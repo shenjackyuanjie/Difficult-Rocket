@@ -1,5 +1,7 @@
 # SR
 
+[中文](https://github.com/shenjackyuanjie/SR/blob/main/docs/README-cn.md)
+
 > It's a Simple Rocket liked game build with Python
 
 # Advantage

@@ -1,5 +1,7 @@
 # SR
 
+[English](https://github.com/shenjackyuanjie/SR)
+
 > 这是一个用Python制作的类Simple Rocket游戏
 
 # 优势
