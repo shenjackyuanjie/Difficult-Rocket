@@ -39,7 +39,9 @@ class MODInfo(Serializable):
 
     """作者、描述"""
     writer: str  # 作者
+    link: str = ""  # 作者链接
     description: str = ""  # 描述
+    info: str = ""  # 其他信息 （可以很多很多）
 
     """版本兼容信息"""
     write_version: str  # mod编写版本
