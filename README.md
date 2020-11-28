@@ -1,10 +1,11 @@
 # SR
- simplerocket in python
- or simple rocket python edition
 
-# NEED
+> It's a Simple Rocket liked game build with Python
 
-```
-python 3.8+
-pyglet
-```
+# Advantage
+
+Nope. Not even one
+
+(Because is was not done)
+
+#
