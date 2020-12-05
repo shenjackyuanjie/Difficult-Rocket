@@ -24,7 +24,7 @@ class Game:
 
     def setup(self):
         # dic
-        self.window_c = libs.loads.window_config()
+        self.window_c = libs.loads.config(".\\configs\\window.json")
         # window
         self.window = Window(width=int(self.window_c['width']), 
                              height=int(self.window_c['height']),

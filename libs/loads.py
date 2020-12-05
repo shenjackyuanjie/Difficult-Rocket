@@ -16,9 +16,3 @@ def config(file_name, stack=None):
     if stack != None:
         rd = rd[stack]
     return rd
-
-
-def window_config():
-    j_config = config("./configs/window.json")
-    config_r = (j_config)
-    return config_r
