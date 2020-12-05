@@ -29,4 +29,5 @@ class Game:
         self.window = Window(width=int(self.window_c['width']), 
                              height=int(self.window_c['height']),
                              fullscreen=bool(self.window_c['fullscreen']),
-                             caption=str(self.window_c['caption']))
+                             caption=str(self.window_c['caption']),
+                             visible=bool(self.window_c['visible']))
