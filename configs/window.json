@@ -1,6 +1,6 @@
 {
-    "x": "1024",
-    "y": "768",
+    "width": "1024",
+    "height": "768",
     "fullscreen": "False",
     "caption": "Simple Rocket 0.1",
     "visible": "True",

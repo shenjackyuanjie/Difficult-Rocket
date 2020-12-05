@@ -1,6 +1,6 @@
 {
-    "x": "int",
-    "y": "int",
+    "width": "int",
+    "height": "int",
     "fullscreen": "bool",
     "caption": "xxx",
     "visible": "bool",
