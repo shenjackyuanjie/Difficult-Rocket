@@ -1,10 +1,8 @@
 {
-    "size" : {
-        "x" : "int",
-        "y" : "int",
-        "fullscreen" : "bool"
-    },
-    "caption" : "xxx",
-    "visible" : "bool",
-    "style" : "xxx(in list)"
+    "x": "int",
+    "y": "int",
+    "fullscreen": "bool",
+    "caption": "xxx",
+    "visible": "bool",
+    "style": "xxx(in list)"
 }
