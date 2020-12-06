@@ -1,3 +1,14 @@
 {
-    "language": "zh_cn"
+    "language": "zh_cn",
+    "textures": {
+        "back_ground_space": "back_ground_space.png",
+        "planet": {
+            "earth_ground": "earth_ground.png"
+        },
+        "flame": {
+            "liquid": "liquid_engine_flame.png",
+            "soild": "soild_engine_flame.png",
+            "ion": "ion_engine_flame.png"
+        }
+    }
 }

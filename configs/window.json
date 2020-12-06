@@ -1,8 +1,9 @@
 {
     "width": "1024",
     "height": "768",
-    "fullscreen": "False",
+    "fullscreen": "0",
     "caption": "Simple Rocket 0.1",
-    "visible": "True",
+    "resizable":"1",
+    "visible": "1",
     "style": "None"
 }

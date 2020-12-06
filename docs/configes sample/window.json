@@ -1,8 +1,9 @@
 {
     "width": "int",
     "height": "int",
-    "fullscreen": "bool",
+    "fullscreen": "`1/0`",
     "caption": "xxx",
-    "visible": "bool",
+    "resizable":"1/0",
+    "visible": "1/0",
     "style": "xxx(in list)"
 }

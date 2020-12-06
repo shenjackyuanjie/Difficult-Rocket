@@ -1,0 +1,12 @@
+{
+    "language": "language",
+    "textures": {
+        "back_ground_space": "xxx.png",
+        "planet": {
+            "xxx": "xxx.png"
+        },
+        "flame": {
+            "xxx": "xxx.png"
+        }
+    }
+}
