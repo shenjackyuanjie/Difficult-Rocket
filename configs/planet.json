@@ -3,7 +3,10 @@
         "description": "",
         "planets": {
             "smearth": {
-                
+                "description": "",
+                "gravity": 9.81,
+                "radius": 63710000,
+                "map_color": [103, 157, 255]
             }
         }
     }
