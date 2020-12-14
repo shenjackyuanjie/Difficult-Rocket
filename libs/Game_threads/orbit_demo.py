@@ -7,5 +7,5 @@ import libs
 import threading
 
 class Orbit_demo(threading.Thread):
-    def __init__(self):
+    def __init__(self, threadID, delivery_class):
         pass
