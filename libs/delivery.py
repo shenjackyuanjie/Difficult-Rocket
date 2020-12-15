@@ -3,6 +3,7 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
+
 class Delivery:
     def __init__(self):
         self.using = False
