@@ -26,4 +26,4 @@ class Orbit_demo(threading.Thread):
         print("ha ?")
     
     def orbit_math(self):
-        mass = self.ship_info["mass"]
+        pass
