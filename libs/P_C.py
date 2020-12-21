@@ -27,13 +27,23 @@ def P_C_M(A, B):  # stand for Physics Calculation multiple
     Unit2 = []
     for unit in B[3]:
         if unit in [Unit1]:
-            n = Unit1.index(unit)
-            Unit1.pop(n)
+            Unit1.remove(unit)
         else:
             Unit2.append(unit)
     if Unit1 == None:
         Unit1 = []
+    print(Unit1, Unit2)
+    for unit in Unit2:
+        print(unit)
+        if unit in Unit1:
+            Unit1.remove(unit)
+            Unit2.remove(unit)
+            print(unit)
+        else:
+            pass
+    print(Unit1, Unit2)
     C = [Float, Int, Unit1, Unit2]
+    print(C)
     return C
 
 
@@ -57,11 +67,16 @@ def P_C_D(A, B):  # stand for Physics Calculation divide
     Unit2 = []
     for unit in B[2]:
         if unit in [Unit1]:
-            n = Unit1.index(unit)
-            Unit1.pop(n)
+            Unit1.remove(unit)
         else:
             Unit2.append(unit)
     if Unit1 == None:
         Unit1 = []
+    for unit in Unit2:
+        if unit in Unit1:
+            Unit1.remove(unit)
+            Unit2.remove(unit)
+        else:
+            pass
     C = [Float, Int, Unit1, Unit2]
     return C
