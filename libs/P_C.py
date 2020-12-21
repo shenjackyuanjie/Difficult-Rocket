@@ -32,18 +32,13 @@ def P_C_M(A, B):  # stand for Physics Calculation multiple
             Unit2.append(unit)
     if Unit1 == None:
         Unit1 = []
-    print(Unit1, Unit2)
     for unit in Unit2:
-        print(unit)
         if unit in Unit1:
             Unit1.remove(unit)
             Unit2.remove(unit)
-            print(unit)
         else:
             pass
-    print(Unit1, Unit2)
     C = [Float, Int, Unit1, Unit2]
-    print(C)
     return C
 
 
