@@ -10,5 +10,8 @@
             "soild": "soild_engine_flame.png",
             "ion": "ion_engine_flame.png"
         }
+    },
+    "basic_number": {
+        "G" : ["6.67", "-11", ["N", "m", "m"], ["kg", "kg"]]
     }
 }

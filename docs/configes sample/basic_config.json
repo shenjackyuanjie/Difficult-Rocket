@@ -8,5 +8,8 @@
         "flame": {
             "xxx": "xxx.png"
         }
+    },
+    "basic_number": {
+        "name" : ["float", "int", ["unit"], ["unit"], "name = float × 10^int × unit(s) ÷ unit(s)"]
     }
 }

@@ -21,3 +21,9 @@ class Orbit_demo(threading.Thread):
         self.this_planet_info = {}
         self.back_ground_element = {}
         self.back_ground_image = ""
+    
+    def main(self):
+        print("ha ?")
+    
+    def orbit_math(self):
+        mass = self.ship_info["mass"]
