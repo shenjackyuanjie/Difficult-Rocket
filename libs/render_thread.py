@@ -7,13 +7,19 @@ import libs
 import pyglet
 import threading
 
+from threading import Thread
+
 from pyglet.app import run
 from pyglet.window import Window
 from pyglet.resource import image
 
 
 class RenderThread(threading.Thread, pyglet.window.Window):
+    
     def __init__(self, threadID, delivery_class):
+        # father class __init__()
+        Window.__init__(self)
+        threading.Thread.__init__(self)
         # value
         # dic
         self.parts = {}  # this ship parts
@@ -39,9 +45,9 @@ class RenderThread(threading.Thread, pyglet.window.Window):
         # window
         self.window = Window(width=int(self.window_c['width']),
                              height=int(self.window_c['height']),
-                             fullscreen=mbool(self.window_c['fullscreen']),
+                             fullscreen=libs.tools.mbool(self.window_c['fullscreen']),
                              caption=str(self.window_c['caption']),
-                             visible=mbool(self.window_c['visible']))
+                             visible=libs.tools.mbool(self.window_c['visible']))
 
     def on_draw(self):
         pass

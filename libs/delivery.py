@@ -7,6 +7,7 @@ mail: 3695888@qq.com
 class Delivery:
     def __init__(self):
         self.using = False
+        self.rended = False
         self.ship_info = {}
         self.planet_system = {}
         self.main_ship_parts = {}
