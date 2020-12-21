@@ -13,8 +13,8 @@ def P_C_M(A, B):  # stand for Physics Calculation multiple
     A & B list format:docs.basic_config.json:basic_number
     """
     C = [0.0, 1, [], []]
-    Float = A[0] * B[0]
-    Int = A[1] + B[1]
+    Float = float(A[0] * B[0])
+    Int = int(A[1] + B[1])
     if Float >= 10:
         Float /= 10
         Int += 1
@@ -22,8 +22,7 @@ def P_C_M(A, B):  # stand for Physics Calculation multiple
         Float *= 10
         Int -= 1
     else:
-        Float = float(Float)
-        Int = int(Int)
+        pass
     Unit1 = [].append(A[2].extend(B[2]))
     Unit2 = []
     for unit in B[3]:
@@ -44,8 +43,8 @@ def P_C_D(A, B):  # stand for Physics Calculation divide
     A & B list format:docs.basic_config.json:basic_number
     """
     C = [0.0, 1, [], []]
-    Float = A[0] / B[0]
-    Int = A[1] - B[1]
+    Float = float(A[0] / B[0])
+    Int = int(A[1] - B[1])
     if Float >= 10:
         Float /= 10
         Int += 1
@@ -53,8 +52,7 @@ def P_C_D(A, B):  # stand for Physics Calculation divide
         Float *= 10
         Int -= 1
     else:
-        Float = float(Float)
-        Int = int(Int)
+        pass
     Unit1 = A[2].extend(B[3])
     Unit2 = []
     for unit in B[2]:
