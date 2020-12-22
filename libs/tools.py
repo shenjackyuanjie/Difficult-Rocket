@@ -28,6 +28,3 @@ def D_C(listA, listB): # stand for Duplicate check
     listA.sort()
     listB.sort()
     return
-
-def S_C_float_check(SC): # stand for Scientific notation's float check
-    pass
