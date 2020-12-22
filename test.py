@@ -12,9 +12,9 @@ B = [0.245, -7, ["N", "kg"], ["m", "s"]]
 print("A = " , A)
 print("B = " , B)
 
-C = libs.P_C.S_N_M(A, B)
-D = libs.P_C.S_N_D(A, B)
-E = libs.P_C.S_N_D(C, B)
+C = libs.S_D.S_N_M(A, B)
+D = libs.S_D.S_N_D(A, B)
+E = libs.S_D.S_N_D(C, B)
 
 print("A × B = " , C)
 print("A ÷ B = " , D)
