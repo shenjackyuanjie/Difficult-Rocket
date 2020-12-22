@@ -11,3 +11,23 @@ def mbool(thing):  # stand for my bool
         return False
     else:
         raise ValueError("Need a 'like bool' not anything else")
+
+def D_C(listA, listB): # stand for Duplicate check
+    """
+    usage:\n
+    input two list\n
+    the fun will do duplicate check and sort then\n
+    the fun won't return any thing just change the list now
+    """
+    for unit in listB:
+        if unit in listA:
+            listA.remove(unit)
+            listB.remove(unit)
+        else:
+            continue
+    listA.sort()
+    listB.sort()
+    return
+
+def S_C_float_check(SC): # stand for Scientific notation's float check
+    pass

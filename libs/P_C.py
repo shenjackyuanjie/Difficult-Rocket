@@ -7,7 +7,7 @@ import libs
 import math
 
 
-def P_C_M(A, B):  # stand for Physics Calculation multiple
+def P_C_M(A, B):  # stand for Scientific notation multiple
     """
     formats:
     A & B list format:docs.basic_config.json:basic_number
@@ -26,12 +26,7 @@ def P_C_M(A, B):  # stand for Physics Calculation multiple
     Unit1, Unit2 = A[2] + B[2], A[3] + B[3]
     if Unit1 == None:
         Unit1 = []
-    for unit in Unit2:
-        if unit in Unit1:
-            Unit1.remove(unit)
-            Unit2.remove(unit)
-        else:
-            continue
+    libs.tools.D_C(Unit1, Unit2)
     C = [Float, Int, Unit1, Unit2]
     return C
 
@@ -55,11 +50,6 @@ def P_C_D(A, B):  # stand for Physics Calculation divide
     Unit1, Unit2 = A[2] + B[3], A[3] + B[2]
     if Unit1 == None:
         Unit1 = []
-    for unit in Unit2:
-        if unit in Unit1:
-            Unit1.remove(unit)
-            Unit2.remove(unit)
-        else:
-            continue
+    libs.tools.D_C(Unit1, Unit2)
     C = [Float, Int, Unit1, Unit2]
     return C
