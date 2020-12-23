@@ -15,7 +15,7 @@ class Orbit_demo(threading.Thread):
         # father class __init__()
         threading.Thread.__init__(self)
         # dic
-        self.ship_info = {}
+        self.ship_info = {"mass": [1, 5, ["kg"], []],}
         self.planet_system = {"Solar System": {"planets": {"smearth": {"description": "", "gravity": 9.81, "radius": 63710000, "map_color": [103, 157, 255]}}}}
         self.main_ship_parts = {}
         self.this_planet_info = {}

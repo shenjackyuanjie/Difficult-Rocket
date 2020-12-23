@@ -23,7 +23,7 @@ def S_N_M(A, B):  # stand for Scientific notation multiple
     """
     formats:
     A & B list format:docs.basic_config.json:basic_number"""
-    C = [float(A[0] * B[0]), int(A[1] + B[1])]
+    C = [A[0] * B[0], int(A[1] + B[1])]
     S_C_float_check(C)
     Unit1, Unit2 = A[2] + B[2], A[3] + B[3]
     if Unit1 == None:
