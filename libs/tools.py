@@ -3,6 +3,9 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
+import libs
+import decimal
+
 
 def mbool(thing):  # stand for my bool
     if (thing == "True") or (thing == 1) or (thing == "1"):
@@ -12,7 +15,8 @@ def mbool(thing):  # stand for my bool
     else:
         raise ValueError("Need a 'like bool' not anything else")
 
-def D_C(listA, listB): # stand for Duplicate check
+
+def D_C(listA, listB):  # stand for Duplicate check
     """
     usage:\n
     input two list\n
@@ -28,3 +32,19 @@ def D_C(listA, listB): # stand for Duplicate check
     listA.sort()
     listB.sort()
     return
+
+
+def F_Mu(A, B):  # stand for float multiple
+    pass
+
+
+def F_D(A, B):  # stand for float divided
+    pass
+
+
+def F_P(A, B):  # stand for float plus
+    pass
+
+
+def F_Mi(A, B):  # stand for float minus
+    pass

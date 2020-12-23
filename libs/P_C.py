@@ -1,13 +1,15 @@
 """
 writen by shenjackyuanjie
 mail: 3695888@qq.com
+
+file name stand for : Physics calculation
 """
 
 import libs
 import math
 
 
-def S_C_float_check(SC):  # stand for Scientific notation's float check\
+def S_C_float_check(SC):  # stand for Scientific notation's float check
     """
     formats:
     SC list format:docs.basic_config.json:basic_number"""
@@ -33,7 +35,7 @@ def S_N_M(A, B):  # stand for Scientific notation multiple
     return C
 
 
-def S_N_D(A, B):  # stand for Scientific notation divide
+def S_N_D(A, B):  # stand for Scientific notation divided
     """
     formats:
     A & B list format:docs.basic_config.json:basic_number"""
