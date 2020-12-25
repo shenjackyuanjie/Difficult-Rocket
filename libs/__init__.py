@@ -6,7 +6,7 @@ mail: 3695888@qq.com
 import libs.Game_threads
 
 # import in this forder
-import libs.S_D
+import libs.P_C
 import libs.main
 import libs.tools
 import libs.loads
