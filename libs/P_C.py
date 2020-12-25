@@ -40,7 +40,7 @@ def S_N_M(A, B):  # stand for Scientific notation multiple
 def S_N_D(A, B):  # stand for Scientific notation divided
     """
     formats:
-    A & B list format:docs.basic_config.json:basic_number"""
+    A & B list format:docs.basic_config:basic_number"""
     C = [F_D(A[0], B[0]), F_Mi(A[1], B[1])]
     S_C_float_check(C)
     Unit1, Unit2 = A[2] + B[3], A[3] + B[2]
@@ -49,3 +49,7 @@ def S_N_D(A, B):  # stand for Scientific notation divided
     libs.tools.D_C(Unit1, Unit2)
     C += [Unit1, Unit2]
     return C
+
+
+def G_C(M, m, R): #stand for gravity calculation
+    pass
