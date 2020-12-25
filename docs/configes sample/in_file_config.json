@@ -2,7 +2,8 @@
     "Game_threads": {
         "orbit_demo": {
             "ship_info": {
-                "mass" : "basic_config:basic_number"
+                "mass": "basic_config:basic_number",
+                "force": "basic_config:basic_force"
             }
         }
     }

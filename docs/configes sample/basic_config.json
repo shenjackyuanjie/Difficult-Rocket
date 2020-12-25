@@ -10,6 +10,9 @@
         }
     },
     "basic_number": {
-        "name" : ["float", "int", ["unit"], ["unit"], "name = float × 10^int × unit(s) ÷ unit(s)"]
+        "name": ["float", "int", ["unit"], ["unit"], "name = float × 10^int × unit(s) ÷ unit(s)"]
+    },
+    "basic_force" : {
+        "name": ["x", "y", "x&y format:basic_number/unit1:[m]/unit2:[]"]
     }
 }
