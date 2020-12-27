@@ -23,33 +23,55 @@ def S_C_float_check(SC):  # stand for Scientific notation's float check
         SC[1] -= 1
 
 
-def S_N_M(A, B):  # stand for Scientific notation multiple
+def S_N_M(A, B, *C):  # stand for Scientific notation multiple
+    """
+    formats:
+    A & B & C list format:docs.basic_config.json:basic_number"""
+    AB = __S_N_M(A, B)
+    if C:
+        for SN in C:
+            AB = __S_N_M(AB, SN)
+    else:
+        return AB
+    return AB
+
+
+def __S_N_M(A, B):
     """
     formats:
     A & B list format:docs.basic_config.json:basic_number"""
-    C = [F_Mu(A[0], B[0]), F_A(A[1], B[1])]
-    S_C_float_check(C)
+    R = [F_Mu(A[0], B[0]), F_A(A[1], B[1])]
+    S_C_float_check(R)
     Unit1, Unit2 = A[2] + B[2], A[3] + B[3]
     if Unit1 == None:
         Unit1 = []
     libs.tools.D_C(Unit1, Unit2)
-    C += [Unit1, Unit2]
-    return C
+    R += [Unit1, Unit2]
+    return R
 
 
 def S_N_D(A, B):  # stand for Scientific notation divided
     """
     formats:
     A & B list format:docs.basic_config:basic_number"""
-    C = [F_D(A[0], B[0]), F_Mi(A[1], B[1])]
-    S_C_float_check(C)
+    R = [F_D(A[0], B[0]), F_Mi(A[1], B[1])]
+    S_C_float_check(R)
     Unit1, Unit2 = A[2] + B[3], A[3] + B[2]
     if Unit1 == None:
         Unit1 = []
     libs.tools.D_C(Unit1, Unit2)
-    C += [Unit1, Unit2]
-    return C
+    R += [Unit1, Unit2]
+    return R
 
 
-def G_C(M, m, R): #stand for gravity calculation
-    pass
+def G_C(M, m, R, G): #stand for gravity calculation
+    """
+    formats:
+    M : ship's mass
+    m : planet's mass
+    R : distance to the planet
+    G : Gravitational constant
+    M & m & R format: docs.basic_config:basic_number
+    """
+    A = S_N_M
+
