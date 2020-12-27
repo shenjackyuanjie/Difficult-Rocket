@@ -23,24 +23,26 @@ def S_C_float_check(SC):  # stand for Scientific notation's float check
         SC[1] -= 1
 
 
-def S_N_M(A, B, *C):  # stand for Scientific notation multiple
+def S_N_M(*SN):  # stand for Scientific notation multiple
     """
     formats:
     A & B & C list format:docs.basic_config.json:basic_number"""
-    AB = __S_N_M(A, B)
-    if C:
-        for SN in C:
-            AB = __S_N_M(AB, SN)
+    if len(SN) < 2:
+        raise TypeError("it need more than 2!")
+    elif len(SN) == 2:
+        return __S_N_M(SN[0], SN[1])
     else:
-        return AB
-    return AB
+        R = __S_N_M(SN[0], SN[1])
+        for A in SN[2:]:
+            R = __S_N_M(R, A)
+    return R
 
 
 def __S_N_M(A, B):
     """
     formats:
     A & B list format:docs.basic_config.json:basic_number"""
-    R = [F_Mu(A[0], B[0]), F_A(A[1], B[1])]
+    R = [F_Mu(A[0], B[0]), A[1] + B[1]]
     S_C_float_check(R)
     Unit1, Unit2 = A[2] + B[2], A[3] + B[3]
     if Unit1 == None:
@@ -54,7 +56,7 @@ def S_N_D(A, B):  # stand for Scientific notation divided
     """
     formats:
     A & B list format:docs.basic_config:basic_number"""
-    R = [F_D(A[0], B[0]), F_Mi(A[1], B[1])]
+    R = [F_D(A[0], B[0]), A[1] - B[1]]
     S_C_float_check(R)
     Unit1, Unit2 = A[2] + B[3], A[3] + B[2]
     if Unit1 == None:
@@ -73,5 +75,5 @@ def G_C(M, m, R, G): #stand for gravity calculation
     G : Gravitational constant
     M & m & R format: docs.basic_config:basic_number
     """
-    A = S_N_M
+    pass
 
