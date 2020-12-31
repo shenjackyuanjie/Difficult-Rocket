@@ -75,5 +75,8 @@ def G_C(M, m, R, G): #stand for gravity calculation
     G : Gravitational constant
     M & m & R format: docs.basic_config:basic_number
     """
-    pass
+    g = libs.config.basic_number()
+    A = S_N_M(M, m, G)
+    B = S_N_D(A, S_N_M(R, R))
+    return B
 
