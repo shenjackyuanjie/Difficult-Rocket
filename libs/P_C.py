@@ -77,5 +77,9 @@ def G_C(M, m, R, G):  # stand for gravity calculation
     """
     g = libs.config.basic_number()
     A = S_N_M(M, m, G)
-    B = S_N_D(A, S_N_M(R, R))
-    return B
+    g = S_N_D(A, S_N_M(R, R))
+    return g
+
+
+def distance(A, B):
+    pass
