@@ -1,6 +1,6 @@
 """
 writen by shenjackyuanjie
-mail: 3695888@qq.
+mail: 3695888@qq.c
 """
 # import folders
 
