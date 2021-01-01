@@ -1,3 +1,9 @@
+# VScode file
+.vscode/
+
+# PYCharm file
+.idea/
+
 # log file
 *.log
 
@@ -126,7 +132,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-
-.idea/
-.vscode/settings.json
