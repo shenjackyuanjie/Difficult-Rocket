@@ -66,7 +66,7 @@ def S_N_D(A, B):  # stand for Scientific notation divided
     return R
 
 
-def G_C(M, m, R, G): #stand for gravity calculation
+def G_C(M, m, R, G):  # stand for gravity calculation
     """
     formats:
     M : ship's mass
@@ -79,4 +79,3 @@ def G_C(M, m, R, G): #stand for gravity calculation
     A = S_N_M(M, m, G)
     B = S_N_D(A, S_N_M(R, R))
     return B
-
