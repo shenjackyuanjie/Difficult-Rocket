@@ -12,7 +12,7 @@ def config(file_name, stack=None):
         with open(file_name, "r") as jf:  # jf -> json file
             rd = json.load(jf)
     except FileNotFoundError:
-        raise
+        raise FileNotFoundError("no config file")
     if stack != None:
         rd = rd[stack]
     return rd
