@@ -8,7 +8,10 @@ file name stand for : Physics calculation
 import libs
 import math
 
-from libs.tools import F_Mi, F_Mu, F_A, F_D
+F_A = libs.tools.F_A()
+F_D = libs.tools.F_D()
+F_Mi = libs.tools.F_Mi()
+F_Mu = libs.tools.F_mu()
 
 
 def S_C_float_check(SC):  # stand for Scientific notation's float check
@@ -82,4 +85,9 @@ def G_C(M, m, R, G):  # stand for gravity calculation
 
 
 def distance(A, B):
+    """
+    formats:
+    A & B format: docs.basic_config:basic_poi
+    """
+    D = libs
     pass
