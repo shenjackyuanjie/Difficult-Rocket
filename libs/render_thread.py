@@ -35,11 +35,11 @@ class RenderThread(threading.Thread, pyglet.window.Window):
     def setup(self):
         # dic
         self.window_c = libs.loads.config(
-            ".\\configs\\window.json")  # stand for window config
+            ".\\sys_configs\\window.json")  # stand for window config
         self.planet_c = libs.loads.config(
-            ".\\configs\\planet.json")  # stand for planet config
+            ".\\sys_configs\\planet.json")  # stand for planet config
         self.textures_c = libs.loads.config(
-            ".\\configs\\basic_config", "textures")  # stand for textures config
+            ".\\sys_configs\\basic_config", "textures")  # stand for textures config
         # image
         self.b_g = image("back_ground_space.png")
         # window
