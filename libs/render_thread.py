@@ -7,9 +7,7 @@ import libs
 import pyglet
 import threading
 
-from threading import Thread
-
-from pyglet.app import run
+import pyglet.app
 from pyglet.window import Window
 from pyglet.resource import image
 
@@ -31,7 +29,7 @@ class RenderThread(threading.Thread, pyglet.window.Window):
         # list
 
     def start_game(self):
-        run()
+        pyglet.app.run()
         return
 
     def setup(self):

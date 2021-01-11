@@ -32,4 +32,4 @@ f = libs.P_C.S_N_M(A,libs.P_C.S_N_M(B,libs.P_C.S_N_M(C, D)))
 print("A * B * C * D = " , e)
 print("A * B * C * D = " , f)
 
-G = libs.render
+G = libs.render_thread
