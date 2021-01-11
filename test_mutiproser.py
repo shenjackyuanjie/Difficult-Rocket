@@ -1,7 +1,10 @@
 
 import multiprocessing as mp
 from multiprocessing.context import Process
-import os, time, random
+import os
+import time
+import random
+
 
 class Main(mp.Process):
     def __init__(self, dev) -> None:
@@ -13,7 +16,7 @@ class Main(mp.Process):
     def run(self):
         while self.ttt:
             print(os.getpid())
-            time.sleep(3)
+            time.sleep(1)
             while not(self.dev.using):
                 self.dev.using = True
                 print("开始调用a")
@@ -36,13 +39,14 @@ class Main(mp.Process):
 class render(mp.Process):
     def __init__(self, dev) -> None:
         Process.__init__(self)
+        self.bbb = 3
         self.ggg = True
         self.dev = dev
-    
+
     def run(self):
         while self.ggg:
             print(os.getpid())
-            time.sleep(3)
+            time.sleep(1)
             while not(self.dev.using):
                 self.dev.using = True
                 if random.choice(range(0, 5, 1)) == 4:
@@ -78,4 +82,10 @@ if __name__ == "__main__":
     print(":aaa")
     A.start()
     B.start()
-    time.sleep(5)
+    time.sleep(3)
+    print("gogogogogogoogogogogo")
+    dev.a = False
+    print("A is deadddddddddddddddddddd AAAAAAAA")
+    time.sleep(3)
+    dev.b = False
+    print("BBBBBBBBBBBBBB")
