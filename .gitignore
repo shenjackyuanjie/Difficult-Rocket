@@ -1,5 +1,6 @@
 # VScode file
 .vscode/
+SR.code-workspace
 
 # PYCharm file
 .idea/
