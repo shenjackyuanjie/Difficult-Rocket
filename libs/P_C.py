@@ -7,11 +7,7 @@ file name stand for : Physics calculation
 
 import libs
 import math
-
-F_A = libs.tools.F_A()
-F_D = libs.tools.F_D()
-F_Mi = libs.tools.F_Mi()
-F_Mu = libs.tools.F_mu()
+from decimal import Decimal as D
 
 
 def S_C_float_check(SC):  # stand for Scientific notation's float check

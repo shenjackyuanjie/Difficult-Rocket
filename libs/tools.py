@@ -33,26 +33,3 @@ def D_C(listA, listB):  # stand for Duplicate check
     listB.sort()
     return
 
-
-def F_Mu(A, B):  # stand for float multiple
-    a = decimal.Decimal(str(A))
-    b = decimal.Decimal(str(B))
-    return float(a * b)
-
-
-def F_D(A, B):  # stand for float divided
-    a = decimal.Decimal(str(A))
-    b = decimal.Decimal(str(B))
-    return float(a / b)
-
-
-def F_A(A, B):  # stand for float plus
-    a = decimal.Decimal(str(A))
-    b = decimal.Decimal(str(B))
-    return float(a + b)
-
-
-def F_Mi(A, B):  # stand for float minus
-    a = decimal.Decimal(str(A))
-    b = decimal.Decimal(str(B))
-    return float(a - b)
