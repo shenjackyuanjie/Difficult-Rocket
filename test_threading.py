@@ -26,7 +26,7 @@ class Aclass(threading.Thread):
             time.sleep(1)
 
     def stop(self):
-        sys.exit()
+        self.running = False
 
 
 class dev():
