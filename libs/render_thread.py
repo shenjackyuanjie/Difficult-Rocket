@@ -6,6 +6,7 @@ mail: 3695888@qq.com
 import libs
 import pyglet
 import threading
+import multiprocessing
 
 import pyglet.app
 from pyglet.window import Window
@@ -34,12 +35,14 @@ class RenderThread(threading.Thread, pyglet.window.Window):
 
     def setup(self):
         # dic
+        """
         self.window_c = libs.loads.config(
             ".\\sys_value\\window.json")  # stand for window config
         self.planet_c = libs.loads.config(
             ".\\sys_value\\planet.json")  # stand for planet config
         self.textures_c = libs.loads.config(
             ".\\sys_value\\basic_config", "textures")  # stand for textures config
+        """
         # image
         self.b_g = image("back_ground_space.png")
         # window
