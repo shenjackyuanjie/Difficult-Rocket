@@ -6,22 +6,25 @@ mail: 3695888@qq.com
 import libs
 import pyglet
 import threading
-import multiprocessing
+import multiprocessing as mp
 
 import pyglet.app
 from pyglet.window import Window
 from pyglet.resource import image
 
 
-class RenderThread(threading.Thread, pyglet.window.Window):
+class RenderThread(mp.Process, pyglet.window.Window):
 
-    def __init__(self, thread_ID, thread_name, delivery_class):
+    def __init__(self, dev_list, dev_dic):
         # father class __init__()
         Window.__init__(self)
-        threading.Thread.__init__(self)
+        mp.Process.__init__(self)
         # value
-        self.thread_id = thread_ID
-        self.thread_name = thread_name
+        self.process_id = 'Render'
+        self.process_name = 'render process'
+        # share memery
+        self.dev_list = dev_list
+        self.dev_dic = dev_dic
         # dic
         self.parts = {}  # this ship parts
         self.o_parts = {}  # stand for opther parts
@@ -35,21 +38,12 @@ class RenderThread(threading.Thread, pyglet.window.Window):
 
     def setup(self):
         # dic
-        """
-        self.window_c = libs.loads.config(
-            ".\\sys_value\\window.json")  # stand for window config
-        self.planet_c = libs.loads.config(
-            ".\\sys_value\\planet.json")  # stand for planet config
-        self.textures_c = libs.loads.config(
-            ".\\sys_value\\basic_config", "textures")  # stand for textures config
-        """
         # image
         self.b_g = image("back_ground_space.png")
         # window
         self.window = Window(width=int(self.window_c['width']),
                              height=int(self.window_c['height']),
-                             fullscreen=libs.tools.mbool(
-                                 self.window_c['fullscreen']),
+                             fullscreen=libs.tools.mbool(self.window_c['fullscreen']),
                              caption=str(self.window_c['caption']),
                              visible=libs.tools.mbool(self.window_c['visible']))
 

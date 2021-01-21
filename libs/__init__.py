@@ -14,3 +14,4 @@ import libs.setup
 import libs.configs
 import libs.delivery
 import libs.render_thread
+import libs.compute_thread

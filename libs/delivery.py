@@ -6,7 +6,6 @@ mail: 3695888@qq.com
 
 class Delivery:
     def __init__(self):
-
         # bool
         self.using = False
         self.rended = False

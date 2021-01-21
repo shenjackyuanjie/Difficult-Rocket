@@ -5,7 +5,6 @@ mail: 3695888@qq.com
 
 import pyglet
 import libs
-import json
 import sys
 import os
 
