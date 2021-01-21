@@ -12,6 +12,10 @@ Nope. Not even one
 
 (Because is was not done)
 
+# Plan feature
+
+- server client separate (can be start one by one)
+
 # Environment
 
 - `Python 3.8.5` `Windows10 x64` `Pyglet 1.5.7`
@@ -19,6 +23,7 @@ Nope. Not even one
 ## Required python modules
 
 - pyglet
+- json5
 
 # About License
 
