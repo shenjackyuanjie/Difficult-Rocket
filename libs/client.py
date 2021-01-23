@@ -3,14 +3,13 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import libs
-import pyglet
-import threading
 import multiprocessing as mp
 
+import libs
+import pyglet
 import pyglet.app
-from pyglet.window import Window
 from pyglet.resource import image
+from pyglet.window import Window
 
 
 class RenderThread(mp.Process, pyglet.window.Window):

@@ -4,8 +4,6 @@ mail: 3695888@qq.com
 """
 
 import libs
-import math
-from decimal import Decimal as D
 
 """
 some tools

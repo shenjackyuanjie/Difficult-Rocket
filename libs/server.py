@@ -3,8 +3,6 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import libs
-import threading
 import multiprocessing as mp
 
 
