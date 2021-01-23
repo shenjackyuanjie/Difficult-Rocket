@@ -3,8 +3,6 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import libs
-
 def basic_number(Int=0, Float=1, unit1=[], unit2=[]):
     return [Int, Float, unit1, unit2]
 

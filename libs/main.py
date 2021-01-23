@@ -3,8 +3,6 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-from libs.Game_threads import orbit_demo
-
 import libs
 import multiprocessing as mp
 
@@ -16,7 +14,8 @@ class Game():
     def __init__(self):
         self.dics = share().dict()
         self.lists = share().list()
-        self.render = libs.libs.render_thread.RenderThread(self.lists, self.dics)
+        self.client = libs.libs.client()
+        self.server = libs.libs.server()
 
     def setup(self):
-        self.game_thread = orbit_demo()
+        pass
