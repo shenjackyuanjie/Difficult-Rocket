@@ -1,9 +1,11 @@
 {
   "width": "1024",
   "height": "768",
-  "full_screen": "0",
-  "caption": "Simple Rocket 0.1",
-  "resizable": "1",
-  "visible": "1",
+  "full_screen": "false",
+  // bool
+  "caption": "Simple Rocket {version}",
+  // {version} -> version of SR
+  "resizable": "true",
+  "visible": "true",
   "style": "None"
 }
