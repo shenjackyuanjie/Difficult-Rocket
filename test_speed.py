@@ -2,8 +2,7 @@ import time
 
 from decimal import Decimal as D
 
-
-times = 5000000
+times = 500000
 # 尽量不要超过 5000000 否则整体执行时间>10s
 # 5000000
 
