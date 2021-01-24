@@ -2,35 +2,35 @@
 
 ### 版本 0.1
 
-[English](https://github.com/shenjackyuanjie/SR)
+For English version, please move [here](https://github.com/shenjackyuanjie/SR).
 
 > 这是一个用Python制作的类Simple Rocket游戏
 
-# 优势
+## 优势
 
-没有。一点也没有
+没有。一个也没有
 
 （因为还没写完呢）
 
-# 计划特性
+## 计划特性
 
 - 服务端客户端分离（可以单独开启）
 
-# 环境需求
+## 环境需求
 
 - `Python 3.8.5` `Windows10 x64` `Pyglet 1.5.7`
 
-## 需要的Python模块
+### 需要的Python模块
 
 - pyglet
 - json5
 
 
-# 关于分享协议
+## 关于分享协议
 
-### https://creativecommons.org/licenses/by-nc-sa/4.0/
+#### https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-### 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)
+#### 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)
 
 这是一份普通人可以理解的许可协议概要 (但不是替代) 。 免责声明.
 
