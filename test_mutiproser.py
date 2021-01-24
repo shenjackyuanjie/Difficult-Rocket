@@ -1,8 +1,9 @@
+
 import multiprocessing as mp
-import os
-import random
-import time
 from multiprocessing.context import Process
+import os
+import time
+import random
 
 
 class Main(mp.Process):

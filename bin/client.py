@@ -5,7 +5,7 @@ mail: 3695888@qq.com
 
 import multiprocessing as mp
 
-import libs
+import bin
 import pyglet
 import pyglet.app
 from pyglet.resource import image
@@ -21,12 +21,12 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # value
         self.process_id = 'Render'
         self.process_name = 'render process'
-        # share memery
+        # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # dic
         self.parts = {}  # this ship parts
-        self.o_parts = {}  # stand for opther parts
+        self.o_parts = {}  # stand for other parts
         self.b_g_e = {}  # stand for back ground element
         self.planet_system = {}  # hole planet system
         # list
@@ -42,18 +42,18 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # window
         self.window = Window(width=int(self.window_c['width']),
                              height=int(self.window_c['height']),
-                             fullscreen=libs.tools.mbool(self.window_c['fullscreen']),
+                             fullscreen=bin.tools.mbool(self.window_c['full_screen']),
                              caption=str(self.window_c['caption']),
-                             visible=libs.tools.mbool(self.window_c['visible']))
+                             visible=bin.tools.mbool(self.window_c['visible']))
 
     def on_draw(self):
         pass
 
-    def on_mouse_motion(self):
+    def on_mouse_motion(self, x, y, dx, dy):
         pass
 
-    def on_key_press(self):
+    def on_key_press(self, symbol, modifiers):
         pass
 
-    def on_key_release(self):
+    def on_key_release(self, symbol, modifiers):
         pass
