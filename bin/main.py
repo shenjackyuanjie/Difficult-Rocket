@@ -16,8 +16,8 @@ class Game():
     def __init__(self):
         self.dics = share().dict()
         self.lists = share().list()
-        self.client = client.RenderThread(self.lists, self.dics)
-        self.server = server.server(self.lists, self.dics)
+        self.client = client.RenderThread(self.lists, self.dics, net_mode='local')
+        self.server = server.server(self.lists, self.dics, net_mode='local')
 
     def setup(self):
         pass

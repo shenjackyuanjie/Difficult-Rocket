@@ -14,7 +14,7 @@ from pyglet.window import Window
 
 class RenderThread(mp.Process, pyglet.window.Window):
 
-    def __init__(self, dev_list, dev_dic):
+    def __init__(self, dev_list, dev_dic, net_mode='local'):
         # do father class __init__()
         Window.__init__(self)
         mp.Process.__init__(self)

@@ -7,13 +7,13 @@ import multiprocessing as mp
 
 
 class server(mp.Process):
-    def __init__(self, dev_list, dev_dic):
+    def __init__(self, dev_list, dev_dic, net_mode='local'):
         # father class __init__()
         mp.Process.__init__(self)
         # value
         self.process_id = 'Server'
         self.process_name = 'server process'
-        # share memery
+        # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
 

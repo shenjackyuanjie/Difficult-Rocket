@@ -6,6 +6,8 @@
   "caption": "Simple Rocket {version}",
   // {version} -> version of SR
   "resizable": "true",
+  // bool
   "visible": "true",
+  // bool
   "style": "None"
 }
