@@ -4,7 +4,7 @@ mail: 3695888@qq.com
 """
 
 import pyglet
-import libs
+import bin
 import sys
 import os
 
