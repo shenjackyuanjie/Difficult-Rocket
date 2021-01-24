@@ -14,7 +14,7 @@ None. Not even one!
 
 ## Planed feature
 
-- server client separate (can be start one by one).
+- server client separate (just like minecraft).
 
 ## Environment
 
@@ -55,6 +55,8 @@ No additional restrictions — You may not apply legal terms or technological me
 
 Notices:
 
-You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
+You do not have to comply with the license for elements of the material in the public domain or where your use is
+permitted by an applicable exception or limitation.
 
-No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
+No warranties are given. The license may not give you all the permissions necessary for your intended use. For example,
+other rights such as publicity, privacy, or moral rights may limit how you use the material.
