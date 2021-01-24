@@ -1,22 +1,22 @@
 # SR
 
-### Vision 0.1
+### Version 0.1
 
-[中文](https://github.com/shenjackyuanjie/SR/blob/main/docs/README-cn.md)
+中文版请移步[这里](https://github.com/shenjackyuanjie/SR/blob/main/docs/README-cn.md)。
 
 > It's a Simple Rocket liked game build with Python
 
-# Advantage
+## Advantage
 
-Nope. Not even one
+None. Not even one!
 
-(Because is was not done)
+(Because we are still writing the description, coming s∞n)
 
-# Plan feature
+## Planed feature
 
-- server client separate (can be start one by one)
+- server client separate (can be start one by one).
 
-# Environment
+## Environment
 
 - `Python 3.8.5` `Windows10 x64` `Pyglet 1.5.7`
 
@@ -25,11 +25,11 @@ Nope. Not even one
 - pyglet
 - json5
 
-# About License
+## About License
 
-### https://creativecommons.org/licenses/by-nc-sa/4.0/
+#### https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-### Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+#### Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 
 This is a human-readable summary of (and not a substitute for) the license. Disclaimer.
 
