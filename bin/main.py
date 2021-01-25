@@ -11,8 +11,8 @@ import time
 import logging
 
 # 直接导入
-import server
-import client
+import bin.server as server
+import bin.client as client
 
 
 class Game():

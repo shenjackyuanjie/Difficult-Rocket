@@ -25,6 +25,14 @@ Physics calculation
 """
 
 
+def F_D(A, B):
+    pass
+
+
+def F_Mu():
+    pass
+
+
 def D_C(listA, listB):  # stand for Duplicate check
     """
     usage:\n
