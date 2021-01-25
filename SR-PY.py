@@ -16,7 +16,7 @@ def main():
     if py_v_info[0] == 2:
         raise Exception("Simple Rocket need python vision 3+")
     # start games
-    game = bin.main.Game()
+    game = bin.bin.main.Game()
 
 
 if __name__ == "__main__":

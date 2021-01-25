@@ -22,12 +22,12 @@ class Game():
         self.start_time = time.strftime("%Y-%m-%d %H-%M-%S", time.gmtime(time.time()))
         self.configs = ''
         # share memory
-        self.dics = share().dict()
+        self.dicts = share().dict()
         self.lists = share().list()
         # logger
         self.server_logger = logging.getLogger('server')
         self.client_logger = logging.getLogger('client')
-        self.log_file_hander = logging.FileHandler('')
+        self.log_file_handler = logging.FileHandler('')
         # client and server
-        self.client = client.RenderThread(self.lists, self.dics, self.client_logger, net_mode='local')
-        self.server = server.server(self.lists, self.dics, self.server_logger, net_mode='local')
+        self.client = client.RenderThread(self.lists, self.dicts, self.client_logger, net_mode='local')
+        self.server = server.server(self.lists, self.dicts, self.server_logger, net_mode='local')

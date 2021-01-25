@@ -26,14 +26,14 @@ Physics calculation
 """
 
 
-def is_decimal(A):
+def is_decimal(A: any) -> bool:
     if type(A) == type(decimal.Decimal):
         return True
     else:
         return False
 
 
-def F_D(A, B):
+def F_D(A: decimal, B: decimal) -> decimal:
     if is_decimal(A) and is_decimal(B):
         return A / B
 
@@ -42,7 +42,7 @@ def F_Mu():
     pass
 
 
-def D_C(listA, listB):  # stand for Duplicate check
+def D_C(listA: list, listB: list) -> '1':  # stand for Duplicate check
     """
     usage:\n
     input two list\n
@@ -57,10 +57,10 @@ def D_C(listA, listB):  # stand for Duplicate check
             continue
     listA.sort()
     listB.sort()
-    return
+    return 1
 
 
-def S_C_float_check(SC):  # stand for Scientific notation's float check
+def S_C_float_check(SC) -> dict:  # stand for Scientific notation's float check
     """
     formats:
     SC list format:docs.basic_config.json:basic_number"""
