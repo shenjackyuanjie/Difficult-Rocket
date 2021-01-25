@@ -5,6 +5,7 @@ mail: 3695888@qq.com
 
 import bin
 import json5
+import decimal
 
 """
 some tools
@@ -25,8 +26,16 @@ Physics calculation
 """
 
 
+def is_decimal(A):
+    if type(A) == type(decimal.Decimal):
+        return True
+    else:
+        return False
+
+
 def F_D(A, B):
-    pass
+    if is_decimal(A) and is_decimal(B):
+        return A / B
 
 
 def F_Mu():
