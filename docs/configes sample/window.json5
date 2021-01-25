@@ -1,13 +1,13 @@
 {
-  "width": "int",
-  "height": "int",
-  "full_screen": "true/false",
+  'width': 'int',
+  'height': 'int',
+  'full_screen': 'true/false',
   // bool
-  "caption": "xxx",
+  'caption': 'xxx',
   // {version} -> version of SR
-  "resizable": "true",
+  'resizable': 'true',
   // bool
-  "visible": "true",
+  'visible': 'true',
   // bool
-  "style": "xxx(in list)"
+  'style': 'xxx(in list)'
 }

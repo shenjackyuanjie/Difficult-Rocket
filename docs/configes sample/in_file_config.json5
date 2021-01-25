@@ -1,10 +1,12 @@
 {
-    "Game_threads": {
-        "orbit_demo": {
-            "ship_info": {
-                "mass": "basic_config:basic_number",
-                "force": "basic_config:basic_force"
-            }
-        }
+  'Game_threads': {
+    'orbit_demo': {
+      'ship_info': {
+        'mass': 'basic_config:basic_number',
+        'force': 'basic_config:basic_force'
+      }
     }
+  },
+  'client': {
+  }
 }

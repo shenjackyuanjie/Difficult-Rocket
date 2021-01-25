@@ -7,9 +7,11 @@ import multiprocessing as mp
 
 
 class server(mp.Process):
-    def __init__(self, dev_list, dev_dic, net_mode='local'):
+    def __init__(self, dev_list, dev_dic, logger, net_mode='local'):
         # father class __init__()
         mp.Process.__init__(self)
+        # logging
+        self.logger = logger
         # value
         self.process_id = 'Server'
         self.process_name = 'server process'

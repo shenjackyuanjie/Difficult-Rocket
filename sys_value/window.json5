@@ -1,13 +1,13 @@
 {
-  "width": "1024",
-  "height": "768",
-  "full_screen": "false",
+  'width': '1024',
+  'height': '768',
+  'full_screen': 'false',
   // bool
-  "caption": "Simple Rocket {version}",
+  'caption': 'Simple Rocket {version}',
   // {version} -> version of SR
-  "resizable": "true",
+  'resizable': 'true',
   // bool
-  "visible": "true",
+  'visible': 'true',
   // bool
-  "style": "None"
+  'style': 'None'
 }
