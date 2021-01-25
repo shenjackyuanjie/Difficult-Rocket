@@ -14,21 +14,20 @@ import logging
 import server
 import client
 
-# get time when the program to start the logging
-start_time = time.time()
-start_time_date = time.strftime("%Y-%m-%d %H-%M-%S", time.gmtime(start_time))
-
-# ---------- option start ----------
-log_level = logging.DEBUG  # log level
-
 
 class Game():
 
     def __init__(self):
-        self.start_time = time.strftime("%Y-%m-%d %H-%M-%S", time.gmtime(start_time))
+        # basic config
+        self.start_time = time.strftime("%Y-%m-%d %H-%M-%S", time.gmtime(time.time()))
+        self.configs = ''
+        # share memory
         self.dics = share().dict()
         self.lists = share().list()
+        # logger
         self.server_logger = logging.getLogger('server')
         self.client_logger = logging.getLogger('client')
+        self.log_file_hander = logging.FileHandler('')
+        # client and server
         self.client = client.RenderThread(self.lists, self.dics, self.client_logger, net_mode='local')
         self.server = server.server(self.lists, self.dics, self.server_logger, net_mode='local')

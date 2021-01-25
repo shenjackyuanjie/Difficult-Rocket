@@ -3,7 +3,8 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import libs
+import bin
+import json5
 
 """
 some tools
@@ -78,7 +79,7 @@ def __S_N_M(A, B):
     Unit1, Unit2 = A[2] + B[2], A[3] + B[3]
     if Unit1 == None:
         Unit1 = []
-    libs.tools.D_C(Unit1, Unit2)
+    D_C(Unit1, Unit2)
     R += [Unit1, Unit2]
     return R
 
@@ -92,7 +93,7 @@ def S_N_D(A, B):  # stand for Scientific notation divided
     Unit1, Unit2 = A[2] + B[3], A[3] + B[2]
     if Unit1 == None:
         Unit1 = []
-    libs.tools.D_C(Unit1, Unit2)
+    D_C(Unit1, Unit2)
     R += [Unit1, Unit2]
     return R
 
@@ -106,7 +107,7 @@ def G_C(M, m, R, G):  # stand for gravity calculation
     G : Gravitational constant
     M & m & R format: docs.basic_config:basic_number
     """
-    g = libs.config.basic_number()
+    g = bin.config.basic_number()
     A = S_N_M(M, m, G)
     g = S_N_D(A, S_N_M(R, R))
     return g
@@ -117,7 +118,7 @@ def distance(A, B):
     formats:
     A & B format: docs.basic_config:basic_poi
     """
-    D = libs
+    D = bin
     pass
 
 
