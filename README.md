@@ -14,11 +14,14 @@ None. Not even one!
 
 ## Planed feature
 
-- server client separate (just like minecraft).
+- server client separate (just like minecraft)
 
-## Environment
+## Environment (been tested)
 
-- `Python 3.8.5` `Windows10 x64` `Pyglet 1.5.7`
+- `Python 3.8.7`
+  `Windows10 x64`
+  `Pyglet 1.5.14`
+  `Json5 0.9.5`
 
 ## Required python modules
 

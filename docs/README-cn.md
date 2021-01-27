@@ -16,9 +16,12 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 - 服务端客户端分离（就像minecraft一样）
 
-## 环境需求
+## 环境需求 （测试过的）
 
-- `Python 3.8.5` `Windows10 x64` `Pyglet 1.5.7` `Json 5`
+- `Python 3.8.7`
+  `Windows10 x64`
+  `Pyglet 1.5.14`
+  `Json5 0.9.5`
 
 ### 需要的Python模块
 
