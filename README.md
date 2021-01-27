@@ -1,6 +1,8 @@
 # SR
 
-### Version 0.1
+### Version
+
+0.0 (developing)
 
 中文版请移步[这里](https://github.com/shenjackyuanjie/SR/blob/main/docs/README-cn.md)。
 

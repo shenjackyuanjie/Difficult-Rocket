@@ -1,6 +1,8 @@
 # SR
 
-### 版本 0.1
+## 版本
+
+0.0 (开发.ing)
 
 For an English version of readme, please move [here](https://github.com/shenjackyuanjie/SR).
 
