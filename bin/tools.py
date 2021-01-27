@@ -27,10 +27,10 @@ Physics calculation
 
 
 def is_decimal(A: any) -> bool:
-    if type(A) == type(decimal.Decimal):
-        return True
-    else:
+    if type(A) != type(decimal.Decimal):
         return False
+    else:
+        return True
 
 
 def F_D(A: decimal, B: decimal) -> decimal:
@@ -38,8 +38,19 @@ def F_D(A: decimal, B: decimal) -> decimal:
         return A / B
 
 
-def F_Mu():
-    pass
+def F_Mu(A: decimal, B: decimal) -> decimal:
+    if is_decimal(A) and is_decimal(B):
+        return A * B
+
+
+def F_Mi(A: decimal, B: decimal) -> decimal:
+    if is_decimal(A) and is_decimal(B):
+        return A - B
+
+
+def F_A(A: decimal, B: decimal) -> decimal:
+    if is_decimal(A) and is_decimal(B):
+        return A + B
 
 
 def D_C(listA: list, listB: list) -> '1':  # stand for Duplicate check
@@ -60,7 +71,7 @@ def D_C(listA: list, listB: list) -> '1':  # stand for Duplicate check
     return 1
 
 
-def S_C_float_check(SC) -> dict:  # stand for Scientific notation's float check
+def S_C_float_check(SC) -> None:  # stand for Scientific notation's float check
     """
     formats:
     SC list format:docs.basic_config.json:basic_number"""
@@ -94,7 +105,7 @@ def __S_N_M(A, B):
     R = [F_Mu(A[0], B[0]), A[1] + B[1]]
     S_C_float_check(R)
     Unit1, Unit2 = A[2] + B[2], A[3] + B[3]
-    if Unit1 == None:
+    if Unit1 is None:
         Unit1 = []
     D_C(Unit1, Unit2)
     R += [Unit1, Unit2]
