@@ -9,19 +9,41 @@
   },
   'client': {
     'self.parts': {
-      'part ID': [
-        // shipId.partId
-        'part Type',
-        // just id
-        [
-          'x',
-          'y'
+      'ship name': {
+        'control center': [
+          'part type',
+          // part type
+          'turn',
+          // type:float
+          'is mirror',
+          // type:bool
+          [
+            'basic_config.basic_poi'
+          ]
+          /*rua！ 我用中文了！
+          飞船的"控制中心"（直译）没有"特殊值"
+          也就是说控制中心只是一个"壳"（服务端同理）
+          只会计算位置、方向之类的统一数据
+          需要改的话发issue
+          */
         ],
-        //poi
-        {
-          'special value': 'xxx'
-        }
-      ]
+        'part ID': [
+          // partId
+          'part type',
+          // part type
+          'turn',
+          // type:float  0 is up clockwise
+          'is mirror',
+          // type:bool
+          [
+            'basic_config.basic_poi'
+          ],
+          {
+            'special value 1': 'xxx',
+            'special value 2': 'xxx'
+          }
+        ]
+      }
     }
   }
 }

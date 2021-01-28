@@ -54,8 +54,10 @@ class RenderThread(mp.Process, pyglet.window.Window):
 
     def on_draw(self):
         # render parts
-        for part in self.parts:
-            pass
+        for ship in self.parts:
+            ship_poi = ship
+            for part in ship:
+                pass
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass
