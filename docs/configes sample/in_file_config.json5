@@ -8,5 +8,20 @@
     }
   },
   'client': {
+    'self.parts': {
+      'part ID': [
+        // shipId.partId
+        'part Type',
+        // just id
+        [
+          'x',
+          'y'
+        ],
+        //poi
+        {
+          'special value': 'xxx'
+        }
+      ]
+    }
   }
 }
