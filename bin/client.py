@@ -21,8 +21,8 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # logging
         self.logger = logger
         # value
-        self.process_id = 'Render'
-        self.process_name = 'render process'
+        self.process_id = 'Client'
+        self.process_name = 'Client process'
         # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
@@ -48,16 +48,16 @@ class RenderThread(mp.Process, pyglet.window.Window):
                              caption=str(self.window_c['caption']),
                              visible=bin.tools.mbool(self.window_c['visible']))
 
-    """
-    keyboard and mouse input
-    """
-
     def on_draw(self):
         # render parts
         for ship in self.parts:
-            ship_poi = ship
+            ship_poi = ship['brain'][3]
             for part in ship:
                 pass
+
+    """
+    keyboard and mouse input
+    """
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass
