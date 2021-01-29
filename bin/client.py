@@ -48,7 +48,14 @@ class RenderThread(mp.Process, pyglet.window.Window):
                              caption=str(self.window_c['caption']),
                              visible=bin.tools.mbool(self.window_c['visible']))
 
+    """
+    draws
+    """
+
     def on_draw(self):
+        pass
+
+    def part_draw(self):
         # render parts
         for ship in self.parts:
             ship_poi = ship['brain'][3]
