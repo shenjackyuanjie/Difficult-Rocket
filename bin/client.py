@@ -27,11 +27,12 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # dic
-        self.parts = {}  # this ship parts
+        self.ships = {}  # this ship parts
         self.o_parts = {}  # stand for other parts
         self.b_g_e = {}  # stand for back ground element
         self.planet_system = {}  # hole planet system
         # list
+        self.map_view = [bin.config]
 
     def start_game(self):
         pyglet.app.run()
@@ -57,10 +58,15 @@ class RenderThread(mp.Process, pyglet.window.Window):
 
     def part_draw(self):
         # render parts
-        for ship in self.parts:
+        for ship in self.ships:
             ship_poi = ship['brain'][3]
             for part in ship:
                 pass
+
+    def check_in_view(self):
+        for ship in self.ships:
+            pass
+        pass
 
     """
     keyboard and mouse input

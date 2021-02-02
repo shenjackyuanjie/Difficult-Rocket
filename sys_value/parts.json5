@@ -1,20 +1,44 @@
 {
+  //  /*
   'part id': [
     [
-      'float',
-      'float'
+      'part name',
+      // part name can be reuse
+      'description',
+      // 描述
     ],
-    /* 坐标轴偏移量
-        指的是部件的碰撞箱左上角到贴图左上角的距离*/
+    // about names and other
+    [
+      'float',
+      // mass
+      'bool',
+      // hidden in part list
+      'float'
+      // buoyancy(浮力) in the water
+    ],
+    // about config
+    [
+      'xxx.png',
+      // texture file name
+      [
+        'float',
+        'float'
+      ],
+      // 贴图偏移量
+      // 指的是部件的碰撞箱左上角到贴图左上角的距离
+    ],
+    // about texture
     [
       'float',
       'float'
     ],
-    /* 碰撞箱大小 （暂时只支持方形碰撞箱）
-    坐标轴也是从左上开始*/
-    'xxx.png'
-    /* 贴图文件名
-    可以为包含文件夹的 比如：./engine/xxx.png*/
+    // 碰撞箱大小 （暂时只支持方形碰撞箱）
+    //坐标轴也是从左上开始
+    //可以为包含文件夹的 比如：./engine/xxx.png
+    [
+      '特殊值（懒得写）'
+    ]
   ],
+  //  */
   '': []
 }
