@@ -8,6 +8,11 @@
     }
   },
   'client': {
+    'self.view': [
+      'space',
+      'map',
+      'menu'
+    ],
     'self.parts': {
       'ship name': {
         'brain': [

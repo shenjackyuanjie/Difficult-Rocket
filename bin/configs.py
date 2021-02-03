@@ -33,10 +33,10 @@ def basic_number(int_num=0, float_num=1, unit1=None, unit2=None, num=1) -> list:
     return numbers
 
 
-def basic_poi(type=None) -> list:
-    if type == None:
+def basic_poi(poi_type=None) -> list:
+    if poi_type is None:
         return basic_number(unit1='m', num=2)
-    if type == 'view':
+    if poi_type == 'view':
         return [basic_number(unit1='chunk', num=2), basic_number(unit1='m', num=2)]
 
 

@@ -9,5 +9,10 @@
   // bool
   'visible': 'true',
   // bool
-  'style': 'None'
+  'style': 'None',
+  'views': [
+    'space',
+    'map',
+    'menu'
+  ]
 }

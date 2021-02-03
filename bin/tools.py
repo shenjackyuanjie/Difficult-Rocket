@@ -3,9 +3,13 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import bin
 import json5
 import decimal
+
+try:
+    import configs
+except ModuleNotFoundError:
+    from bin import configs
 
 """
 some tools
@@ -13,9 +17,11 @@ some tools
 
 
 def mbool(thing):  # stand for my bool
-    if (thing == "True") or (thing == 1) or (thing == "1"):
+    yes = ['True', 'TRUE', '1', 1]
+    no = ['False', 'FALSE', '0', 0]
+    if thing in yes:
         return True
-    elif (thing == "False") or (thing == 0) or (thing == "0"):
+    elif thing in no:
         return False
     else:
         raise ValueError("Need a 'like bool' not anything else")
@@ -27,7 +33,7 @@ Physics calculation
 
 
 def is_decimal(A: any) -> bool:
-    if type(A) != type(decimal.Decimal):
+    if type(A) is not type(decimal.Decimal):
         return False
     else:
         return True
@@ -119,7 +125,7 @@ def S_N_D(A, B):  # stand for Scientific notation divided
     R = [F_D(A[0], B[0]), A[1] - B[1]]
     S_C_float_check(R)
     Unit1, Unit2 = A[2] + B[3], A[3] + B[2]
-    if Unit1 == None:
+    if Unit1 is None:
         Unit1 = []
     D_C(Unit1, Unit2)
     R += [Unit1, Unit2]
@@ -135,19 +141,29 @@ def G_C(M, m, R, G):  # stand for gravity calculation
     G : Gravitational constant
     M & m & R format: docs.basic_config:basic_number
     """
-    g = bin.config.basic_number()
+    g = configs.basic_force()
     A = S_N_M(M, m, G)
     g = S_N_D(A, S_N_M(R, R))
     return g
 
 
-def distance(A, B):
+def distance(A, B) -> float:
     """
     formats:
     A & B format: docs.basic_config:basic_poi
     """
-    D = bin
-    pass
+    poi_dis = configs.basic_poi()
+    dis = decimal.Decimal('0.0')
+    xd = A[0] - B[0]
+    yd = A[1] - B[1]
+    poi_dis[0] = xd
+    poi_dis[1] = yd
+    # 勾股定理
+    poi_dis[0] **= 2
+    poi_dis[1] **= 2
+    poi_dis.append(poi_dis[0] + poi_dis[1])
+    poi_dis[2] **= 0.5
+    return poi_dis[2]
 
 
 """
@@ -156,12 +172,12 @@ loads
 
 
 def config(file_name, stack=None):
-    rd = {}  # rd -> return
+    # rd = {}  # rd -> return data
     try:
         with open(file_name, "r") as jf:  # jf -> json file
             rd = json5.load(jf)
     except FileNotFoundError:
-        raise FileNotFoundError("no config file")
-    if stack != None:
+        raise FileNotFoundError("no config file \n file name : %s \n stack : %s" % (file_name, stack))
+    if stack is not None:
         rd = rd[stack]
     return rd

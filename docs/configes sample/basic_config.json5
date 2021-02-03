@@ -12,6 +12,7 @@
   'basic_number': {
     'name': [
       'float',
+      // Decimal class
       'int',
       [
         'unit'
@@ -26,7 +27,7 @@
     'name': [
       'x',
       'y',
-      'x&y format:basic_number/unit1:[m]/unit2:[]'
+      //x&y format:basic_number/unit1:[m]/unit2:[]'
     ]
   },
   'basic_poi': {
