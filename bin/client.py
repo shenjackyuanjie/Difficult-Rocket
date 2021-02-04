@@ -25,9 +25,6 @@ class RenderThread(mp.Process, pyglet.window.Window):
 
     def __init__(self, dev_list, dev_dic, logger, net_mode='local'):
         """
-        rua! 用  中  文
-        __init__ 内定义的变量都是必须用传入变量定义的
-        其他的都放在setup里了
         :param dev_list: 共享内存
         :param dev_dic: 共享内存
         :param logger: logger

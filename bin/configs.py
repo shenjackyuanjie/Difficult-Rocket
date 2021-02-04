@@ -4,18 +4,21 @@ mail: 3695888@qq.com
 """
 
 # import re
-import bin
 import time
 import json5
 import decimal
 
+try:
+    import tools
+except ModuleNotFoundError:
+    from bin import tools
 
 def __basic_number(int_num=0, float_num=1, unit1=None, unit2=None) -> list:
     if unit1 is None:
         unit1 = []
     if unit2 is None:
         unit2 = []
-    if bin.tools.is_decimal(float_num):  # is decimal class?
+    if tools.is_decimal(float_num):  # is decimal class?
         return [int_num, float_num, unit1, unit2]  # is just return
     else:
         return [int_num, decimal.Decimal(str(float_num)), unit1, unit2]  # no create a decimal class
