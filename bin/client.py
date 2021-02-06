@@ -23,8 +23,9 @@ except ModuleNotFoundError:
 
 class RenderThread(mp.Process, pyglet.window.Window):
 
-    def __init__(self, dev_list, dev_dic, logger, net_mode='local'):
+    def __init__(self, logger, dev_dic=None, dev_list=None, path=None, net_mode='local'):
         """
+        :param path: 运行路径
         :param dev_list: 共享内存
         :param dev_dic: 共享内存
         :param logger: logger
@@ -48,7 +49,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # configs
         self.window_config = tools.config('sys_value/window.json5')
         self.part_list = tools.config('sys_value/parts.json5')
-        self.map_view = [configs.basic_poi(poi_type='view')]
+        self.map_view = [configs.basic_poi(poi_type='chunk')]
         # dic
         self.ships = {}  # all ship
         self.planet_system = {}  # hole planet system
@@ -58,13 +59,13 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # window
         self.window = Window(width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
-                             fullscreen=tools.mbool(self.window_config['full_screen']),
+                             fullscreen=tools.c_b(self.window_config['full_screen']),
                              caption=str(self.window_config['caption']),
-                             visible=tools.mbool(self.window_config['visible']))
+                             visible=tools.c_b(self.window_config['visible']))
         # setup
         self.setup()
 
-    def start_game(self):
+    def startGame(self):
         pyglet.app.run()
         return
 

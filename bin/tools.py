@@ -5,18 +5,22 @@ mail: 3695888@qq.com
 
 import json5
 import decimal
+import logging
 
 try:
     import configs
 except ModuleNotFoundError:
     from bin import configs
 
+# logger
+tools_logger = logging.getLogger('tools')
+
 """
 some tools
 """
 
 
-def mbool(thing):  # stand for my bool
+def c_b(thing):  # stand for my bool
     yes = ['True', 'TRUE', '1', 1]
     no = ['False', 'FALSE', '0', 0]
     if thing in yes:
@@ -176,7 +180,8 @@ def config(file_name, stack=None):
     try:
         with open(file_name, "r") as jf:  # jf -> json file
             rd = json5.load(jf)
-    except FileNotFoundError:
+    except FileNotFoundError as exp:
+        tools_logger.exception("no config file \n file name : %s \n stack : %s" % (file_name, stack))
         raise FileNotFoundError("no config file \n file name : %s \n stack : %s" % (file_name, stack))
     if stack is not None:
         rd = rd[stack]
