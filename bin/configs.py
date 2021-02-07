@@ -19,7 +19,7 @@ except ModuleNotFoundError:
 configs_logger = logging.getLogger('configs')
 
 
-def __basic_number(int_num=0, float_num=1, unit1=None, unit2=None) -> list:
+def _BasicNumber(int_num=0, float_num=1, unit1=None, unit2=None) -> list:
     if unit1 is None:
         unit1 = []
     if unit2 is None:
@@ -30,28 +30,47 @@ def __basic_number(int_num=0, float_num=1, unit1=None, unit2=None) -> list:
         return [int_num, decimal.Decimal(str(float_num)), unit1, unit2]  # no create a decimal class
 
 
-def basic_number(int_num=0, float_num=1, unit1=None, unit2=None, num=1) -> list:
+def BasicNumber(int_num=0, float_num=1, unit1=None, unit2=None, num=1) -> list:
     numbers = []
     if num > 1:
         for x in range(0, num, 1):
-            numbers.append(__basic_number(int_num, float_num, unit1, unit2))
+            numbers.append(_BasicNumber(int_num, float_num, unit1, unit2))
     elif num == 1:
-        return __basic_number(int_num, float_num, unit1, unit2)
+        return _BasicNumber(int_num, float_num, unit1, unit2)
     else:  # num < 1
-
         raise TypeError('you should give me a num with >= 1!')
     return numbers
 
 
+class BasicNumberClass:
+    def __init__(self, int_num=0, float_num=1, unit1=None, unit2=None):
+        self.int = int_num
+        self.float = decimal.Decimal(str(float_num))
+        if unit1:
+            self.units1 = unit1
+        else:
+            self.units1 = []
+        if unit2:
+            self.units2 = unit2
+        else:
+            self.units2 = []
+
+    def __str__(self):
+        return None
+
+    def __add__(self, other):
+        pass
+
+
 def basic_poi(poi_type=None) -> list:
     if poi_type is None:
-        return basic_number(unit1='m', num=2)
+        return BasicNumber(unit1='m', num=2)
     if poi_type == 'chunk':
-        return [basic_number(unit1='chunk', num=2), basic_number(unit1='m', num=2)]
+        return [BasicNumber(unit1='chunk', num=2), BasicNumber(unit1='m', num=2)]
 
 
 def basic_force() -> list:
-    return basic_number(unit1='N', num=2)
+    return BasicNumber(unit1='N', num=2)
 
 
 def configs(name, option=None) -> dict:
@@ -61,8 +80,9 @@ def configs(name, option=None) -> dict:
             try:
                 data = data[option]
             except IndexError as exp:
-                logging.exception(exp)
-                raise exp
+                log = 'can\'t find stack named %s in file %s' % (option, name)
+                configs_logger.exception(log)
+                raise IndexError(log)
         return data
 
 

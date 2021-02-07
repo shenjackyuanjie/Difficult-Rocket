@@ -51,7 +51,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.part_list = tools.config('sys_value/parts.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
         # dic
-        self.ships = {}  # all ship
+        self.ships = {}  # all ship(part)
         self.planet_system = {}  # hole planet system
         # list
         # re stuff

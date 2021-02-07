@@ -157,7 +157,8 @@ def distance(A, B) -> float:
     A & B format: docs.basic_config:basic_poi
     """
     poi_dis = configs.basic_poi()
-    dis = decimal.Decimal('0.0')
+    for x in A, B:
+        x = decimal.Decimal(str(x))
     xd = A[0] - B[0]
     yd = A[1] - B[1]
     poi_dis[0] = xd
@@ -181,8 +182,9 @@ def config(file_name, stack=None):
         with open(file_name, "r") as jf:  # jf -> json file
             rd = json5.load(jf)
     except FileNotFoundError as exp:
-        tools_logger.exception("no config file \n file name : %s \n stack : %s" % (file_name, stack))
-        raise FileNotFoundError("no config file \n file name : %s \n stack : %s" % (file_name, stack))
+        log = "no config file \n file name : %s \n stack : %s" % (file_name, stack)
+        tools_logger.exception(log)
+        raise FileNotFoundError(log)
     if stack is not None:
         rd = rd[stack]
     return rd
