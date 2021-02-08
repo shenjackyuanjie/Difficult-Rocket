@@ -4,7 +4,7 @@
 
 0.0 (开发.ing)
 
-For an English version of readme, please move [here](https://github.com/shenjackyuanjie/DR).
+For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
 > 这是一个用Python制作的类Simple Rocket游戏
 
