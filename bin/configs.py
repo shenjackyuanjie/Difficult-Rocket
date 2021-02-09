@@ -55,10 +55,27 @@ class BasicNumberClass:
         else:
             self.units2 = []
 
+    def sort(self):
+        self.units1.sort()
+        self.units2.sort()
+
+    def units(self):
+        return [].append(self.units1.append(self.units2))
+
     def __str__(self):
         return None
 
     def __add__(self, other):
+        if type(other) is type(self):
+            self.sort()
+            other.sort()
+            if self.units() == other.units():
+                pass
+
+    def __radd__(self, other):
+        self.__add__(self)
+
+    def __mul__(self, other):
         pass
 
 
