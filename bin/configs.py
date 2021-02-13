@@ -96,6 +96,7 @@ class BasicNumberClass:
                 self.float = check[0]
                 self.int = check[1]
         elif o_type == type(decimal.Decimal('1.0')) and not self.units():
+            pass
 
     def __radd__(self, other):
         self.__add__(self)

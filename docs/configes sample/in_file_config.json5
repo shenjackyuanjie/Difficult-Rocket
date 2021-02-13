@@ -1,31 +1,35 @@
 {
-  'Game_threads': {
-    'orbit_demo': {
-      'ship_info': {
-        'mass': 'basic_config:basic_number',
-        'force': 'basic_config:basic_force'
+  Game_threads: {
+    orbit_demo: {
+      ship_info: {
+        mass: 'basic_config:basic_number',
+        force: 'basic_config:basic_force'
       }
     }
   },
-  'client': {
-    'self.view': [
-      'space',
-      'map',
-      'menu'
-    ],
+  client: {
+    'self.view': ['space', 'map', 'menu'],
+    'self.textures': {
+      'first name of textures(defaut: difficult_rocket)': {
+        'name of image or name of list': 'pyglet.image class or dict',
+        /*
+        这里说明一下，你即可以直接主列表下直接放image，也可以再细分
+        会直接检测是列表还是image
+        另外 可 在文件夹同级放image文件
+        */
+        'nothing': 'nothing'
+      }
+    },
     'self.parts': {
       'ship name': {
-        'brain': [
+        brain: [
           'part type',
           // part type
           'turn',
           // type:float
           'is mirror',
           // type:bool
-          [
-            'basic_config.basic_poi',
-            'basic_config.basic_poi'
-          ]
+          ['basic_config.basic_poi', 'basic_config.basic_poi']
           /*brain的坐标记录由两部分组成
           第一部分是brain所在区块的区块坐标(区块的大小暂定2^64m大小，从恒星中心开始算，普通的平面直角坐标系)
           第二部分是brain所在区块内的相对坐标(左上角00)*/
@@ -44,12 +48,10 @@
           // type:float  0 is up clockwise
           'is mirror',
           // type:bool
-          [
-            'basic_config.basic_poi'
-          ],
+          ['basic_config.basic_poi'],
           {
             'special value 1': 'xxx',
-            'special value 2': 'xxx'
+            'special value 2': 'xxx',
             /*继续继续
             这里的“特殊值”指的是
             除去上面写的类型、角度、镜像、位置之外的其他属性
@@ -58,6 +60,7 @@
             比如对接之后传输燃料、渲染太阳能板
             的时候可以用到
             */
+            'nothing': 'nothing'
           }
         ]
       }

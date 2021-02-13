@@ -8,7 +8,7 @@ import multiprocessing as mp
 import re
 import pyglet
 import pyglet.app
-from pyglet.resource import image
+from pyglet import image
 from pyglet.window import Window
 
 try:
@@ -16,7 +16,7 @@ try:
     import configs
     import tools
 except ModuleNotFoundError:
-    # ben import use
+    # been import use
     from bin import configs
     from bin import tools
 
@@ -47,19 +47,21 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # image
         self.b_g = image("back_ground_space.png")
         # configs
-        self.window_config = tools.config('sys_value/window.json5')
-        self.part_list = tools.config('sys_value/parts.json5')
+        self.view = tools.config('configs/view.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
+        self.part_list = tools.config('sys_value/parts.json5')
+        self.window_config = tools.config('sys_value/window.json5')
         # dic
         self.ships = {}  # all ship(part)
         self.planet_system = {}  # hole planet system
         # list
         # re stuff
-        self.ipv4_re = re.compile("""^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$""")
+        self.ipv4_re = re.compile(u'^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$')
         # window
         self.window = Window(width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
-                             fullscreen=tools.c_b(self.window_config['full_screen']),
+                             fullscreen=tools.c_b(
+                                 self.window_config['full_screen']),
                              caption=str(self.window_config['caption']),
                              visible=tools.c_b(self.window_config['visible']))
         # setup
@@ -73,10 +75,19 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # net_mode
         if self.net_mode == 'local':
             pass
-        elif re.match(self.ipv4_re, self.net_mode):  # net_mode != 'local' and ,can is a ipv4 ip
+        # net_mode != 'local' and ,can is a ipv4 ip
+        elif re.match(self.ipv4_re, self.net_mode):
             pass
         # textures
-
+        self.textures = {}
+        # parts
+        self.textures['part'] = {}
+        parts = tools.configs('sys_value/parts.json5')
+        for part in parts:
+            name = parts[part]
+            path = part[2][0]
+            part_image = image.load(path)
+            self.textures['part'][name] = part_image
     """
     draws
     """
