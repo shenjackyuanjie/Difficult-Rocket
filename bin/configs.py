@@ -59,23 +59,54 @@ class BasicNumberClass:
         self.units1.sort()
         self.units2.sort()
 
-    def units(self):
-        return [].append(self.units1.append(self.units2))
+    def float_int_check(self, int_=None, float_=None):
+        if not int_:
+            int_ = 1
+        if not float_:
+            float_ = decimal.Decimal(1.0)
+        while float_ > 10:
+            float_ / 10
+            int_ + 1
+        else:
+            while float_ < 0.1:
+                float_ * 10
+                int_ - 1
+        return [int_, float_]
+
+    def units(self) -> list or bool:
+        if (self.units1 == []) and (self.units2 == []):
+            return None
+        data = self.units1
+        data.append(self.units2)
+        return data
 
     def __str__(self):
-        return None
+        return [self.float, self.int, self.units1, self.units2]
 
     def __add__(self, other):
-        if type(other) is type(self):
+        o_type = type(other)
+        if o_type == type(self):
             self.sort()
             other.sort()
             if self.units() == other.units():
-                pass
+                self_num = self.float * (10 ** self.int)
+                other_num = other.float * (10 ** other.float)
+                r_float = self_num + other_num
+                check = self.float_int_check(1, r_float)
+                self.float = check[0]
+                self.int = check[1]
+        elif o_type == type(decimal.Decimal('1.0')) and not self.units():
 
     def __radd__(self, other):
         self.__add__(self)
 
     def __mul__(self, other):
+        pass
+
+    def __rmul__(self, other):
+        self.__mul__(self)
+
+    def __truediv__(self, other):
         pass
 
 
