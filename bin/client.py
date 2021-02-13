@@ -82,8 +82,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
     """
 
     def on_draw(self):
-        if self.view in list:
-            pass
+        pass
 
     def part_draw(self):
         # render parts

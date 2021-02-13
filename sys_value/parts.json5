@@ -13,6 +13,8 @@
       // mass
       'bool',
       // hidden in part list
+      'bool',
+      // hidden in misson (even thought that is not done yet)
       'float'
       // buoyancy(浮力) in the water
     ],
@@ -51,7 +53,7 @@
       0.1
     ],
     [
-      'parts/Beam.png',
+      'hand.png',
       [
         0.0,
         0.0
