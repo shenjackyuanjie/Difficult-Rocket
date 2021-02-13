@@ -12,13 +12,13 @@ from pyglet import image
 from pyglet.window import Window
 
 try:
-    # editing use
-    import configs
-    import tools
-except ModuleNotFoundError:
     # been import use
     from bin import configs
     from bin import tools
+except ModuleNotFoundError:
+    # editing use
+    import configs
+    import tools
 
 
 class RenderThread(mp.Process, pyglet.window.Window):
