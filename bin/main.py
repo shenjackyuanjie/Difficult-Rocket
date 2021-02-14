@@ -11,13 +11,13 @@ import time
 import logging
 
 try:
-    import tools
-    import client
-    import server
-except ModuleNotFoundError:
     from bin import tools
     from bin import client
     from bin import server
+except ModuleNotFoundError:
+    import tools
+    import client
+    import server
 
 
 class Game:

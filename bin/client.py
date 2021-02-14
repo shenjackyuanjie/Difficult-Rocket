@@ -53,10 +53,11 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.window_config = tools.config('sys_value/window.json5')
         # dic
         self.ships = {}  # all ship(part)
-        self.planet_system = {}  # hole planet system
+        self.planet_system = tools.configs('sys_vlaue/planet.json5')  # hole planet system
         # list
         # re stuff
-        self.ipv4_re = re.compile(u'^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$')
+        self.ipv4_re = re.compile(
+            u'^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$')
         # window
         self.window = Window(width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
@@ -93,7 +94,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
     """
 
     def on_draw(self):
-        pass
+        self.part_draw()
 
     def part_draw(self):
         # render parts
