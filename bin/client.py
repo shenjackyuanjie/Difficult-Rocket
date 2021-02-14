@@ -15,7 +15,7 @@ try:
     # been import use
     from bin import configs
     from bin import tools
-except ModuleNotFoundError or ImportError:
+except (ModuleNotFoundError, ImportError, ImportWarning):
     # editing use
     import configs
     import tools

@@ -14,7 +14,7 @@ try:
     from bin import tools
     from bin import client
     from bin import server
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError, ImportWarning):
     import tools
     import client
     import server

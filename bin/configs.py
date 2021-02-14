@@ -11,9 +11,9 @@ import decimal
 import logging
 
 try:
-    import tools
-except ModuleNotFoundError:
     from bin import tools
+except (ModuleNotFoundError, ImportError, ImportWarning):
+    import tools
 
 # logger
 configs_logger = logging.getLogger('configs')
