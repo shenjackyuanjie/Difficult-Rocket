@@ -44,7 +44,7 @@ class Game:
         self.client_log_config = self.log_config['client']
         self.client_logger = logging.getLogger('client')
         self.client_fmt = logging.Formatter(
-            fmt="[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s", 
+            fmt=self.client_log_config['fmt'],
             datefmt=self.client_log_config['date_fmt'])
         self.client_stream_handler = logging.StreamHandler()
         self.client_stream_handler.setLevel(self.client_log_config['level'])
@@ -54,7 +54,7 @@ class Game:
         self.server_log_config = self.log_config['server']
         self.server_logger = logging.getLogger('server')
         self.server_fmt = logging.Formatter(
-            fmt="[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s", 
+            fmt=self.server_log_config['fmt'],
             datefmt=self.server_log_config['date_fmt'])
         self.server_stream_handler = logging.StreamHandler()
         self.server_stream_handler.setLevel(self.server_log_config['level'])
@@ -62,8 +62,8 @@ class Game:
         self.server_logger.addHandler(self.server_stream_handler)
         #   file logger
         self.log_formatter = logging.Formatter(
-            fmt="[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s", 
-            datefmt=self.log_config['date_fmt'])
+            fmt=self.log_file_config['fmt'],
+            datefmt=self.log_file_config['date_fmt'])
         # client and server
         self.client = client.RenderThread(
             self.client_logger, self.dicts, self.lists, net_mode='local')
