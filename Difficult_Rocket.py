@@ -3,8 +3,7 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 '''
 
-import os
-import bin
+
 import sys
 from bin import main
 

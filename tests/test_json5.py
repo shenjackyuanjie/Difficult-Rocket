@@ -3,6 +3,6 @@ import json5
 import pprint
 
 
-with open('configs/view.json5') as view:
+with open('sys_value/parts.json5', 'r+', encoding='utf-8') as view:
     a = view.read()
     pprint.pprint(a)

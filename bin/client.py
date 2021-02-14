@@ -32,7 +32,6 @@ class RenderThread(mp.Process, pyglet.window.Window):
         :param net_mode: 网络模式 # local / ip
         '''
         # do father class __init__()
-        Window.__init__(self)
         mp.Process.__init__(self)
         # logging
         self.logger = logger
@@ -52,7 +51,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.window_config = tools.config('sys_value/window.json5')
         # dic
         self.ships = {}  # all ship(part)
-        self.planet_system = tools.configs('sys_vlaue/planet.json5')  # hole planet system
+        self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
         # list
         # re stuff
         self.ipv4_re = re.compile(
@@ -82,18 +81,17 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.textures = {}
         # parts
         self.textures['part'] = {}
-        parts = tools.configs('sys_value/parts.json5')
+        parts = tools.config('sys_value/parts.json5')
         for part in parts:
-            name = parts[part]
-            path = part[2][0]
+            path = parts[part][2][0]
+            path = 'textures/' + path
             part_image = image.load(path)
-            self.textures['part'][name] = part_image
-    '''
-    draws
-    '''
+            self.textures['part'][part] = part_image
+
+    # draws
 
     def on_draw(self):
-        self.logger.info('testing!')
+        print('rua!')
 
     def build_draw(self):
         pass

@@ -23,14 +23,14 @@ some tools
 
 
 def c_b(thing):  # stand for my bool
-    yes = ['True', 'TRUE', '1', 1]
-    no = ['False', 'FALSE', '0', 0]
+    yes = ['True', 'TRUE', 'true', '1', 1, True]
+    no = ['False', 'FALSE', 'false', '0', 0, False]
     if thing in yes:
         return True
     elif thing in no:
         return False
     else:
-        raise ValueError('Need a 'like bool' not anything else')
+        raise ValueError("Need a 'like bool' not anything else")
 
 
 '''
@@ -180,7 +180,7 @@ def config(file_name, stack=None):
     type = file_name[file_name.rfind('.') + 1:] # 从最后一个.到末尾 (截取文件格式)
     if (type == 'json5') or (type == 'json'):
         try:
-            with open(file_name, 'r') as jf:  # jf -> json file
+            with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
                 rd = json5.load(jf)
         except FileNotFoundError as exp:
             log = 'no config json(5) file \n file name : %s \n stack : %s' % (file_name, stack)
