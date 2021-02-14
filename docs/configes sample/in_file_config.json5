@@ -8,7 +8,7 @@
     }
   },
   client: {
-    'self.view': ['space', 'map', 'menu'],
+    'self.view': ['space', 'map', 'menu', 'build'],
     'self.textures': {
       'first name of textures(defaut: difficult_rocket)': {
         'name of image or name of list': 'pyglet.image class or dict',
@@ -17,7 +17,7 @@
         会直接检测是列表还是image
         另外 可 在文件夹同级放image文件
         */
-        'nothing': 'nothing'
+        nothing: 'nothing'
       }
     },
     'self.parts': {
@@ -60,7 +60,7 @@
             比如对接之后传输燃料、渲染太阳能板
             的时候可以用到
             */
-            'nothing': 'nothing'
+            nothing: 'nothing'
           }
         ]
       }

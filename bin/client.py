@@ -15,7 +15,7 @@ try:
     # been import use
     from bin import configs
     from bin import tools
-except ModuleNotFoundError:
+except ModuleNotFoundError or ImportError:
     # editing use
     import configs
     import tools
@@ -94,9 +94,12 @@ class RenderThread(mp.Process, pyglet.window.Window):
     """
 
     def on_draw(self):
-        self.part_draw()
+        self.logger.info('testing!')
 
-    def part_draw(self):
+    def build_draw(self):
+        pass
+
+    def space_draw(self):
         # render parts
         for ship in self.ships:
             # get ship poi
