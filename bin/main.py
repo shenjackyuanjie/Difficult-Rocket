@@ -1,7 +1,7 @@
-"""
+'''
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-"""
+'''
 
 # share memory
 from multiprocessing import Manager as share
@@ -27,17 +27,16 @@ class Game:
     def __init__(self):
         # basic config
         self.start_time = time.strftime(
-            "%Y-%m-%d %H-%M-%S", time.gmtime(time.time()))
-        self.configs = ''
+            '%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
         # share memory
         self.dicts = share().dict()
         self.lists = share().list()
         # logger
         #  log config
-        self.log_config = tools.configs('configs/logging.json5')
+        self.log_config = tools.config('configs/logging.json5')
         self.log_file_config = self.log_config['file']
-        self.log_file_handler = logging.FileHandler(configs.name_handler(
-            self.log_file_config['filename']['main'], self.log_file_config['filename']['formats']))
+        self.log_file_handler = logging.FileHandler('logs/%s' % (configs.name_handler(
+            self.log_file_config['filename']['main'], self.log_file_config['filename']['formats'])))
         #  logger
         #   all logger
         #   client logger

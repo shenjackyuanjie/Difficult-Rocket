@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
 <!-- $TexturePacker:SmartUpdate:a77efb5331c05aae1059b4f033dd3a10:1/1$ -->
 <!--Format:
@@ -13,14 +13,14 @@ oW => sprite's original width (only available if trimmed)
 oH => sprite's original height (only available if trimmed)
 r => 'y' only set if sprite is rotated
 -->
-<TextureAtlas imagePath="PlanetSprites.png" width="1024" height="1024">
-    <sprite n="Earth.png" x="2" y="498" w="256" h="256"/>
-    <sprite n="Jupiter.png" x="368" y="204" w="256" h="257"/>
-    <sprite n="Mars.PNG" x="260" y="463" w="256" h="256"/>
-    <sprite n="Mercury.png" x="626" y="260" w="256" h="256"/>
-    <sprite n="Moon.png" x="884" y="260" w="128" h="128"/>
-    <sprite n="Neptune.PNG" x="721" y="2" w="257" h="256"/>
-    <sprite n="Saturn.png" x="2" y="2" w="364" h="236"/>
-    <sprite n="Uranus.png" x="368" y="2" w="351" h="200"/>
-    <sprite n="Venus.PNG" x="2" y="240" w="256" h="256"/>
+<TextureAtlas imagePath='PlanetSprites.png' width='1024' height='1024'>
+    <sprite n='Earth.png' x='2' y='498' w='256' h='256'/>
+    <sprite n='Jupiter.png' x='368' y='204' w='256' h='257'/>
+    <sprite n='Mars.PNG' x='260' y='463' w='256' h='256'/>
+    <sprite n='Mercury.png' x='626' y='260' w='256' h='256'/>
+    <sprite n='Moon.png' x='884' y='260' w='128' h='128'/>
+    <sprite n='Neptune.PNG' x='721' y='2' w='257' h='256'/>
+    <sprite n='Saturn.png' x='2' y='2' w='364' h='236'/>
+    <sprite n='Uranus.png' x='368' y='2' w='351' h='200'/>
+    <sprite n='Venus.PNG' x='2' y='240' w='256' h='256'/>
 </TextureAtlas>

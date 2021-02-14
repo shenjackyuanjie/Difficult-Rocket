@@ -1,7 +1,7 @@
-"""
+'''
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-"""
+'''
 
 
 class Delivery:
@@ -17,4 +17,4 @@ class Delivery:
         self.this_planet_info = {}
         self.back_ground_element = {}
         # value
-        self.back_ground_image = ""
+        self.back_ground_image = ''

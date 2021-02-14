@@ -1,7 +1,7 @@
-"""
+'''
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-"""
+'''
 
 # import re
 import os
@@ -146,4 +146,5 @@ def name_handler(name: str, configs=None) -> str:
             replace = time.time()
         elif need_replace == '{dir}':
             replace = os.getcwd()
-        name.replace(need_replace, replace)
+        name = name.replace(need_replace, replace)
+    return name

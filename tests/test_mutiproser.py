@@ -19,21 +19,21 @@ class Main(mp.Process):
             time.sleep(2)
             while not(self.dev.using):
                 self.dev.using = True
-                print("开始调用a")
+                print('开始调用a')
                 if self.dev.dev1 != 0:
                     self.aaa = self.dev.dev1
                 if self.dev.bget == False:
-                    print("B 没拿到")
+                    print('B 没拿到')
                 else:
-                    print("B 拿到了")
+                    print('B 拿到了')
                     self.dev.bget = False
                 self.dev.aget = True
                 self.ttt = self.dev.a
                 self.dev.using = False
-                print("结束调用a")
+                print('结束调用a')
                 break
-            print(" aaa = ", self.aaa)
-        print("完事，收工---a")
+            print(' aaa = ', self.aaa)
+        print('完事，收工---a')
 
 
 class render(mp.Process):
@@ -51,18 +51,18 @@ class render(mp.Process):
                 self.dev.using = True
                 if random.choice(range(0, 5, 1)) == 4:
                     self.dev.dev1 = self.bbb
-                print("开始调用b")
+                print('开始调用b')
                 if self.dev.aget == False:
-                    print("A 没拿到")
+                    print('A 没拿到')
                 else:
-                    print("A 拿到了")
+                    print('A 拿到了')
                     self.dev.aget = False
                 # self.dev.bget = True
                 self.ggg = self.dev.b
                 self.dev.using = False
-                print("结束调用b")
+                print('结束调用b')
                 break
-        print("完事，收工---b")
+        print('完事，收工---b')
 
 
 class Delivery():
@@ -75,18 +75,18 @@ class Delivery():
         self.bget = False
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     dev = Delivery()
     A = Main(dev)
     B = render(dev)
-    print(":aaa")
+    print(':aaa')
     A.start()
     time.sleep(1)
     B.start()
     time.sleep(5)
-    print("gogogogogogoogogogogo")
+    print('gogogogogogoogogogogo')
     dev.a = False
-    print("A is deadddddddddddddddddddd AAAAAAAA")
+    print('A is deadddddddddddddddddddd AAAAAAAA')
     time.sleep(3)
     dev.b = False
-    print("BBBBBBBBBBBBBB")
+    print('BBBBBBBBBBBBBB')

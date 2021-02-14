@@ -1,7 +1,7 @@
-"""
+'''
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-"""
+'''
 
 import multiprocessing as mp
 
@@ -24,13 +24,13 @@ except (ModuleNotFoundError, ImportError, ImportWarning):
 class RenderThread(mp.Process, pyglet.window.Window):
 
     def __init__(self, logger, dev_dic=None, dev_list=None, path=None, net_mode='local'):
-        """
+        '''
         :param path: 运行路径
         :param dev_list: 共享内存
         :param dev_dic: 共享内存
         :param logger: logger
         :param net_mode: 网络模式 # local / ip
-        """
+        '''
         # do father class __init__()
         Window.__init__(self)
         mp.Process.__init__(self)
@@ -45,7 +45,6 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.view = 'space'
         self.net_mode = net_mode
         # image
-        self.b_g = image("back_ground_space.png")
         # configs
         self.view = tools.config('configs/view.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
@@ -89,9 +88,9 @@ class RenderThread(mp.Process, pyglet.window.Window):
             path = part[2][0]
             part_image = image.load(path)
             self.textures['part'][name] = part_image
-    """
+    '''
     draws
-    """
+    '''
 
     def on_draw(self):
         self.logger.info('testing!')
@@ -108,9 +107,9 @@ class RenderThread(mp.Process, pyglet.window.Window):
             for part in ship:
                 pass
 
-    """
+    '''
     keyboard and mouse input
-    """
+    '''
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass

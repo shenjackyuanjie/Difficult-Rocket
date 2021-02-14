@@ -41,11 +41,11 @@ time.sleep(random.random())
 B = Aclass(Dev, 'b')
 A.start()
 B.start()
-print("hmmm")
+print('hmmm')
 try:
     while True:
         In = input()
-        if In == "stop":
+        if In == 'stop':
             Dev.running['a'] = False
             Dev.running['b'] = False
             break
