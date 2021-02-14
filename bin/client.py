@@ -63,6 +63,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
                                  self.window_config['full_screen']),
                              caption=str(self.window_config['caption']),
                              visible=tools.c_b(self.window_config['visible']))
+        self.logger.info('setup done')
         # setup
         self.setup()
 

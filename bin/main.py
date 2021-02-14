@@ -32,15 +32,21 @@ class Game:
         self.dicts = share().dict()
         self.lists = share().list()
         # logger
-        self.log_config = tools.config('configs/logging.json5')
-        logging.basicConfig(filename=('logs/'+configs.name_handler(self.log_config['file']['filename']['main'], self.log_config['file']['filename']['formats'])),
-            level=logging.DEBUG)
-        self.root_logger_stream_hander = logging.StreamHandler()
-        self.root_logger = logging.getLogger()
-        logging.info('rua!')
-        self.root_logger.info('aaaaa')
+        logging.basicConfig(filename='logs/%s.log' % (time.time()))
+        self.log_config = tools.config('configs/logging.json5', 'file')
+        self.log_filename = 'logs/' + configs.name_handler(
+            self.log_config['filename']['main'], self.log_config['filename']['formats'])
+        self.log_file_hander = logging.FileHandler(self.log_filename)
+        self.log_file_hander.setLevel(tools.log_level(self.log_config['level']))
+        self.log_stream_hander = logging.StreamHandler()
+        self.log_stream_hander.setLevel(tools.log_level(self.log_config['level']))
+        logging.getLogger().addHandler(self.log_stream_hander)
+        logging.info('logger done')
+        # logging.getLogger().addHandler(self.log_file_hander)
+        logging.info('logger done')
         self.server_logger = logging.getLogger()
         self.client_logger = logging.getLogger()
+        self.client_logger.info('client logger and server logger done')
         # client and server
         self.client = client.RenderThread(
             self.client_logger, self.dicts, self.lists, net_mode='local')

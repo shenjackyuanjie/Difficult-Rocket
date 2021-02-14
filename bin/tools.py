@@ -3,8 +3,8 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 '''
 
+import re
 import json5
-import json
 import decimal
 import logging
 from xml.dom.minidom import parse
@@ -31,6 +31,24 @@ def c_b(thing):  # stand for my bool
         return False
     else:
         raise ValueError("Need a 'like bool' not anything else")
+
+
+def log_level(level):
+    level_ = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', logging.DEBUG,
+              logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
+    if level in level_:
+        if (level == 'DEBUG') or (level == logging.DEBUG):
+            return logging.DEBUG
+        if (level == 'INFO') or (level == logging.INFO):
+            return logging.INFO
+        if (level == 'WARNING') or (level == logging.WARNING):
+            return logging.WARNING
+        if (level == 'ERROR') or (level == logging.ERROR):
+            return logging.ERROR
+        if (level == 'CRITICAL') or (level == logging.CRITICAL):
+            return logging.CRITICAL
+    else:
+        raise ValueError('Need a like level thing not anything else')
 
 
 '''
@@ -177,13 +195,14 @@ def distance(A, B):
 
 
 def config(file_name, stack=None):
-    type = file_name[file_name.rfind('.') + 1:] # 从最后一个.到末尾 (截取文件格式)
+    type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     if (type == 'json5') or (type == 'json'):
         try:
             with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
                 rd = json5.load(jf)
         except FileNotFoundError as exp:
-            log = 'no config json(5) file \n file name : %s \n stack : %s' % (file_name, stack)
+            log = 'no config json(5) file \n file name : %s \n stack : %s' % (
+                file_name, stack)
             tools_logger.exception(log)
             raise FileNotFoundError(log)
         if stack is not None:
@@ -193,7 +212,8 @@ def config(file_name, stack=None):
         try:
             xml_load = parse(file_name)
         except FileNotFoundError as exp:
-            log = 'no config json(5) file \n file name : %s \n stack : %s' % (file_name, stack)
+            log = 'no config json(5) file \n file name : %s \n stack : %s' % (
+                file_name, stack)
             tools_logger.exception(log)
             raise FileNotFoundError(log)
         if stack is not None:
