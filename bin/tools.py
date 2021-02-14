@@ -6,6 +6,7 @@ mail: 3695888@qq.com
 import json5
 import decimal
 import logging
+from xml.dom.minidom import parse
 
 try:
     import configs
@@ -81,7 +82,7 @@ def D_C(listA: list, listB: list) -> '1':  # stand for Duplicate check
     return 1
 
 
-def S_C_float_check(SC) -> None:  # stand for Scientific notation's float check
+def S_C_float_check(SC):  # stand for Scientific notation's float check
     """
     formats:
     SC list format:docs.basic_config.json:basic_number"""
@@ -151,7 +152,7 @@ def G_C(M, m, R, G):  # stand for gravity calculation
     return g
 
 
-def distance(A, B) -> float:
+def distance(A, B):
     """
     formats:
     A & B format: docs.basic_config:basic_poi
@@ -171,20 +172,31 @@ def distance(A, B) -> float:
     return poi_dis[2]
 
 
-"""
-loads
-"""
+# loads
 
 
 def config(file_name, stack=None):
-    # rd = {}  # rd -> return data
-    try:
-        with open(file_name, "r") as jf:  # jf -> json file
-            rd = json5.load(jf)
-    except FileNotFoundError as exp:
-        log = "no config file \n file name : %s \n stack : %s" % (file_name, stack)
-        tools_logger.exception(log)
-        raise FileNotFoundError(log)
-    if stack is not None:
-        rd = rd[stack]
-    return rd
+    type = file_name[file_name.rfind('.') + 1:] # 从最后一次.到末尾(截取文件格式)
+    if (type == 'json5') or (type == 'json'):
+        try:
+            with open(file_name, "r") as jf:  # jf -> json file
+                rd = json5.load(jf)
+        except FileNotFoundError as exp:
+            log = "no config json(5) file \n file name : %s \n stack : %s" % (file_name, stack)
+            tools_logger.exception(log)
+            raise FileNotFoundError(log)
+        if stack is not None:
+            rd = rd[stack]
+        return rd
+    elif type == 'xml':
+        try:
+            xml_load = parse(file_name)
+        except FileNotFoundError as exp:
+            log = "no config json(5) file \n file name : %s \n stack : %s" % (file_name, stack)
+            tools_logger.exception(log)
+            raise FileNotFoundError(log)
+        if stack is not None:
+            xml_get = xml_load.getElementsByTagName(stack)
+            return xml_get
+        else:
+            return xml_load
