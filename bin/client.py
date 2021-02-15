@@ -54,16 +54,13 @@ class RenderThread(mp.Process, pyglet.window.Window):
         self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
         # list
         # re stuff
-        self.ipv4_re = re.compile(
-            u'^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$')
         # window
         self.window = Window(width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
-                             fullscreen=tools.c_b(
-                                 self.window_config['full_screen']),
+                             fullscreen=tools.c_b(self.window_config['full_screen']),
                              caption=str(self.window_config['caption']),
                              visible=tools.c_b(self.window_config['visible']))
-        self.logger.info('setup done')
+        self.logger.info('client setup done!')
         # setup
         self.setup()
 
@@ -76,8 +73,8 @@ class RenderThread(mp.Process, pyglet.window.Window):
         if self.net_mode == 'local':
             pass
         # net_mode != 'local' and ,can is a ipv4 ip
-        elif re.match(self.ipv4_re, self.net_mode):
-            pass
+        # elif re.match(self.ipv4_re, self.net_mode):
+        #     pass
         # textures
         self.textures = {}
         # parts

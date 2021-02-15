@@ -18,6 +18,7 @@ class server(mp.Process):
         # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
+        self.logger.info('server setup done!')
 
     def run(self):
         pass

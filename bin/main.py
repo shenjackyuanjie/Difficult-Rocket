@@ -33,16 +33,26 @@ class Game:
         self.lists = share().list()
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
-        self.log_filename = 'logs/' + configs.name_handler(
-            self.log_config['filename']['main'], self.log_config['filename']['formats'])
-        logging.basicConfig(filename=self.log_filename, level=logging.DEBUG)
-        self.root_logger_stream_hander = logging.StreamHandler()
-        self.root_logger_stream_hander.setLevel(
-            self.log_config['level'])
-        logging.getLogger().addHandler(self.root_logger_stream_hander)
+        self.log_filename = 'logs/' + configs.name_handler(self.log_config['filename']['main'],
+                                                           self.log_config['filename']['formats'])
+        logging.basicConfig(level=logging.DEBUG,
+                            format=self.log_config['fmt'],
+                            datefmt=self.log_config['date_fmt'])
+        self.root_logger_stream_handler = logging.StreamHandler()
+        self.root_logger_stream_handler.setLevel(self.log_config['level'])
+
         logging.info('logger done')
-        self.server_logger = logging.getLogger()
-        self.client_logger = logging.getLogger()
+
+        self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
+        self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
+        self.root_logger_stream_handler.setLevel(self.log_config['level'])
+        self.root_logger_file_handler = logging.FileHandler(self.log_filename)
+        self.root_logger_file_handler.setFormatter(self.root_logger_fmt)
+        logging.getLogger().addHandler(self.root_logger_stream_handler)
+        logging.getLogger().addHandler(self.root_logger_file_handler)
+
+        self.server_logger = logging.getLogger().getChild('server')
+        self.client_logger = logging.getLogger().getChild('client')
         self.client_logger.info('client logger and server logger done')
         # client and server
         self.client = client.RenderThread(
