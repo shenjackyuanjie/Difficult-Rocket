@@ -1,7 +1,7 @@
-'''
+"""
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-'''
+"""
 
 # share memory
 from multiprocessing import Manager as share
@@ -64,8 +64,11 @@ class Game:
         py_v = str('%d.%d.%d' % (py_v_info[0], py_v_info[1], py_v_info[2]))
         self.main_logger.info('Difficult Rocket is running on Python Vision %s' % py_v)
         if py_v_info[0] == 2:
-            self.main_logger.critical('Difficult Rocket need python vision 3+ but not %s ' % py_v)
+            self.main_logger.critical('Difficult Rocket need Python vision 3+ but not %s ' % py_v)
             raise Exception('Difficult Rocket need python vision 3+ but not %s ' % py_v)
+        elif py_v_info[1] <= 7:
+            self.main_logger.warning('Difficult is develop in Python version 3.8 \n and you are running on %s may \
+            cause error' % py_v)
 
     def start(self):
         # start
