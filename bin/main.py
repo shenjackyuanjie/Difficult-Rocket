@@ -50,7 +50,7 @@ class Game:
         self.main_logger = logging.getLogger().getChild('main')
         self.server_logger = logging.getLogger().getChild('server')
         self.client_logger = logging.getLogger().getChild('client')
-        self.client_logger.info('client logger and server logger done')
+        self.main_logger.info('client logger and server logger done')
         self.python_version_check()
         # client and server
         self.client = client.RenderThread(
@@ -62,9 +62,10 @@ class Game:
     def python_version_check(self) -> None:
         py_v_info = sys.version_info
         py_v = str('%d.%d.%d' % (py_v_info[0], py_v_info[1], py_v_info[2]))
-        self.main_logger.info('Simple Rocket is running on Python Vision %s' % py_v)
+        self.main_logger.info('Difficult Rocket is running on Python Vision %s' % py_v)
         if py_v_info[0] == 2:
-            raise Exception('Simple Rocket need python vision 3+ but not %s ' % (py_v))
+            self.main_logger.critical('Difficult Rocket need python vision 3+ but not %s ' % py_v)
+            raise Exception('Difficult Rocket need python vision 3+ but not %s ' % py_v)
 
     def start(self):
         # start
