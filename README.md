@@ -4,7 +4,7 @@
 
 0.0 (developing)
 
-中文README请移步[这里](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)。
+中文README请移步 [这里](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
 
 > It's a Simple Rocket liked game build with Python
 
