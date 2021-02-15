@@ -26,8 +26,7 @@ class Game:
 
     def __init__(self):
         # basic config
-        self.start_time = time.strftime(
-            '%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
+        self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
         # share memory
         self.dicts = share().dict()
         self.lists = share().list()
@@ -55,6 +54,7 @@ class Game:
             self.client_logger, self.dicts, self.lists, net_mode='local')
         self.server = server.server(
             self.lists, self.dicts, self.server_logger, net_mode='local')
+        # //todo log configs
 
         # start
         self.client.startGame()
