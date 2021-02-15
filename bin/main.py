@@ -6,7 +6,7 @@ mail: 3695888@qq.com
 # share memory
 from multiprocessing import Manager as share
 
-# import bin
+import sys
 import time
 import logging
 
@@ -32,23 +32,26 @@ class Game:
         self.lists = share().list()
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
-        self.log_filename = 'logs/' + configs.name_handler(self.log_config['filename']['main'],
-                                                           self.log_config['filename']['formats'])
+        self.log_filename = configs.name_handler(self.log_config['filename']['main'],
+                                                 self.log_config['filename']['formats'])
+        self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler = logging.StreamHandler()
         self.root_logger_stream_handler.setLevel(self.log_config['level'])
-        self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_stream_handler.setLevel(tools.log_level(self.log_config['level']))
         self.root_logger_file_handler = logging.FileHandler(self.log_filename)
         self.root_logger_file_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_file_handler.setLevel(tools.log_level(self.log_config['level']))
+        # root logger setup
         logging.getLogger().setLevel(tools.log_level(self.log_config['level']))
         logging.getLogger().addHandler(self.root_logger_stream_handler)
         logging.getLogger().addHandler(self.root_logger_file_handler)
-
+        # create logger
+        self.main_logger = logging.getLogger().getChild('main')
         self.server_logger = logging.getLogger().getChild('server')
         self.client_logger = logging.getLogger().getChild('client')
         self.client_logger.info('client logger and server logger done')
+        self.python_version_check()
         # client and server
         self.client = client.RenderThread(
             self.client_logger, self.dicts, self.lists, net_mode='local')
@@ -56,5 +59,13 @@ class Game:
             self.lists, self.dicts, self.server_logger, net_mode='local')
         # //todo log configs
 
+    def python_version_check(self) -> None:
+        py_v_info = sys.version_info
+        py_v = str('%d.%d.%d' % (py_v_info[0], py_v_info[1], py_v_info[2]))
+        self.main_logger.info('Simple Rocket is running on Python Vision %s' % py_v)
+        if py_v_info[0] == 2:
+            raise Exception('Simple Rocket need python vision 3+ but not %s ' % (py_v))
+
+    def start(self):
         # start
         self.client.startGame()

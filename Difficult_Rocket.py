@@ -17,6 +17,7 @@ def game():
         raise Exception('Simple Rocket need python vision 3+')
     # start games
     game = main.Game()
+    game.start()
 
 
 if __name__ == '__main__':
