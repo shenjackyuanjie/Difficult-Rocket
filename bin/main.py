@@ -35,19 +35,15 @@ class Game:
         self.log_config = tools.config('configs/logging.json5', 'file')
         self.log_filename = 'logs/' + configs.name_handler(self.log_config['filename']['main'],
                                                            self.log_config['filename']['formats'])
-        logging.basicConfig(level=logging.DEBUG,
-                            format=self.log_config['fmt'],
-                            datefmt=self.log_config['date_fmt'])
         self.root_logger_stream_handler = logging.StreamHandler()
         self.root_logger_stream_handler.setLevel(self.log_config['level'])
-
-        logging.info('logger done')
-
         self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
-        self.root_logger_stream_handler.setLevel(self.log_config['level'])
+        self.root_logger_stream_handler.setLevel(tools.log_level(self.log_config['level']))
         self.root_logger_file_handler = logging.FileHandler(self.log_filename)
         self.root_logger_file_handler.setFormatter(self.root_logger_fmt)
+        self.root_logger_file_handler.setLevel(tools.log_level(self.log_config['level']))
+        logging.getLogger().setLevel(tools.log_level(self.log_config['level']))
         logging.getLogger().addHandler(self.root_logger_stream_handler)
         logging.getLogger().addHandler(self.root_logger_file_handler)
 
