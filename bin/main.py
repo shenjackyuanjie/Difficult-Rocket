@@ -56,14 +56,21 @@ class Game:
         self.main_logger = logging.getLogger().getChild('main')
         self.server_logger = logging.getLogger().getChild('server')
         self.client_logger = logging.getLogger().getChild('client')
-        self.main_logger.info('client logger and server logger done')
-
+        self.main_logger.info('loggers created')
+        self.main_logger.info('main logger setup done')
+        self.log_log_config()
         # version check
         self.python_version_check()
         # client and server
         self.client = client.client(self.client_logger, self.dicts, self.lists, net_mode='local')
         self.server = server.server(self.lists, self.dicts, self.server_logger, net_mode='local')
-        # //todo log configs
+
+    def log_log_config(self):
+        self.main_logger.info('game start setup at %s' % self.start_time)
+        self.main_logger.debug('log file name: %s' % self.log_filename)
+        self.main_logger.debug('log file level: %s' % self.log_config['level'])
+        self.main_logger.debug('log file format: %s' % self.log_config['fmt'])
+        self.main_logger.debug('log file date format: %s' % self.log_config['date_fmt'])
 
     def python_version_check(self) -> None:
         self.main_logger.info('Difficult Rocket is running on Python Vision %s' % self.on_python_v)

@@ -23,13 +23,13 @@ except (ModuleNotFoundError, ImportError, ImportWarning):
 class client(mp.Process, pyglet.window.Window):
 
     def __init__(self, logger, dev_dic=None, dev_list=None, path=None, net_mode='local'):
-        '''
+        """
         :param path: 运行路径
         :param dev_list: 共享内存
         :param dev_dic: 共享内存
         :param logger: logger
         :param net_mode: 网络模式 # local / ip
-        '''
+        """
         # do father class __init__()
         mp.Process.__init__(self)
         # logging
@@ -71,9 +71,6 @@ class client(mp.Process, pyglet.window.Window):
         # net_mode
         if self.net_mode == 'local':
             pass
-        # net_mode != 'local' and ,can is a ipv4 ip
-        # elif re.match(self.ipv4_re, self.net_mode):
-        #     pass
         # textures
         self.textures = {}
         # parts

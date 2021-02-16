@@ -14,7 +14,7 @@
       'bool',
       // hidden in part list
       'bool',
-      // hidden in misson (even thought that is not done yet)
+      // hidden in mission (even thought that is not done yet)
       'float'
       // buoyancy(浮力) in the water
     ],
