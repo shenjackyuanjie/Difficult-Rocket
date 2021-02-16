@@ -221,3 +221,24 @@ def config(file_name, stack=None):
             return xml_get
         else:
             return xml_load
+
+
+def get_At(name, in_xml, need_type=str):
+    name_type = type(name)
+    if name_type == list:
+        At_list = []
+        for need_name in name:
+            if in_xml.hasAttribute(need_name):
+                get = in_xml.getAttribute(need_name)
+                At_list.append(need_type(get))
+            else:
+                continue
+        return At_list
+    elif name_type == str:
+        if in_xml.hasAttribute(name):
+            At = in_xml.getAttribute(name)
+        else:
+            return None
+    else:
+        raise TypeError('only str and list type is ok but you give me a' + name_type + 'type')
+    return need_type(At)

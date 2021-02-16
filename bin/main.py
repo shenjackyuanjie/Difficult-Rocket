@@ -8,6 +8,7 @@ from multiprocessing import Manager as share
 
 import sys
 import time
+import pyglet
 import logging
 
 try:
@@ -83,4 +84,4 @@ class Game:
 
     def start(self):
         # start
-        self.client.start_game()
+        self.client.start()
