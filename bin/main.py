@@ -26,10 +26,16 @@ class Game:
 
     def __init__(self):
         # basic config
+        self.on_python_v_info = sys.version_info
+        self.on_python_v = str('%d.%d.%d' % (self.on_python_v_info[0],
+                                             self.on_python_v_info[1],
+                                             self.on_python_v_info[2]))
         self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
+
         # share memory
         self.dicts = share().dict()
         self.lists = share().list()
+
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
         self.log_filename = configs.name_handler(self.log_config['filename']['main'],
@@ -39,7 +45,7 @@ class Game:
         self.root_logger_stream_handler.setLevel(self.log_config['level'])
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_stream_handler.setLevel(tools.log_level(self.log_config['level']))
-        self.root_logger_file_handler = logging.FileHandler(self.log_filename)
+        self.root_logger_file_handler = logging.FileHandler('logs/' + self.log_filename)
         self.root_logger_file_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_file_handler.setLevel(tools.log_level(self.log_config['level']))
         # root logger setup
@@ -51,25 +57,23 @@ class Game:
         self.server_logger = logging.getLogger().getChild('server')
         self.client_logger = logging.getLogger().getChild('client')
         self.main_logger.info('client logger and server logger done')
+
+        # version check
         self.python_version_check()
         # client and server
-        self.client = client.RenderThread(
-            self.client_logger, self.dicts, self.lists, net_mode='local')
-        self.server = server.server(
-            self.lists, self.dicts, self.server_logger, net_mode='local')
+        self.client = client.client(self.client_logger, self.dicts, self.lists, net_mode='local')
+        self.server = server.server(self.lists, self.dicts, self.server_logger, net_mode='local')
         # //todo log configs
 
     def python_version_check(self) -> None:
-        py_v_info = sys.version_info
-        py_v = str('%d.%d.%d' % (py_v_info[0], py_v_info[1], py_v_info[2]))
-        self.main_logger.info('Difficult Rocket is running on Python Vision %s' % py_v)
-        if py_v_info[0] == 2:
-            self.main_logger.critical('Difficult Rocket need Python vision 3+ but not %s ' % py_v)
-            raise Exception('Difficult Rocket need python vision 3+ but not %s ' % py_v)
-        elif py_v_info[1] <= 7:
-            self.main_logger.warning('Difficult is develop in Python version 3.8 \n and you are running on %s may \
-            cause error' % py_v)
+        self.main_logger.info('Difficult Rocket is running on Python Vision %s' % self.on_python_v)
+        if self.on_python_v_info[0] == 2:
+            self.main_logger.critical('Difficult Rocket need Python vision 3+ but not %s ' % self.on_python_v)
+            raise Exception('Difficult Rocket need python vision 3+ but not %s ' % self.on_python_v)
+        elif self.on_python_v_info[1] <= 7:
+            self.main_logger.warning('Difficult is develop in Python version 3.8 \n\
+                                      and you are running on %s may cause error' % self.on_python_v)
 
     def start(self):
         # start
-        self.client.startGame()
+        self.client.start_game()

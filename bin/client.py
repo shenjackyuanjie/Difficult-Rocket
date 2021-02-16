@@ -5,7 +5,6 @@ mail: 3695888@qq.com
 
 import multiprocessing as mp
 
-import re
 import pyglet
 import pyglet.app
 from pyglet import image
@@ -21,7 +20,7 @@ except (ModuleNotFoundError, ImportError, ImportWarning):
     import tools
 
 
-class RenderThread(mp.Process, pyglet.window.Window):
+class client(mp.Process, pyglet.window.Window):
 
     def __init__(self, logger, dev_dic=None, dev_list=None, path=None, net_mode='local'):
         '''
@@ -64,7 +63,7 @@ class RenderThread(mp.Process, pyglet.window.Window):
         # setup
         self.setup()
 
-    def startGame(self):
+    def start_game(self):
         pyglet.app.run()
         return
 
