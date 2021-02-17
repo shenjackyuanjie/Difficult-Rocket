@@ -1,0 +1,94 @@
+<Runtime time="0.0" firstStageActivated="1" solarSystem="SmolarSystem.xml">
+    <Nodes>
+        <PlanetNode name="Sun"/>
+        <PlanetNode name="Smercury" trueAnomaly="-2.398935"/>
+        <PlanetNode name="Smenus" trueAnomaly="0.856837"/>
+        <PlanetNode name="Smearth" trueAnomaly="-2.986780"/>
+        <PlanetNode name="Smoon" trueAnomaly="-0.600810"/>
+        <ShipNode id="2" planet="Smearth" planetRadius="637100.000000" x="724262.38933452626" y="685367.67763381428"
+                  vx="-1368.8459415697464" vy="1458.1017293482519">
+            <Ship version="1" liftedOff="1" touchingGround="0">
+                <Parts>
+                    <Part partType="pod-1" id="1" x="700971.221953" y="702281.363812" angle="-0.010499"
+                          angleV="0.000000" editorAngle="0">
+                        <Pod throttle="0.000000" name="Satellite">
+                            <Staging currentStage="3">
+                                <Step/>
+                                <Step/>
+                                <Step>
+                                    <Activate Id="147" moved="1"/>
+                                    <Activate Id="148" moved="1"/>
+                                    <Activate Id="149" moved="1"/>
+                                    <Activate Id="146" moved="1"/>
+                                    <Activate Id="150" moved="1"/>
+                                    <Activate Id="151" moved="1"/>
+                                </Step>
+                            </Staging>
+                        </Pod>
+                    </Part>
+                    <Part partType="fueltank-2" id="154" x="700971.193144" y="702278.613812" angle="-0.010499"
+                          angleV="0.000000" editorAngle="0">
+                        <Tank fuel="3000.000000"/>
+                    </Part>
+                    <Part partType="fueltank-2" id="158" x="700971.151152" y="702274.613812" angle="3.131103"
+                          angleV="0.000000" editorAngle="2">
+                        <Tank fuel="3000.000000"/>
+                    </Part>
+                    <Part partType="fueltank-1" id="140" x="700971.118925" y="702271.614300" angle="-0.009680"
+                          angleV="0.000000" editorAngle="0">
+                        <Tank fuel="1500.000000"/>
+                    </Part>
+                    <Part partType="port-1" id="141" x="700971.104277" y="702270.114300" angle="1.561116"
+                          angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+                    <Part partType="strut-1" id="142" x="700966.135039" y="702273.167523" angle="-0.010681"
+                          angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+                    <Part partType="fuselage-1" id="145" x="700961.135527" y="702273.220745" angle="-0.010504"
+                          angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+                    <Part partType="solar-1" id="147" x="700959.885527" y="702273.233929" angle="-0.010504"
+                          angleV="0.000000" editorAngle="0" activated="1" exploded="0" flippedX="1" flippedY="0"
+                          extension="1.000000"/>
+                    <Part partType="solar-1" id="148" x="700961.148710" y="702274.470257" angle="1.560113"
+                          angleV="0.000000" editorAngle="1" activated="1" exploded="0" flippedX="0" flippedY="0"
+                          extension="1.000000"/>
+                    <Part partType="solar-1" id="149" x="700961.121855" y="702271.970745" angle="1.559927"
+                          angleV="0.000000" editorAngle="1" activated="1" exploded="0" flippedX="1" flippedY="0"
+                          extension="1.000000"/>
+                    <Part partType="strut-1" id="143" x="700976.135527" y="702273.060101" angle="-0.010735"
+                          angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+                    <Part partType="fuselage-1" id="144" x="700981.135039" y="702273.004925" angle="-0.010958"
+                          angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+                    <Part partType="solar-1" id="146" x="700982.384550" y="702272.991253" angle="-0.010460"
+                          angleV="0.000000" editorAngle="0" activated="1" exploded="0" flippedX="0" flippedY="0"
+                          extension="1.000000"/>
+                    <Part partType="solar-1" id="150" x="700981.148222" y="702274.254437" angle="1.560379"
+                          angleV="0.000000" editorAngle="1" activated="1" exploded="0" flippedX="0" flippedY="0"
+                          extension="1.000000"/>
+                    <Part partType="solar-1" id="151" x="700981.121367" y="702271.754925" angle="1.559881"
+                          angleV="0.000000" editorAngle="1" activated="1" exploded="0" flippedX="1" flippedY="0"
+                          extension="1.000000"/>
+                </Parts>
+                <Connections>
+                    <Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1" childPart="154"/>
+                    <Connection parentAttachPoint="2" childAttachPoint="2" parentPart="154" childPart="158"/>
+                    <Connection parentAttachPoint="1" childAttachPoint="1" parentPart="158" childPart="140"/>
+                    <Connection parentAttachPoint="2" childAttachPoint="1" parentPart="140" childPart="141"/>
+                    <Connection parentAttachPoint="4" childAttachPoint="4" parentPart="158" childPart="142"/>
+                    <Connection parentAttachPoint="3" childAttachPoint="4" parentPart="142" childPart="145"/>
+                    <Connection parentAttachPoint="3" childAttachPoint="1" parentPart="145" childPart="147"/>
+                    <Connection parentAttachPoint="1" childAttachPoint="2" parentPart="145" childPart="148"/>
+                    <Connection parentAttachPoint="2" childAttachPoint="1" parentPart="145" childPart="149"/>
+                    <Connection parentAttachPoint="3" childAttachPoint="3" parentPart="158" childPart="143"/>
+                    <Connection parentAttachPoint="4" childAttachPoint="3" parentPart="143" childPart="144"/>
+                    <Connection parentAttachPoint="4" childAttachPoint="2" parentPart="144" childPart="146"/>
+                    <Connection parentAttachPoint="1" childAttachPoint="2" parentPart="144" childPart="150"/>
+                    <Connection parentAttachPoint="2" childAttachPoint="1" parentPart="144" childPart="151"/>
+                </Connections>
+            </Ship>
+        </ShipNode>
+        <PlanetNode name="Smars" trueAnomaly="1.744960"/>
+        <PlanetNode name="Smupiter" trueAnomaly="1.325815"/>
+        <PlanetNode name="Smaturn" trueAnomaly="2.222660"/>
+        <PlanetNode name="Smuranus" trueAnomaly="-2.838959"/>
+        <PlanetNode name="Smeptune" trueAnomaly="-1.313059"/>
+    </Nodes>
+</Runtime>
