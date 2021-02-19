@@ -49,7 +49,7 @@ def cut_and_save(config, save_path):
         pic_.save(save_name)
 
 
-def All_in_one_cut(xml, pic, path):
+def All_in_one_cut(xml, path):
     json_name = xml[:-4] + '.json5'
     rewrite_config(xml, json_name)
     cut_and_save(json_name, path)

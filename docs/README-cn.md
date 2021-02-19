@@ -22,14 +22,15 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 - `Python 3.8.7`
   `Windows10 x64`
-  `Pyglet 1.5.14`
+  `Pyglet 1.5.15`
   `Json5 0.9.5`
+  `pillow 8.1.0`
 
 ### 需要的Python模块
 
-- pyglet
 - json5
-
+- pyglet
+- pillow
 
 ## 关于分享协议
 

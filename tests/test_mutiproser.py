@@ -28,7 +28,7 @@ class Main(mp.Process):
                     print('B 拿到了')
                     self.dev.bget = False
                 self.dev.aget = True
-                self.ttt = self.dev.a
+                self.ttt = self.dev.add_speed
                 self.dev.using = False
                 print('结束调用a')
                 break

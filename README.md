@@ -22,13 +22,15 @@ None. Not even one!
 
 - `Python 3.8.7`
   `Windows10 x64`
-  `Pyglet 1.5.14`
+  `Pyglet 1.5.15`
   `Json5 0.9.5`
+  `pillow 8.1.0`
 
 ## Required python modules
 
-- pyglet
 - json5
+- pyglet
+- pillow
 
 ## About License
 
