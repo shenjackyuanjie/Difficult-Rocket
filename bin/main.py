@@ -36,7 +36,11 @@ class Game:
         # share memory
         self.dicts = share().dict()
         self.lists = share().list()
-
+        # lang_config
+        self.language = tools.config('sys_value/basic_config.json5')
+        self.language = self.language['language']
+        self.lang = tools.config('sys_value/lang/%s.json5' % self.language)
+        self.lang = self.lang['main']
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
         self.log_filename = configs.name_handler(self.log_config['filename']['main'],
@@ -57,16 +61,17 @@ class Game:
         self.main_logger = logging.getLogger().getChild('main')
         self.server_logger = logging.getLogger().getChild('server')
         self.client_logger = logging.getLogger().getChild('client')
-        self.main_logger.info('loggers created')
-        self.main_logger.info('main logger setup done')
-        self.log_log_config()
+        self.main_logger.info(self.lang['logger.created'])
+        self.main_logger.info(self.lang['logger.main_done'])
+        self.log_configs()
         # version check
         self.python_version_check()
         # client and server
         self.client = client.client(self.client_logger, self.dicts, self.lists, net_mode='local')
         self.server = server.server(self.lists, self.dicts, self.server_logger, net_mode='local')
 
-    def log_log_config(self):
+    def log_configs(self):
+        self.main_logger.info('%s %s' % (self.lang['lang.language'], self.language))
         self.main_logger.info('game start setup at %s' % self.start_time)
         self.main_logger.debug('log file name: %s' % self.log_filename)
         self.main_logger.debug('log file level: %s' % self.log_config['level'])
@@ -84,4 +89,4 @@ class Game:
 
     def start(self):
         # start
-        self.client.start()
+        self.client.run()

@@ -1,0 +1,9 @@
+{
+  'main': {
+    'lang.language': '游戏语言为：',
+    'logger.created': '日志处理器创建完成',
+    'logger.main_done': '主日志处理器创建完成',
+    'logger.log_file_name': '日志文件记录级别：',
+    'game_start_at': '游戏主线程开始于：'
+  }
+}

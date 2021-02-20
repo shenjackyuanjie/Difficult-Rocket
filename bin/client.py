@@ -1,14 +1,12 @@
-'''
+"""
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-'''
+"""
 
-import multiprocessing as mp
-
+import os
 import pyglet
-import pyglet.app
 from pyglet import image
-from pyglet.window import Window
+import multiprocessing as mp
 
 try:
     # been import use
@@ -31,6 +29,7 @@ class client(mp.Process):
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
+        self.process_pid = os.getpid()
         self.view = 'space'
         self.net_mode = net_mode
         self.window_config = tools.config('sys_value/window.json5')
@@ -43,8 +42,12 @@ class client(mp.Process):
                              fullscreen=tools.c_b(self.window_config['full_screen']),
                              caption=str(self.window_config['caption']),
                              visible=tools.c_b(self.window_config['visible']))
+        self.log_config()
 
-    def start(self) -> None:
+    def log_config(self):
+        self.logger.info('client is running on pid : %s' % self.process_pid)
+
+    def run(self) -> None:
         pyglet.app.run()
 
 
@@ -74,10 +77,12 @@ class window(pyglet.window.Window):
         self.part_list = tools.config('sys_value/parts.json5')
         # dic
         self.ships = {}  # all ship(part)
-        self.planet_system = tools.config('sys_value/planet.json5')
-        # hole planet system
+        self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
         # list
-        # re stuff
+        # batch
+        self.part_batch = pyglet.graphics.Batch()
+        self.label_batch = pyglet.graphics.Batch()
+        self.runtime_batch = pyglet.graphics.Batch()
         # window
         self.logger.info('client setup done!')
         self.textures = {}
@@ -93,14 +98,23 @@ class window(pyglet.window.Window):
         parts = tools.config('sys_value/parts.json5')
         for part in parts:
             path = parts[part][2][0]
-            path = 'textures/' + path
-            part_image = image.load(path)
+            part_image = image.load('textures/' + path)
             self.textures['part'][part] = part_image
+
+        # tests
+        self.info_label = pyglet.text.Label(text='test',
+                                            x=150, y=100,
+                                            batch=self.label_batch)
 
     # draws
 
     def on_draw(self):
-        return
+        self.draw_batch()
+
+    def draw_batch(self):
+        self.part_batch.draw()
+        self.runtime_batch.draw()
+        self.label_batch.draw()
 
     def build_draw(self):
         pass
