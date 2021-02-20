@@ -72,11 +72,11 @@ class Game:
 
     def log_configs(self):
         self.main_logger.info('%s %s' % (self.lang['lang.language'], self.language))
-        self.main_logger.info('game start setup at %s' % self.start_time)
-        self.main_logger.debug('log file name: %s' % self.log_filename)
-        self.main_logger.debug('log file level: %s' % self.log_config['level'])
-        self.main_logger.debug('log file format: %s' % self.log_config['fmt'])
-        self.main_logger.debug('log file date format: %s' % self.log_config['date_fmt'])
+        self.main_logger.info('%s %s' % (self.lang['game_start.at'], self.start_time))
+        self.main_logger.debug('%s %s' % (self.lang['logger.logfile_name'], self.log_filename))
+        self.main_logger.debug('%s %s' % (self.lang['logger.logfile_level'], self.log_config['level']))
+        self.main_logger.debug('%s %s' % (self.lang['logger.logfile_fmt'], self.log_config['fmt']))
+        self.main_logger.debug('log file date format: %s' % (self.log_config['date_fmt']))
 
     def python_version_check(self) -> None:
         self.main_logger.info('Difficult Rocket is running on Python Vision %s' % self.on_python_v)
