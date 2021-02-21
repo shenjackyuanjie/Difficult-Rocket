@@ -1,5 +1,5 @@
 {
-  'language': 'zh_cn',
+  'language': 'zh-cn',
   'textures': {
     'back_ground_space': 'back_ground_space.png',
     'planet': {

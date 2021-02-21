@@ -67,18 +67,18 @@ class Game:
         # version check
         self.python_version_check()
         # client and server
-        self.client = client.client(self.client_logger, self.dicts, self.lists, net_mode='local')
+        self.client = client.client(self.client_logger, self.dicts, self.lists, self.language, net_mode='local')
         self.server = server.server(self.lists, self.dicts, self.server_logger, net_mode='local')
 
     def log_configs(self):
-        self.main_logger.info('%s %s' % (self.lang['lang.language'], self.language))
+        self.main_logger.info('%s %s' % (self.lang['logger.language'], self.lang['lang.language']))
         self.main_logger.info('%s %s' % (self.lang['game_start.at'], self.start_time))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_name'], self.log_filename))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_level'], self.log_config['level']))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_fmt'], self.log_config['fmt']))
-        self.main_logger.debug('log file date format: %s' % (self.log_config['date_fmt']))
+        self.main_logger.debug('%s %s' % (self.lang['logger.logfile_datefmt'], self.log_config['date_fmt']))
 
-    def python_version_check(self) -> None:
+    def python_version_check(self):
         self.main_logger.info('Difficult Rocket is running on Python Vision %s' % self.on_python_v)
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('Difficult Rocket need Python vision 3+ but not %s ' % self.on_python_v)

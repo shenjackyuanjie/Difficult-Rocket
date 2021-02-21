@@ -4,7 +4,9 @@ mail: 3695888@qq.com
 """
 
 import os
+import time
 import pyglet
+import random
 from pyglet import image
 import multiprocessing as mp
 
@@ -19,7 +21,7 @@ except (ModuleNotFoundError, ImportError, ImportWarning):
 
 
 class client(mp.Process):
-    def __init__(self, logger, dev_dic=None, dev_list=None, net_mode='local'):
+    def __init__(self, logger, dev_dic=None, dev_list=None, language='zh-cn', net_mode='local'):
         mp.Process.__init__(self)
         # logging
         self.logger = logger
@@ -36,6 +38,7 @@ class client(mp.Process):
         self.window = window(logger=logger,
                              dev_dic=dev_dic,
                              dev_list=dev_list,
+                             language=language,
                              net_mode=net_mode,
                              width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
@@ -53,7 +56,7 @@ class client(mp.Process):
 
 class window(pyglet.window.Window):
 
-    def __init__(self, logger, dev_dic=None, dev_list=None, net_mode='local', *args, **kwargs):
+    def __init__(self, logger, dev_dic=None, dev_list=None, language='zh-cn', net_mode='local', *args, **kwargs):
         super(window, self).__init__(*args, **kwargs)
         """
         :param dev_list: 共享内存
@@ -67,11 +70,12 @@ class window(pyglet.window.Window):
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # value
-        self.process_id = 'Client'
-        self.process_name = 'Client process'
+        self.FPS = 60
+        self.SPF = 1.0 / self.FPS
         self.view = 'space'
         self.net_mode = net_mode
         # configs
+        self.lang = tools.config('sys_value/lang/%s.json5' % language)
         self.view = tools.config('configs/view.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
         self.part_list = tools.config('sys_value/parts.json5')
@@ -88,6 +92,7 @@ class window(pyglet.window.Window):
         self.textures = {}
         # setup
         self.setup()
+        pyglet.clock.schedule_interval(self.update(), self.SPF)
 
     def setup(self):
         # net_mode
@@ -102,16 +107,23 @@ class window(pyglet.window.Window):
             self.textures['part'][part] = part_image
 
         # tests
-        self.info_label = pyglet.text.Label(text='test',
-                                            x=150, y=100,
+        self.info_label = pyglet.text.Label(text='test %s' % pyglet.clock.get_fps(),
+                                            x=10, y=self.height - 10,
+                                            anchor_x='left', anchor_y='top',
                                             batch=self.label_batch)
 
     # draws
 
+    def update(self):
+        self.info_label.x = random.randint(100, 500)
+        self.info_label.y = random.randint(100, 500)
+
     def on_draw(self):
         self.draw_batch()
+        print(time.time())
 
     def draw_batch(self):
+        self.clear()
         self.part_batch.draw()
         self.runtime_batch.draw()
         self.label_batch.draw()
