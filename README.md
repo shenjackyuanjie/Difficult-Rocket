@@ -2,7 +2,7 @@
 
 ### Version
 
-0.0 (developing)
+0.1 (developing and have no DEMO)
 
 中文README请移步 [这里](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
 

@@ -5,6 +5,9 @@
   // bool
   'caption': 'Simple Rocket {version}',
   // {version} -> version of SR
+  'caption_option': {
+    '{version}': '0.1'
+  },
   'resizable': 'true',
   // bool
   'visible': 'true',

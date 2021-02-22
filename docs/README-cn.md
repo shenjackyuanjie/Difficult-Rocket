@@ -2,7 +2,7 @@
 
 ## 版本
 
-0.0 (开发.ing)
+0.1 (开发.ing 没有DEMO(除非你能管一个乌漆嘛黑的页面+三个东西叫DEMO))
 
 For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 

@@ -38,6 +38,8 @@ class client(mp.Process):
         self.view = 'space'
         self.net_mode = net_mode
         self.window_config = tools.config('sys_value/window.json5')
+        self.caption = self.window_config['caption']
+        self.caption = configs.name_handler(self.caption, self.window_config['caption_option'])
         self.window = window(logger=logger,
                              dev_dic=dev_dic,
                              dev_list=dev_list,
@@ -46,7 +48,8 @@ class client(mp.Process):
                              width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
                              fullscreen=tools.c_b(self.window_config['full_screen']),
-                             caption=str(self.window_config['caption']),
+                             caption=self.caption,
+                             resizable=tools.c_b(self.window_config['resizable']),
                              visible=tools.c_b(self.window_config['visible']))
         self.log_config()
 
