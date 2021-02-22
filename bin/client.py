@@ -74,6 +74,9 @@ class window(pyglet.window.Window):
         self.SPF = 1.0 / self.FPS
         self.view = 'space'
         self.net_mode = net_mode
+        # FPS
+        self.max_fps = self.FPS
+        self.min_fps = self.FPS
         # configs
         self.lang = tools.config('sys_value/lang/%s.json5' % language)
         self.view = tools.config('configs/view.json5')
@@ -92,7 +95,7 @@ class window(pyglet.window.Window):
         self.textures = {}
         # setup
         self.setup()
-        pyglet.clock.schedule_interval(self.update(), self.SPF)
+        pyglet.clock.schedule_interval(self.update, self.SPF)
 
     def setup(self):
         # net_mode
@@ -114,13 +117,18 @@ class window(pyglet.window.Window):
 
     # draws
 
-    def update(self):
-        self.info_label.x = random.randint(100, 500)
-        self.info_label.y = random.randint(100, 500)
+    def update(self, ree):
+        now_FPS = pyglet.clock.get_fps()
+        if now_FPS > self.max_fps:
+            self.max_fps = now_FPS
+        elif now_FPS < self.min_fps:
+            self.min_fps = now_FPS
+        self.info_label.text = 'now FPS: %03d \n max FPS: %02d \n min FPS: %02d' % (now_FPS, self.max_fps, self.min_fps)
+        self.info_label.anchor_x = 'left'
+        self.info_label.anchor_y = 'top'
 
     def on_draw(self):
         self.draw_batch()
-        print(time.time())
 
     def draw_batch(self):
         self.clear()
