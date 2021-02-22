@@ -27,6 +27,7 @@ class server(mp.Process):
         # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
+        self.logger.info('%s: %s%s' % (self.lang['os.pid_is1'], self.process_pid, self.lang['os.pid_is2']))
         self.logger.info('%s' % self.lang['setup.done'])
 
     def run(self):

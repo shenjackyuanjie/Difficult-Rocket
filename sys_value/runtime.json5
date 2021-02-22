@@ -1,5 +1,6 @@
 {
   'trash_can': 'Editor/TrashCan.png',
   'add_part': 'Editor/ToolbarIconAddPart.png',
+  'to_menu': 'Editor/ToolbarIconMenu.png',
   'part_button': 'Editor/PartButton.png'
 }

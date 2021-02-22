@@ -164,6 +164,7 @@ class window(pyglet.window.Window):
     def build_draw(self):
         self.textures['runtime']['trash_can'].blit(x=self.width - 90, y=self.height - 90)
         self.textures['runtime']['add_part'].blit(x=10, y=10)
+        # //todo 把所有要素都加进来+整个设置图标+布局
 
     def space_draw(self):
         # render parts
