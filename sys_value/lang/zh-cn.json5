@@ -11,9 +11,13 @@
     'game_start.at': '游戏主线程开始于：'
   },
   'client': {
-    'setup.done': '客户端载入完成'
+    'setup.done': '客户端载入完成',
+    'os.pid_is1': '客户端正在以pid',
+    'os.pid_is2': '运行'
   },
   'server': {
-    'setup.done': '服务端载入完成'
+    'setup.done': '服务端载入完成',
+    'os.pid_is1': '服务端正在以pid',
+    'os.pid_is2': '运行'
   }
 }

@@ -7,7 +7,8 @@ import os
 import time
 import pyglet
 import random
-from pyglet import image
+from pyglet.window import key
+from pyglet.window import mouse
 import multiprocessing as mp
 
 try:
@@ -28,6 +29,8 @@ class client(mp.Process):
         # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
+        # lang
+        self.lang = tools.config('sys_value/lang/%s.json5' % language, 'client')
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
@@ -48,7 +51,7 @@ class client(mp.Process):
         self.log_config()
 
     def log_config(self):
-        self.logger.info('client is running on pid : %s' % self.process_pid)
+        self.logger.info('%s: %s%s' % (self.lang['os.pid_is1'], self.process_pid, self.lang['os.pid_is2']))
 
     def run(self) -> None:
         pyglet.app.run()
@@ -84,6 +87,8 @@ class window(pyglet.window.Window):
         self.view = tools.config('configs/view.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
         self.part_list = tools.config('sys_value/parts.json5')
+        pyglet.resource.path = ['textures']
+        pyglet.resource.reindex()
         # dic
         self.ships = {}  # all ship(part)
         self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
@@ -103,16 +108,20 @@ class window(pyglet.window.Window):
         # net_mode
         if self.net_mode == 'local':
             pass
-        # parts
+        # parts textures
         self.textures['part'] = {}
         parts = tools.config('sys_value/parts.json5')
         for part in parts:
             path = parts[part][2][0]
-            part_image = image.load('textures/' + path)
+            part_image = pyglet.resource.image(path)
             self.textures['part'][part] = part_image
-        pyglet.resource.path = ['textures']
-        pyglet.resource.reindex()
-        self.trash_can = pyglet.resource.image('Editor/TrashCan.png')
+        # runtimes textures
+        self.textures['runtime'] = {}
+        runtimes = tools.config('sys_value/runtime.json5')
+        for runtime in runtimes:
+            path = runtimes[runtime]
+            runtime_image = pyglet.resource.image(path)
+            self.textures['runtime'][runtime] = runtime_image
 
         # tests
         self.info_label = pyglet.text.Label(text='test %s' % pyglet.clock.get_fps(),
@@ -150,7 +159,8 @@ class window(pyglet.window.Window):
         self.label_batch.draw()
 
     def build_draw(self):
-        self.trash_can.blit(x=self.width - 90, y=self.height - 90)
+        self.textures['runtime']['trash_can'].blit(x=self.width - 90, y=self.height - 90)
+        self.textures['runtime']['add_part'].blit(x=10, y=10)
 
     def space_draw(self):
         # render parts
@@ -172,10 +182,18 @@ class window(pyglet.window.Window):
         pass
 
     def on_mouse_press(self, x, y, button, modifiers):
-        pass
+        print(x, y, button, modifiers)
+        if button == mouse.LEFT:
+            self.logger.info('左键！')
+        elif button == mouse.RIGHT:
+            self.logger.info('右键！')
 
     def on_key_press(self, symbol, modifiers):
-        pass
+        print(symbol, modifiers)
+        if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |
+                                                       key.MOD_CAPSLOCK |
+                                                       key.MOD_SCROLLLOCK)):
+            self.dispatch_event('on_close')
 
     def on_key_release(self, symbol, modifiers):
         pass
