@@ -212,7 +212,7 @@ def config(file_name, stack=None):
         try:
             xml_load = parse(file_name)
         except FileNotFoundError as exp:
-            log = 'no config json(5) file \n file name : %s \n stack : %s' % (
+            log = 'no config xml file \n file name : %s \n stack : %s' % (
                 file_name, stack)
             tools_logger.exception(log)
             raise FileNotFoundError(log)

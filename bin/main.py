@@ -39,8 +39,7 @@ class Game:
         # lang_config
         self.language = tools.config('sys_value/basic_config.json5')
         self.language = self.language['language']
-        self.lang = tools.config('sys_value/lang/%s.json5' % self.language)
-        self.lang = self.lang['main']
+        self.lang = tools.config('sys_value/lang/%s.json5' % self.language, 'main')
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
         self.log_filename = configs.name_handler(self.log_config['filename']['main'],

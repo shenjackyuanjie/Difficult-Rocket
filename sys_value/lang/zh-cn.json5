@@ -9,5 +9,11 @@
     'logger.logfile_fmt': '日志文件记录格式：',
     'logger.logfile_datefmt': '日志文件日期格式：',
     'game_start.at': '游戏主线程开始于：'
+  },
+  'client': {
+    'setup.done': '客户端载入完成'
+  },
+  'server': {
+    'setup.done': '服务端载入完成'
   }
 }

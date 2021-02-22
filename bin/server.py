@@ -1,9 +1,15 @@
-'''
+"""
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-'''
+"""
 
+import os
 import multiprocessing as mp
+
+try:
+    from bin import tools
+except (ModuleNotFoundError, ImportError, ImportWarning):
+    import tools
 
 
 class server(mp.Process):
@@ -15,10 +21,13 @@ class server(mp.Process):
         # value
         self.process_id = 'Server'
         self.process_name = 'server process'
+        self.process_pid = os.getpid()
+        # lang
+        self.lang = tools.config('sys_value/lang/%s.json5' % language, 'server')
         # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
-        self.logger.info('server setup done!')
+        self.logger.info('%s' % self.lang['setup.done'])
 
     def run(self):
         pass

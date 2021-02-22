@@ -75,10 +75,12 @@ class window(pyglet.window.Window):
         self.view = 'space'
         self.net_mode = net_mode
         # FPS
-        self.max_fps = self.FPS
-        self.min_fps = self.FPS
+        self.max_fps = [self.FPS, time.time()]
+        self.min_fps = [self.FPS, time.time()]
+        self.fps_wait = 5
+        # lang
+        self.lang = tools.config('sys_value/lang/%s.json5' % language, 'client')
         # configs
-        self.lang = tools.config('sys_value/lang/%s.json5' % language)
         self.view = tools.config('configs/view.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
         self.part_list = tools.config('sys_value/parts.json5')
@@ -91,7 +93,7 @@ class window(pyglet.window.Window):
         self.label_batch = pyglet.graphics.Batch()
         self.runtime_batch = pyglet.graphics.Batch()
         # window
-        self.logger.info('client setup done!')
+        self.logger.info('%s' % self.lang['setup.done'])
         self.textures = {}
         # setup
         self.setup()
@@ -108,6 +110,9 @@ class window(pyglet.window.Window):
             path = parts[part][2][0]
             part_image = image.load('textures/' + path)
             self.textures['part'][part] = part_image
+        pyglet.resource.path = ['textures']
+        pyglet.resource.reindex()
+        self.trash_can = pyglet.resource.image('Editor/TrashCan.png')
 
         # tests
         self.info_label = pyglet.text.Label(text='test %s' % pyglet.clock.get_fps(),
@@ -118,26 +123,34 @@ class window(pyglet.window.Window):
     # draws
 
     def update(self, ree):
+        self.FPS_update()
+
+    def FPS_update(self):
         now_FPS = pyglet.clock.get_fps()
-        if now_FPS > self.max_fps:
-            self.max_fps = now_FPS
-        elif now_FPS < self.min_fps:
-            self.min_fps = now_FPS
-        self.info_label.text = 'now FPS: %03d \n max FPS: %02d \n min FPS: %02d' % (now_FPS, self.max_fps, self.min_fps)
-        self.info_label.anchor_x = 'left'
-        self.info_label.anchor_y = 'top'
+        if now_FPS > self.max_fps[0]:
+            self.max_fps = [now_FPS, time.time()]
+        elif now_FPS < self.min_fps[0]:
+            self.min_fps = [now_FPS, time.time()]
+        else:
+            if (time.time() - self.max_fps[1]) > self.fps_wait:
+                self.max_fps = [self.FPS, time.time()]
+            elif (time.time() - self.min_fps[1]) > self.fps_wait:
+                self.min_fps = [self.FPS, time.time()]
+        self.info_label.text = 'now FPS: %03d max FPS: %02d  min FPS: %02d' % (
+            now_FPS, self.max_fps[0], self.min_fps[0])
 
     def on_draw(self):
+        self.clear()
+        self.build_draw()
         self.draw_batch()
 
     def draw_batch(self):
-        self.clear()
         self.part_batch.draw()
         self.runtime_batch.draw()
         self.label_batch.draw()
 
     def build_draw(self):
-        pass
+        self.trash_can.blit(x=self.width - 90, y=self.height - 90)
 
     def space_draw(self):
         # render parts

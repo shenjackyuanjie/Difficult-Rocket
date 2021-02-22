@@ -39,7 +39,7 @@ def cut_and_save(config, save_path):
         print(exp)
     for config_ in configs['images']:
         config__ = configs['images'][config_]
-        save_name = 'textures/' + save_path + config_
+        save_name = 'textures/%s/%s' % (save_path, config_)
         x, y, w, h, t = config__[0], config__[1], config__[2], config__[3], config__[4]
         crop_box = [x, y, x + w, y + h]
         pic_ = pic.crop(crop_box)
@@ -53,3 +53,4 @@ def All_in_one_cut(xml, path):
     json_name = xml[:-4] + '.json5'
     rewrite_config(xml, json_name)
     cut_and_save(json_name, path)
+
