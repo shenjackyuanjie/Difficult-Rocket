@@ -93,6 +93,7 @@ class window(pyglet.window.Window):
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
         # dic
+        self.button_hitbox = {}
         self.ships = {}  # all ship(part)
         self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
         # list
@@ -108,6 +109,9 @@ class window(pyglet.window.Window):
         pyglet.clock.schedule_interval(self.update, self.SPF)
 
     def setup(self):
+        # values
+        self.zoom = -1
+        self.add_part = -1
         # net_mode
         if self.net_mode == 'local':
             pass
@@ -121,12 +125,19 @@ class window(pyglet.window.Window):
         # runtimes textures
         self.textures['runtime'] = {}
         runtimes = tools.config('sys_value/runtime.json5')
-        for runtime in runtimes:
-            path = runtimes[runtime]
+        for runtime in runtimes['textures']:
+            path = runtimes['textures'][runtime]
             runtime_image = pyglet.resource.image(path)
             self.textures['runtime'][runtime] = runtime_image
+        for runtime in runtimes['button']:
+            path = runtimes['button'][runtime]
+            runtime_image = pyglet.resource.image(path)
+            runtime_sprite = pyglet.sprite.Sprite(img=runtime_image, batch=self.runtime_batch, x=self.width + 1,
+                                                  y=self.height + 1)
+            self.textures['runtime'][runtime] = runtime_image
+            self.textures['runtime'][runtime + '_sprite'] = runtime_sprite
 
-        # tests
+        # info_label
         self.info_label = pyglet.text.Label(text='test %s' % pyglet.clock.get_fps(),
                                             x=10, y=self.height - 10,
                                             anchor_x='left', anchor_y='top',
@@ -163,7 +174,33 @@ class window(pyglet.window.Window):
 
     def build_draw(self):
         self.textures['runtime']['trash_can'].blit(x=self.width - 90, y=self.height - 90)
-        self.textures['runtime']['add_part'].blit(x=10, y=10)
+        self.textures['runtime']['trash_can'].blit(x=self.width - 90, y=self.height - 90)
+        # button tool bar
+        # start from 20 20
+        # between 30
+        # size 50*50
+        tool_y = 25
+        back = 0
+        while back < self.width:
+            self.textures['runtime']['toolbar_light'].blit(x=back, y=0)
+            back += self.textures['runtime']['toolbar_light'].width
+        self.textures['runtime']['to_menu_sprite'].x = 20
+        self.textures['runtime']['to_menu_sprite'].y = tool_y
+        self.textures['runtime']['add_part_sprite'].x = 100
+        self.textures['runtime']['add_part_sprite'].y = tool_y
+        self.textures['runtime']['stage_sprite'].x = 180
+        self.textures['runtime']['stage_sprite'].y = tool_y
+        self.textures['runtime']['zoom_sprite'].x = 260
+        self.textures['runtime']['zoom_sprite'].y = tool_y
+        if self.zoom != -1:
+            self.textures['runtime']['zoom_in_sprite'].x = 260 - 40
+            self.textures['runtime']['zoom_in_sprite'].y = tool_y + 25 + 50
+            self.textures['runtime']['zoom_out_sprite'].x = 260 + 40
+            self.textures['runtime']['zoom_out_sprite'].y = tool_y + 25 + 50
+        else:
+            self.textures['runtime']['zoom_in_sprite'].x = self.width + 1
+            self.textures['runtime']['zoom_out_sprite'].x = self.width + 1
+
         # //todo 把所有要素都加进来+整个设置图标+布局
 
     def space_draw(self):
@@ -189,6 +226,7 @@ class window(pyglet.window.Window):
         print(x, y, button, modifiers)
         if button == mouse.LEFT:
             self.logger.info('左键！')
+            self.zoom *= -1
         elif button == mouse.RIGHT:
             self.logger.info('右键！')
 
