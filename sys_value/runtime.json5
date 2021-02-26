@@ -1,10 +1,10 @@
 {
   'textures': {
     'toolbar_dark': 'Editor/ToolbarDark.png',
-    'toolbar_light': 'Editor/ToolbarLight.png'
+    'toolbar_light': 'Editor/ToolbarLight.png',
+    'trash_can': 'Editor/TrashCan.png'
   },
   'button': {
-    'trash_can': 'Editor/TrashCan.png',
     'rotate': 'Editor/RotateButton.png',
     'add_part': 'Editor/ToolbarIconAddPart.png',
     'to_menu': 'Editor/ToolbarIconMenu.png',

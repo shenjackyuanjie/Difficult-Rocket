@@ -94,6 +94,7 @@ class window(pyglet.window.Window):
         pyglet.resource.reindex()
         # dic
         self.button_hitbox = {}
+        self.button_show = {}
         self.ships = {}  # all ship(part)
         self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
         # list
@@ -111,7 +112,6 @@ class window(pyglet.window.Window):
     def setup(self):
         # values
         self.zoom = -1
-        self.add_part = -1
         # net_mode
         if self.net_mode == 'local':
             pass
@@ -125,17 +125,21 @@ class window(pyglet.window.Window):
         # runtimes textures
         self.textures['runtime'] = {}
         runtimes = tools.config('sys_value/runtime.json5')
+        # load textures
         for runtime in runtimes['textures']:
             path = runtimes['textures'][runtime]
             runtime_image = pyglet.resource.image(path)
             self.textures['runtime'][runtime] = runtime_image
+        # load button's textures
         for runtime in runtimes['button']:
             path = runtimes['button'][runtime]
             runtime_image = pyglet.resource.image(path)
             runtime_sprite = pyglet.sprite.Sprite(img=runtime_image, batch=self.runtime_batch, x=self.width + 1,
                                                   y=self.height + 1)
-            self.textures['runtime'][runtime] = runtime_image
-            self.textures['runtime'][runtime + '_sprite'] = runtime_sprite
+            # self.textures['runtime'][runtime] = runtime_image
+            self.textures['runtime'][runtime] = runtime_sprite
+            self.button_hitbox[runtime] = [runtime_image.width, runtime_image.height]
+            self.button_show[runtime] = -1
 
         # info_label
         self.info_label = pyglet.text.Label(text='test %s' % pyglet.clock.get_fps(),
@@ -147,6 +151,7 @@ class window(pyglet.window.Window):
 
     def update(self, ree):
         self.FPS_update()
+        self.hit_box_update()
 
     def FPS_update(self):
         now_FPS = pyglet.clock.get_fps()
@@ -161,6 +166,13 @@ class window(pyglet.window.Window):
                 self.min_fps = [self.FPS, time.time()]
         self.info_label.text = 'now FPS: %03d max FPS: %02d  min FPS: %02d' % (
             now_FPS, self.max_fps[0], self.min_fps[0])
+
+    def hit_box_update(self):
+        for hit_box in self.button_hitbox:
+            box_ = self.button_hitbox[hit_box]
+            button = self.textures['runtime'][hit_box]
+            box = [button.x, button.y, button.x + button.width, button.y + button.height]
+            self.button_hitbox[hit_box] = box
 
     def on_draw(self):
         self.clear()
@@ -184,27 +196,28 @@ class window(pyglet.window.Window):
         while back < self.width:
             self.textures['runtime']['toolbar_light'].blit(x=back, y=0)
             back += self.textures['runtime']['toolbar_light'].width
-        self.textures['runtime']['to_menu_sprite'].x = 20
-        self.textures['runtime']['to_menu_sprite'].y = tool_y
-        self.textures['runtime']['add_part_sprite'].x = 100
-        self.textures['runtime']['add_part_sprite'].y = tool_y
-        self.textures['runtime']['stage_sprite'].x = 180
-        self.textures['runtime']['stage_sprite'].y = tool_y
-        self.textures['runtime']['zoom_sprite'].x = 260
-        self.textures['runtime']['zoom_sprite'].y = tool_y
-        if self.zoom != -1:
-            self.textures['runtime']['zoom_in_sprite'].x = 260 - 40
-            self.textures['runtime']['zoom_in_sprite'].y = tool_y + 25 + 50
-            self.textures['runtime']['zoom_out_sprite'].x = 260 + 40
-            self.textures['runtime']['zoom_out_sprite'].y = tool_y + 25 + 50
+        self.textures['runtime']['to_menu'].x = 20
+        self.textures['runtime']['to_menu'].y = tool_y
+        self.textures['runtime']['add_part'].x = 100
+        self.textures['runtime']['add_part'].y = tool_y
+        self.textures['runtime']['stage'].x = 180
+        self.textures['runtime']['stage'].y = tool_y
+        self.textures['runtime']['zoom'].x = 260
+        self.textures['runtime']['zoom'].y = tool_y
+        if self.button_show['zoom'] != -1:
+            self.textures['runtime']['zoom_in'].x = 260 - 40
+            self.textures['runtime']['zoom_in'].y = tool_y + 25 + 50
+            self.textures['runtime']['zoom_out'].x = 260 + 40
+            self.textures['runtime']['zoom_out'].y = tool_y + 25 + 50
         else:
-            self.textures['runtime']['zoom_in_sprite'].x = self.width + 1
-            self.textures['runtime']['zoom_out_sprite'].x = self.width + 1
+            self.textures['runtime']['zoom_in'].x = self.width + 1
+            self.textures['runtime']['zoom_out'].x = self.width + 1
 
         # //todo 把所有要素都加进来+整个设置图标+布局
 
     def space_draw(self):
         # render parts
+
         for ship in self.ships:
             # get ship poi
             ship_poi = ship['brain'][3]
@@ -225,10 +238,15 @@ class window(pyglet.window.Window):
     def on_mouse_press(self, x, y, button, modifiers):
         print(x, y, button, modifiers)
         if button == mouse.LEFT:
-            self.logger.info('左键！')
-            self.zoom *= -1
+            self.logger.info('左键！ 在 x:%s y:%s' % (x, y))
+            for hit_box in self.button_hitbox:
+                box = self.button_hitbox[hit_box]
+                if (box[0] <= x <= box[2]) and (box[1] <= y <= box[3]):
+                    self.button_show[hit_box] *= -1
+                    self.logger.info('%s 被左键点击 显示状态为：%s' % (hit_box, self.button_show[hit_box]))
+                    break
         elif button == mouse.RIGHT:
-            self.logger.info('右键！')
+            self.logger.info('右键！ 在 x:%s y:%s' % (x, y))
 
     def on_key_press(self, symbol, modifiers):
         print(symbol, modifiers)
