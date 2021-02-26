@@ -13,7 +13,9 @@
   'client': {
     'setup.done': 'Client load complete ',
     'os.pid_is1': 'Client is using PID :',
-    'os.pid_is2': 'To Run'
+    'os.pid_is2': 'To Run',
+    'button.been_press': '按钮被按下，目前状态为：'
+    //todo 翻译！
   },
   'server': {
     'setup.done': 'server load complete ',

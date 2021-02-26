@@ -94,7 +94,7 @@ class window(pyglet.window.Window):
         pyglet.resource.reindex()
         # dic
         self.button_hitbox = {}
-        self.button_show = {}
+        self.button_toggled = {}
         self.ships = {}  # all ship(part)
         self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
         # list
@@ -139,7 +139,7 @@ class window(pyglet.window.Window):
             # self.textures['runtime'][runtime] = runtime_image
             self.textures['runtime'][runtime] = runtime_sprite
             self.button_hitbox[runtime] = [runtime_image.width, runtime_image.height]
-            self.button_show[runtime] = -1
+            self.button_toggled[runtime] = -1
 
         # info_label
         self.info_label = pyglet.text.Label(text='test %s' % pyglet.clock.get_fps(),
@@ -204,7 +204,7 @@ class window(pyglet.window.Window):
         self.textures['runtime']['stage'].y = tool_y
         self.textures['runtime']['zoom'].x = 260
         self.textures['runtime']['zoom'].y = tool_y
-        if self.button_show['zoom'] != -1:
+        if self.button_toggled['zoom'] != -1:
             self.textures['runtime']['zoom_in'].x = 260 - 40
             self.textures['runtime']['zoom_in'].y = tool_y + 25 + 50
             self.textures['runtime']['zoom_out'].x = 260 + 40
@@ -242,8 +242,9 @@ class window(pyglet.window.Window):
             for hit_box in self.button_hitbox:
                 box = self.button_hitbox[hit_box]
                 if (box[0] <= x <= box[2]) and (box[1] <= y <= box[3]):
-                    self.button_show[hit_box] *= -1
-                    self.logger.info('%s 被左键点击 显示状态为：%s' % (hit_box, self.button_show[hit_box]))
+                    self.button_toggled[hit_box] *= -1
+                    self.logger.debug(
+                        '%s %s %s' % (hit_box, self.lang['button.been_press'], self.button_toggled[hit_box]))
                     break
         elif button == mouse.RIGHT:
             self.logger.info('右键！ 在 x:%s y:%s' % (x, y))

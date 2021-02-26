@@ -13,7 +13,8 @@
   'client': {
     'setup.done': '客户端载入完成',
     'os.pid_is1': '客户端正在以pid',
-    'os.pid_is2': '运行'
+    'os.pid_is2': '运行',
+    'button.been_press': '按钮被按下，目前状态为：'
   },
   'server': {
     'setup.done': '服务端载入完成',
