@@ -1,25 +1,27 @@
 {
   'main': {
-    'lang. Language ': 'English (EN-US) ',
+    'version.now_on': 'Difficult Rocket is running on Python Vision',
+    'version.need3+': 'Difficult Rocket need Python vision 3.0+',
+    '': '',
+    'lang.language': 'English (EN-US)',
     'logger.language': 'Logging language is: ',
     'logger.created': 'Log handler created',
     'logger.main_done': 'Main log handler created ',
-    'logger.logfile_name': 'Log file name: : ',
-    'logger.logfile_level': 'Log file record level: ',
-    'logger.logfile_fmt': 'Log file record format: ',
-    'logger.logfile_datefmt': 'Log file date format: ',
+    'logger.logfile_name': 'Log file name :',
+    'logger.logfile_level': 'Log file record level :',
+    'logger.logfile_fmt': 'Log file record format :',
+    'logger.logfile_datefmt': 'Log file date format :',
     'game_start.at': 'The main thread of the game starts with:'
   },
   'client': {
     'setup.done': 'Client load complete ',
-    'os.pid_is1': 'Client is using PID :',
-    'os.pid_is2': 'To Run',
-    'button.been_press': '按钮被按下，目前状态为：'
-    //todo 翻译！
+    'os.pid_is1': 'Client is using PID',
+    'os.pid_is2': ' To Run',
+    'button.been_press': 'The button is pressed, the current state of the button is:',
   },
   'server': {
     'setup.done': 'server load complete ',
-    'os.pid_is1': 'server is using pid',
+    'os.pid_is1': 'server is using PID',
     'os.pid_is2': 'To Run'
   }
 }

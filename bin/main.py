@@ -8,7 +8,6 @@ from multiprocessing import Manager as share
 
 import sys
 import time
-import pyglet
 import logging
 
 try:
@@ -28,9 +27,7 @@ class Game:
     def __init__(self):
         # basic config
         self.on_python_v_info = sys.version_info
-        self.on_python_v = str('%d.%d.%d' % (self.on_python_v_info[0],
-                                             self.on_python_v_info[1],
-                                             self.on_python_v_info[2]))
+        self.on_python_v = sys.version.split(' ')[0]
         self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
 
         # share memory
@@ -49,7 +46,7 @@ class Game:
         self.root_logger_stream_handler.setLevel(self.log_config['level'])
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_stream_handler.setLevel(tools.log_level(self.log_config['level']))
-        self.root_logger_file_handler = logging.FileHandler('logs/' + self.log_filename)
+        self.root_logger_file_handler = logging.FileHandler('logs/' + self.log_filename, encoding='utf-8')
         self.root_logger_file_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_file_handler.setLevel(tools.log_level(self.log_config['level']))
         # root logger setup
@@ -67,7 +64,8 @@ class Game:
         self.python_version_check()
         # client and server
         self.client = client.client(self.client_logger, self.dicts, self.lists, self.language, net_mode='local')
-        self.server = server.server(self.lists, self.dicts, self.server_logger, net_mode='local')
+        self.server = server.server(self.lists, self.dicts, self.server_logger, language=self.language,
+                                    net_mode='local')
 
     def log_configs(self):
         self.main_logger.info('%s %s' % (self.lang['logger.language'], self.lang['lang.language']))
@@ -78,13 +76,13 @@ class Game:
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_datefmt'], self.log_config['date_fmt']))
 
     def python_version_check(self):
-        self.main_logger.info('Difficult Rocket is running on Python Vision %s' % self.on_python_v)
+        self.main_logger.info('%s %s' % (self.lang['version.now_on'], self.on_python_v))
         if self.on_python_v_info[0] == 2:
-            self.main_logger.critical('Difficult Rocket need Python vision 3+ but not %s ' % self.on_python_v)
-            raise Exception('Difficult Rocket need python vision 3+ but not %s ' % self.on_python_v)
+            self.main_logger.critical('%s' % self.lang['version.need3+'])
+            raise Exception('%s' % self.lang['version.need3+'])
         elif self.on_python_v_info[1] <= 7:
-            self.main_logger.warning('Difficult is develop in Python version 3.8 \n\
-                                      and you are running on %s may cause error' % self.on_python_v)
+            warning = configs.name_handler(self.lang['version.best3.8+'])
+            self.main_logger.warning(warning)
 
     def start(self):
         # start

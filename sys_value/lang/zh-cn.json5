@@ -1,5 +1,8 @@
 {
   'main': {
+    'version.now_on': '困难火箭的运行Python环境为',
+    'version.need3+': '困难火箭需要Python3.0+的环境',
+    'version.best3.8+': '困难火箭是在Python3.8的环境下编写的，目前正在运行在Python{py_v}的环境下，可能产生BUG',
     'lang.language': '简 体 中 文 （zh-cn）',
     'logger.language': '日志记录语言为：',
     'logger.created': '日志处理器创建完成',

@@ -5,6 +5,7 @@ mail: 3695888@qq.com
 
 # import re
 import os
+import sys
 import time
 import json5
 import decimal
@@ -146,5 +147,7 @@ def name_handler(name: str, configs=None) -> str:
             replace = time.time()
         elif need_replace == '{dir}':
             replace = os.getcwd()
+        elif need_replace == '{py_v}':
+            replace = sys.version.split(' ')[0]
         name = name.replace(need_replace, replace)
     return name

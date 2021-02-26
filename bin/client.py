@@ -6,7 +6,6 @@ mail: 3695888@qq.com
 import os
 import time
 import pyglet
-import random
 from pyglet.window import key
 from pyglet.window import mouse
 import multiprocessing as mp
@@ -166,6 +165,10 @@ class window(pyglet.window.Window):
                 self.min_fps = [self.FPS, time.time()]
         self.info_label.text = 'now FPS: %03d max FPS: %02d  min FPS: %02d' % (
             now_FPS, self.max_fps[0], self.min_fps[0])
+        self.info_label.anchor_x = 'left'
+        self.info_label.anchor_y = 'top'
+        self.info_label.x = 10
+        self.info_label.y = self.height - 10
 
     def hit_box_update(self):
         for hit_box in self.button_hitbox:
@@ -210,6 +213,8 @@ class window(pyglet.window.Window):
             self.textures['runtime']['zoom_out'].x = 260 + 40
             self.textures['runtime']['zoom_out'].y = tool_y + 25 + 50
         else:
+            self.button_toggled['zoom_in'] = -1
+            self.button_toggled['zoom_out'] = -1
             self.textures['runtime']['zoom_in'].x = self.width + 1
             self.textures['runtime']['zoom_out'].x = self.width + 1
 
@@ -236,21 +241,20 @@ class window(pyglet.window.Window):
         pass
 
     def on_mouse_press(self, x, y, button, modifiers):
-        print(x, y, button, modifiers)
         if button == mouse.LEFT:
-            self.logger.info('左键！ 在 x:%s y:%s' % (x, y))
+            self.logger.debug('左键！ 在 x:%s y:%s' % (x, y))
             for hit_box in self.button_hitbox:
                 box = self.button_hitbox[hit_box]
                 if (box[0] <= x <= box[2]) and (box[1] <= y <= box[3]):
                     self.button_toggled[hit_box] *= -1
-                    self.logger.debug(
-                        '%s %s %s' % (hit_box, self.lang['button.been_press'], self.button_toggled[hit_box]))
+                    self.logger.debug('%s %s %s' % (hit_box,
+                                                    self.lang['button.been_press'],
+                                                    self.button_toggled[hit_box]))
                     break
         elif button == mouse.RIGHT:
-            self.logger.info('右键！ 在 x:%s y:%s' % (x, y))
+            self.logger.debug('右键！ 在 x:%s y:%s' % (x, y))
 
     def on_key_press(self, symbol, modifiers):
-        print(symbol, modifiers)
         if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
