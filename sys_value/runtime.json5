@@ -8,10 +8,17 @@
     'rotate': 'Editor/RotateButton.png',
     'add_part': 'Editor/ToolbarIconAddPart.png',
     'to_menu': 'Editor/ToolbarIconMenu.png',
-    'part_button': 'Editor/PartButton.png',
+    //    'part_button': 'Editor/PartButton.png',
     'stage': 'Editor/ToolbarIconStaging.png',
     'zoom': 'Editor/ToolbarIconZoom.png',
     'zoom_in': 'Editor/ToolbarIconZoomIn.png',
-    'zoom_out': 'Editor/ToolbarIconZoomOut.png'
-  },
+    'zoom_out': 'Editor/ToolbarIconZoomOut.png',
+    'play': 'Editor/ToolbarIconPlay.png',
+    'logic': {
+      'zoom': {
+        'zoom_in': 'child',
+        'zoom_out': 'child'
+      }
+    },
+  }
 }

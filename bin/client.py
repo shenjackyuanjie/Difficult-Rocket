@@ -131,6 +131,8 @@ class window(pyglet.window.Window):
             self.textures['runtime'][runtime] = runtime_image
         # load button's textures
         for runtime in runtimes['button']:
+            if runtime == 'logic':
+                continue
             path = runtimes['button'][runtime]
             runtime_image = pyglet.resource.image(path)
             runtime_sprite = pyglet.sprite.Sprite(img=runtime_image, batch=self.runtime_batch, x=self.width + 1,
@@ -206,6 +208,8 @@ class window(pyglet.window.Window):
         self.textures['runtime']['stage'].x = 180
         self.textures['runtime']['stage'].y = tool_y
         self.textures['runtime']['zoom'].x = 260
+        self.textures['runtime']['zoom'].y = tool_y
+        self.textures['runtime']['play'].x = 260
         self.textures['runtime']['zoom'].y = tool_y
         if self.button_toggled['zoom'] != -1:
             self.textures['runtime']['zoom_in'].x = 260 - 40
