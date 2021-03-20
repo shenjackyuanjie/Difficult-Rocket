@@ -43,8 +43,8 @@ None. Not even one!
 
 - pyglet : GUI
 - @小卡儿 : transfer chinese to English
-- @Rayawa : check mistake in README
-- @Billchyi : check mistake in REAMDE
+- [@Rayawa](https://github.com/Rayawa) : check mistake in README
+- [@Billchyi](https://github.com/Billchyi) : check mistake in REAMDE
 
 ## About License
 

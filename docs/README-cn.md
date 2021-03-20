@@ -43,8 +43,8 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 - pyglet : 图形界面
 - @小卡儿 : 翻译lang
-- @Rayawa : README矫正
-- @Billchyi : README矫正
+- [@Rayawa](https://github.com/Rayawa) : README矫正
+- [@Billchyi](https://github.com/Billchyi) : README矫正
 
 ## 关于分享协议
 
