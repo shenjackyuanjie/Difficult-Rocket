@@ -4,6 +4,7 @@ mail: 3695888@qq.com
 '''
 
 import re
+import math
 import json5
 import decimal
 import logging
@@ -50,10 +51,23 @@ def log_level(level):
     else:
         raise ValueError('Need a like level thing not anything else')
 
+# linear_algebra
 
-'''
+def C_R_P(position, degrees): # stand for calculation
+    """
+    very thanks for lenny from pyglet delvoper
+    this part of code is write by him
+    """
+    radians = degrees * (math.pi / 180)
+    cos = math.cos(radians)
+    sin = math.sin(radians)
+    rotated_pos = (position[0] * cos - position[1] * sin, position[0] * sin + position[1] * cos)
+    return rotated_pos
+
+
+"""
 Physics calculation
-'''
+"""
 
 
 def is_decimal(A: any) -> bool:
