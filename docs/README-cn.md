@@ -20,18 +20,18 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 环境需求 （测试过的/开发平台）
 
-- `开发平台1 Windows 10`
-  `Python 3.8.7`
-  `Windows10 x64`
-  `Pyglet 1.5.15`
-  `Json5 0.9.5`
-  `pillow 8.1.0`
-- `开发平台2 macOS Big Sur`
-  `Python 3.8.7`
-  `macOS Big Sur 11.2.1`
-  `Pyglet 1.5.15`
-  `Json5 0.9.5`
-  `pillow 8.1.2`
+- - `开发平台1 Windows 10`
+  - `Python 3.8.7`
+  - `Windows10 x64`
+  - `Pyglet 1.5.15`
+  - `Json5 0.9.5`
+  - `pillow 8.1.0`
+- - `开发平台2 macOS Big Sur`
+  - `Python 3.8.7`
+  - `macOS Big Sur 11.2.1`
+  - `Pyglet 1.5.15`
+  - `Json5 0.9.5`
+  - `pillow 8.1.2`
 
 ## 需要的Python模块
 
