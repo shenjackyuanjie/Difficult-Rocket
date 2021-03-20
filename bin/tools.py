@@ -56,6 +56,7 @@ def log_level(level):
 def C_R_P(position, degrees): # stand for calculation
     """
     very thanks for lenny from pyglet delvoper
+    https://github.com/LennyPhoenix
     this part of code is write by him
     """
     radians = degrees * (math.pi / 180)
