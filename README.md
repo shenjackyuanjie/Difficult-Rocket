@@ -2,7 +2,7 @@
 
 ### Version
 
-0.2 (developing and have no DEMO)
+0.2.1 (developing and have no DEMO)
 
 中文README请移步 [这里](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
 
@@ -18,19 +18,33 @@ None. Not even one!
 
 - server client separate (just like minecraft)
 
-## Environment (been tested)
+## Environment (been tested / develop on)
 
-- `Python 3.8.7`
+- `Develop platform 1 - Windows 10`
+  `Python 3.8.7`
   `Windows10 x64`
   `Pyglet 1.5.15`
   `Json5 0.9.5`
   `pillow 8.1.0`
+- `Develop platform 2 - macOS Big Sur`
+  `Python 3.8.7`
+  `macOS Big Sur 11.2.1`
+  `Pyglet 1.5.15`
+  `Json5 0.9.5`
+  `pillow 8.1.2`
 
 ## Required python modules
 
 - json5
 - pyglet
 - pillow
+
+## thanks to
+
+- pyglet : GUI
+- @小卡儿 : transfer chinese to English
+- @Rayawa : check mistake in README
+- @Billchyi : check mistake in REAMDE
 
 ## About License
 

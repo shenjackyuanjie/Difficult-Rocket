@@ -75,7 +75,7 @@ class window(pyglet.window.Window):
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # value
-        self.FPS = 60
+        self.FPS = int(tools.config('sys_value/window.json5')['fps'])
         self.SPF = 1.0 / self.FPS
         self.view = 'space'
         self.net_mode = net_mode
@@ -200,7 +200,7 @@ class window(pyglet.window.Window):
         back = 0
         while back < self.width:
             self.textures['runtime']['toolbar_light'].blit(x=back, y=0)
-            back += self.textures['runtime']['toolbar_light'].width
+            back += self.textures['runtime']['toolbar_light'].width - 1
         self.textures['runtime']['to_menu'].x = 20
         self.textures['runtime']['to_menu'].y = tool_y
         self.textures['runtime']['add_part'].x = 100
