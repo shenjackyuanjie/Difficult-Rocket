@@ -23,15 +23,15 @@ None. Not even one!
 - - `Develop platform 1 - Windows 10`
   - `Python 3.8.7`
   - `Windows10 x64`
-  `Pyglet 1.5.15`
-  `Json5 0.9.5`
-  `pillow 8.1.0`
-- `Develop platform 2 - macOS Big Sur`
-  `Python 3.8.7`
-  `macOS Big Sur 11.2.1`
-  `Pyglet 1.5.15`
-  `Json5 0.9.5`
-  `pillow 8.1.2`
+  - `Pyglet 1.5.15`
+  - `Json5 0.9.5`
+  - `pillow 8.1.0`
+- - `Develop platform 2 - macOS Big Sur`
+  - `Python 3.8.7`
+  - `macOS Big Sur 11.2.1`
+  - `Pyglet 1.5.15`
+  - `Json5 0.9.5`
+  - `pillow 8.1.2`
 
 ## Required python modules
 
