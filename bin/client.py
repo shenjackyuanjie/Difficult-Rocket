@@ -209,8 +209,8 @@ class window(pyglet.window.Window):
         self.textures['runtime']['stage'].y = tool_y
         self.textures['runtime']['zoom'].x = 260
         self.textures['runtime']['zoom'].y = tool_y
-        self.textures['runtime']['play'].x = 260
-        self.textures['runtime']['zoom'].y = tool_y
+        self.textures['runtime']['play'].x = self.width - 50 - 20
+        self.textures['runtime']['play'].y = tool_y
         if self.button_toggled['zoom'] != -1:
             self.textures['runtime']['zoom_in'].x = 260 - 40
             self.textures['runtime']['zoom_in'].y = tool_y + 25 + 50

@@ -6,20 +6,16 @@ mail: 3695888@qq.com
 # share memory
 from multiprocessing import Manager as share
 
+import os
 import sys
 import time
 import logging
 
-try:
-    from bin import tools
-    from bin import client
-    from bin import server
-    from bin import configs
-except (ModuleNotFoundError, ImportError, ImportWarning):
-    import tools
-    import client
-    import server
-    import configs
+sys.path.append('./')
+from bin import tools
+from bin import client
+from bin import server
+from bin import configs
 
 
 class Game:
@@ -46,7 +42,11 @@ class Game:
         self.root_logger_stream_handler.setLevel(self.log_config['level'])
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_stream_handler.setLevel(tools.log_level(self.log_config['level']))
-        self.root_logger_file_handler = logging.FileHandler('logs/' + self.log_filename, encoding='utf-8')
+        try:
+            self.root_logger_file_handler = logging.FileHandler('logs/' + self.log_filename, encoding='utf-8')
+        except FileNotFoundError:
+            os.mkdir('./logs')
+            self.root_logger_file_handler = logging.FileHandler('logs/' + self.log_filename, encoding='utf-8')
         self.root_logger_file_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_file_handler.setLevel(tools.log_level(self.log_config['level']))
         # root logger setup
@@ -80,7 +80,7 @@ class Game:
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('%s' % self.lang['version.need3+'])
             raise Exception('%s' % self.lang['version.need3+'])
-        elif self.on_python_v_info[1] <= 7:
+        elif self.on_python_v_info[1] <= 9:
             warning = configs.name_handler(self.lang['version.best3.8+'])
             self.main_logger.warning(warning)
 

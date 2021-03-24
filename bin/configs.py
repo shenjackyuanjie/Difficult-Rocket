@@ -11,10 +11,8 @@ import json5
 import decimal
 import logging
 
-try:
-    from bin import tools
-except (ModuleNotFoundError, ImportError, ImportWarning):
-    import tools
+sys.path.append('./')
+from bin import tools
 
 # logger
 configs_logger = logging.getLogger('configs')
@@ -136,18 +134,27 @@ def configs(name, option=None) -> dict:
         return data
 
 
+def defaut_name_hander(names: str) -> str:
+    """
+    won't change the string
+    just return one
+    """
+    name = names
+    name = name.replace('{time.time}', str(time.time()))
+    name = name.replace('{dir}', str(os.getcwd()))
+    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
+    return names
+
+
 def name_handler(name: str, configs=None) -> str:
     if configs is None:
         return name
+    try:
+        name = defaut_name_hander(name)
+        name.replace('{date}', time.strftime(configs['{date}'], time.gmtime(time.time())))
+    except:
+        pass
     for need_replace in configs:
         replace = configs[need_replace]
-        if need_replace == '{date}':  # special replaces
-            replace = time.strftime(configs[need_replace], time.gmtime(time.time()))
-        elif need_replace == '{time.time}':
-            replace = time.time()
-        elif need_replace == '{dir}':
-            replace = os.getcwd()
-        elif need_replace == '{py_v}':
-            replace = sys.version.split(' ')[0]
         name = name.replace(need_replace, replace)
     return name

@@ -1,6 +1,6 @@
 {
   'server': {
-    'level': 'DEBUG',
+    'level': 'INFO',
     // option: CRITICAL   ERROR   WARNING   INFO   DEBUG
     'fmt': '[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s',
     // format of log
@@ -8,7 +8,7 @@
     // format at https://docs.python.org/zh-cn/3.8/library/time.html#time.strftime
   },
   'client': {
-    'level': 'DEBUG',
+    'level': 'INFO',
     // option: CRITICAL   ERROR   WARNING   INFO   DEBUG
     'fmt': '[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s',
     // format of log
@@ -16,7 +16,7 @@
     // format at https://docs.python.org/zh-cn/3.8/library/time.html#time.strftime
   },
   'file': {
-    'level': 'DEBUG',
+    'level': 'INFO',
     // option: CRITICAL   ERROR   WARNING   INFO   DEBUG
     'fmt': '[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s',
     // format of log
