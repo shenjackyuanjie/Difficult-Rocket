@@ -4,20 +4,16 @@ mail: 3695888@qq.com
 """
 
 import os
+import sys
 import time
 import pyglet
 from pyglet.window import key
 from pyglet.window import mouse
 import multiprocessing as mp
 
-try:
-    # been import use
-    from bin import configs
-    from bin import tools
-except (ModuleNotFoundError, ImportError, ImportWarning):
-    # editing use
-    import configs
-    import tools
+sys.path.append('./')
+from bin import configs
+from bin import tools
 
 
 class client(mp.Process):

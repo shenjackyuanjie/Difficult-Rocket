@@ -143,18 +143,17 @@ def defaut_name_hander(names: str) -> str:
     name = name.replace('{time.time}', str(time.time()))
     name = name.replace('{dir}', str(os.getcwd()))
     name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
-    return names
+    print(name)
+    return name
 
 
 def name_handler(name: str, configs=None) -> str:
     if configs is None:
         return name
-    try:
-        name = defaut_name_hander(name)
-        name.replace('{date}', time.strftime(configs['{date}'], time.gmtime(time.time())))
-    except:
-        pass
+    name = defaut_name_hander(name)
     for need_replace in configs:
         replace = configs[need_replace]
+        if need_replace == '{date}':
+            replace = time.strftime(configs['{date}'], time.gmtime(time.time()))
         name = name.replace(need_replace, replace)
     return name
