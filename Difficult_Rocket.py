@@ -8,6 +8,9 @@ mail: 3695888@qq.com or shyj3695888@163.com
 QQ: 3695888"""
 
 if __name__ == '__main__':
+    import sys
+    sys.path.append('./')
+    sys.path.append('./bin/libs')
     from bin import main
     print(hi)
     game = main.Game()
