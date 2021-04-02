@@ -5,15 +5,20 @@ mail: 3695888@qq.com
 
 import os
 import sys
+sys.path.append('./bin/libs/')
+sys.path.append('./')
 import time
 import pyglet
 from pyglet.window import key
 from pyglet.window import mouse
 import multiprocessing as mp
 
-sys.path.append('./')
-from bin import configs
-from bin import tools
+try:
+    from bin import tools
+    from bin import configs
+except (ModuleNotFoundError, ImportError, ImportWarning):
+    import tools
+    import configs
 
 
 class client(mp.Process):
@@ -25,14 +30,14 @@ class client(mp.Process):
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # lang
-        self.lang = tools.config('sys_value/lang/%s.json5' % language, 'client')
+        self.lang = tools.config('configs/sys_value/lang/%s.json5' % language, 'client')
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.view = 'space'
         self.net_mode = net_mode
-        self.window_config = tools.config('sys_value/window.json5')
+        self.window_config = tools.config('configs/sys_value/window.json5')
         self.caption = self.window_config['caption']
         self.caption = configs.name_handler(self.caption, self.window_config['caption_option'])
         self.window = window(logger=logger,
@@ -49,7 +54,7 @@ class client(mp.Process):
         self.log_config()
 
     def log_config(self):
-        self.logger.info('%s: %s%s' % (self.lang['os.pid_is1'], self.process_pid, self.lang['os.pid_is2']))
+        self.logger.info('%s: %s %s' % (self.lang['os.pid_is1'], self.process_pid, self.lang['os.pid_is2']))
 
     def run(self) -> None:
         pyglet.app.run()
@@ -71,7 +76,7 @@ class window(pyglet.window.Window):
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # value
-        self.FPS = int(tools.config('sys_value/window.json5')['fps'])
+        self.FPS = int(tools.config('configs/sys_value/window.json5')['fps'])
         self.SPF = 1.0 / self.FPS
         self.view = 'space'
         self.net_mode = net_mode
@@ -80,18 +85,18 @@ class window(pyglet.window.Window):
         self.min_fps = [self.FPS, time.time()]
         self.fps_wait = 5
         # lang
-        self.lang = tools.config('sys_value/lang/%s.json5' % language, 'client')
+        self.lang = tools.config('configs/sys_value/lang/%s.json5' % language, 'client')
         # configs
         self.view = tools.config('configs/view.json5')
         self.map_view = [configs.basic_poi(poi_type='chunk')]
-        self.part_list = tools.config('sys_value/parts.json5')
+        self.part_list = tools.config('configs/sys_value/parts.json5')
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
         # dic
         self.button_hitbox = {}
         self.button_toggled = {}
         self.ships = {}  # all ship(part)
-        self.planet_system = tools.config('sys_value/planet.json5')  # hole planet system
+        self.planet_system = tools.config('configs/sys_value/planet.json5')  # hole planet system
         # list
         # batch
         self.part_batch = pyglet.graphics.Batch()
@@ -106,20 +111,21 @@ class window(pyglet.window.Window):
 
     def setup(self):
         # values
-        self.zoom = -1
         # net_mode
         if self.net_mode == 'local':
             pass
+
         # parts textures
         self.textures['part'] = {}
-        parts = tools.config('sys_value/parts.json5')
+        parts = tools.config('configs/sys_value/parts.json5')
         for part in parts:
             path = parts[part][2][0]
             part_image = pyglet.resource.image(path)
             self.textures['part'][part] = part_image
+
         # runtimes textures
         self.textures['runtime'] = {}
-        runtimes = tools.config('sys_value/runtime.json5')
+        runtimes = tools.config('configs/sys_value/runtime.json5')
         # load textures
         for runtime in runtimes['textures']:
             path = runtimes['textures'][runtime]

@@ -1,7 +1,7 @@
-'''
+"""
 writen by shenjackyuanjie
 mail: 3695888@qq.com
-'''
+"""
 
 # import re
 import os
@@ -12,7 +12,10 @@ import decimal
 import logging
 
 sys.path.append('./')
-from bin import tools
+try:
+    from bin import tools
+except (ModuleNotFoundError, ImportError, ImportWarning):
+    import tools
 
 # logger
 configs_logger = logging.getLogger('configs')
@@ -134,23 +137,26 @@ def configs(name, option=None) -> dict:
         return data
 
 
-def defaut_name_hander(names: str) -> str:
+names = {'{time.time}': str(time.time()),
+         '{dir}':       str(os.getcwd()),
+         '{py_v}':      str(sys.version.split(' ')[0])}
+
+def default_name_handler(name: str) -> str:
     """
     won't change the string
     just return one
     """
-    name = names
+    name = name
     name = name.replace('{time.time}', str(time.time()))
     name = name.replace('{dir}', str(os.getcwd()))
     name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
-    print(name)
     return name
 
 
 def name_handler(name: str, configs=None) -> str:
     if configs is None:
-        return name
-    name = defaut_name_hander(name)
+        return default_name_handler(name)
+    name = default_name_handler(name)
     for need_replace in configs:
         replace = configs[need_replace]
         if need_replace == '{date}':

@@ -23,7 +23,7 @@ class server(mp.Process):
         self.process_name = 'server process'
         self.process_pid = os.getpid()
         # lang
-        self.lang = tools.config('sys_value/lang/%s.json5' % language, 'server')
+        self.lang = tools.config('configs/sys_value/lang/%s.json5' % language, 'server')
         # share memory
         self.dev_list = dev_list
         self.dev_dic = dev_dic
