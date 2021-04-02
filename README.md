@@ -4,7 +4,7 @@
 
 0.2.3 (developing DEMO)
 
-中文README请移步 [这里](./blob/main/docs/README-cn.md)
+中文README请移步 [这里](.docs/README-cn.md)
 
 > It's a Simple Rocket liked game build with Python
 
