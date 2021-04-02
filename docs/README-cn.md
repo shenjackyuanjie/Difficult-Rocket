@@ -2,9 +2,9 @@
 
 ## 版本
 
-0.2.1 (开发.ing 没有DEMO(除非你能管一个乌漆嘛黑的页面+五个按键叫DEMO))
+0.2.3 (开发DEMO.ing)
 
-For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
+For an English version of readme, please move [here](.).
 
 > 这是一个用Python制作的类Simple Rocket游戏
 
@@ -16,7 +16,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 计划特性
 
-- 服务端客户端分离（就像minecraft一样）
+- 都在 [这](./projects)
 
 ## 环境需求 （测试过的/开发平台）
 
@@ -35,16 +35,16 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 需要的Python模块
 
-- json5
-- pyglet
+- json5（已经内置 路径：`./bin/libs/json5`）
+- pyglet（已经内置 路径：`./bin/libs/pyglet`）
 - pillow
 
 ## 感谢
 
 - pyglet : 图形界面
 - @小卡儿 : 翻译lang
-- [@Rayawa](https://github.com/Rayawa) : README矫正
-- [@Billchyi](https://github.com/Billchyi) : README矫正
+- [@Rayawa](https://github.com/Rayawa) : 文档矫正
+- [@Billchyi](https://github.com/Billchyi) : 文档矫正
 
 ## 关于分享协议
 

@@ -2,9 +2,9 @@
 
 ### Version
 
-0.2.1 (developing and have no DEMO)
+0.2.3 (developing DEMO)
 
-中文README请移步 [这里](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
+中文README请移步 [这里](./blob/main/docs/README-cn.md)
 
 > It's a Simple Rocket liked game build with Python
 
@@ -16,7 +16,7 @@ None. Not even one!
 
 ## Planed feature
 
-- server client separate (just like minecraft)
+- All In [here](./projects)
 
 ## Environment (been tested / develop on)
 
@@ -35,16 +35,16 @@ None. Not even one!
 
 ## Required python modules
 
-- json5
-- pyglet
+- json5 (pre install path:`./bin/libs/json5`)
+- pyglet (pre install path:`./bin/libs/pyglet`)
 - pillow
 
 ## thanks to
 
 - pyglet : GUI
 - @小卡儿 : transfer chinese to English
-- [@Rayawa](https://github.com/Rayawa) : check mistake in README
-- [@Billchyi](https://github.com/Billchyi) : check mistake in REAMDE
+- [@Rayawa](https://github.com/Rayawa) : check mistake in docs
+- [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 
 ## About License
 
