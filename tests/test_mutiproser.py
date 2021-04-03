@@ -1,9 +1,8 @@
-
 import multiprocessing as mp
-from multiprocessing.context import Process
 import os
-import time
 import random
+import time
+from multiprocessing.context import Process
 
 
 class Main(mp.Process):
@@ -17,7 +16,7 @@ class Main(mp.Process):
         while self.ttt:
             print(os.getpid())
             time.sleep(2)
-            while not(self.dev.using):
+            while not (self.dev.using):
                 self.dev.using = True
                 print('开始调用a')
                 if self.dev.dev1 != 0:
@@ -47,7 +46,7 @@ class render(mp.Process):
         while self.ggg:
             print(os.getpid())
             time.sleep(2)
-            while not(self.dev.using):
+            while not (self.dev.using):
                 self.dev.using = True
                 if random.choice(range(0, 5, 1)) == 4:
                     self.dev.dev1 = self.bbb

@@ -8,7 +8,12 @@
     }
   },
   client: {
-    'self.view': ['space', 'map', 'menu', 'build'],
+    'self.view': [
+      'space',
+      'map',
+      'menu',
+      'build'
+    ],
     'self.textures': {
       'first name of textures(defaut: difficult_rocket)': {
         'name of image or name of list': 'pyglet.image class or dict',
@@ -29,7 +34,10 @@
           // type:float
           'is mirror',
           // type:bool
-          ['basic_config.basic_poi', 'basic_config.basic_poi']
+          [
+            'basic_config.basic_poi',
+            'basic_config.basic_poi'
+          ]
           /*brain的坐标记录由两部分组成
           第一部分是brain所在区块的区块坐标(区块的大小暂定2^64m大小，从恒星中心开始算，普通的平面直角坐标系)
           第二部分是brain所在区块内的相对坐标(左上角00)*/
@@ -48,7 +56,9 @@
           // type:float  0 is up clockwise
           'is mirror',
           // type:bool
-          ['basic_config.basic_poi'],
+          [
+            'basic_config.basic_poi'
+          ],
           {
             'special value 1': 'xxx',
             'special value 2': 'xxx',

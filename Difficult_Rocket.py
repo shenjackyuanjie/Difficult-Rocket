@@ -9,6 +9,7 @@ QQ: 3695888"""
 
 if __name__ == '__main__':
     from bin import main
+
     print(hi)
     game = main.Game()
     game.start()

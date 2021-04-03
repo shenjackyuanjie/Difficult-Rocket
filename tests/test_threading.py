@@ -1,8 +1,7 @@
+import os
+import random
 import threading
 import time
-import os
-import sys
-import random
 
 
 class Aclass(threading.Thread):

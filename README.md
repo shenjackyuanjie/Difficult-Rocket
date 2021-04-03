@@ -20,18 +20,20 @@ None. Not even one!
 
 ## Environment (been tested / develop on)
 
-- - `Develop platform 1 - Windows 10`
-  - `Python 3.8.7`
-  - `Windows10 x64`
-  - `Pyglet 1.5.15`
-  - `Json5 0.9.5`
-  - `pillow 8.1.0`
-- - `Develop platform 2 - macOS Big Sur`
-  - `Python 3.8.7`
-  - `macOS Big Sur 11.2.1`
-  - `Pyglet 1.5.15`
-  - `Json5 0.9.5`
-  - `pillow 8.1.2`
+-
+    - `Develop platform 1 - Windows 10`
+    - `Python 3.8.7`
+    - `Windows10 x64`
+    - `Pyglet 1.5.15`
+    - `Json5 0.9.5`
+    - `pillow 8.1.0`
+-
+    - `Develop platform 2 - macOS Big Sur`
+    - `Python 3.8.7`
+    - `macOS Big Sur 11.2.1`
+    - `Pyglet 1.5.15`
+    - `Json5 0.9.5`
+    - `pillow 8.1.2`
 
 ## Required python modules
 
@@ -64,15 +66,18 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 
 Under the following terms:
 
-Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way 
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You
+may do so in any reasonable manner, but not in any way
 
 that suggests the licensor endorses you or your use.
 
 NonCommercial — You may not use the material for commercial purposes.
 
-ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same
+license as the original.
 
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from
+doing anything the license permits.
 
 Notices:
 

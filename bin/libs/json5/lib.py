@@ -19,7 +19,6 @@ import unicodedata
 
 from .parser import Parser
 
-
 if sys.version_info[0] < 3:
     str = unicode  # pylint: disable=redefined-builtin, invalid-name
 else:
@@ -87,7 +86,7 @@ def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
     elif object_hook:
         dictify = lambda pairs: object_hook(dict(pairs))
     else:
-        dictify = lambda pairs: dict(pairs) # pylint: disable=unnecessary-lambda
+        dictify = lambda pairs: dict(pairs)  # pylint: disable=unnecessary-lambda
 
     if not allow_duplicate_keys:
         _orig_dictify = dictify
@@ -107,6 +106,7 @@ def _reject_duplicate_keys(pairs, dictify):
             raise ValueError('Duplicate key "%s" found in object', key)
         keys.add(key)
     return dictify(pairs)
+
 
 def _walk_ast(el, dictify, parse_float, parse_int, parse_constant):
     if el == 'None':
@@ -251,11 +251,11 @@ def _dumps(obj, skipkeys, ensure_ascii, check_circular, allow_nan, indent,
     t = type(obj)
     if t == type('') or t == type(u''):
         if (is_key and _is_ident(obj) and not quote_keys
-            and not _is_reserved_word(obj)):
+                and not _is_reserved_word(obj)):
             return True, obj
         return True, _dump_str(obj, ensure_ascii)
     if t is float:
-        s = _dump_float(obj,allow_nan)
+        s = _dump_float(obj, allow_nan)
     if t is int:
         s = str(obj)
 
@@ -458,6 +458,7 @@ def _is_id_continue(ch):
 
 
 _reserved_word_re = None
+
 
 def _is_reserved_word(k):
     global _reserved_word_re

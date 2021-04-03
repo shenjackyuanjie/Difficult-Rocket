@@ -5,8 +5,8 @@
 ### Add
 
 - local libs
-  - `pyglet 1.5.15`
-  - `json   0.9.5`
+    - `pyglet 1.5.15`
+    - `json   0.9.5`
 
 PS: now I'm not sure witch lib will be import first
 

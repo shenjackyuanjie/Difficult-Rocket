@@ -3,8 +3,8 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import os
 import multiprocessing as mp
+import os
 
 try:
     from bin import tools

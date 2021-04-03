@@ -3,8 +3,9 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import bin
 import decimal
+
+import bin
 
 A = [2.573, 3, ['m', 'kg'], ['N', 's']]
 B = [2.45, -7, ['N', 'kg'], ['m', 's']]
@@ -15,7 +16,6 @@ print('A = ', A)
 print('B = ', B)
 print('C = ', C)
 print('D = ', D)
-
 
 a = bin.tools.S_N_M(A, B)
 b = bin.tools.S_N_D(A, B)

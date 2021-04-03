@@ -3,12 +3,12 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import re
-import math
-import json5
 import decimal
 import logging
+import math
 from xml.dom.minidom import parse
+
+import json5
 
 try:
     import configs
@@ -51,9 +51,10 @@ def log_level(level):
     else:
         raise ValueError('Need a like level thing not anything else')
 
+
 # linear_algebra
 
-def C_R_P(position, degrees): # stand for calculation
+def C_R_P(position, degrees):  # stand for calculation
     """
     very thanks for lenny from pyglet delvoper
     https://github.com/LennyPhoenix

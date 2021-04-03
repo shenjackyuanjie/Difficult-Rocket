@@ -3,13 +3,12 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-# share memory
-from multiprocessing import Manager as share
-
+import logging
 import os
 import sys
 import time
-import logging
+# share memory
+from multiprocessing import Manager as share
 
 sys.path.append('./')
 try:

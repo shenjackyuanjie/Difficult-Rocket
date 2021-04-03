@@ -1,4 +1,3 @@
-
 import logging
 
 # set up logging to file - see previous section for more details
