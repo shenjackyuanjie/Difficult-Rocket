@@ -26,7 +26,7 @@
       'main': '{date} DR.log',
       // {date} -> date
       'formats': {
-        '{date}': '%Y-%m-%d %H-%M-%S'
+        'date': '%Y-%m-%d %H-%M-%S'
         // format at https://docs.python.org/zh-cn/3.8/library/time.html#time.strftime
         // can and more {xx} by adding more obj  EZ
       }

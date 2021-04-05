@@ -138,17 +138,16 @@ def configs(name, option=None) -> dict:
         return data
 
 
-name_handlers = {'{time.time}': str(time.time()),
-                 '{dir}': str(os.getcwd()),
-                 '{py_v}': str(sys.version.split(' ')[0])
+name_handlers = {'time.time': str(time.time()),
+                 'dir': str(os.getcwd()),
+                 'py_v': str(sys.version.split(' ')[0])
                  }
 
 
-def name_handler(name: str, configs=None) -> str:
-    names = configs
-    names = names.update(name_handlers)
-    print(names)
-    handler_name = name.format(names)
+def name_handler(name: str, configs={}) -> str:
+    names = name_handlers
+    names.update(configs)
+    handler_name = name.format(**names)
     if configs is None:
         return handler_name
     return name
