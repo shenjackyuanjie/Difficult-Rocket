@@ -4,7 +4,7 @@
 
 0.2.4 (developing DEMO)
 
-中文README请移步 [这里](.docs/README-cn.md)
+中文README请移步 [这里](docs/README-cn.md)
 
 > It's a Simple Rocket liked game build with Python
 
@@ -16,7 +16,7 @@ None. Not even one!
 
 ## Planed feature
 
-- All In [here](./projects)
+- All In [here](../projects)
 
 ## Environment (been tested / develop on)
 
