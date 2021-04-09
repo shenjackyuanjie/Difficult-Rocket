@@ -34,9 +34,11 @@ def c_b(thing):  # stand for my bool
         raise ValueError("Need a 'like bool' not anything else")
 
 
+level_ = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL',
+          logging.DEBUG,logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
+
+
 def log_level(level):
-    level_ = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', logging.DEBUG,
-              logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
     if level in level_:
         if (level == 'DEBUG') or (level == logging.DEBUG):
             return logging.DEBUG

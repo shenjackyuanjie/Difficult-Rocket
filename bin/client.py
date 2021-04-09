@@ -40,7 +40,7 @@ class client(mp.Process):
         self.net_mode = net_mode
         self.window_config = tools.config('configs/sys_value/window.json5')
         self.caption = self.window_config['caption']
-        self.caption = configs.name_handler(self.caption, self.window_config['caption_option'])
+        self.caption = configs.name_handler(self.caption, {'version': self.window_config['caption_option']['version']})
         self.window = window(logger=logger,
                              dev_dic=dev_dic,
                              dev_list=dev_list,
@@ -246,6 +246,9 @@ class window(pyglet.window.Window):
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.logger.debug('按键移动 %s %s %s %s' % (x, y, dx, dy))
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        self.logger.debug('按键拖拽 %s %s %s %s %s %s' %(x, y, dx, dy, buttons, modifiers))
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:

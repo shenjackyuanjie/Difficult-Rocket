@@ -2,7 +2,7 @@
 
 ### Version
 
-0.2.3 (developing DEMO)
+0.2.4 (developing DEMO)
 
 中文README请移步 [这里](.docs/README-cn.md)
 

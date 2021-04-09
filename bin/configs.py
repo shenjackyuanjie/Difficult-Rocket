@@ -144,10 +144,15 @@ name_handlers = {'time.time': str(time.time()),
                  }
 
 
-def name_handler(name: str, configs={}) -> str:
+def name_handler(name: str, configs=dict) -> str:
     names = name_handlers
-    names.update(configs)
+    if configs is dict:
+        pass
+    elif type(configs) is dict:
+        names.update(configs)
+    else:
+        pass
+    if 'date' in names:
+        names['date'] = str(time.strftime(names['date'], time.gmtime(time.time())))
     handler_name = name.format(**names)
-    if configs is None:
-        return handler_name
-    return name
+    return handler_name
