@@ -1,5 +1,6 @@
 # VScode file
 .vscode/
+.vs/
 DR.code-workspace
 
 # PYCharm file
@@ -132,12 +133,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# DS_Store
-*.DS_Store
-*/.DS_Store
-textures/.DS_Store
-/.vs/PythonSettings.json
-/.vs/slnx.sqlite
-/.vs/VSWorkspaceState.json
-/.vs/DR/v16/.suo

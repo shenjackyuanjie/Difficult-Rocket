@@ -4,7 +4,9 @@
 
 0.2.4 (开发DEMO.ing)
 
-For an English version of readme, please move [here]().
+[更新日志](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/update_logs.md)
+
+For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
 > 这是一个用Python制作的类Simple Rocket游戏
 
@@ -16,7 +18,7 @@ For an English version of readme, please move [here]().
 
 ## 计划特性
 
-- 都在 [这](./projects)
+- 都在 [这](https://github.com/shenjackyuanjie/Difficult-Rocket/projects)
 
 ## 环境需求 （测试过的/开发平台）
 

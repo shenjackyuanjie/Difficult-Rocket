@@ -1,5 +1,10 @@
 # Difficult Rocket Update Logs
 
+## Readme
+
+- [README](https://github.com/shenjackyuanjie/Difficult-Rocket)
+- [中文README](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
+
 ## 2021/04/09 V 0.2.3/4
 
 ### Add 
@@ -23,7 +28,7 @@
 
 - add local libs
     - `pyglet 1.5.15`
-    - `json   0.9.5`
+    - `json5  0.9.5`
 
 PS: now I'm not sure witch lib will be import first
 
