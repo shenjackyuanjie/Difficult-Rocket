@@ -4,7 +4,7 @@
 
 0.2.4 (开发DEMO.ing)
 
-For an English version of readme, please move [here](..).
+For an English version of readme, please move [here]().
 
 > 这是一个用Python制作的类Simple Rocket游戏
 
