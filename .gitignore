@@ -137,3 +137,7 @@ dmypy.json
 *.DS_Store
 */.DS_Store
 textures/.DS_Store
+/.vs/PythonSettings.json
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
+/.vs/DR/v16/.suo
