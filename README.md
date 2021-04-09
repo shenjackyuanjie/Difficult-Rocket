@@ -16,7 +16,7 @@ None. Not even one!
 
 ## Planed feature
 
-- All In [here](../projects)
+- All In [here](..../projects)
 
 ## Environment (been tested / develop on)
 
