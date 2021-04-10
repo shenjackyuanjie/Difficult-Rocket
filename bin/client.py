@@ -5,14 +5,14 @@ mail: 3695888@qq.com
 
 import os
 import sys
+import time
+import multiprocessing as mp
 
 sys.path.append('./bin/libs/')
 sys.path.append('./')
-import time
 import pyglet
 from pyglet.window import key
 from pyglet.window import mouse
-import multiprocessing as mp
 
 try:
     from bin import tools
