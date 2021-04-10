@@ -5,14 +5,14 @@ mail: 3695888@qq.com
 
 import os
 import sys
-import time
-import multiprocessing as mp
 
 sys.path.append('./bin/libs/')
 sys.path.append('./')
+import time
 import pyglet
 from pyglet.window import key
 from pyglet.window import mouse
+import multiprocessing as mp
 
 try:
     from bin import tools
@@ -77,7 +77,7 @@ class window(pyglet.window.Window):
         self.dev_list = dev_list
         self.dev_dic = dev_dic
         # value
-        self.FPS = int(tools.config('configs/sys_value/window.json5', 'fps'))
+        self.FPS = int(tools.config('configs/sys_value/window.json5')['fps'])
         self.SPF = 1.0 / self.FPS
         self.view = 'space'
         self.net_mode = net_mode
@@ -245,12 +245,10 @@ class window(pyglet.window.Window):
     """
 
     def on_mouse_motion(self, x, y, dx, dy):
-        # self.logger.debug('按键移动 %s %s %s %s' % (x, y, dx, dy))
-        pass
+        self.logger.debug('按键移动 %s %s %s %s' % (x, y, dx, dy))
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-        # self.logger.debug('按键拖拽 %s %s %s %s %s %s' %(x, y, dx, dy, buttons, modifiers))
-        pass
+        self.logger.debug('按键拖拽 %s %s %s %s %s %s' %(x, y, dx, dy, buttons, modifiers))
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:

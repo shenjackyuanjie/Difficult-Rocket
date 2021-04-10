@@ -84,7 +84,7 @@ class Game:
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('%s' % self.lang['version.need3+'])
             raise Exception('%s' % self.lang['version.need3+'])
-        elif self.on_python_v_info[1] <= 7:
+        elif self.on_python_v_info[1] <= 8:
             warning = configs.name_handler(self.lang['version.best3.8+'])
             self.main_logger.warning(warning)
 

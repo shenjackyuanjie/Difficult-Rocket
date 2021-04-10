@@ -7,7 +7,7 @@ DR.code-workspace
 .idea/
 
 # log file
-.log
+*.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

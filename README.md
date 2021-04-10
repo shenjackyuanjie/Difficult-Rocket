@@ -24,7 +24,7 @@ None. Not even one!
 
 -
     - `Develop platform 1 - Windows 10`
-    - `Python 3.8.9`
+    - `Python 3.8.7`
     - `Windows10 x64`
     - `Pyglet 1.5.15`
     - `Json5 0.9.5`
@@ -43,12 +43,12 @@ None. Not even one!
 - pyglet (pre install path:`./bin/libs/pyglet`)
 - pillow
 
-## Thanks to
+## thanks to
 
-- [pyglet](http://pyglet.org) GUI
-- [@ruoxiao-you](https://github.com/ruoxiao-you) transfer chinese to English
-- [@Rayawa](https://github.com/Rayawa) check mistake in docs
-- [@Billchyi](https://github.com/Billchyi) check mistake in docs
+- pyglet : GUI
+- @小卡儿 : transfer chinese to English
+- [@Rayawa](https://github.com/Rayawa) : check mistake in docs
+- [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 
 ## About License
 

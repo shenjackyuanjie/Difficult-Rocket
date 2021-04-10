@@ -13,7 +13,7 @@
   'visible': 'true',
   // bool
   'style': 'None',
-  'fps': 30,
+  'fps': 60,
   'views': [
     'space',
     'map',
