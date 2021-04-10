@@ -245,10 +245,12 @@ class window(pyglet.window.Window):
     """
 
     def on_mouse_motion(self, x, y, dx, dy):
-        self.logger.debug('按键移动 %s %s %s %s' % (x, y, dx, dy))
+        # self.logger.debug('按键移动 %s %s %s %s' % (x, y, dx, dy))
+        pass
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-        self.logger.debug('按键拖拽 %s %s %s %s %s %s' %(x, y, dx, dy, buttons, modifiers))
+        # self.logger.debug('按键拖拽 %s %s %s %s %s %s' %(x, y, dx, dy, buttons, modifiers))
+        pass
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:
