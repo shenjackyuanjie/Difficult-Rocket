@@ -24,7 +24,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 -
     - `开发平台1 Windows 10`
-    - `Python 3.8.7`
+    - `Python 3.8.9`
     - `Windows10 x64`
     - `Pyglet 1.5.15`
     - `Json5 0.9.5`
@@ -45,8 +45,8 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 感谢
 
-- pyglet : 图形界面
-- @小卡儿 : 翻译lang
+- [pyglet](http://pyglet.org) : 图形界面
+- [@ruoxiao-you](https://github.com/ruoxiao-you): 翻译lang
 - [@Rayawa](https://github.com/Rayawa) : 文档矫正
 - [@Billchyi](https://github.com/Billchyi) : 文档矫正
 
