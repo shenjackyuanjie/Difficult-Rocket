@@ -3,10 +3,10 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
+import multiprocessing as mp
 import os
 import sys
 import time
-import multiprocessing as mp
 
 sys.path.append('./bin/libs/')
 sys.path.append('./')

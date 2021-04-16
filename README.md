@@ -26,9 +26,10 @@ None. Not even one!
     - `Develop platform 1 - Windows 10`
     - `Python 3.8.7`
     - `Windows10 x64`
-    - `Pyglet 1.5.15`
+    - `Pyglet 1.5.16`
     - `Json5 0.9.5`
     - `pillow 8.1.0`
+    - `AMD 5600X`
 -
     - `Develop platform 2 - macOS Big Sur`
     - `Python 3.8.7`
@@ -39,8 +40,8 @@ None. Not even one!
 
 ## Required python modules
 
-- json5 (pre install path:`./bin/libs/json5`)
-- pyglet (pre install path:`./bin/libs/pyglet`)
+- json5 (pre-installed V0.9.5 path:`./bin/libs/json5`)
+- pyglet (pre-installed V1.5.16 path:`./bin/libs/pyglet`)
 - pillow
 
 ## thanks to

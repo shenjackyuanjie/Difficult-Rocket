@@ -3,13 +3,14 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import logging
 import os
 import sys
 import time
+import logging
 # share memory
 from multiprocessing import Manager as share
 
+sys.path.append('./bin/libs/')
 sys.path.append('./')
 try:
     from bin import tools
@@ -40,7 +41,8 @@ class Game:
         self.lang = tools.config('configs/sys_value/lang/%s.json5' % self.language, 'main')
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
-        self.log_filename = configs.name_handler(self.log_config['filename']['main'], {'date': self.log_config['date_fmt']})
+        self.log_filename = configs.name_handler(self.log_config['filename']['main'],
+                                                 {'date': self.log_config['date_fmt']})
         self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler = logging.StreamHandler()
         self.root_logger_stream_handler.setLevel(self.log_config['level'])

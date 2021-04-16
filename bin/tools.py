@@ -6,8 +6,11 @@ mail: 3695888@qq.com
 import decimal
 import logging
 import math
+import sys
 from xml.dom.minidom import parse
 
+sys.path.append('./bin/libs/')
+sys.path.append('./')
 import json5
 
 try:
@@ -35,7 +38,7 @@ def c_b(thing):  # stand for my bool
 
 
 level_ = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL',
-          logging.DEBUG,logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
+          logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
 
 
 def log_level(level):
@@ -212,7 +215,7 @@ def distance(A, B):
 # loads
 
 
-def config(file_name, stack=None):
+def config(file_name, stack=None): # // TODO 加上.config的读取+解析
     type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     if (type == 'json5') or (type == 'json'):
         try:

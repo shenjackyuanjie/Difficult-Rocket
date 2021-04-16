@@ -10,9 +10,11 @@ import os
 import sys
 import time
 
+sys.path.append('./bin/libs/')
+sys.path.append('./')
+
 import json5
 
-sys.path.append('./')
 try:
     from bin import tools
 except (ModuleNotFoundError, ImportError, ImportWarning):

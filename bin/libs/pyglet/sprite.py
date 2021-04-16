@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2020 pyglet contributors
+# Copyright (c) 2008-2021 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -455,8 +455,8 @@ class Sprite(event.EventDispatcher):
         return self._x, self._y
 
     @position.setter
-    def position(self, pos):
-        self._x, self._y = pos
+    def position(self, position):
+        self._x, self._y = position
         self._update_position()
 
     @property

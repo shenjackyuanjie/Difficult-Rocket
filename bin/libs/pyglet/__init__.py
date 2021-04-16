@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2020 pyglet contributors
+# Copyright (c) 2008-2021 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -61,11 +61,11 @@ _is_pyglet_doc_run = hasattr(sys, "is_pyglet_doc_run") and sys.is_pyglet_doc_run
 #:    >>> parse_version(pyglet.version) >= parse_version('1.1')
 #:    True
 #:
-version = '1.5.15'
+version = '1.5.16'
 
 
 if sys.version_info < (3, 6):
-    raise Exception('pyglet %s requires Python 3.5 or newer.' % version)
+    raise Exception('pyglet %s requires Python 3.6 or newer.' % version)
 
 
 # pyglet platform treats *BSD systems as Linux
@@ -170,6 +170,7 @@ options = {
     'xlib_fullscreen_override_redirect': False,
     'darwin_cocoa': True,
     'search_local_libs': True,
+    'advanced_font_features': False,
     'headless': False,
     'headless_device': 0,
 }
@@ -195,6 +196,7 @@ _option_types = {
     'vsync': bool,
     'xsync': bool,
     'xlib_fullscreen_override_redirect': bool,
+    'advanced_font_features': bool,
     'headless': bool,
     'headless_device': int
 }

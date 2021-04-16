@@ -26,9 +26,10 @@ For an English version of readme, please move [here](https://github.com/shenjack
     - `开发平台1 Windows 10`
     - `Python 3.8.7`
     - `Windows10 x64`
-    - `Pyglet 1.5.15`
+    - `Pyglet 1.5.16`
     - `Json5 0.9.5`
     - `pillow 8.1.0`
+    - `AMD 5600X`
 -
     - `开发平台2 macOS Big Sur`
     - `Python 3.8.7`
@@ -39,8 +40,8 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 需要的Python模块
 
-- json5（已经内置 路径：`./bin/libs/json5`）
-- pyglet（已经内置 路径：`./bin/libs/pyglet`）
+- json5（已经内置V0.9.5 路径：`./bin/libs/json5`）
+- pyglet（已经内置V1.5.16 路径：`./bin/libs/pyglet`）
 - pillow
 
 ## 感谢

@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2020 pyglet contributors
+# Copyright (c) 2008-2021 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -157,7 +157,7 @@ class Caret:
         clock.unschedule(self._blink)
         if visible and self._active and self.PERIOD:
             clock.schedule_interval(self._blink, self.PERIOD)
-            self._blink_visible = False # flipped immediately by next blink
+            self._blink_visible = False  # flipped immediately by next blink
         self._blink(0)
 
     def _get_visible(self):
@@ -388,8 +388,8 @@ class Caret:
         if update_ideal_x:
             self._ideal_x = x
 
-        x -= self._layout.top_group.translate_x
-        y -= self._layout.top_group.translate_y
+        x -= self._layout.top_group.view_x
+        y -= self._layout.top_group.view_y
         font = self._layout.document.get_font(max(0, self._position - 1))
         self._list.vertices[:] = [x, y + font.descent, x, y + font.ascent]
 

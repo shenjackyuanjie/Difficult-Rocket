@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2020 pyglet contributors
+# Copyright (c) 2008-2021 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -346,6 +346,13 @@ class COMObject:
 
             cls._pointers[itf] = ctypes.pointer(ctypes.pointer(vtbl))
 
+    @property
+    def pointers(self):
+        """Returns pointers to the implemented interfaces in this COMObject.  Read-only.
+
+        :type: dict
+        """
+        return self._pointers
 
 class Interface(metaclass=COMInterfaceMeta):
     _methods_ = []
@@ -354,9 +361,9 @@ class Interface(metaclass=COMInterfaceMeta):
 class IUnknown(metaclass=COMInterfaceMeta):
     """These methods are not implemented by default yet. Strictly for COM method ordering."""
     _methods_ = [
-        ('QueryInterface', STDMETHOD(REFIID, ctypes.c_void_p)),
-        ('AddRef', METHOD(ctypes.c_int)),
-        ('Release', METHOD(ctypes.c_int))
+        ('QueryInterface', STDMETHOD(ctypes.c_void_p, REFIID, ctypes.c_void_p)),
+        ('AddRef', METHOD(ctypes.c_int, ctypes.c_void_p)),
+        ('Release', METHOD(ctypes.c_int, ctypes.c_void_p))
     ]
 
 

@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2020 pyglet contributors
+# Copyright (c) 2008-2021 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,7 @@
 # ----------------------------------------------------------------------------
 
 import ctypes
+import warnings
 from collections import namedtuple
 
 from pyglet.util import asbytes, asstr
@@ -45,7 +46,7 @@ from pyglet.font.freetype_lib import *
 
 class FreeTypeGlyphRenderer(base.GlyphRenderer):
     def __init__(self, font):
-        super(FreeTypeGlyphRenderer, self).__init__(font)
+        super().__init__(font)
         self.font = font
 
         self._glyph_slot = None
@@ -134,8 +135,7 @@ class FreeTypeGlyphRenderer(base.GlyphRenderer):
         return self._create_glyph()
 
 
-FreeTypeFontMetrics = namedtuple('FreeTypeFontMetrics',
-                                 ['ascent', 'descent'])
+FreeTypeFontMetrics = namedtuple('FreeTypeFontMetrics', ['ascent', 'descent'])
 
 
 class MemoryFaceStore:
@@ -160,9 +160,14 @@ class FreeTypeFont(base.Font):
     # Map font (name, bold, italic) to FreeTypeMemoryFace
     _memory_faces = MemoryFaceStore()
 
-    def __init__(self, name, size, bold=False, italic=False, dpi=None):
-        super(FreeTypeFont, self).__init__()
+    def __init__(self, name, size, bold=False, italic=False, stretch=False, dpi=None):
+        # assert type(bold) is bool, "Only a boolean value is supported for bold in the current font renderer."
+        # assert type(italic) is bool, "Only a boolean value is supported for bold in the current font renderer."
 
+        if stretch:
+            warnings.warn("The current font render does not support stretching.")
+
+        super().__init__()
         self.name = name
         self.size = size
         self.bold = bold
@@ -342,7 +347,7 @@ class FreeTypeFace:
 class FreeTypeMemoryFace(FreeTypeFace):
     def __init__(self, data):
         self._copy_font_data(data)
-        super(FreeTypeMemoryFace, self).__init__(self._create_font_face())
+        super().__init__(self._create_font_face())
 
     def _copy_font_data(self, data):
         self.font_data = (FT_Byte * len(data))()
