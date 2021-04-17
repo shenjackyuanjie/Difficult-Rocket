@@ -5,6 +5,27 @@
 - [README](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [中文README](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
 
+## 2021/04/17 V 0.4.1
+
+PS: 
+
+- `Va.b.c`
+
+- a : Big Version (Big rewrite times) (now at DEMO making)
+- b : Middle Rewrite Times (Yes I've rewritten for 4 times)
+- c : normal updates
+
+### DEBUG
+
+- solve pre-installed lib can't use
+- solve pre-installed lib's bug
+- some other bugs
+
+### Change
+
+- plan to change config file format to .config (plan to)
+- reformat all files (including libs)
+
 ## 2021/04/09 V 0.2.3/4
 
 ### Add
