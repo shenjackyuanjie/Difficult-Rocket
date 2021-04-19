@@ -2,7 +2,7 @@
 
 ## 版本
 
-0.2.4 (开发DEMO.ing)
+0.4.1 (开发DEMO.ing)
 
 [更新日志](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/update_logs.md)
 
