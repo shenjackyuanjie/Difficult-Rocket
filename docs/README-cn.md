@@ -6,6 +6,8 @@
 
 [更新日志](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/update_logs.md)
 
+[计划特性列表](https://github.com/shenjackyuanjie/Difficult-Rocket/tree/main/docs/plan_features)
+
 For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
 > 这是一个用Python制作的类Simple Rocket游戏
