@@ -31,7 +31,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
     - `Pyglet 1.5.16`
     - `Json5 0.9.5`
     - `pillow 8.1.0`
-    - `AMD 5600X`
+    - `AMD R5 5600X`
 -
     - `开发平台2 macOS Big Sur`
     - `Python 3.8.7`
@@ -39,6 +39,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
     - `Pyglet 1.5.15`
     - `Json5 0.9.5`
     - `pillow 8.1.2`
+    - `Intel I5 8279U`
 
 ## 需要的Python模块
 
