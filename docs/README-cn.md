@@ -31,7 +31,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
     - `Pyglet 1.5.16`
     - `Json5 0.9.5`
     - `pillow 8.1.0`
-    - `AMD R5 5600X`
+    - `AMD R5 5600X`(AMD YES!)
 -
     - `开发平台2 macOS Big Sur`
     - `Python 3.8.7`
@@ -50,7 +50,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
 ## 感谢
 
 - pyglet : 图形界面
-- @小卡儿 : 翻译lang
+- [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译lang
 - [@Rayawa](https://github.com/Rayawa) : 文档矫正
 - [@Billchyi](https://github.com/Billchyi) : 文档矫正
 

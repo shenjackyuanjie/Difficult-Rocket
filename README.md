@@ -50,7 +50,7 @@ None. Not even one!
 ## thanks to
 
 - pyglet : GUI
-- @小卡儿 : transfer chinese to English
+- [@rouxiao-you](https://github.com/ruoxiao-you) : transfer chinese to English
 - [@Rayawa](https://github.com/Rayawa) : check mistake in docs
 - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 
