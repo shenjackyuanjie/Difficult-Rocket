@@ -133,3 +133,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# github
+.gitignore
+.gitattributes
+
+# some other thing
+page1.jpg
+page2.jpg
+superman.py
