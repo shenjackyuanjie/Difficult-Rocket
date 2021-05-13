@@ -21,6 +21,7 @@
 | 可堆叠部件 | part-stack | planing |
 | 可压缩结构 | part-zip | planing |
 | 部件平移 | part-move | planing |
+| 存档额外信息 | extra-save-info | planing |
 
 # 文件范例
 
