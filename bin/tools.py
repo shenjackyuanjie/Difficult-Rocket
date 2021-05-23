@@ -3,6 +3,7 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
+import configparser
 import decimal
 import logging
 import math
@@ -19,7 +20,7 @@ except ModuleNotFoundError:
     from bin import configs
 
 # logger
-tools_logger = logging.getLogger('tools')
+tools_logger = logging.getLogger('part-tools')
 
 """
 some tools
@@ -215,12 +216,17 @@ def distance(A, B):
 # loads
 
 
-def config(file_name, stack=None): # // TODO 加上.config的读取+解析
-    type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
-    if (type == 'json5') or (type == 'json'):
+def config(file_name, stack=None):  # // TODO 加上.config的读取+解析
+    f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
+    if (f_type == 'json5') or (f_type == 'json'):
         try:
-            with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
-                rd = json5.load(jf)
+            try:
+                with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
+                    rd = json5.load(jf)
+            except UnicodeDecodeError:
+                with open(file_name, 'r', encoding='gbk') as jf:
+                    rd = json5.load(jf)
+                tools_logger.info('文件 %s 解码错误，已重新使用gbk编码打开' % file_name)
         except FileNotFoundError as exp:
             log = 'no config json(5) file \n file name : %s \n stack : %s' % (
                 file_name, stack)
@@ -229,7 +235,7 @@ def config(file_name, stack=None): # // TODO 加上.config的读取+解析
         if stack is not None:
             rd = rd[stack]
         return rd
-    elif type == 'xml':
+    elif f_type == 'xml':
         try:
             xml_load = parse(file_name)
         except FileNotFoundError as exp:
@@ -242,9 +248,17 @@ def config(file_name, stack=None): # // TODO 加上.config的读取+解析
             return xml_get
         else:
             return xml_load
+    elif (f_type == 'config') or (f_type == 'conf'):
+        cp = configparser.ConfigParser()  # cp -> config parser
+        cf = cp.read(file_name)  # cf -> config file
 
 
 def get_At(name, in_xml, need_type=str):
+    """
+    get Attribute from a XML tree
+    will raise TypeError if input is not str or list
+    XML no!   Json5 yes!
+    """
     name_type = type(name)
     if name_type == list:
         At_list = []

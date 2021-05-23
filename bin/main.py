@@ -63,6 +63,7 @@ class Game:
         self.main_logger = logging.getLogger().getChild('main')
         self.server_logger = logging.getLogger().getChild('server')
         self.client_logger = logging.getLogger().getChild('client')
+        # output info
         self.main_logger.info(self.lang['logger.created'])
         self.main_logger.info(self.lang['logger.main_done'])
         self.log_configs()
@@ -85,8 +86,8 @@ class Game:
         self.main_logger.info('%s %s' % (self.lang['version.now_on'], self.on_python_v))
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('%s' % self.lang['version.need3+'])
-            raise Exception('%s' % self.lang['version.need3+'])
-        elif self.on_python_v_info[1] <= 8:
+            raise SystemError('%s' % self.lang['version.need3+'])
+        elif self.on_python_v_info[1] < 9:
             warning = configs.name_handler(self.lang['version.best3.8+'])
             self.main_logger.warning(warning)
 
