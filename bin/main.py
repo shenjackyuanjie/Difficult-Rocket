@@ -82,7 +82,7 @@ class Game:
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_fmt'], self.log_config['fmt']))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_datefmt'], self.log_config['date_fmt']))
 
-    def python_version_check(self):
+    def python_version_check(self):  # best 3.8+ and write at 3.8.9
         self.main_logger.info('%s %s' % (self.lang['version.now_on'], self.on_python_v))
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('%s' % self.lang['version.need3+'])

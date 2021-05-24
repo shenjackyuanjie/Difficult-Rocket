@@ -3,6 +3,10 @@
 .vs/
 DR.code-workspace
 
+# local libs
+pyglet/
+pyglet
+
 # PYCharm file
 .idea/
 

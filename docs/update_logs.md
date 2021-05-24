@@ -5,8 +5,15 @@
 - [README](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [中文README](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
 
-## 2021/04/17 V 0.4.1
 
+## 2021/05/24 V 0.4.2
+
+### DEBUG
+
+- using python version 3.8.9 still report `best3.8+`(lang name)(actually is debugging)
+
+## 2021/04/17 V 0.4.1
+ 
 PS: 
 
 - `Va.b.c`

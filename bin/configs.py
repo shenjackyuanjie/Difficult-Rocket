@@ -139,7 +139,7 @@ def configs(name, option=None) -> dict:
                 raise IndexError(log)
         return data
 
-
+"""
 name_handlers = {'time.time': str(time.time()),
                  'dir': str(os.getcwd()),
                  'py_v': str(sys.version.split(' ')[0])
@@ -158,3 +158,32 @@ def name_handler(name: str, configs=dict) -> str:
         names['date'] = str(time.strftime(names['date'], time.gmtime(time.time())))
     handler_name = name.format(**names)
     return handler_name
+"""
+
+names = {'{time.time}': str(time.time()),
+         '{dir}': str(os.getcwd()),
+         '{py_v}': str(sys.version.split(' ')[0])}
+
+
+def default_name_handler(name: str) -> str:
+    """
+    won't change the string
+    just return one
+    """
+    name = name
+    name = name.replace('{time.time}', str(time.time()))
+    name = name.replace('{dir}', str(os.getcwd()))
+    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
+    return name
+
+
+def name_handler(name: str, configs=None) -> str:
+    if configs is None:
+        return default_name_handler(name)
+    name = default_name_handler(name)
+    for need_replace in configs:
+        replace = configs[need_replace]
+        if need_replace == '{date}':
+            replace = time.strftime(configs['{date}'], time.gmtime(time.time()))
+        name = name.replace(need_replace, replace)
+    return name
