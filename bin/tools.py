@@ -250,7 +250,8 @@ def config(file_name, stack=None):  # // TODO 加上.config的读取+解析
             return xml_load
     elif (f_type == 'config') or (f_type == 'conf'):
         cp = configparser.ConfigParser()  # cp -> config parser
-        cf = cp.read(file_name)  # cf -> config file
+        cp.read(file_name)  # config parser -> reader
+
 
 
 def get_At(name, in_xml, need_type=str):

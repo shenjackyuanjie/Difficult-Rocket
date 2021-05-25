@@ -13,4 +13,3 @@ for c in configs.sections():
 conf = configparser.ConfigParser()
 conf.read('test_config.config')
 print(type(conf))
-print(conf[:])

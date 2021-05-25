@@ -7,7 +7,6 @@ import multiprocessing as mp
 import os
 import sys
 import time
-
 sys.path.append('./bin/libs/')
 sys.path.append('./')
 import pyglet

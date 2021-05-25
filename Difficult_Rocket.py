@@ -27,7 +27,7 @@ print("os.getcwd() = ", os.getcwd())
 
 if __name__ == '__main__':
     from bin import main
-
+    os.chdir(sys.path[0]) # TODO 没做完.ing
     print(hi)
     game = main.Game()
     game.start()
