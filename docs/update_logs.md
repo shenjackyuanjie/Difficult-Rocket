@@ -12,6 +12,16 @@
 
 - using python version 3.8.9 still report `best3.8+`(lang name)(actually is debugging)
 
+### Change
+
+- change back how configs.py/name_format work(replace str) fix some issue
+- doing remake for config sys (lazy yes!)
+- clear bin/pyglet (already exits in bin/lib)
+
+### Need Do
+
+- debug name_format
+
 ## 2021/04/17 V 0.4.1
  
 PS: 

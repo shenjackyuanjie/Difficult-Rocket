@@ -2,7 +2,7 @@
 
 ### Version
 
-0.4.1 (developing DEMO)
+0.4.2 (developing DEMO)
 
 [Update logs](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/update_logs.md)
 

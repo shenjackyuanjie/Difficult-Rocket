@@ -177,13 +177,13 @@ def default_name_handler(name: str) -> str:
     return name
 
 
-def name_handler(name: str, configs=None) -> str:
-    if configs is None:
+def name_handler(name: str, formats=None) -> str:
+    if formats is None:
         return default_name_handler(name)
     name = default_name_handler(name)
-    for need_replace in configs:
-        replace = configs[need_replace]
+    for need_replace in formats:
+        replace = formats[need_replace]
         if need_replace == '{date}':
-            replace = time.strftime(configs['{date}'], time.gmtime(time.time()))
+            replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
         name = name.replace(need_replace, replace)
     return name
