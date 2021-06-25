@@ -22,7 +22,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 - 都在 [这](https://github.com/shenjackyuanjie/Difficult-Rocket/projects)
 
-## 环境需求 （测试过的/开发平台）
+## 环境需求 （测试过的 / 开发平台）
 
 -
     - `开发平台1 Windows 10`
