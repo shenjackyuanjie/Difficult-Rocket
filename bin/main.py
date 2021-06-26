@@ -41,7 +41,7 @@ class Game:
         self.lang = tools.config('configs/sys_value/lang/%s.json5' % self.language, 'main')
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
-        self.log_filename = configs.name_handler(self.log_config['filename']['main'],
+        self.log_filename = tools.name_handler(self.log_config['filename']['main'],
                                                  {'date': self.log_config['date_fmt']})
         self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler = logging.StreamHandler()
@@ -88,7 +88,7 @@ class Game:
             self.main_logger.critical('%s' % self.lang['version.need3+'])
             raise SystemError('%s' % self.lang['version.need3+'])
         elif self.on_python_v_info[1] < 9:
-            warning = configs.name_handler(self.lang['version.best3.8+'])
+            warning = tools.name_handler(self.lang['version.best3.8+'])
             self.main_logger.warning(warning)
 
     def start(self):

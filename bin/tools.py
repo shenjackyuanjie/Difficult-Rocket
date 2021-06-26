@@ -3,16 +3,18 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import configparser
-import decimal
-import logging
-import math
 import sys
-from xml.dom.minidom import parse
 
 sys.path.append('./bin/libs/')
 sys.path.append('./')
 import json5
+import configparser
+import decimal
+import logging
+import math
+import time
+import os
+from xml.dom.minidom import parse
 
 try:
     import configs
@@ -253,7 +255,6 @@ def config(file_name, stack=None):  # // TODO 加上.config的读取+解析
         cp.read(file_name)  # config parser -> reader
 
 
-
 def get_At(name, in_xml, need_type=str):
     """
     get Attribute from a XML tree
@@ -278,3 +279,32 @@ def get_At(name, in_xml, need_type=str):
     else:
         raise TypeError('only str and list type is ok but you give me a' + name_type + 'type')
     return need_type(At)
+
+
+names = {'{time.time}': str(time.time()),
+         '{dir}': str(os.getcwd()),
+         '{py_v}': str(sys.version.split(' ')[0])}
+
+
+def default_name_handler(name: str) -> str:
+    """
+    won't change the string
+    just return one
+    """
+    name = name
+    name = name.replace('{time.time}', str(time.time()))
+    name = name.replace('{dir}', str(os.getcwd()))
+    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
+    return name
+
+
+def name_handler(name: str, formats=None) -> str:
+    if formats is None:
+        return default_name_handler(name)
+    name = default_name_handler(name)
+    for need_replace in formats:
+        replace = formats[need_replace]
+        if need_replace == '{date}':
+            replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
+        name = name.replace(need_replace, replace)
+    return name

@@ -6,14 +6,14 @@
   'caption': 'Simple Rocket {version}',
   // {version} -> version of SR
   'caption_option': {
-    'version': '0.4.1'
+    'version': '0.4.3'
   },
   'resizable': 'true',
   // bool
   'visible': 'true',
   // bool
   'style': 'None',
-  'fps': 120,
+  'fps': 60,
   'views': [
     'space',
     'map',

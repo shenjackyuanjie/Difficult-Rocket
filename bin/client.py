@@ -39,7 +39,7 @@ class client(mp.Process):
         self.net_mode = net_mode
         self.window_config = tools.config('configs/sys_value/window.json5')
         self.caption = self.window_config['caption']
-        self.caption = configs.name_handler(self.caption, {'version': self.window_config['caption_option']['version']})
+        self.caption = tools.name_handler(self.caption, {'version': self.window_config['caption_option']['version']})
         self.window = window(logger=logger,
                              dev_dic=dev_dic,
                              dev_list=dev_list,

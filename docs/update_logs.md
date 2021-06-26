@@ -5,6 +5,21 @@
 - [README](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [中文README](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
 
+## 2021/06/26 V 0.4.3
+
+### DEBUG
+
+- some name_format bug
+
+### Change
+
+- doing: change render pip line ('m really doing)
+- default FPS from 120 -> 60
+
+### Add
+
+- add performance_test folder
+- add some performances test
 
 ## 2021/05/24 V 0.4.2
 

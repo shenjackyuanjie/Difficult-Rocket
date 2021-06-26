@@ -3,12 +3,12 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import decimal
-import logging
 # import re
 import os
 import sys
 import time
+import decimal
+import logging
 
 sys.path.append('./bin/libs/')
 sys.path.append('./')
@@ -127,18 +127,6 @@ def basic_force() -> list:
     return BasicNumber(unit1='N', num=2)
 
 
-def configs(name, option=None) -> dict:
-    with open(name, 'r') as file:
-        data = json5.load(file)
-        if option:
-            try:
-                data = data[option]
-            except IndexError as exp:
-                log = 'can\'t find stack named %s in file %s' % (option, name)
-                configs_logger.exception(log)
-                raise IndexError(log)
-        return data
-
 """
 name_handlers = {'time.time': str(time.time()),
                  'dir': str(os.getcwd()),
@@ -159,31 +147,3 @@ def name_handler(name: str, configs=dict) -> str:
     handler_name = name.format(**names)
     return handler_name
 """
-
-names = {'{time.time}': str(time.time()),
-         '{dir}': str(os.getcwd()),
-         '{py_v}': str(sys.version.split(' ')[0])}
-
-
-def default_name_handler(name: str) -> str:
-    """
-    won't change the string
-    just return one
-    """
-    name = name
-    name = name.replace('{time.time}', str(time.time()))
-    name = name.replace('{dir}', str(os.getcwd()))
-    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
-    return name
-
-
-def name_handler(name: str, formats=None) -> str:
-    if formats is None:
-        return default_name_handler(name)
-    name = default_name_handler(name)
-    for need_replace in formats:
-        replace = formats[need_replace]
-        if need_replace == '{date}':
-            replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
-        name = name.replace(need_replace, replace)
-    return name

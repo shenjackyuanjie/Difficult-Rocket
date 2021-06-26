@@ -19,15 +19,16 @@ if __name__ == '__main__':
     print("__file__ = ", __file__)
     print("os.path.abspath(__file__) = ", os.path.abspath(__file__))
     print("os.path.realpath(__file__) = ", os.path.realpath(__file__))
-    print("os.path.dirname(os.path.realpath(__file__)) = ", 
-    os.path.dirname(os.path.realpath(__file__)))
-    print("os.path.split(os.path.realpath(__file__)) = ", 
-    os.path.split(os.path.realpath(__file__)))
-    print("os.path.split(os.path.realpath(__file__))[0] = ", 
-    os.path.split(os.path.realpath(__file__))[0])
+    print("os.path.dirname(os.path.realpath(__file__)) = ",
+          os.path.dirname(os.path.realpath(__file__)))
+    print("os.path.split(os.path.realpath(__file__)) = ",
+          os.path.split(os.path.realpath(__file__)))
+    print("os.path.split(os.path.realpath(__file__))[0] = ",
+          os.path.split(os.path.realpath(__file__))[0])
     print("os.getcwd() = ", os.getcwd())
     from bin import main
-    os.chdir(sys.path[0]) # TODO 没做完.ing
+
+    os.chdir(sys.path[0])  # TODO 没做完.ing
     print(hi)
     game = main.Game()
     game.start()
