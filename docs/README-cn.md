@@ -16,13 +16,13 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 没有。一个也没有
 
-（因为还没写完呢）
+(因为还没写完呢)
 
 ## 计划特性
 
 - 都在 [这](https://github.com/shenjackyuanjie/Difficult-Rocket/projects)
 
-## 环境需求 （测试过的/开发平台）
+## 环境需求 (测试过的 / 开发平台)
 
 -
     - `开发平台1 Windows 10`
@@ -31,7 +31,7 @@ For an English version of readme, please move [here](https://github.com/shenjack
     - `Pyglet 1.5.16`
     - `Json5 0.9.5`
     - `pillow 8.1.0`
-    - `AMD R5 5600X(AMD YES!）`
+    - `AMD R5 5600X(AMD YES!)`
 -
     - `开发平台2 macOS Big Sur`
     - `Python 3.8.7`
@@ -43,8 +43,8 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 需要的Python模块
 
-- json5（已经内置V0.9.5 路径：`./bin/libs/json5`）
-- pyglet（已经内置V1.5.16 路径：`./bin/libs/pyglet`）
+- json5 (已经内置V0.9.5 路径：`./bin/libs/json5`)
+- pyglet (已经内置V1.5.16 路径：`./bin/libs/pyglet`)
 - pillow
 
 ## 感谢
