@@ -3,7 +3,30 @@
 ## Readme
 
 - [README](https://github.com/shenjackyuanjie/Difficult-Rocket)
-- [中文README](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
+- [中文README](README-cn.md)
+- Using [SemVer 2.0.0](https://semver.org/) to manage version
+
+## 20210708 V 0.4.4
+
+### PS
+
+- Nice day everyone!
+- I have finish my final exam on grade 8.
+- Will soon reach grade 9, so update will be late very much.
+
+### Change
+
+- function tools.config()'s way of raise error change tools.report_file_error()
+- function tools.cb() change name to tools.format_bool()
+- config.py clear some useless import class
+- changing configfile to main.config *doing
+
+### Test change
+
+- test_config_file.py
+- test_for_speed.py
+- test_logging_conf.py
+- test_speed_of_sprite.py
 
 ## 2021/06/26 V 0.4.3
 
@@ -38,8 +61,8 @@
 - debug name_format
 
 ## 2021/04/17 V 0.4.1
- 
-PS: 
+
+PS:
 
 - `Va.b.c`
 

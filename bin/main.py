@@ -3,10 +3,10 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
+import logging
 import os
 import sys
 import time
-import logging
 # share memory
 from multiprocessing import Manager as share
 
@@ -42,10 +42,9 @@ class Game:
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
         self.log_filename = tools.name_handler(self.log_config['filename']['main'],
-                                                 {'date': self.log_config['date_fmt']})
+                                               {'date': self.log_config['date_fmt']})
         self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler = logging.StreamHandler()
-        self.root_logger_stream_handler.setLevel(self.log_config['level'])
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
         self.root_logger_stream_handler.setLevel(tools.log_level(self.log_config['level']))
         try:

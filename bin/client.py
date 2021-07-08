@@ -7,6 +7,7 @@ import multiprocessing as mp
 import os
 import sys
 import time
+
 sys.path.append('./bin/libs/')
 sys.path.append('./')
 import pyglet
@@ -47,10 +48,10 @@ class client(mp.Process):
                              net_mode=net_mode,
                              width=int(self.window_config['width']),
                              height=int(self.window_config['height']),
-                             fullscreen=tools.c_b(self.window_config['full_screen']),
+                             fullscreen=tools.format_bool(self.window_config['full_screen']),
                              caption=self.caption,
-                             resizable=tools.c_b(self.window_config['resizable']),
-                             visible=tools.c_b(self.window_config['visible']))
+                             resizable=tools.format_bool(self.window_config['resizable']),
+                             visible=tools.format_bool(self.window_config['visible']))
         self.log_config()
 
     def log_config(self):

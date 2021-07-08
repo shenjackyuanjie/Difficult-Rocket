@@ -1,20 +1,21 @@
 """
 writen by shenjackyuanjie
 mail: 3695888@qq.com
+github: @shenjackyuanjie
 """
 
-import sys
-
-sys.path.append('./bin/libs/')
-sys.path.append('./')
-import json5
 import configparser
 import decimal
 import logging
 import math
-import time
 import os
+import sys
+import time
 from xml.dom.minidom import parse
+
+sys.path.append('./bin/libs/')
+sys.path.append('./')
+import json5
 
 try:
     import configs
@@ -25,11 +26,118 @@ except ModuleNotFoundError:
 tools_logger = logging.getLogger('part-tools')
 
 """
+file configs
+"""
+
+
+def report_file_error(filetype: str, error_type, filename: str, stack: any):
+    if error_type == FileNotFoundError:
+        log = 'no config %s file \n file name: %s \n file type: %s \n stack: %s' % (filetype, filename, filetype, stack)
+    elif error_type == KeyError:
+        log = 'no stack in %s file: %s \n file type: %s \n stack: %s' % (filetype, filename, filetype, stack)
+    else:
+        log = 'some error has been found! \n error type: %s \n file name: %s \n file type: %s \n stack: %s' % (error_type, filename, filetype, stack)
+    tools_logger.exception(log)
+    raise error_type(log)
+
+
+def config(file_name: str, stack=None):
+    f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
+    try:
+        if (f_type == 'json5') or (f_type == 'json'):
+            try:
+                with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
+                    rd = json5.load(jf)
+            except UnicodeDecodeError:
+                with open(file_name, 'r', encoding='gbk') as jf:
+                    rd = json5.load(jf)
+                tools_logger.info('文件 %s 解码错误，已重新使用gbk编码打开' % file_name)
+            if stack is not None:
+                rd = rd[stack]
+            return rd
+        elif f_type == 'xml':
+            xml_load = parse(file_name)
+            if stack is not None:
+                xml_get = xml_load.getElementsByTagName(stack)
+                return xml_get
+            else:
+                return xml_load
+        elif (f_type == 'config') or (f_type == 'conf'):
+            cp = configparser.ConfigParser()  # cp -> config parser
+            cp.read(file_name)  # config parser -> reader
+            rd = {}
+            for section in cp.sections():
+                rd[section] = {}
+                for data in cp[section]:
+                    rd[section][data] = cp[section][data]
+            if stack:
+                rd = rd[stack]
+            return rd
+    except Exception as exp:
+        report_file_error(f_type, exp, file_name, stack)
+
+
+# main config
+main_config_file = config('./configs/main.config')
+
+
+def get_At(name, in_xml, need_type=str):
+    """
+    get Attribute from a XML tree
+    will raise TypeError if input is not str or list
+    XML no!   Json5 yes!
+    """
+    name_type = type(name)
+    if name_type == list:
+        At_list = []
+        for need_name in name:
+            if in_xml.hasAttribute(need_name):
+                get = in_xml.getAttribute(need_name)
+                At_list.append(need_type(get))
+            else:
+                continue
+        return At_list
+    elif name_type == str:
+        if in_xml.hasAttribute(name):
+            At = in_xml.getAttribute(name)
+        else:
+            return None
+    else:
+        raise TypeError('only str and list type is ok but you give me a' + name_type + 'type')
+    return need_type(At)
+
+
+def default_name_handler(name_: str) -> str:
+    """
+    won't change the string
+    just return one
+    """
+    name = name_
+    name = name.replace('{time.time}', str(time.time()))
+    name = name.replace('{dir}', str(os.getcwd()))
+    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
+    name = name.replace('{version}', str(main_config_file['runtime']['version']))
+    return name
+
+
+def name_handler(name: str, formats=None) -> str:
+    if formats is None:
+        return default_name_handler(name)
+    name = default_name_handler(name)
+    for need_replace in formats:
+        replace = formats[need_replace]
+        if need_replace == '{date}':
+            replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
+        name = name.replace(need_replace, replace)
+    return name
+
+
+"""
 some tools
 """
 
 
-def c_b(thing):  # stand for my bool
+def format_bool(thing):
     yes = ['True', 'TRUE', 'true', '1', 1, True]
     no = ['False', 'FALSE', 'false', '0', 0, False]
     if thing in yes:
@@ -57,14 +165,14 @@ def log_level(level):
         if (level == 'CRITICAL') or (level == logging.CRITICAL):
             return logging.CRITICAL
     else:
-        raise ValueError('Need a like level thing not anything else')
+        raise ValueError('Need a like logging.level thing not anything else')
 
 
 # linear_algebra
 
 def C_R_P(position, degrees):  # stand for calculation
     """
-    very thanks for lenny from pyglet delvoper
+    very thanks for lenny from pyglet developer
     https://github.com/LennyPhoenix
     this part of code is write by him
     """
@@ -107,7 +215,7 @@ def F_A(A: decimal, B: decimal) -> decimal:
         return A + B
 
 
-def D_C(listA: list, listB: list) -> '1':  # stand for Duplicate check
+def D_C(listA: list, listB: list):  # stand for Duplicate check
     """
     usage:\n
     input two list\n
@@ -122,7 +230,6 @@ def D_C(listA: list, listB: list) -> '1':  # stand for Duplicate check
             continue
     listA.sort()
     listB.sort()
-    return 1
 
 
 def S_C_float_check(SC):  # stand for Scientific notation's float check
@@ -142,7 +249,7 @@ def S_N_M(*SN):  # stand for Scientific notation multiple
     formats:
     A & B & C list format:docs.basic_config.json:basic_number"""
     if len(SN) < 2:
-        raise TypeError('it need more than 2!')
+        raise TypeError('it need more than 1!')
     elif len(SN) == 2:
         return __S_N_M(SN[0], SN[1])
     else:
@@ -213,98 +320,3 @@ def distance(A, B):
     poi_dis.append(poi_dis[0] + poi_dis[1])
     poi_dis[2] **= 0.5
     return poi_dis[2]
-
-
-# loads
-
-
-def config(file_name, stack=None):  # // TODO 加上.config的读取+解析
-    f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
-    if (f_type == 'json5') or (f_type == 'json'):
-        try:
-            try:
-                with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
-                    rd = json5.load(jf)
-            except UnicodeDecodeError:
-                with open(file_name, 'r', encoding='gbk') as jf:
-                    rd = json5.load(jf)
-                tools_logger.info('文件 %s 解码错误，已重新使用gbk编码打开' % file_name)
-        except FileNotFoundError as exp:
-            log = 'no config json(5) file \n file name : %s \n stack : %s' % (
-                file_name, stack)
-            tools_logger.exception(log)
-            raise FileNotFoundError(log)
-        if stack is not None:
-            rd = rd[stack]
-        return rd
-    elif f_type == 'xml':
-        try:
-            xml_load = parse(file_name)
-        except FileNotFoundError as exp:
-            log = 'no config xml file \n file name : %s \n stack : %s' % (
-                file_name, stack)
-            tools_logger.exception(log)
-            raise FileNotFoundError(log)
-        if stack is not None:
-            xml_get = xml_load.getElementsByTagName(stack)
-            return xml_get
-        else:
-            return xml_load
-    elif (f_type == 'config') or (f_type == 'conf'):
-        cp = configparser.ConfigParser()  # cp -> config parser
-        cp.read(file_name)  # config parser -> reader
-
-
-def get_At(name, in_xml, need_type=str):
-    """
-    get Attribute from a XML tree
-    will raise TypeError if input is not str or list
-    XML no!   Json5 yes!
-    """
-    name_type = type(name)
-    if name_type == list:
-        At_list = []
-        for need_name in name:
-            if in_xml.hasAttribute(need_name):
-                get = in_xml.getAttribute(need_name)
-                At_list.append(need_type(get))
-            else:
-                continue
-        return At_list
-    elif name_type == str:
-        if in_xml.hasAttribute(name):
-            At = in_xml.getAttribute(name)
-        else:
-            return None
-    else:
-        raise TypeError('only str and list type is ok but you give me a' + name_type + 'type')
-    return need_type(At)
-
-
-names = {'{time.time}': str(time.time()),
-         '{dir}': str(os.getcwd()),
-         '{py_v}': str(sys.version.split(' ')[0])}
-
-
-def default_name_handler(name: str) -> str:
-    """
-    won't change the string
-    just return one
-    """
-    name = name
-    name = name.replace('{time.time}', str(time.time()))
-    name = name.replace('{dir}', str(os.getcwd()))
-    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
-    return name
-
-
-def name_handler(name: str, formats=None) -> str:
-    if formats is None:
-        return default_name_handler(name)
-    name = default_name_handler(name)
-    for need_replace in formats:
-        replace = formats[need_replace]
-        if need_replace == '{date}':
-            replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
-        name = name.replace(need_replace, replace)
-    return name

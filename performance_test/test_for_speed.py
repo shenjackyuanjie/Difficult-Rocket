@@ -3,6 +3,7 @@
 import random
 import time
 from pprint import pprint
+
 TPS = 60
 SPT = 1 / TPS
 
@@ -26,8 +27,8 @@ while t < times:
         pass
     print(t, end='\n')
     e_t = time.time()
-    time_list[t] = [s_t, e_t, e_t-s_t]
+    time_list[t] = [s_t, e_t, e_t - s_t]
 end_time = time.time()
 pprint(time_list)
 pprint(test_list)
-print(start_t, end_time, end_time-start_t)
+print(start_t, end_time, end_time - start_t)
