@@ -16,17 +16,17 @@
 
 ### Change
 
-- function tools.config()'s way of raise error change tools.report_file_error()
-- function tools.cb() change name to tools.format_bool()
+- function `tools.config()` way of raise error change `tools.report_file_error()`
+- function `tools.cb()` change name to `tools.format_bool()`
 - config.py clear some useless import class
 - changing configfile to main.config *doing
 
 ### Test change
 
-- test_config_file.py
-- test_for_speed.py
-- test_logging_conf.py
-- test_speed_of_sprite.py
+- `test_config_file.py`
+- `test_for_speed.py`
+- `test_logging_conf.py`
+- `test_speed_of_sprite.py`
 
 ## 2021/06/26 V 0.4.3
 
