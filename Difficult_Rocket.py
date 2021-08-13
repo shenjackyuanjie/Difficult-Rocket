@@ -9,6 +9,7 @@ QQ: 3695888"""
 
 import os
 import sys
+import traceback
 
 ## TODO 默认位置配置文件+可自定义工作路径
 
@@ -30,5 +31,9 @@ if __name__ == '__main__':
 
     os.chdir(sys.path[0])  # TODO 没做完.ing
     print(hi)
-    game = main.Game()
-    game.start()
+    try:
+        game = main.Game()
+        game.start()
+    except:
+        error = traceback.format_exc()
+        print(error)

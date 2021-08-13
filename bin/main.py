@@ -3,10 +3,11 @@ writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
 
-import logging
 import os
 import sys
 import time
+import logging
+import multiprocessing
 # share memory
 from multiprocessing import Manager as share
 
@@ -38,11 +39,11 @@ class Game:
         # lang_config
         self.language = tools.config('configs/sys_value/basic_config.json5')
         self.language = self.language['language']
-        self.lang = tools.config('configs/sys_value/lang/%s.json5' % self.language, 'main')
+        self.lang = tools.config('configs/lang/%s.json5' % self.language, 'main')
         # logger
         self.log_config = tools.config('configs/logging.json5', 'file')
         self.log_filename = tools.name_handler(self.log_config['filename']['main'],
-                                               {'date': self.log_config['date_fmt']})
+                                               {'{date}': self.log_config['date_fmt']})
         self.root_logger_fmt = logging.Formatter(self.log_config['fmt'], self.log_config['date_fmt'])
         self.root_logger_stream_handler = logging.StreamHandler()
         self.root_logger_stream_handler.setFormatter(self.root_logger_fmt)
@@ -59,19 +60,18 @@ class Game:
         logging.getLogger().addHandler(self.root_logger_stream_handler)
         logging.getLogger().addHandler(self.root_logger_file_handler)
         # create logger
-        self.main_logger = logging.getLogger().getChild('main')
-        self.server_logger = logging.getLogger().getChild('server')
-        self.client_logger = logging.getLogger().getChild('client')
+        self.main_logger = logging.getLogger('main')
         # output info
         self.main_logger.info(self.lang['logger.created'])
         self.main_logger.info(self.lang['logger.main_done'])
         self.log_configs()
         # version check
         self.python_version_check()
-        # client and server
-        self.client = client.client(self.client_logger, self.dicts, self.lists, self.language, net_mode='local')
-        self.server = server.server(self.lists, self.dicts, self.server_logger, language=self.language,
-                                    net_mode='local')
+        self.setup()
+
+    def setup(self):
+        self.client = client.Client(self.lists, self.dicts, net_mode='local')
+        self.server = server.server(self.lists, self.dicts, net_mode='local')
 
     def log_configs(self):
         self.main_logger.info('%s %s' % (self.lang['logger.language'], self.lang['lang.language']))
@@ -81,15 +81,15 @@ class Game:
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_fmt'], self.log_config['fmt']))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_datefmt'], self.log_config['date_fmt']))
 
-    def python_version_check(self):  # best 3.8+ and write at 3.8.9
+    def python_version_check(self):  # best 3.8+ and write at 3.8.10
         self.main_logger.info('%s %s' % (self.lang['version.now_on'], self.on_python_v))
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('%s' % self.lang['version.need3+'])
             raise SystemError('%s' % self.lang['version.need3+'])
-        elif self.on_python_v_info[1] < 9:
+        elif self.on_python_v_info[1] < 8:
             warning = tools.name_handler(self.lang['version.best3.8+'])
             self.main_logger.warning(warning)
 
     def start(self):
-        # start
+        self.server.run()
         self.client.run()

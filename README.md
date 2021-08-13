@@ -1,32 +1,29 @@
-# Difficult-Rocket
+# [Difficult-Rocket(github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
+# [Difficult-Rocket(gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 
-### Version
+## Version
 
-0.4.3 (developing DEMO)
+- (developing DEMO)(coming s∞n)
+- 0.4.6 release
+- 0.5.0 developing
 
-[Update logs](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/update_logs.md)
-
-[Plan feature list](https://github.com/shenjackyuanjie/Difficult-Rocket/tree/main/docs/plan_features)
-
-中文README请移步 [这里](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/README-cn.md)
+## 中文README请移步 [这里](./docs/README-cn.md)
 
 > It's a Simple Rocket liked game build with Python
 
 ## Advantage
 
-None. Not even one!
+> Lighter than Vanilla SR
 
-(Because we are still writing the description, coming s∞n)
+## [Plan feature list](./docs/plan_features)
 
-## Planed feature
-
-- All In [here](https://github.com/shenjackyuanjie/Difficult-Rocket/projects)
+## [Update logs](./docs/update_logs.md)
 
 ## Environment (been tested / develop on)
 
 -
     - `Develop platform 1 - Windows 10`
-    - `Python 3.8.7`
+    - `Python 3.8.10`
     - `Windows10 x64`
     - `Pyglet 1.5.16`
     - `Json5 0.9.5`
@@ -43,9 +40,10 @@ None. Not even one!
 
 ## Required python modules
 
-- json5 (pre-installed V0.9.5 path:`./bin/libs/json5`)
-- pyglet (pre-installed V1.5.16 path:`./bin/libs/pyglet`)
+- json5 (pre-installed V0.9.6 path:`./bin/libs/json5`)
+- pyglet (pre-installed V1.5.18 path:`./bin/libs/pyglet`)
 - pillow
+- semver
 
 ## thanks to
 
@@ -53,6 +51,8 @@ None. Not even one!
 - [@rouxiao-you](https://github.com/ruoxiao-you) : transfer chinese to English
 - [@Rayawa](https://github.com/Rayawa) : check mistake in docs
 - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
+
+## Other links
 
 ## About License
 

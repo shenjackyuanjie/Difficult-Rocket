@@ -6,6 +6,54 @@
 - [中文README](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202108 V 0.5.0
+
+making
+
+## 20210811 V 0.4.6
+
+### DEBUG
+
+- game window doesn't use input `(*args, **kwargs)` to setup
+
+### Change
+
+- language type `zh-cn` -> `zh-CN`
+- game window config now use `configs/main.config` to config
+- `on_mouse_click` function's debug message now use `self.lang` to debug message (witch is multi-language)
+- server client and main now use `logging.getLogger()`
+
+### Add
+
+- `[window_default]` in `configs/main.config`
+- server and client now will output `PID` and `PPID` info as `INFO`
+- `client` now change to `ClientWindow`
+
+### Delete
+
+- all game window render has been deleted
+- - will be rewritten in 0.5.0
+- delete some useless code
+- delete some useless file
+
+## 20210723 V 0.4.5
+
+### DEBUG
+
+- `new_thread.py` link of stackoverflow have an extra 'find' in the middle REMOVED
+
+### Add
+
+- `new_thread.py` now can use @new_thread to get a threaded fun
+
+### Change
+
+- `README.md` and `README-cn.md` change URL to file path
+- `README.md` and `README-cn.md` some label style change
+- Pre-installed `pyglet` upgrade from `1.5.16` -> `1.5.18`
+- Pre-installed `json5` upgrade from `0.9.5` -> `0.9.6`
+
+
 ## 20210708 V 0.4.4
 
 ### PS

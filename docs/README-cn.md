@@ -1,32 +1,29 @@
-# Difficult-Rocket
+# [Difficult-Rocket(github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
+# [Difficult-Rocket(gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 
 ## 版本
 
-0.4.3 (开发DEMO.ing)
+- (开发DEMO.ing)(coming s∞n)
+- 0.4.6 预览版
+- 0.5.0 开发中.ing
 
-[更新日志](https://github.com/shenjackyuanjie/Difficult-Rocket/blob/main/docs/update_logs.md)
-
-[计划特性列表](https://github.com/shenjackyuanjie/Difficult-Rocket/tree/main/docs/plan_features)
-
-For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
+### For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
 > 这是一个用Python制作的类Simple Rocket游戏
 
 ## 优势
 
-没有。一个也没有
+> 相对于原版SR比较“轻量化”
 
-(因为还没写完呢)
+## [计划特性列表](./plan_features)
 
-## 计划特性
-
-- 都在 [这](https://github.com/shenjackyuanjie/Difficult-Rocket/projects)
+## [更新日志](./update_logs.md)
 
 ## 环境需求 (测试过的 / 开发平台)
 
 -
     - `开发平台1 Windows 10`
-    - `Python 3.8.7`
+    - `Python 3.8.10`
     - `Windows10 x64`
     - `Pyglet 1.5.16`
     - `Json5 0.9.5`
@@ -43,9 +40,10 @@ For an English version of readme, please move [here](https://github.com/shenjack
 
 ## 需要的Python模块
 
-- json5 (已经内置V0.9.5 路径：`./bin/libs/json5`)
-- pyglet (已经内置V1.5.16 路径：`./bin/libs/pyglet`)
+- json5 (已经内置V0.9.6 路径：`./bin/libs/json5`)
+- pyglet (已经内置V1.5.18 路径：`./bin/libs/pyglet`)
 - pillow
+- semver
 
 ## 感谢
 
@@ -53,6 +51,8 @@ For an English version of readme, please move [here](https://github.com/shenjack
 - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译lang
 - [@Rayawa](https://github.com/Rayawa) : 文档矫正
 - [@Billchyi](https://github.com/Billchyi) : 文档矫正
+
+## 相关链接
 
 ## 关于分享协议
 

@@ -5,12 +5,14 @@ github: @shenjackyuanjie
 """
 
 import configparser
+import traceback
 import decimal
 import logging
+import semver
 import math
-import os
-import sys
 import time
+import sys
+import os
 from xml.dom.minidom import parse
 
 sys.path.append('./bin/libs/')
@@ -31,14 +33,14 @@ file configs
 
 
 def report_file_error(filetype: str, error_type, filename: str, stack: any):
-    if error_type == FileNotFoundError:
-        log = 'no config %s file \n file name: %s \n file type: %s \n stack: %s' % (filetype, filename, filetype, stack)
-    elif error_type == KeyError:
+    error = traceback.format_exc()
+    if isinstance(error_type, FileNotFoundError):
+        log = 'no {} file was found!: \n file name: {} \n file type: {} \n stack: {} \n traceback: {}'.format(filetype, filename, filetype, stack, error)
+    elif isinstance(error_type, KeyError):
         log = 'no stack in %s file: %s \n file type: %s \n stack: %s' % (filetype, filename, filetype, stack)
     else:
         log = 'some error has been found! \n error type: %s \n file name: %s \n file type: %s \n stack: %s' % (error_type, filename, filetype, stack)
     tools_logger.exception(log)
-    raise error_type(log)
 
 
 def config(file_name: str, stack=None):
@@ -73,12 +75,23 @@ def config(file_name: str, stack=None):
             if stack:
                 rd = rd[stack]
             return rd
+    except FileNotFoundError:
+        log = 'no {} file was found!: \n file name: {} \n file type: {} \n stack: {}'.format(f_type, file_name, f_type, stack)
+        tools_logger.error(log)
+        raise
+    except KeyError:
+        log = 'no stack in {} file {} was found! \n file type: {} \n file name: {} \n stack: {}'.format(f_type, file_name, f_type, file_name, stack)
+        tools_logger.error(log)
+        raise
     except Exception as exp:
-        report_file_error(f_type, exp, file_name, stack)
+        log = 'some error has been found!\n error type: {} \n file name: {} \n file type: {} \n stack: {}'.format(type(exp), file_name, f_type, stack)
+        tools_logger.error(log)
+        raise
 
 
 # main config
 main_config_file = config('./configs/main.config')
+Version = semver.VersionInfo.parse(str(main_config_file['runtime']['version']))
 
 
 def get_At(name, in_xml, need_type=str):
@@ -117,17 +130,21 @@ def default_name_handler(name_: str) -> str:
     name = name.replace('{dir}', str(os.getcwd()))
     name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
     name = name.replace('{version}', str(main_config_file['runtime']['version']))
+    name = name.replace('{write_v}', str(main_config_file['runtime']['write_py_v']))
     return name
 
 
-def name_handler(name: str, formats=None) -> str:
+def name_handler(name: str, formats: dict = None) -> str:
     if formats is None:
         return default_name_handler(name)
     name = default_name_handler(name)
     for need_replace in formats:
         replace = formats[need_replace]
         if need_replace == '{date}':
-            replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
+            if '{date}' in formats:
+                replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
+            else:
+                replace = time.strftime(main_config_file['runtime']['date_fmt'], time.gmtime(time.time()))
         name = name.replace(need_replace, replace)
     return name
 

@@ -1,3 +1,5 @@
+-i https://pypi.tuna.tsinghua.edu.cn/simple
+semver
 pyglet
-json5
 pillow
+json5

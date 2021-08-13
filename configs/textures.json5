@@ -1,0 +1,23 @@
+{
+  'Editor': {
+    'runtime': {
+      'toolbar.dark': 'Editor/ToolbarDark.png',
+      'toolbar.light': 'Editor/ToolbarLight.png',
+      'button_side.dark': 'Editor/ButtonDarkSide.png',
+      'button_side.light': 'Editor/ButtonLightSide.png'
+    },
+    'toggle_button': {
+      'stage': 'Editor/ToolbarIconStaging.png',
+      'add_part': 'Editor/ToolbarIconAddPart.png',
+      'menu': 'Editor/ToolbarIconMenu.png'
+    },
+    'push_button': {
+      'zoom': 'Editor/ToolbarIconZoom.png',
+      'zoom.in': 'Editor/ToolbarIconZoomIn.png',
+      'zoom.out': 'Editor/ToolbarIconZoomOut.png',
+      'play': 'Editor/ToolbarIconPlay.png',
+      'rotate': 'Editor/RotateButton.png',
+      'trash_can': 'Editor/TrashCan.png'
+    }
+  }
+}

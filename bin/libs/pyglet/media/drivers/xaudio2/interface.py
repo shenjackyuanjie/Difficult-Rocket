@@ -76,6 +76,8 @@ class XAudio2Driver:
 
         self._players = []  # Only used for resetting/restoring xaudio2. Store players to callback.
 
+        self._create_xa2()
+
         if self.restart_on_error:
             audio_devices = get_audio_device_manager()
             if audio_devices:
@@ -86,8 +88,6 @@ class XAudio2Driver:
                     raise ImportError("No default audio device found, can not create driver.")
 
                 pyglet.clock.schedule_interval_soft(self._check_state, 0.5)
-
-        self._create_xa2()
 
     def _check_state(self, dt):
         """Hack/workaround, you cannot shutdown/create XA2 within a COM callback, set a schedule to check state."""
@@ -115,7 +115,11 @@ class XAudio2Driver:
 
     def _create_xa2(self, device_id=None):
         self._xaudio2 = lib.IXAudio2()
-        lib.XAudio2Create(ctypes.byref(self._xaudio2), 0, self.processor)
+
+        try:
+            lib.XAudio2Create(ctypes.byref(self._xaudio2), 0, self.processor)
+        except OSError:
+            raise ImportError("XAudio2 driver could not be initialized.")
 
         if _debug:
             # Debug messages are found in Windows Event Viewer, you must enable event logging:
