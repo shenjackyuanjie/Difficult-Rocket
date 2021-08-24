@@ -6,9 +6,24 @@
 - [中文README](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202108 V 0.5.0
+## 20210823 V 0.5.0
 
-making
+### Change
+
+- many `sys.path.append()` and 
+- `try: import xxx except: from bin import xxx` has been removed
+- and now IDE won't blame you when you open the file anymore!(LOL)
+- `Server` now use Dev to delivery message between thread(will be done in 0.6.0)
+- test files now use `_test_*.py` for names
+
+### Add
+
+- `crash.py` to handle and create crash report (not done)
+- `DragSprite` (maybe will add in future pyglet update PR has been published)
+
+### Delete
+
+- `name_hanlder` in `configs.py`
 
 ## 20210811 V 0.4.6
 

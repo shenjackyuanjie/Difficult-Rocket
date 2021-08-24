@@ -4,25 +4,24 @@ mail: 3695888@qq.com
 github: @shenjackyuanjie
 """
 
-import configparser
-import traceback
-import decimal
-import logging
-import semver
-import math
-import time
-import sys
 import os
+import sys
+import time
+import math
+import semver
+import logging
+import decimal
+import traceback
+import configparser
 from xml.dom.minidom import parse
 
-sys.path.append('./bin/libs/')
-sys.path.append('./')
+if __name__ == '__main__':  # been start will not run this
+    sys.path.append('/bin/libs')
+    sys.path.append('/bin')
+
 import json5
 
-try:
-    import configs
-except ModuleNotFoundError:
-    from bin import configs
+import configs
 
 # logger
 tools_logger = logging.getLogger('part-tools')
@@ -64,7 +63,7 @@ def config(file_name: str, stack=None):
                 return xml_get
             else:
                 return xml_load
-        elif (f_type == 'config') or (f_type == 'conf'):
+        elif (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
             cp = configparser.ConfigParser()  # cp -> config parser
             cp.read(file_name)  # config parser -> reader
             rd = {}

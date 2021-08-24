@@ -8,25 +8,20 @@ import sys
 import time
 import logging
 import multiprocessing
-# share memory
 from multiprocessing import Manager as share
 
-sys.path.append('./bin/libs/')
-sys.path.append('./')
-try:
-    from bin import tools
-    from bin import client
-    from bin import server
-    from bin import configs
-except (ModuleNotFoundError, ImportError, ImportWarning):
-    import tools
-    import client
-    import server
-    import configs
+if __name__ == '__main__':  # been start will not run this
+    sys.path.append('/bin/libs')
+    sys.path.append('/bin')
+
+import tools
+import client
+import server
+import configs
+import pyglet
 
 
 class Game:
-
     def __init__(self):
         # basic config
         self.on_python_v_info = sys.version_info
@@ -69,11 +64,11 @@ class Game:
         self.python_version_check()
         self.setup()
 
-    def setup(self):
+    def setup(self) -> None:
         self.client = client.Client(self.lists, self.dicts, net_mode='local')
-        self.server = server.server(self.lists, self.dicts, net_mode='local')
+        self.server = server.Server(self.lists, self.dicts, net_mode='local')
 
-    def log_configs(self):
+    def log_configs(self) -> None:
         self.main_logger.info('%s %s' % (self.lang['logger.language'], self.lang['lang.language']))
         self.main_logger.info('%s %s' % (self.lang['game_start.at'], self.start_time))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_name'], self.log_filename))
@@ -81,7 +76,7 @@ class Game:
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_fmt'], self.log_config['fmt']))
         self.main_logger.debug('%s %s' % (self.lang['logger.logfile_datefmt'], self.log_config['date_fmt']))
 
-    def python_version_check(self):  # best 3.8+ and write at 3.8.10
+    def python_version_check(self) -> None:  # best 3.8+ and write at 3.8.10
         self.main_logger.info('%s %s' % (self.lang['version.now_on'], self.on_python_v))
         if self.on_python_v_info[0] == 2:
             self.main_logger.critical('%s' % self.lang['version.need3+'])
@@ -90,6 +85,6 @@ class Game:
             warning = tools.name_handler(self.lang['version.best3.8+'])
             self.main_logger.warning(warning)
 
-    def start(self):
+    def start(self) -> None:
         self.server.run()
-        self.client.run()
+        pyglet.app.run()

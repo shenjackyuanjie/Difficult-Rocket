@@ -17,7 +17,8 @@
     'setup.done': '客户端载入完成',
     'os.pid_is': '客户端 PID: {} PPID: {}',
     'button.been_press': '按钮被按下，目前状态为：',
-    'mouse.press_at': '鼠标在 {} 被按下，按键为：{}',
+    'mouse.press': '鼠标在 {} 被按下，按键为：{}',
+    'mouse.release': '鼠标在 {} 释放，按键为：{}',
     'mouse.right': '右键',
     'mouse.left': '左键'
   },

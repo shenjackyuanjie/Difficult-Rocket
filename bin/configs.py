@@ -8,13 +8,11 @@ import logging
 # import re
 import sys
 
-sys.path.append('./bin/libs/')
-sys.path.append('./')
+if __name__ == '__main__':  # been start will not run this
+    sys.path.append('/bin/libs')
+    sys.path.append('/bin')
 
-try:
-    from bin import tools
-except (ModuleNotFoundError, ImportError, ImportWarning):
-    import tools
+import tools
 
 # logger
 configs_logger = logging.getLogger('configs')
@@ -122,24 +120,3 @@ def basic_poi(poi_type=None) -> list:
 def basic_force() -> list:
     return BasicNumber(unit1='N', num=2)
 
-
-"""
-name_handlers = {'time.time': str(time.time()),
-                 'dir': str(os.getcwd()),
-                 'py_v': str(sys.version.split(' ')[0])
-                 }
-
-
-def name_handler(name: str, configs=dict) -> str:
-    names = name_handlers
-    if configs is dict:
-        pass
-    elif type(configs) is dict:
-        names.update(configs)
-    else:
-        pass
-    if 'date' in names:
-        names['date'] = str(time.strftime(names['date'], time.gmtime(time.time())))
-    handler_name = name.format(**names)
-    return handler_name
-"""

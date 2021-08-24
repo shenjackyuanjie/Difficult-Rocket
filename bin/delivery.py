@@ -8,7 +8,7 @@ class Delivery:
     def __init__(self):
         # bool
         self.using = False
-        self.rended = False
+        self.read = False
         self.key_board_get = False
         # dic
         self.ship_info = {}
