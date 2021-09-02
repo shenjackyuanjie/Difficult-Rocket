@@ -9,10 +9,12 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我！)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202108 V 0.5.1
+## 20210902 V 0.5.1
 
 ### Change
 
+- crash report's format
+- crash report now use multithreading!
 - some info in `client`
 - `tools/format_bool` now use more clever way to format
 
