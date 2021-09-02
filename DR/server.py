@@ -10,15 +10,15 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-import tools
-import delivery
-from new_thread import new_thread
+from api import tools
+from api.delivery import Delivery
+from api.new_thread import new_thread
 
 # TODO 改变服务端启动逻辑 0.6.0会写完的（
 
 
 class Server:
-    def __init__(self, dev_list, dev_dic, net_mode='local', Dev: delivery.Delivery = delivery.Delivery):
+    def __init__(self, dev_list, dev_dic, net_mode='local', Dev: Delivery = Delivery):
         # father class __init__()
         # mp.Process.__init__(self)
         # logging

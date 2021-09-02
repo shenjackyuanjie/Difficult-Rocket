@@ -1,11 +1,16 @@
-# [Difficult-Rocket(github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
-# [Difficult-Rocket(gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+# Difficult Rocket
+- [github](https://github.com/shenjackyuanjie/Difficult-Rocket)
+- [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+
+[![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
+[![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Python-3.6_|_3.7_|_3.8_|_3.9-blue.svg)](https://Python.org)
 
 ## Version
 
-- (developing DEMO)(coming s∞n)
-- 0.4.6 release
-- 0.5.0 developing
+[![Generic badge](https://img.shields.io/badge/Release-0.4.5-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.5)
+<br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.4.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.6)
+<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.5.1-blue.svg)
 
 ## 中文README请移步 [这里](./docs/README-cn.md)
 

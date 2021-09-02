@@ -2,9 +2,26 @@
 
 ## Readme
 
-- [README](https://github.com/shenjackyuanjie/Difficult-Rocket)
-- [中文README](README-cn.md)
+[![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
+![Generic badge](https://img.shields.io/badge/Version-0.5.1-yellow.svg)
+- [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
+- [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+- [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我！)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
+
+## 202108 V 0.5.1
+
+### Change
+
+- some info in `client`
+- `tools/format_bool` now use more clever way to format
+
+### Add
+
+- `on_resize(self, width, height):` in `client`
+- auto crash report in `bin/crash/create_crash_report`
+- `bin/api/Exp.py` some Exception
+- `bin/api/translate` to create a `translate` class that can reload language
 
 ## 20210823 V 0.5.0
 

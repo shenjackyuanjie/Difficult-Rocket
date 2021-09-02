@@ -3,15 +3,14 @@
 .vs/
 DR.code-workspace
 
-# local libs
-pyglet/
-pyglet
-
 # PYCharm file
 .idea/
 
-# log file
-*.log
+# log files
+logs/
+
+# crash report files
+crash_report/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

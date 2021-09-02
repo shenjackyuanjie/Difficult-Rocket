@@ -65,7 +65,6 @@ class DragSprite(WidgetBase):
         self.dragging = False
 
     def _check_hit(self, x, y):
-        print(self._x, self._y, x, y, self._width, self._height)
         return self._x < x < self._x + self._width and self._y < y < self._y + self._height
 
     def on_mouse_press(self, x, y, buttons, modifiers):

@@ -19,5 +19,8 @@
       'rotate': 'Editor/RotateButton.png',
       'trash_can': 'Editor/TrashCan.png'
     }
+  },
+  'Runtime': {
+
   }
 }

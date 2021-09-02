@@ -1,13 +1,15 @@
 """
 writen by shenjackyuanjie
-mail: 3695888@qq.com
+mail:   3695888@qq.com
 github: @shenjackyuanjie
+gitee:  @shenjackyuanjie
 """
-from .new_thread import new_thread
-from .tools import config
+
+from .api import *
 
 __all__ = [
     'new_thread',
+    'Delivery',
     'config'
 ]
 

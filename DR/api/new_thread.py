@@ -1,6 +1,7 @@
 import functools
 import inspect
 import threading
+import time
 from typing import Optional, Callable
 
 """
@@ -38,3 +39,15 @@ def new_thread(thread_name: Optional[str or Callable] = None):
         return wrapper(this_is_a_function)
     # Use @on_new_thread with ending brackets case
     return wrapper
+
+
+@new_thread()
+def a():
+    print('ah')
+    time.sleep(2)
+    print('done')
+
+
+if __name__ == '__main__':
+    b = a()
+    b.join()

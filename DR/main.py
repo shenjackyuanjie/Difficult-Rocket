@@ -14,7 +14,7 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-import tools
+from api import tools
 import client
 import server
 import configs
@@ -27,7 +27,6 @@ class Game:
         self.on_python_v_info = sys.version_info
         self.on_python_v = sys.version.split(' ')[0]
         self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
-
         # share memory
         self.dicts = share().dict()
         self.lists = share().list()

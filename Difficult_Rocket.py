@@ -6,6 +6,7 @@ mail: 3695888@qq.com
 import os
 import sys
 import traceback
+import threading
 
 # TODO 默认位置配置文件+可自定义工作路径
 
@@ -25,18 +26,18 @@ if __name__ == '__main__':
     print("os.getcwd() = ", os.getcwd())
 
     os.chdir(sys.path[0])  # TODO 没做完.ing
-    sys.path.append('./bin')
-    sys.path.append('./bin/libs')
-    from bin import main
+    sys.path.append('DR')
+    sys.path.append('DR/libs')
 
     print(hi)
     try:
+        from DR import main
         game = main.Game()
         game.start()
-    except:
-        print('the game has error , now outputing error message')
+    except Exception as e:
+        print('the game has error , now outputting error message')
         error = traceback.format_exc()
         print(error)
-        from bin import crash
-
-        crash.create_crash_report(error)
+        from DR import crash
+        crash_thread = threading.Thread(target=crash.create_crash_report, args=(error, ), name='Crash report thread')
+        crash_thread.start()

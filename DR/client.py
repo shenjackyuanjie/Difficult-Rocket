@@ -16,10 +16,13 @@ import pyglet
 from pyglet.window import key
 from pyglet.window import mouse
 
-import tools
-import delivery
 import drag_sprite
-from new_thread import new_thread
+from api import Exp
+from api import tools
+from api.tools import config
+from api.delivery import Delivery
+from api.new_thread import new_thread
+# from mcdreforged.api.decorator import new_thread
 
 
 class Client:
@@ -56,6 +59,7 @@ class Client:
 class ClientWindow(pyglet.window.Window):
 
     def __init__(self, dev_dic=None, dev_list=None, net_mode='local', *args, **kwargs):
+        self.times = [time.time()]
         super().__init__(*args, **kwargs)
         """
         :param dev_list: 共享内存
@@ -76,15 +80,17 @@ class ClientWindow(pyglet.window.Window):
         self.config_file = tools.config('configs/main.config')
         self.FPS = int(self.config_file['runtime']['fps'])
         self.SPF = 1.0 / self.FPS
+        # lang
+        self.lang = tools.config('configs/lang/%s.json5' % self.config_file['runtime']['language'], 'client')
+        # dic
+        self.environment = {}
+        self.textures = {}  # all textures
+        self.runtime = {}
+        # list
         # FPS
         self.max_fps = [self.FPS, time.time()]
         self.min_fps = [self.FPS, time.time()]
         self.fps_wait = 5
-        # lang
-        self.lang = tools.config('configs/lang/%s.json5' % self.config_file['runtime']['language'], 'client')
-        # dic
-        self.textures = {}
-        # list
         # batch
         self.part_batch = pyglet.graphics.Batch()
         self.label_batch = pyglet.graphics.Batch()
@@ -96,25 +102,38 @@ class ClientWindow(pyglet.window.Window):
         self.info_label = pyglet.text.Label(x=10, y=self.height - 10,
                                             anchor_x='left', anchor_y='top',
                                             batch=self.label_batch)
+        self.fps_display = pyglet.window.FPSDisplay(self)
         pyglet.clock.schedule_interval(self.update, self.SPF)
+        self.times.append(time.time())
+        self.times.append(self.times[1] - self.times[0])
+        self.logger.debug(self.times[2])
+
+    @new_thread('client_load_environment')
+    def load_environment(self) -> None:
+        # load parts info
+        self.environment['parts'] = config('configs/sys_value/parts.json5')
+        self.load_textures()
 
     @new_thread('client_load_textures')
-    def load_textures(self):
-        pass
+    def load_textures(self) -> None:
+        # load parts
+        self.textures['parts'] = {}
+        for part in self.environment['parts']:
+            pass
+
 
     def setup(self):
         self.logger.info(self.lang['os.pid_is'].format(os.getpid(), os.getppid()))
         image = pyglet.image.load('textures/Editor/PartButton.png')
         self.textures['test'] = drag_sprite.DragSprite(10, 20, image, batch=self.label_batch, drag_by_all=False, drag_out_window=True)
-        pass
+        self.load_environment()
 
     # draws
 
-    def update(self, tick):
-        self.FPS_update()
-        self.hit_box_update()
+    def update(self, tick: float):
+        self.FPS_update(tick)
 
-    def FPS_update(self):
+    def FPS_update(self, tick: float):
         now_FPS = pyglet.clock.get_fps()
         if now_FPS > self.max_fps[0]:
             self.max_fps = [now_FPS, time.time()]
@@ -125,21 +144,24 @@ class ClientWindow(pyglet.window.Window):
                 self.max_fps = [self.FPS, time.time()]
             elif (time.time() - self.min_fps[1]) > self.fps_wait:
                 self.min_fps = [self.FPS, time.time()]
-        self.info_label.text = 'now FPS: %06d \n max FPS: %02d \n min FPS: %02d' % (now_FPS, self.max_fps[0], self.min_fps[0])
+        self.info_label.text = 'FPS: {:.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.max_fps[0], self.min_fps[0], tick)
 
-    def hit_box_update(self):
-        pass
+    """
+    window draw and event
+    """
 
     def on_draw(self):
         self.clear()
         self.draw_batch()
 
+    def on_resize(self, width: int, height: int):
+        super().on_resize(width, height)
+        self.info_label.y = height - 10
+
     def draw_batch(self):
         self.part_batch.draw()
         self.label_batch.draw()
-
-    def draw_label(self):
-        pass
+        self.fps_display.draw()
 
     """
     keyboard and mouse input

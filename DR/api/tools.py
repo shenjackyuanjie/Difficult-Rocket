@@ -8,24 +8,26 @@ import os
 import sys
 import time
 import math
+import xml.dom.minidom
+
 import semver
 import logging
 import decimal
 import traceback
 import configparser
 from xml.dom.minidom import parse
+from typing import Optional
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
 import json5
+import importlib
 
-import configs
-
+configs = importlib.import_module('configs')
 # logger
 tools_logger = logging.getLogger('part-tools')
-
 """
 file configs
 """
@@ -42,7 +44,7 @@ def report_file_error(filetype: str, error_type, filename: str, stack: any):
     tools_logger.exception(log)
 
 
-def config(file_name: str, stack=None):
+def config(file_name: str, stack=None) -> dict:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     try:
         if (f_type == 'json5') or (f_type == 'json'):
@@ -152,16 +154,27 @@ def name_handler(name: str, formats: dict = None) -> str:
 some tools
 """
 
+yes = ['true', '1', 1, 1.0, True]
+no = ['false', '0', 0, 0.0, False, None]
 
-def format_bool(thing):
-    yes = ['True', 'TRUE', 'true', '1', 1, True]
-    no = ['False', 'FALSE', 'false', '0', 0, False]
-    if thing in yes:
+
+def format_bool(thing) -> bool:
+    """
+    :param thing 啥都行，只要是能传进来的都可以
+
+    如果看起来像"True" 比如 'true','1',1
+    就返回 True
+    如果看起来像"False" 比如 'false','0',0
+    就返回 False
+    都不像就 raise TypeError
+    感谢来自MCDReforged的各位同志《你能在MCDR群里聊除了MCDR的任何东西》
+    """
+    if (thing in yes) or (isinstance(thing, str) and thing.lower() in yes):
         return True
-    elif thing in no:
+    elif (thing in no) or (isinstance(thing, str) and thing.lower() in no):
         return False
     else:
-        raise ValueError("Need a 'like bool' not anything else")
+        raise TypeError("Need a 'like bool' not a {}".format(thing))
 
 
 level_ = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL',
