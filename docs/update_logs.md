@@ -4,10 +4,23 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 ![Generic badge](https://img.shields.io/badge/Version-0.5.1-yellow.svg)
+
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
-- [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我！)-blue.svg?style=flat-square)](README-cn.md)
+- [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
+
+## 202109 V 0.5.2
+
+### Change
+
+- now bin folder use the name `Difficult_Rocket`
+- now test files no longer have `_test_` prefix
+- now will always use local `pyglet`
+
+### Add
+
+- `"mods support"` will done in 1.0.0
 
 ## 20210902 V 0.5.1
 
@@ -29,7 +42,7 @@
 
 ### Change
 
-- many `sys.path.append()` and 
+- many `sys.path.append()` and
 - `try: import xxx except: from bin import xxx` has been removed
 - and now IDE won't blame you when you open the file anymore!(LOL)
 - `Server` now use Dev to delivery message between thread(will be done in 0.6.0)
@@ -66,7 +79,8 @@
 ### Delete
 
 - all game window render has been deleted
-- - will be rewritten in 0.5.0
+-
+    - will be rewritten in 0.5.0
 - delete some useless code
 - delete some useless file
 
@@ -86,7 +100,6 @@
 - `README.md` and `README-cn.md` some label style change
 - Pre-installed `pyglet` upgrade from `1.5.16` -> `1.5.18`
 - Pre-installed `json5` upgrade from `0.9.5` -> `0.9.6`
-
 
 ## 20210708 V 0.4.4
 

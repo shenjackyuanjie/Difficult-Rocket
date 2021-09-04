@@ -26,18 +26,26 @@ if __name__ == '__main__':
     print("os.getcwd() = ", os.getcwd())
 
     os.chdir(sys.path[0])  # TODO 没做完.ing
-    sys.path.append('DR')
-    sys.path.append('DR/libs')
+    sys.path.append('Difficult_Rocket')
+    sys.path.append('Difficult_Rocket/libs')
 
     print(hi)
     try:
-        from DR import main
+        from Difficult_Rocket import main
+
         game = main.Game()
         game.start()
-    except Exception as e:
+    except:
         print('the game has error , now outputting error message')
         error = traceback.format_exc()
         print(error)
-        from DR import crash
-        crash_thread = threading.Thread(target=crash.create_crash_report, args=(error, ), name='Crash report thread')
+        from Difficult_Rocket import crash
+
+        crash_thread = threading.Thread(target=crash.create_crash_report, args=(error,), name='Crash report thread')
         crash_thread.start()
+        crash_thread.join()
+        print(crash_thread.__str__())
+    else:
+        for thread in threading.enumerate():
+            if thread == threading.main_thread(): continue
+            print(thread.__str__())
