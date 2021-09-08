@@ -32,6 +32,7 @@ if __name__ == '__main__':
     print(hi)
     try:
         from Difficult_Rocket import main
+        from Difficult_Rocket import crash
 
         game = main.Game()
         game.start()
@@ -39,13 +40,11 @@ if __name__ == '__main__':
         print('the game has error , now outputting error message')
         error = traceback.format_exc()
         print(error)
-        from Difficult_Rocket import crash
+        from Difficult_Rocket.api import thread
 
-        crash_thread = threading.Thread(target=crash.create_crash_report, args=(error,), name='Crash report thread')
+        crash_thread = thread.Threads(target=crash.create_crash_report, args=(error,), name='Crash report thread')
         crash_thread.start()
         crash_thread.join()
-        print(crash_thread.__str__())
     else:
-        for thread in threading.enumerate():
-            if thread == threading.main_thread(): continue
-            print(thread.__str__())
+        crash.record_thread = False
+        print(crash.all_thread)

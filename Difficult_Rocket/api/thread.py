@@ -11,6 +11,13 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-# import folders
+import threading
 
-# import in this folder
+from Difficult_Rocket import crash
+
+
+class Threads(threading.Thread):
+    def run(self) -> None:
+        if crash.record_thread:
+            crash.all_thread[self.name] = self
+        super(Threads, self).run()

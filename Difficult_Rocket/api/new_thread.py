@@ -3,6 +3,7 @@ import inspect
 import threading
 import time
 from typing import Optional, Callable
+from Difficult_Rocket.api import thread
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen_Breath/MCDReforged)
@@ -21,9 +22,9 @@ def new_thread(thread_name: Optional[str or Callable] = None):
     def wrapper(func):
         @functools.wraps(func)  # to preserve the origin function information
         def wrap(*args, **kwargs):
-            thread = threading.Thread(target=func, args=args, kwargs=kwargs, name=thread_name)
-            thread.setDaemon(False)
-            thread.start()
+            thread_ = thread.Threads(target=func, args=args, kwargs=kwargs, name=thread_name)
+            thread_.setDaemon(False)
+            thread_.start()
             return thread
 
         # bring the signature of the func to the wrap function

@@ -1,7 +1,16 @@
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2021 by shenjackyuanjie
+#  All rights reserved
+#  -------------------------------
+
 """
 writen by shenjackyuanjie
-mail: 3695888@qq.com
+mail:   3695888@qq.com
+github: @shenjackyuanjie
+gitee:  @shenjackyuanjie
 """
+
 import configparser
 import logging
 import os
@@ -12,11 +21,10 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from Difficult_Rocket.libs import pyglet
-from Difficult_Rocket.libs.pyglet.window import key, mouse
-from Difficult_Rocket.api import Exp, tools, config
-from drag_sprite import DragSprite
-from api.new_thread import new_thread
+import pyglet
+from pyglet.window import key, mouse
+from Difficult_Rocket.drag_sprite import DragSprite
+from Difficult_Rocket.api import Exp, tools, config, new_thread
 
 
 class Client:
@@ -90,17 +98,16 @@ class ClientWindow(pyglet.window.Window):
         self.label_batch = pyglet.graphics.Batch()
         # frame
         self.frame = pyglet.gui.Frame(self)
-        self.logger.info(self.lang['setup.done'])
         # setup
         self.setup()
         self.info_label = pyglet.text.Label(x=10, y=self.height - 10,
                                             anchor_x='left', anchor_y='top',
                                             batch=self.label_batch)
-        self.fps_display = pyglet.window.FPSDisplay(self)
         pyglet.clock.schedule_interval(self.update, self.SPF)
         self.times.append(time.time())
         self.times.append(self.times[1] - self.times[0])
         self.logger.debug(self.times[2])
+        self.logger.info(self.lang['setup.done'])
 
     @new_thread('client_load_environment')
     def load_environment(self) -> None:
@@ -157,7 +164,6 @@ class ClientWindow(pyglet.window.Window):
     def draw_batch(self):
         self.part_batch.draw()
         self.label_batch.draw()
-        self.fps_display.draw()
 
     """
     keyboard and mouse input

@@ -1,9 +1,16 @@
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2021 by shenjackyuanjie
+#  All rights reserved
+#  -------------------------------
+
 """
 writen by shenjackyuanjie
 mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
+
 
 import os
 import threading
@@ -26,22 +33,8 @@ Thread_message = """##  Thread info
 System_message = """##  System info
 """
 
-
-def thread_crash_check() -> None:
-    """
-    Need to run in a new thread
-    will raise error when any thread raise error
-    maybe will create a crash report
-    """
-    all_thread = {}
-    thread_local = threading.local()
-    for thread in threading.enumerate():
-        if thread not in all_thread:
-            all_thread[thread.name] = thread
-    for any_thread in all_thread:
-        if not all_thread[any_thread].is_alive():
-            pass
-            # if all_thread[any_thread].exitcode
+all_thread = {threading.main_thread().name: threading.main_thread()}
+record_thread = True
 
 
 def crash_info_handler(info: str = None) -> str:
@@ -71,7 +64,7 @@ def create_crash_report(info: str = None) -> None:
         crash_file.write(Head_message)  # 开头信息
         crash_file.write(crash_info)
         crash_file.write(Thread_message)
-        for thread in threading.enumerate():
+        for thread in all_thread:
             crash_file.write(markdown_line_handler(thread.name, code=True))
             crash_file.write(markdown_line_handler(f'Ident: {thread.ident}', level=2))
             crash_file.write(markdown_line_handler(f'Daemon: {thread.isDaemon()}', level=2))

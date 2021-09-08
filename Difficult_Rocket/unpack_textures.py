@@ -1,12 +1,18 @@
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2021 by shenjackyuanjie
+#  All rights reserved
+#  -------------------------------
+
 """
 writen by shenjackyuanjie
-mail: 3695888@qq.com
+mail:   3695888@qq.com
+github: @shenjackyuanjie
+gitee:  @shenjackyuanjie
 """
 
-try:
-    from bin import tools
-except (ModuleNotFoundError, ImportError, ImportWarning):
-    import tools
+
+from Difficult_Rocket.api import tools
 import os
 
 import PIL.Image
