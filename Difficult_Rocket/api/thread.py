@@ -19,5 +19,5 @@ from Difficult_Rocket import crash
 class Threads(threading.Thread):
     def run(self) -> None:
         if crash.record_thread:
-            crash.all_thread[self.name] = self
+            crash.all_thread.append(self)
         super(Threads, self).run()

@@ -23,8 +23,10 @@ if __name__ == '__main__':  # been start will not run this
 
 import pyglet
 from pyglet.window import key, mouse
+from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.drag_sprite import DragSprite
-from Difficult_Rocket.api import Exp, tools, config, new_thread
+from Difficult_Rocket.crash import create_crash_report
+from Difficult_Rocket.api import tools, config, new_thread
 
 
 class Client:
@@ -204,8 +206,5 @@ class ClientWindow(pyglet.window.Window):
         config_file['window']['width'] = str(self.width)
         config_file['window']['height'] = str(self.height)
         config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
-        # pyglet source code
-        self.has_exit = True
-        from pyglet import app
-        if app.event_loop.is_running:
-            self.close()
+        create_crash_report()
+        super(ClientWindow, self).on_close()

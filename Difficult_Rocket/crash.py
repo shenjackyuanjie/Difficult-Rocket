@@ -33,7 +33,7 @@ Thread_message = """##  Thread info
 System_message = """##  System info
 """
 
-all_thread = {threading.main_thread().name: threading.main_thread()}
+all_thread = [threading.main_thread()]
 record_thread = True
 
 
@@ -55,7 +55,10 @@ def markdown_line_handler(string: Optional[str or bool or int or float], code: b
 
 
 def create_crash_report(info: str = None) -> None:
-    crash_info = crash_info_handler(info)
+    if info:
+        crash_info = crash_info_handler(info)
+    else:
+        crash_info = crash_info_handler(traceback.format_exc())
     if 'crash_report' not in os.listdir('./'):
         os.mkdir('./crash_report')
     date_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
@@ -65,9 +68,12 @@ def create_crash_report(info: str = None) -> None:
         crash_file.write(crash_info)
         crash_file.write(Thread_message)
         for thread in all_thread:
-            crash_file.write(markdown_line_handler(thread.name, code=True))
+            thread: threading.Thread
+            crash_file.write(markdown_line_handler(f'{thread.name}', code=True))
+            crash_file.write(markdown_line_handler(f'order: {all_thread.index(thread)}', level=2))
             crash_file.write(markdown_line_handler(f'Ident: {thread.ident}', level=2))
             crash_file.write(markdown_line_handler(f'Daemon: {thread.isDaemon()}', level=2))
+            crash_file.write(markdown_line_handler(f'Running: {thread.is_alive()}', level=2))
         crash_file.write(System_message)
 
 

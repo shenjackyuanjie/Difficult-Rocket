@@ -11,6 +11,10 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+__all__ = ['TexturesError',
+           'LanguageError',
+           'TestError']
+
 
 
 class Error(Exception):
@@ -38,3 +42,8 @@ class LanguageError(Error):
 
     def __str__(self):
         return '{}{}'.format(self.info, self.lang)
+
+
+class TestError(Error):
+    """就像名字一样 用于测试的error"""
+    pass

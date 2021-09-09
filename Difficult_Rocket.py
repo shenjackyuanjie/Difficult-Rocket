@@ -31,8 +31,8 @@ if __name__ == '__main__':
 
     print(hi)
     try:
-        from Difficult_Rocket import main
         from Difficult_Rocket import crash
+        from Difficult_Rocket import main
 
         game = main.Game()
         game.start()
