@@ -206,5 +206,4 @@ class ClientWindow(pyglet.window.Window):
         config_file['window']['width'] = str(self.width)
         config_file['window']['height'] = str(self.height)
         config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
-        create_crash_report()
         super(ClientWindow, self).on_close()

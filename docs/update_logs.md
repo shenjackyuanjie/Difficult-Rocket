@@ -16,7 +16,9 @@
 
 - now bin folder use the name `Difficult_Rocket`
 - now test files no longer have `_test_` prefix
-- now will always use local `pyglet`
+- now will always use local `pyglet` # may change
+- now fitting `pypy3.10`
+- now `crash-report` have more information
 
 ### Add
 

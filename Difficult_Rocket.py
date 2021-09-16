@@ -30,21 +30,29 @@ if __name__ == '__main__':
     sys.path.append('Difficult_Rocket/libs')
 
     print(hi)
+
+    DEBUGGING = False
+    from Difficult_Rocket.api.Exp import *
     try:
         from Difficult_Rocket import crash
         from Difficult_Rocket import main
 
         game = main.Game()
         game.start()
-    except:
-        print('the game has error , now outputting error message')
+
+        if DEBUGGING:
+            raise TestError('debugging')
+    except TestError:
+        print('the game is debugging. this crash is raise by TestError')
         error = traceback.format_exc()
         print(error)
-        from Difficult_Rocket.api import thread
-
-        crash_thread = thread.Threads(target=crash.create_crash_report, args=(error,), name='Crash report thread')
-        crash_thread.start()
-        crash_thread.join()
+        crash.create_crash_report(error)
+    except:
+        print('the game has unknown error , now outputting error message')
+        error = traceback.format_exc()
+        print(error)
+        crash.create_crash_report(error)
     else:
         crash.record_thread = False
         print(crash.all_thread)
+        sys.exit(1)
