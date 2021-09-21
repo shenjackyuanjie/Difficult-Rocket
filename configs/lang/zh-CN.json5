@@ -6,6 +6,7 @@
     'lang.language': '简 体 中 文 （zh-cn）',
     'logger.language': '日志记录语言为：',
     'logger.created': '日志处理器创建完成',
+    'logger.mkdir': 'logs/文件夹不存在，已经新建文件夹',
     'logger.main_done': '主日志处理器创建完成',
     'logger.logfile_name': '日志文件文件名：',
     'logger.logfile_level': '日志文件记录级别：',

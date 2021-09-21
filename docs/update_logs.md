@@ -35,6 +35,7 @@
   - (witch was `zh-CN`)
 - `crash` now have more information about multiprocess
 - add some unused read_input in `client`
+- now when `logs/` is not found logger will info `logger.mkdir`
 
 ### DEBUG
 

@@ -44,9 +44,16 @@ class Game:
         log_config = tools.config('configs/logger.json5')
         file_name = log_config['handlers']['file']['filename']
         del log_config['handlers']['file']['datefmt']
-        log_config['handlers']['file']['filename'] = file_name.format(self.start_time)
-        logging.config.dictConfig(log_config)
-        self.logger = logging.getLogger('main')
+        log_config['handlers']['file']['filename'] = f'logs/{file_name.format(self.start_time)}'
+        try:
+            logging.config.dictConfig(log_config)
+            self.logger = logging.getLogger('main')
+        except ValueError:
+            os.mkdir('logs')
+            logging.config.dictConfig(log_config)
+            self.logger = logging.getLogger('main')
+            self.logger.info(tr['main']['logger.mkdir'])
+        self.logger.info(tr['main']['logger.created'])
         # version check
         self.python_version_check()
         self.setup()
