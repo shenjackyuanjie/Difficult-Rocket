@@ -18,13 +18,15 @@
     'os.pid_is': 'Client is using PID',
     'button.been_press': 'The button is pressed, the current state of the button is:',
     'mouse.press_at': 'mouse was click at {} button is: {}',
+    'mouse.release': 'mouse release at {} button is: {}',
     'mouse.right': 'right button',
     'mouse.left': 'left button'
   },
   'server': {
     'setup.done': 'server load complete ',
     'os.pid_is': 'Client is using PID: {} PPID: {}'
-  }
+  },
+  'language': 'English'
 }
 /*
 感谢@小咔er 帮我lazy的翻译

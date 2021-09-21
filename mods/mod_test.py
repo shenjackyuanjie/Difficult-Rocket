@@ -11,6 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-# import folders
-
-# import in this folder
+"""
+this is a test of modding in Difficult Rocket
+just a test
+"""

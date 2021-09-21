@@ -23,27 +23,15 @@ class Error(Exception):
 
 
 class TexturesError(Error):
-    """材质相关error 包含info和textures"""
-
-    def __init__(self, info, textures):
-        self.info = info
-        self.textures = textures
-
-    def __str__(self):
-        return '{}{}'.format(self.info, self.textures)
+    """材质相关 error"""
+    pass
 
 
 class LanguageError(Error):
-    """lang文件相关error 包含info和language"""
-
-    def __init__(self, info, language):
-        self.info = info
-        self.lang = language
-
-    def __str__(self):
-        return '{}{}'.format(self.info, self.lang)
+    """lang 文件相关 error"""
+    pass
 
 
 class TestError(Error):
-    """就像名字一样 用于测试的error"""
+    """就像名字一样 用于测试的 error"""
     pass

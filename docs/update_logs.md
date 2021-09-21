@@ -1,7 +1,7 @@
 # Difficult Rocket Update Logs
 
 ## Readme
-
+##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 ![Generic badge](https://img.shields.io/badge/Version-0.5.1-yellow.svg)
 
@@ -16,13 +16,39 @@
 
 - now bin folder use the name `Difficult_Rocket`
 - now test files no longer have `_test_` prefix
-- now will always use local `pyglet` # may change
-- now fitting `pypy3.10`
+- now will always use local `pyglet` 
+  - may change later
+- fitting `pypy3.10` (well······ not success (because OpenGL, blame it))
 - now `crash-report` have more information
+- now when pressed, the sprite will rotate randomly
+- now `pyglet.app.run()` use multiprocess
 
 ### Add
 
-- `"mods support"` will done in 1.0.0
+- ~~`"mods support"` will done in 1.0.0~~(maybe. just maybe)
+- now you can use `DEBUGGING` to test or check game run stats
+  - when `True` it will always make a crash report
+- now `Difficult_Rocket.api.translate.Lang` can be used to auto translate text in `configs/lang/xxx.json5`
+  - you can use `translate.tr[xxx]` to use translated info
+  - and use `.format` to format info's `{}`
+  - if translate is not found, `Lang` will try to find translate in default language translate
+  - (witch was `zh-CN`)
+- `crash` now have more information about multiprocess
+- add some unused read_input in `client`
+
+### DEBUG
+
+- now version on the window will be `0.5.2`
+
+### Delete
+
+- now `client.Client` and `server.Server` only use `net_mode` option
+- `api.new_thread` have no more extra line of testing
+
+### Translate
+
+- add `mouse.release` and `language` to en-us
+- add `language` to `zh-CN`
 
 ## 20210902 V 0.5.1
 

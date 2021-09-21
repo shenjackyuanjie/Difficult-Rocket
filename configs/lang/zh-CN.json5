@@ -25,5 +25,6 @@
   'server': {
     'setup.done': '服务端载入完成',
     'os.pid_is': '服务端 PID: {} PPID: {}'
-  }
+  },
+  'language': '简体中文'
 }

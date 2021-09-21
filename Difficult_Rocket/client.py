@@ -11,11 +11,18 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import configparser
-import logging
 import os
 import sys
 import time
+import random
+import logging
+import traceback
+import threading
+import configparser
+import multiprocessing
+
+from multiprocessing import Pipe
+from multiprocessing.connection import Connection
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
@@ -23,19 +30,16 @@ if __name__ == '__main__':  # been start will not run this
 
 import pyglet
 from pyglet.window import key, mouse
+from Difficult_Rocket import crash
 from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.drag_sprite import DragSprite
-from Difficult_Rocket.crash import create_crash_report
-from Difficult_Rocket.api import tools, config, new_thread
+from Difficult_Rocket.api import tools, config, new_thread, thread
 
 
 class Client:
-    def __init__(self, dev_dic=None, dev_list=None, net_mode='local'):
+    def __init__(self, net_mode='local'):
         # logging
         self.logger = logging.getLogger('client')
-        # share memory
-        self.dev_list = dev_list
-        self.dev_dic = dev_dic
         # config
         self.config = tools.config('configs/main.config')
         # lang
@@ -47,9 +51,7 @@ class Client:
         self.view = 'space'
         self.net_mode = net_mode
         self.caption = tools.name_handler(self.config['window']['caption'], {'version': self.config['runtime']['version']})
-        self.window = ClientWindow(dev_dic=self.dev_dic,
-                                   dev_list=self.dev_list,
-                                   net_mode=self.net_mode,
+        self.window = ClientWindow(net_mode=self.net_mode,
                                    width=int(self.config['window']['width']),
                                    height=int(self.config['window']['height']),
                                    fullscreen=tools.format_bool(self.config['window']['full_screen']),
@@ -57,12 +59,14 @@ class Client:
                                    resizable=tools.format_bool(self.config['window']['resizable']),
                                    visible=tools.format_bool(self.config['window']['visible']))
 
+    def start(self):
+        self.window.start_game()  # 游戏启动
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
 
 class ClientWindow(pyglet.window.Window):
 
-    def __init__(self, dev_dic=None, dev_list=None, net_mode='local', *args, **kwargs):
+    def __init__(self, net_mode='local', *args, **kwargs):
         self.times = [time.time()]
         super().__init__(*args, **kwargs)
         """
@@ -74,10 +78,12 @@ class ClientWindow(pyglet.window.Window):
         # logging
         self.logger = logging.getLogger('client')
         # share memory
-        self.dev_list = dev_list
-        self.dev_dic = dev_dic
+        # self.dev_list = dev_list
+        # self.dev_dic = dev_dic
         # value
         self.net_mode = net_mode
+        self.run_input = False
+        self.pipeA_, self.pipeB_ = Pipe()
         # configs
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
@@ -117,7 +123,7 @@ class ClientWindow(pyglet.window.Window):
         self.environment['parts'] = config('configs/sys_value/parts.json5')
         try:
             self.load_textures()
-        except Exp.TexturesError:
+        except TexturesError:
             raise
 
     @new_thread('client_load_textures')
@@ -133,7 +139,24 @@ class ClientWindow(pyglet.window.Window):
         self.textures['test'] = DragSprite(10, 20, image, batch=self.label_batch, drag_by_all=False, drag_out_window=True)
         self.load_environment()
 
-    # draws
+    def start_game(self) -> None:
+        self.run_input = True
+        # self.input_line = threading.Thread(target=self.read_input, name='client_read_line', daemon=True)
+        # self.input_line.start()
+        pyglet.app.run()
+
+    def read_input(self):
+        self.logger.debug('read_input start')
+        while self.run_input:
+            get = input('<<<')
+            self.logger.info(get)
+            if get == 'stop':
+                self.run_input = False
+        self.logger.debug('read_input end')
+
+    """
+    draws and some event
+    """
 
     def update(self, tick: float):
         self.FPS_update(tick)
@@ -150,10 +173,6 @@ class ClientWindow(pyglet.window.Window):
             elif (time.time() - self.min_fps[1]) > self.fps_wait:
                 self.min_fps = [self.FPS, time.time()]
         self.info_label.text = 'FPS: {:.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.max_fps[0], self.min_fps[0], tick)
-
-    """
-    window draw and event
-    """
 
     def on_draw(self):
         self.clear()
@@ -185,6 +204,7 @@ class ClientWindow(pyglet.window.Window):
             self.logger.debug(self.lang['mouse.press'].format([x, y], self.lang['mouse.left']))
         elif button == mouse.RIGHT:
             self.logger.debug(self.lang['mouse.press'].format([x, y], self.lang['mouse.right']))
+        self.textures['test']._sprite.rotation = random.randint(0, 360)
         self.textures['test'].on_mouse_press(x, y, button, modifiers)
 
     def on_mouse_release(self, x, y, button, modifiers) -> None:
@@ -201,6 +221,8 @@ class ClientWindow(pyglet.window.Window):
         pass
 
     def on_close(self) -> None:
+        self.run_input = False
+        # self.input_line.join()
         config_file = configparser.ConfigParser()
         config_file.read('configs/main.config')
         config_file['window']['width'] = str(self.width)

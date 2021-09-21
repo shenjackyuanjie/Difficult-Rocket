@@ -29,7 +29,7 @@ from api.new_thread import new_thread
 
 
 class Server:
-    def __init__(self, dev_list, dev_dic, net_mode='local', Dev: Delivery = Delivery):
+    def __init__(self, net_mode='local', Dev: Delivery = Delivery):
         # father class __init__()
         # mp.Process.__init__(self)
         # logging
@@ -43,12 +43,8 @@ class Server:
         self.net_mode = net_mode
         # lang
         self.lang = tools.config('configs/lang/%s.json5' % self.config['runtime']['language'], 'server')
-        # share memory
-        self.dev_list = dev_list
-        self.dev_dic = dev_dic
         self.logger.info('%s' % self.lang['setup.done'])
 
     @new_thread('Server')
     def run(self):
         self.logger.info(self.lang['os.pid_is'].format(os.getpid(), os.getppid()))
-        self.logger.debug(self)

@@ -12,14 +12,14 @@ gitee:  @shenjackyuanjie
 """
 
 
-import configparser
-import decimal
-import logging
-import math
 import os
 import sys
 import time
+import math
+import decimal
+import logging
 import traceback
+import configparser
 from xml.dom.minidom import parse
 
 import semver
@@ -28,10 +28,8 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-import json5
-import importlib
+from libs import json5
 
-configs = importlib.import_module('configs')
 # logger
 tools_logger = logging.getLogger('part-tools')
 """
@@ -99,7 +97,6 @@ def config(file_name: str, stack=None) -> dict:
 
 # main config
 main_config_file = config('./configs/main.config')
-Version = semver.VersionInfo.parse(str(main_config_file['runtime']['version']))
 
 
 def get_At(name, in_xml, need_type=str):

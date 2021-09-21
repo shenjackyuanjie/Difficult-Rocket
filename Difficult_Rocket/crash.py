@@ -17,6 +17,7 @@ import time
 import platform
 import traceback
 import threading
+import multiprocessing
 from typing import Optional
 
 # import psutil
@@ -31,6 +32,9 @@ Head_message = """# ----- Difficult Rocket Crash Report -----
 ## Traceback
 """
 
+Process_message = """##  Process info
+"""
+
 Thread_message = """##  Thread info
 """
 
@@ -42,6 +46,7 @@ System_message = """##  System info
 
 
 all_thread = [threading.main_thread()]
+all_process = [multiprocessing.current_process()]
 record_thread = True
 
 
@@ -66,11 +71,18 @@ def create_crash_report(info: str = None) -> None:
         os.mkdir('./crash_report')
     date_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
     filename = 'crash-{}.md'.format(date_time)
-    with open('./crash_report/{}'.format(filename), 'w+') as crash_file:
+    with open('./crash_report/{}'.format(filename), 'w+', encoding='utf-8') as crash_file:
         # 开头信息
         crash_file.write(Head_message)
         # 崩溃信息
         crash_file.write(crash_info)
+        # 多进程信息
+        crash_file.write(Process_message)
+        for process in all_process:
+            process: multiprocessing.Process
+            crash_file.write(markdown_line_handler(f'{process.name}', code=True))
+            crash_file.write(markdown_line_handler(f'Ident: {process.ident}', level=2))
+            crash_file.write(markdown_line_handler(f'Running: {process.is_alive()}', level=2))
         # 运行线程信息
         crash_file.write(Thread_message)
         for thread in all_thread:

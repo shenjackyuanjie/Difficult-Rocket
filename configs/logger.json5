@@ -1,0 +1,53 @@
+{
+  'version': 1,
+  'formatters': {
+    'file': { // file 跟 root 的输出格式一致
+      'class': 'logging.Formatter',
+      'format': '[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s',
+      'datefmt': '%Y-%m-%d %H-%M-%S'
+    },
+    'client': {
+      'class': 'logging.Formatter',
+      'format': '[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s',
+      'datefmt': '%Y-%m-%d %H-%M-%S'
+    },
+    'server': {
+      'class': 'logging.Formatter',
+      'format': '[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s',
+      'datefmt': '%Y-%m-%d %H-%M-%S'
+    }
+  },
+  'handlers': {
+    'console': {
+      'class': 'logging.StreamHandler',
+      'formatter': 'file',
+      'level': 'DEBUG',
+    },
+    'file': {
+      'class': 'logging.FileHandler',
+      'filename': '{} DR.log',
+      'datefmt': '%Y-%m-%d %H-%M-%S',
+      'encoding': 'utf-8',
+      'formatter': 'file',
+      'mode': 'w'
+    }
+  },
+  'loggers': {
+    'client': {
+      'level': 'DEBUG',
+      'handlers': ['console', 'file']
+    },
+    'server': {
+      'level': 'DEBUG',
+      'handlers': ['console', 'file']
+    },
+    'main': {
+      'level': 'DEBUG',
+      'handlers': ['console', 'file']
+    }
+  },
+  'root': {
+    'level': 'DEBUG',
+    'handlers': ['console', 'file']
+  }
+}

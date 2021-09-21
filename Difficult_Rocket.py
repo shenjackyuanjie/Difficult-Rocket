@@ -2,11 +2,11 @@
 writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
-
 import os
 import sys
 import traceback
 import threading
+import multiprocessing
 
 # TODO 默认位置配置文件+可自定义工作路径
 
@@ -33,6 +33,8 @@ if __name__ == '__main__':
 
     DEBUGGING = False
     from Difficult_Rocket.api.Exp import *
+    # multiprocessing.set_start_method('fork', True)
+    print(multiprocessing.get_start_method())
     try:
         from Difficult_Rocket import crash
         from Difficult_Rocket import main
@@ -55,4 +57,5 @@ if __name__ == '__main__':
     else:
         crash.record_thread = False
         print(crash.all_thread)
+        print(crash.all_process)
         sys.exit(1)
