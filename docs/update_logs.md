@@ -44,6 +44,7 @@
 
 - now `client.Client` and `server.Server` only use `net_mode` option
 - `api.new_thread` have no more extra line of testing
+- `configs/view.json5` now removed
 
 ### Translate
 
