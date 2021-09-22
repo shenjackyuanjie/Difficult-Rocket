@@ -35,15 +35,15 @@
   'loggers': {
     'client': {
       'level': 'DEBUG',
-      'handlers': ['console', 'file']
+      'handlers': []
     },
     'server': {
       'level': 'DEBUG',
-      'handlers': ['console', 'file']
+      'handlers': []
     },
     'main': {
       'level': 'DEBUG',
-      'handlers': ['console', 'file']
+      'handlers': []
     }
   },
   'root': {

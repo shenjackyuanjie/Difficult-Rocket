@@ -39,7 +39,7 @@ class Game:
         # lang_config
         self.language = tools.config('configs/sys_value/basic_config.json5')
         self.language = self.language['language']
-        translate.tr.set_language(self.language)
+        tr.set_language(self.language)
         # logging config
         log_config = tools.config('configs/logger.json5')
         file_name = log_config['handlers']['file']['filename']
@@ -48,7 +48,7 @@ class Game:
         try:
             logging.config.dictConfig(log_config)
             self.logger = logging.getLogger('main')
-        except ValueError:
+        except ValueError:  # it should be no 'logs/' folder
             os.mkdir('logs')
             logging.config.dictConfig(log_config)
             self.logger = logging.getLogger('main')
