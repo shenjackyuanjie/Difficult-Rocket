@@ -36,6 +36,7 @@ from pyglet.window import key, mouse
 from pyglet.libs.darwin.quartzkey import keymap, charmap
 
 from pyglet.libs.darwin import cocoapy
+from .pyglet_textview import PygletTextView
 
 
 NSTrackingArea = cocoapy.ObjCClass('NSTrackingArea')
@@ -117,7 +118,6 @@ class PygletView_Implementation:
         # "Option-e", "e" if the protocol isn't implemented.  So the easiest
         # thing to do is to subclass NSTextView which *does* implement the
         # protocol and let it handle text input.
-        PygletTextView = cocoapy.ObjCClass('PygletTextView')
         self._textview = PygletTextView.alloc().initWithCocoaWindow_(window)
         # Add text view to the responder chain.
         self.addSubview_(self._textview)
@@ -179,6 +179,7 @@ class PygletView_Implementation:
         width, height = int(size.width), int(size.height)
         self._window.switch_to()
         self._window.context.update_geometry()
+        self._window._width, self._window._height = width, height
         self._window.dispatch_event("on_resize", width, height)
         self._window.dispatch_event("on_expose")
         # Can't get app.event_loop.enter_blocking() working with Cocoa, because
@@ -363,7 +364,7 @@ class PygletView_Implementation:
     def mouseExited_(self, nsevent):
         x, y = getMousePosition(self, nsevent)
         self._window._mouse_in_window = False
-        if not self._window._is_mouse_exclusive:
+        if not self._window._mouse_exclusive:
             self._window.set_mouse_platform_visible()
         self._window.dispatch_event('on_mouse_leave', x, y)
 
@@ -377,7 +378,7 @@ class PygletView_Implementation:
         # the bottom right corner, the resize control will set the cursor
         # to the default arrow and screw up our cursor tracking.
         self._window._mouse_in_window = True
-        if not self._window._is_mouse_exclusive:
+        if not self._window._mouse_exclusive:
             self._window.set_mouse_platform_visible()
 
 

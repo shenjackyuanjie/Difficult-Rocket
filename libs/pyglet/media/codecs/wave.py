@@ -38,7 +38,7 @@
 
 import wave
 
-from ..exceptions import MediaDecodeException, MediaEncodeException
+from ..exceptions import MediaDecodeException
 from .base import StreamingSource, AudioData, AudioFormat, StaticSource
 from . import MediaEncoder, MediaDecoder
 
@@ -123,17 +123,11 @@ class WaveEncoder(MediaEncoder):
                 The file name to save as.
 
         """
-
-        extension = filename.split('.')[-1].lower()
-        if f".{extension}" not in self.get_file_extensions():
-            raise MediaDecodeException("Invalid Format")
-
         source.seek(0)
         wave_writer = wave.open(file, mode='wb')
         wave_writer.setnchannels(source.audio_format.channels)
-        wave_writer.setsampwidth(source.audio_format.sample_size // 8)
+        wave_writer.setsampwidth(source.audio_format.bytes_per_sample)
         wave_writer.setframerate(source.audio_format.sample_rate)
-
         # Save the data in 1-second chunks:
         chunksize = source.audio_format.bytes_per_second
         audiodata = source.get_audio_data(chunksize)

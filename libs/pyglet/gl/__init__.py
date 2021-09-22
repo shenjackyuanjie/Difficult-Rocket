@@ -33,38 +33,25 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # ----------------------------------------------------------------------------
 
-"""OpenGL and GLU interface.
+"""OpenGL interface.
 
-This package imports all OpenGL, GLU and registered OpenGL extension
-functions.  Functions have identical signatures to their C counterparts.  For
-example::
-
-    from pyglet.gl import *
-
-    # [...omitted: set up a GL context and framebuffer]
-    glBegin(GL_QUADS)
-    glVertex3f(0, 0, 0)
-    glVertex3f(0.1, 0.2, 0.3)
-    glVertex3f(0.1, 0.2, 0.3)
-    glEnd()
+This package imports all OpenGL and registered OpenGL extension
+functions.  Functions have identical signatures to their C counterparts.
 
 OpenGL is documented in full at the `OpenGL Reference Pages`_.
 
-The `OpenGL Programming Guide`_ is a popular reference manual organised by
-topic.  The free online version documents only OpenGL 1.1.  `Later editions`_
-cover more recent versions of the API and can be purchased from a book store.
+The `OpenGL Programming Guide`_, also known as "The Red Book", is a popular
+reference manual organised by topic. It is available in digital and paper
+editions.
 
-.. _OpenGL Reference Pages: http://www.opengl.org/documentation/red_book/
-.. _OpenGL Programming Guide: http://fly.cc.fer.hr/~unreal/theredbook/
-.. _Later editions: http://www.opengl.org/documentation/red_book/
+.. _OpenGL Reference Pages: https://www.khronos.org/registry/OpenGL-Refpages/
+.. _OpenGL Programming Guide: http://opengl-redbook.com/
 
-The following subpackages are imported into this "mega" package already (and
-so are available by importing ``pyglet.gl``):
+The following subpackages are imported into this "mega" package already
+(and so are available by importing ``pyglet.gl``):
 
 ``pyglet.gl.gl``
     OpenGL
-``pyglet.gl.glu``
-    GLU
 ``pyglet.gl.gl.glext_arb``
     ARB registered OpenGL extension functions
 
@@ -88,24 +75,25 @@ by default:
 ``pyglet.gl.wglext_nv``
     nvidia WGL extension functions
 
-The information modules are provided for convenience, and are documented
-below.
+The information modules are provided for convenience, and are documented below.
 """
-
-import sys as _sys
-
 import pyglet as _pyglet
-from pyglet import compat_platform
-from pyglet.gl.gl import *
 
+from pyglet.gl.gl import *
+from pyglet.gl.lib import GLException
+from pyglet.gl import gl_info
+from pyglet.gl.gl_compat import GL_LUMINANCE, GL_INTENSITY
+
+from pyglet import compat_platform
 from .base import ObjectSpace, CanvasConfig, Context
 
+import sys as _sys
 _is_pyglet_doc_run = hasattr(_sys, "is_pyglet_doc_run") and _sys.is_pyglet_doc_run
 
 #: The active OpenGL context.
 #:
-#: You can change the current context by calling `Context.set_current`; do not
-#: modify this global.
+#: You can change the current context by calling `Context.set_current`;
+#: do not modify this global.
 #:
 #: :type: `Context`
 #:
@@ -158,7 +146,8 @@ if _pyglet.options['debug_texture']:
     _glTexImage2D = glTexImage2D
 
 
-    def glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels):
+    def glTexImage2D(target, level, internalformat, width, height, border,
+                     format, type, pixels):
         try:
             _debug_texture_dealloc(_debug_texture)
         except KeyError:
@@ -199,7 +188,16 @@ def _create_shadow_window():
         return
 
     from pyglet.window import Window
-    _shadow_window = Window(width=1, height=1, visible=False)
+
+    class ShadowWindow(Window):
+        def __init__(self):
+            super().__init__(width=1, height=1, visible=False)
+
+        def _create_projection(self):
+            """Shadow window does not need a projection."""
+            pass
+
+    _shadow_window = ShadowWindow()
     _shadow_window.switch_to()
 
     from pyglet import app
@@ -217,6 +215,7 @@ elif compat_platform.startswith('linux'):
     from .xlib import XlibConfig as Config
 elif compat_platform == 'darwin':
     from .cocoa import CocoaConfig as Config
+
 
 _shadow_window = None
 

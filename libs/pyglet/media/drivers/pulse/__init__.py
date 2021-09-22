@@ -36,6 +36,7 @@
 from .adaptation import PulseAudioDriver
 
 import pyglet
+
 _debug = pyglet.options['debug_media']
 
 

@@ -35,10 +35,14 @@
 import platform
 from ctypes import c_uint32, c_int, byref
 
-from pyglet.canvas.cocoa import CocoaCanvas
-from pyglet.gl import ContextException
 from pyglet.gl.base import Config, CanvasConfig, Context
+
+from pyglet.gl import ContextException
+
+from pyglet.canvas.cocoa import CocoaCanvas
+
 from pyglet.libs.darwin import cocoapy, quartz
+
 
 NSOpenGLPixelFormat = cocoapy.ObjCClass('NSOpenGLPixelFormat')
 NSOpenGLContext = cocoapy.ObjCClass('NSOpenGLContext')
@@ -68,27 +72,26 @@ catalina:       19.0 -> 19.6
 big_sur:        20.0 ->
 """
 os_x_release = {
-    'pre-release': (0, 1),
-    'kodiak': (1, 2, 1),
-    'cheetah': (1, 3, 1),
-    'puma': (1, 4.1),
-    'jaguar': (6, 0, 1),
-    'panther': (7,),
-    'tiger': (8,),
-    'leopard': (9,),
-    'snow_leopard': (10,),
-    'lion': (11,),
-    'mountain_lion': (12,),
-    'mavericks': (13,),
-    'yosemite': (14,),
-    'el_capitan': (15,),
-    'sierra': (16,),
-    'high_sierra': (17,),
-    'mojave': (18,),
-    'catalina': (19,),
-    'big_sur': (20,)
+    'pre-release':      (0,1),
+    'kodiak':           (1,2,1),
+    'cheetah':          (1,3,1),
+    'puma':             (1,4.1),
+    'jaguar':           (6,0,1),
+    'panther':          (7,),
+    'tiger':            (8,),
+    'leopard':          (9,),
+    'snow_leopard':     (10,),
+    'lion':             (11,),
+    'mountain_lion':    (12,),
+    'mavericks':        (13,),
+    'yosemite':         (14,),
+    'el_capitan':       (15,),
+    'sierra':           (16,),
+    'high_sierra':      (17,),
+    'mojave':           (18,),
+    'catalina':         (19,),
+    'big_sur':          (20,)
 }
-
 
 def os_x_version():
     version = tuple([int(v) for v in platform.release().split('.')])
@@ -97,7 +100,6 @@ def os_x_version():
     if len(version) > 0:
         return version
     return (version,)
-
 
 _os_x_version = os_x_version()
 
@@ -118,7 +120,7 @@ _gl_attributes = {
     'fullscreen': cocoapy.NSOpenGLPFAFullScreen,
     'minimum_policy': cocoapy.NSOpenGLPFAMinimumPolicy,
     'maximum_policy': cocoapy.NSOpenGLPFAMaximumPolicy,
-    'screen_mask': cocoapy.NSOpenGLPFAScreenMask,
+    'screen_mask' : cocoapy.NSOpenGLPFAScreenMask,
 
     # Not supported in current pyglet API
     'color_float': cocoapy.NSOpenGLPFAColorFloat,
@@ -156,7 +158,6 @@ _fake_gl_attributes = {
     'accum_blue_size': 0,
     'accum_alpha_size': 0
 }
-
 
 class CocoaConfig(Config):
 
@@ -196,7 +197,7 @@ class CocoaConfig(Config):
             version = (
                 getattr(self, 'major_version', None) or 2,
                 getattr(self, 'minor_version', None)
-            )
+                )
             # tell os-x we want to request a profile
             attrs.append(cocoapy.NSOpenGLPFAOpenGLProfile)
 
@@ -248,7 +249,7 @@ class CocoaCanvasConfig(CanvasConfig):
                 byref(vals),
                 cocoapy.NSOpenGLPFAOpenGLProfile,
                 0
-            )
+                )
 
             if vals.value == cocoapy.NSOpenGLProfileVersion4_1Core:
                 setattr(self, "major_version", 4)

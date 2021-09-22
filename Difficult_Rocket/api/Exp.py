@@ -16,7 +16,6 @@ __all__ = ['TexturesError',
            'TestError']
 
 
-
 class Error(Exception):
     """基础 Exception"""
     pass

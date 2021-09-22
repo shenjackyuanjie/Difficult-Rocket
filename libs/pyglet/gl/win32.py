@@ -33,17 +33,18 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # ----------------------------------------------------------------------------
 
-from pyglet import gl
 from pyglet.canvas.win32 import Win32Canvas
+from .base import Config, CanvasConfig, Context
+
+from pyglet import gl
 from pyglet.gl import gl_info
 from pyglet.gl import wgl
-from pyglet.gl import wgl_info
 from pyglet.gl import wglext_arb
-from pyglet.libs.win32 import _gdi32
+from pyglet.gl import wgl_info
+
+from pyglet.libs.win32 import _user32, _kernel32, _gdi32
 from pyglet.libs.win32.constants import *
 from pyglet.libs.win32.types import *
-
-from .base import Config, CanvasConfig, Context
 
 
 class Win32Config(Config):
@@ -102,12 +103,12 @@ class Win32Config(Config):
         if pf:
             return [Win32CanvasConfig(canvas, pf, self)]
         else:
-            return []
+            return []                    
 
     def _get_arb_pixel_format_matching_configs(self, canvas):
         """Get configs using the WGL_ARB_pixel_format extension.
         This method assumes a (dummy) GL context is already created."""
-
+        
         # Check for required extensions        
         if self.sample_buffers or self.samples:
             if not gl_info.have_extension('GL_ARB_multisample'):
@@ -119,7 +120,7 @@ class Win32Config(Config):
             attr = Win32CanvasConfigARB.attribute_ids.get(name, None)
             if attr and value is not None:
                 attrs.extend([attr, int(value)])
-        attrs.append(0)
+        attrs.append(0)        
         attrs = (c_int * len(attrs))(*attrs)
 
         pformats = (c_int * 16)()
@@ -189,12 +190,12 @@ class Win32CanvasConfigARB(CanvasConfig):
     def __init__(self, canvas, pf, config):
         super(Win32CanvasConfigARB, self).__init__(canvas, config)
         self._pf = pf
-
+        
         names = list(self.attribute_ids.keys())
         attrs = list(self.attribute_ids.values())
         attrs = (c_int * len(attrs))(*attrs)
         values = (c_int * len(attrs))()
-
+        
         wglext_arb.wglGetPixelFormatAttribivARB(canvas.hdc, pf, 0, len(attrs), attrs, values)
 
         for name, value in zip(names, values):
@@ -205,10 +206,9 @@ class Win32CanvasConfigARB(CanvasConfig):
         return isinstance(canvas, Win32Canvas)
 
     def create_context(self, share):
-        if self.requires_gl_3() and wgl_info.have_extension('WGL_ARB_create_context'):
-            # For GPUs that ONLY support OpenGL 3.1/3.2, this
-            # extension should be present. Those GPUs should use
-            # the Win32ARBContext for GL3.1/3.2 contexts:
+        if wgl_info.have_extension('WGL_ARB_create_context'):
+            # Graphics adapters that ONLY support up to OpenGL 3.1/3.2
+            # should be using the Win32ARBContext class.
             return Win32ARBContext(self, share)
         else:
             return Win32Context(self, share)

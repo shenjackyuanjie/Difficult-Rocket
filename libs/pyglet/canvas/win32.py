@@ -35,7 +35,7 @@
 
 from .base import Display, Screen, ScreenMode, Canvas
 
-from pyglet.libs.win32 import _kernel32, _user32, types, constants
+from pyglet.libs.win32 import _user32
 from pyglet.libs.win32.constants import *
 from pyglet.libs.win32.types import *
 
@@ -129,7 +129,12 @@ class Win32ScreenMode(ScreenMode):
         self.height = mode.dmPelsHeight
         self.depth = mode.dmBitsPerPel
         self.rate = mode.dmDisplayFrequency
+        self.scaling = mode.dmDisplayFixedOutput
 
+    def __repr__(self):
+        return '%s(width=%r, height=%r, depth=%r, rate=%r, scaling=%r)' % (
+            self.__class__.__name__,
+            self.width, self.height, self.depth, self.rate, self.scaling)
 
 class Win32Canvas(Canvas):
     def __init__(self, display, hwnd, hdc):

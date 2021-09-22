@@ -11,12 +11,12 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+# system function
 import os
 import sys
 import time
 import random
 import logging
-import traceback
 import threading
 import configparser
 import multiprocessing
@@ -28,12 +28,21 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-import pyglet
-from pyglet.window import key, mouse
+# Difficult_Rocket function
 from Difficult_Rocket import crash
 from Difficult_Rocket.api.Exp import *
+from Difficult_Rocket.api.translate import tr
 from Difficult_Rocket.drag_sprite import DragSprite
 from Difficult_Rocket.api import tools, config, new_thread, thread
+
+# libs function
+local_lib = True
+if local_lib:
+    from libs import pyglet
+    from libs.pyglet.window import key, mouse
+else:
+    import pyglet
+    from pyglet.window import key, mouse
 
 
 class Client:
@@ -48,7 +57,6 @@ class Client:
         self.process_id = 'Client'
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
-        self.view = 'space'
         self.net_mode = net_mode
         self.caption = tools.name_handler(self.config['window']['caption'], {'version': self.config['runtime']['version']})
         self.window = ClientWindow(net_mode=self.net_mode,
@@ -83,7 +91,6 @@ class ClientWindow(pyglet.window.Window):
         # value
         self.net_mode = net_mode
         self.run_input = False
-        self.pipeA_, self.pipeB_ = Pipe()
         # configs
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()

@@ -63,22 +63,22 @@ def _hex_color(val):
 
 
 _color_names = {
-    'black': _hex_color(0x000000),
-    'silver': _hex_color(0xc0c0c0),
-    'gray': _hex_color(0x808080),
-    'white': _hex_color(0xffffff),
-    'maroon': _hex_color(0x800000),
-    'red': _hex_color(0xff0000),
-    'purple': _hex_color(0x800080),
-    'fucsia': _hex_color(0x008000),
-    'green': _hex_color(0x00ff00),
-    'lime': _hex_color(0xffff00),
-    'olive': _hex_color(0x808000),
-    'yellow': _hex_color(0xff0000),
-    'navy': _hex_color(0x000080),
-    'blue': _hex_color(0x0000ff),
-    'teal': _hex_color(0x008080),
-    'aqua': _hex_color(0x00ffff),
+    'black':    _hex_color(0x000000),
+    'silver':   _hex_color(0xc0c0c0),
+    'gray':     _hex_color(0x808080),
+    'white':    _hex_color(0xffffff),
+    'maroon':   _hex_color(0x800000),
+    'red':      _hex_color(0xff0000),
+    'purple':   _hex_color(0x800080),
+    'fucsia':   _hex_color(0x008000),
+    'green':    _hex_color(0x00ff00),
+    'lime':     _hex_color(0xffff00),
+    'olive':    _hex_color(0x808000),
+    'yellow':   _hex_color(0xff0000),
+    'navy':     _hex_color(0x000080),
+    'blue':     _hex_color(0x0000ff),
+    'teal':     _hex_color(0x008080),
+    'aqua':     _hex_color(0x00ffff),
 }
 
 

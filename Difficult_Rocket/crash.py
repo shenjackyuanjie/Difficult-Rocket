@@ -11,7 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-
 import os
 import time
 import platform
@@ -43,7 +42,6 @@ Python_message = """##  Python info
 
 System_message = """##  System info
 """
-
 
 all_thread = [threading.main_thread()]
 all_process = [multiprocessing.current_process()]

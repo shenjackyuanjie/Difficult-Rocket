@@ -67,8 +67,8 @@ This can be useful to tag areas of interest in a document, or maintain
 references back to the source material.
 
 As well as text, the document can contain arbitrary elements represented by
-:py:class:`~pyglet.text.document.InlineElement`.  An inline element behaves like a single character in the
-documented, but can be rendered by the application.
+:py:class:`~pyglet.text.document.InlineElement`.  An inline element behaves
+like a single character in the document, but can be rendered by the application.
 
 Paragraph breaks
 ================

@@ -35,7 +35,6 @@
 
 import math
 import weakref
-
 from abc import ABCMeta, abstractmethod
 
 from pyglet.util import with_metaclass

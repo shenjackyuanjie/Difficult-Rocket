@@ -81,22 +81,20 @@ instance when loading the Model::
 
 .. versionadded:: 1.4
 """
+from math import radians
+from io import BytesIO
 
-import io
+import pyglet
 
-from pyglet.gl import *
+from pyglet import gl
 from pyglet import graphics
+from pyglet.gl import current_context
+from pyglet.math import Mat4
+from pyglet.graphics import shader
 
 from .codecs import ModelDecodeException
 from .codecs import add_encoders, add_decoders, add_default_model_codecs
 from .codecs import get_encoders, get_decoders
-
-
-# Default matrix for models
-_default_identity = [1.0, 0.0, 0.0, 0.0,
-                     0.0, 1.0, 0.0, 0.0,
-                     0.0, 0.0, 1.0, 0.0,
-                     0.0, 0.0, 0.0, 1.0]
 
 
 def load(filename, file=None, decoder=None, batch=None):
@@ -122,7 +120,7 @@ def load(filename, file=None, decoder=None, batch=None):
         file = open(filename, 'rb')
 
     if not hasattr(file, 'seek'):
-        file = io.BytesIO(file.read())
+        file = BytesIO(file.read())
 
     try:
         if decoder:
@@ -146,6 +144,28 @@ def load(filename, file=None, decoder=None, batch=None):
         file.close()
 
 
+def get_default_shader():
+    try:
+        return pyglet.gl.current_context.model_default_plain_shader
+    except AttributeError:
+        vert_shader = shader.Shader(MaterialGroup.default_vert_src, 'vertex')
+        frag_shader = shader.Shader(MaterialGroup.default_frag_src, 'fragment')
+        default_shader_program = shader.ShaderProgram(vert_shader, frag_shader)
+        pyglet.gl.current_context.model_default_plain_shader = default_shader_program
+        return pyglet.gl.current_context.model_default_plain_shader
+
+
+def get_default_textured_shader():
+    try:
+        return pyglet.gl.current_context.model_default_textured_shader
+    except AttributeError:
+        vert_shader = shader.Shader(TexturedMaterialGroup.default_vert_src, 'vertex')
+        frag_shader = shader.Shader(TexturedMaterialGroup.default_frag_src, 'fragment')
+        default_shader_program = shader.ShaderProgram(vert_shader, frag_shader)
+        pyglet.gl.current_context.model_default_textured_shader = default_shader_program
+        return current_context.model_default_textured_shader
+
+
 class Model:
     """Instance of a 3D object.
 
@@ -167,10 +187,11 @@ class Model:
                 Optional batch to add the model to. If no batch is provided,
                 the model will maintain it's own internal batch.
         """
-        self.groups = groups
         self.vertex_lists = vertex_lists
+        self.groups = groups
         self._batch = batch
-        self._matrix = _default_identity
+        self._rotation = 0, 0, 0
+        self._translation = 0, 0, 0
 
     @property
     def batch(self):
@@ -191,29 +212,32 @@ class Model:
             return
 
         if batch is None:
-            batch = pyglet.graphics.Batch()
+            batch = graphics.Batch()
 
         for group, vlist in zip(self.groups, self.vertex_lists):
-            self._batch.migrate(vlist, GL_TRIANGLES, group, batch)
+            self._batch.migrate(vlist, gl.GL_TRIANGLES, group, batch)
 
         self._batch = batch
 
     @property
-    def matrix(self):
-        """Transformation matrix.
+    def rotation(self):
+        return self._rotation
 
-        A 4x4 matrix containing the desired transformation to
-        apply. The data should be provided as a flat list or tuple.
-
-        :type: list or tuple
-        """
-        return self._matrix
-
-    @matrix.setter
-    def matrix(self, matrix):
+    @rotation.setter
+    def rotation(self, values):
+        self._rotation = values
         for group in self.groups:
-            group.matrix[:] = matrix
-        self._matrix = matrix
+            group.rotation = values
+
+    @property
+    def translation(self):
+        return self._translation
+
+    @translation.setter
+    def translation(self, values):
+        self._translation = values
+        for group in self.groups:
+            group.translation = values
 
     def draw(self):
         """Draw the model.
@@ -221,6 +245,7 @@ class Model:
         This is not recommended. See the module documentation
         for information on efficient drawing of multiple models.
         """
+        gl.current_context.window_block.bind(0)
         self._batch.draw_subset(self.vertex_lists)
 
 
@@ -229,81 +254,169 @@ class Material:
 
     def __init__(self, name, diffuse, ambient, specular, emission, shininess, texture_name=None):
         self.name = name
-        self.diffuse = (GLfloat * 4)(*diffuse)
-        self.ambient = (GLfloat * 4)(*ambient)
-        self.specular = (GLfloat * 4)(*specular)
-        self.emission = (GLfloat * 4)(*emission)
+        self.diffuse = diffuse
+        self.ambient = ambient
+        self.specular = specular
+        self.emission = emission
         self.shininess = shininess
         self.texture_name = texture_name
 
+    def __eq__(self, other):
+        return (self.name == other.name and
+                self.diffuse == other.diffuse and
+                self.ambient == other.ambient and
+                self.specular == other.specular and
+                self.emission == other.emission and
+                self.shininess == other.shininess and
+                self.texture_name == other.texture_name)
 
-class TexturedMaterialGroup(graphics.Group):
 
-    def __init__(self, material, texture, matrix=None):
-        super(TexturedMaterialGroup, self).__init__()
+class BaseMaterialGroup(graphics.ShaderGroup):
+    default_vert_src = None
+    default_frag_src = None
+
+    def __init__(self, material, program, order=0, parent=None):
+        super().__init__(program, order, parent)
+
         self.material = material
+        self.rotation = 0, 0, 0
+        self.translation = 0, 0, 0
+
+    def set_modelview_matrix(self):
+        # NOTE: Matrix operations can be optimized later with transform feedback
+        view = Mat4()
+        view = view.rotate(radians(self.rotation[2]), z=1)
+        view = view.rotate(radians(self.rotation[1]), y=1)
+        view = view.rotate(radians(self.rotation[0]), x=1)
+        view = view.translate(*self.translation)
+
+        # TODO: separate the projection block, and remove this hack
+        block = self.program.uniform_blocks['WindowBlock']
+        ubo = block.create_ubo(0)
+        with ubo as window_block:
+            window_block.projection[:] = pyglet.math.Mat4.perspective_projection(0, 720, 0, 480, z_near=0.1, z_far=255)
+            window_block.view[:] = view
+
+
+class TexturedMaterialGroup(BaseMaterialGroup):
+    default_vert_src = """#version 330 core
+    in vec3 vertices;
+    in vec3 normals;
+    in vec2 tex_coords;
+    in vec4 colors;
+
+    out vec4 vertex_colors;
+    out vec3 vertex_normals;
+    out vec2 texture_coords;
+    out vec3 vertex_position;
+
+    uniform WindowBlock
+    {
+        mat4 projection;
+        mat4 view;
+    } window;
+
+
+    void main()
+    {
+        vec4 pos = window.view * vec4(vertices, 1.0);
+        gl_Position = window.projection * pos;
+        mat3 normal_matrix = transpose(inverse(mat3(window.view)));
+
+        vertex_position = pos.xyz;
+        vertex_colors = colors;
+        texture_coords = tex_coords;
+        vertex_normals = normal_matrix * normals;
+    }
+    """
+    default_frag_src = """#version 330 core
+    in vec4 vertex_colors;
+    in vec3 vertex_normals;
+    in vec2 texture_coords;
+    in vec3 vertex_position;
+    out vec4 final_colors;
+
+    uniform sampler2D our_texture;
+
+    void main()
+    {
+        float l = dot(normalize(-vertex_position), normalize(vertex_normals));
+        final_colors = (texture(our_texture, texture_coords) * vertex_colors) * l * 1.2;
+    }
+    """
+
+    def __init__(self, material, texture):
+        super().__init__(material, get_default_textured_shader())
         self.texture = texture
-        self.matrix = (GLfloat * 16)(*matrix or _default_identity)
 
-    def set_state(self, face=GL_FRONT_AND_BACK):
-        glEnable(self.texture.target)
-        glBindTexture(self.texture.target, self.texture.id)
-        material = self.material
-        glMaterialfv(face, GL_DIFFUSE, material.diffuse)
-        glMaterialfv(face, GL_AMBIENT, material.ambient)
-        glMaterialfv(face, GL_SPECULAR, material.specular)
-        glMaterialfv(face, GL_EMISSION, material.emission)
-        glMaterialf(face, GL_SHININESS, material.shininess)
-
-        glPushMatrix()
-        glMultMatrixf(self.matrix)
+    def set_state(self):
+        gl.glActiveTexture(gl.GL_TEXTURE0)
+        gl.glBindTexture(self.texture.target, self.texture.id)
+        self.program.use()
+        self.set_modelview_matrix()
 
     def unset_state(self):
-        glPopMatrix()
-        glDisable(self.texture.target)
-        glDisable(GL_COLOR_MATERIAL)
-
-    def __eq__(self, other):
-        # Do not consolidate Groups when adding to a Batch.
-        # Matrix multiplications requires isolation.
-        return False
+        gl.glBindTexture(self.texture.target, 0)
 
     def __hash__(self):
-        return hash((self.texture.id, self.texture.target))
-
-
-class MaterialGroup(graphics.Group):
-
-    def __init__(self, material, matrix=None):
-        super(MaterialGroup, self).__init__()
-        self.material = material
-        self.matrix = (GLfloat * 16)(*matrix or _default_identity)
-
-    def set_state(self, face=GL_FRONT_AND_BACK):
-        glDisable(GL_TEXTURE_2D)
-        material = self.material
-        glMaterialfv(face, GL_DIFFUSE, material.diffuse)
-        glMaterialfv(face, GL_AMBIENT, material.ambient)
-        glMaterialfv(face, GL_SPECULAR, material.specular)
-        glMaterialfv(face, GL_EMISSION, material.emission)
-        glMaterialf(face, GL_SHININESS, material.shininess)
-
-        glPushMatrix()
-        glMultMatrixf(self.matrix)
-
-    def unset_state(self):
-        glPopMatrix()
-        glDisable(GL_COLOR_MATERIAL)
+        return hash((self.texture.target, self.texture.id, self.program, self.order, self.parent))
 
     def __eq__(self, other):
-        # Do not consolidate Groups when adding to a Batch.
-        # Matrix multiplications requires isolation.
-        return False
+        return (self.__class__ is other.__class__ and
+                self.material == other.material and
+                self.texture.target == other.texture.target and
+                self.texture.id == other.texture.id and
+                self.program == other.program and
+                self.order == other.order and
+                self.parent == other.parent)
 
-    def __hash__(self):
-        material = self.material
-        return hash((tuple(material.diffuse) + tuple(material.ambient) +
-                     tuple(material.specular) + tuple(material.emission), material.shininess))
+
+class MaterialGroup(BaseMaterialGroup):
+    default_vert_src = """#version 330 core
+    in vec3 vertices;
+    in vec3 normals;
+    in vec4 colors;
+
+    out vec4 vertex_colors;
+    out vec3 vertex_normals;
+    out vec3 vertex_position;
+
+    uniform WindowBlock
+    {
+        mat4 projection;
+        mat4 view;
+    } window;
+
+    void main()
+    {
+        vec4 pos = window.view * vec4(vertices, 1.0);
+        gl_Position = window.projection * pos;
+        mat3 normal_matrix = transpose(inverse(mat3(window.view)));
+
+        vertex_position = pos.xyz;
+        vertex_colors = colors;
+        vertex_normals = normal_matrix * normals;
+    }
+    """
+    default_frag_src = """#version 330 core
+    in vec4 vertex_colors;
+    in vec3 vertex_normals;
+    in vec3 vertex_position;
+    out vec4 final_colors;
+
+    void main()
+    {
+        float l = dot(normalize(-vertex_position), normalize(vertex_normals));
+        final_colors = vertex_colors * l * 1.2;
+    }
+    """
+
+    def __init__(self, material):
+        super().__init__(material, get_default_shader())
+
+    def set_state(self):
+        self.program.use()
+        self.set_modelview_matrix()
 
 
 add_default_model_codecs()

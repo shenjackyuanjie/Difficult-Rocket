@@ -33,7 +33,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # ----------------------------------------------------------------------------
 
-"""Joystick, tablet and USB HID device support.
+"""Joystick, Game Controller, tablet and USB HID device support.
 
 This module provides a unified interface to almost any input device, besides
 the regular mouse and keyboard support provided by
@@ -83,16 +83,17 @@ handlers.
 
 import sys
 
-from .base import Device, Control, RelativeAxis, AbsoluteAxis, Button
-from .base import Joystick, AppleRemote, Tablet
+from .base import Device, Control, RelativeAxis, AbsoluteAxis
+from .base import Button, Joystick, AppleRemote, Tablet, GameController
 from .base import DeviceException, DeviceOpenException, DeviceExclusiveException
+
 
 _is_pyglet_doc_run = hasattr(sys, "is_pyglet_doc_run") and sys.is_pyglet_doc_run
 
 
 def get_apple_remote(display=None):
     """Get the Apple remote control device.
-    
+
     The Apple remote is the small white 6-button remote control that
     accompanies most recent Apple desktops and laptops.  The remote can only
     be used with Mac OS X.
@@ -105,6 +106,7 @@ def get_apple_remote(display=None):
     :return: The remote device, or `None` if the computer does not support it.
     """
     return None
+
 
 if _is_pyglet_doc_run:
     def get_devices(display=None):
@@ -129,6 +131,18 @@ if _is_pyglet_doc_run:
                 device.
 
         :rtype: list of :py:class:`Joystick`
+        """
+
+    def get_game_controllers(display=None):
+        """Get a list of attached game controllers.
+
+        :Parameters:
+            display : `~pyglet.canvas.Display`
+                The display device to query for input devices.  Ignored on Mac
+                OS X and Windows.  On Linux, defaults to the default display
+                device.
+
+        :rtype: list of :py:class:`GameController`
         """
 
     def get_tablets(display=None):
@@ -156,18 +170,26 @@ else:
     from pyglet import compat_platform
 
     if compat_platform.startswith('linux'):
-        from .x11_xinput import get_devices as xinput_get_devices
         from .x11_xinput_tablet import get_tablets
+        from .x11_xinput import get_devices as xinput_get_devices
         from .evdev import get_devices as evdev_get_devices
         from .evdev import get_joysticks
+        from .evdev import get_game_controllers
+
         def get_devices(display=None):
-            return (evdev_get_devices(display) +
-                    xinput_get_devices(display))
+            return evdev_get_devices(display) + xinput_get_devices(display)
+
     elif compat_platform in ('cygwin', 'win32'):
-        from .directinput import get_devices, get_joysticks
+        from .directinput import get_devices
+        from .directinput import get_joysticks
+        from .directinput import get_game_controllers
         try:
             from .wintab import get_tablets
         except:
             pass
+
     elif compat_platform == 'darwin':
-        from .darwin_hid import get_devices, get_joysticks, get_apple_remote
+        from .darwin_hid import get_devices
+        from .darwin_hid import get_joysticks
+        from .darwin_hid import get_apple_remote
+        from .darwin_hid import get_game_controllers

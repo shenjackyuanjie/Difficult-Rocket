@@ -32,7 +32,6 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # ----------------------------------------------------------------------------
-
 from ctypes import c_void_p, c_bool
 
 from pyglet.libs.darwin.cocoapy import ObjCClass, ObjCSubclass, send_super

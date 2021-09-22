@@ -37,12 +37,11 @@ import weakref
 
 from pyglet.media.drivers.base import AbstractAudioDriver, AbstractAudioPlayer
 from pyglet.media.events import MediaEvent
-from pyglet.media.exceptions import MediaException
 from pyglet.media.drivers.listener import AbstractListener
 from pyglet.util import debug_print
 
 from . import lib_pulseaudio as pa
-from .interface import PulseAudioContext, PulseAudioMainLoop, PulseAudioStream
+from .interface import PulseAudioMainLoop
 
 
 _debug = debug_print('debug_media')
@@ -84,8 +83,7 @@ class PulseAudioDriver(AbstractAudioDriver):
 
     def dump_debug_info(self):
         print('Client version: ', pa.pa_get_library_version())
-
-        print('Server:         ', self.context.Server)
+        print('Server:         ', self.context.server)
         print('Protocol:       ', self.context.protocol_version)
         print('Server protocol:', self.context.server_protocol_version)
         print('Local context:  ', self.context.is_local and 'Yes' or 'No')

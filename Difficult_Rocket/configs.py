@@ -11,11 +11,10 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-
+import re
+import sys
 import decimal
 import logging
-# import re
-import sys
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')

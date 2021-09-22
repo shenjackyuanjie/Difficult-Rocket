@@ -36,10 +36,8 @@
 """Low-level graphics rendering.
 
 This module provides an efficient low-level abstraction over OpenGL.  It gives
-very good performance for rendering OpenGL primitives; far better than the
-typical immediate-mode usage and, on modern graphics cards, better than using
-display lists in many cases.  The module is used internally by other areas of
-pyglet.
+very good performance for rendering OpenGL primitives. The module is used
+internally by other areas of pyglet.
 
 See the :ref:`guide_graphics` for details on how to use this graphics API.
 
@@ -47,10 +45,12 @@ Batches and groups
 ==================
 
 Without even needing to understand the details on how to draw primitives with
-the graphics API, developers can make use of :py:class:`~pyglet.graphics.Batch` and :py:class:`~pyglet.graphics.Group`
-objects to improve performance of sprite and text rendering.
+the graphics API, developers can make use of :py:class:`~pyglet.graphics.Batch`
+and :py:class:`~pyglet.graphics.Group` objects to improve performance of sprite
+and text rendering.
 
-The :py:class:`~pyglet.sprite.Sprite`, :py:func:`~pyglet.text.Label` and :py:func:`~pyglet.text.layout.TextLayout` classes all accept a ``batch`` and
+The :py:class:`~pyglet.sprite.Sprite`, :py:func:`~pyglet.text.Label` and
+:py:func:`~pyglet.text.layout.TextLayout` classes all accept a ``batch`` and
 ``group`` parameter in their constructors.  A batch manages a set of objects
 that will be drawn all at once, and a group describes the manner in which an
 object is drawn.
@@ -69,14 +69,14 @@ Drawing a complete batch is much faster than drawing the items in the batch
 individually, especially when those items belong to a common group.  
 
 Groups describe the OpenGL state required for an item.  This is for the most
-part managed by the sprite and text classes, however you can also use groups
-to ensure items are drawn in a particular order.  For example,  the following
-example adds a background sprite which is guaranteed to be drawn before the
-car and the boat::
+part managed by the sprite and text classes, however you can also use custom
+groups to ensure items are drawn in a particular order. For example, the
+following example adds a background sprite which is guaranteed to be drawn
+before the car and the boat::
 
     batch = pyglet.graphics.Batch()
-    background = pyglet.graphics.OrderedGroup(0)
-    foreground = pyglet.graphics.OrderedGroup(1)
+    background = pyglet.sprite.SpriteGroup(0)
+    foreground = pyglet.sprite.SpriteGroup(1)
 
     background = pyglet.sprite.Sprite(background_image, 
                                       batch=batch, group=background)
@@ -163,8 +163,8 @@ import weakref
 
 import pyglet
 from pyglet.gl import *
-from pyglet import gl
 from pyglet.graphics import vertexbuffer, vertexattribute, vertexdomain
+from pyglet.graphics.vertexarray import VertexArray
 
 _debug_graphics_batch = pyglet.options['debug_graphics_batch']
 
@@ -183,23 +183,35 @@ def draw(size, mode, *data):
             details.
 
     """
-    glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT)
+    # Create and bind a throwaway VAO
+    vao_id = GLuint()
+    glGenVertexArrays(1, vao_id)
+    glBindVertexArray(vao_id)
+    # Activate shader program:
+    group = get_default_group()
+    group.set_state()
 
     buffers = []
     for fmt, array in data:
-        attribute = vertexattribute.create_attribute(fmt)
+        attribute = vertexattribute.create_attribute(group.program, fmt)
         assert size == len(array) // attribute.count, 'Data for %s is incorrect length' % fmt
-        buffer = vertexbuffer.create_mappable_buffer(size * attribute.stride, vbo=False)
+
+        buffer = vertexbuffer.create_buffer(size * attribute.stride, mappable=False)
 
         attribute.set_region(buffer, 0, size, array)
         attribute.enable()
         attribute.set_pointer(buffer.ptr)
-        buffers.append(buffer)
+
+        buffers.append(buffer)      # Don't garbage collect it.
 
     glDrawArrays(mode, 0, size)
-    glFlush()
 
-    glPopClientAttrib()
+    # Deactivate shader program:
+    group.unset_state()
+    # Discard everything after drawing:
+    del buffers
+    glBindVertexArray(0)
+    glDeleteVertexArrays(1, vao_id)
 
 
 def draw_indexed(size, mode, indices, *data):
@@ -216,13 +228,20 @@ def draw_indexed(size, mode, indices, *data):
             Attribute formats and data.  See the module summary for details.
 
     """
-    glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT)
+    # Create and bind a throwaway VAO
+    vao_id = GLuint()
+    glGenVertexArrays(1, vao_id)
+    glBindVertexArray(vao_id)
+    # Activate shader program:
+    group = get_default_group()
+    group.set_state()
 
     buffers = []
     for fmt, array in data:
-        attribute = vertexattribute.create_attribute(fmt)
+        attribute = vertexattribute.create_attribute(group.program, fmt)
         assert size == len(array) // attribute.count, 'Data for %s is incorrect length' % fmt
-        buffer = vertexbuffer.create_mappable_buffer(size * attribute.stride, vbo=False)
+
+        buffer = vertexbuffer.create_buffer(size * attribute.stride, mappable=False)
 
         attribute.set_region(buffer, 0, size, array)
         attribute.enable()
@@ -243,7 +262,12 @@ def draw_indexed(size, mode, indices, *data):
     glDrawElements(mode, len(indices), index_type, index_array)
     glFlush()
 
-    glPopClientAttrib()
+    # Deactivate shader program:
+    group.unset_state()
+    # Discard everything after drawing:
+    del buffers
+    glBindVertexArray(0)
+    glDeleteVertexArrays(1, vao_id)
 
 
 def _parse_data(data):
@@ -262,13 +286,31 @@ def _parse_data(data):
     return formats, initial_arrays
 
 
-def _get_default_batch():
-    shared_object_space = gl.current_context.object_space
+def get_default_batch():
     try:
-        return shared_object_space.pyglet_graphics_default_batch
+        return pyglet.gl.current_context.pyglet_graphics_default_batch
     except AttributeError:
-        shared_object_space.pyglet_graphics_default_batch = Batch()
-        return shared_object_space.pyglet_graphics_default_batch
+        pyglet.gl.current_context.pyglet_graphics_default_batch = Batch()
+        return pyglet.gl.current_context.pyglet_graphics_default_batch
+
+
+def get_default_group():
+    try:
+        return pyglet.gl.current_context.pyglet_graphics_default_group
+    except AttributeError:
+        pyglet.gl.current_context.pyglet_graphics_default_group = ShaderGroup(get_default_shader())
+        return pyglet.gl.current_context.pyglet_graphics_default_group
+
+
+def get_default_shader():
+    try:
+        return pyglet.gl.current_context.pyglet_graphics_default_shader
+    except AttributeError:
+        _default_vert_shader = pyglet.graphics.shader.Shader(_vertex_source, 'vertex')
+        _default_frag_shader = pyglet.graphics.shader.Shader(_fragment_source, 'fragment')
+        default_shader_program = pyglet.graphics.shader.ShaderProgram(_default_vert_shader, _default_frag_shader)
+        pyglet.gl.current_context.pyglet_graphics_default_shader = default_shader_program
+        return pyglet.gl.current_context.pyglet_graphics_default_shader
 
 
 def vertex_list(count, *data):
@@ -284,8 +326,8 @@ def vertex_list(count, *data):
     :rtype: :py:class:`~pyglet.graphics.vertexdomain.VertexList`
     """
     # Note that mode=0 because the default batch is never drawn: vertex lists
-    # returned from this function are drawn directly by the app.
-    return _get_default_batch().add(count, 0, None, *data)
+    # returned from this function are drawn directly by their draw() method.
+    return get_default_batch().add(count, 0, None, *data)
 
 
 def vertex_list_indexed(count, indices, *data):
@@ -303,18 +345,18 @@ def vertex_list_indexed(count, indices, *data):
     :rtype: `IndexedVertexList`
     """
     # Note that mode=0 because the default batch is never drawn: vertex lists
-    # returned from this function are drawn directly by the app.
-    return _get_default_batch().add_indexed(count, 0, None, indices, *data)
+    # returned from this function are drawn directly by their draw() method.
+    return get_default_batch().add_indexed(count, 0, None, indices, *data)
 
 
 class Batch:
     """Manage a collection of vertex lists for batched rendering.
 
-    Vertex lists are added to a :py:class:`~pyglet.graphics.Batch` using the `add` and `add_indexed`
-    methods.  An optional group can be specified along with the vertex list,
-    which gives the OpenGL state required for its rendering.  Vertex lists
-    with shared mode and group are allocated into adjacent areas of memory and
-    sent to the graphics card in a single operation.
+    Vertex lists are added to a :py:class:`~pyglet.graphics.Batch` using the
+    `add` and `add_indexed` methods. An optional group can be specified along
+    with the vertex list, which gives the OpenGL state required for its rendering.
+    Vertex lists with shared mode and group are allocated into adjacent areas of
+    memory and sent to the graphics card in a single operation.
 
     Call `VertexList.delete` to remove a vertex list from the batch.
     """
@@ -333,6 +375,12 @@ class Batch:
 
         self._draw_list = []
         self._draw_list_dirty = False
+
+        # Each Batch encompasses one VAO
+        self.vao = VertexArray()
+
+        if _debug_graphics_batch:
+            print("Batch created. VAO ID: {0}".format(self.vao.id))
 
     def invalidate(self):
         """Force the batch to update the draw list.
@@ -368,7 +416,7 @@ class Batch:
         # Create vertex list and initialize
         vlist = domain.create(count)
         for i, array in initial_arrays:
-            vlist._set_attribute_data(i, array)
+            vlist.set_attribute_data(i, array)
 
         return vlist
 
@@ -398,9 +446,9 @@ class Batch:
         # Create vertex list and initialize
         vlist = domain.create(count, len(indices))
         start = vlist.start
-        vlist._set_index_data([i + start for i in indices])
+        vlist.set_index_data([i + start for i in indices])
         for i, array in initial_arrays:
-            vlist._set_attribute_data(i, array)
+            vlist.set_attribute_data(i, array)
 
         return vlist
 
@@ -436,24 +484,23 @@ class Batch:
 
     def _get_domain(self, indexed, mode, group, formats):
         if group is None:
-            group = null_group
+            group = get_default_group()
 
         # Batch group
         if group not in self.group_map:
             self._add_group(group)
 
-        domain_map = self.group_map[group]
+        # If not a ShaderGroup, use the default ShaderProgram
+        shader_program = getattr(group, 'program', get_default_shader())
 
         # Find domain given formats, indices and mode
-        key = (formats, mode, indexed)
+        domain_map = self.group_map[group]
+        key = (formats, mode, indexed, shader_program.id)
         try:
             domain = domain_map[key]
         except KeyError:
             # Create domain
-            if indexed:
-                domain = vertexdomain.create_indexed_domain(*formats)
-            else:
-                domain = vertexdomain.create_domain(*formats)
+            domain = vertexdomain.create_domain(shader_program, *formats, indexed=indexed)
             domain.__formats = formats
             domain_map[key] = domain
             self._draw_list_dirty = True
@@ -470,7 +517,7 @@ class Batch:
             if group.parent not in self.group_children:
                 self.group_children[group.parent] = []
             self.group_children[group.parent].append(group)
-            
+
         group._assigned_batches.add(self)
         self._draw_list_dirty = True
 
@@ -484,13 +531,12 @@ class Batch:
 
             # Draw domains using this group
             domain_map = self.group_map[group]
-            for (formats, mode, indexed), domain in list(domain_map.items()):
+            for (formats, mode, indexed, program_id), domain in list(domain_map.items()):
                 # Remove unused domains from batch
-                if domain._is_empty():
-                    del domain_map[(formats, mode, indexed)]
+                if domain.is_empty:
+                    del domain_map[(formats, mode, indexed, program_id)]
                     continue
-                draw_list.append(
-                    (lambda d, m: lambda: d.draw(m))(domain, mode))
+                draw_list.append((lambda d, m: lambda: d.draw(m))(domain, mode))
 
             # Sort and visit child groups of this group
             children = self.group_children.get(group)
@@ -516,7 +562,7 @@ class Batch:
                     self.top_groups.remove(group)
                 except ValueError:
                     pass
-                    
+
                 return []
 
         self._draw_list = []
@@ -555,8 +601,9 @@ class Batch:
             dump(group)
 
     def draw(self):
-        """Draw the batch.
-        """
+        """Draw the batch."""
+        self.vao.bind()
+
         if self._draw_list_dirty:
             self._update_draw_list()
 
@@ -579,13 +626,15 @@ class Batch:
 
         """
 
+        self.vao.bind()
+
         # Horrendously inefficient.
         def visit(group):
             group.set_state()
 
             # Draw domains using this group
             domain_map = self.group_map[group]
-            for (_, mode, _), domain in domain_map.items():
+            for (_, mode, _, _), domain in domain_map.items():
                 for alist in vertex_lists:
                     if alist.domain is domain:
                         alist.draw(mode)
@@ -609,48 +658,65 @@ class Batch:
 class Group:
     """Group of common OpenGL state.
 
-    Before a vertex list is rendered, its group's OpenGL state is set; as are
-    that state's ancestors' states.  This can be defined arbitrarily on
-    subclasses; the default state change has no effect, and groups vertex
-    lists only in the order in which they are drawn.
+    Before a VertexList is rendered, its Group's OpenGL state is set.
+    This can including binding textures, or setting any other parameters.
     """
-
-    def __init__(self, parent=None):
-        """Create a group.
+    def __init__(self, order=0, parent=None):
+        """Create a Group.
 
         :Parameters:
+            `order` : int
+                Set the order to render above or below other Groups.
             `parent` : `~pyglet.graphics.Group`
-                Group to contain this group; its state will be set before this
-                state's.
+                Group to contain this Group; its state will be set before this
+                Group's state.
             `visible` : bool
-                Determines whether this group is visible in any of the batches it is assigned to.
+                Determines whether this Group is visible in any of the Batches
+                it is assigned to. If False, objects in this Group will not
+                be rendered.
             `batches` : list
-                Read Only. A list of which batches this group is a part of. 
+                Read Only. A list of which Batches this Group is a part of.
         """
+        self._order = order
         self.parent = parent
         self._visible = True
         self._assigned_batches = weakref.WeakSet()
-    
+
+    @property
+    def order(self):
+        return self._order
+
     @property
     def visible(self):
         return self._visible
-        
+
     @visible.setter
     def visible(self, value):
         self._visible = value
-        
+
         for batch in self._assigned_batches:
             batch.invalidate()
-            
+
     @property
     def batches(self):
         return [batch for batch in self._assigned_batches]
-    
+
     def __lt__(self, other):
-        return hash(self) < hash(other)
+        return self._order < other.order
+
+    def __eq__(self, other):
+        return (self.__class__ is other.__class__ and
+                self._order == other.order and
+                self.parent == other.parent)
+
+    def __hash__(self):
+        return hash((self._order, self.parent))
+
+    def __repr__(self):
+        return "{}(order={})".format(self.__class__.__name__, self._order)
 
     def set_state(self):
-        """Apply the OpenGL state change.  
+        """Apply the OpenGL state change.
         
         The default implementation does nothing."""
         pass
@@ -682,18 +748,25 @@ class Group:
             self.parent.unset_state_recursive()
 
 
-class NullGroup(Group):
-    """The default group class used when ``None`` is given to a batch.
+class ShaderGroup(Group):
+    def __init__(self, program, order=0, parent=None):
+        super().__init__(order, parent)
+        self.program = program
 
-    This implementation has no effect.
-    """
-    pass
+    def set_state(self):
+        self.program.use()
 
+    def unset_state(self):
+        self.program.stop()
 
-#: The default group.
-#:
-#: :type: :py:class:`~pyglet.graphics.Group`
-null_group = NullGroup()
+    def __eq__(self, other):
+        return (self.__class__ is other.__class__ and
+                self._order == other.order and
+                self.program == other.program and
+                self.parent == other.parent)
+
+    def __hash__(self):
+        return hash((self._order, self.parent, self.program))
 
 
 class TextureGroup(Group):
@@ -704,78 +777,74 @@ class TextureGroup(Group):
 
     # Don't use this, create your own group classes that are more specific.
     # This is just an example.
-    def __init__(self, texture, parent=None):
+    def __init__(self, texture, order=0, parent=None):
         """Create a texture group.
 
         :Parameters:
             `texture` : `~pyglet.image.Texture`
                 Texture to bind.
+            `order` : int
+                Change the order to render above or below other Groups.
             `parent` : `~pyglet.graphics.Group`
                 Parent group.
-
         """
-        super(TextureGroup, self).__init__(parent)
+        super(TextureGroup, self).__init__(order, parent)
         self.texture = texture
 
     def set_state(self):
-        glEnable(self.texture.target)
+        glActiveTexture(GL_TEXTURE0)
         glBindTexture(self.texture.target, self.texture.id)
 
     def unset_state(self):
-        glDisable(self.texture.target)
+        glBindTexture(self.texture.target, 0)
 
     def __hash__(self):
-        return hash((self.texture.target, self.texture.id, self.parent))
+        return hash((self.texture.target, self.texture.id, self.order, self.parent))
 
     def __eq__(self, other):
         return (self.__class__ is other.__class__ and
                 self.texture.target == other.texture.target and
                 self.texture.id == other.texture.id and
+                self.order == other.order and
                 self.parent == other.parent)
 
     def __repr__(self):
         return '%s(id=%d)' % (self.__class__.__name__, self.texture.id)
 
 
-class OrderedGroup(Group):
-    """A group with partial order.
+#: The default Shaders
 
-    Ordered groups with a common parent are rendered in ascending order of
-    their ``order`` field.  This is a useful way to render multiple layers of
-    a scene within a single batch.
-    """
+_vertex_source = """#version 330 core
+    in vec3 position;
+    in vec4 colors;
+    in vec3 tex_coords;
+    out vec4 vertex_colors;
+    out vec3 texture_coords;
 
-    # This can be useful as a top-level group, or as a superclass for other
-    # groups that need to be ordered.
-    #
-    # As a top-level group it's useful because graphics can be composited in a
-    # known order even if they don't know about each other or share any known
-    # group.
-    def __init__(self, order, parent=None):
-        """Create an ordered group.
+    uniform WindowBlock
+    {
+        mat4 projection;
+        mat4 view;
+    } window;  
 
-        :Parameters:
-            `order` : int
-                Order of this group.
-            `parent` : `~pyglet.graphics.Group`
-                Parent of this group.
+    void main()
+    {
+        gl_Position = window.projection * window.view * vec4(position, 1);
 
-        """
-        super(OrderedGroup, self).__init__(parent)
-        self.order = order
+        vertex_colors = colors;
+        texture_coords = tex_coords;
+    }
+"""
 
-    def __lt__(self, other):
-        if isinstance(other, OrderedGroup):
-            return self.order < other.order
-        return super(OrderedGroup, self).__lt__(other)
+_fragment_source = """#version 330 core
+    in vec4 vertex_colors;
+    in vec3 texture_coords;
+    out vec4 final_colors;
 
-    def __eq__(self, other):
-        return (self.__class__ is other.__class__ and
-                self.order == other.order and
-                self.parent == other.parent)
+    uniform sampler2D our_texture;
 
-    def __hash__(self):
-        return hash((self.order, self.parent))
-
-    def __repr__(self):
-        return '%s(%d)' % (self.__class__.__name__, self.order)
+    void main()
+    {
+        final_colors = texture(our_texture, texture_coords.xy) + vertex_colors;
+    }
+"""

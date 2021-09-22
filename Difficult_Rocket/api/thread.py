@@ -21,4 +21,3 @@ class Threads(threading.Thread):
         if crash.record_thread:
             crash.all_thread.append(self)
         super().run()
-

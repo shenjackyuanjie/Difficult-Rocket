@@ -21,7 +21,9 @@
     'mouse.press': '鼠标在 {} 被按下，按键为：{}',
     'mouse.release': '鼠标在 {} 释放，按键为：{}',
     'mouse.right': '右键',
-    'mouse.left': '左键'
+    'mouse.left': '左键',
+    'libs.local': '正在使用本地 pyglet 库 版本为: {}',
+    'libs.outer': '正在使用全局 pyglet 库 版本为: {}\n(可能会造成bug，因为本地库版本为2.0dev)'
   },
   'server': {
     'setup.done': '服务端载入完成',

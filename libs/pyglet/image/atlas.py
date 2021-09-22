@@ -61,8 +61,6 @@ the application's responsibility to keep track of the regions returned by the
 
 import pyglet
 
-from pyglet.gl import GL_RGBA
-
 
 class AllocatorException(Exception):
     """The allocator does not have sufficient free space for the requested
@@ -192,7 +190,7 @@ class TextureAtlas:
         width = min(width, max_texture_size)
         height = min(height, max_texture_size)
 
-        self.texture = pyglet.image.Texture.create(width, height, GL_RGBA, rectangle=True)
+        self.texture = pyglet.image.Texture.create(width, height)
         self.allocator = Allocator(width, height)
 
     def add(self, img, border=0):
@@ -268,9 +266,8 @@ class TextureBin:
             try:
                 return atlas.add(img, border)
             except AllocatorException:
-                # Remove atlases that are no longer useful (this is so their
-                # textures can later be freed if the images inside them get
-                # collected).
+                # Remove atlases that are no longer useful (so that their textures
+                # can later be freed if the images inside them get collected).
                 if img.width < 64 and img.height < 64:
                     self.atlases.remove(atlas)
 

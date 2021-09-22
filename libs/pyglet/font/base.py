@@ -62,7 +62,7 @@ _prepend = lambda c, cc: c in _logical_order_exception
 _spacing_mark = lambda c, cc: cc == 'Mc' and c not in _other_grapheme_extend
 
 
-def _grapheme_break(left, right):
+def grapheme_break(left, right):
     # GB1
     if left is None:
         return True
@@ -121,7 +121,7 @@ def get_grapheme_clusters(text):
     cluster = ''
     left = None
     for right in text:
-        if cluster and _grapheme_break(left, right):
+        if cluster and grapheme_break(left, right):
             clusters.append(cluster)
             cluster = ''
         elif cluster:
@@ -181,29 +181,29 @@ class Glyph(image.TextureRegion):
             left_side_bearing + self.width + x_offset,
             -baseline + self.height + y_offset)
 
-    def draw(self):
-        """Debug method.
-        
-        Use the higher level APIs for performance and kerning.
-        """
-        glBindTexture(GL_TEXTURE_2D, self.owner.id)
-        glBegin(GL_QUADS)
-        self.draw_quad_vertices()
-        glEnd()
-
-    def draw_quad_vertices(self):
-        """Debug method. 
-
-        Use the higher level APIs for performance and kerning.
-        """
-        glTexCoord3f(*self.tex_coords[:3])
-        glVertex2f(self.vertices[0], self.vertices[1])
-        glTexCoord3f(*self.tex_coords[3:6])
-        glVertex2f(self.vertices[2], self.vertices[1])
-        glTexCoord3f(*self.tex_coords[6:9])
-        glVertex2f(self.vertices[2], self.vertices[3])
-        glTexCoord3f(*self.tex_coords[9:12])
-        glVertex2f(self.vertices[0], self.vertices[3])
+    # def draw(self):
+    #     """Debug method.
+    #
+    #     Use the higher level APIs for performance and kerning.
+    #     """
+    #     glBindTexture(GL_TEXTURE_2D, self.owner.id)
+    #     glBegin(GL_QUADS)
+    #     self.draw_quad_vertices()
+    #     glEnd()
+    #
+    # def draw_quad_vertices(self):
+    #     """Debug method.
+    #
+    #     Use the higher level APIs for performance and kerning.
+    #     """
+    #     glTexCoord3f(*self.tex_coords[:3])
+    #     glVertex2f(self.vertices[0], self.vertices[1])
+    #     glTexCoord3f(*self.tex_coords[3:6])
+    #     glVertex2f(self.vertices[2], self.vertices[1])
+    #     glTexCoord3f(*self.tex_coords[6:9])
+    #     glVertex2f(self.vertices[2], self.vertices[3])
+    #     glTexCoord3f(*self.tex_coords[9:12])
+    #     glVertex2f(self.vertices[0], self.vertices[3])
 
     def get_kerning_pair(self, right_glyph):
         """Not implemented.
@@ -286,9 +286,10 @@ class Font:
         `descent` : int
             Maximum descent below the baseline, in pixels. Usually negative.
     """
-    texture_width = 256
-    texture_height = 256
-    texture_internalformat = GL_ALPHA
+    texture_width = 512
+    texture_height = 512
+    # TODO: rewrite text.layout._default_shader_program to use GL_R8 or GL_RED
+    texture_internalformat = GL_RGBA
     texture_min_filter = GL_LINEAR
     texture_mag_filter = GL_LINEAR
 
@@ -358,12 +359,12 @@ class Font:
             if glyph:
                 break
         if not glyph:
-            texture = self.texture_class.create_for_size(GL_TEXTURE_2D,
-                                                         self.texture_width,
-                                                         self.texture_height,
-                                                         self.texture_internalformat,
-                                                         self.texture_min_filter,
-                                                         self.texture_mag_filter)
+            texture = self.texture_class.create(self.texture_width,
+                                                self.texture_height,
+                                                GL_TEXTURE_2D,
+                                                self.texture_internalformat,
+                                                self.texture_min_filter,
+                                                self.texture_mag_filter)
             self.textures.insert(0, texture)
             glyph = texture.fit(image)
         return glyph
@@ -444,7 +445,7 @@ class Font:
             width -= glyph.advance
             
             # If over width and have some committed glyphs, finish.
-            if width <= 0 and len(glyphs) > 0:
+            if width <= 0 < len(glyphs):
                 break
 
             # If a valid breakpoint, commit holding buffer

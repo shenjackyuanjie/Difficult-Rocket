@@ -96,7 +96,7 @@ the set when they are no longer referenced or are closed explicitly.
 """
 
 
-def run():
+def run(interval=1/60):
     """Begin processing events, scheduled functions and window updates.
 
     This is a convenience function, equivalent to::
@@ -104,7 +104,7 @@ def run():
         pyglet.app.event_loop.run()
 
     """
-    event_loop.run()
+    event_loop.run(interval)
 
 
 def exit():
@@ -127,7 +127,6 @@ def exit():
 #: :meth:`EventLoop.run`.
 event_loop = EventLoop()
 
-#: The platform-dependent event loop.
-#: Applications must not subclass or replace this :class:`PlatformEventLoop`
-#: object.
+#: The platform-dependent event loop. Applications must not subclass
+# or replace this :class:`PlatformEventLoop` object.
 platform_event_loop = PlatformEventLoop()

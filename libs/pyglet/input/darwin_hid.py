@@ -37,8 +37,9 @@ import sys
 
 from ctypes import CFUNCTYPE, byref, c_void_p, c_int, c_ubyte, c_bool, c_uint32, c_uint64
 
+from .gamecontroller import is_game_controller
 from .base import Device, AbsoluteAxis, RelativeAxis, Button
-from .base import Joystick, AppleRemote
+from .base import Joystick, GameController, AppleRemote
 
 from pyglet.libs.darwin.cocoapy import CFSTR, CFIndex, CFTypeID, known_cftypes
 from pyglet.libs.darwin.cocoapy import kCFRunLoopDefaultMode, CFAllocatorRef, cf
@@ -80,7 +81,7 @@ kHIDUsage_Csmr_Menu            = 0x40
 kHIDUsage_Csmr_FastForward     = 0xB3
 kHIDUsage_Csmr_Rewind          = 0xB4
 kHIDUsage_Csmr_Eject	       = 0xB8
-kHIDUsage_Csmr_Mute	       = 0xE2
+kHIDUsage_Csmr_Mute	           = 0xE2
 kHIDUsage_Csmr_VolumeIncrement = 0xE9
 kHIDUsage_Csmr_VolumeDecrement = 0xEA
 
@@ -541,6 +542,7 @@ _axis_names = {
     (0x01, 0x39): 'hat',
 }
 
+
 _button_names = {
     (kHIDPage_GenericDesktop, kHIDUsage_GD_SystemSleep): 'sleep',
     (kHIDPage_GenericDesktop, kHIDUsage_GD_SystemWakeUp): 'wakeup',
@@ -563,7 +565,7 @@ _button_names = {
 
 class PygletDevice(Device):
     def __init__(self, display, device, manager):
-        super(PygletDevice, self).__init__(display, device.product)
+        super(PygletDevice, self).__init__(display=display, name=device.product)
         self.device = device
         self.device_identifier = self.device.unique_identifier()
         self.device.add_value_observer(self)
@@ -588,6 +590,29 @@ class PygletDevice(Device):
 
     def get_controls(self):
         return list(self._controls.values())
+
+    def get_guid(self):
+        """Generate an SDL2 style GUID from the product guid."""
+
+        if self.device.transport == 'USB':
+            bustype = 0x03
+            vendor, product, version = self.device_identifier[2:5]
+            # Byte swap (ABCD --> CDAB):
+            bustype = ((bustype << 8) | (bustype >> 8)) & 0xFFFF
+            vendor = ((vendor << 8) | (vendor >> 8)) & 0xFFFF
+            product = ((product << 8) | (product >> 8)) & 0xFFFF
+            version = ((version << 8) | (version >> 8)) & 0xFFFF
+            return "{:04x}0000{:04x}0000{:04x}0000{:04x}0000".format(bustype, vendor, product, version)
+
+        elif self.device.transport == 'BLUETOOTH':
+            bustype = 0x05
+            # Byte swap (ABCD --> CDAB):
+            bustype = ((bustype << 8) | (bustype >> 8)) & 0xFFFF
+
+            # TODO: test fallback to vendor id if no product name:
+            name = self.device.product or str(self.device.vendorID)
+            name = name.encode().hex()
+            return "{:04x}0000{:0<24}".format(bustype, name)
 
     def device_removed(self, hid_device):
         # Called by device when it is unplugged.
@@ -645,6 +670,7 @@ class PygletDevice(Device):
 
 ######################################################################
 
+
 _manager = HIDManager()
 
 
@@ -661,3 +687,8 @@ def get_apple_remote(display=None):
     for device in _manager.devices:
         if device.product == 'Apple IR':
             return AppleRemote(PygletDevice(display, device, _manager))
+
+
+def get_game_controllers(display=None):
+    return [GameController(PygletDevice(display, device, _manager)) for device in _manager.devices
+            if is_game_controller(device)]

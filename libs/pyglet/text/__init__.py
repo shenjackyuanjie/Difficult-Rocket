@@ -300,8 +300,27 @@ class DocumentLabel(layout.TextLayout):
 
     @color.setter
     def color(self, color):
-        self.document.set_style(0, len(self.document.text),
-                                {'color': color})
+        self.document.set_style(0, len(self.document.text), {'color': color})
+
+    @property
+    def opacity(self):
+        """Blend opacity.
+
+        This property sets the alpha component of the colour of the label's
+        vertices.  With the default blend mode, this allows the layout to be
+        drawn with fractional opacity, blending with the background.
+
+        An opacity of 255 (the default) has no effect.  An opacity of 128 will
+        make the sprite appear translucent.
+
+        :type: int
+        """
+        return self.color[4]
+
+    @opacity.setter
+    def opacity(self, alpha):
+        if alpha != self.color[4]:
+            self.color = list(map(int, (*self.color[:3], alpha)))
 
     @property
     def font_name(self):
@@ -316,8 +335,7 @@ class DocumentLabel(layout.TextLayout):
 
     @font_name.setter
     def font_name(self, font_name):
-        self.document.set_style(0, len(self.document.text),
-                                {'font_name': font_name})
+        self.document.set_style(0, len(self.document.text), {'font_name': font_name})
 
     @property
     def font_size(self):
@@ -524,3 +542,4 @@ class HTMLLabel(DocumentLabel):
     def text(self, text):
         self._text = text
         self.document = decode_html(text, self._location)
+

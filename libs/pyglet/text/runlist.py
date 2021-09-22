@@ -111,6 +111,7 @@ class RunList:
 
         """
         i = 0
+
         for run in self.runs:
             if end - start == 0:
                 break
@@ -177,7 +178,7 @@ class RunList:
                 run.value = value
             i += run.count
 
-            # Merge adjacent runs
+        # Merge adjacent runs
         last_run = self.runs[0]
         for run in self.runs[1:]:
             if run.value == last_run.value:

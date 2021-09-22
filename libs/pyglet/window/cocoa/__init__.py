@@ -36,8 +36,7 @@
 from ctypes import *
 
 import pyglet
-from pyglet import gl
-from pyglet.window import BaseWindow, WindowException
+from pyglet.window import BaseWindow
 from pyglet.window import MouseCursor, DefaultMouseCursor
 from pyglet.event import EventDispatcher
 
@@ -47,7 +46,6 @@ from pyglet.libs.darwin import cocoapy, CGPoint
 
 from .systemcursor import SystemCursor
 from .pyglet_delegate import PygletDelegate
-from .pyglet_textview import PygletTextView
 from .pyglet_window import PygletWindow, PygletToolWindow
 from .pyglet_view import PygletView
 
@@ -84,14 +82,8 @@ class CocoaWindow(BaseWindow):
     _delegate = None
 
     # Window properties
-    _minimum_size = None
-    _maximum_size = None
-
-    _is_mouse_exclusive = False
     _mouse_platform_visible = True
     _mouse_ignore_motion = False
-
-    _is_keyboard_exclusive = False
 
     # Flag set during close() method.
     _was_closed = False
@@ -401,24 +393,13 @@ class CocoaWindow(BaseWindow):
         origin = cocoapy.NSPoint(x, screen_height - y - rect.size.height)
         self._nswindow.setFrameOrigin_(origin)
 
-    def get_size(self):
-        window_frame = self._nswindow.frame()
-        rect = self._nswindow.contentRectForFrameRect_(window_frame)
-        return int(rect.size.width), int(rect.size.height)
-
     def get_framebuffer_size(self):
         view = self.context._nscontext.view()
         bounds = view.convertRectToBacking_(view.bounds()).size
         return int(bounds.width), int(bounds.height)
 
-    # :deprecated: Use Window.get_framebuffer_size
-    get_viewport_size = get_framebuffer_size
-
-    def set_size(self, width, height):
-        if self._fullscreen:
-            raise WindowException('Cannot set size of fullscreen window.')
-        self._width = max(1, int(width))
-        self._height = max(1, int(height))
+    def set_size(self, width: int, height: int) -> None:
+        super().set_size(width, height)
         # Move frame origin down so that top-left corner of window doesn't move.
         window_frame = self._nswindow.frame()
         rect = self._nswindow.contentRectForFrameRect_(window_frame)
@@ -431,17 +412,19 @@ class CocoaWindow(BaseWindow):
         is_visible = self._nswindow.isVisible()
         self._nswindow.setFrame_display_animate_(new_frame, True, is_visible)
 
-    def set_minimum_size(self, width, height):
-        self._minimum_size = cocoapy.NSSize(width, height)
+    def set_minimum_size(self, width: int, height: int) -> None:
+        super().set_minimum_size(width, height)
 
         if self._nswindow is not None:
-            self._nswindow.setContentMinSize_(self._minimum_size)
+            ns_minimum_size = cocoapy.NSSize(*self._minimum_size)
+            self._nswindow.setContentMinSize_(ns_minimum_size)
 
-    def set_maximum_size(self, width, height):
-        self._maximum_size = cocoapy.NSSize(width, height)
+    def set_maximum_size(self, width: int, height: int) -> None:
+        super().set_maximum_size(width, height)
 
         if self._nswindow is not None:
-            self._nswindow.setContentMaxSize_(self._maximum_size)
+            ns_maximum_size = cocoapy.NSSize(*self._maximum_size)
+            self._nswindow.setContentMaxSize_(ns_maximum_size)
 
     def activate(self):
         if self._nswindow is not None:
@@ -449,8 +432,9 @@ class CocoaWindow(BaseWindow):
             NSApp.activateIgnoringOtherApps_(True)
             self._nswindow.makeKeyAndOrderFront_(None)
 
-    def set_visible(self, visible=True):
-        self._visible = visible
+    def set_visible(self, visible: bool = True) -> None:
+        super().set_visible(visible)
+
         if self._nswindow is not None:
             if visible:
                 # Not really sure why on_resize needs to be here,
@@ -471,12 +455,12 @@ class CocoaWindow(BaseWindow):
         if self._nswindow is not None:
             self._nswindow.zoom_(None)
 
-    def set_vsync(self, vsync):
+    def set_vsync(self, vsync: bool) -> None:
         if pyglet.options['vsync'] is not None:
             vsync = pyglet.options['vsync']
-        self._vsync = vsync  # _recreate depends on this
-        if self.context:
-            self.context.set_vsync(vsync)
+
+        super().set_vsync(vsync)
+        self.context.set_vsync(vsync)
 
     def _mouse_in_content_rect(self):
         # Returns true if mouse is inside the window's content rectangle.
@@ -501,7 +485,7 @@ class CocoaWindow(BaseWindow):
         # look like.
         else:
             # If we are in mouse exclusive mode, then hide the mouse cursor.
-            if self._is_mouse_exclusive:
+            if self._mouse_exclusive:
                 SystemCursor.hide()
             # If we aren't inside the window, then always show the mouse
             # and make sure that it is the default cursor.
@@ -581,7 +565,7 @@ class CocoaWindow(BaseWindow):
             quartz.CGDisplayMoveCursorToPoint(displayID, cocoapy.NSPoint(x, y))
 
     def set_exclusive_mouse(self, exclusive=True):
-        self._is_mouse_exclusive = exclusive
+        super().set_exclusive_mouse(exclusive)
         if exclusive:
             # Skip the next motion event, which would return a large delta.
             self._mouse_ignore_motion = True
@@ -605,7 +589,7 @@ class CocoaWindow(BaseWindow):
 
         # This flag is queried by window delegate to determine whether
         # the quit menu item is active.
-        self._is_keyboard_exclusive = exclusive
+        super().set_exclusive_keyboard(exclusive)
 
         if exclusive:
             # "Be nice! Don't disable force-quit!"
@@ -619,3 +603,6 @@ class CocoaWindow(BaseWindow):
 
         NSApp = NSApplication.sharedApplication()
         NSApp.setPresentationOptions_(options)
+
+
+__all__ = ["CocoaWindow"]

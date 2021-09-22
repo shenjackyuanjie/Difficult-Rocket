@@ -51,15 +51,15 @@ context::
     info = GLInfo()
     info.set_active_context()
 
-    if info.have_version(2, 1):
+    if info.have_version(4, 5):
         # ...
 
 """
 
-import warnings
 from ctypes import c_char_p, cast
+import warnings
 
-from pyglet.gl.gl import GL_EXTENSIONS, GL_RENDERER, GL_VENDOR, GL_VERSION, GLint, glGetIntegerv, glGetString
+from pyglet.gl.gl import GL_EXTENSIONS, GL_RENDERER, GL_VENDOR, GL_VERSION
 from pyglet.util import asstr
 
 
@@ -74,7 +74,7 @@ class GLInfo:
     when the context is active for this `GLInfo` instance.
     """
     have_context = False
-    version = '0.0.0'
+    version = '0.0'
     vendor = ''
     renderer = ''
     extensions = set()
@@ -86,21 +86,18 @@ class GLInfo:
 
         This method is called automatically for the default context.
         """
+        from pyglet.gl.gl import GLint, glGetIntegerv, glGetString, glGetStringi, GL_NUM_EXTENSIONS
+
         self.have_context = True
         if not self._have_info:
             self.vendor = asstr(cast(glGetString(GL_VENDOR), c_char_p).value)
             self.renderer = asstr(cast(glGetString(GL_RENDERER), c_char_p).value)
             self.version = asstr(cast(glGetString(GL_VERSION), c_char_p).value)
-            if self.have_version(3):
-                from pyglet.gl.glext_arb import glGetStringi, GL_NUM_EXTENSIONS
-                num_extensions = GLint()
-                glGetIntegerv(GL_NUM_EXTENSIONS, num_extensions)
-                self.extensions = (asstr(cast(glGetStringi(GL_EXTENSIONS, i), c_char_p).value)
-                                   for i in range(num_extensions.value))
-            else:
-                self.extensions = asstr(cast(glGetString(GL_EXTENSIONS), c_char_p).value).split()
-            if self.extensions:
-                self.extensions = set(self.extensions)
+            num_extensions = GLint()
+            glGetIntegerv(GL_NUM_EXTENSIONS, num_extensions)
+            self.extensions = (asstr(cast(glGetStringi(GL_EXTENSIONS, i), c_char_p).value)
+                                for i in range(num_extensions.value))
+            self.extensions = set(self.extensions)
             self._have_info = True
 
     def remove_active_context(self):
@@ -142,7 +139,7 @@ class GLInfo:
             warnings.warn('No GL context created yet.')
         return self.version
 
-    def have_version(self, major, minor=0, release=0):
+    def have_version(self, major, minor=0):
         """Determine if a version of OpenGL is supported.
 
         :Parameters:
@@ -150,9 +147,6 @@ class GLInfo:
                 The major revision number (typically 1 or 2).
             `minor` : int
                 The minor revision number.
-            `release` : int
-                The release number.
-                :deprecated: No longer used
 
         :rtype: bool
         :return: True if the requested or a later version is supported.
@@ -162,8 +156,8 @@ class GLInfo:
             warnings.warn('No GL context created yet.')
         if not self.version or 'None' in self.version:
             return False
-        ver = '%s.0.0' % self.version.strip().split(' ', 1)[0]
-        imajor, iminor, irelease = [int(v) for v in ver.split('.', 3)[:3]]
+        ver = '%s.0' % self.version.split(' ', 1)[0]
+        imajor, iminor = [int(v) for v in ver.split('.', 3)[:2]]
         return (imajor > major or
                 (imajor == major and iminor >= minor) or
                 (imajor == major and iminor == minor))
@@ -187,8 +181,8 @@ class GLInfo:
         return self.vendor
 
 
-# Single instance useful for apps with only a single context (or all contexts
-# have same GL driver, common case). 
+# Single instance useful for apps with only a single context
+# (or all contexts have the same GL driver, a common case).
 _gl_info = GLInfo()
 
 set_active_context = _gl_info.set_active_context

@@ -33,14 +33,15 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # ----------------------------------------------------------------------------
 
+import warnings
 from ctypes import *
 
-from pyglet import gl
+from .base import Config, CanvasConfig, Context
 from pyglet.canvas.headless import HeadlessCanvas
 from pyglet.libs.egl import egl
 from pyglet.libs.egl.egl import *
+from pyglet import gl
 
-from .base import Config, CanvasConfig, Context
 
 _fake_gl_attributes = {
     'double_buffer': 0,
@@ -51,7 +52,6 @@ _fake_gl_attributes = {
     'accum_blue_size': 0,
     'accum_alpha_size': 0
 }
-
 
 class HeadlessConfig(Config):
     def match(self, canvas):

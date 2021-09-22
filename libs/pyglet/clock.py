@@ -117,8 +117,6 @@ from operator import attrgetter
 from heapq import heappush, heappop, heappushpop
 from collections import deque
 
-from pyglet import compat_platform
-
 
 class _ScheduledItem:
     __slots__ = ['func', 'args', 'kwargs']
@@ -152,22 +150,6 @@ class Clock:
 
     It is also used for calling scheduled functions.
     """
-
-    #: The minimum amount of time in seconds this clock will attempt to sleep
-    #: for when framerate limiting.  Higher values will increase the
-    #: accuracy of the limiting but also increase CPU usage while
-    #: busy-waiting.  Lower values mean the process sleeps more often, but is
-    #: prone to over-sleep and run at a potentially lower or uneven framerate
-    #: than desired.
-
-    #: On Windows, MIN_SLEEP is larger because the default timer resolution
-    #: is set by default to 15 .6 ms.
-    MIN_SLEEP = 0.008 if compat_platform in ('win32', 'cygwin') else 0.005
-
-    #: The amount of time in seconds this clock subtracts from sleep values
-    #: to compensate for lazy operating systems.
-    SLEEP_UNDERSHOOT = MIN_SLEEP - 0.001
-
     # List of functions to call every tick.
     _schedule_items = None
 
@@ -568,9 +550,7 @@ class Clock:
         # clever remove item without disturbing the heap:
         # 1. set function to an empty lambda -- original function is not called
         # 2. set interval to 0               -- item will be removed from heap eventually
-        valid_items = set(item
-                          for item in self._schedule_interval_items
-                          if item.func == func)
+        valid_items = set(item for item in self._schedule_interval_items if item.func == func)
 
         if self._current_interval_item:
             if self._current_interval_item.func == func:
@@ -722,7 +702,7 @@ def schedule_interval_soft(func, interval, *args, **kwargs):
 def schedule_once(func, delay, *args, **kwargs):
     """Schedule ``func`` to be called once after ``delay`` seconds.
 
-    This function uses the fefault clock. ``delay`` can be a float. The
+    This function uses the default clock. ``delay`` can be a float. The
     arguments passed to ``func`` are ``dt`` (time since last function call),
     followed by any ``*args`` and ``**kwargs`` given here.
 

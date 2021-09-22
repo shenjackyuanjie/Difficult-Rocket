@@ -35,7 +35,7 @@
 
 """pyglet is a cross-platform games and multimedia package.
 
-Detailed documentation is available at http://www.pyglet.org
+More information is available at http://www.pyglet.org
 """
 
 import os
@@ -43,21 +43,16 @@ import sys
 
 from typing import TYPE_CHECKING
 
+#: The release version
+version = '2.0.dev9'
+__version__ = version
+
+if sys.version_info < (3, 6):
+    raise Exception('pyglet %s requires Python 3.6 or newer.' % version)
 
 if 'sphinx' in sys.modules:
     setattr(sys, 'is_pyglet_doc_run', True)
 _is_pyglet_doc_run = hasattr(sys, "is_pyglet_doc_run") and sys.is_pyglet_doc_run
-
-
-#: The release version of this pyglet installation.
-#:
-#: Valid only if pyglet was installed from a source or binary distribution
-#: (i.e. not in a checked-out copy from SVN).
-version = '1.5.18'
-
-
-if sys.version_info < (3, 6):
-    raise Exception('pyglet %s requires Python 3.6 or newer.' % version)
 
 
 # pyglet platform treats *BSD systems as Linux
@@ -145,6 +140,7 @@ options = {
     'debug_gl': not _enable_optimisations,
     'debug_gl_trace': False,
     'debug_gl_trace_args': False,
+    'debug_gl_shaders': False,
     'debug_graphics_batch': False,
     'debug_lib': False,
     'debug_media': False,
@@ -155,12 +151,10 @@ options = {
     'debug_trace_flush': True,
     'debug_win32': False,
     'debug_x11': False,
-    'graphics_vbo': True,
     'shadow_window': True,
     'vsync': None,
     'xsync': True,
     'xlib_fullscreen_override_redirect': False,
-    'darwin_cocoa': True,
     'search_local_libs': True,
     'advanced_font_features': False,
     'headless': False,
@@ -173,6 +167,7 @@ _option_types = {
     'debug_gl': bool,
     'debug_gl_trace': bool,
     'debug_gl_trace_args': bool,
+    'debug_gl_shaders': bool,
     'debug_graphics_batch': bool,
     'debug_lib': bool,
     'debug_media': bool,
@@ -183,11 +178,11 @@ _option_types = {
     'debug_trace_flush': bool,
     'debug_win32': bool,
     'debug_x11': bool,
-    'graphics_vbo': bool,
     'shadow_window': bool,
     'vsync': bool,
     'xsync': bool,
     'xlib_fullscreen_override_redirect': bool,
+    'search_local_libs': bool,
     'advanced_font_features': bool,
     'headless': bool,
     'headless_device': int
@@ -197,6 +192,7 @@ _option_types = {
 def _read_environment():
     """Read defaults for options from environment"""
     for key in options:
+        assert key in _option_types, f"Option '{key}' must have a type set in _option_types."
         env = 'PYGLET_%s' % key.upper()
         try:
             value = os.environ[env]

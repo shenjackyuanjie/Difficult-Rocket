@@ -12,7 +12,6 @@ gitee:  @shenjackyuanjie
 """
 
 
-
 class Delivery:
     def __init__(self):
         # bool

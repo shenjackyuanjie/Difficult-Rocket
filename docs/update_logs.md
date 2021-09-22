@@ -22,6 +22,7 @@
 - now `crash-report` have more information
 - now when pressed, the sprite will rotate randomly
 - now `pyglet.app.run()` use multiprocess
+- now will allways use `libs/` lib when using `pyglet` or `json5`
 
 ### Add
 

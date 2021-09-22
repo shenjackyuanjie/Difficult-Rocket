@@ -36,15 +36,14 @@
 import warnings
 from ctypes import *
 
-from pyglet import gl
+from .base import Config, CanvasConfig, Context
 from pyglet.canvas.xlib import XlibCanvas
 from pyglet.gl import glx
-from pyglet.gl import glx_info
 from pyglet.gl import glxext_arb
+from pyglet.gl import glx_info
 from pyglet.gl import glxext_mesa
 from pyglet.gl import lib
-
-from .base import Config, CanvasConfig, Context
+from pyglet import gl
 
 
 class XlibConfig(Config):
@@ -248,7 +247,7 @@ class BaseXlibContext(Context):
             elif self._have_SGI_swap_control:
                 glxext_arb.glXSwapIntervalSGI(interval)
         except lib.MissingFunctionException as e:
-            warnings.warn(e.message)
+            warnings.warn(str(e))
 
     def get_vsync(self):
         return self._vsync

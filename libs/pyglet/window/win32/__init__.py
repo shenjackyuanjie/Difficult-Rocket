@@ -98,9 +98,7 @@ class Win32Window(BaseWindow):
     _hidden = False
     _has_focus = False
 
-    _exclusive_keyboard = False
     _exclusive_keyboard_focus = True
-    _exclusive_mouse = False
     _exclusive_mouse_focus = True
     _exclusive_mouse_screen = None
     _exclusive_mouse_lpos = None
@@ -111,8 +109,6 @@ class Win32Window(BaseWindow):
 
     _ws_style = 0
     _ex_ws_style = 0
-    _minimum_size = None
-    _maximum_size = None
 
     def __init__(self, *args, **kwargs):
         # Bind event handlers
@@ -152,6 +148,10 @@ class Win32Window(BaseWindow):
                 self.WINDOW_STYLE_TOOL: (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU,
                                          WS_EX_TOOLWINDOW),
                 self.WINDOW_STYLE_BORDERLESS: (WS_POPUP, 0),
+                self.WINDOW_STYLE_TRANSPARENT: (WS_OVERLAPPEDWINDOW,
+                                                WS_EX_LAYERED),
+                self.WINDOW_STYLE_OVERLAY: (WS_POPUP,
+                                            WS_EX_LAYERED | WS_EX_TRANSPARENT)
             }
             self._ws_style, self._ex_ws_style = styles[self._style]
 
@@ -268,6 +268,11 @@ class Win32Window(BaseWindow):
             x, y = self._client_to_window_pos(*factory.get_location())
             _user32.SetWindowPos(self._hwnd, hwnd_after,
                                  x, y, width, height, SWP_FRAMECHANGED)
+        elif self.style == 'transparent' or self.style == "overlay":
+            _user32.SetLayeredWindowAttributes(self._hwnd, 0, 254, LWA_ALPHA)
+            if self.style == "overlay":
+                _user32.SetWindowPos(self._hwnd, HWND_TOPMOST, 0,
+                                     0, width, height, SWP_NOMOVE | SWP_NOSIZE)
         else:
             _user32.SetWindowPos(self._hwnd, hwnd_after,
                                  0, 0, width, height, SWP_NOMOVE | SWP_FRAMECHANGED)
@@ -331,7 +336,7 @@ class Win32Window(BaseWindow):
 
     vsync = property(_get_vsync)  # overrides BaseWindow property
 
-    def set_vsync(self, vsync):
+    def set_vsync(self, vsync: bool) -> None:
         if pyglet.options['vsync'] is not None:
             vsync = pyglet.options['vsync']
 
@@ -340,12 +345,23 @@ class Win32Window(BaseWindow):
         if not self._fullscreen:
             # Disable interval if composition is enabled to avoid conflict with DWM.
             if self._always_dwm or self._dwm_composition_enabled():
-                vsync = 0
+                vsync = False
 
+        super().set_vsync(vsync)
         self.context.set_vsync(vsync)
 
     def switch_to(self):
         self.context.set_current()
+
+    def update_transparency(self):
+        region = _gdi32.CreateRectRgn(0, 0, -1, -1)
+        bb = DWM_BLURBEHIND()
+        bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION
+        bb.hRgnBlur = region
+        bb.fEnable = True
+
+        _dwmapi.DwmEnableBlurBehindWindow(self._hwnd, ctypes.byref(bb))
+        _gdi32.DeleteObject(region)
 
     def flip(self):
         self.draw_mouse_cursor()
@@ -354,6 +370,9 @@ class Win32Window(BaseWindow):
             if self._always_dwm or self._dwm_composition_enabled():
                 if self._interval:
                     _dwmapi.DwmFlush()
+
+        if self.style in ('overlay', 'transparent'):
+            self.update_transparency()
 
         self.context.flip()
 
@@ -373,31 +392,20 @@ class Win32Window(BaseWindow):
         _user32.ClientToScreen(self._hwnd, byref(point))
         return point.x, point.y
 
-    def set_size(self, width, height):
-        if self._fullscreen:
-            raise WindowException('Cannot set size of fullscreen window.')
+    def set_size(self, width: int, height: int) -> None:
+        super().set_size(width, height)
         width, height = self._client_to_window_size(width, height)
         _user32.SetWindowPos(self._hwnd, 0, 0, 0, width, height,
                              (SWP_NOZORDER |
                               SWP_NOMOVE |
                               SWP_NOOWNERZORDER))
 
-    def get_size(self):
-        # rect = RECT()
-        # _user32.GetClientRect(self._hwnd, byref(rect))
-        # return rect.right - rect.left, rect.bottom - rect.top
-        return self._width, self._height
-
-    def set_minimum_size(self, width, height):
-        self._minimum_size = width, height
-
-    def set_maximum_size(self, width, height):
-        self._maximum_size = width, height
-
     def activate(self):
         _user32.SetForegroundWindow(self._hwnd)
 
-    def set_visible(self, visible=True):
+    def set_visible(self, visible: bool = True) -> None:
+        super().set_visible(visible)
+
         if visible:
             insertAfter = HWND_TOPMOST if self._fullscreen else HWND_TOP
             _user32.SetWindowPos(self._hwnd, insertAfter, 0, 0, 0, 0,
@@ -408,7 +416,6 @@ class Win32Window(BaseWindow):
         else:
             _user32.ShowWindow(self._hwnd, SW_HIDE)
             self.dispatch_event('on_hide')
-        self._visible = visible
         self.set_mouse_platform_visible()
 
     def minimize(self):
@@ -424,7 +431,7 @@ class Win32Window(BaseWindow):
     def set_mouse_platform_visible(self, platform_visible=None):
         if platform_visible is None:
             platform_visible = (self._mouse_visible and
-                                not self._exclusive_mouse and
+                                not self._mouse_exclusive and
                                 (not self._mouse_cursor.gl_drawable or self._mouse_cursor.hw_drawable)) or \
                                (not self._mouse_in_window or
                                 not self._has_focus)
@@ -467,7 +474,7 @@ class Win32Window(BaseWindow):
         self._exclusive_mouse_screen = p.x, p.y
 
     def set_exclusive_mouse(self, exclusive=True):
-        if self._exclusive_mouse == exclusive and \
+        if self._mouse_exclusive == exclusive and \
                 self._exclusive_mouse_focus == self._has_focus:
             return
 
@@ -500,7 +507,7 @@ class Win32Window(BaseWindow):
             # Release clip
             _user32.ClipCursor(None)
 
-        self._exclusive_mouse = exclusive
+        super().set_exclusive_mouse(exclusive)
         self._exclusive_mouse_focus = self._has_focus
         self.set_mouse_platform_visible(not exclusive)
 
@@ -516,7 +523,7 @@ class Win32Window(BaseWindow):
         _user32.SetCursorPos(x, y)
 
     def set_exclusive_keyboard(self, exclusive=True):
-        if self._exclusive_keyboard == exclusive and \
+        if self._keyboard_exclusive == exclusive and \
                 self._exclusive_keyboard_focus == self._has_focus:
             return
 
@@ -525,7 +532,7 @@ class Win32Window(BaseWindow):
         else:
             _user32.UnregisterHotKey(self._hwnd, 0)
 
-        self._exclusive_keyboard = exclusive
+        super().set_exclusive_keyboard(exclusive)
         self._exclusive_keyboard_focus = self._has_focus
 
     def get_system_mouse_cursor(self, name):
@@ -716,12 +723,7 @@ class Win32Window(BaseWindow):
             event_handler = event_handlers.get(msg, None)
             result = None
             if event_handler:
-                if self._allow_dispatch_event or not self._enable_event_queue:
-                    result = event_handler(msg, wParam, lParam)
-                else:
-                    result = 0
-                    self._event_queue.append((event_handler, msg,
-                                              wParam, lParam))
+                result = event_handler(msg, wParam, lParam)
             if result is None:
                 result = _user32.DefWindowProcW(hwnd, msg, wParam, lParam)
             return result
@@ -799,7 +801,7 @@ class Win32Window(BaseWindow):
                 self.dispatch_event('on_text_motion', motion)
 
         # Send on to DefWindowProc if not exclusive.
-        if self._exclusive_keyboard:
+        if self._keyboard_exclusive:
             return 0
         else:
             return None
@@ -821,7 +823,7 @@ class Win32Window(BaseWindow):
                                 byref(size), sizeof(RAWINPUTHEADER))
 
         if inp.header.dwType == RIM_TYPEMOUSE:
-            if not self._exclusive_mouse:
+            if not self._mouse_exclusive:
                 return 0
                 
             rmouse = inp.data.mouse
@@ -915,7 +917,7 @@ class Win32Window(BaseWindow):
     @ViewEventHandler
     @Win32EventHandler(WM_MOUSEMOVE)
     def _event_mousemove(self, msg, wParam, lParam):
-        if self._exclusive_mouse and self._has_focus:
+        if self._mouse_exclusive and self._has_focus:
             return 0
 
         x, y = self._get_location(lParam)
@@ -1126,25 +1128,25 @@ class Win32Window(BaseWindow):
         self.dispatch_event('on_activate')
         self._has_focus = True
 
-        self.set_exclusive_keyboard(self._exclusive_keyboard)
-        self.set_exclusive_mouse(self._exclusive_mouse)
+        self.set_exclusive_keyboard(self._keyboard_exclusive)
+        self.set_exclusive_mouse(self._mouse_exclusive)
         return 0
 
     @Win32EventHandler(WM_KILLFOCUS)
     def _event_killfocus(self, msg, wParam, lParam):
         self.dispatch_event('on_deactivate')
         self._has_focus = False
-        exclusive_keyboard = self._exclusive_keyboard
-        exclusive_mouse = self._exclusive_mouse
+        keyboard_exclusive = self._keyboard_exclusive
+        mouse_exclusive = self._mouse_exclusive
         # Disable both exclusive keyboard and mouse
         self.set_exclusive_keyboard(False)
         self.set_exclusive_mouse(False)
 
         # But save desired state and note that we lost focus
         # This will allow to reset the correct mode once we regain focus
-        self._exclusive_keyboard = exclusive_keyboard
+        self._keyboard_exclusive = keyboard_exclusive
         self._exclusive_keyboard_focus = False
-        self._exclusive_mouse = exclusive_mouse
+        self._mouse_exclusive = mouse_exclusive
         self._exclusive_mouse_focus = False
         return 0
 
@@ -1199,3 +1201,6 @@ class Win32Window(BaseWindow):
         # Reverse Y and call event.
         self.dispatch_event('on_file_drop', point.x, self._height - point.y, paths)
         return 0
+
+
+__all__ = ["Win32EventHandler", "Win32Window"]

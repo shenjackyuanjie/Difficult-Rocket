@@ -57,7 +57,7 @@ from pyglet.window import key
 
 
 class Caret:
-    """Visible text insertion marker for 
+    """Visible text insertion marker for
     `pyglet.text.layout.IncrementalTextLayout`.
 
     The caret is drawn as a single vertical bar at the document `position` 
@@ -96,9 +96,11 @@ class Caret:
     #: Blink period, in seconds.
     PERIOD = 0.5
 
-    #: Pixels to scroll viewport per mouse scroll wheel movement.  Defaults
-    #: to 12pt at 96dpi.
+    #: Pixels to scroll viewport per mouse scroll wheel movement.
+    #: Defaults to 12pt at 96dpi.
     SCROLL_INCREMENT = 12 * 96 // 72
+
+    _mark = None
 
     def __init__(self, layout, batch=None, color=(0, 0, 0)):
         """Create a caret for a layout.
@@ -117,11 +119,9 @@ class Caret:
         """
         from pyglet import gl
         self._layout = layout
-        if batch is None:
-            batch = layout.batch
-        r, g, b = color
-        colors = (r, g, b, 255, r, g, b, 255)
-        self._list = batch.add(2, gl.GL_LINES, layout.background_group, 'v2f', ('c4B', colors))
+        batch = batch or layout.batch
+        colors = (*color, 255, *color, 255)
+        self._list = batch.add(2, gl.GL_LINES, layout.foreground_decoration_group, 'position2f', ('colors4Bn', colors))
 
         self._ideal_x = None
         self._ideal_line = None
@@ -152,7 +152,19 @@ class Caret:
     def _nudge(self):
         self.visible = True
 
-    def _set_visible(self, visible):
+    @property
+    def visible(self):
+        """Caret visibility.
+
+        The caret may be hidden despite this property due to the periodic blinking
+        or by `on_deactivate` if the event handler is attached to a window.
+
+        :type: bool
+        """
+        return self._visible
+
+    @visible.setter
+    def visible(self, visible):
         self._visible = visible
         clock.unschedule(self._blink)
         if visible and self._active and self.PERIOD:
@@ -160,88 +172,74 @@ class Caret:
             self._blink_visible = False  # flipped immediately by next blink
         self._blink(0)
 
-    def _get_visible(self):
-        return self._visible
+    @property
+    def color(self):
+        """Caret color.
 
-    visible = property(_get_visible, _set_visible, doc="""Caret visibility.
+        The default caret color is ``[0, 0, 0]`` (black).  Each RGB color
+        component is in the range 0 to 255.
 
-    The caret may be hidden despite this property due to the periodic blinking
-    or by `on_deactivate` if the event handler is attached to a window.
+        :type: (int, int, int)
+        """
+        return self._list.colors[:3]
 
-    :type: bool
-    """)
-    
-    def _set_color(self, color):
+    @color.setter
+    def color(self, color):
         self._list.colors[:3] = color
         self._list.colors[4:7] = color
 
-    def _get_color(self):
-        return self._list.colors[:3]
+    @property
+    def position(self):
+        """Position of caret within document."""
+        return self._position
 
-    color = property(_get_color, _set_color, doc="""Caret color.
-
-    The default caret color is ``[0, 0, 0]`` (black).  Each RGB color
-    component is in the range 0 to 255.
-
-    :type: (int, int, int)
-    """)
-
-    def _set_position(self, index):
-        self._position = index
+    @position.setter
+    def position(self, position):
+        self._position = position
         self._next_attributes.clear()
         self._update()
 
-    def _get_position(self):
-        return self._position
+    @property
+    def mark(self):
+        """Position of immovable end of text selection within document.
 
-    position = property(_get_position, _set_position, doc="""Position of caret within document.
+        An interactive text selection is determined by its immovable end (the
+        caret's position when a mouse drag begins) and the caret's position, which
+        moves interactively by mouse and keyboard input.
 
-    :type: int
-    """)
+        This property is ``None`` when there is no selection.
 
-    _mark = None
+        :type: int
+        """
+        return self._mark
 
-    def _set_mark(self, mark):
+    @mark.setter
+    def mark(self, mark):
         self._mark = mark
         self._update(line=self._ideal_line)
         if mark is None:
             self._layout.set_selection(0, 0)
-    
-    def _get_mark(self):
-        return self._mark
 
-    mark = property(_get_mark, _set_mark,
-                    doc="""Position of immovable end of text selection within document.
+    @property
+    def line(self):
+        """Index of line containing the caret's position.
 
-    An interactive text selection is determined by its immovable end (the
-    caret's position when a mouse drag begins) and the caret's position, which
-    moves interactively by mouse and keyboard input.
+        When set, `position` is modified to place the caret on requested line
+        while maintaining the closest possible X offset.
 
-    This property is ``None`` when there is no selection.
-
-    :type: int
-    """)
-
-    def _set_line(self, line):
-        if self._ideal_x is None:
-            self._ideal_x, _ = self._layout.get_point_from_position(self._position)
-        self._position = self._layout.get_position_on_line(line, self._ideal_x)
-        self._update(line=line, update_ideal_x=False)
-
-    def _get_line(self):
+        :rtype: int
+        """
         if self._ideal_line is not None:
             return self._ideal_line
         else:
             return self._layout.get_line_from_position(self._position)
 
-    line = property(_get_line, _set_line,
-                    doc="""Index of line containing the caret's position.
-
-    When set, `position` is modified to place the caret on requested line
-    while maintaining the closest possible X offset.
-                    
-    :type: int
-    """)
+    @line.setter
+    def line(self, line):
+        if self._ideal_x is None:
+            self._ideal_x, _ = self._layout.get_point_from_position(self._position)
+        self._position = self._layout.get_position_on_line(line, self._ideal_x)
+        self._update(line=line, update_ideal_x=False)
 
     def get_style(self, attribute):
         """Get the document's named style at the caret's current position.
@@ -375,7 +373,7 @@ class Caret:
         p = self._layout.get_position_on_line(line, x)
         self.mark = self._layout.document.get_paragraph_start(p)
         self._position = self._layout.document.get_paragraph_end(p)
-        self._update(line=line) 
+        self._update(line=line)
         self._next_attributes.clear()
 
     def _update(self, line=None, update_ideal_x=True):
@@ -388,19 +386,21 @@ class Caret:
         if update_ideal_x:
             self._ideal_x = x
 
-        x -= self._layout.top_group.view_x
-        y -= self._layout.top_group.view_y
+        x += self._layout.x
+        y += self._layout.y + self._layout.height
+
         font = self._layout.document.get_font(max(0, self._position - 1))
-        self._list.vertices[:] = [x, y + font.descent, x, y + font.ascent]
+        self._list.position[:] = [x, y + font.descent, x, y + font.ascent]
 
         if self._mark is not None:
-            self._layout.set_selection(min(self._position, self._mark),
-                                       max(self._position, self._mark))
+            self._layout.set_selection(min(self._position, self._mark), max(self._position, self._mark))
 
         self._layout.ensure_line_visible(line)
         self._layout.ensure_x_visible(x)
 
     def on_layout_update(self):
+        """Handler for the `IncrementalTextLayout.on_layout_update` event.
+        """
         if self.position > len(self._layout.document.text):
             self.position = len(self._layout.document.text)
         self._update()
@@ -434,14 +434,12 @@ class Caret:
                 self._delete_selection()
             elif self._position > 0:
                 self._position -= 1
-                self._layout.document.delete_text(
-                    self._position, self._position + 1)
+                self._layout.document.delete_text(self._position, self._position + 1)
         elif motion == key.MOTION_DELETE:
             if self.mark is not None:
                 self._delete_selection()
             elif self._position < len(self._layout.document.text):
-                self._layout.document.delete_text(
-                    self._position, self._position + 1)
+                self._layout.document.delete_text(self._position, self._position + 1)
         elif self._mark is not None and not select:
             self._mark = None
             self._layout.set_selection(0, 0)
@@ -449,8 +447,7 @@ class Caret:
         if motion == key.MOTION_LEFT:
             self.position = max(0, self.position - 1)
         elif motion == key.MOTION_RIGHT:
-            self.position = min(len(self._layout.document.text), 
-                                self.position + 1) 
+            self.position = min(len(self._layout.document.text), self.position + 1)
         elif motion == key.MOTION_UP:
             self.line = max(0, self.line - 1)
         elif motion == key.MOTION_DOWN:
@@ -512,7 +509,7 @@ class Caret:
         "click".
         """
         self._layout.view_x -= scroll_x * self.SCROLL_INCREMENT
-        self._layout.view_y += scroll_y * self.SCROLL_INCREMENT 
+        self._layout.view_y += scroll_y * self.SCROLL_INCREMENT
         return event.EVENT_HANDLED
 
     def on_mouse_press(self, x, y, button, modifiers):
