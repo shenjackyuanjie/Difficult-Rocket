@@ -10,7 +10,7 @@
 
 [![Generic badge](https://img.shields.io/badge/Release-0.4.5-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.5)
 <br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.4.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.6)
-<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.5.1-blue.svg)
+<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.5.2-blue.svg)
 
 ## 中文README请移步 [这里](./docs/README-cn.md)
 
@@ -30,7 +30,7 @@
     - `Develop platform 1 - Windows 10`
     - `Python 3.8.10`
     - `Windows10 x64`
-    - `Pyglet 1.5.16`
+    - `pyglet 2.0.dev9`
     - `Json5 0.9.5`
     - `pillow 8.1.0`
     - `AMD R5 5600X`
@@ -45,8 +45,8 @@
 
 ## Required python modules
 
-- json5 (pre-installed V0.9.6 path:`./bin/libs/json5`)
-- pyglet (pre-installed V1.5.18 path:`./bin/libs/pyglet`)
+- json5 (pre-installed V0.9.6 path:`./libs/json5`)
+- pyglet (pre-installed V2.0.dev9 path:`./libs/pyglet`)
 - pillow
 - semver
 
