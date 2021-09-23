@@ -21,6 +21,7 @@ import threading
 import configparser
 import multiprocessing
 
+from decimal import Decimal
 from multiprocessing import Pipe
 from multiprocessing.connection import Connection
 
@@ -85,9 +86,6 @@ class ClientWindow(pyglet.window.Window):
         """
         # logging
         self.logger = logging.getLogger('client')
-        # share memory
-        # self.dev_list = dev_list
-        # self.dev_dic = dev_dic
         # value
         self.net_mode = net_mode
         self.run_input = False
@@ -95,15 +93,14 @@ class ClientWindow(pyglet.window.Window):
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
         self.config_file = tools.config('configs/main.config')
-        self.FPS = int(self.config_file['runtime']['fps'])
-        self.SPF = 1.0 / self.FPS
+        self.FPS = Decimal(int(self.config_file['runtime']['fps']))
+        self.SPF = Decimal('1') / self.FPS
         # lang
         self.lang = tools.config('configs/lang/%s.json5' % self.config_file['runtime']['language'], 'client')
         # dic
         self.environment = {}
         self.textures = {}  # all textures
         self.runtime = {}
-        # list
         # FPS
         self.max_fps = [self.FPS, time.time()]
         self.min_fps = [self.FPS, time.time()]
@@ -113,15 +110,13 @@ class ClientWindow(pyglet.window.Window):
         self.label_batch = pyglet.graphics.Batch()
         # frame
         self.frame = pyglet.gui.Frame(self)
+        self.M_frame = pyglet.gui.MovableFrame(self)
         # setup
         self.setup()
         self.info_label = pyglet.text.Label(x=10, y=self.height - 10,
                                             anchor_x='left', anchor_y='top',
                                             batch=self.label_batch)
-        pyglet.clock.schedule_interval(self.update, self.SPF)
-        self.times.append(time.time())
-        self.times.append(self.times[1] - self.times[0])
-        self.logger.debug(self.times[2])
+        pyglet.clock.schedule_interval(self.update, float(self.SPF))
         self.logger.info(self.lang['setup.done'])
 
     @new_thread('client_load_environment')

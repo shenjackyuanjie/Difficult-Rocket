@@ -19,9 +19,9 @@ import decimal
 import logging
 import traceback
 import configparser
-from xml.dom.minidom import parse
 
-import semver
+from typing import List
+from xml.dom.minidom import parse
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
@@ -221,7 +221,7 @@ Physics calculation
 
 
 def is_decimal(A: any) -> bool:
-    if isinstance(A, decimal):
+    if isinstance(A, decimal.Decimal):
         return False
     else:
         return True
@@ -334,7 +334,7 @@ def G_C(M, m, R, G):  # stand for gravity calculation
     return g
 
 
-def distance(A: List[float, float], B: List[float, float]):
+def distance(A, B):
     """
     formats:
     A & B format: docs.basic_config:basic_poi
@@ -353,4 +353,4 @@ def distance(A: List[float, float], B: List[float, float]):
     poi_dis[2] **= 0.5
     return poi_dis[2]
 
-def 
+# def
