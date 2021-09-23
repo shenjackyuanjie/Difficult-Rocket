@@ -1,4 +1,4 @@
-"""
+﻿"""
 writen by shenjackyuanjie
 mail: 3695888@qq.com
 """
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
     os.chdir(sys.path[0])
     sys.path.append('./Difficult_Rocket')
-    sys.path.append('./libs')
+    sys.path.append('/libs')
     print(sys.path)
     print(hi)
 

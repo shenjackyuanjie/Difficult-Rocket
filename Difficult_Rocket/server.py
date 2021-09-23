@@ -1,4 +1,4 @@
-#  -------------------------------
+﻿#  -------------------------------
 #  Difficult Rocket
 #  Copyright © 2021 by shenjackyuanjie
 #  All rights reserved
@@ -19,7 +19,7 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from api import tools
+from Difficult_Rocket.api import tools
 from api.delivery import Delivery
 from api.new_thread import new_thread
 

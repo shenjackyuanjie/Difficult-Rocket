@@ -221,7 +221,7 @@ Physics calculation
 
 
 def is_decimal(A: any) -> bool:
-    if type(A) is not type(decimal.Decimal):
+    if isinstance(A, decimal):
         return False
     else:
         return True
@@ -334,7 +334,7 @@ def G_C(M, m, R, G):  # stand for gravity calculation
     return g
 
 
-def distance(A, B):
+def distance(A: List[float, float], B: List[float, float]):
     """
     formats:
     A & B format: docs.basic_config:basic_poi
@@ -352,3 +352,5 @@ def distance(A, B):
     poi_dis.append(poi_dis[0] + poi_dis[1])
     poi_dis[2] **= 0.5
     return poi_dis[2]
+
+def 
