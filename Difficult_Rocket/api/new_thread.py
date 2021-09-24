@@ -9,6 +9,7 @@ from Difficult_Rocket import crash
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
 Very thanks to Fallen_Breath and other coder who helped MCDR worked better
 GNU Lesser General Public License v3.0（GNU LGPL v3)
+(have some changes)
 """
 
 
