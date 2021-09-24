@@ -24,8 +24,8 @@ def new_thread(thread_name: Optional[str or Callable] = None, Daemon=False):
         def wrap(*args, **kwargs):
             thread_ = threading.Thread(target=func, args=args, kwargs=kwargs, name=thread_name)
             thread_.setDaemon(Daemon)
-            crash.all_thread.append(thread_)
             thread_.start()
+            crash.all_thread.append(thread_)
             return thread
 
         # bring the signature of the func to the wrap function
