@@ -3,17 +3,16 @@ import inspect
 import threading
 import time
 from typing import Optional, Callable
-from Difficult_Rocket.api import thread
 from Difficult_Rocket import crash
 
 """
-This part of code come from MCDReforged(https://github.com/Fallen_Breath/MCDReforged)
+This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
 Very thanks to Fallen_Breath and other coder who helped MCDR worked better
-https://www.gnu.org/licenses/gpl-3.0.en.html
+GNU Lesser General Public License v3.0（GNU LGPL v3)
 """
 
 
-def new_thread(thread_name: Optional[str or Callable] = None):
+def new_thread(thread_name: Optional[str or Callable] = None, Daemon=False):
     """
     Use a new thread to execute the decorated function
     The function return value will be set to the thread instance that executes this function
@@ -24,9 +23,9 @@ def new_thread(thread_name: Optional[str or Callable] = None):
         @functools.wraps(func)  # to preserve the origin function information
         def wrap(*args, **kwargs):
             thread_ = threading.Thread(target=func, args=args, kwargs=kwargs, name=thread_name)
-            thread_.setDaemon(False)
-            thread_.start()
+            thread_.setDaemon(Daemon)
             crash.all_thread.append(thread_)
+            thread_.start()
             return thread
 
         # bring the signature of the func to the wrap function
