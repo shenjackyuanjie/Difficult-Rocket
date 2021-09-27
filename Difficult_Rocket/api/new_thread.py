@@ -27,7 +27,7 @@ def new_thread(thread_name: Optional[str or Callable] = None, Daemon=False):
             thread_.setDaemon(Daemon)
             thread_.start()
             crash.all_thread.append(thread_)
-            return thread
+            return thread_
 
         # bring the signature of the func to the wrap function
         # so inspect.getfullargspec(func) works correctly

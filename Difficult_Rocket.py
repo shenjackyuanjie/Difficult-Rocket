@@ -14,6 +14,7 @@ import multiprocessing
 hi = """Difficult Rocket is writen by shenjackyuanjie
 mail: 3695888@qq.com or shyj3695888@163.com
 QQ: 3695888"""
+
 if __name__ == '__main__':
     print("sys.path[0] = ", sys.path[0])
     print("sys.argv[0] = ", sys.argv[0])
@@ -25,15 +26,15 @@ if __name__ == '__main__':
     print("os.path.split(os.path.realpath(__file__))[0] = ", os.path.split(os.path.realpath(__file__))[0])
     print("os.getcwd() = ", os.getcwd())
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
-    os.chdir(sys.path[0])
-    sys.path.append('./Difficult_Rocket')
-    sys.path.append('/libs')
+    file_path = os.path.split(os.path.realpath(__file__))[0]
+    os.chdir(file_path)
+    sys.path.append(f'{file_path}\\Difficult_Rocket')
+    sys.path.append(f'{file_path}\\libs')
     print(sys.path)
     print(hi)
 
     DEBUGGING = False
     from Difficult_Rocket.api.Exp import *
-    # multiprocessing.set_start_method('fork', True)
     print(multiprocessing.get_start_method())
     try:
         from Difficult_Rocket import crash
