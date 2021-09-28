@@ -10,7 +10,7 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202109 V 0.5.2
+## 20210928 V 0.5.2
 
 ### Change
 
@@ -28,7 +28,7 @@
 
 ### Add
 
-- ~~mods support will done in 1.0.0~~
+- ~~mods support will be done in 1.0.0~~
   - just maybe
 - now you can use `DEBUGGING` to test or check game run stats
   - when `True` it will always make a crash report
@@ -40,9 +40,6 @@
 - `crash` now have more information about multiprocess
 - add some unused read_input in `client`
 - now when `logs/` is not found logger will info `logger.mkdir`
-- add `tr.lang(xx, xx)` that can solve error on getting item from lang file
-  - `tr[xxx]` can also use but won't solve error when item not found
-  - so best use `tr.lang(xx, xx)`
 
 ### DEBUG
 
@@ -58,6 +55,9 @@
 
 - add `mouse.release` and `language` to en-us
 - add `language` to `zh-CN`
+- add `tr.lang(xx, xx)` that can solve error on getting item from lang file
+  - `tr[xxx]` can also use but won't solve error when item not found
+  - so best use `tr.lang(xx, xx)`
 
 ## 20210902 V 0.5.1
 
