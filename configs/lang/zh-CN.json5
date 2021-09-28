@@ -16,8 +16,12 @@
   },
   'client': {
     'setup.done': '客户端载入完成',
-    'setup.use_time': '客户端载入消耗时间: {} 秒',
-    'os.pid_is': '客户端 PID: {} PPID: {}',
+    'setup.use_time': '客户端载入花费: {} 秒'
+  },
+  'window': {
+    'setup.done': '游戏窗口载入完成',
+    'setup.use_time': '游戏窗口载入消耗时间: {} 秒',
+    'os.pid_is': '游戏窗口 PID: {} PPID: {}',
     'button.been_press': '按钮被按下，目前状态为：',
     'mouse.press': '鼠标在 {} 被按下，按键为：{}',
     'mouse.release': '鼠标在 {} 释放，按键为：{}',

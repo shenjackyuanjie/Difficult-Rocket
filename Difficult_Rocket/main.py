@@ -26,7 +26,6 @@ if __name__ == '__main__':  # been start will not run this
 from Difficult_Rocket import client, server
 from Difficult_Rocket.api import tools, thread, translate
 from Difficult_Rocket.api.translate import tr
-from libs import pyglet
 
 
 class Game:
@@ -36,11 +35,11 @@ class Game:
         self.on_python_v = sys.version.split(' ')[0]
         self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
         # lang_config
-        self.language = tools.config('configs/sys_value/basic_config.json5')
+        self.language = tools.load_file('configs/sys_value/basic_config.json5')
         self.language = self.language['language']
         tr.set_language(self.language)
         # logging config
-        log_config = tools.config('configs/logger.json5')
+        log_config = tools.load_file('configs/logger.json5')
         file_name = log_config['handlers']['file']['filename']
         del log_config['handlers']['file']['datefmt']
         log_config['handlers']['file']['filename'] = f'logs/{file_name.format(self.start_time)}'

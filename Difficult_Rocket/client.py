@@ -34,7 +34,7 @@ from Difficult_Rocket import crash
 from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.api.translate import tr
 from Difficult_Rocket.drag_sprite import DragSprite
-from Difficult_Rocket.api import tools, config, new_thread, thread
+from Difficult_Rocket.api import tools, load_file, new_thread, thread
 
 # libs function
 local_lib = True
@@ -51,9 +51,9 @@ class Client:
         # logging
         self.logger = logging.getLogger('client')
         # config
-        self.config = tools.config('configs/main.config')
+        self.config = tools.load_file('configs/main.config')
         # lang
-        self.lang = tools.config('configs/lang/%s.json5' % self.config['runtime']['language'], 'client')
+        self.lang = tools.load_file('configs/lang/%s.json5' % self.config['runtime']['language'], 'client')
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
@@ -67,6 +67,7 @@ class Client:
                                    caption=self.caption,
                                    resizable=tools.format_bool(self.config['window']['resizable']),
                                    visible=tools.format_bool(self.config['window']['visible']))
+        self.logger.info(tr['client']['setup.done'])
 
     def start(self):
         self.window.start_game()  # 游戏启动
@@ -92,11 +93,11 @@ class ClientWindow(pyglet.window.Window):
         # configs
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
-        self.config_file = tools.config('configs/main.config')
+        self.config_file = tools.load_file('configs/main.config')
         self.FPS = Decimal(int(self.config_file['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
         # lang
-        self.lang = tools.config('configs/lang/%s.json5' % self.config_file['runtime']['language'], 'client')
+        self.lang = tools.load_file('configs/lang/%s.json5' % self.config_file['runtime']['language'], 'client')
         # dic
         self.environment = {}
         self.textures = {}  # all textures
@@ -122,7 +123,7 @@ class ClientWindow(pyglet.window.Window):
     @new_thread('client_load_environment')
     def load_environment(self) -> None:
         # load parts info
-        self.environment['parts'] = config('configs/sys_value/parts.json5')
+        self.environment['parts'] = load_file('configs/sys_value/parts.json5')
         try:
             self.load_textures()
         except TexturesError:
@@ -136,7 +137,7 @@ class ClientWindow(pyglet.window.Window):
             pass
 
     def setup(self):
-        self.logger.info(self.lang['os.pid_is'].format(os.getpid(), os.getppid()))
+        self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
         image = pyglet.image.load('textures/Editor/PartButton.png')
         self.textures['test'] = DragSprite(10, 20, image, batch=self.label_batch, drag_by_all=False, drag_out_window=True)
         self.load_environment()
@@ -210,7 +211,7 @@ class ClientWindow(pyglet.window.Window):
         self.textures['test'].on_mouse_press(x, y, button, modifiers)
 
     def on_mouse_release(self, x, y, button, modifiers) -> None:
-        self.logger.debug(self.lang['mouse.release'].format([x, y], self.lang['mouse.right']))
+        self.logger.debug(tr.lang('window', 'mouse.release').format([x, y], tr.lang('window', 'mouse.right')))
         self.textures['test'].on_mouse_release(x, y, button, modifiers)
 
     def on_key_press(self, symbol, modifiers) -> None:

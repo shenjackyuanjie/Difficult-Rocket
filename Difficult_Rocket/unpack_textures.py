@@ -19,7 +19,7 @@ import json5
 
 
 def rewrite_config(name, save_name):
-    load_xml = tools.config(name)
+    load_xml = tools.load_file(name)
     load_xml = load_xml.documentElement
     sprites = load_xml.getElementsByTagName('sprite')
     pic_path = load_xml.getAttribute('imagePath')

@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from .tools import config
+from .tools import load_file
 from .translate import Lang
 from .delivery import Delivery
 from .new_thread import new_thread
@@ -21,6 +21,6 @@ __all__ = ['TexturesError',
            'LanguageError',
            'new_thread',
            'Delivery',
-           'config',
+           'load_file',
            'Lang']
 

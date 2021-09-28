@@ -37,11 +37,11 @@ class Server:
         self.process_id = 'Server'
         self.process_name = 'server process'
         # config
-        self.config = tools.config('configs/main.config')
+        self.config = tools.load_file('configs/main.config')
         self.dev = Dev
         self.net_mode = net_mode
         # lang
-        self.lang = tools.config('configs/lang/%s.json5' % self.config['runtime']['language'], 'server')
+        self.lang = tools.load_file('configs/lang/%s.json5' % self.config['runtime']['language'], 'server')
         self.logger.info('%s' % self.lang['setup.done'])
 
     @new_thread('Server')

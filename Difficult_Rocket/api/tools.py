@@ -48,7 +48,7 @@ def report_file_error(filetype: str, error_type, filename: str, stack: any):
     tools_logger.exception(log)
 
 
-def config(file_name: str, stack=None) -> dict:
+def load_file(file_name: str, stack=None) -> dict:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     try:
         if (f_type == 'json5') or (f_type == 'json'):
@@ -95,7 +95,7 @@ def config(file_name: str, stack=None) -> dict:
 
 
 # main config
-main_config_file = config('./configs/main.config')
+main_config_file = load_file('./configs/main.config')
 
 
 def get_At(name, in_xml, need_type=str):

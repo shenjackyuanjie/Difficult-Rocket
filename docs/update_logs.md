@@ -23,10 +23,13 @@
 - now when pressed, the sprite will rotate randomly
 - now `pyglet.app.run()` use multiprocess
 - now will allways use `libs/` lib when using `pyglet` or `json5`
+- now `tools.config()` is `tools.load_file()`
+- now `lang` file have `server``client` and `window`
 
 ### Add
 
-- ~~`"mods support"` will done in 1.0.0~~(maybe. just maybe)
+- ~~mods support will done in 1.0.0~~
+  - just maybe
 - now you can use `DEBUGGING` to test or check game run stats
   - when `True` it will always make a crash report
 - now `Difficult_Rocket.api.translate.Lang` can be used to auto translate text in `configs/lang/xxx.json5`
@@ -37,6 +40,9 @@
 - `crash` now have more information about multiprocess
 - add some unused read_input in `client`
 - now when `logs/` is not found logger will info `logger.mkdir`
+- add `tr.lang(xx, xx)` that can solve error on getting item from lang file
+  - `tr[xxx]` can also use but won't solve error when item not found
+  - so best use `tr.lang(xx, xx)`
 
 ### DEBUG
 
@@ -110,7 +116,6 @@
 ### Delete
 
 - all game window render has been deleted
--
     - will be rewritten in 0.5.0
 - delete some useless code
 - delete some useless file

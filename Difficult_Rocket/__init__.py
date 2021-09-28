@@ -16,7 +16,7 @@ from .api import *
 __all__ = [
     'new_thread',
     'Delivery',
-    'config'
+    'load_file'
 ]
 
 
