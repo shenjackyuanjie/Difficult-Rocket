@@ -11,14 +11,18 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+__all__ = ['Newton',
+           'Metre',
+           'Second']
 
-class N:
+
+class Newton:
     pass
 
 
-class m:
+class Metre:
     pass
 
 
-class s:
+class Second:
     pass
