@@ -11,18 +11,31 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-__all__ = ['Newton',
-           'Metre',
-           'Second']
+
+class Units:
+    """
+    base class of all units
+    """
+    def __init__(self):
+        pass
 
 
-class Newton:
+class _Newton(Units):
     pass
 
 
-class Metre:
+newton = _Newton()
+
+
+class _Metre(Units):
     pass
 
 
-class Second:
+metre = _Metre()
+
+
+class _Second(Units):
     pass
+
+
+second = _Second()
