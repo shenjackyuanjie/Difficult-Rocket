@@ -18,7 +18,6 @@ from typing import List, Optional
 from decimal import Decimal
 
 
-
 # linear_algebra
 
 
@@ -159,7 +158,7 @@ def distance(A, B):
     formats:
     A & B format: docs.basic_config:basic_poi
     """
-    poi_dis = configs.basic_poi()
+    poi_dis = basic_poi()
     for x in A, B:
         x = decimal.Decimal(str(x))
     xd = A[0] - B[0]
@@ -179,7 +178,7 @@ def _BasicNumber(int_num=0, float_num=1, unit1=None, unit2=None) -> list:
         unit1 = []
     if unit2 is None:
         unit2 = []
-    if tools.is_decimal(float_num):  # is decimal class?
+    if is_decimal(float_num):  # is decimal class?
         return [int_num, float_num, unit1, unit2]  # is just return
     else:
         return [int_num, decimal.Decimal(str(float_num)), unit1, unit2]  # no create a decimal class
@@ -296,3 +295,6 @@ class ScientificNumber:
             self.multi_unit = []
         else:
             self.multi_unit = multi_unit
+        self.floats = floats
+        self.integer = integer
+

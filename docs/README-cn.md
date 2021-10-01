@@ -5,7 +5,7 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/编写_Python_版本-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Python-3.6_|_3.7_|_3.8_|_3.9-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9-blue.svg)](https://Python.org)
 
 ## 版本
 
@@ -32,9 +32,10 @@
     - `Python 3.8.10`
     - `Windows10 x64`
     - `pyglet 2.0.dev9`
-    - `Json5 0.9.5`
+    - `Json5 0.9.6`
     - `pillow 8.1.0`
     - `AMD R5 5600X(AMD YES!)`
+    - `AMD RX 550 4G`
 -
     - `开发平台2 macOS Big Sur`
     - `Python 3.8.7`

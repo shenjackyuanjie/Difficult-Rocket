@@ -4,7 +4,7 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Python-3.6_|_3.7_|_3.8_|_3.9-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9-blue.svg)](https://Python.org)
 
 ## Version
 
@@ -12,7 +12,7 @@
 <br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.4.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.6)
 <br/>![Generic badge](https://img.shields.io/badge/Devloping-0.5.2-blue.svg)
 
-## 中文README请移步 [这里](./docs/README-cn.md)
+## 中文README请移步 [这里](/docs/README-cn.md)
 
 > It's a Simple Rocket liked game build with Python
 
@@ -20,9 +20,9 @@
 
 > Lighter than Vanilla SR
 
-## [Plan feature list](./docs/plan_features)
+## [Plan feature list](/docs/plan_features)
 
-## [Update logs](./docs/update_logs.md)
+## [Update logs](/docs/update_logs.md)
 
 ## Environment (been tested / develop on)
 
@@ -31,9 +31,10 @@
     - `Python 3.8.10`
     - `Windows10 x64`
     - `pyglet 2.0.dev9`
-    - `Json5 0.9.5`
+    - `Json5 0.9.6`
     - `pillow 8.1.0`
     - `AMD R5 5600X`
+    - `AMD RX 550 4G`
 -
     - `Develop platform 2 - macOS Big Sur`
     - `Python 3.8.7`

@@ -3,12 +3,26 @@
 ## Readme
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.5.1-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.5.3-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
+
+## 202110 V 0.5.3
+
+### Change
+
+- now `Difficult Rocket` will only fit python3.8+
+  - because `:=`
+- now main crash report handler have new way to handler crash
+
+### Add
+
+- `Difficult_Rocket.graphics.widgets.Parts`
+  - have many costume value
+- `libs/fonts` now have `HarmonyOS_Sans`
 
 ## 20210928 V 0.5.2
 

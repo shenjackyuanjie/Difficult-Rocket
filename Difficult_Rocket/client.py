@@ -33,7 +33,7 @@ if __name__ == '__main__':  # been start will not run this
 from Difficult_Rocket import crash
 from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.api.translate import tr
-from Difficult_Rocket.drag_sprite import DragSprite
+from Difficult_Rocket.graphics import widgets
 from Difficult_Rocket.api import tools, load_file, new_thread, thread
 
 # libs function
@@ -48,12 +48,11 @@ else:
 
 class Client:
     def __init__(self, net_mode='local'):
+        start_time = time.time_ns()
         # logging
         self.logger = logging.getLogger('client')
         # config
         self.config = tools.load_file('configs/main.config')
-        # lang
-        self.lang = tools.load_file('configs/lang/%s.json5' % self.config['runtime']['language'], 'client')
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
@@ -67,7 +66,11 @@ class Client:
                                    caption=self.caption,
                                    resizable=tools.format_bool(self.config['window']['resizable']),
                                    visible=tools.format_bool(self.config['window']['visible']))
-        self.logger.info(tr['client']['setup.done'])
+        self.logger.info(tr.lang('client', 'setup.done'))
+        end_time = time.time_ns()
+        self.use_time = end_time - start_time
+        self.logger.info(tr.lang('client', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
+        self.logger.debug(tr.lang('client', 'setup.use_time_ns').format(self.use_time))
 
     def start(self):
         self.window.start_game()  # 游戏启动
@@ -77,7 +80,7 @@ class Client:
 class ClientWindow(pyglet.window.Window):
 
     def __init__(self, net_mode='local', *args, **kwargs):
-        self.times = [time.time()]
+        start_time = time.time_ns()
         super().__init__(*args, **kwargs)
         """
         :param dev_list: 共享内存
@@ -96,8 +99,6 @@ class ClientWindow(pyglet.window.Window):
         self.config_file = tools.load_file('configs/main.config')
         self.FPS = Decimal(int(self.config_file['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
-        # lang
-        self.lang = tools.load_file('configs/lang/%s.json5' % self.config_file['runtime']['language'], 'client')
         # dic
         self.environment = {}
         self.textures = {}  # all textures
@@ -111,41 +112,40 @@ class ClientWindow(pyglet.window.Window):
         self.label_batch = pyglet.graphics.Batch()
         # frame
         self.frame = pyglet.gui.Frame(self)
-        self.M_frame = pyglet.gui.MovableFrame(self)
+        self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
         # setup
         self.setup()
         self.info_label = pyglet.text.Label(x=10, y=self.height - 10,
                                             anchor_x='left', anchor_y='top',
                                             batch=self.label_batch)
         pyglet.clock.schedule_interval(self.update, float(self.SPF))
-        self.logger.info(self.lang['setup.done'])
-
-    @new_thread('client_load_environment')
-    def load_environment(self) -> None:
-        # load parts info
-        self.environment['parts'] = load_file('configs/sys_value/parts.json5')
-        try:
-            self.load_textures()
-        except TexturesError:
-            raise
-
-    @new_thread('client_load_textures')
-    def load_textures(self) -> None:
-        # load parts
-        self.textures['parts'] = {}
-        for part in self.environment['parts']:
-            pass
+        self.logger.info(tr.lang('window', 'setup.done'))
+        end_time = time.time_ns()
+        self.use_time = end_time - start_time
+        self.logger.info(tr.lang('window', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
+        self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
 
     def setup(self):
         self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
-        image = pyglet.image.load('textures/Editor/PartButton.png')
-        self.textures['test'] = DragSprite(10, 20, image, batch=self.label_batch, drag_by_all=False, drag_out_window=True)
-        self.load_environment()
+        self.load_fonts()
+
+    @new_thread('client load_fonts')
+    def load_fonts(self):
+        file_path = './libs/fonts/HarmonyOS Sans/'
+        ttf_files = os.listdir(file_path)
+        self.logger.info(tr.lang('window', 'fonts.found').format(ttf_files))
+        for ttf_file in ttf_files:
+            pyglet.font.add_directory(f'{file_path}{ttf_file}')
+
+    @new_thread('client load_editor')
+    def load_Editor(self):
+        pass
 
     def start_game(self) -> None:
         self.run_input = True
-        # self.input_line = threading.Thread(target=self.read_input, name='client_read_line', daemon=True)
-        # self.input_line.start()
+        # self.read_thread = threading.Thread(target=self.read_input, name='client_read_input')
+        # self.read_thread.start()
+        # crash.all_thread.append(self.read_thread)
         pyglet.app.run()
 
     def read_input(self):
@@ -162,9 +162,10 @@ class ClientWindow(pyglet.window.Window):
     """
 
     def update(self, tick: float):
-        self.FPS_update(tick)
+        decimal_tick = Decimal(tick)
+        self.FPS_update(decimal_tick)
 
-    def FPS_update(self, tick: float):
+    def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         if now_FPS > self.max_fps[0]:
             self.max_fps = [now_FPS, time.time()]
@@ -199,20 +200,13 @@ class ClientWindow(pyglet.window.Window):
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers) -> None:
         # self.logger.debug('按键拖拽 %s %s %s %s %s %s' % (x, y, dx, dy, buttons, modifiers))
-        self.textures['test'].on_mouse_drag(x, y, dx, dy, buttons, modifiers)
         pass
 
     def on_mouse_press(self, x, y, button, modifiers) -> None:
-        if button == mouse.LEFT:
-            self.logger.debug(self.lang['mouse.press'].format([x, y], self.lang['mouse.left']))
-        elif button == mouse.RIGHT:
-            self.logger.debug(self.lang['mouse.press'].format([x, y], self.lang['mouse.right']))
-        self.textures['test']._sprite.rotation = random.randint(0, 360)
-        self.textures['test'].on_mouse_press(x, y, button, modifiers)
+        self.logger.debug(tr.lang('window', 'mouse.press').format([x, y], tr.lang('window', 'mouse.{}'.format(mouse.buttons_string(button)))))
 
     def on_mouse_release(self, x, y, button, modifiers) -> None:
-        self.logger.debug(tr.lang('window', 'mouse.release').format([x, y], tr.lang('window', 'mouse.right')))
-        self.textures['test'].on_mouse_release(x, y, button, modifiers)
+        self.logger.debug(tr.lang('window', 'mouse.release').format([x, y], tr.lang('window', 'mouse.{}'.format(mouse.buttons_string(button)))))
 
     def on_key_press(self, symbol, modifiers) -> None:
         if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |

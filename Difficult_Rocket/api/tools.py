@@ -352,5 +352,3 @@ def distance(A, B):
     poi_dis.append(poi_dis[0] + poi_dis[1])
     poi_dis[2] **= 0.5
     return poi_dis[2]
-
-# def

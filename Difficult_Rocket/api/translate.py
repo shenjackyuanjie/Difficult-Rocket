@@ -83,16 +83,24 @@ class Lang:
                 raise LanguageError(f'there\'s no key {args} in both {self.language} and zh-CN')
 
 
-try:
-    tr = Lang('zh-CN')
-except FileNotFoundError:
-    import os
+tr = Lang('zh-CN')
 
-    os.chdir('..')
-    os.chdir('..')
-    tr = Lang('zh-CN')
+# font's value
 
+HOS = 'HarmonyOS_Sans'
+HOS_S = 'HarmonyOS_Sans_SC'
+HOS_T = 'HarmonyOS_Sans_TC'
+HOS_I = 'HarmonyOS_Sans_Italic'
+HOS_C = 'HarmonyOS_Sans_Condensed'
+HOS_CI = 'HarmonyOS_Sans_Condensed_Italic'
+HOS_NA = 'HarmonyOS_Sans_Naskh_Arabic'
+HOS_NAU = 'HarmonyOS_Sans_Naskh_Arabic_UI'
 
-def test():
-    print(tr)
-    assert tr.language == 'zh-CN'
+鸿蒙字体 = HOS
+鸿蒙简体 = HOS_S
+鸿蒙繁体 = HOS_T
+鸿蒙斜体 = HOS_I
+鸿蒙窄体 = HOS_C
+鸿蒙斜窄体 = HOS_CI
+鸿蒙阿拉伯 = HOS_NA
+鸿蒙阿拉伯UI = HOS_NAU

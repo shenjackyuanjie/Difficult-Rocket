@@ -1,26 +1,31 @@
 {
   'Editor': {
     'runtime': {
-      'toolbar.dark': 'Editor/ToolbarDark.png',
-      'toolbar.light': 'Editor/ToolbarLight.png',
-      'button_side.dark': 'Editor/ButtonDarkSide.png',
-      'button_side.light': 'Editor/ButtonLightSide.png'
+      'toolbar.dark': 'ToolbarDark.png',
+      'toolbar.light': 'ToolbarLight.png',
+      'button_side.dark': 'ButtonDarkSide.png',
+      'button_side.light': 'ButtonLightSide.png'
     },
     'toggle_button': {
-      'stage': 'Editor/ToolbarIconStaging.png',
-      'add_part': 'Editor/ToolbarIconAddPart.png',
-      'menu': 'Editor/ToolbarIconMenu.png'
+      'stage': 'ToolbarIconStaging.png',
+      'add_part': 'ToolbarIconAddPart.png',
+      'menu': 'ToolbarIconMenu.png'
     },
     'push_button': {
-      'zoom': 'Editor/ToolbarIconZoom.png',
-      'zoom.in': 'Editor/ToolbarIconZoomIn.png',
-      'zoom.out': 'Editor/ToolbarIconZoomOut.png',
-      'play': 'Editor/ToolbarIconPlay.png',
-      'rotate': 'Editor/RotateButton.png',
-      'trash_can': 'Editor/TrashCan.png'
+      'zoom': 'ToolbarIconZoom.png',
+      'zoom.in': 'ToolbarIconZoomIn.png',
+      'zoom.out': 'ToolbarIconZoomOut.png',
+      'play': 'ToolbarIconPlay.png',
+      'rotate': 'RotateButton.png',
+      'trash_can': 'TrashCan.png'
     }
   },
   'Runtime': {
-
+  },
+  'Parts': {
+    'battery': 'Battery.png',
+    'beam': 'Beam.png',
+    'cover_bottom': 'CoverBottom.png',
+    'nose_cone': 'NoseCone.png'
   }
 }
