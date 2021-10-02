@@ -15,26 +15,18 @@ gitee:  @shenjackyuanjie
 import os
 import sys
 import time
-import random
 import logging
-import threading
 import configparser
-import multiprocessing
 
 from decimal import Decimal
-from multiprocessing import Pipe
-from multiprocessing.connection import Connection
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-from Difficult_Rocket import crash
-from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.api.translate import tr
-from Difficult_Rocket.graphics import widgets
-from Difficult_Rocket.api import tools, load_file, new_thread, thread
+from Difficult_Rocket.api import tools, new_thread, translate
 
 # libs function
 local_lib = True
@@ -97,6 +89,7 @@ class ClientWindow(pyglet.window.Window):
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
         self.config_file = tools.load_file('configs/main.config')
+        self.game_config = tools.load_file('configs/game.config')
         self.FPS = Decimal(int(self.config_file['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
         # dic
@@ -115,21 +108,32 @@ class ClientWindow(pyglet.window.Window):
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
         # setup
         self.setup()
-        self.info_label = pyglet.text.Label(x=10, y=self.height - 10,
-                                            anchor_x='left', anchor_y='top',
-                                            batch=self.label_batch)
+        # 命令显示
+        self.command_label = [pyglet.text.Label(x=10, y=10 + 20 * line,
+                                                anchor_x='left', anchor_y='center',
+                                                font_name=translate.鸿蒙简体, font_size=12,
+                                                batch=self.label_batch)
+                              for line in range(int(self.game_config['command']['show']) + 1)]
+        # fps显示
+        self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
+                                           anchor_x='left', anchor_y='top',
+                                           font_name=translate.鸿蒙简体, font_size=20,
+                                           batch=self.label_batch)
+        # 设置刷新率
         pyglet.clock.schedule_interval(self.update, float(self.SPF))
+        # 完成设置后的信息输出
         self.logger.info(tr.lang('window', 'setup.done'))
+        self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
         self.use_time = end_time - start_time
         self.logger.info(tr.lang('window', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
 
     def setup(self):
-        self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
         self.load_fonts()
+        # print(pyglet.font.have_font('HarmonyOS_Sans_Black'))
 
-    @new_thread('client load_fonts')
+    # @new_thread('client load_fonts')
     def load_fonts(self):
         file_path = './libs/fonts/HarmonyOS Sans/'
         ttf_files = os.listdir(file_path)
@@ -176,7 +180,7 @@ class ClientWindow(pyglet.window.Window):
                 self.max_fps = [self.FPS, time.time()]
             elif (time.time() - self.min_fps[1]) > self.fps_wait:
                 self.min_fps = [self.FPS, time.time()]
-        self.info_label.text = 'FPS: {:.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.max_fps[0], self.min_fps[0], tick)
+        self.fps_label.text = 'FPS: {:.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.max_fps[0], self.min_fps[0], tick)
 
     def on_draw(self):
         self.clear()
@@ -184,7 +188,7 @@ class ClientWindow(pyglet.window.Window):
 
     def on_resize(self, width: int, height: int):
         super().on_resize(width, height)
-        self.info_label.y = height - 10
+        self.fps_label.y = height - 10
 
     def draw_batch(self):
         self.part_batch.draw()
@@ -213,9 +217,16 @@ class ClientWindow(pyglet.window.Window):
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
             self.dispatch_event('on_close')
+        self.logger.debug(tr.lang('window', 'key.press').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
     def on_key_release(self, symbol, modifiers) -> None:
-        pass
+        self.logger.debug(tr.lang('window', 'key.release').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+
+    def on_text(self, text):
+        if text == '':
+            self.logger.debug(tr.lang('window', 'text.new_line'))
+        else:
+            self.logger.debug(tr.lang('window', 'text.input').format(text))
 
     def on_close(self) -> None:
         self.run_input = False
@@ -225,4 +236,4 @@ class ClientWindow(pyglet.window.Window):
         config_file['window']['width'] = str(self.width)
         config_file['window']['height'] = str(self.height)
         config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
-        super(ClientWindow, self).on_close()
+        super().on_close()

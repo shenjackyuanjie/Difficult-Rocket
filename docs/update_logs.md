@@ -23,6 +23,9 @@
 - `Difficult_Rocket.graphics.widgets.Parts`
   - have many costume value
 - `libs/fonts` now have `HarmonyOS_Sans`
+- handler of `on_key_press` and `on_key_release` and `on_text`
+- `game.config` config file
+- `lang/en-us.json5` now up to date with `lang/zh-CN.json5`
 
 ## 20210928 V 0.5.2
 

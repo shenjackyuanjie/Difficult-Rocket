@@ -1011,18 +1011,8 @@ class TextLayout:
         return self._x, self._y
 
     @position.setter
-    def position(self, position):
-        self.update(*position)
-
-    def update(self, x, y):
-        """Change both X and Y positions of the layout at once for faster performance.
-
-        :Parameters:
-            `x` : int
-                X coordinate of the layout.
-            `y` : int
-                Y coordinate of the layout.
-        """
+    def position(self, values):
+        x, y = values
         if self._boxes:
             self._x = x
             self._y = y
@@ -1789,6 +1779,10 @@ class ScrollableTextLayout(TextLayout):
         area = self._get_left(), self._get_bottom(self._get_lines()), self._width, self._height
         for group in self.groups.values():
             group.scissor_area = area
+
+    def _update(self):
+        super()._update()
+        self._update_scissor_area()
 
     # Properties
 

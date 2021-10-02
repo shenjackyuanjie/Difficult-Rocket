@@ -6,6 +6,7 @@
     'lang.language': 'English (EN-US)',
     'logger.language': 'Logging language is: ',
     'logger.created': 'Log handler created',
+    'logger.mkdir': 'logs/ folder not found, now created',
     'logger.main_done': 'Main log handler created ',
     'logger.logfile_name': 'Log file name :',
     'logger.logfile_level': 'Log file record level :',
@@ -14,17 +15,29 @@
     'game_start.at': 'The main thread of the game starts with:'
   },
   'client': {
-    'setup.done': 'Client load complete ',
-    'os.pid_is': 'Client is using PID',
+    'setup.done': 'Client load complete',
+    'setup.use_time': 'Client load use: {} second',
+    'setup.use_time_ns': 'Client load use: {} nano second'
+  },
+  'window': {
+    'setup.done': 'Window load complete ',
+    'setup.use_time': 'Window load use: {} second',
+    'setup.use_time_ns': 'Window load use: {} nano second',
+    'os.pid_is': 'Window\'s PID: {} PPID: {}',
     'button.been_press': 'The button is pressed, the current state of the button is:',
     'mouse.press_at': 'mouse was click at {} button is: {}',
     'mouse.release': 'mouse release at {} button is: {}',
-    'mouse.right': 'right button',
-    'mouse.left': 'left button'
+    'mouse.RIGHT': 'right button',
+    'mouse.LEFT': 'left button',
+    'mouse.MIDDLE': 'middle button',
+    'key.press': 'key {} {} been press',
+    'key.release': 'key {} {} been release',
+    'text.input': 'input text {}',
+    'text.new_line': '换行'
   },
   'server': {
-    'setup.done': 'server load complete ',
-    'os.pid_is': 'Client is using PID: {} PPID: {}'
+    'setup.done': 'Server load complete ',
+    'os.pid_is': 'Server is using PID: {} PPID: {}'
   },
   'language': 'English'
 }
