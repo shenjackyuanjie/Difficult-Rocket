@@ -35,8 +35,7 @@ class Game:
         self.on_python_v = sys.version.split(' ')[0]
         self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
         # lang_config
-        self.language = tools.load_file('configs/sys_value/basic_config.json5')
-        self.language = self.language['language']
+        self.language = tools.load_file('configs/main.config', 'runtime')['language']
         tr.set_language(self.language)
         # logging config
         log_config = tools.load_file('configs/logger.json5')

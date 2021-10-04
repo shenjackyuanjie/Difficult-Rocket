@@ -12,6 +12,7 @@ gitee:  @shenjackyuanjie
 """
 
 from .api import *
+from .guis import *
 
 __all__ = [
     'new_thread',

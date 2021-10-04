@@ -11,14 +11,21 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from .tools import load_file
+# 单独导入的(或者就这一个有用的)
 from .translate import Lang
 from .delivery import Delivery
 from .new_thread import new_thread
-from .Exp import TexturesError, LanguageError
+
+# lazy之后之前全部导入的(太多了写不动__all__了)
+from .Exp import *
+from .tools import *
+from .command import *
+from .calculation import *
+from .scientific_unit import *
 
 __all__ = ['TexturesError',
            'LanguageError',
+           'TestError',
            'new_thread',
            'Delivery',
            'load_file',

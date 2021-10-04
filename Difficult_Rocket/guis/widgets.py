@@ -11,17 +11,22 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+from Difficult_Rocket.api import translate
+
 from libs import pyglet
 from libs.pyglet.gui import widgets
 from libs.pyglet.sprite import Sprite
 from libs.pyglet.graphics import Batch
 from libs.pyglet.image import AbstractImage
 
+__all__ = ['Parts']
+
 
 class Parts(widgets.WidgetBase):
     """
     parts
     """
+
     def __init__(self,
                  x: int,
                  y: int,

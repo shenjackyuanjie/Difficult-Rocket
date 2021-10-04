@@ -31,6 +31,8 @@ class Lang:
     lang['language'] = 'abc' 或
     lang['lang'] = 'abc'
     的方式直接更改并刷新翻译
+    用
+    lang.lang(xxx, xxx)来获取翻译过的值
     """
 
     def __init__(self, language: str = 'zh-CN'):
@@ -81,6 +83,9 @@ class Lang:
                 return 结果
             except KeyError:
                 raise LanguageError(f'there\'s no key {args} in both {self.language} and zh-CN')
+
+    def 翻译(self, *args):
+        self.lang(args)
 
 
 tr = Lang('zh-CN')

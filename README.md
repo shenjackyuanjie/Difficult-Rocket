@@ -4,13 +4,14 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev9-blue.svg)](https://pyglet.org)
 [![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9-blue.svg)](https://Python.org)
 
 ## Version
 
 [![Generic badge](https://img.shields.io/badge/Release-0.4.5-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.5)
 <br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.4.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.6)
-<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.5.2-blue.svg)
+<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.5.3-blue.svg)
 
 ## 中文README请移步 [这里](/docs/README-cn.md)
 
@@ -47,7 +48,8 @@
 ## Required python modules
 
 - json5 (pre-installed V0.9.6 path:`./libs/json5`)
-- pyglet (pre-installed V2.0.dev9 path:`./libs/pyglet`)
+
+[comment]: <> (- pyglet &#40;pre-installed V2.0.dev9 path:`./libs/pyglet`&#41;)
 - pillow
 - semver
 

@@ -30,10 +30,15 @@
     'mouse.RIGHT': 'right button',
     'mouse.LEFT': 'left button',
     'mouse.MIDDLE': 'middle button',
-    'key.press': 'key {} {} been press',
-    'key.release': 'key {} {} been release',
-    'text.input': 'input text {}',
-    'text.new_line': '换行'
+    'key.press': 'key {} | {} been press',
+    'key.release': 'key {} | {} been release',
+    'text.input': 'input text "{}"',
+    'text.new_line': 'new line',
+    'text.motion': 'text move {}',
+    'text.motion_select': 'text select {}',
+    'libs.local': 'using local pyglet, version: {}',
+    'libs.outer': 'using global pyglet, version: {}\n(may cause bug)',
+    'fonts.found': 'found fonts in font lib: {}'
   },
   'server': {
     'setup.done': 'Server load complete ',

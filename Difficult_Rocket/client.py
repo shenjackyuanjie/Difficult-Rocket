@@ -25,6 +25,8 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
+from Difficult_Rocket import guis
+from Difficult_Rocket.api import command
 from Difficult_Rocket.api.translate import tr
 from Difficult_Rocket.api import tools, new_thread, translate
 
@@ -104,16 +106,16 @@ class ClientWindow(pyglet.window.Window):
         self.part_batch = pyglet.graphics.Batch()
         self.label_batch = pyglet.graphics.Batch()
         # frame
-        self.frame = pyglet.gui.Frame(self)
+        self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
         # setup
         self.setup()
         # 命令显示
-        self.command_label = [pyglet.text.Label(x=10, y=10 + 20 * line,
-                                                anchor_x='left', anchor_y='center',
-                                                font_name=translate.鸿蒙简体, font_size=12,
-                                                batch=self.label_batch)
-                              for line in range(int(self.game_config['command']['show']) + 1)]
+        self.command = command.CommandLine(x=10, y=30,
+                                           width=20, height=20,
+                                           length=int(self.game_config['command']['show']),
+                                           batch=self.label_batch)
+        self.push_handlers(self.command)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            anchor_x='left', anchor_y='top',
@@ -194,6 +196,7 @@ class ClientWindow(pyglet.window.Window):
         self.part_batch.draw()
         self.label_batch.draw()
 
+
     """
     keyboard and mouse input
     """
@@ -223,10 +226,18 @@ class ClientWindow(pyglet.window.Window):
         self.logger.debug(tr.lang('window', 'key.release').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
     def on_text(self, text):
-        if text == '':
+        if text == '\r':
             self.logger.debug(tr.lang('window', 'text.new_line'))
         else:
             self.logger.debug(tr.lang('window', 'text.input').format(text))
+
+    def on_text_motion(self, motion):
+        motion_string = key.motion_string(motion)
+        self.logger.debug(tr.lang('window', 'text.motion').format(motion_string))
+
+    def on_text_motion_select(self, motion):
+        motion_string = key.motion_string(motion)
+        self.logger.debug(tr.lang('window', 'text.motion_select').format(motion_string))
 
     def on_close(self) -> None:
         self.run_input = False
