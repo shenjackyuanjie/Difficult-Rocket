@@ -28,6 +28,7 @@
 - `lang/en-us.json5` now up to date with `lang/zh-CN.json5`
 - `graphics/frame/AllFrame`
 - `translate/Lang.翻译` same as `Lang.lang`
+- `command/CommandLine` to render command line
 
 ## 20210928 V 0.5.2
 
