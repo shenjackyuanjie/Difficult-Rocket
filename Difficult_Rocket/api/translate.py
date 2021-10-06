@@ -92,14 +92,14 @@ tr = Lang('zh-CN')
 
 # font's value
 
-HOS = 'HarmonyOS_Sans'
-HOS_S = 'HarmonyOS_Sans_SC'
-HOS_T = 'HarmonyOS_Sans_TC'
-HOS_I = 'HarmonyOS_Sans_Italic'
-HOS_C = 'HarmonyOS_Sans_Condensed'
-HOS_CI = 'HarmonyOS_Sans_Condensed_Italic'
-HOS_NA = 'HarmonyOS_Sans_Naskh_Arabic'
-HOS_NAU = 'HarmonyOS_Sans_Naskh_Arabic_UI'
+HOS = 'HarmonyOS Sans'
+HOS_S = 'HarmonyOS Sans SC'
+HOS_T = 'HarmonyOS Sans TC'
+HOS_I = 'HarmonyOS Sans Italic'
+HOS_C = 'HarmonyOS Sans Condensed'
+HOS_CI = 'HarmonyOS Sans Condensed Italic'
+HOS_NA = 'HarmonyOS Sans Naskh Arabic'
+HOS_NAU = 'HarmonyOS Sans Naskh Arabic_UI'
 
 鸿蒙字体 = HOS
 鸿蒙简体 = HOS_S

@@ -11,16 +11,21 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+import time
+
+# from DR
 from Difficult_Rocket.api import translate
+from Difficult_Rocket.api.new_thread import new_thread
 
 # from libs.pyglet
 from libs import pyglet
 from libs.pyglet.text import Label
 from libs.pyglet.window import key
 from libs.pyglet.gui import widgets
-from libs.pyglet.graphics import Batch, Group
 from libs.pyglet.text.caret import Caret
+from libs.pyglet.graphics import Batch, Group
 from libs.pyglet.text.layout import IncrementalTextLayout
+from libs.pyglet.text.document import UnformattedDocument
 
 
 class CommandLine(widgets.WidgetBase):
@@ -36,37 +41,65 @@ class CommandLine(widgets.WidgetBase):
                  length: int,
                  batch: Batch,
                  group: Group = None,
+                 command_text: str = '/',
                  font_size: int = 20):
         super().__init__(x, y, width, height)
+
         # normal values
         self.length = length
-        self._editing = False
         self.command_list = ['' for line in range(length)]
-        bg_group = Group(order=0, parent=group)
-        fg_group = Group(order=1, parent=group)
-        # hidden value
-        self._text = ''
-        self._doc = pyglet.text.document.UnformattedDocument('')
-        self._doc.set_style(0, len(self._doc.text), dict(color=(0, 0, 0, 255)))
-        self._line = Label(x=x, y=y, batch=batch, text=self.text,
-                           color=(100, 255, 255, 200),
-                           anchor_x='left', anchor_y='center',
-                           font_size=font_size, group=fg_group)
-        self._label = [Label(x=x, y=y + 20 + (line * 20), batch=batch, text='a',
-                             anchor_x='left', anchor_y='center',
-                             font_size=12, group=bg_group)
-                       for line in range(length)]
-        # Rectangular outline with 2-pixel pad:
-        color = (255, 255, 255, 255)
-        self._pad = p = 2
-        self._outline = pyglet.shapes.Rectangle(x-p, y-p, width+p+p, height+p+p, color[:3], batch, fg_group)
-        self._outline.opacity = color[3]
+        self.command_text = command_text
         self._text_position = 0
         self._command_view = 0
         self._value = 0
 
+        # group
+        self._user_group = group
+        bg_group = Group(order=0, parent=group)
+        fg_group = Group(order=1, parent=group)
+
+        # hidden value
+        self._text = ''
+        self._line = Label(x=x, y=y, batch=batch, text=self.text,
+                           color=(100, 255, 255, 255),
+                           anchor_x='left', anchor_y='bottom',
+                           font_size=font_size, font_name=translate.鸿蒙简体,
+                           group=fg_group)
+        self._label = [Label(x=x + 10, y=y + 20 + (line * 20), batch=batch, text='a',
+                             anchor_x='left', anchor_y='bottom',
+                             font_size=font_size - 3, font_name=translate.鸿蒙简体,
+                             group=bg_group)
+                       for line in range(length)]
+        # Rectangular outline with 5-pixel pad:
+        color = (100, 100, 100, 100)
+        self._pad = p = 5
+        self._outline = pyglet.shapes.Rectangle(x=x - p, y=y - p,
+                                                width=width + p + p, height=height + p + p,
+                                                color=color[:3],
+                                                batch=batch, group=fg_group)
+        self._outline.opacity = color[3]
+
+        self.document = UnformattedDocument(text=self.text)
+        self.document.set_style(0, len(self.document.text), dict(color=(200, 132, 123, 255),
+                                                                 font_size=font_size, font_name=translate.鸿蒙简体))
+        font = self.document.get_font()
+        height = font.ascent - font.descent
+
+        self.layout = IncrementalTextLayout(document=self.document,
+                                            width=width, height=height,
+                                            batch=batch)
+        self.layout.position = x, y
+        self.caret = Caret(self.layout, color=(200, 132, 123), batch=batch)
+        self.editing = False
+
     def _update_position(self):
         self._line.position = self._x, self._y
+
+    def update_groups(self, order):
+        self._line.group = Group(order=order + 1, parent=self._user_group)
+        for label in self._label:
+            label.group = Group(order=order + 1, parent=self._user_group)
+        self._outline.group = Group(order=order + 2, parent=self._user_group)
 
     @property
     def text(self):
@@ -77,7 +110,7 @@ class CommandLine(widgets.WidgetBase):
         assert type(value) is str, 'CommandLine\'s text must be string!'
         self._text = value
         self._line.text = value
-        self._doc.text = value
+        self.document.text = value
 
     @property
     def command_view(self):
@@ -102,6 +135,7 @@ class CommandLine(widgets.WidgetBase):
                 self._label[line].y = self.y + 20 + (line * 20)
             self._label[0].text = self.text
             self.text = ''
+            self._command_view = 0
         elif value == self._command_view:  # not doing anything
             pass
         elif value > self._command_view:  # move upwards
@@ -116,34 +150,88 @@ class CommandLine(widgets.WidgetBase):
 
     @editing.setter
     def editing(self, value):
+        print(value)
         assert type(value) is bool, 'Command editing must be bool!'
         self._editing = value
+        self._line.visible = value
+        self._outline.visible = value
+        self.caret.visible = value
+        for label in self._label:
+            label.visible = value
+
+    @new_thread('command wait')
+    def wait(self, wait):
+        self._label[0].visible = True
+        time.sleep(wait)
+        if self._label[0].visible and not self.editing:
+            self._label[0].visible = False
 
     def on_text(self, text):
         if self.editing:
+            self.caret.on_text(text)
             if text in ('\r', '\n'):  # goto a new line
+                if self.text[0] == self.command_text:
+                    self.dispatch_event('on_command', self.text)
+                else:
+                    self.dispatch_event('on_message', self.text)
                 self.command_view = -1
-                self._editing = False
+                self.editing = False
+                self.wait(1)
             else:
-                self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'
-                # 插入字符（简单粗暴）
+                self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'  # 插入字符（简单粗暴）
                 self._text_position += 1
-                # 光标位置+1
         elif text == 't':  # open command line
-            self._editing = not self.editing
+            self.editing = not self.editing
 
     def on_text_motion(self, motion):
         if self.editing:
-            motion_string = key.motion_string(motion)
-            if motion == key.MOTION_DOWN:
-                # 刷新整个命令列表，向上刷新一遍
-                self.command_list[-1].text = self.command_list[0].text  # 把最上面一个显示替换成最新的
-                last = self.command_list[-1]  # 获取一遍现有的最后一个
-                self.command_list.pop(-1)  # 删除最后一个
-                self.command_list.insert(1, last)  # 把之前的最后一个插进第2个的位置（整体往后挪一个）
-                for line in range(1, len(self.command_list)):
-                    self.command_list[line].y = 50 + (20 * line)  # 挨个重设 y
-                self.command_list.text = ''  # 清除第一个的数据
+            self.caret.on_text_motion(motion)
+            # edit motion
+            if motion == key.MOTION_DELETE:
+                self.text = f'{self.text[:self._text_position]}{self.text[self._text_position + 1:]}'
+            elif motion == key.MOTION_BACKSPACE:
+                self.text = f'{self.text[:self._text_position - 1]}{self.text[self._text_position:]}'
+                self._text_position -= 1
+
+            # move motion
+            elif motion == key.MOTION_LEFT:
+                self._text_position -= 1
+            elif motion == key.MOTION_RIGHT:
+                self._text_position += 1
+            elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):
+                self._text_position = 0
+            elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):
+                self._text_position = len(self.text)
+
+            # view move motion
+            elif motion == key.MOTION_DOWN:
+                if not self.command_view == -1:
+                    self.command_view -= 1
+                else:
+                    pass
 
     def on_text_motion_select(self, motion):
-        pass
+        if self.editing:
+            self.caret.on_text_motion_select(motion)
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        if self.editing:
+            self.caret.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
+
+    def on_mouse_press(self, x, y, buttons, modifiers):
+        if self.editing:
+            self.caret.on_mouse_press(x, y, buttons, modifiers)
+
+    def on_command(self, command):
+        if self.editing:
+            return
+        """give command to it"""
+
+    def on_message(self, message):
+        if self.editing:
+            return
+        """give message to it"""
+
+
+CommandLine.register_event_type('on_command')
+CommandLine.register_event_type('on_message')

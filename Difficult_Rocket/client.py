@@ -111,16 +111,17 @@ class ClientWindow(pyglet.window.Window):
         # setup
         self.setup()
         # 命令显示
-        self.command = command.CommandLine(x=10, y=30,
-                                           width=20, height=20,
+        self.command_group = pyglet.graphics.Group(0)
+        self.command = command.CommandLine(x=50, y=30,
+                                           width=self.width-100, height=40,
                                            length=int(self.game_config['command']['show']),
-                                           batch=self.label_batch)
+                                           batch=self.label_batch, group=self.command_group)
         self.push_handlers(self.command)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            anchor_x='left', anchor_y='top',
                                            font_name=translate.鸿蒙简体, font_size=20,
-                                           batch=self.label_batch)
+                                           batch=self.label_batch, group=self.command_group)
         # 设置刷新率
         pyglet.clock.schedule_interval(self.update, float(self.SPF))
         # 完成设置后的信息输出
