@@ -136,6 +136,7 @@ class CommandLine(widgets.WidgetBase):
             self._label[0].text = self.text
             self.text = ''
             self._command_view = 0
+            self._text_position = 0
         elif value == self._command_view:  # not doing anything
             pass
         elif value > self._command_view:  # move upwards
