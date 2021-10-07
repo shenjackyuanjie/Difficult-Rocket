@@ -150,7 +150,6 @@ class CommandLine(widgets.WidgetBase):
 
     @editing.setter
     def editing(self, value):
-        print(value)
         assert type(value) is bool, 'Command editing must be bool!'
         self._editing = value
         self._line.visible = value
