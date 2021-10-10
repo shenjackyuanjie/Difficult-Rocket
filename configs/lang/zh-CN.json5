@@ -36,6 +36,8 @@
     'text.new_line': '换行',
     'text.motion': '光标移动 {}',
     'text.motion_select': '光标选择 {}',
+    'command.text': '输入命令: {}',
+    'message.text': '输入信息: {}',
     'libs.local': '正在使用本地 pyglet 库 版本为: {}',
     'libs.outer': '正在使用全局 pyglet 库 版本为: {}\n(可能会造成bug，因为本地库版本为2.0dev9)',
     'fonts.found': '在字体列表中找到以下字体库: {}'

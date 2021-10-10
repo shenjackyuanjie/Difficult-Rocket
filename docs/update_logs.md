@@ -26,9 +26,28 @@
 - handler of `on_key_press` and `on_key_release` and `on_text`
 - `game.config` config file
 - `lang/en-us.json5` now up to date with `lang/zh-CN.json5`
-- `graphics/frame/AllFrame`
 - `translate/Lang.翻译` same as `Lang.lang`
 - `command/CommandLine` to render command line
+
+### Translate
+
+- Add
+  - `window`
+    - `message.text`
+    - `command.text`
+    - `text.motion`
+    - `text.motion_select`
+    - `setup.use_time_ns`
+    - `fonts.found`
+  - `client`
+    - `setup.use_time_ns`
+
+### Command
+
+- now you can press `t` to call out a message window
+  - or press `/` to open command line
+  - not done
+  - useless until now
 
 ## 20210928 V 0.5.2
 

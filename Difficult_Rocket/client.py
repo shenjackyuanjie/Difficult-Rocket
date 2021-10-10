@@ -117,6 +117,8 @@ class ClientWindow(pyglet.window.Window):
                                            length=int(self.game_config['command']['show']),
                                            batch=self.label_batch, group=self.command_group)
         self.push_handlers(self.command)
+        self.command.set_handler('on_command', self.on_command)
+        self.command.set_handler('on_message', self.on_message)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            anchor_x='left', anchor_y='top',
@@ -199,15 +201,23 @@ class ClientWindow(pyglet.window.Window):
 
 
     """
+    command line event
+    """
+
+    def on_command(self, command):
+        self.logger.info(tr.lang('window', 'command.text').format(command))
+
+    def on_message(self, message):
+        self.logger.info(tr.lang('window', 'message.text').format(message))
+
+    """
     keyboard and mouse input
     """
 
     def on_mouse_motion(self, x, y, dx, dy) -> None:
-        # self.logger.debug('按键移动 %s %s %s %s' % (x, y, dx, dy))
         pass
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers) -> None:
-        # self.logger.debug('按键拖拽 %s %s %s %s %s %s' % (x, y, dx, dy, buttons, modifiers))
         pass
 
     def on_mouse_press(self, x, y, button, modifiers) -> None:

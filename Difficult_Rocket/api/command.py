@@ -171,7 +171,7 @@ class CommandLine(widgets.WidgetBase):
             self.caret.on_text(text)
             if text in ('\r', '\n'):  # goto a new line
                 if self.text[0] == self.command_text:
-                    self.dispatch_event('on_command', self.text)
+                    self.dispatch_event('on_command', self.text[1:])
                 else:
                     self.dispatch_event('on_message', self.text)
                 self.command_view = -1
@@ -180,8 +180,13 @@ class CommandLine(widgets.WidgetBase):
             else:
                 self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'  # 插入字符（简单粗暴）
                 self._text_position += 1
-        elif text == 't':  # open command line
-            self.editing = not self.editing
+        elif text == 't':  # open message line
+            self.editing = True
+        elif text == '/':  # open command line
+            self.editing = True
+            self.text = '/'
+            self._text_position = 1
+            self.caret.on_text_motion(key.MOTION_RIGHT)
 
     def on_text_motion(self, motion):
         if self.editing:
