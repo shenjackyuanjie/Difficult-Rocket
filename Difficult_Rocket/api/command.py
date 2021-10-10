@@ -52,6 +52,8 @@ class CommandLine(widgets.WidgetBase):
         self._text_position = 0
         self._command_view = 0
         self._value = 0
+        self.command_split = 25
+        self.command_distance = 20
 
         # group
         self._user_group = group
@@ -65,7 +67,7 @@ class CommandLine(widgets.WidgetBase):
                            anchor_x='left', anchor_y='bottom',
                            font_size=font_size, font_name=translate.鸿蒙简体,
                            group=fg_group)
-        self._label = [Label(x=x + 10, y=y + 20 + (line * 20), batch=batch, text='a',
+        self._label = [Label(x=x + 10, y=y + self.command_distance + (line * self.command_split), batch=batch, text='a',
                              anchor_x='left', anchor_y='bottom',
                              font_size=font_size - 3, font_name=translate.鸿蒙简体,
                              group=bg_group)
@@ -132,7 +134,7 @@ class CommandLine(widgets.WidgetBase):
             self._label.insert(0, self._label[-1])
             self._label.pop(-1)
             for line in range(self.length):
-                self._label[line].y = self.y + 20 + (line * 20)
+                self._label[line].y = self.y + self.command_distance + (line * self.command_split)
             self._label[0].text = self.text
             self.text = ''
             self._command_view = 0
