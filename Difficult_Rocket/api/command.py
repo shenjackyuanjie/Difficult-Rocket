@@ -52,8 +52,14 @@ class CommandLine(widgets.WidgetBase):
         self._text_position = 0
         self._command_view = 0
         self._value = 0
+        self._text = ''
         self.command_split = 25
         self.command_distance = 20
+
+        self.document = UnformattedDocument(text=self.text)
+        self.document.set_style(0, len(self.document.text), dict(color=(122, 173, 153, 255)))
+        font = self.document.get_font()
+        height = font.ascent - font.descent
 
         # group
         self._user_group = group
@@ -89,13 +95,14 @@ class CommandLine(widgets.WidgetBase):
 
         self.layout = IncrementalTextLayout(document=self.document,
                                             width=width, height=height,
-                                            batch=batch)
+                                            batch=batch, multiline=False)
         self.layout.position = x, y
-        self.caret = Caret(self.layout, color=(200, 132, 123), batch=batch)
+        self.caret = Caret(self.layout, batch=batch, color=(100, 0 ,0))
+        self.caret.visible = False
         self.editing = False
 
     def _update_position(self):
-        self._line.position = self._x, self._y
+        self.caret.position = self._x, self.y
 
     def update_groups(self, order):
         self._line.group = Group(order=order + 1, parent=self._user_group)
@@ -172,7 +179,9 @@ class CommandLine(widgets.WidgetBase):
         if self.editing:
             self.caret.on_text(text)
             if text in ('\r', '\n'):  # goto a new line
-                if self.text[0] == self.command_text:
+                if not self.text:
+                    pass
+                elif self.text[0] == self.command_text:
                     self.dispatch_event('on_command', self.text[1:])
                 else:
                     self.dispatch_event('on_message', self.text)
@@ -196,14 +205,14 @@ class CommandLine(widgets.WidgetBase):
             # edit motion
             if motion == key.MOTION_DELETE:
                 self.text = f'{self.text[:self._text_position]}{self.text[self._text_position + 1:]}'
-            elif motion == key.MOTION_BACKSPACE:
+            elif motion == key.MOTION_BACKSPACE and self._text_position >= 1:
                 self.text = f'{self.text[:self._text_position - 1]}{self.text[self._text_position:]}'
                 self._text_position -= 1
 
             # move motion
-            elif motion == key.MOTION_LEFT:
+            elif motion == key.MOTION_LEFT and self._text_position >= 0:
                 self._text_position -= 1
-            elif motion == key.MOTION_RIGHT:
+            elif motion == key.MOTION_RIGHT and self._text_position <= len(self.text):
                 self._text_position += 1
             elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):
                 self._text_position = 0
@@ -216,6 +225,7 @@ class CommandLine(widgets.WidgetBase):
                     self.command_view -= 1
                 else:
                     pass
+            print(self._text_position)
 
     def on_text_motion_select(self, motion):
         if self.editing:
