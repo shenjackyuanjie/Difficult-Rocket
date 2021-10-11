@@ -203,16 +203,16 @@ class CommandLine(widgets.WidgetBase):
         if self.editing:
             self.caret.on_text_motion(motion)
             # edit motion
-            if motion == key.MOTION_DELETE:
-                self.text = f'{self.text[:self._text_position]}{self.text[self._text_position + 1:]}'
-            elif motion == key.MOTION_BACKSPACE and self._text_position >= 1:
-                self.text = f'{self.text[:self._text_position - 1]}{self.text[self._text_position:]}'
-                self._text_position -= 1
+            if motion == key.MOTION_DELETE:  # 确保不越界
+                self.text = f'{self.text[:self._text_position]}{self.text[self._text_position + 1:]}'  # 简单粗暴的删除
+            elif motion == key.MOTION_BACKSPACE and self._text_position >= 1:  # 确保不越界
+                self.text = f'{self.text[:self._text_position - 1]}{self.text[self._text_position:]}'  # 简单粗暴的删除
+                self._text_position -= 1  # 记得切换光标位置
 
             # move motion
-            elif motion == key.MOTION_LEFT and self._text_position >= 0:
+            elif motion == key.MOTION_LEFT and self._text_position >= 0:  # 确保不越界
                 self._text_position -= 1
-            elif motion == key.MOTION_RIGHT and self._text_position <= len(self.text):
+            elif motion == key.MOTION_RIGHT and self._text_position <= len(self.text):  # 确保不越界
                 self._text_position += 1
             elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):
                 self._text_position = 0
