@@ -35,15 +35,15 @@
   },
   'loggers': {
     'client': {
-//      'level': 'DEBUG',
+      'level': 'DEBUG',
       'handlers': []
     },
     'server': {
-//      'level': 'DEBUG',
+      'level': 'DEBUG',
       'handlers': []
     },
     'main': {
-//      'level': 'DEBUG',
+      'level': 'DEBUG',
       'handlers': []
     }
   },
