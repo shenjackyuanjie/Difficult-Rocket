@@ -28,6 +28,7 @@
 - `lang/en-us.json5` now up to date with `lang/zh-CN.json5`
 - `translate/Lang.翻译` same as `Lang.lang`
 - `command/CommandLine` to render command line
+- `@new_thread` now can option if log this thread to `crash` or not
 
 ### Translate
 
@@ -39,6 +40,12 @@
     - `text.motion_select`
     - `setup.use_time_ns`
     - `fonts.found`
+    - `game.input_stop`
+    - `game.command_stop`
+    - `game.window_stop`
+    - `game.stop_get`
+    - `game.stop`
+    - `game.end`
   - `client`
     - `setup.use_time_ns`
 

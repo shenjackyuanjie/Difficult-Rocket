@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket.api import translate
+from ..api import translate
 
 from libs import pyglet
 from libs.pyglet.gui import widgets

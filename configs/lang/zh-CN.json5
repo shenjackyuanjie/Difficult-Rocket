@@ -40,7 +40,13 @@
     'message.text': '输入信息: {}',
     'libs.local': '正在使用本地 pyglet 库 版本为: {}',
     'libs.outer': '正在使用全局 pyglet 库 版本为: {}\n(可能会造成bug，因为本地库版本为2.0dev9)',
-    'fonts.found': '在字体列表中找到以下字体库: {}'
+    'fonts.found': '在字体列表中找到以下字体库: {}',
+    'game.input_stop': '控制台',
+    'game.command_stop': '游戏内命令行',
+    'game.window_stop': '窗口',
+    'game.stop_get': '从{}传入关闭指令,关闭游戏中',
+    'game.stop': '游戏正在关闭,保存数据中···',
+    'game.end': '游戏已经关闭'
   },
   'server': {
     'setup.done': '服务端载入完成',

@@ -25,10 +25,11 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-from Difficult_Rocket import guis
-from Difficult_Rocket.api import command
-from Difficult_Rocket.api.translate import tr
-from Difficult_Rocket.api import tools, new_thread, translate
+from . import guis
+from .api import command
+from .api.Exp import *
+from .api.translate import tr
+from .api import tools, new_thread, translate
 
 # libs function
 local_lib = True
@@ -112,8 +113,8 @@ class ClientWindow(pyglet.window.Window):
         self.setup()
         # 命令显示
         self.command_group = pyglet.graphics.Group(0)
-        self.command = command.CommandLine(x=50, y=30,
-                                           width=self.width-100, height=40,
+        self.command = command.CommandLine(x=50, y=30,  # 实例化
+                                           width=self.width - 100, height=40,
                                            length=int(self.game_config['command']['show']),
                                            batch=self.label_batch, group=self.command_group)
         self.push_handlers(self.command)
@@ -135,35 +136,41 @@ class ClientWindow(pyglet.window.Window):
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
 
     def setup(self):
-        self.load_fonts()
-        # print(pyglet.font.have_font('HarmonyOS_Sans_Black'))
+        self.load_fonts().join()
+        # print(pyglet.font.load(translate.鸿蒙简体))
 
-    # @new_thread('client load_fonts')
+    @new_thread('client load_fonts')
     def load_fonts(self):
-        file_path = './libs/fonts/HarmonyOS Sans/'
+        file_path = './libs/fonts/HarmonyOS_Sans/'
         ttf_files = os.listdir(file_path)
         self.logger.info(tr.lang('window', 'fonts.found').format(ttf_files))
-        for ttf_file in ttf_files:
-            pyglet.font.add_directory(f'{file_path}{ttf_file}')
+        for ttf_folder in ttf_files:
+            for ttf_file in os.listdir(f'{file_path}{ttf_folder}'):
+                if not ttf_file[-4:] == '.ttf': continue
+                pyglet.font.add_file(f'{file_path}{ttf_folder}/{ttf_file}')
+                # print(f'{file_path}{ttf_file}')
 
-    @new_thread('client load_editor')
+    # @new_thread('client load_editor')
     def load_Editor(self):
         pass
 
     def start_game(self) -> None:
         self.run_input = True
-        # self.read_thread = threading.Thread(target=self.read_input, name='client_read_input')
-        # self.read_thread.start()
-        # crash.all_thread.append(self.read_thread)
+        self.read_input()
         pyglet.app.run()
 
+    @new_thread('read_input', daemon=True)
     def read_input(self):
         self.logger.debug('read_input start')
         while self.run_input:
-            get = input('<<<')
+            self.logger.info('<<<')
+            get = input()
+            if get in ('', ' ', '\n', '\r'):
+                continue
             self.logger.info(get)
             if get == 'stop':
                 self.run_input = False
+                self.dispatch_event('on_close', 'a')  # source = 'command'
         self.logger.debug('read_input end')
 
     """
@@ -199,15 +206,16 @@ class ClientWindow(pyglet.window.Window):
         self.part_batch.draw()
         self.label_batch.draw()
 
-
     """
     command line event
     """
 
-    def on_command(self, command):
+    def on_command(self, command: command.CommandLine.text):
         self.logger.info(tr.lang('window', 'command.text').format(command))
+        if command == 'stop':
+            self.dispatch_event('on_close', 'command')  # source = command
 
-    def on_message(self, message):
+    def on_message(self, message: command.CommandLine.text):
         self.logger.info(tr.lang('window', 'message.text').format(message))
 
     """
@@ -250,12 +258,15 @@ class ClientWindow(pyglet.window.Window):
         motion_string = key.motion_string(motion)
         self.logger.debug(tr.lang('window', 'text.motion_select').format(motion_string))
 
-    def on_close(self) -> None:
-        self.run_input = False
-        # self.input_line.join()
+    def on_close(self, source: str = 'window') -> None:
+        self.logger.info(tr.lang('window', 'game.stop_get').format(tr.lang('window', f'game.{source}_stop')))
+        self.logger.info(tr.lang('window', 'game.stop'))
+        if self.run_input:
+            self.run_input = False
         config_file = configparser.ConfigParser()
         config_file.read('configs/main.config')
         config_file['window']['width'] = str(self.width)
         config_file['window']['height'] = str(self.height)
         config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
         super().on_close()
+        self.logger.info(tr.lang('window', 'game.end'))

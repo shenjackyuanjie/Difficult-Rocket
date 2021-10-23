@@ -19,6 +19,7 @@ from Difficult_Rocket.api.new_thread import new_thread
 
 # from libs.pyglet
 from libs import pyglet
+from libs.pyglet import font
 from libs.pyglet.text import Label
 from libs.pyglet.window import key
 from libs.pyglet.gui import widgets
@@ -56,11 +57,6 @@ class CommandLine(widgets.WidgetBase):
         self.command_split = 25
         self.command_distance = 20
 
-        self.document = UnformattedDocument(text=self.text)
-        self.document.set_style(0, len(self.document.text), dict(color=(122, 173, 153, 255)))
-        font = self.document.get_font()
-        height = font.ascent - font.descent
-
         # group
         self._user_group = group
         bg_group = Group(order=0, parent=group)
@@ -87,22 +83,10 @@ class CommandLine(widgets.WidgetBase):
                                                 batch=batch, group=fg_group)
         self._outline.opacity = color[3]
 
-        self.document = UnformattedDocument(text=self.text)
-        self.document.set_style(0, len(self.document.text), dict(color=(200, 132, 123, 255),
-                                                                 font_size=font_size, font_name=translate.鸿蒙简体))
-        font = self.document.get_font()
-        height = font.ascent - font.descent
-
-        self.layout = IncrementalTextLayout(document=self.document,
-                                            width=width, height=height,
-                                            batch=batch, multiline=False)
-        self.layout.position = x, y
-        self.caret = Caret(self.layout, batch=batch, color=(100, 0 ,0))
-        self.caret.visible = False
         self.editing = False
 
     def _update_position(self):
-        self.caret.position = self._x, self.y
+        pass
 
     def update_groups(self, order):
         self._line.group = Group(order=order + 1, parent=self._user_group)
@@ -119,7 +103,6 @@ class CommandLine(widgets.WidgetBase):
         assert type(value) is str, 'CommandLine\'s text must be string!'
         self._text = value
         self._line.text = value
-        self.document.text = value
 
     @property
     def command_view(self):
@@ -164,11 +147,10 @@ class CommandLine(widgets.WidgetBase):
         self._editing = value
         self._line.visible = value
         self._outline.visible = value
-        self.caret.visible = value
         for label in self._label:
             label.visible = value
 
-    @new_thread('command wait')
+    @new_thread('command wait', log_thread=False)
     def wait(self, wait):
         self._label[0].visible = True
         time.sleep(wait)
@@ -177,7 +159,6 @@ class CommandLine(widgets.WidgetBase):
 
     def on_text(self, text):
         if self.editing:
-            self.caret.on_text(text)
             if text in ('\r', '\n'):  # goto a new line
                 if not self.text:
                     pass
@@ -197,11 +178,9 @@ class CommandLine(widgets.WidgetBase):
             self.editing = True
             self.text = '/'
             self._text_position = 1
-            self.caret.on_text_motion(key.MOTION_RIGHT)
 
     def on_text_motion(self, motion):
         if self.editing:
-            self.caret.on_text_motion(motion)
             # edit motion
             if motion == key.MOTION_DELETE:  # 确保不越界
                 self.text = f'{self.text[:self._text_position]}{self.text[self._text_position + 1:]}'  # 简单粗暴的删除
@@ -229,22 +208,22 @@ class CommandLine(widgets.WidgetBase):
 
     def on_text_motion_select(self, motion):
         if self.editing:
-            self.caret.on_text_motion_select(motion)
+            pass
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         if self.editing:
-            self.caret.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
+            pass
 
     def on_mouse_press(self, x, y, buttons, modifiers):
         if self.editing:
-            self.caret.on_mouse_press(x, y, buttons, modifiers)
+            pass
 
-    def on_command(self, command):
+    def on_command(self, command: text):
         if self.editing:
             return
         """give command to it"""
 
-    def on_message(self, message):
+    def on_message(self, message: text):
         if self.editing:
             return
         """give message to it"""
