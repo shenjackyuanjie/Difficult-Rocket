@@ -35,7 +35,7 @@
   },
   'loggers': {
     'client': {
-      'level': 'DEBUG',
+      'level': 'INFO',
       'handlers': []
     },
     'server': {

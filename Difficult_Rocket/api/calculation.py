@@ -14,7 +14,7 @@ gitee:  @shenjackyuanjie
 import math
 import decimal
 
-from typing import List, Optional
+from typing import List, Optional, Union
 from decimal import Decimal
 
 
@@ -283,18 +283,26 @@ class ScientificNumber:
     """
 
     def __init__(self,
-                 floats: Optional[float] = 1.0,
-                 integer: Optional[int] = 0,
-                 multi_unit: list = None,
-                 divide_unit: list = None):
-        if divide_unit is None:
-            self.divide_unit = []
+                 小数: Union[float, Decimal] = 1.0,
+                 指数: int = 0,
+                 乘单位: list = list,
+                 除单位: list = list):
+        if not isinstance(小数, Decimal):
+            self.小数 = Decimal(小数)
         else:
-            self.divide_unit = divide_unit
-        if multi_unit is None:
-            self.multi_unit = []
-        else:
-            self.multi_unit = multi_unit
-        self.floats = floats
-        self.integer = integer
+            self.小数 = 小数
+        self.指数 = 指数
+        self.乘单位 = 乘单位
+        self.除单位 = 除单位
+        self.check()
+
+    def check(self):
+        while self.小数 > 10:
+            self.小数 /= 10
+            self.指数 += 1
+        while self.小数 < 1:
+            self.小数 *= 10
+            self.指数 -= 1
+        self.除单位.sort()
+        self.乘单位.sort()
 

@@ -13,9 +13,12 @@ gitee:  @shenjackyuanjie
 
 import time
 
+from typing import Union
+from decimal import Decimal
+
 # from DR
-from Difficult_Rocket.api import translate
-from Difficult_Rocket.api.new_thread import new_thread
+from . import translate
+from .new_thread import new_thread
 
 # from libs.pyglet
 from libs import pyglet
@@ -49,7 +52,7 @@ class CommandLine(widgets.WidgetBase):
         # normal values
         self.length = length
         self.command_list = ['' for line in range(length)]
-        self.command_text = command_text
+        self._command_text = command_text
         self._text_position = 0
         self._command_view = 0
         self._value = 0
@@ -78,7 +81,7 @@ class CommandLine(widgets.WidgetBase):
         color = (100, 100, 100, 100)
         self._pad = p = 5
         self._outline = pyglet.shapes.Rectangle(x=x - p, y=y - p,
-                                                width=width + p + p, height=height + p + p,
+                                                width=width + p, height=height + p,
                                                 color=color[:3],
                                                 batch=batch, group=fg_group)
         self._outline.opacity = color[3]
@@ -135,7 +138,7 @@ class CommandLine(widgets.WidgetBase):
             pass
         else:  # move downwards
             pass
-        self._command_view = value
+        # self._command_view = value
 
     @property
     def editing(self):
@@ -157,16 +160,22 @@ class CommandLine(widgets.WidgetBase):
         if self._label[0].visible and not self.editing:
             self._label[0].visible = False
 
+    """
+    events
+    """
+
     def on_text(self, text):
         if self.editing:
             if text in ('\r', '\n'):  # goto a new line
                 if not self.text:
                     pass
-                elif self.text[0] == self.command_text:
+                elif self.text[0] == self._command_text:
                     self.dispatch_event('on_command', self.text[1:])
                 else:
                     self.dispatch_event('on_message', self.text)
-                self.command_view = -1
+                # on_message 和 on_command 可能会覆盖 self.text 需要再次判定
+                if self.text:
+                    self.command_view = -1
                 self.editing = False
                 self.wait(1)
             else:
@@ -204,7 +213,6 @@ class CommandLine(widgets.WidgetBase):
                     self.command_view -= 1
                 else:
                     pass
-            print(self._text_position)
 
     def on_text_motion_select(self, motion):
         if self.editing:
@@ -218,6 +226,10 @@ class CommandLine(widgets.WidgetBase):
         if self.editing:
             pass
 
+    """
+    custom event
+    """
+
     def on_command(self, command: text):
         if self.editing:
             return
@@ -227,6 +239,13 @@ class CommandLine(widgets.WidgetBase):
         if self.editing:
             return
         """give message to it"""
+
+    def push_line(self, line: Union[str, int, float, Decimal], block_line: bool = False):
+        _text = self.text
+        self.text = str(line)
+        self.command_view = -1
+        if not block_line:
+            self.text = _text
 
 
 CommandLine.register_event_type('on_command')

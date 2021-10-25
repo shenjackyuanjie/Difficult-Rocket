@@ -3,20 +3,23 @@
 ## Readme
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.5.3-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.6.0-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202110 V 0.5.3
+## 20211025 V 0.6.0 
+
+#### Command Line Update!
 
 ### Change
 
 - now `Difficult Rocket` will only fit python3.8+
   - because `:=`
 - now main crash report handler have new way to handler crash
+- now fonts' folder's name is `HarmonyOS_Sans`
 
 ### Add
 
@@ -29,6 +32,7 @@
 - `translate/Lang.翻译` same as `Lang.lang`
 - `command/CommandLine` to render command line
 - `@new_thread` now can option if log this thread to `crash` or not
+- `start.cmd` witch could debug easier
 
 ### Translate
 
@@ -54,7 +58,16 @@
 - now you can press `t` to call out a message window
   - or press `/` to open command line
   - not done
-  - useless until now
+  - ~~useless until now~~
+- new command
+  - `/min_fps`
+    - get min fps in 5 second
+  - `/max_fps`
+    - get max fps in 5 second
+  - `/stop`
+    - stop the game
+  - `/default`
+    - switch window size to default size
 
 ## 20210928 V 0.5.2
 

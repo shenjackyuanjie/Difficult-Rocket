@@ -16,6 +16,7 @@ import os
 import sys
 import time
 import logging
+import traceback
 import configparser
 
 from decimal import Decimal
@@ -25,10 +26,9 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-from . import guis
 from .api import command
-from .api.Exp import *
 from .api.translate import tr
+from .fps.fps_log import FpsLogger
 from .api import tools, new_thread, translate
 
 # libs function
@@ -103,6 +103,8 @@ class ClientWindow(pyglet.window.Window):
         self.max_fps = [self.FPS, time.time()]
         self.min_fps = [self.FPS, time.time()]
         self.fps_wait = 5
+        self.fps_log = FpsLogger(stable_fps=int(self.FPS),
+                                 wait_time=5)
         # batch
         self.part_batch = pyglet.graphics.Batch()
         self.label_batch = pyglet.graphics.Batch()
@@ -137,20 +139,19 @@ class ClientWindow(pyglet.window.Window):
 
     def setup(self):
         self.load_fonts().join()
-        # print(pyglet.font.load(translate.鸿蒙简体))
 
-    @new_thread('client load_fonts')
+    @new_thread('window load_fonts')
     def load_fonts(self):
         file_path = './libs/fonts/HarmonyOS_Sans/'
         ttf_files = os.listdir(file_path)
         self.logger.info(tr.lang('window', 'fonts.found').format(ttf_files))
         for ttf_folder in ttf_files:
             for ttf_file in os.listdir(f'{file_path}{ttf_folder}'):
-                if not ttf_file[-4:] == '.ttf': continue
+                if not ttf_file[-4:] == '.ttf':
+                    continue
                 pyglet.font.add_file(f'{file_path}{ttf_folder}/{ttf_file}')
-                # print(f'{file_path}{ttf_file}')
 
-    # @new_thread('client load_editor')
+    # @new_thread('window load_editor')
     def load_Editor(self):
         pass
 
@@ -159,27 +160,37 @@ class ClientWindow(pyglet.window.Window):
         self.read_input()
         pyglet.app.run()
 
-    @new_thread('read_input', daemon=True)
+    @new_thread('window read_input', daemon=True)
     def read_input(self):
         self.logger.debug('read_input start')
         while self.run_input:
-            self.logger.info('<<<')
             get = input()
             if get in ('', ' ', '\n', '\r'):
                 continue
-            self.logger.info(get)
             if get == 'stop':
                 self.run_input = False
-                self.dispatch_event('on_close', 'a')  # source = 'command'
+            try:
+                self.on_command(get)
+            except:
+                self.logger.error(traceback.format_exc())
         self.logger.debug('read_input end')
+
+    @new_thread('window save_info')
+    def save_info(self):
+        config_file = configparser.ConfigParser()
+        config_file.read('configs/main.config')
+        config_file['window']['width'] = str(self.width)
+        config_file['window']['height'] = str(self.height)
+        config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
 
     """
     draws and some event
     """
 
     def update(self, tick: float):
-        decimal_tick = Decimal(tick)
+        decimal_tick = Decimal(str(tick)[:10])
         self.FPS_update(decimal_tick)
+        self.fps_log.update_tick(Decimal(tick))
 
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
@@ -214,6 +225,16 @@ class ClientWindow(pyglet.window.Window):
         self.logger.info(tr.lang('window', 'command.text').format(command))
         if command == 'stop':
             self.dispatch_event('on_close', 'command')  # source = command
+        elif command == 'log_tick':
+            self.logger.debug(self.fps_log.fps_list)
+        elif command == 'max_fps':
+            self.logger.info(self.fps_log.max_fps)
+            self.command.push_line(self.fps_log.max_fps, block_line=True)
+        elif command == 'min_fps':
+            self.logger.info(self.fps_log.min_fps)
+            self.command.push_line(self.fps_log.min_fps, block_line=True)
+        elif command == 'default':
+            self.set_size(int(self.config_file['window_default']['width']), int(self.config_file['window_default']['height']))
 
     def on_message(self, message: command.CommandLine.text):
         self.logger.info(tr.lang('window', 'message.text').format(message))
@@ -263,10 +284,6 @@ class ClientWindow(pyglet.window.Window):
         self.logger.info(tr.lang('window', 'game.stop'))
         if self.run_input:
             self.run_input = False
-        config_file = configparser.ConfigParser()
-        config_file.read('configs/main.config')
-        config_file['window']['width'] = str(self.width)
-        config_file['window']['height'] = str(self.height)
-        config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
+        self.save_info()
         super().on_close()
         self.logger.info(tr.lang('window', 'game.end'))
