@@ -1,6 +1,6 @@
 # Difficult Rocket Update Logs
 
-## Readme
+## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 ![Generic badge](https://img.shields.io/badge/Version-0.6.0-yellow.svg)
