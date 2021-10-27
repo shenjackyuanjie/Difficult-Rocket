@@ -19,7 +19,6 @@ from .new_thread import new_thread
 # lazy之后之前全部导入的(太多了写不动__all__了)
 from .Exp import *
 from .tools import *
-from .command import *
 from .calculation import *
 from .scientific_unit import *
 

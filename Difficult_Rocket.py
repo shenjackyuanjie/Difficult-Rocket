@@ -54,7 +54,8 @@ if __name__ == '__main__':
 
         print(error_format['error.happen'])
         error = traceback.format_exc()
-        if (name := type(exp).__name__) in error_format:
+        name = type(exp).__name__
+        if name in error_format:
             print(error_format[name])
         else:
             print(error_format['error.unknown'])
@@ -64,4 +65,3 @@ if __name__ == '__main__':
         crash.record_thread = False
         print(crash.all_thread)
         print(crash.all_process)
-        sys.exit(1)

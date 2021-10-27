@@ -16,6 +16,8 @@ import decimal
 
 from decimal import Decimal
 
+from ..api.new_thread import new_thread
+
 from libs import pyglet
 
 """
@@ -34,6 +36,7 @@ class FpsLogger:
         self.wait_time = wait_time
         self.fps_list = [[stable_fps, time.time_ns()]]
 
+    # @new_thread('fps_logger update', daemon=False, log_thread=False)
     def update_tick(self,
                     tick: Decimal):
         now_time = time.time_ns()
@@ -42,6 +45,12 @@ class FpsLogger:
         self.fps_list.append([now_fps, now_time, tick_time, tick])
         if now_time - self.fps_list[0][1] >= self.wait_time * (10 ** 9):
             self.fps_list.pop(0)
+
+    def update_list(self):
+        now_time = time.time_ns()
+        for fps_time in self.fps_list:
+            if now_time - fps_time[1] >= self.wait_time * (10 ** 9):
+                del fps_time
 
     @property
     def max_fps(self):

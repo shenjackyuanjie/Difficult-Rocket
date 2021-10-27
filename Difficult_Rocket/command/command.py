@@ -17,8 +17,8 @@ from typing import Union
 from decimal import Decimal
 
 # from DR
-from . import translate
-from .new_thread import new_thread
+from ..api import translate
+from ..api.new_thread import new_thread
 
 # from libs.pyglet
 from libs import pyglet
@@ -26,10 +26,7 @@ from libs.pyglet import font
 from libs.pyglet.text import Label
 from libs.pyglet.window import key
 from libs.pyglet.gui import widgets
-from libs.pyglet.text.caret import Caret
 from libs.pyglet.graphics import Batch, Group
-from libs.pyglet.text.layout import IncrementalTextLayout
-from libs.pyglet.text.document import UnformattedDocument
 
 
 class CommandLine(widgets.WidgetBase):
@@ -97,6 +94,14 @@ class CommandLine(widgets.WidgetBase):
             label.group = Group(order=order + 1, parent=self._user_group)
         self._outline.group = Group(order=order + 2, parent=self._user_group)
 
+    """
+    values
+    """
+
+    @property
+    def value(self):
+        return self.text
+
     @property
     def text(self):
         return self._text
@@ -122,7 +127,7 @@ class CommandLine(widgets.WidgetBase):
                                实际上还有一个限制
         """
         assert type(value) is int, 'Command View must be integer'
-        assert -2 < value < self.length, f'Command View must be bigger than -1 and smaller than {self.length}'
+        assert -self.length < value < self.length, f'Command View must be bigger than {-self.length} and smaller than {self.length}'
         if value == -1:  # flush command list
             self._label.insert(0, self._label[-1])
             self._label.pop(-1)
@@ -153,12 +158,24 @@ class CommandLine(widgets.WidgetBase):
         for label in self._label:
             label.visible = value
 
-    @new_thread('command wait', log_thread=False)
-    def wait(self, wait):
+    @new_thread('command wait', daemon=True, log_thread=False)
+    def wait(self, wait: Union[float, int] = 0):
+        this = self._label[0]
         self._label[0].visible = True
         time.sleep(wait)
         if self._label[0].visible and not self.editing:
-            self._label[0].visible = False
+            while (self._label[0].opacity >= 30) and self._label[0].visible and (self._label[0] is this) and not self.editing:
+                # (label 的透明度不是 0) and (label 还在显示) and (label 还是载入线程时候的那个label) and (现在不在输入新行)
+                self._label[0].opacity -= 2
+                time.sleep(0.01)
+            if self._label[0] is this:  # 如果结束的时候label还是这个label
+                self._label[0].opacity = 255
+            else:  # 如果不是就赶快找回来！
+                now = self._label.index(this)
+                self._label[now].opacity = 255
+            if not self.editing:  # 如果不在编辑再隐藏
+                self._label[0].visible = False
+            print(self._label[0].opacity)
 
     """
     events
@@ -177,7 +194,7 @@ class CommandLine(widgets.WidgetBase):
                 if self.text:
                     self.command_view = -1
                 self.editing = False
-                self.wait(1)
+                self.wait()
             else:
                 self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'  # 插入字符（简单粗暴）
                 self._text_position += 1

@@ -10,6 +10,12 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202111 V 0.6.1
+
+### Change
+
+- now command will fade away but not suddenly disappear
+
 ## 20211025 V 0.6.0 
 
 #### Command Line Update!

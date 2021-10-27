@@ -26,7 +26,7 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-from .api import command
+from .command import command
 from .api.translate import tr
 from .fps.fps_log import FpsLogger
 from .api import tools, new_thread, translate
@@ -93,16 +93,13 @@ class ClientWindow(pyglet.window.Window):
         pyglet.resource.reindex()
         self.config_file = tools.load_file('configs/main.config')
         self.game_config = tools.load_file('configs/game.config')
-        self.FPS = Decimal(int(self.config_file['runtime']['fps']))
-        self.SPF = Decimal('1') / self.FPS
         # dic
         self.environment = {}
         self.textures = {}  # all textures
         self.runtime = {}
         # FPS
-        self.max_fps = [self.FPS, time.time()]
-        self.min_fps = [self.FPS, time.time()]
-        self.fps_wait = 5
+        self.FPS = Decimal(int(self.config_file['runtime']['fps']))
+        self.SPF = Decimal('1') / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS),
                                  wait_time=5)
         # batch
@@ -194,16 +191,9 @@ class ClientWindow(pyglet.window.Window):
 
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
-        if now_FPS > self.max_fps[0]:
-            self.max_fps = [now_FPS, time.time()]
-        elif now_FPS < self.min_fps[0]:
-            self.min_fps = [now_FPS, time.time()]
-        else:
-            if (time.time() - self.max_fps[1]) > self.fps_wait:
-                self.max_fps = [self.FPS, time.time()]
-            elif (time.time() - self.min_fps[1]) > self.fps_wait:
-                self.min_fps = [self.FPS, time.time()]
-        self.fps_label.text = 'FPS: {:.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.max_fps[0], self.min_fps[0], tick)
+        self.fps_log.update_tick(tick)
+        # self.fps_label.text = 'FPS: {:5.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.fps_log.max_fps, self.fps_log.min_fps, tick)
+        self.fps_label.text = f'FPS: {now_FPS:>10.1f} {now_FPS:.1f} {self.fps_log.max_fps:>5.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self):
         self.clear()
