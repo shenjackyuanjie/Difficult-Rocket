@@ -193,7 +193,7 @@ class ClientWindow(pyglet.window.Window):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
         # self.fps_label.text = 'FPS: {:5.1f} {:.1f} ({:.1f}/{:.1f}) | MSPF: {:.5f} '.format(now_FPS, 1 / tick, self.fps_log.max_fps, self.fps_log.min_fps, tick)
-        self.fps_label.text = f'FPS: {now_FPS:>10.1f} {now_FPS:.1f} {self.fps_log.max_fps:>5.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {now_FPS:>10.1f} {self.fps_log.max_fps:>5.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self):
         self.clear()
@@ -272,6 +272,7 @@ class ClientWindow(pyglet.window.Window):
     def on_close(self, source: str = 'window') -> None:
         self.logger.info(tr.lang('window', 'game.stop_get').format(tr.lang('window', f'game.{source}_stop')))
         self.logger.info(tr.lang('window', 'game.stop'))
+        self.fps_log.check_list = False
         if self.run_input:
             self.run_input = False
         self.save_info()
