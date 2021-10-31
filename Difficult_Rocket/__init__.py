@@ -11,17 +11,14 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from .api import *
-from .guis import *
+__version__ = '0.6.1'
 
-__all__ = [
-    'new_thread',
-    'Delivery',
-    'load_file'
-]
+playing = False
 
+if playing:
+    from .api import new_thread
 
-@new_thread('think')
-def think(some_thing_to_think):
-    gotcha = 'think_result'
-    return gotcha
+    @new_thread('think')
+    def think(some_thing_to_think):
+        gotcha = 'think_result'
+        return gotcha

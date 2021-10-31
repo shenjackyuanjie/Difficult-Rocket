@@ -17,8 +17,7 @@ from typing import Union
 from decimal import Decimal
 
 # from DR
-from ..api import translate
-from ..api.new_thread import new_thread
+from Difficult_Rocket.api import translate, new_thread
 
 # from libs.pyglet
 from libs import pyglet
@@ -48,7 +47,7 @@ class CommandLine(widgets.WidgetBase):
 
         # normal values
         self.length = length
-        self.command_list = ['' for line in range(length)]
+        self._command_list = ['' for line in range(length)]
         self._command_text = command_text
         self._text_position = 0
         self._command_view = 0
@@ -175,6 +174,10 @@ class CommandLine(widgets.WidgetBase):
                 self._label[now].opacity = 255
             if not self.editing:  # 如果不在编辑再隐藏
                 self._label[0].visible = False
+
+    @property
+    def command_list(self):
+        return self._command_list
 
     """
     events

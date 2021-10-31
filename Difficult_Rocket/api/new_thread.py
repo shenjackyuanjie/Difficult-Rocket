@@ -1,8 +1,9 @@
 import functools
 import inspect
 import threading
-from typing import Optional, Callable
 from Difficult_Rocket import crash
+from typing import Optional, Callable
+
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
@@ -57,10 +58,7 @@ class FunctionThread(threading.Thread):
         super().join(timeout)
 
     def start(self) -> None:
-        try:
-            super().start()
-        except:
-            raise
+        super().start()
 
 
 

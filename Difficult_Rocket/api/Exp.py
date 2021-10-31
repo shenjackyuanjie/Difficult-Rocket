@@ -13,6 +13,7 @@ gitee:  @shenjackyuanjie
 
 __all__ = ['TexturesError',
            'LanguageError',
+           'CommandError',
            'TestError']
 
 
@@ -23,6 +24,11 @@ class Error(Exception):
 
 class TexturesError(Error):
     """材质相关 error"""
+    pass
+
+
+class CommandError(Error):
+    """命令解析相关 error"""
     pass
 
 
