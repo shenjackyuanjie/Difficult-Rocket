@@ -41,7 +41,7 @@ if __name__ == '__main__':
     from Difficult_Rocket.api.Exp import *
 
     try:
-        from Difficult_Rocket import crash
+        from Difficult_Rocket.crash import crash
         from Difficult_Rocket import main
 
         game = main.Game()

@@ -10,3 +10,10 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
+
+from .crash import *
+
+
+__all__ = ['all_thread',
+           'all_process',
+           'crash']

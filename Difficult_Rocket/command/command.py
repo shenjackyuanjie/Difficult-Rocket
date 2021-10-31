@@ -175,7 +175,6 @@ class CommandLine(widgets.WidgetBase):
                 self._label[now].opacity = 255
             if not self.editing:  # 如果不在编辑再隐藏
                 self._label[0].visible = False
-            print(self._label[0].opacity)
 
     """
     events
