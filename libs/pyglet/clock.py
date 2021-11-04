@@ -113,8 +113,8 @@ of the system clock.
 
 import time
 
-from operator import attrgetter
 from heapq import heappush, heappop, heappushpop
+from operator import attrgetter
 from collections import deque
 
 
@@ -271,7 +271,10 @@ class Clock:
                 break
 
             # execute the callback
-            item.func(now - item.last_ts, *item.args, **item.kwargs)
+            try:
+                item.func(now - item.last_ts, *item.args, **item.kwargs)
+            except ReferenceError:
+                pass    # weakly-referenced object no longer exists.
 
             if item.interval:
 

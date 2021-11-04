@@ -8,7 +8,7 @@ import traceback
 import threading
 import multiprocessing
 
-# TODO 默认位置配置文件+可自定义工作路径
+# TODO 默认位置配置文件+可自定义工作路径iu
 
 
 hi = """Difficult Rocket is writen by shenjackyuanjie
