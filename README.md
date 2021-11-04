@@ -4,7 +4,7 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev9-blue.svg)](https://pyglet.org)
+[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev11-blue.svg)](https://pyglet.org)
 [![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9-blue.svg)](https://Python.org)
 
 ## Version
