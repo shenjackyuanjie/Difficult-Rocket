@@ -70,10 +70,12 @@ class InputBox(widgets.WidgetBase):
         self.外框距离 = out_line
         self._输入框 = Label(x=x + out_line, y=y + out_line,
                           width=width, height=height,
+                          color=text_color,
                           font_name=font_name, font_size=font_size,
                           batch=batch, group=group,
                           text=message)
         self._外框 = Rectangle(x=x-out_line, y=y-out_line,
+                             color=out_line_color,
                              width=width + (out_line * 2), height=height + (out_line * 2),
                              batch=batch, group=group)
         self._光标 = Rectangle(x=x+out_line, y=y+out_line,
