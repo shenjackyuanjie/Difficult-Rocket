@@ -16,6 +16,11 @@
 
 - now command will fade away but not suddenly disappear
 
+### Add
+
+- `gui/widgets.py` InputBox
+  - making
+
 ## 20211025 V 0.6.0 
 
 #### Command Line Update!

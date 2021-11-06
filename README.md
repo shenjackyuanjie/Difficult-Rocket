@@ -31,7 +31,7 @@
     - `Develop platform 1 - Windows 10`
     - `Python 3.8.10`
     - `Windows10 x64`
-    - `pyglet 2.0.dev9`
+    - `pyglet 2.0.dev11`
     - `Json5 0.9.6`
     - `pillow 8.1.0`
     - `AMD R5 5600X`
@@ -48,8 +48,7 @@
 ## Required python modules
 
 - json5 (pre-installed V0.9.6 path:`./libs/json5`)
-
-[comment]: <> (- pyglet &#40;pre-installed V2.0.dev9 path:`./libs/pyglet`&#41;)
+- pyglet (pre-installed V2.0.dev11 path:`./libs/pyglet`)
 - pillow
 - semver
 

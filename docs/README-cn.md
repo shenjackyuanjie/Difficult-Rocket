@@ -32,7 +32,7 @@
     - `开发平台1 Windows 10`
     - `Python 3.8.10`
     - `Windows10 x64`
-    - `pyglet 2.0.dev9`
+    - `pyglet 2.0.dev11`
     - `Json5 0.9.6`
     - `pillow 8.1.0`
     - `AMD R5 5600X(AMD YES!)`
@@ -49,7 +49,7 @@
 ## 需要的Python模块
 
 - json5 (已经内置V0.9.6 路径：`./libs/json5`)
-- pyglet (已经内置V2.0.dev9 路径：`./libs/pyglet`)
+- pyglet (已经内置V2.0.dev11 路径：`./libs/pyglet`)
 - pillow
 - semver
 
