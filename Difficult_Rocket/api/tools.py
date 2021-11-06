@@ -23,6 +23,8 @@ import configparser
 from typing import List
 from xml.dom.minidom import parse
 
+import Difficult_Rocket
+
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
@@ -35,63 +37,44 @@ tools_logger = logging.getLogger('part-tools')
 file configs
 """
 
-
-def report_file_error(filetype: str, error_type, filename: str, stack: any):
-    error = traceback.format_exc()
-    if isinstance(error_type, FileNotFoundError):
-        log = 'no {} file was found!: \n file name: {} \n file type: {} \n stack: {} \n traceback: {}'.format(filetype, filename, filetype, stack,
-                                                                                                              error)
-    elif isinstance(error_type, KeyError):
-        log = 'no stack in %s file: %s \n file type: %s \n stack: %s' % (filetype, filename, filetype, stack)
-    else:
-        log = 'some error has been found! \n error type: %s \n file name: %s \n file type: %s \n stack: %s' % (error_type, filename, filetype, stack)
-    tools_logger.exception(log)
+file_error = {'FileNotFoundError': 'no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}',
+              'KeyError': 'no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}',
+              'Error': 'get some unknown error when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
 
 
 def load_file(file_name: str, stack=None) -> dict:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     try:
+        rd = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
         if (f_type == 'json5') or (f_type == 'json'):
             try:
                 with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
-                    rd = json5.load(jf)
+                    rd = json5.load(jf, encoding='uft-8')
             except UnicodeDecodeError:
                 with open(file_name, 'r', encoding='gbk') as jf:
                     rd = json5.load(jf)
                 tools_logger.info('文件 %s 解码错误，已重新使用gbk编码打开' % file_name)
             if stack is not None:
                 rd = rd[stack]
-            return rd
         elif f_type == 'xml':
             xml_load = parse(file_name)
             if stack is not None:
-                xml_get = xml_load.getElementsByTagName(stack)
-                return xml_get
-            else:
-                return xml_load
+                rd = xml_load.getElementsByTagName(stack)
         elif (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
-            cp = configparser.ConfigParser()  # cp -> config parser
-            cp.read(file_name)  # config parser -> reader
-            rd = {}
-            for section in cp.sections():
-                rd[section] = {}
-                for data in cp[section]:
-                    rd[section][data] = cp[section][data]
+            cd = configparser.ConfigParser()
+            cd.read(file_name)
             if stack:
-                rd = rd[stack]
-            return rd
-    except FileNotFoundError:
-        log = 'no {} file was found!: \n file name: {} \n file type: {} \n stack: {}'.format(f_type, file_name, f_type, stack)
-        tools_logger.error(log)
-        raise
-    except KeyError:
-        log = 'no stack in {} file {} was found! \n file type: {} \n file name: {} \n stack: {}'.format(f_type, file_name, f_type, file_name, stack)
-        tools_logger.error(log)
-        raise
+                rd = cd[stack]
+            else:
+                rd = cd
     except Exception as exp:
-        log = 'some error has been found!\n error type: {} \n file name: {} \n file type: {} \n stack: {}'.format(type(exp), file_name, f_type, stack)
-        tools_logger.error(log)
+        error_type = type(exp).__name__
+        if error_type in file_error:
+            tools_logger.error(file_error[error_type].format(filetype=f_type, filename=file_name, stack=stack))
+        else:
+            tools_logger.error(file_error['Error'].format(filetype=f_type, filename=file_name, stack=stack))
         raise
+    return rd
 
 
 # main config

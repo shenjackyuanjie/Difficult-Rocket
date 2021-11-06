@@ -51,6 +51,7 @@ class FpsLogger:
         # 获取当前信息
         if now_fps > self.max_fps and not self.time - self._max_fps_tick >= self.wait_time:
             self.max_fps = now_fps
+        # self.max_fps = max(self.max_fps, now_fps)
         tick_time = self.time - self.fps_list[-1][1]
         # 获取渲染用时
         self.fps_list.append([now_fps, self.time, tick_time, tick])
@@ -74,14 +75,15 @@ class FpsLogger:
 
     @max_fps.setter
     def max_fps(self, value):
-        if self.time - self._max_fps_tick <= self.wait_time:
-            self._max_fps = value
-            self._max_fps_tick = time.time_ns()
-        else:
-            max_fps = self.list_max_fps
-            self._max_fps = max_fps[0]
-            self._max_fps_tick = max_fps[1]
-            del max_fps
+        # if self.time - self._max_fps_tick <= self.wait_time:
+        #     self._max_fps = value
+        #     self._max_fps_tick = time.time_ns()
+        # else:
+        #     max_fps = self.list_max_fps
+        #     self._max_fps = max_fps[0]
+        #     self._max_fps_tick = max_fps[1]
+        self._max_fps = value
+        self._max_fps_tick = self.time
 
     @property
     def min_fps(self):

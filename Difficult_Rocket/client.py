@@ -26,16 +26,20 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-from .command import line
-from .api.translate import tr
-from .fps.fps_log import FpsLogger
-from .api import tools, new_thread, translate
-from .api.Exp import *
+import translate
+
+from Difficult_Rocket.api.Exp import *
+from Difficult_Rocket.translate import tr
+from Difficult_Rocket.command import line
+from Difficult_Rocket.fps.fps_log import FpsLogger
+from Difficult_Rocket.guis.widgets import InputBox
+from Difficult_Rocket.api import tools, new_thread
 
 # libs function
 local_lib = True
 if local_lib:
     from libs import pyglet
+    from libs.pyglet.window import Window
     from libs.pyglet.window import key, mouse
 else:
     import pyglet
@@ -73,7 +77,7 @@ class Client:
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
 
-class ClientWindow(pyglet.window.Window):
+class ClientWindow(Window):
 
     def __init__(self, net_mode='local', *args, **kwargs):
         start_time = time.time_ns()
@@ -92,14 +96,14 @@ class ClientWindow(pyglet.window.Window):
         # configs
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
-        self.config_file = tools.load_file('configs/main.config')
+        self.main_config = tools.load_file('configs/main.config')
         self.game_config = tools.load_file('configs/game.config')
         # dic
         self.environment = {}
         self.textures = {}  # all textures
         self.runtime = {}
         # FPS
-        self.FPS = Decimal(int(self.config_file['runtime']['fps']))
+        self.FPS = Decimal(int(self.main_config['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS),
                                  wait_time=5)
@@ -120,10 +124,16 @@ class ClientWindow(pyglet.window.Window):
         self.push_handlers(self.command)
         self.command.set_handler('on_command', self.on_command)
         self.command.set_handler('on_message', self.on_message)
+        self.input_box = InputBox(x=50, y=30, width=300, height=20,
+                                  batch=self.label_batch)  # 实例化
+        self.push_handlers(self.input_box)
+        self.input_box.enabled = True
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
+                                           width=self.width - 20, height=20,
                                            anchor_x='left', anchor_y='top',
-                                           font_name=translate.鸿蒙简体, font_size=20,
+                                           font_name=translate.微软等宽无线, font_size=20,
+                                           multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
         pyglet.clock.schedule_interval(self.update, float(self.SPF))
@@ -136,18 +146,21 @@ class ClientWindow(pyglet.window.Window):
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
 
     def setup(self):
-        self.load_fonts().join()
+        self.load_fonts()
 
-    @new_thread('window load_fonts')
     def load_fonts(self):
-        file_path = './libs/fonts/HarmonyOS_Sans/'
-        ttf_files = os.listdir(file_path)
-        self.logger.info(tr.lang('window', 'fonts.found').format(ttf_files))
-        for ttf_folder in ttf_files:
-            for ttf_file in os.listdir(f'{file_path}{ttf_folder}'):
-                if not ttf_file[-4:] == '.ttf':
-                    continue
-                pyglet.font.add_file(f'{file_path}{ttf_folder}/{ttf_file}')
+        fonts_folder_path = self.main_config['runtime']['fonts_folder']
+        # 加载字体路径
+        for fonts_folders in os.listdir(fonts_folder_path):
+            # 从字体路径内加载字体文件夹
+            for files in os.listdir(os.path.join(fonts_folder_path, fonts_folders)):
+                # 从字体文件夹加载字体（或是字体类文件夹）
+                if os.path.isfile(os.path.join(fonts_folder_path, fonts_folders, files)):
+                    # 如果是字体文件，则直接加载
+                    pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files))
+                else:  # 否则，遍历加载字体类文件夹并加载
+                    for font in os.listdir(os.path.join(fonts_folder_path, fonts_folders, files)):
+                        pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files, font))
 
     # @new_thread('window load_editor')
     def load_Editor(self):
@@ -168,7 +181,7 @@ class ClientWindow(pyglet.window.Window):
             if get == 'stop':
                 self.run_input = False
             try:
-                self.on_command(get)
+                self.on_command(line.CommandText(get))
             except CommandError:
                 self.logger.error(traceback.format_exc())
         self.logger.debug('read_input end')
@@ -193,9 +206,9 @@ class ClientWindow(pyglet.window.Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {now_FPS:>13.1f} {self.fps_log.max_fps:>5.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {now_FPS: >10.1f} \n{1/tick} \n{self.fps_log.max_fps: >10.1f} {self.fps_log.min_fps:>5.1f}'
 
-    def on_draw(self):
+    def on_draw(self, *dt):
         self.clear()
         self.draw_batch()
 
@@ -211,20 +224,21 @@ class ClientWindow(pyglet.window.Window):
     command line event
     """
 
-    def on_command(self, command: line.CommandLine.text):
+    def on_command(self, command: line.CommandText):
         self.logger.info(tr.lang('window', 'command.text').format(command))
-        if command == 'stop':
+        if command.match('stop'):
             self.dispatch_event('on_close', 'command')  # source = command
-        elif command == 'log_tick':
-            self.logger.debug(self.fps_log.fps_list)
-        elif command == 'max_fps':
-            self.logger.info(self.fps_log.max_fps)
-            self.command.push_line(self.fps_log.max_fps, block_line=True)
-        elif command == 'min_fps':
-            self.logger.info(self.fps_log.min_fps)
-            self.command.push_line(self.fps_log.min_fps, block_line=True)
-        elif command == 'default':
-            self.set_size(int(self.config_file['window_default']['width']), int(self.config_file['window_default']['height']))
+        elif command.match('fps'):
+            if command.match('log'):
+                self.logger.debug(self.fps_log.fps_list)
+            elif command.match('max'):
+                self.logger.info(self.fps_log.max_fps)
+                self.command.push_line(self.fps_log.max_fps, block_line=True)
+            elif command.match('min'):
+                self.logger.info(self.fps_log.min_fps)
+                self.command.push_line(self.fps_log.min_fps, block_line=True)
+        elif command.match('default'):
+            self.set_size(int(self.main_config['window_default']['width']), int(self.main_config['window_default']['height']))
 
     def on_message(self, message: line.CommandLine.text):
         self.logger.info(tr.lang('window', 'message.text').format(message))
@@ -260,6 +274,8 @@ class ClientWindow(pyglet.window.Window):
             self.logger.debug(tr.lang('window', 'text.new_line'))
         else:
             self.logger.debug(tr.lang('window', 'text.input').format(text))
+            if text == 't':
+                self.input_box.enabled = True
 
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)

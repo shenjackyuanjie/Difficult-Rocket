@@ -4,9 +4,8 @@ mail: 3695888@qq.com
 """
 import os
 import sys
+import cProfile
 import traceback
-import threading
-import multiprocessing
 
 # TODO 默认位置配置文件
 # TODO 可自定义工作路径
@@ -30,6 +29,7 @@ if __name__ == '__main__':
     print(f'{os.getcwd()=}')
     print(f'{os.path.abspath(__file__)=}')
     print(f'{os.path.realpath(__file__)=}')
+    print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
     file_path = os.path.split(os.path.realpath(__file__))[0]
     os.chdir(file_path)
@@ -40,18 +40,19 @@ if __name__ == '__main__':
 
     DEBUGGING = False
     from Difficult_Rocket.api.Exp import *
-
+    from Difficult_Rocket.crash import crash
     try:
-        from Difficult_Rocket.crash import crash
         from Difficult_Rocket import main
-
         game = main.Game()
-        game.start()
-
+        cprofile = False
+        if cprofile:
+            cProfile.run('game.start()', sort='calls')
+        else:
+            game.start()
         if DEBUGGING:
             raise TestError('debugging')
     except Exception as exp:
-        from Difficult_Rocket.api.translate import tr
+        from Difficult_Rocket.translate import tr
 
         print(error_format['error.happen'])
         error = traceback.format_exc()

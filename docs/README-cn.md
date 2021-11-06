@@ -6,17 +6,17 @@
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/编写于_Python_版本-3.8.10-blue.svg)](https://Python.org)
 [![Generic badge](https://img.shields.io/badge/编写于_Pyglet_版本-2.0dev11-blue.svg)](https://pyglet.org)
-[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_-blue.svg)](https://Python.org)
 
 ## 版本
 
-[![Generic badge](https://img.shields.io/badge/Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.5)
-<br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.6)
-<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.1-blue.svg)
+[![Generic badge](https://img.shields.io/badge/Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+<br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)
 
 ### For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
-> 这是一个用Python制作的类Simple Rocket游戏
+> 这是一个用Python制作的类Simple Rocket游戏(简称：火箭模拟器)
 
 ## 优势
 
@@ -28,34 +28,39 @@
 
 ## 环境需求 (测试过的 / 开发平台)
 
--
-    - `开发平台1 Windows 10`
-    - `Python 3.8.10`
-    - `Windows10 x64`
-    - `pyglet 2.0.dev11`
-    - `Json5 0.9.6`
-    - `pillow 8.1.0`
-    - `AMD R5 5600X(AMD YES!)`
-    - `AMD RX 550 4G`
--
-    - `开发平台2 macOS Big Sur`
-    - `Python 3.8.7`
-    - `macOS Big Sur 11.2.1`
-    - `Pyglet 1.5.15`
-    - `Json5 0.9.5`
-    - `pillow 8.1.2`
-    - `Intel I5 8279U`
+- `开发平台 1 - Windows 10`
+  - `Python 3.8.10`
+  - `Windows10 x64`
+  - `json5 0.9.6`
+  - `pillow 8.1.0`
+  - `pyperclip 1.8.2`
+  - `pyglet 2.0.dev11`
+  - `xmltodict 0.12.0`
+  - `AMD R5 5600X`
+  - `AMD RX 550 4G`
+- `开发平台 2 - macOS Big Sur`
+  - `Python 3.8.7`
+  - `macOS Big Sur 11.2.1`
+  - `Pyglet 1.5.15`
+  - `Json5 0.9.5`
+  - `pillow 8.1.2`
+  - `Intel I5 8279U`
 
 ## 需要的Python模块
 
-- json5 (已经内置V0.9.6 路径：`./libs/json5`)
-- pyglet (已经内置V2.0.dev11 路径：`./libs/pyglet`)
-- pillow
-- semver
+- `json5` (已经内置 V0.9.6 路径：`./libs/json5`)
+- `pyglet` (已经内置 V2.0.dev11 路径：`./libs/pyglet`)
+- `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
+- `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
+- `pillow`
+- `semver`
 
 ## 感谢
 
-- pyglet : 图形界面
+- [pyglet](https://github.com/pyglet/pyglet) : 图形界面
+- `json5`: json5解析器
+- `xmltodict`: xml 与 dict 转换器
+- `pyperclip`: 剪贴板!
 - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译lang
 - [@Rayawa](https://github.com/Rayawa) : 文档矫正
 - [@Billchyi](https://github.com/Billchyi) : 文档矫正

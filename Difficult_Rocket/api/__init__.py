@@ -12,7 +12,6 @@ gitee:  @shenjackyuanjie
 """
 
 # 单独导入的(或者就这一个有用的)
-from .translate import Lang
 from .delivery import Delivery
 from .new_thread import new_thread
 
@@ -27,6 +26,5 @@ __all__ = ['TexturesError',
            'TestError',
            'new_thread',
            'Delivery',
-           'load_file',
-           'Lang']
+           'load_file']
 

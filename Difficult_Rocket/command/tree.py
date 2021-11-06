@@ -11,16 +11,12 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-version = '0.6.1'
-__version__ = version
+import line
 
 
-playing = False
+class CommandTree:
+    def __init__(self, command_tree_dict):
+        self.command_tree_dict = command_tree_dict
 
-if playing:
-    from .api import new_thread
-
-    @new_thread('think')
-    def think(some_thing_to_think):
-        gotcha = 'think_result'
-        return gotcha
+    def parse(self, command: line.CommandText):
+        pass

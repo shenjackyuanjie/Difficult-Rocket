@@ -1,5 +1,10 @@
 # Difficult Rocket Update Logs
 
+- 感谢 `Github copilot` 的翻译(甚至这句话也是`copilot`翻译的)
+  - 也就意味着以后的更新日志是中文记录+`copilot`翻译的
+- Thanks `Github copilot` for translate (lazy yes!)
+  - Means the update logs will lodge in Chinese and translated by `copilot`
+
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
@@ -10,34 +15,78 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202111 V 0.6.1
+## 202112 V 0.6.1
+
+争取12月内发一个release
 
 ### Change
 
-- now command will fade away but not suddenly disappear
+- 把`api/translate`移动到根目录下
+  - move `api/translate` to root directory
+- 现在命令会慢慢消失，而不是立即消失
+  - Now the command will disappear slowly, not immediately
+- 重写了一遍` client.load_fonts()`
+  - rewrite `client.load_fonts()`
+- 重写了 `tools.load_file()` 的错误处理和 `.config` 文件的解析方式
+  - 现在 `.config` 文件解析后会直接返回一个 `ConfigParser` 对象
+  - 也就意味着不能再直接遍历 `.config` 文件返回的解析 ~~谁遍历.config文件啊~~
+  - 同时也意味着可以直接用解析好的 `.config` 文件来修改 `.config` 文件
+    - rewrite `tools.load_file()` error handling and `.config` file parsing method
+      - now `.config` file parsing after return `ConfigParser` object
+      - that means you can not directly traverse `.config` file return parsing ~~who traverse .config file~~
+      - also means you can directly use parsed `.config` file to modify `.config` file
+- 为 `pyglet` 添加 `Ctrl+C` 和 `Ctrl+V` 的快捷键解析
+  - add `Ctrl+C` and `Ctrl+V` shortcut for `pyglet`
+
+### Command
+
+- `log_tick` 指令改为 `fps log`
+  - command `log_tick` change to `fps log`
+- `maxfps` 指令改为 `fps max`
+  - command `maxfps` change to `fps max`
+- `minfps` 指令改为 `fps min`
+  - command `minfps` change to `fps min`
+
+- 命令内容输出使用`CommandText`而不是`str`
+  - 也就是说可以使用`CommandText.match`来匹配命令内容
+  - command output use `CommandText` instead of `str`
+    - means you can use `CommandText.match` to match command content
+- 命令解析现在使用新的`CommandText.match`
+  - command parse now use new `CommandText.match`
 
 ### Add
 
-- `gui/widgets.py` InputBox
-  - making
+- 添加内置字体`Cascadia_Code`
+  - add built-in font `Cascadia_Code`
+- 添加模块 `xmltodict` `pyperclip`
+  - add modules `xmltodict` `pyperclip`
+- 添加了`json5` `pyglet` `pyperclip` `xmltodict` 的协议
+  - 非常感谢上述模块的作者和维护者们
+  - added `json5` `pyglet` `pyperclip` `xmltodict` LICENSE
+    - thanks a lot to above module's author and maintainer
 
-## 20211025 V 0.6.0 
+## 20211025 V 0.6.0
 
 #### Command Line Update!
 
 ### Change
 
-- now `Difficult Rocket` will only fit python3.8+
-  - because `:=`
-- now main crash report handler have new way to handler crash
-- now fonts' folder's name is `HarmonyOS_Sans`
+- 现在 `Difficult Rocket` 只适用于 python3.8+
+  - 因为 `:=` 的使用
+  - now `Difficult Rocket` will only fit python3.8+
+    - because `:=`
+- 现在主程序崩溃时的报告处理方式有了新的方式
+  - now main crash report handler have new way to handler crash
+- 现在字体文件夹的名字改为 `HarmonyOS_Sans`
+  - now fonts' folder's name is `HarmonyOS_Sans`
 
 ### Add
 
 - `Difficult_Rocket.graphics.widgets.Parts`
   - have many costume value
-- `libs/fonts` now have `HarmonyOS_Sans` font
+- now `libs/fonts` have `HarmonyOS_Sans` font
 - handler of `on_key_press` and `on_key_release` and `on_text`
+  - `on_key_press` 和 `on_key_release` 和 `on_text` 的处理方式
 - `game.config` config file
 - `lang/en-us.json5` now up to date with `lang/zh-CN.json5`
 - `translate/Lang.翻译` same as `Lang.lang`
