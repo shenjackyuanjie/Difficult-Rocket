@@ -47,10 +47,10 @@
 
 ## Required python modules
 
-- json5 (pre-installed V0.9.6 path:`./libs/json5`)
-- pyglet (pre-installed V2.0.dev11 path:`./libs/pyglet`)
-- pillow
-- semver
+- `json5` (pre-installed V0.9.6 path:`./libs/json5`)
+- `pyglet` (pre-installed V2.0.dev11 path:`./libs/pyglet`)
+- `pillow`
+- `semver`
 
 ## thanks to
 

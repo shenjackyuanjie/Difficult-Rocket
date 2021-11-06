@@ -48,10 +48,10 @@
 
 ## 需要的Python模块
 
-- json5 (已经内置V0.9.6 路径：`./libs/json5`)
-- pyglet (已经内置V2.0.dev11 路径：`./libs/pyglet`)
-- pillow
-- semver
+- `json5` (已经内置V0.9.6 路径：`./libs/json5`)
+- `pyglet` (已经内置V2.0.dev11 路径：`./libs/pyglet`)
+- `pillow`
+- `semver`
 
 ## 感谢
 

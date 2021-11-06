@@ -51,7 +51,7 @@ if __name__ == '__main__':
         if DEBUGGING:
             raise TestError('debugging')
     except Exception as exp:
-        from Difficult_Rocket.api.translate import tr
+        from Difficult_Rocket.translate import tr
 
         print(error_format['error.happen'])
         error = traceback.format_exc()
