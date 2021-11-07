@@ -26,11 +26,13 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-from .command import line
-from .api.translate import tr
-from .fps.fps_log import FpsLogger
-from .api import tools, new_thread, translate
-from .api.Exp import *
+import translate
+
+from Difficult_Rocket.api.Exp import *
+from Difficult_Rocket.fps.fps_log import FpsLogger
+from Difficult_Rocket.translate import tr
+from Difficult_Rocket.command import line
+from Difficult_Rocket.api import tools, new_thread
 
 # libs function
 local_lib = True
@@ -122,8 +124,10 @@ class ClientWindow(pyglet.window.Window):
         self.command.set_handler('on_message', self.on_message)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
+                                           width=self.width - 20, height=20,
                                            anchor_x='left', anchor_y='top',
                                            font_name=translate.鸿蒙简体, font_size=20,
+                                           multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
         pyglet.clock.schedule_interval(self.update, float(self.SPF))
@@ -168,7 +172,7 @@ class ClientWindow(pyglet.window.Window):
             if get == 'stop':
                 self.run_input = False
             try:
-                self.on_command(get)
+                self.on_command(line.CommandText(get))
             except CommandError:
                 self.logger.error(traceback.format_exc())
         self.logger.debug('read_input end')
@@ -193,7 +197,7 @@ class ClientWindow(pyglet.window.Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {now_FPS:>13.1f} {self.fps_log.max_fps:>5.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {now_FPS:_>10.1f} \n{self.fps_log.max_fps:_>10.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self):
         self.clear()
@@ -211,19 +215,20 @@ class ClientWindow(pyglet.window.Window):
     command line event
     """
 
-    def on_command(self, command: line.CommandLine.text):
+    def on_command(self, command: line.CommandText):
         self.logger.info(tr.lang('window', 'command.text').format(command))
-        if command == 'stop':
+        if command.match('stop'):
             self.dispatch_event('on_close', 'command')  # source = command
-        elif command == 'log_tick':
-            self.logger.debug(self.fps_log.fps_list)
-        elif command == 'max_fps':
-            self.logger.info(self.fps_log.max_fps)
-            self.command.push_line(self.fps_log.max_fps, block_line=True)
-        elif command == 'min_fps':
-            self.logger.info(self.fps_log.min_fps)
-            self.command.push_line(self.fps_log.min_fps, block_line=True)
-        elif command == 'default':
+        elif command.match('fps'):
+            if command.match('log'):
+                self.logger.debug(self.fps_log.fps_list)
+            elif command.match('max'):
+                self.logger.info(self.fps_log.max_fps)
+                self.command.push_line(self.fps_log.max_fps, block_line=True)
+            elif command.match('min'):
+                self.logger.info(self.fps_log.min_fps)
+                self.command.push_line(self.fps_log.min_fps, block_line=True)
+        elif command.match('default'):
             self.set_size(int(self.config_file['window_default']['width']), int(self.config_file['window_default']['height']))
 
     def on_message(self, message: line.CommandLine.text):

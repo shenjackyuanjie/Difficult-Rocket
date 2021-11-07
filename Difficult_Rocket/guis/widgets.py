@@ -58,7 +58,7 @@ class InputBox(widgets.WidgetBase):
                  font_size: int = 15,
                  text_color: [int, int, int] = (0, 0, 0, 255),
                  out_line_color: [int, int, int] = (255, 255, 255),
-
+                 cursor_color: [int, int, int] = (255, 255, 255),
                  out_line: int = 2,
                  batch: Batch = Batch(),
                  group: Group = Group()):
@@ -79,6 +79,7 @@ class InputBox(widgets.WidgetBase):
                              width=width + (out_line * 2), height=height + (out_line * 2),
                              batch=batch, group=group)
         self._光标 = Rectangle(x=x+out_line, y=y+out_line,
+                             color=cursor_color,
                              width=1, height=self.字高,
                              batch=batch, group=group)
 
