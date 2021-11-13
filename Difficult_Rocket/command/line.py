@@ -64,7 +64,16 @@ class CommandText:
         else:
             return False
 
-    def greedy(self, name: str = None):
+    def greedy(self, name: str = None) -> str:
+        if name:
+            self.value_dict[name] = self.text
+        self.value_list.append(self.text)
+        return self.text
+
+    def value(self,
+              name: str = None,
+              split: str = ' ',
+              middle: list = ('\'', '\"')):
         pass
 
     def __str__(self):
