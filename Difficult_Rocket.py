@@ -24,6 +24,7 @@ error_format = {
 }
 
 if __name__ == '__main__':
+    # 如果Python版本小于3.10就不导入pyjion
     print(f'{__file__=}')
     print(f'{sys.path[0]=}')
     print(f'{sys.argv[0]=}')

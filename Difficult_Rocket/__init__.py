@@ -14,6 +14,7 @@ gitee:  @shenjackyuanjie
 version = '0.6.1'
 __version__ = version
 
+
 playing = False
 
 if playing:

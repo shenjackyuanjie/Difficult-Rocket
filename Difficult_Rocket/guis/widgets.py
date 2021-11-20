@@ -13,7 +13,7 @@ gitee:  @shenjackyuanjie
 
 from Difficult_Rocket import translate
 
-from libs import pyglet
+# from libs import pyglet
 from libs.pyglet import font
 from libs.pyglet.text import Label
 from libs.pyglet.gui import widgets
@@ -53,7 +53,10 @@ class InputBox(widgets.WidgetBase):
                  message: str = '',
                  font_name: str = translate.鸿蒙简体,
                  font_size: int = 15,
-                 blod: bool = False,
+                 font_bold: bool = False,
+                 font_italic: bool = False,
+                 font_stretch: bool = False,
+                 font_dpi: int = 100,
                  text_color: [int, int, int] = (0, 0, 0, 255),
                  out_line_color: [int, int, int] = (255, 255, 255),
                  cursor_color: [int, int, int] = (255, 255, 255),
@@ -62,24 +65,34 @@ class InputBox(widgets.WidgetBase):
                  group: Group = Group()):
         super().__init__(x, y, width, height)
         self._text = message
-        self.text = self._text
-        self.字体 = font.load(name=font_name, size=font_size, blod=blod)
-        self.字高 = self.字体.ascent - self.字体.descent
-        self.外框距离 = out_line
+        self._text_position = 0
+        self.font = font.load(name=font_name, size=font_size,
+                              blod=font_bold, italic=font_italic, stretch=font_stretch,
+                              dpi=font_dpi)
+        self.font_height = self.font.ascent - self.font.descent0
+        self._select_position = [self.x, self.y, self.x, self.y + self.font_height]
+        self.out_bound = out_line
         self._输入框 = Label(x=x + out_line, y=y + out_line,
                           width=width, height=height,
                           color=text_color,
                           font_name=font_name, font_size=font_size,
                           batch=batch, group=group,
                           text=message)
-        self._外框 = Rectangle(x=x-out_line, y=y-out_line,
+        self._外框 = Rectangle(x=x - out_line, y=y - out_line,
                              color=out_line_color,
                              width=width + (out_line * 2), height=height + (out_line * 2),
                              batch=batch, group=group)
-        self._光标 = Rectangle(x=x+out_line, y=y+out_line,
+        self._光标 = Rectangle(x=x + out_line, y=y + out_line,
                              color=cursor_color,
-                             width=1, height=self.字高,
+                             width=1, height=self.font_height,
                              batch=batch, group=group)
+        self._选择框 = Rectangle(x=x, y=y, width=0, height=self.font_height,
+                              color=(63, 115, 255))
+        self._选择的字 = Label(x=x, y=y, width=0, height=self.font_height,
+                           color=text_color,
+                           font_name=font_name, font_size=font_size,
+                           batch=batch, group=group,
+                           text='')
 
     """
     输入框的属性
@@ -96,6 +109,21 @@ class InputBox(widgets.WidgetBase):
         self._输入框.text = value
 
     @property
+    def select_position(self):
+        return self._select_position
+
+    @select_position.setter
+    def select_position(self, value):
+        if value > len(self.text):
+            value = len(self.text)
+        if value > 0:
+            self._select_position = self.x
+            for glyphs in self.font.get_glyphs(self.text)[:value]:
+                self._select_position += glyphs.width
+        else:
+            self._select_position = self.x
+
+    @property
     def opacity(self):
         return self._输入框.opacity
 
@@ -106,17 +134,22 @@ class InputBox(widgets.WidgetBase):
         self._外框.opacity = value
         self._光标.opacity = value
 
+    @property
+    def value(self):
+        return self._text
+
     """
     事件调用
     """
 
     def _update_position(self):
-        self._输入框.position = self._x + self.外框距离, self._y + self.外框距离
-        self._外框.position = self._x - self.外框距离, self._y - self.外框距离
-        self._光标.position = self._x + self.外框距离, self._y + self.外框距离
+        self._输入框.position = self._x + self.out_bound, self._y + self.out_bound
+        self._外框.position = self._x - self.out_bound, self._y - self.out_bound
+        self._光标.position = self._x + self.out_bound, self._y + self.out_bound
 
     def on_text(self, text):
-        pass
+        if self.enabled:
+            pass
 
     def on_text_motion(self, motion):
         pass
@@ -125,7 +158,10 @@ class InputBox(widgets.WidgetBase):
         pass
 
     def on_mouse_press(self, x, y, buttons, modifiers):
-        pass
+        if self._check_hit(x, y):
+            self.enabled = True
+        else:
+            self.enabled = False
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         pass

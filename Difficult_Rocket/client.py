@@ -197,9 +197,9 @@ class ClientWindow(pyglet.window.Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {now_FPS:_>10.1f} \n{self.fps_log.max_fps:_>10.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {now_FPS:_>10.1f} \n{1/tick} \n{self.fps_log.max_fps:_>10.1f} {self.fps_log.min_fps:>5.1f}'
 
-    def on_draw(self):
+    def on_draw(self, *dt):
         self.clear()
         self.draw_batch()
 
