@@ -57,9 +57,10 @@ class InputBox(widgets.WidgetBase):
                  font_italic: bool = False,
                  font_stretch: bool = False,
                  font_dpi: int = 100,
-                 text_color: [int, int, int] = (0, 0, 0, 255),
-                 out_line_color: [int, int, int] = (255, 255, 255),
-                 cursor_color: [int, int, int] = (255, 255, 255),
+                 text_color: [int, int, int] = (187, 187, 187, 255),
+                 out_line_color: [int, int, int] = (37, 116, 176),
+                 cursor_color: [int, int, int] = (187, 187, 187),
+                 select_color: [int, int, int] = (63, 115, 255),
                  out_line: int = 2,
                  batch: Batch = Batch(),
                  group: Group = Group()):
@@ -69,8 +70,7 @@ class InputBox(widgets.WidgetBase):
         self.font = font.load(name=font_name, size=font_size,
                               blod=font_bold, italic=font_italic, stretch=font_stretch,
                               dpi=font_dpi)
-        self.font_height = self.font.ascent - self.font.descent0
-        self._select_position = [self.x, self.y, self.x, self.y + self.font_height]
+        self.font_height = self.font.ascent - self.font.descent
         self.out_bound = out_line
         self._输入框 = Label(x=x + out_line, y=y + out_line,
                           width=width, height=height,
@@ -87,7 +87,7 @@ class InputBox(widgets.WidgetBase):
                              width=1, height=self.font_height,
                              batch=batch, group=group)
         self._选择框 = Rectangle(x=x, y=y, width=0, height=self.font_height,
-                              color=(63, 115, 255))
+                              color=select_color)
         self._选择的字 = Label(x=x, y=y, width=0, height=self.font_height,
                            color=text_color,
                            font_name=font_name, font_size=font_size,
@@ -99,43 +99,28 @@ class InputBox(widgets.WidgetBase):
     """
 
     @property
-    def text(self):
+    def text(self) -> str:
         return self._text
 
     @text.setter
-    def text(self, value):
+    def text(self, value) -> None:
         assert type(value) is str, 'Input Box\'s text must be string!'
         self._text = value
         self._输入框.text = value
 
     @property
-    def select_position(self):
-        return self._select_position
-
-    @select_position.setter
-    def select_position(self, value):
-        if value > len(self.text):
-            value = len(self.text)
-        if value > 0:
-            self._select_position = self.x
-            for glyphs in self.font.get_glyphs(self.text)[:value]:
-                self._select_position += glyphs.width
-        else:
-            self._select_position = self.x
-
-    @property
-    def opacity(self):
+    def opacity(self) -> int:
         return self._输入框.opacity
 
     @opacity.setter
-    def opacity(self, value: int):
+    def opacity(self, value: int) -> None:
         assert type(value) is int, 'Input Box\'s opacity must be int!'
         self._输入框.opacity = value
         self._外框.opacity = value
         self._光标.opacity = value
 
     @property
-    def value(self):
+    def value(self) -> str:
         return self._text
 
     """
@@ -147,9 +132,13 @@ class InputBox(widgets.WidgetBase):
         self._外框.position = self._x - self.out_bound, self._y - self.out_bound
         self._光标.position = self._x + self.out_bound, self._y + self.out_bound
 
-    def on_text(self, text):
+    def on_text(self, text: str):
         if self.enabled:
-            pass
+            if text in ('\r', '\n'):
+                if self.text:
+                    self.dispatch_event('on_commit', self.text)
+            else:
+                self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'
 
     def on_text_motion(self, motion):
         pass
