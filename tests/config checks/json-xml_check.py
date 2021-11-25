@@ -7,7 +7,7 @@ gitee:  @shenjackyuanjie
 
 import json
 import pprint
-import xmltodict
+from xmltodict import xmltodict
 
 json_ = {
     'a': {

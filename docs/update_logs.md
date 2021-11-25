@@ -42,8 +42,14 @@
 
 ### Add
 
-- `gui/widgets.py` InputBox
-  - making
+- 添加内置字体`Cascadia_Code`
+  - add built-in font `Cascadia_Code`
+- 添加模块 `xmltodict` `pyperclip`
+  - add modules `xmltodict` `pyperclip`
+- 添加了`json5` `pyglet` `pyperclip` `xmltodict` 的协议
+  - 非常感谢上述模块的作者和维护者们
+  - added `json5` `pyglet` `pyperclip` `xmltodict` LICENSE
+    - thanks a lot to above module's author and maintainer
 
 ## 20211025 V 0.6.0
 

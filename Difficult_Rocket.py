@@ -4,6 +4,7 @@ mail: 3695888@qq.com
 """
 import os
 import sys
+import cProfile
 import traceback
 import threading
 import multiprocessing
@@ -46,7 +47,8 @@ if __name__ == '__main__':
     try:
         from Difficult_Rocket import main
         game = main.Game()
-        game.start()
+        cProfile.run('game.start()', sort='calls')
+        # game.start()
         if DEBUGGING:
             raise TestError('debugging')
     except Exception as exp:

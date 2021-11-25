@@ -95,17 +95,19 @@ tr = Lang('zh-CN')
 HOS = 'HarmonyOS Sans'
 HOS_S = 'HarmonyOS Sans SC'
 HOS_T = 'HarmonyOS Sans TC'
-HOS_I = 'HarmonyOS Sans Italic'
 HOS_C = 'HarmonyOS Sans Condensed'
-HOS_CI = 'HarmonyOS Sans Condensed Italic'
-HOS_NA = 'HarmonyOS Sans Naskh Arabic'
-HOS_NAU = 'HarmonyOS Sans Naskh Arabic_UI'
 
 鸿蒙字体 = HOS
 鸿蒙简体 = HOS_S
 鸿蒙繁体 = HOS_T
-鸿蒙斜体 = HOS_I
 鸿蒙窄体 = HOS_C
-鸿蒙斜窄体 = HOS_CI
-鸿蒙阿拉伯 = HOS_NA
-鸿蒙阿拉伯UI = HOS_NAU
+
+CC = 'Cascadia Code'
+CM = 'Cascadia Mono'
+CCPL = 'Cascadia Code PL'
+CMPL = 'Cascadia Mono PL'
+
+微软等宽 = CC
+微软等宽无线 = CM
+微软等宽带电线 = CCPL
+微软等宽带电线无线 = CMPL

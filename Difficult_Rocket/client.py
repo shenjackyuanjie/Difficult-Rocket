@@ -126,7 +126,7 @@ class ClientWindow(pyglet.window.Window):
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            width=self.width - 20, height=20,
                                            anchor_x='left', anchor_y='top',
-                                           font_name=translate.鸿蒙简体, font_size=20,
+                                           font_name=translate.微软等宽无线, font_size=20,
                                            multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
@@ -140,18 +140,18 @@ class ClientWindow(pyglet.window.Window):
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
 
     def setup(self):
-        self.load_fonts().join()
+        self.load_fonts()
 
-    @new_thread('window load_fonts')
     def load_fonts(self):
-        file_path = './libs/fonts/HarmonyOS_Sans/'
-        ttf_files = os.listdir(file_path)
-        self.logger.info(tr.lang('window', 'fonts.found').format(ttf_files))
-        for ttf_folder in ttf_files:
-            for ttf_file in os.listdir(f'{file_path}{ttf_folder}'):
-                if not ttf_file[-4:] == '.ttf':
-                    continue
-                pyglet.font.add_file(f'{file_path}{ttf_folder}/{ttf_file}')
+        fonts_path = './libs/fonts/'
+        fonts = os.listdir(fonts_path)
+        for font in fonts:
+            ttf_files = os.listdir(f'{fonts_path}{font}')
+            for ttf_folder in ttf_files:
+                for ttf_file in os.listdir(f'{fonts_path}{font}/{ttf_folder}') if os.path.isdir(f'{fonts_path}{font}/{ttf_folder}') else ttf_folder:
+                    if not ttf_file[-4:] == '.ttf':
+                        continue
+                    pyglet.font.add_file(f'{fonts_path}{font}/{ttf_folder}/{ttf_file}')
 
     # @new_thread('window load_editor')
     def load_Editor(self):
@@ -197,7 +197,7 @@ class ClientWindow(pyglet.window.Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {now_FPS:_>10.1f} \n{1/tick} \n{self.fps_log.max_fps:_>10.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {now_FPS: >10.1f} \n{1/tick} \n{self.fps_log.max_fps: >10.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self, *dt):
         self.clear()
