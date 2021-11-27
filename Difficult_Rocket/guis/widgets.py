@@ -124,7 +124,7 @@ class InputBox(widgets.WidgetBase):
         self._选择框.opacity = value
         self._光标.opacity = value
 
-    @opacity
+    @property
     def visible(self) -> bool:
         return self._input_box.visible
 

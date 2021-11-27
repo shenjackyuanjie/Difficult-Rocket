@@ -277,7 +277,7 @@ class CommandLine(widgets.WidgetBase):
             elif motion == key.MOTION_RIGHT and self._text_position <= len(self.text):  # 确保不越界
                 self._text_position += 1
             elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):
-                self._text_position = 0 
+                self._text_position = 0
             elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):
                 self._text_position = len(self.text)
 
