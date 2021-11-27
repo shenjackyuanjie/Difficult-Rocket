@@ -23,6 +23,10 @@
   - move `api/translate` to root directory
 - 现在命令会慢慢消失，而不是立即消失
   - Now the command will disappear slowly, not immediately
+- 重写了一遍` client.load_fonts()`
+  - rewrite `client.load_fonts()`
+- 重写了 `tools.load_file()` 的错误处理和 `.config` 文件的解析方式
+  - rewrite `tools.load_file()` error handling and `.config` file parsing mode
 
 ### Command
 

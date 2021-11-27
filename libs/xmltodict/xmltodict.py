@@ -5,11 +5,6 @@ try:
     from defusedexpat import pyexpat as expat
 except ImportError:
     from xml.parsers import expat
-#  -------------------------------
-#  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
-#  All rights reserved
-#  -------------------------------
 
 from xml.sax.saxutils import XMLGenerator
 from xml.sax.xmlreader import AttributesImpl

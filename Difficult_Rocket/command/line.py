@@ -121,7 +121,7 @@ class CommandLine(widgets.WidgetBase):
         self._line = Label(x=x, y=y, batch=batch, text=self.text,
                            color=(100, 255, 255, 255),
                            anchor_x='left', anchor_y='bottom',
-                           font_size=font_size, font_name=translate.鸿蒙简体,
+                           font_size=font_size, font_name=translate.微软等宽,
                            group=fg_group)
         self._label = [Label(x=x + 10, y=y + self.command_distance + (line * self.command_split), batch=batch, text='a',
                              anchor_x='left', anchor_y='bottom',
@@ -277,7 +277,7 @@ class CommandLine(widgets.WidgetBase):
             elif motion == key.MOTION_RIGHT and self._text_position <= len(self.text):  # 确保不越界
                 self._text_position += 1
             elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):
-                self._text_position = 0
+                self._text_position = 0 
             elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):
                 self._text_position = len(self.text)
 

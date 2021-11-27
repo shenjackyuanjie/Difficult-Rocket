@@ -16,11 +16,14 @@ from Difficult_Rocket import translate
 # from libs import pyglet
 from libs.pyglet import font
 from libs.pyglet.text import Label
+from libs.pyglet.window import key
 from libs.pyglet.gui import widgets
 from libs.pyglet.sprite import Sprite
 from libs.pyglet.shapes import Rectangle
-from libs.pyglet.graphics import Batch, Group
 from libs.pyglet.image import AbstractImage
+from libs.pyglet.graphics import Batch, Group
+# from libs import pyperclip
+from libs.pyperclip import paste, copy
 
 __all__ = ['Parts']
 
@@ -72,16 +75,16 @@ class InputBox(widgets.WidgetBase):
                               dpi=font_dpi)
         self.font_height = self.font.ascent - self.font.descent
         self.out_bound = out_line
-        self._输入框 = Label(x=x + out_line, y=y + out_line,
-                          width=width, height=height,
-                          color=text_color,
-                          font_name=font_name, font_size=font_size,
-                          batch=batch, group=group,
-                          text=message)
-        self._外框 = Rectangle(x=x - out_line, y=y - out_line,
-                             color=out_line_color,
-                             width=width + (out_line * 2), height=height + (out_line * 2),
-                             batch=batch, group=group)
+        self._input_box = Label(x=x + out_line, y=y + out_line,
+                                width=width, height=height,
+                                color=text_color,
+                                font_name=font_name, font_size=font_size,
+                                batch=batch, group=group,
+                                text=message)
+        self._out_box = Rectangle(x=x - out_line, y=y - out_line,
+                                  color=out_line_color,
+                                  width=width + (out_line * 2), height=height + (out_line * 2),
+                                  batch=batch, group=group)
         self._光标 = Rectangle(x=x + out_line, y=y + out_line,
                              color=cursor_color,
                              width=1, height=self.font_height,
@@ -106,18 +109,34 @@ class InputBox(widgets.WidgetBase):
     def text(self, value) -> None:
         assert type(value) is str, 'Input Box\'s text must be string!'
         self._text = value
-        self._输入框.text = value
+        self._input_box.text = value
 
     @property
     def opacity(self) -> int:
-        return self._输入框.opacity
+        return self._input_box.opacity
 
     @opacity.setter
     def opacity(self, value: int) -> None:
         assert type(value) is int, 'Input Box\'s opacity must be int!'
-        self._输入框.opacity = value
-        self._外框.opacity = value
+        self._input_box.opacity = value
+        self._out_box.opacity = value
+        self._选择的字.opacity = value
+        self._选择框.opacity = value
         self._光标.opacity = value
+
+    @opacity
+    def visible(self) -> bool:
+        return self._input_box.visible
+
+    @visible.setter
+    def visible(self, value: bool) -> None:
+        assert type(value) is bool, 'Input Box\'s visible must be bool!'
+        self._input_box.visible = value
+        self._out_box.visible = value
+        self._选择的字.visible = value
+        self._选择框.visible = value
+        self._光标.visible = value
+
 
     @property
     def value(self) -> str:
@@ -128,8 +147,8 @@ class InputBox(widgets.WidgetBase):
     """
 
     def _update_position(self):
-        self._输入框.position = self._x + self.out_bound, self._y + self.out_bound
-        self._外框.position = self._x - self.out_bound, self._y - self.out_bound
+        self._input_box.position = self._x + self.out_bound, self._y + self.out_bound
+        self._out_box.position = self._x - self.out_bound, self._y - self.out_bound
         self._光标.position = self._x + self.out_bound, self._y + self.out_bound
 
     def on_text(self, text: str):
@@ -141,13 +160,13 @@ class InputBox(widgets.WidgetBase):
                 self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'
 
     def on_text_motion(self, motion):
-        pass
+        if self.enabled
 
     def on_text_motion_select(self, motion):
         pass
 
     def on_mouse_press(self, x, y, buttons, modifiers):
-        if self._check_hit(x, y):
+        if self._check_hit(x, y) and self._input_box.visible:
             self.enabled = True
         else:
             self.enabled = False

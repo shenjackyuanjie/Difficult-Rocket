@@ -1,21 +1,22 @@
 # Difficult Rocket
+
 - [github](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
 [![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev11-blue.svg)](https://pyglet.org)
-[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_-blue.svg)](https://Python.org)
 
 ## Version
 
-[![Generic badge](https://img.shields.io/badge/Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.5)
-<br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases/v0.4.6)
-<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.1-blue.svg)
+[![Generic badge](https://img.shields.io/badge/Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+<br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+<br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)
 
 ## 中文README请移步 [这里](/docs/README-cn.md)
 
-> It's a Simple Rocket liked game build with Python
+> It's a Simple Rocket liked game build with Python (in short: rocket simulator)
 
 ## Advantage
 
@@ -27,35 +28,40 @@
 
 ## Environment (been tested / develop on)
 
--
-    - `Develop platform 1 - Windows 10`
-    - `Python 3.8.10`
-    - `Windows10 x64`
-    - `pyglet 2.0.dev11`
-    - `Json5 0.9.6`
-    - `pillow 8.1.0`
-    - `AMD R5 5600X`
-    - `AMD RX 550 4G`
--
-    - `Develop platform 2 - macOS Big Sur`
-    - `Python 3.8.7`
-    - `macOS Big Sur 11.2.1`
-    - `Pyglet 1.5.15`
-    - `Json5 0.9.5`
-    - `pillow 8.1.2`
-    - `Intel I5 8279U`
+- `Develop platform 1 - Windows 10`
+  - `Python 3.8.10`
+  - `Windows10 x64`
+  - `json5 0.9.6`
+  - `pillow 8.1.0`
+  - `pyperclip 1.8.2`
+  - `pyglet 2.0.dev11`
+  - `xmltodict 0.12.0`
+  - `AMD R5 5600X`
+  - `AMD RX 550 4G`
+- `Develop platform 2 - macOS Big Sur`
+  - `Python 3.8.7`
+  - `macOS Big Sur 11.2.1`
+  - `Pyglet 1.5.15`
+  - `Json5 0.9.5`
+  - `pillow 8.1.2`
+  - `Intel I5 8279U`
 
 ## Required python modules
 
 - `json5` (pre-installed V0.9.6 path:`./libs/json5`)
 - `pyglet` (pre-installed V2.0.dev11 path:`./libs/pyglet`)
+- `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
+- `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
 - `pillow`
 - `semver`
 
 ## thanks to
 
-- pyglet : GUI
-- [@rouxiao-you](https://github.com/ruoxiao-you) : transfer chinese to English
+- [pyglet](https://github.com/pyglet/pyglet): GUI
+- `json5`: json5 parser
+- `xmltodict`: translate data between xml and dict
+- `pyperclip`: paste board!
+- [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
 - [@Rayawa](https://github.com/Rayawa) : check mistake in docs
 - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 

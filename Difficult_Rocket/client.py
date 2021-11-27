@@ -94,14 +94,14 @@ class ClientWindow(pyglet.window.Window):
         # configs
         pyglet.resource.path = ['textures']
         pyglet.resource.reindex()
-        self.config_file = tools.load_file('configs/main.config')
+        self.main_config = tools.load_file('configs/main.config')
         self.game_config = tools.load_file('configs/game.config')
         # dic
         self.environment = {}
         self.textures = {}  # all textures
         self.runtime = {}
         # FPS
-        self.FPS = Decimal(int(self.config_file['runtime']['fps']))
+        self.FPS = Decimal(int(self.main_config['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS),
                                  wait_time=5)
@@ -143,15 +143,18 @@ class ClientWindow(pyglet.window.Window):
         self.load_fonts()
 
     def load_fonts(self):
-        fonts_path = './libs/fonts/'
-        fonts = os.listdir(fonts_path)
-        for font in fonts:
-            ttf_files = os.listdir(f'{fonts_path}{font}')
-            for ttf_folder in ttf_files:
-                for ttf_file in os.listdir(f'{fonts_path}{font}/{ttf_folder}') if os.path.isdir(f'{fonts_path}{font}/{ttf_folder}') else ttf_folder:
-                    if not ttf_file[-4:] == '.ttf':
-                        continue
-                    pyglet.font.add_file(f'{fonts_path}{font}/{ttf_folder}/{ttf_file}')
+        fonts_folder_path = self.main_config['runtime']['fonts_folder']
+        # 加载字体路径
+        for fonts_folders in os.listdir(fonts_folder_path):
+            # 从字体路径内加载字体文件夹
+            for files in os.listdir(os.path.join(fonts_folder_path, fonts_folders)):
+                # 从字体文件夹加载字体（或是字体类文件夹）
+                if os.path.isfile(os.path.join(fonts_folder_path, fonts_folders, files)):
+                    # 如果是字体文件，则直接加载
+                    pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files))
+                else:  # 否则，遍历加载字体类文件夹并加载
+                    for font in os.listdir(os.path.join(fonts_folder_path, fonts_folders, files)):
+                        pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files, font))
 
     # @new_thread('window load_editor')
     def load_Editor(self):
@@ -229,7 +232,7 @@ class ClientWindow(pyglet.window.Window):
                 self.logger.info(self.fps_log.min_fps)
                 self.command.push_line(self.fps_log.min_fps, block_line=True)
         elif command.match('default'):
-            self.set_size(int(self.config_file['window_default']['width']), int(self.config_file['window_default']['height']))
+            self.set_size(int(self.main_config['window_default']['width']), int(self.main_config['window_default']['height']))
 
     def on_message(self, message: line.CommandLine.text):
         self.logger.info(tr.lang('window', 'message.text').format(message))
