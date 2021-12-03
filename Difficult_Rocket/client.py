@@ -258,6 +258,10 @@ class ClientWindow(pyglet.window.Window):
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
             self.dispatch_event('on_close')
+        if symbol == key.C and modifiers & key.MOD_CTRL:
+            self.dispatch_event('on_text_motion', key.MOTION_COPY)
+        if symbol == key.V and modifiers & key.MOD_CTRL:
+            self.dispatch_event('on_text_motion', key.MOTION_PASTE)
         self.logger.debug(tr.lang('window', 'key.press').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
     def on_key_release(self, symbol, modifiers) -> None:

@@ -69,7 +69,7 @@ class InputBox(widgets.WidgetBase):
                  group: Group = Group()):
         super().__init__(x, y, width, height)
         self._text = message
-        self._text_position = 0
+        self._cursor_poi = 0
         self.font = font.load(name=font_name, size=font_size,
                               blod=font_bold, italic=font_italic, stretch=font_stretch,
                               dpi=font_dpi)
@@ -101,8 +101,9 @@ class InputBox(widgets.WidgetBase):
     输入框的属性
     """
 
+    # 本身属性
     @property
-    def text(self) -> str:
+    def text(self) -> str:  # 输入框的文本
         return self._text
 
     @text.setter
@@ -112,7 +113,17 @@ class InputBox(widgets.WidgetBase):
         self._input_box.text = value
 
     @property
-    def opacity(self) -> int:
+    def cursor_poi(self) -> int:  # 光标位置
+        return self._cursor_poi
+
+    @cursor_poi.setter
+    def cursor_poi(self, value) -> None:
+        assert type(value) is int, 'Input Box\'s cursor poi must be int!'
+        self._cursor_poi = value
+
+    # 渲染时属性
+    @property
+    def opacity(self) -> int:  # 透明度
         return self._input_box.opacity
 
     @opacity.setter
@@ -125,7 +136,7 @@ class InputBox(widgets.WidgetBase):
         self._光标.opacity = value
 
     @property
-    def visible(self) -> bool:
+    def visible(self) -> bool:  # 是否可见
         return self._input_box.visible
 
     @visible.setter
@@ -151,16 +162,35 @@ class InputBox(widgets.WidgetBase):
         self._out_box.position = self._x - self.out_bound, self._y - self.out_bound
         self._光标.position = self._x + self.out_bound, self._y + self.out_bound
 
+    # 输入东西
     def on_text(self, text: str):
         if self.enabled:
             if text in ('\r', '\n'):
                 if self.text:
                     self.dispatch_event('on_commit', self.text)
             else:
-                self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'
+                self.text = f'{self.text[:self.cursor_poi]}{text}{self.text[self.cursor_poi:]}'
 
+    # 移动光标
     def on_text_motion(self, motion):
-        if self.enabled
+        if self.enabled:
+            # 根据按键处理
+            # 单格移动光标(上下左右)
+            if motion in (key.MOTION_UP, key.MOTION_LEFT):  # 往上一个移动
+                self.cursor_poi = max(0, self._cursor_poi - 1)
+            elif motion in (key.MOTION_DOWN, key.MOTION_RIGHT):  # 往下一个移动
+                self.cursor_poi = min(len(self.text), self._cursor_poi + 1)
+            # 大前后移动(开头或结尾)
+            elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):  # 开头
+                self.cursor_poi = 0
+            elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):  # 结尾
+                self.cursor_poi = len(self.text)
+
+    def on_key_press(self, symbol, modifiers):
+        # 在这加一个on_key_press纯属为了处理剪贴板操作
+        # (pyglet没有把ctrl+c和ctrl+v的事件绑定到on_text_motion上)
+        if symbol == key.C and modifiers & key.MOD_CTRL:
+            self.on_text_motion(key.MOTION_COPY)
 
     def on_text_motion_select(self, motion):
         pass
