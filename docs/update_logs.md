@@ -15,7 +15,9 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202111 V 0.6.1
+## 202112 V 0.6.1
+
+争取12月内发一个release
 
 ### Change
 
@@ -26,7 +28,15 @@
 - 重写了一遍` client.load_fonts()`
   - rewrite `client.load_fonts()`
 - 重写了 `tools.load_file()` 的错误处理和 `.config` 文件的解析方式
-  - rewrite `tools.load_file()` error handling and `.config` file parsing mode
+  - 现在 `.config` 文件解析后会直接返回一个 `ConfigParser` 对象
+  - 也就意味着不能再直接遍历 `.config` 文件返回的解析 ~~谁遍历.config文件啊~~
+  - 同时也意味着可以直接用解析好的 `.config` 文件来修改 `.config` 文件
+    - rewrite `tools.load_file()` error handling and `.config` file parsing method
+      - now `.config` file parsing after return `ConfigParser` object
+      - that means you can not directly traverse `.config` file return parsing ~~who traverse .config file~~
+      - also means you can directly use parsed `.config` file to modify `.config` file
+- 为 `pyglet` 添加 `Ctrl+C` 和 `Ctrl+V` 的快捷键解析
+  - add `Ctrl+C` and `Ctrl+V` shortcut for `pyglet`
 
 ### Command
 

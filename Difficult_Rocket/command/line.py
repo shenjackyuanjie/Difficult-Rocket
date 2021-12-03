@@ -239,6 +239,8 @@ class CommandLine(widgets.WidgetBase):
     """
 
     def on_text(self, text):
+        # 这里的大部分东西都会在最近被重写
+        # TODO 重写成基于新的 InputBox 的解析
         if self.editing:
             if text in ('\r', '\n'):  # goto a new line
                 if not self.text:

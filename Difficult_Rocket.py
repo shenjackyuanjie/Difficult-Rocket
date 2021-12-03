@@ -46,8 +46,11 @@ if __name__ == '__main__':
     try:
         from Difficult_Rocket import main
         game = main.Game()
-        cProfile.run('game.start()', sort='calls')
-        # game.start()
+        cprofile = False
+        if cprofile:
+            cProfile.run('game.start()', sort='calls')
+        else:
+            game.start()
         if DEBUGGING:
             raise TestError('debugging')
     except Exception as exp:

@@ -189,6 +189,7 @@ class InputBox(widgets.WidgetBase):
     def on_key_press(self, symbol, modifiers):
         # 在这加一个on_key_press纯属为了处理剪贴板操作
         # (pyglet没有把ctrl+c和ctrl+v的事件绑定到on_text_motion上)
+        # TODO 正在给pyglet发PR
         if symbol == key.C and modifiers & key.MOD_CTRL:
             self.on_text_motion(key.MOTION_COPY)
 

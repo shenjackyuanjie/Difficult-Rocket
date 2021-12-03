@@ -45,7 +45,7 @@ file_error = {'FileNotFoundError': 'no {filetype} file was founded!:\n file name
 def load_file(file_name: str, stack=None) -> dict:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     try:
-        rd = ''
+        rd = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
         if (f_type == 'json5') or (f_type == 'json'):
             try:
                 with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file

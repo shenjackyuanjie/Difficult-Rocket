@@ -38,6 +38,7 @@ from Difficult_Rocket.api import tools, new_thread
 local_lib = True
 if local_lib:
     from libs import pyglet
+    from libs.pyglet.window import Window
     from libs.pyglet.window import key, mouse
 else:
     import pyglet
@@ -75,7 +76,7 @@ class Client:
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
 
-class ClientWindow(pyglet.window.Window):
+class ClientWindow(Window):
 
     def __init__(self, net_mode='local', *args, **kwargs):
         start_time = time.time_ns()
@@ -258,10 +259,6 @@ class ClientWindow(pyglet.window.Window):
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
             self.dispatch_event('on_close')
-        if symbol == key.C and modifiers & key.MOD_CTRL:
-            self.dispatch_event('on_text_motion', key.MOTION_COPY)
-        if symbol == key.V and modifiers & key.MOD_CTRL:
-            self.dispatch_event('on_text_motion', key.MOTION_PASTE)
         self.logger.debug(tr.lang('window', 'key.press').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
     def on_key_release(self, symbol, modifiers) -> None:
