@@ -6,8 +6,6 @@ import os
 import sys
 import cProfile
 import traceback
-import threading
-import multiprocessing
 
 # TODO 默认位置配置文件
 # TODO 可自定义工作路径

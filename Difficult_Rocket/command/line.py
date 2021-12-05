@@ -20,10 +20,10 @@ from decimal import Decimal
 # from DR
 from Difficult_Rocket import translate
 from Difficult_Rocket.api import new_thread
+from Difficult_Rocket.guis.widgets import InputBox
 
 # from libs.pyglet
 from libs import pyglet
-from libs.pyglet import font
 from libs.pyglet.text import Label
 from libs.pyglet.window import key
 from libs.pyglet.gui import widgets

@@ -14,6 +14,7 @@ gitee:  @shenjackyuanjie
 from Difficult_Rocket import translate
 
 # from libs import pyglet
+from libs import pyglet
 from libs.pyglet import font
 from libs.pyglet.text import Label
 from libs.pyglet.window import key
@@ -68,10 +69,11 @@ class InputBox(widgets.WidgetBase):
                  batch: Batch = Batch(),
                  group: Group = Group()):
         super().__init__(x, y, width, height)
+        self.enabled = False
         self._text = message
         self._cursor_poi = 0
         self.font = font.load(name=font_name, size=font_size,
-                              blod=font_bold, italic=font_italic, stretch=font_stretch,
+                              bold=font_bold, italic=font_italic, stretch=font_stretch,
                               dpi=font_dpi)
         self.font_height = self.font.ascent - self.font.descent
         self.out_bound = out_line
@@ -120,6 +122,10 @@ class InputBox(widgets.WidgetBase):
     def cursor_poi(self, value) -> None:
         assert type(value) is int, 'Input Box\'s cursor poi must be int!'
         self._cursor_poi = value
+        add_x = self.x + self.out_bound
+        for glyph in self.font.get_glyphs(self.text[:value]):
+            add_x += glyph.width
+        self._光标.x = add_x
 
     # 渲染时属性
     @property
@@ -148,7 +154,6 @@ class InputBox(widgets.WidgetBase):
         self._选择框.visible = value
         self._光标.visible = value
 
-
     @property
     def value(self) -> str:
         return self._text
@@ -170,6 +175,7 @@ class InputBox(widgets.WidgetBase):
                     self.dispatch_event('on_commit', self.text)
             else:
                 self.text = f'{self.text[:self.cursor_poi]}{text}{self.text[self.cursor_poi:]}'
+                self.cursor_poi += len(text)
 
     # 移动光标
     def on_text_motion(self, motion):
@@ -185,13 +191,21 @@ class InputBox(widgets.WidgetBase):
                 self.cursor_poi = 0
             elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):  # 结尾
                 self.cursor_poi = len(self.text)
-
-    def on_key_press(self, symbol, modifiers):
-        # 在这加一个on_key_press纯属为了处理剪贴板操作
-        # (pyglet没有把ctrl+c和ctrl+v的事件绑定到on_text_motion上)
-        # TODO 正在给pyglet发PR
-        if symbol == key.C and modifiers & key.MOD_CTRL:
-            self.on_text_motion(key.MOTION_COPY)
+            # 删除操作
+            elif motion == key.MOTION_BACKSPACE:
+                if self.text:  # 如果有文字
+                    self.text = f'{self.text[:self.cursor_poi - 1]}{self.text[self.cursor_poi:]}'
+                self.cursor_poi = max(0, self._cursor_poi - 1)
+            elif motion == key.MOTION_DELETE:
+                if self.text and self.cursor_poi != len(self.text) - 1:  # 如果有文字，并且光标不在最后
+                    self.text = f'{self.text[:self.cursor_poi]}{self.text[self.cursor_poi + 1:]}'
+            # 剪贴板操作
+            elif motion == key.MOTION_COPY:
+                pass
+            elif motion == key.MOTION_PASTE:
+                paste_text = paste()
+                self.text = f'{self.text[:self.cursor_poi]}{paste_text}{self.text[self.cursor_poi:]}'
+                self.cursor_poi += len(paste_text)
 
     def on_text_motion_select(self, motion):
         pass
@@ -210,3 +224,6 @@ class InputBox(widgets.WidgetBase):
 
     def on_commit(self, text: str):
         pass
+
+
+InputBox.register_event_type('on_commit')

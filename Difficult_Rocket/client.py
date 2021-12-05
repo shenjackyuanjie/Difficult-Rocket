@@ -29,9 +29,10 @@ if __name__ == '__main__':  # been start will not run this
 import translate
 
 from Difficult_Rocket.api.Exp import *
-from Difficult_Rocket.fps.fps_log import FpsLogger
 from Difficult_Rocket.translate import tr
 from Difficult_Rocket.command import line
+from Difficult_Rocket.fps.fps_log import FpsLogger
+from Difficult_Rocket.guis.widgets import InputBox
 from Difficult_Rocket.api import tools, new_thread
 
 # libs function
@@ -123,6 +124,10 @@ class ClientWindow(Window):
         self.push_handlers(self.command)
         self.command.set_handler('on_command', self.on_command)
         self.command.set_handler('on_message', self.on_message)
+        self.input_box = InputBox(x=50, y=30, width=300, height=20,
+                                  batch=self.label_batch)  # 实例化
+        self.push_handlers(self.input_box)
+        self.input_box.enabled = True
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            width=self.width - 20, height=20,
@@ -269,6 +274,8 @@ class ClientWindow(Window):
             self.logger.debug(tr.lang('window', 'text.new_line'))
         else:
             self.logger.debug(tr.lang('window', 'text.input').format(text))
+            if text == 't':
+                self.input_box.enabled = True
 
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
