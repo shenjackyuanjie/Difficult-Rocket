@@ -23,6 +23,8 @@ from libs.pyglet.sprite import Sprite
 from libs.pyglet.shapes import Rectangle
 from libs.pyglet.image import AbstractImage
 from libs.pyglet.graphics import Batch, Group
+from libs.pyglet.text.document import FormattedDocument
+from libs.pyglet.text.layout import IncrementalTextLayout
 # from libs import pyperclip
 from libs.pyperclip import paste, copy
 
@@ -55,7 +57,7 @@ class InputBox(widgets.WidgetBase):
     def __init__(self,
                  x: int, y: int, width: int, height: int,
                  message: str = '',
-                 font_name: str = translate.鸿蒙简体,
+                 font_name: str = translate.微软等宽,
                  font_size: int = 15,
                  font_bold: bool = False,
                  font_italic: bool = False,
@@ -77,8 +79,14 @@ class InputBox(widgets.WidgetBase):
                               dpi=font_dpi)
         self.font_height = self.font.ascent - self.font.descent
         self.out_bound = out_line
+        # 基于IncrementalTextLayout的处理系统
+        self._doc = FormattedDocument(message)
+        # self._doc.set_style()
+        self._layout = IncrementalTextLayout(self._doc, self.font, width, height,
+                                             batch=batch, group=group)
+        # 基于Label的处理系统
         self._input_box = Label(x=x + out_line, y=y + out_line,
-                                width=width, height=height,
+                                width=width, height=self.font_height + self.out_bound * 2,
                                 color=text_color,
                                 font_name=font_name, font_size=font_size,
                                 batch=batch, group=group,
@@ -122,10 +130,7 @@ class InputBox(widgets.WidgetBase):
     def cursor_poi(self, value) -> None:
         assert type(value) is int, 'Input Box\'s cursor poi must be int!'
         self._cursor_poi = value
-        add_x = self.x + self.out_bound
-        for glyph in self.font.get_glyphs(self.text[:value]):
-            add_x += glyph.width
-        self._光标.x = add_x
+        self._光标.x = self.x + self.out_bound + self._input_box.content_width
 
     # 渲染时属性
     @property

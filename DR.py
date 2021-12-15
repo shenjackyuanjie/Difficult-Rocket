@@ -44,6 +44,8 @@ if __name__ == '__main__':
     try:
         from Difficult_Rocket import main
         game = main.Game()
+        from libs.pyglet.gl import glClearColor
+        glClearColor(0, 0, 0, 0)
         cprofile = False
         if cprofile:
             cProfile.run('game.start()', sort='calls')

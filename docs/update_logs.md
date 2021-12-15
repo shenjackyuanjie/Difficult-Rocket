@@ -21,6 +21,11 @@
 
 ### Change
 
+- 重命名 `Difficult_Rocket.py` -> `DR.py`
+  - 用于修复 `Pycharm` 检测模块时总是会把主文件检测成主程序，导致一些模块总是检测不到的问题
+    - Rename `Difficult_Rocket.py` -> `DR.py`
+    - Use it to fix `Pycharm` module detection problem
+      - When the main file is detected as the main program, some modules will always be detected as the main program
 - 把`api/translate`移动到根目录下
   - move `api/translate` to root directory
 - 现在命令会慢慢消失，而不是立即消失
