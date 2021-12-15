@@ -105,8 +105,7 @@ class ClientWindow(Window):
         # FPS
         self.FPS = Decimal(int(self.main_config['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
-        self.fps_log = FpsLogger(stable_fps=int(self.FPS),
-                                 wait_time=5)
+        self.fps_log = FpsLogger(stable_fps=int(self.FPS))
         # batch
         self.part_batch = pyglet.graphics.Batch()
         self.label_batch = pyglet.graphics.Batch()
@@ -117,17 +116,19 @@ class ClientWindow(Window):
         self.setup()
         # 命令显示
         self.command_group = pyglet.graphics.Group(0)
-        self.command = line.CommandLine(x=50, y=30,  # 实例化
-                                        width=self.width - 100, height=40,
-                                        length=int(self.game_config['command']['show']),
-                                        batch=self.label_batch, group=self.command_group)
-        self.push_handlers(self.command)
-        self.command.set_handler('on_command', self.on_command)
-        self.command.set_handler('on_message', self.on_message)
+        # self.command = line.CommandLine(x=50, y=30,  # 实例化
+        #                                 width=self.width - 100, height=40,
+        #                                 length=int(self.game_config['command']['show']),
+        #                                 batch=self.label_batch, group=self.command_group)
+        # self.push_handlers(self.command)
+        # self.command.set_handler('on_command', self.on_command)
+        # self.command.set_handler('on_message', self.on_message)
         self.input_box = InputBox(x=50, y=30, width=300, height=20,
                                   batch=self.label_batch)  # 实例化
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
+        self.label = pyglet.text.HTMLLabel(text=f'<font color=red real_size=20 face="{translate.HOS_S}">abc</font>',
+                                           x=self.width // 2, y=self.height // 2)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            width=self.width - 20, height=20,
@@ -206,11 +207,12 @@ class ClientWindow(Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {now_FPS: >10.1f} \n{1/tick} \n{self.fps_log.max_fps: >10.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS}] \n{self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self, *dt):
         self.clear()
         self.draw_batch()
+        self.label.draw()
 
     def on_resize(self, width: int, height: int):
         super().on_resize(width, height)

@@ -12,92 +12,58 @@ gitee:  @shenjackyuanjie
 """
 
 import time
-import decimal
+import statistics
 
+from typing import Union
 from decimal import Decimal
 
-from ..api import new_thread
-
-from libs import pyglet
-
-"""
-fps_list ->
-[
-[fps, time_ns, tick time_ns, pyglet tick]
-]
-"""
+from libs.pyglet import clock
 
 
 class FpsLogger:
     def __init__(self,
                  stable_fps: int = 60,
-                 wait_time: int = 5):
+                 count: int = 400):
         self.stable_fps = stable_fps
-        self.wait_time = wait_time
-        self.time = time.time_ns()
-        self.fps_list = [[stable_fps, time.time_ns()]]
+        self.count = count
+        self._fps = stable_fps
+        self.middle_fps = stable_fps
+        self.fps_list = [stable_fps]  # type: list[Union[int, float]]
+        self.get_fps_list = [stable_fps]  # type: list[Union[int, float]]
         self._max_fps = stable_fps
-        self._max_fps_tick = time.time_ns()
         self._min_fps = stable_fps
-        self._min_fps_tick = time.time_ns()
-        self.check_list = True
-        self.update_list()
 
-    # @new_thread('fps_logger update', daemon=False, log_thread=False)
+
     def update_tick(self,
                     tick: Decimal):
-        self.time = time.time_ns()
-        now_fps = pyglet.clock.get_fps()
-        # 获取当前信息
-        if now_fps > self.max_fps and not self.time - self._max_fps_tick >= self.wait_time:
-            self.max_fps = now_fps
-        # self.max_fps = max(self.max_fps, now_fps)
-        tick_time = self.time - self.fps_list[-1][1]
-        # 获取渲染用时
-        self.fps_list.append([now_fps, self.time, tick_time, tick])
-        if self.time - self.fps_list[0][1] >= self.wait_time * (10 ** 9):
-            self.fps_list.pop(0)
+        now_fps = clock.get_fps()
+        if now_fps != 0:
+            self.fps_list.append(now_fps)
+        else:
+            self.fps_list.append(1)
+        if len(self.fps_list) > self.count:
+            self.fps_list = self.fps_list[-self.count + 1:]
+        if len(self.get_fps_list) > self.count:
+            self.get_fps_list = self.get_fps_list[-self.count + 1:]
+        try:
+            self._fps = statistics.geometric_mean(self.fps_list[-200:])
+            self.middle_fps = statistics.median(self.fps_list)
+        except Exception:
+            print(self.fps_list)
+            raise
+        self._max_fps = max(self.fps_list)
+        self._min_fps = min(self.fps_list)
+        # 获取新fps
         del now_fps
-        del tick_time
-
-    @new_thread('fps_logger check_list', daemon=True)
-    def update_list(self):
-        while self.check_list:
-            now_time = time.time_ns()
-            for fps_time in self.fps_list:
-                if now_time - fps_time[1] >= self.wait_time * (10 ** 9):
-                    del self.fps_list[self.fps_list.index(fps_time)]
-            time.sleep(1)
 
     @property
     def max_fps(self):
         return self._max_fps
 
-    @max_fps.setter
-    def max_fps(self, value):
-        # if self.time - self._max_fps_tick <= self.wait_time:
-        #     self._max_fps = value
-        #     self._max_fps_tick = time.time_ns()
-        # else:
-        #     max_fps = self.list_max_fps
-        #     self._max_fps = max_fps[0]
-        #     self._max_fps_tick = max_fps[1]
-        self._max_fps = value
-        self._max_fps_tick = self.time
-
     @property
     def min_fps(self):
         return self._min_fps
 
-    @min_fps.setter
-    def min_fps(self, value):
-        self._min_fps = value
-        self._min_fps_tick = time.time_ns()
-
     @property
-    def list_max_fps(self):
-        return max(self.fps_list)
-
-    @property
-    def list_min_fps(self):
-        return min(self.fps_list)
+    def fps(self):
+        return self._fps
