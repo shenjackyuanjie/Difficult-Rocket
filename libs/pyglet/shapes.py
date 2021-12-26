@@ -355,7 +355,7 @@ class Arc(_ShapeBase):
                  closed=False, color=(255, 255, 255), batch=None, group=None):
         """Create an Arc.
 
-        The Arc's anchor point (x, y) defaults to it's center.
+        The Arc's anchor point (x, y) defaults to its center.
 
         :Parameters:
             `x` : float
@@ -475,7 +475,7 @@ class Circle(_ShapeBase):
             `segments` : int
                 You can optionally specify how many distinct triangles
                 the circle should be made from. If not specified it will
-                be automatically calculated based using the formula:
+                be automatically calculated using the formula:
                 `max(14, int(radius / 1.25))`.
             `color` : (int, int, int)
                 The RGB color of the circle, specified as a tuple of
@@ -677,7 +677,7 @@ class Sector(_ShapeBase):
                     `segments` : int
                         You can optionally specify how many distinct triangles
                         the sector should be made from. If not specified it will
-                        be automatically calculated based using the formula:
+                        be automatically calculated using the formula:
                         `max(14, int(radius / 1.25))`.
                     `angle` : float
                         The angle of the sector, in radians. Defaults to tau (pi * 2),
@@ -745,6 +745,19 @@ class Sector(_ShapeBase):
     @angle.setter
     def angle(self, value):
         self._angle = value
+        self._update_position()
+
+    @property
+    def start_angle(self):
+        """The start angle of the sector.
+
+        :type: float
+        """
+        return self._start_angle
+
+    @start_angle.setter
+    def start_angle(self, angle):
+        self._start_angle = angle
         self._update_position()
 
     @property

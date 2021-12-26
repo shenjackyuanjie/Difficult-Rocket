@@ -1,26 +1,30 @@
 # Difficult Rocket Update Logs
 
 - 感谢 `Github copilot` 的翻译(甚至这句话也是`copilot`翻译的)
-  - 也就意味着以后的更新日志是中文记录+`copilot`翻译的
+  - 也就意味着以后的更新日志是中文记录+`copilot`翻译的(当然，也有可能是`Easy Translate`翻译的)
 - Thanks `Github copilot` for translate (lazy yes!)
   - Means the update logs will lodge in Chinese and translated by `copilot`
 
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.6.0-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.6.1-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202112 V 0.6.1
+## ~~202111 202112xx~~ 20220119 V 0.6.1
 
-争取12月内发一个release
+~~争取12月内发一个release~~
+
+行了，这都2022年了，我接着摸，等我考完试(20220110)再发
 
 ### Change
 
+- 更新了所有文件的版权信息
+  - Update all files copyright information
 - 重命名 `Difficult_Rocket.py` -> `DR.py`
   - 用于修复 `Pycharm` 检测模块时总是会把主文件检测成主程序，导致一些模块总是检测不到的问题
     - Rename `Difficult_Rocket.py` -> `DR.py`
@@ -42,6 +46,8 @@
       - also means you can directly use parsed `.config` file to modify `.config` file
 - 为 `pyglet` 添加 `Ctrl+C` 和 `Ctrl+V` 的快捷键解析
   - add `Ctrl+C` and `Ctrl+V` shortcut for `pyglet`
+- 更新 `pyglet` 到 `2.0dev13`
+  - update `pyglet` to `2.0dev13`
 
 ### Command
 
@@ -69,6 +75,12 @@
   - 非常感谢上述模块的作者和维护者们
   - added `json5` `pyglet` `pyperclip` `xmltodict` LICENSE
     - thanks a lot to above module's author and maintainer
+- 继续~~重~~新写了一个基于 `HTMLLabel` 的 `HTMLformatedLabel`
+  - 同时为他写了一个 `decode_text2HTML` 工具(这也是咕咕咕的一大部分原因)
+  - add a `HTMLformatedLabel` Label based on `HTMLLabel`
+    - also write a `decode_text2HTML` tool (also a big reason why lazy)
+- 增加内置模块 `toml` 和对应的 `LICENSE.txt`
+  - Added built-in module `toml` and corresponding `LICENSE.txt`
 
 ## 20211025 V 0.6.0
 

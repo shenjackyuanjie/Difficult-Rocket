@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
 #  -------------------------------
 
@@ -127,8 +127,6 @@ class ClientWindow(Window):
                                   batch=self.label_batch)  # 实例化
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
-        self.label = pyglet.text.HTMLLabel(text=f'<font color=red real_size=20 face="{translate.HOS_S}">abc</font>',
-                                           x=self.width // 2, y=self.height // 2)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            width=self.width - 20, height=20,
@@ -212,7 +210,6 @@ class ClientWindow(Window):
     def on_draw(self, *dt):
         self.clear()
         self.draw_batch()
-        self.label.draw()
 
     def on_resize(self, width: int, height: int):
         super().on_resize(width, height)

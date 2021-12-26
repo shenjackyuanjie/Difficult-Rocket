@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
 #  -------------------------------
 
@@ -23,7 +23,7 @@ from libs.pyglet import clock
 class FpsLogger:
     def __init__(self,
                  stable_fps: int = 60,
-                 count: int = 400):
+                 count: int = 700):
         self.stable_fps = stable_fps
         self.count = count
         self._fps = stable_fps
@@ -46,7 +46,7 @@ class FpsLogger:
         if len(self.get_fps_list) > self.count:
             self.get_fps_list = self.get_fps_list[-self.count + 1:]
         try:
-            self._fps = statistics.geometric_mean(self.fps_list[-200:])
+            self._fps = statistics.geometric_mean(self.fps_list[-100:])
             self.middle_fps = statistics.median(self.fps_list)
         except Exception:
             print(self.fps_list)

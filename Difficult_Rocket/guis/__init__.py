@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
 #  -------------------------------
 
@@ -10,7 +10,3 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
-
-from .widgets import *
-
-__all__ = ['widgets']

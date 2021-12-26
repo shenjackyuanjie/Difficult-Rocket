@@ -10,7 +10,7 @@
 
 ## 版本
 
-[![Generic badge](https://img.shields.io/badge/Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 <br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 <br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)
 
@@ -36,6 +36,7 @@
   - `pyperclip 1.8.2`
   - `pyglet 2.0.dev11`
   - `xmltodict 0.12.0`
+  - `toml 0.10.2`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 - `开发平台 2 - macOS Big Sur`
@@ -49,6 +50,7 @@
 ## 需要的Python模块
 
 - `json5` (已经内置 V0.9.6 路径：`./libs/json5`)
+- `toml` (已经内置 V0.10.2 路径：`./libs/toml`)
 - `pyglet` (已经内置 V2.0.dev11 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
 - `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
@@ -59,6 +61,7 @@
 
 - [pyglet](https://github.com/pyglet/pyglet) : 图形界面
 - `json5`: json5解析器
+- `toml`: toml解析器
 - `xmltodict`: xml 与 dict 转换器
 - `pyperclip`: 剪贴板!
 - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译lang

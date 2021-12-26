@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
 #  -------------------------------
 
@@ -20,7 +20,6 @@ from decimal import Decimal
 # from DR
 from Difficult_Rocket import translate
 from Difficult_Rocket.api import new_thread
-from Difficult_Rocket.guis.widgets import InputBox
 
 # from libs.pyglet
 from libs import pyglet
