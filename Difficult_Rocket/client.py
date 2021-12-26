@@ -127,7 +127,7 @@ class ClientWindow(Window):
                                   batch=self.label_batch)  # 实例化
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
-        self.label = pyglet.text.HTMLLabel(text=f'<font color=red real_size=20 face="{translate.HOS_S}">abc</font>',
+        self.label = pyglet.text.HTMLLabel(text=f'<font color=red real_size=20 face="{translate.鸿蒙简体}">abc</font>',
                                            x=self.width // 2, y=self.height // 2)
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,

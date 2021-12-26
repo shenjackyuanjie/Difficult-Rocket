@@ -42,6 +42,8 @@
       - also means you can directly use parsed `.config` file to modify `.config` file
 - 为 `pyglet` 添加 `Ctrl+C` 和 `Ctrl+V` 的快捷键解析
   - add `Ctrl+C` and `Ctrl+V` shortcut for `pyglet`
+- 更新 `pyglet`
+  - update `pyglet`
 
 ### Command
 
@@ -69,6 +71,7 @@
   - 非常感谢上述模块的作者和维护者们
   - added `json5` `pyglet` `pyperclip` `xmltodict` LICENSE
     - thanks a lot to above module's author and maintainer
+- 继续~~重~~新写了一个基于 `HTMLLabel` 的 ``
 
 ## 20211025 V 0.6.0
 
