@@ -38,7 +38,7 @@ from libs import pyglet
 from libs import xmltodict
 from libs.pyglet import shapes
 from libs.pyglet.graphics import Batch
-from libs.pyglet.window import key, mouse
+from libs.pyglet.window import key, mouse, Window
 
 
 class Client:
@@ -71,7 +71,7 @@ class Client:
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
 
-class ClientWindow(pyglet.window.Window):
+class ClientWindow(Window):
 
     def __init__(self, *args, **kwargs):
         start_time = time.time_ns()
@@ -91,7 +91,7 @@ class ClientWindow(pyglet.window.Window):
         # configs
         pyglet.resource.path = ['./textures/', './files']
         pyglet.resource.reindex()
-        self.config_file = tools.load_file('configs/main.config')
+        self.main_config = tools.load_file('configs/main.config')
         self.game_config = tools.load_file('configs/game.config')
         # dic
         self.environment = {}
@@ -101,7 +101,7 @@ class ClientWindow(pyglet.window.Window):
         self.part_list = {}
         self.坐标点 = {'x': {}, 'y': {}}
         # FPS
-        self.FPS = Decimal(int(self.config_file['runtime']['fps']))
+        self.FPS = Decimal(int(self.main_config['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
         # batch
         self.part_batch = Batch()
@@ -124,10 +124,16 @@ class ClientWindow(pyglet.window.Window):
         self.push_handlers(self.command)
         self.command.set_handler('on_command', self.on_command)
         self.command.set_handler('on_message', self.on_message)
+        # self.input_box = InputBox(x=50, y=30, width=300, height=20,
+        #                           batch=self.label_batch)  # 实例化
+        # self.push_handlers(self.input_box)
+        # self.input_box.enabled = True
         # fps显示
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
+                                           width=self.width - 20, height=20,
                                            anchor_x='left', anchor_y='top',
-                                           font_name=translate.鸿蒙简体, font_size=20,
+                                           font_name=translate.微软等宽无线, font_size=20,
+                                           multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
         pyglet.clock.schedule_interval(self.update, float(self.SPF))
@@ -140,7 +146,7 @@ class ClientWindow(pyglet.window.Window):
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
 
     def setup(self):
-        self.load_fonts().join()
+        self.load_fonts()
         self.加载坐标轴()
 
     def 加载坐标轴(self):
@@ -195,16 +201,19 @@ class ClientWindow(pyglet.window.Window):
             self.坐标轴['scale_y'] = self.center_y // self.坐标轴['scale']
             self.加载坐标轴上的点('y')
 
-    @new_thread('window load_fonts')
     def load_fonts(self):
-        file_path = './libs/fonts/HarmonyOS_Sans/'
-        ttf_files = os.listdir(file_path)
-        self.logger.info(tr.lang('window', 'fonts.found').format(ttf_files))
-        for ttf_folder in ttf_files:
-            for ttf_file in os.listdir(f'{file_path}{ttf_folder}'):
-                if not ttf_file[-4:] == '.ttf':
-                    continue
-                pyglet.font.add_file(f'{file_path}{ttf_folder}/{ttf_file}')
+        fonts_folder_path = self.main_config['runtime']['fonts_folder']
+        # 加载字体路径
+        for fonts_folders in os.listdir(fonts_folder_path):
+            # 从字体路径内加载字体文件夹
+            for files in os.listdir(os.path.join(fonts_folder_path, fonts_folders)):
+                # 从字体文件夹加载字体（或是字体类文件夹）
+                if os.path.isfile(os.path.join(fonts_folder_path, fonts_folders, files)):
+                    # 如果是字体文件，则直接加载
+                    pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files))
+                else:  # 否则，遍历加载字体类文件夹并加载
+                    for font in os.listdir(os.path.join(fonts_folder_path, fonts_folders, files)):
+                        pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files, font))
 
     # @new_thread('window load_editor')
     def load_Editor(self):
@@ -245,7 +254,7 @@ class ClientWindow(pyglet.window.Window):
     def update(self, tick: float):
         decimal_tick = Decimal(str(tick)[:10])
 
-    def on_draw(self):
+    def on_draw(self, *dt):
         self.clear()
         self.back_ground.draw()
         self.draw_batch()
@@ -382,6 +391,9 @@ class ClientWindow(pyglet.window.Window):
             self.logger.debug(tr.lang('window', 'text.new_line'))
         else:
             self.logger.debug(tr.lang('window', 'text.input').format(text))
+            if text == 't':
+                pass
+                # self.input_box.enabled = True
 
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
