@@ -11,19 +11,11 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import re
-import os
-import parse
+import sys
 
-os.chdir('..')
-os.chdir('..')
-os.chdir('..')
 
-from Difficult_Rocket.guis.format import html
+with sys.stdout as f:
+    print('aaaaa', file=f, flush=True)
 
-try_texts = [
-    # 'abcaaaa啊啊啊啊',
-    # '从前有座山~',
-    '**挼**aaaaa[awda](123123)',
-    '[aaaa](嗷嗷喊)'
-]
+with sys.__stdout__ as f:
+    print(f.readlines())

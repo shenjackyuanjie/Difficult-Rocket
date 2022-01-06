@@ -18,6 +18,7 @@ from Difficult_Rocket import translate
 
 from libs.pyglet.text import DocumentLabel
 
+
 class FontsLabel(DocumentLabel):
     """
     一个基于HTMLLabel的 可以同时在一行字里面显示多种字体的 Label

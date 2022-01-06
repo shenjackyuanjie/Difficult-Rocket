@@ -15,9 +15,11 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202112 V 0.6.1
+## ~~202112xx~~ 202201 V 0.6.1
 
-争取12月内发一个release
+~~争取12月内发一个release~~
+
+行了，这都2022年了，我接着摸，等我考完试(20220110)再发
 
 ### Change
 
@@ -42,8 +44,8 @@
       - also means you can directly use parsed `.config` file to modify `.config` file
 - 为 `pyglet` 添加 `Ctrl+C` 和 `Ctrl+V` 的快捷键解析
   - add `Ctrl+C` and `Ctrl+V` shortcut for `pyglet`
-- 更新 `pyglet`
-  - update `pyglet`
+- 更新 `pyglet` 到 `2.0dev13`
+  - update `pyglet` to `2.0dev13`
 
 ### Command
 
@@ -71,7 +73,10 @@
   - 非常感谢上述模块的作者和维护者们
   - added `json5` `pyglet` `pyperclip` `xmltodict` LICENSE
     - thanks a lot to above module's author and maintainer
-- 继续~~重~~新写了一个基于 `HTMLLabel` 的 ``
+- 继续~~重~~新写了一个基于 `HTMLLabel` 的 `HTMLformatedLabel`
+  - 同时为他写了一个 `decode_text_to_HTML` 工具(这也是咕咕咕的一大部分原因)
+  - add a `HTMLformatedLabel` Label based on `HTMLLabel`
+    - also write a `decode_text_to_HTML` tool (also a big reason why lazy)
 
 ## 20211025 V 0.6.0
 
