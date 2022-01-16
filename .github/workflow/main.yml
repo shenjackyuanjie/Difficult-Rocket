@@ -1,0 +1,8 @@
+# 名称
+name: 自动创建release
+
+# 触发器
+on:
+  push:
+    branches:
+      - master

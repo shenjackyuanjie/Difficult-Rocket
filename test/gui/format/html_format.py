@@ -22,10 +22,8 @@ os.chdir('..')
 from Difficult_Rocket.guis.format import html
 
 try_texts = [
-    'abcaaaa啊啊啊啊',
-    '从前*有座*山~',
-    '**挼**aaaaa[awda](123123)',
-    '[aaaa](嗷嗷喊)'
+    '明天天气很好',
+    '从前有座山，山里有座庙, **is it**?'
 ]
 
 for text in try_texts:

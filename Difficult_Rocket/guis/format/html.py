@@ -17,6 +17,15 @@ import pprint
 from Difficult_Rocket import translate
 
 
+default_style = {
+    'font_name': 'Times New Roman',
+    'font_size': 12,
+    'bold': False,
+    'italic': False
+}
+
+
+
 class SingleTextStyle:
     """
     单个字符的字体样式
@@ -24,18 +33,23 @@ class SingleTextStyle:
 
     def __init__(self,
                  font_name: str = '',
-                 font_size: int = 15,
+                 font_size: int = 12,
                  bold: bool = False,
                  italic: bool = False,
-                 color: str = 'black',
+                 color: str = 'white',
                  text_tag: list = None,
                  show: bool = True,
+                 prefix: str = '',
+                 suffix: str = '',
                  text: str = ''):
         self.font_name = font_name
         self.font_size = font_size
         self.bold = bold
         self.italic = italic
         self.color = color
+        self.prefix = prefix
+        self.suffix = suffix
+
         if not text_tag:
             self._tag = []
         else:
@@ -74,6 +88,8 @@ class SingleTextStyle:
                 color=other.color or self.color,
                 text_tag=other.tag + self.tag,
                 show=other.show or self.show,
+                prefix=other.prefix + self.prefix,
+                suffix=other.suffix + self.suffix,
                 text=self.text
         )
 
@@ -91,6 +107,8 @@ class SingleTextStyle:
         self.color = other.color or self.color
         self.tag += other.tag
         self.show = other.show or self.show
+        self.prefix += other.prefix
+        self.suffix += other.suffix
         self.text = self.text
         return self
 
@@ -107,30 +125,70 @@ class SingleTextStyle:
         assert type(other) == SingleTextStyle
         return other.tag in self.tag
 
-    def same_style(self, other: 'SingleTextStyle') -> bool:
+    def same_font(self, other: 'SingleTextStyle') -> bool:
         """
-        比较两个字体样式是否相同
+        比较两个字体样式的字体属性是否相同
         :param other: 叠加的字体样式
         :return: 是否相同
         """
         assert type(other) == SingleTextStyle
         return (self.font_name == other.font_name and
                 self.font_size == other.font_size and
-                self.bold == other.bold and
-                self.italic == other.italic and
                 self.color == other.color and
                 self.show == other.show)
+
+    def same_bold(self, other: 'SingleTextStyle') -> bool:
+        """
+        比较两个字体样式的加粗属性是否相同
+        :param other: 叠加的字体样式
+        :return: 是否相同
+        """
+        assert type(other) == SingleTextStyle
+        return self.bold == other.bold
+
+    def same_italic(self, other: 'SingleTextStyle') -> bool:
+        """
+        比较两个字体样式的斜体属性是否相同
+        :param other: 叠加的字体样式
+        :return: 是否相同
+        """
+        assert type(other) == SingleTextStyle
+        return self.italic == other.italic
 
     """
     自动输出一些属性的支持
     """
 
-    def HTML_style_text(self) -> str:
+    def HTML_font(self) -> str:
         """
-        输出字体样式的HTML代码
-        :return: HTML代码
+        输出字体样式的HTML字符
+        :return: HTML 格式字符
         """
-        return f'<font name="{self.font_name}" real_size={self.font_size} bold={self.bold} italic={self.italic} color={self.color}>'
+        text = f'<font face="{self.font_name}" color={self.color}'
+        if self.font_size != default_style['font_size']:
+            text += f' real_size={self.font_size}'
+        text += '>'
+        return text
+
+    def HTML_bold(self) -> str:
+        """
+        输出字体粗体的HTML字符
+        :return: HTML 格式字符
+        """
+        if self.bold:
+            return '<b>'
+        else:
+            return ''
+
+    def HTML_italic(self) -> str:
+        """
+        输出字体斜体的HTML字符
+        :return: HTML 格式字符
+        """
+        if self.italic:
+            return '<i>'
+        else:
+            return ''
 
 
 # [\u4e00-\u9fa5] 中文字符
@@ -138,12 +196,12 @@ default_fonts_config = [
     {
         'match': re.compile(r'.'),  # 匹配的字符  匹配选项是re.compile()
         'shown': re.compile(r'.'),  # 匹配到的字符中显示的部分  匹配选项是re.compile()
-        'style': SingleTextStyle(font_name=translate.鸿蒙简体, font_size=15, bold=False, italic=False, show=True, color='black'),
+        'style': SingleTextStyle(font_name=translate.鸿蒙窄体, font_size=15, bold=False, italic=False, show=True, color='white'),
     },
     {
         'match': re.compile(r'[a-zA-Z]'),
         'shown': re.compile(r'[a-zA-Z]'),
-        'style': SingleTextStyle(font_name=translate.微软等宽)
+        'style': SingleTextStyle(font_name=translate.微软等宽, font_size=23)
     },
     # Markdown 语法规则匹配
     {
@@ -180,6 +238,10 @@ default_fonts_config = [
     }
 ]
 font_HTML_end = '</font>'
+bold_HTML = '<b>'
+bold_HTML_end = '</b>'
+italic_HTML = '<i>'
+italic_HTML_end = '</i>'
 
 
 def decode_text2HTML(text: str,
@@ -223,7 +285,6 @@ def decode_text2HTML(text: str,
                 style_list[match_index] += config['style']  # 字体样式列表的[match_index] += config['style']的样式
                 style_list[match_index].show = False  # 设置显示属性变为False
 
-
             # 为每一个显示的字符设置显示属性
             for shown_text in shown_texts:  # 每一个显示的匹配项
                 for shown_index in range(match_start + shown_text.span()[0], match_start + shown_text.span()[1]):
@@ -231,19 +292,13 @@ def decode_text2HTML(text: str,
                     # 字体样式列表的[shown_index]设置显示属性变为True
 
     # 开始根据配置好的样式输出HTML文本
-    style_list[0].text = style_list[0].HTML_style_text() + style_list[0].text if style_list[0].show else style_list[0].text
-    # 样式列表里的第一个.text
-    # 如果 (这个字符显示) = 第一个的HTML样式+第一个样式.text
-    # 否则 = 第一个样式.text(其实pass最好)
-    for style_index in range(1, len(style_list)):  # 从第二个开始的每一个样式
-        if not style_list[style_index].same_style(style_list[style_index-1]):  # 如果这个字符的样式跟前一个不一样
-            style_list[style_index-1].text += font_HTML_end  # 在前一个样式.text 的后面附加一个 </font>
-            style_list[style_index].text = style_list[style_index].HTML_style_text() + style_list[style_index].text  # 在这个样式.text 的前面放一个HTML样式
-    style_list[-1].text += font_HTML_end  # 样式表的最后一个样式后面附加一个 </font>
+    style_list[0].prefix += style_list[0].HTML_bold() + style_list[0].HTML_italic() + style_list[0].HTML_font()
+    for style in style_list:
+        pass
 
     # 输出最终的HTML文本
     formatted_HTML_text = ''  # 初始化一下
     for style in style_list:  # 每一个样式
         if style.show:  # 如果这个字符显示
-            formatted_HTML_text += style.text  # 文本的后面附加一下
+            formatted_HTML_text += style.prefix + style.text + style.suffix  # 文本的后面附加一下
     return formatted_HTML_text  # 返回，DONE！
