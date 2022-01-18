@@ -263,6 +263,8 @@ italic_HTML_end = '</i>'
 
 def decode_text2HTML(text: str,
                      configs=None) -> str:
+    if text == '':
+        return ''
     if configs is None:
         configs = default_fonts_config
     style_list = [SingleTextStyle(text=text[x]) for x in range(0, len(text))]
