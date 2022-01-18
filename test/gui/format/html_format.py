@@ -11,22 +11,34 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import re
 import os
-import parse
+import cProfile
 
 os.chdir('..')
 os.chdir('..')
 os.chdir('..')
+
 
 from Difficult_Rocket.guis.format import html
 
 try_texts = [
     '明天天气很好',
-    '从前有座山，山里有座庙, **is it**?'
+    '从前有座山，山里有座庙, **is it**?',
+    '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊。阿巴巴巴',
+    '阿瓦达达瓦的，aiwdhaihdwia.awdaiwhdahwido[12312](123131)',
+    '1231231dawdawd65ewwe56er56*awdadad*aaa**阿伟大的阿瓦打我的**'
 ]
 
-for text in try_texts:
-    print(text)
-    print(html.decode_text2HTML(text))
-    print('------')
+
+def main_test():
+    for text in try_texts:
+        print(text)
+        print(html.decode_text2HTML(text))
+        print('------')
+
+
+check = True
+if check:
+    cProfile.run('main_test()', sort='calls')
+else:
+    main_test()

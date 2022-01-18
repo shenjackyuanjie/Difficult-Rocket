@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
 #  -------------------------------
 
@@ -159,36 +159,53 @@ class SingleTextStyle:
     自动输出一些属性的支持
     """
 
-    def HTML_font(self) -> str:
+    def HTML_font(self, suffix: bool = False) -> str:
         """
         输出字体样式的HTML字符
         :return: HTML 格式字符
         """
+        if suffix:
+            return font_HTML_end
         text = f'<font face="{self.font_name}" color={self.color}'
         if self.font_size != default_style['font_size']:
             text += f' real_size={self.font_size}'
         text += '>'
         return text
 
-    def HTML_bold(self) -> str:
+    def HTML_bold(self, suffix: bool = False) -> str:
         """
         输出字体粗体的HTML字符
         :return: HTML 格式字符
         """
+
         if self.bold:
+            if suffix:
+                return bold_HTML_end
             return '<b>'
         else:
             return ''
 
-    def HTML_italic(self) -> str:
+    def HTML_italic(self, suffix: bool = False) -> str:
         """
         输出字体斜体的HTML字符
         :return: HTML 格式字符
         """
         if self.italic:
+            if suffix:
+                return italic_HTML_end
             return '<i>'
         else:
             return ''
+
+    def HTML(self, suffix: bool = False) -> str:
+        """
+        输出字体样式的HTML字符
+        :return: HTML 格式字符
+        """
+        if not suffix:
+            return self.HTML_bold() + self.HTML_italic() + self.HTML_font()
+        else:
+            return font_HTML_end + (bold_HTML_end if self.bold else '') + (italic_HTML_end if self.italic else '')
 
 
 # [\u4e00-\u9fa5] 中文字符
@@ -196,12 +213,12 @@ default_fonts_config = [
     {
         'match': re.compile(r'.'),  # 匹配的字符  匹配选项是re.compile()
         'shown': re.compile(r'.'),  # 匹配到的字符中显示的部分  匹配选项是re.compile()
-        'style': SingleTextStyle(font_name=translate.鸿蒙窄体, font_size=15, bold=False, italic=False, show=True, color='white'),
+        'style': SingleTextStyle(font_name=translate.鸿蒙简体, font_size=15, bold=False, italic=False, show=True, color='white'),
     },
     {
-        'match': re.compile(r'[a-zA-Z]'),
-        'shown': re.compile(r'[a-zA-Z]'),
-        'style': SingleTextStyle(font_name=translate.微软等宽, font_size=23)
+        'match': re.compile(r'[a-zA-Z0-9]'),
+        'shown': re.compile(r'[a-zA-Z0-9]'),
+        'style': SingleTextStyle(font_name=translate.微软等宽, font_size=15)
     },
     # Markdown 语法规则匹配
     {
@@ -257,8 +274,7 @@ def decode_text2HTML(text: str,
         for match_text in match_texts:  # 每一个匹配到的匹配项
             text_match = match_text.group()  # 缓存一下匹配到的字符，用于匹配显示的字符
             shown_texts = config['shown'].finditer(text_match)  # 使用config.shown匹配
-            match_start = match_text.span()[0]
-            match_end = match_text.span()[1]
+            match_start, match_end = match_text.span()
 
             if 'ignore' in config:  # 如果样式选项包含忽略某些字符的tag
                 ignore_texts = config['ignore']['match'].finditer(text_match)  # 根据选项匹配可能忽略的字符
@@ -292,13 +308,32 @@ def decode_text2HTML(text: str,
                     # 字体样式列表的[shown_index]设置显示属性变为True
 
     # 开始根据配置好的样式输出HTML文本
-    style_list[0].prefix += style_list[0].HTML_bold() + style_list[0].HTML_italic() + style_list[0].HTML_font()
-    for style in style_list:
-        pass
+    style_list[0].prefix += style_list[0].HTML()  # 不管怎么说都要在最前面加一个字符标识
+    for style_index in range(1, len(style_list)):
+        if style_list[style_index].show:  # 如果这个字符显示
+            if not style_list[style_index - 1].show:  # 如果前面一个字符不显示(且这个字符显示)
+                style_list[style_index].prefix += style_list[style_index].HTML()  # 那么就直接给这个字符的前缀添加
+            else:  # 开始根据前面的情况处理每种单独的标签
+                if not style_list[style_index - 1].same_font(style_list[style_index]):
+                    style_list[style_index - 1].suffix += style_list[style_index - 1].HTML_font(suffix=True)
+                    style_list[style_index].prefix += style_list[style_index].HTML_font()
+                if not style_list[style_index - 1].same_bold(style_list[style_index]):
+                    style_list[style_index - 1].suffix += style_list[style_index - 1].HTML_bold(suffix=True)
+                    style_list[style_index].prefix += style_list[style_index].HTML_bold()
+                if not style_list[style_index - 1].same_italic(style_list[style_index]):
+                    style_list[style_index - 1].suffix += style_list[style_index - 1].HTML_italic(suffix=True)
+                    style_list[style_index].prefix += style_list[style_index].HTML_italic()
+        else:  # 如果这个字符不显示
+            if style_list[style_index - 1].show:  # 如果前面一个字符显示(且这个字符不显示)
+                style_list[style_index - 1].suffix += style_list[style_index - 1].HTML(suffix=True)
+            # 如果前面一个字符也不显示那就直接pass
+    if style_list[-1].show:
+        style_list[-1].suffix += style_list[-1].HTML(suffix=True)
 
     # 输出最终的HTML文本
     formatted_HTML_text = ''  # 初始化一下
     for style in style_list:  # 每一个样式
         if style.show:  # 如果这个字符显示
             formatted_HTML_text += style.prefix + style.text + style.suffix  # 文本的后面附加一下
+    del style_list  # 主动删掉style_list 释放内存
     return formatted_HTML_text  # 返回，DONE！

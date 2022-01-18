@@ -1,3 +1,9 @@
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2021-2022 by shenjackyuanjie
+#  All rights reserved
+#  -------------------------------
+
 import functools
 import inspect
 import threading

@@ -23,6 +23,8 @@
 
 ### Change
 
+- 更新了所有文件的版权信息
+  - Update all files copyright information
 - 重命名 `Difficult_Rocket.py` -> `DR.py`
   - 用于修复 `Pycharm` 检测模块时总是会把主文件检测成主程序，导致一些模块总是检测不到的问题
     - Rename `Difficult_Rocket.py` -> `DR.py`

@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
 #  -------------------------------
 
@@ -12,11 +12,11 @@ gitee:  @shenjackyuanjie
 """
 
 from Difficult_Rocket import translate
+from Difficult_Rocket.guis.format import html
 
 # from libs import pyglet
-from libs import pyglet
 from libs.pyglet import font
-from libs.pyglet.text import Label
+from libs.pyglet.text import Label, HTMLLabel
 from libs.pyglet.window import key
 from libs.pyglet.gui import widgets
 from libs.pyglet.sprite import Sprite
@@ -91,6 +91,10 @@ class InputBox(widgets.WidgetBase):
                                 font_name=font_name, font_size=font_size,
                                 batch=batch, group=group,
                                 text=message)
+        self._HTML_box = HTMLLabel(x=x + out_line, y=y + out_line + 30,
+                                   width=width, height=self.font_height + self.out_bound * 2,
+                                   batch=batch, group=group,
+                                   text=message)
         self._out_box = Rectangle(x=x - out_line, y=y - out_line,
                                   color=out_line_color,
                                   width=width + (out_line * 2), height=height + (out_line * 2),
@@ -121,6 +125,7 @@ class InputBox(widgets.WidgetBase):
         assert type(value) is str, 'Input Box\'s text must be string!'
         self._text = value
         self._input_box.text = value
+        self._HTML_box.text = html.decode_text2HTML(value)
 
     @property
     def cursor_poi(self) -> int:  # 光标位置
