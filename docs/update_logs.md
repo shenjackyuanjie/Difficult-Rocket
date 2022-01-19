@@ -1,7 +1,7 @@
 # Difficult Rocket Update Logs
 
 - 感谢 `Github copilot` 的翻译(甚至这句话也是`copilot`翻译的)
-  - 也就意味着以后的更新日志是中文记录+`copilot`翻译的
+  - 也就意味着以后的更新日志是中文记录+`copilot`翻译的(当然，也有可能是`Easy Translate`翻译的)
 - Thanks `Github copilot` for translate (lazy yes!)
   - Means the update logs will lodge in Chinese and translated by `copilot`
 
@@ -15,7 +15,7 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## ~~202111 202112xx~~ 202201 V 0.6.1
+## ~~202111 202112xx~~ 20220119 V 0.6.1
 
 ~~争取12月内发一个release~~
 
@@ -79,6 +79,8 @@
   - 同时为他写了一个 `decode_text2HTML` 工具(这也是咕咕咕的一大部分原因)
   - add a `HTMLformatedLabel` Label based on `HTMLLabel`
     - also write a `decode_text2HTML` tool (also a big reason why lazy)
+- 增加内置模块 `toml` 和对应的 `LICENSE.txt`
+  - Added built-in module `toml` and corresponding `LICENSE.txt`
 
 ## 20211025 V 0.6.0
 

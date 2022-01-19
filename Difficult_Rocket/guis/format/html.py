@@ -338,4 +338,5 @@ def decode_text2HTML(text: str,
         if style.show:  # 如果这个字符显示
             formatted_HTML_text += style.prefix + style.text + style.suffix  # 文本的后面附加一下
     del style_list  # 主动删掉style_list 释放内存
+    print(formatted_HTML_text)
     return formatted_HTML_text  # 返回，DONE！
