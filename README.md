@@ -5,12 +5,12 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev11-blue.svg)](https://pyglet.org)
+[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev13-blue.svg)](https://pyglet.org)
 [![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_-blue.svg)](https://Python.org)
 
 ## Version
 
-[![Generic badge](https://img.shields.io/badge/Release-0.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 <br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 <br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)
 
@@ -34,8 +34,9 @@
   - `json5 0.9.6`
   - `pillow 8.1.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0.dev11`
+  - `pyglet 2.0.dev13`
   - `xmltodict 0.12.0`
+  - `toml 0.10.2`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 - `Develop platform 2 - macOS Big Sur`
@@ -49,6 +50,7 @@
 ## Required python modules
 
 - `json5` (pre-installed V0.9.6 path:`./libs/json5`)
+- `toml` (pre-installed V0.10.2 path:`./libs/toml`)
 - `pyglet` (pre-installed V2.0.dev11 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
@@ -59,6 +61,7 @@
 
 - [pyglet](https://github.com/pyglet/pyglet): GUI
 - `json5`: json5 parser
+- `toml` toml parser
 - `xmltodict`: translate data between xml and dict
 - `pyperclip`: paste board!
 - [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
