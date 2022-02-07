@@ -1,5 +1,9 @@
 # Difficult Rocket
 
+[中文](./docs/README-cn.md) | English
+
+[comment]: <> (中文 | [English]&#40;https://github.com/shenjackyuanjie/Difficult-Rocket&#41;.)
+
 - [github](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 

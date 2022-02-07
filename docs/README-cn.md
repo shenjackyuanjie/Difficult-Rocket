@@ -1,5 +1,9 @@
 # Difficult Rocket
 
+[comment]: <> ([中文]&#40;./docs/README-cn.md&#41; | English)
+
+中文 | [English](https://github.com/shenjackyuanjie/Difficult-Rocket).
+
 - [github](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 
@@ -14,7 +18,6 @@
 <br/>[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 <br/>![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)
 
-### For an English version of readme, please move [here](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
 > 这是一个用Python制作的类Simple Rocket游戏(简称：火箭模拟器)
 

@@ -15,16 +15,20 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## ~~202111 202112xx~~ 20220119 V 0.6.1
+## ~~202111 202112xx 20220119~~ 20220207 V 0.6.1
 
 ~~争取12月内发一个release~~
 
-行了，这都2022年了，我接着摸，等我考完试(20220110)再发
+~~行了，这都2022年了，我接着摸，等我考完试(20220110)再发~~
+
+20220207 可算是发了，ruaaaa
 
 ### Change
 
-- 更新了所有文件的版权信息
-  - Update all files copyright information
+- 修改了 readme 文件的语言切换格式
+  - Change the language switch format in readme
+- 更新了所有文件的版权信息 (2021-2022)
+  - Update all files copyright information (2021-2022)
 - 重命名 `Difficult_Rocket.py` -> `DR.py`
   - 用于修复 `Pycharm` 检测模块时总是会把主文件检测成主程序，导致一些模块总是检测不到的问题
     - Rename `Difficult_Rocket.py` -> `DR.py`
