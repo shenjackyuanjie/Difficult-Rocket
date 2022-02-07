@@ -27,7 +27,7 @@ class CommandText:
         self.value_dict = {}
         self.value_list = []
 
-    def find(self, text: str) -> Union[str, False]:
+    def find(self, text: str) -> Union[str, bool]:
         finding = re.match(text, self.text)
         if finding:
             return finding.group()
