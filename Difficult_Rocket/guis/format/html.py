@@ -262,7 +262,8 @@ italic_HTML_end = '</i>'
 
 
 def decode_text2HTML(text: str,
-                     configs=None) -> str:
+                     configs=None,
+                     show_style: bool = False) -> str:
     if text == '':
         return ''
     if configs is None:
@@ -272,12 +273,11 @@ def decode_text2HTML(text: str,
     # 根据输入的配置对每一个字符进行样式设定
     for config in configs:
         # 根据 配置"文件"
-        match_texts = config['match'].finditer(text)  # 使用config.match匹配
+        match_texts = config['match'].finditer(text)  # 使用 config.match 匹配
         for match_text in match_texts:  # 每一个匹配到的匹配项
             text_match = match_text.group()  # 缓存一下匹配到的字符，用于匹配显示的字符
-            shown_texts = config['shown'].finditer(text_match)  # 使用config.shown匹配
+            shown_texts = config['shown'].finditer(text_match)  # 使用 config.shown 匹配
             match_start, match_end = match_text.span()
-
             if 'ignore' in config:  # 如果样式选项包含忽略某些字符的tag
                 ignore_texts = config['ignore']['match'].finditer(text_match)  # 根据选项匹配可能忽略的字符
                 ignore = False  # 忽略先为False
@@ -290,25 +290,21 @@ def decode_text2HTML(text: str,
                             break
                 if ignore:
                     continue  # 跳过本次匹配
-
             if 'tag' in config:  # 如果样式选项包含对部分字符添加tag
                 tag_texts = config['tag']['match'].finditer(text_match)  # 根据配置的正则表达式匹配要添加tag的字符
                 for tag_text in tag_texts:  # 对每一个匹配到的~~~~~~
                     for tag_index in range(match_start + tag_text.span()[0], match_start + tag_text.span()[1]):  # 用于遍历匹配到的字符
                         style_list[tag_index] += config['tag']['style']
-
             # 为匹配到的字符添加样式
             for match_index in range(match_start, match_end):  # 用于遍历匹配到的字符
-                # 这里用match index来精确读写列表里的元素，毕竟re.Match返回的span是两个标点，得遍历
-                style_list[match_index] += config['style']  # 字体样式列表的[match_index] += config['style']的样式
-                style_list[match_index].show = False  # 设置显示属性变为False
-
+                # 这里用 match index 来精确读写列表里的元素，毕竟 re.Match 返回的 span 是两个标点，得遍历
+                style_list[match_index] += config['style']  # 字体样式列表的 [match_index] += config['style'] 的样式
+                style_list[match_index].show = show_style  # 设置显示属性变为 False
             # 为每一个显示的字符设置显示属性
             for shown_text in shown_texts:  # 每一个显示的匹配项
                 for shown_index in range(match_start + shown_text.span()[0], match_start + shown_text.span()[1]):
                     style_list[shown_index].show = True
-                    # 字体样式列表的[shown_index]设置显示属性变为True
-
+                    # 字体样式列表的 [shown_index] 设置显示属性变为 True
     # 开始根据配置好的样式输出HTML文本
     style_list[0].prefix += style_list[0].HTML()  # 不管怎么说都要在最前面加一个字符标识
     for style_index in range(1, len(style_list)):
@@ -328,15 +324,15 @@ def decode_text2HTML(text: str,
         else:  # 如果这个字符不显示
             if style_list[style_index - 1].show:  # 如果前面一个字符显示(且这个字符不显示)
                 style_list[style_index - 1].suffix += style_list[style_index - 1].HTML(suffix=True)
-            # 如果前面一个字符也不显示那就直接pass
+            # 如果前面一个字符也不显示那就直接 pass
     if style_list[-1].show:
         style_list[-1].suffix += style_list[-1].HTML(suffix=True)
 
-    # 输出最终的HTML文本
+    # 输出最终的 HTML 文本
     formatted_HTML_text = ''  # 初始化一下
     for style in style_list:  # 每一个样式
         if style.show:  # 如果这个字符显示
             formatted_HTML_text += style.prefix + style.text + style.suffix  # 文本的后面附加一下
-    del style_list  # 主动删掉style_list 释放内存
+    del style_list  # 主动删掉 style_list 释放内存
     print(formatted_HTML_text)
     return formatted_HTML_text  # 返回，DONE！

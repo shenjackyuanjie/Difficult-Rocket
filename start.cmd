@@ -1,2 +1,2 @@
-python Difficult_Rocket.py
+python DR.py
 pause

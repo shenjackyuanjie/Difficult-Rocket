@@ -125,7 +125,7 @@ class InputBox(widgets.WidgetBase):
         assert type(value) is str, 'Input Box\'s text must be string!'
         self._text = value
         self._input_box.text = value
-        self._HTML_box.text = html.decode_text2HTML(value)
+        self._HTML_box.text = html.decode_text2HTML(value, show_style=True)
 
     @property
     def cursor_poi(self) -> int:  # 光标位置

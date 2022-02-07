@@ -17,13 +17,9 @@ import time
 import math
 import decimal
 import logging
-import traceback
 import configparser
 
-from typing import List
 from xml.dom.minidom import parse
-
-import Difficult_Rocket
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')

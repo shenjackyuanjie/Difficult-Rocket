@@ -94,8 +94,9 @@ class ClientWindow(Window):
         self.net_mode = net_mode
         self.run_input = False
         # configs
-        pyglet.resource.path = ['textures']
+        pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
+        self.set_icon(pyglet.image.load('textures/icon.png'))
         self.main_config = tools.load_file('configs/main.config')
         self.game_config = tools.load_file('configs/game.config')
         # dic
