@@ -389,10 +389,10 @@ class VertexList:
         """dynamic access to vertex attributes, for backwards compatibility.
         """
         domain = self.domain
-        if self._cache_versions.get(name, None) != domain.version:
+        if self._cache_versions.get(name, None) != domain.game_version:
             attribute = domain.attribute_names[name]
             self._caches[name] = attribute.get_region(attribute.buffer, self.start, self.count)
-            self._cache_versions[name] = domain.version
+            self._cache_versions[name] = domain.game_version
 
         region = self._caches[name]
         region.invalidate()
@@ -638,10 +638,10 @@ class IndexedVertexList(VertexList):
     @property
     def indices(self):
         """Array of index data."""
-        if self._indices_cache_version != self.domain.version:
+        if self._indices_cache_version != self.domain.game_version:
             domain = self.domain
             self._indices_cache = domain.get_index_region(self.index_start, self.index_count)
-            self._indices_cache_version = domain.version
+            self._indices_cache_version = domain.game_version
 
         region = self._indices_cache
         region.invalidate()

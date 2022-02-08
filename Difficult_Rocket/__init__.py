@@ -11,8 +11,8 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-version = '0.6.2'
-__version__ = version
+game_version = '0.6.2'
+__version__ = game_version
 
 
 playing = False

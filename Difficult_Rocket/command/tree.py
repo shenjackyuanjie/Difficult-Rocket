@@ -11,14 +11,14 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket import version
+from Difficult_Rocket import game_version
 from Difficult_Rocket.command import line
 
 
 
 command_tree = {
     'name':        'DR-root',
-    'version':     version,
+    'version':     game_version,
     'information': 'DR这一部分的代码还TM是复制我之前写的屑Census',
     'commands':    {
         'info':        '啊啊啊啊',
