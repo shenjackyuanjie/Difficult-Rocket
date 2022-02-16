@@ -15,6 +15,15 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202202 V 0.6.2
+
+### Add
+
+- 添加模块 `semver` 和协议 (`LICENSE.txt`)
+  - Add modules `semver` Add LICENSE (`LICENSE.txt`)
+- 添加对 mod 的支持(还在写啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊)
+
+
 ## ~~202111 202112xx 20220119~~ 20220207 V 0.6.1
 
 ~~争取12月内发一个release~~

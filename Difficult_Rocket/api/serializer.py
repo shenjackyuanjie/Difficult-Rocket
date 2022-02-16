@@ -6,11 +6,14 @@
 # 本文件以 GNU Lesser General Public License v3.0（GNU LGPL v3) 开源协议进行授权 (谢谢狐狸写出这么好的MCDR)
 # 顺便说一句,我把所有的tab都改成了空格,因为我觉得空格比tab更好看(草,后半句是github copilot自动填充的)
 
+
 import copy
 from abc import ABC
 from enum import EnumMeta
 from threading import Lock
 from typing import Union, TypeVar, List, Dict, Type, get_type_hints, Any
+
+from semver import VersionInfo
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
@@ -43,8 +46,13 @@ def _get_args(cls: Type) -> tuple:
     return getattr(cls, '__args__', ())
 
 
-def serialize(obj) -> Union[None, int, float, str, list, dict]:
+_BASIC_CLASSES = (type(None), bool, int, float, str, list, dict, VersionInfo)
+
+
+def serialize(obj) -> _BASIC_CLASSES:
     if type(obj) in (type(None), int, float, str, bool):
+        return obj
+    elif isinstance(obj, VersionInfo):
         return obj
     elif isinstance(obj, list) or isinstance(obj, tuple):
         return list(map(serialize, obj))
@@ -62,9 +70,6 @@ def serialize(obj) -> Union[None, int, float, str, list, dict]:
         raise TypeError('Unsupported input type {}'.format(type(obj))) from None
     else:
         return serialize(attr_dict)
-
-
-_BASIC_CLASSES = (type(None), bool, int, float, str, list, dict)
 
 
 def deserialize(data, cls: Type[T], *, error_at_missing=False, error_at_redundancy=False) -> T:

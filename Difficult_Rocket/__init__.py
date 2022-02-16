@@ -11,8 +11,11 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+from libs.semver.semver import VersionInfo
+
 game_version = '0.6.2'
 __version__ = game_version
+semver_game_version = VersionInfo.parse(game_version)
 
 
 playing = False
