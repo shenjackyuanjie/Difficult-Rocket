@@ -26,8 +26,7 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 # Difficult_Rocket function
-import translate
-
+from Difficult_Rocket import translate
 from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.translate import tr
 from Difficult_Rocket.command import line

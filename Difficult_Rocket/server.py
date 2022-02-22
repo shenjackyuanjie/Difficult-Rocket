@@ -20,8 +20,8 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 from Difficult_Rocket.api import tools
-from api.delivery import Delivery
-from api.new_thread import new_thread
+from Difficult_Rocket.api.delivery import Delivery
+from Difficult_Rocket.api.new_thread import new_thread
 
 
 # TODO 改变服务端启动逻辑 0.6.0会写完的（

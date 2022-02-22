@@ -1,6 +1,6 @@
 #=
 trytry:
-- Julia version: 1.7.1
+- Julia version: 1.7.2
 - Author: shenjack
 - Date: 2022-01-17
 =#
@@ -9,7 +9,6 @@ println("Hello, world!")
 
 # 输入字符，然后输出输入的字符
 
-@time
 function run()
 
 ABigFloat = BigFloat(1111111111111111111111111111111111111111.1111111) * BigFloat(11111123.5111)
