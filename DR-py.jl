@@ -8,8 +8,6 @@ DR:
 
 using PyCall
 
-include("Difficult_Rocket/main.jl")
-
 HiMessage = """
 Difficult Rocket is writen by shenjackyuanjie
 mail: 3695888@qq.com or shyj3695888@163.com
@@ -30,10 +28,4 @@ end
 
 
 
-# print("是否运行py版 y/n")
-# yesOrNo = readline(stdin)
-# if yesOrNo == "y"
-#     @timev py__init__()
-# else
-@timev GLFW__init__()
-# end
+@timev py__init__()
