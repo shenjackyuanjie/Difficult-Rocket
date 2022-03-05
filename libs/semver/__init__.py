@@ -9,10 +9,8 @@ import re
 import sys
 import warnings
 
-
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
-
 
 __version__ = "2.13.0"
 __author__ = "Kostiantyn Rybnikov"
@@ -56,21 +54,20 @@ __all__ = (
 #: Contains the implemented semver.org version of the spec
 SEMVER_SPEC_VERSION = "2.0.0"
 
-
 if not hasattr(__builtins__, "cmp"):
-
     def cmp(a, b):
         """Return negative if a<b, zero if a==b, positive if a>b."""
         return (a > b) - (a < b)
-
 
 if PY3:  # pragma: no cover
     string_types = str, bytes
     text_type = str
     binary_type = bytes
 
+
     def b(s):
         return s.encode("latin-1")
+
 
     def u(s):
         return s
@@ -81,8 +78,10 @@ else:  # pragma: no cover
     text_type = unicode
     binary_type = str
 
+
     def b(s):
         return s
+
 
     # Workaround for standalone backslash
     def u(s):
@@ -147,10 +146,10 @@ def deprecated(func=None, replace=None, version=None, category=DeprecationWarnin
 
         msg = " ".join(msg)
         warnings.warn_explicit(
-            msg.format(m=func.__module__, f=f, r=r, v=version),
-            category=category,
-            filename=inspect.getfile(frame.f_code),
-            lineno=frame.f_lineno,
+                msg.format(m=func.__module__, f=f, r=r, v=version),
+                category=category,
+                filename=inspect.getfile(frame.f_code),
+                lineno=frame.f_lineno,
         )
         # As recommended in the Python documentation
         # https://docs.python.org/3/library/inspect.html#the-interpreter-stack
@@ -198,7 +197,7 @@ def comparator(operator):
         comparable_types = (VersionInfo, dict, tuple, list, text_type, binary_type)
         if not isinstance(other, comparable_types):
             raise TypeError(
-                "other type %r must be in %r" % (type(other), comparable_types)
+                    "other type %r must be in %r" % (type(other), comparable_types)
             )
         return operator(self, other)
 
@@ -222,24 +221,24 @@ class VersionInfo(object):
     _LAST_NUMBER = re.compile(r"(?:[^\d]*(\d+)[^\d]*)+")
     #: Regex for a semver version
     _REGEX = re.compile(
-        r"""
-            ^
-            (?P<major>0|[1-9]\d*)
-            \.
-            (?P<minor>0|[1-9]\d*)
-            \.
-            (?P<patch>0|[1-9]\d*)
-            (?:-(?P<prerelease>
-                (?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)
-                (?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*
-            ))?
-            (?:\+(?P<build>
-                [0-9a-zA-Z-]+
-                (?:\.[0-9a-zA-Z-]+)*
-            ))?
-            $
-        """,
-        re.VERBOSE,
+            r"""
+                ^
+                (?P<major>0|[1-9]\d*)
+                \.
+                (?P<minor>0|[1-9]\d*)
+                \.
+                (?P<patch>0|[1-9]\d*)
+                (?:-(?P<prerelease>
+                    (?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)
+                    (?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*
+                ))?
+                (?:\+(?P<build>
+                    [0-9a-zA-Z-]+
+                    (?:\.[0-9a-zA-Z-]+)*
+                ))?
+                $
+            """,
+            re.VERBOSE,
     )
 
     def __init__(self, major, minor=0, patch=0, prerelease=None, build=None):
@@ -255,7 +254,7 @@ class VersionInfo(object):
             version_parts[name] = value
             if value < 0:
                 raise ValueError(
-                    "{!r} is negative. A version can only be positive.".format(name)
+                        "{!r} is negative. A version can only be positive.".format(name)
                 )
 
         self._major = version_parts["major"]
@@ -342,13 +341,13 @@ class VersionInfo(object):
 ('prerelease', None), ('build', None)])
         """
         return collections.OrderedDict(
-            (
-                ("major", self.major),
-                ("minor", self.minor),
-                ("patch", self.patch),
-                ("prerelease", self.prerelease),
-                ("build", self.build),
-            )
+                (
+                    ("major", self.major),
+                    ("minor", self.minor),
+                    ("patch", self.patch),
+                    ("prerelease", self.prerelease),
+                    ("build", self.build),
+                )
         )
 
     # For compatibility reasons:
@@ -497,9 +496,9 @@ build='build.10')
             other = cls(*other)
         elif not isinstance(other, cls):
             raise TypeError(
-                "Expected str or {} instance, but got {}".format(
-                    cls.__name__, type(other)
-                )
+                    "Expected str or {} instance, but got {}".format(
+                            cls.__name__, type(other)
+                    )
             )
 
         v1 = self.to_tuple()[:3]
@@ -549,15 +548,15 @@ build='build.10')
         }
         if part not in validparts:
             raise ValueError(
-                "Invalid part. Expected one of {validparts}, but got {part!r}".format(
-                    validparts=validparts, part=part
-                )
+                    "Invalid part. Expected one of {validparts}, but got {part!r}".format(
+                            validparts=validparts, part=part
+                    )
             )
         version = self
         if (version.prerelease or version.build) and (
-            part == "patch"
-            or (part == "minor" and version.patch == 0)
-            or (part == "major" and version.minor == version.patch == 0)
+                part == "patch"
+                or (part == "minor" and version.patch == 0)
+                or (part == "major" and version.minor == version.patch == 0)
         ):
             return version.replace(prerelease=None, build=None)
 
@@ -613,9 +612,9 @@ build='build.10')
             index = slice(index, index + 1)
 
         if (
-            isinstance(index, slice)
-            and (index.start is not None and index.start < 0)
-            or (index.stop is not None and index.stop < 0)
+                isinstance(index, slice)
+                and (index.start is not None and index.start < 0)
+                or (index.stop is not None and index.stop < 0)
         ):
             raise IndexError("Version index cannot be negative")
 
@@ -683,15 +682,15 @@ build='build.10')
             match_version = match_expr[1:]
         else:
             raise ValueError(
-                "match_expr parameter should be in format <op><ver>, "
-                "where <op> is one of "
-                "['<', '>', '==', '<=', '>=', '!=']. "
-                "You provided: %r" % match_expr
+                    "match_expr parameter should be in format <op><ver>, "
+                    "where <op> is one of "
+                    "['<', '>', '==', '<=', '>=', '!=']. "
+                    "You provided: %r" % match_expr
             )
 
         possibilities_dict = {
-            ">": (1,),
-            "<": (-1,),
+            ">":  (1,),
+            "<":  (-1,),
             "==": (0,),
             "!=": (-1, 1),
             ">=": (0, 1),
@@ -1101,11 +1100,11 @@ def cmd_bump(args):
     :return: the new, bumped version
     """
     maptable = {
-        "major": "bump_major",
-        "minor": "bump_minor",
-        "patch": "bump_patch",
+        "major":      "bump_major",
+        "minor":      "bump_minor",
+        "patch":      "bump_patch",
         "prerelease": "bump_prerelease",
-        "build": "bump_build",
+        "build":      "bump_build",
     }
     if args.bump is None:
         # When bump is called without arguments,
@@ -1167,7 +1166,7 @@ def createparser():
     parser = argparse.ArgumentParser(prog=__package__, description=__doc__)
 
     parser.add_argument(
-        "--version", action="version", version="%(prog)s " + __version__
+            "--version", action="version", version="%(prog)s " + __version__
     )
 
     s = parser.add_subparsers()
@@ -1184,29 +1183,29 @@ def createparser():
 
     # Create subparsers for the bump subparser:
     for p in (
-        sb.add_parser("major", help="Bump the major part of the version"),
-        sb.add_parser("minor", help="Bump the minor part of the version"),
-        sb.add_parser("patch", help="Bump the patch part of the version"),
-        sb.add_parser("prerelease", help="Bump the prerelease part of the version"),
-        sb.add_parser("build", help="Bump the build part of the version"),
+            sb.add_parser("major", help="Bump the major part of the version"),
+            sb.add_parser("minor", help="Bump the minor part of the version"),
+            sb.add_parser("patch", help="Bump the patch part of the version"),
+            sb.add_parser("prerelease", help="Bump the prerelease part of the version"),
+            sb.add_parser("build", help="Bump the build part of the version"),
     ):
         p.add_argument("version", help="Version to raise")
 
     # Create the check subcommand
     parser_check = s.add_parser(
-        "check", help="Checks if a string is a valid semver version"
+            "check", help="Checks if a string is a valid semver version"
     )
     parser_check.set_defaults(func=cmd_check)
     parser_check.add_argument("version", help="Version to check")
 
     # Create the nextver subcommand
     parser_nextver = s.add_parser(
-        "nextver", help="Determines the next version, taking prereleases into account."
+            "nextver", help="Determines the next version, taking prereleases into account."
     )
     parser_nextver.set_defaults(func=cmd_nextver)
     parser_nextver.add_argument("version", help="Version to raise")
     parser_nextver.add_argument(
-        "part", help="One of 'major', 'minor', 'patch', or 'prerelease'"
+            "part", help="One of 'major', 'minor', 'patch', or 'prerelease'"
     )
     return parser
 

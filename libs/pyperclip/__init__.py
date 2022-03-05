@@ -71,7 +71,7 @@ EXCEPT_MSG = """
 
 PY2 = sys.version_info[0] == 2
 
-STR_OR_UNICODE = unicode if PY2 else str # For paste(): Python 3 uses str, Python 2 uses unicode.
+STR_OR_UNICODE = str
 
 ENCODING = 'utf-8'
 
@@ -104,7 +104,7 @@ class PyperclipTimeoutException(PyperclipException):
 
 def _stringifyText(text):
     if PY2:
-        acceptedTypes = (unicode, str, int, float, bool)
+        acceptedTypes = (str, int, float, bool)
     else:
         acceptedTypes = (str, int, float, bool)
     if not isinstance(text, acceptedTypes):

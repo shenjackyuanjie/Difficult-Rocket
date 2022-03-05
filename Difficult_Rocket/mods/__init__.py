@@ -15,7 +15,7 @@ gitee:  @shenjackyuanjie
 from typing import Tuple
 
 # from libs
-from libs.semver.semver import VersionInfo
+from libs.semver import VersionInfo
 
 # from DR
 from Difficult_Rocket import semver_game_version
@@ -54,8 +54,7 @@ class MODInfo(Serializable):
     write_loader_version: VersionInfo  # mod编写的加载器版本
     compatible_version: Tuple[VersionInfo, VersionInfo] = (semver_game_version, semver_game_version)  # mod兼容版本
     # 第一个是最低兼容版本,第二个是最高兼容版本
-    # 例如: ("1.0.0", "1.1.0")
-    # 例如: ("1.0.0", "1.1.0")
+    # 例如: ("1.0.0", "1.1.0") 表示从1.0.0版本开始兼容,到1.1.0版本结束兼容
 
 
 MOD_info = MODInfo(
@@ -65,6 +64,8 @@ MOD_info = MODInfo(
     write_version=semver_game_version,
     write_loader_version=semver_loader_version
 )
+
+print(MOD_info.serialize())
 
 """
 一些重置用函数

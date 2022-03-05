@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from libs.semver.semver import VersionInfo
+from libs.semver import VersionInfo
 
 game_version = '0.6.2'
 __version__ = game_version

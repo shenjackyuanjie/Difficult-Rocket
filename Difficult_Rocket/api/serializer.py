@@ -13,7 +13,8 @@ from enum import EnumMeta
 from threading import Lock
 from typing import Union, TypeVar, List, Dict, Type, get_type_hints, Any
 
-from semver import VersionInfo
+from semver import VersionInfo as semver_VersionInfo
+from libs.semver import VersionInfo as lib_semver_VersionInfo
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
@@ -46,13 +47,13 @@ def _get_args(cls: Type) -> tuple:
     return getattr(cls, '__args__', ())
 
 
-_BASIC_CLASSES = (type(None), bool, int, float, str, list, dict, VersionInfo)
+_BASIC_CLASSES = (type(None), bool, int, float, str, list, dict, lib_semver_VersionInfo, semver_VersionInfo)
 
 
 def serialize(obj) -> _BASIC_CLASSES:
     if type(obj) in (type(None), int, float, str, bool):
         return obj
-    elif isinstance(obj, VersionInfo):
+    elif isinstance(obj, lib_semver_VersionInfo) or isinstance(obj, semver_VersionInfo):
         return obj
     elif isinstance(obj, list) or isinstance(obj, tuple):
         return list(map(serialize, obj))
@@ -67,7 +68,7 @@ def serialize(obj) -> _BASIC_CLASSES:
             if attr_name.startswith('_'):
                 attr_dict.pop(attr_name)
     except:
-        raise TypeError('Unsupported input type {}'.format(type(obj))) from None
+        raise TypeError(f'Unsupported input type {type(obj)}') from None
     else:
         return serialize(attr_dict)
 
