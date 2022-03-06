@@ -1,11 +1,5 @@
-#  -------------------------------
-#  Difficult Rocket
-#  Copyright © 2021-2022 by shenjackyuanjie
-#  All rights reserved
-#  -------------------------------
 # 本文件以 GNU Lesser General Public License v3.0（GNU LGPL v3) 开源协议进行授权 (谢谢狐狸写出这么好的MCDR)
 # 顺便说一句,我把所有的tab都改成了空格,因为我觉得空格比tab更好看(草,后半句是github copilot自动填充的)
-
 
 import copy
 from abc import ABC

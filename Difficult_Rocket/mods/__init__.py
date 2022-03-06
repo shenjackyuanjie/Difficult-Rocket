@@ -15,11 +15,11 @@ gitee:  @shenjackyuanjie
 from typing import Tuple
 
 # from libs
-from libs.semver import VersionInfo
+from semver import VersionInfo
+from MCDR.serializer import Serializable
 
 # from DR
 from Difficult_Rocket import semver_game_version
-from Difficult_Rocket.api.serializer import Serializable
 
 """
 mod系统参数
