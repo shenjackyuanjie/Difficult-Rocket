@@ -42,19 +42,17 @@ class FpsLogger:
         else:
             self.fps_list.append(1)
         if len(self.fps_list) > self.count:
-            self.fps_list = self.fps_list[-self.count + 1:]
+            self.fps_list = self.fps_list[-self.count + 1:]  # 整个列表往前挪一位
         if len(self.get_fps_list) > self.count:
-            self.get_fps_list = self.get_fps_list[-self.count + 1:]
+            self.get_fps_list = self.get_fps_list[-self.count + 1:]  # 整个列表往前挪一位
         try:
-            self._fps = statistics.geometric_mean(self.fps_list[-100:])
-            self.middle_fps = statistics.median(self.fps_list)
+            self._fps = statistics.geometric_mean(self.fps_list[-100:])  # 取最后100个值的平均值
+            self.middle_fps = statistics.median(self.fps_list)  # 取中间值
         except Exception:
             print(self.fps_list)
             raise
         self._max_fps = max(self.fps_list)
         self._min_fps = min(self.fps_list)
-        # 获取新fps
-        del now_fps
 
     @property
     def max_fps(self):

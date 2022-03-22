@@ -1,4 +1,4 @@
-﻿#  -------------------------------
+#  -------------------------------
 #  Difficult Rocket
 #  Copyright © 2021-2022 by shenjackyuanjie
 #  All rights reserved
@@ -11,17 +11,17 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import logging
 import os
 import sys
+import logging
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from Difficult_Rocket.api import tools
+from utils import tools
 from Difficult_Rocket.api.delivery import Delivery
-from Difficult_Rocket.api.new_thread import new_thread
+from utils.new_thread import new_thread
 
 
 # TODO 改变服务端启动逻辑 0.6.0会写完的（

@@ -1,5 +1,6 @@
 # 本文件以 GNU Lesser General Public License v3.0（GNU LGPL v3) 开源协议进行授权 (谢谢狐狸写出这么好的MCDR)
 # 顺便说一句,我把所有的tab都改成了空格,因为我觉得空格比tab更好看(草,后半句是github copilot自动填充的)
+# 节选自MCDReforged（5a92965，2022年1月），略有改动[doge]
 
 import copy
 from abc import ABC
@@ -7,8 +8,7 @@ from enum import EnumMeta
 from threading import Lock
 from typing import Union, TypeVar, List, Dict, Type, get_type_hints, Any
 
-from semver import VersionInfo as semver_VersionInfo
-from libs.semver import VersionInfo as lib_semver_VersionInfo
+from MCDR.version import Version
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
@@ -41,13 +41,13 @@ def _get_args(cls: Type) -> tuple:
     return getattr(cls, '__args__', ())
 
 
-_BASIC_CLASSES = (type(None), bool, int, float, str, list, dict, lib_semver_VersionInfo, semver_VersionInfo)
+_BASIC_CLASSES = (type(None), bool, int, float, str, list, dict, Version)
 
 
 def serialize(obj) -> _BASIC_CLASSES:
     if type(obj) in (type(None), int, float, str, bool):
         return obj
-    elif isinstance(obj, lib_semver_VersionInfo) or isinstance(obj, semver_VersionInfo):
+    elif isinstance(obj, Version):
         return obj
     elif isinstance(obj, list) or isinstance(obj, tuple):
         return list(map(serialize, obj))
@@ -86,6 +86,9 @@ def deserialize(data, cls: Type[T], *, error_at_missing=False, error_at_redundan
     # Element (None, int, float, str, list, dict)
     # For list and dict, since it doesn't have any type hint, we choose to simply return the data
     elif cls in _BASIC_CLASSES and type(data) is cls:
+        return data
+    # Version
+    elif isinstance(cls, Version):
         return data
     # float thing
     elif cls is float and isinstance(data, int):

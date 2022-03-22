@@ -19,9 +19,13 @@
 
 ### Add
 
-- 添加模块 `semver` 和协议 (`LICENSE.txt`)
-  - Add modules `semver` Add LICENSE (`LICENSE.txt`)
+[然后就很快被替换成MCDR的了]: <> (- 添加模块 `semver` 和协议 &#40;`LICENSE.txt`&#41;)
+[Add soon been replace by MCDR]: <> (  - Add modules `semver` Add LICENSE &#40;`LICENSE.txt`&#41;)
+- 添加了 `libs.MCDR` 文件夹 (`new_thread`没有包含在内)
+  - Add `libs.MCDR` folder (`new_thread` not included)
 - 添加对 mod 的支持(还在写啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊)
+- 计划写个设计文档
+  - Plan to write a design document
 
 
 ## ~~202111 202112xx 20220119~~ 20220207 V 0.6.1

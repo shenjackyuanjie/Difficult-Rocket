@@ -17,7 +17,6 @@ import sys
 import time
 import logging
 import traceback
-import configparser
 
 from decimal import Decimal
 
@@ -30,9 +29,10 @@ from Difficult_Rocket import translate
 from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.translate import tr
 from Difficult_Rocket.command import line
-from Difficult_Rocket.fps.fps_log import FpsLogger
 from Difficult_Rocket.guis.widgets import InputBox
-from Difficult_Rocket.api import tools, new_thread
+from Difficult_Rocket.api import new_thread
+from utils import tools
+from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
 # libs function
 local_lib = True
@@ -40,9 +40,11 @@ if local_lib:
     from libs import pyglet
     from libs.pyglet.window import Window
     from libs.pyglet.window import key, mouse
+    from libs import toml
 else:
     import pyglet
     from pyglet.window import key, mouse
+    import toml
 
 
 class Client:
@@ -51,7 +53,7 @@ class Client:
         # logging
         self.logger = logging.getLogger('client')
         # config
-        self.config = tools.load_file('configs/main.config')
+        self.config = tools.load_file('./configs/main.toml')
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
@@ -95,9 +97,9 @@ class ClientWindow(Window):
         # configs
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
-        self.set_icon(pyglet.image.load('textures/icon.png'))
-        self.main_config = tools.load_file('configs/main.config')
-        self.game_config = tools.load_file('configs/game.config')
+        self.set_icon(pyglet.image.load('./textures/icon.png'))
+        self.main_config = tools.load_file('./configs/main.toml')
+        self.game_config = tools.load_file('./configs/game.config')
         # dic
         self.environment = {}
         self.textures = {}  # all textures
@@ -156,9 +158,13 @@ class ClientWindow(Window):
                 # 从字体文件夹加载字体（或是字体类文件夹）
                 if os.path.isfile(os.path.join(fonts_folder_path, fonts_folders, files)):
                     # 如果是字体文件，则直接加载
+                    # self.logger.debug(tr.lang('window', 'fonts.load').format(os.path.join(fonts_folder_path, fonts_folders, files)))
                     pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files))
                 else:  # 否则，遍历加载字体类文件夹并加载
                     for font in os.listdir(os.path.join(fonts_folder_path, fonts_folders, files)):
+                        if not font[-4:] == '.ttf':
+                            continue
+                        # self.logger.debug(tr.lang('window', 'fonts.load').format(os.path.join(fonts_folder_path, fonts_folders, files, font)))
                         pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files, font))
 
     # @new_thread('window load_editor')
@@ -187,11 +193,11 @@ class ClientWindow(Window):
 
     @new_thread('window save_info')
     def save_info(self):
-        config_file = configparser.ConfigParser()
-        config_file.read('configs/main.config')
-        config_file['window']['width'] = str(self.width)
-        config_file['window']['height'] = str(self.height)
-        config_file.write(open('configs/main.config', 'w', encoding='utf-8'))
+        print('save_info start')
+        config_file = tools.load_file('./config/config.toml')
+        config_file['window']['width'] = self.width
+        config_file['window']['height'] = self.height
+        toml.dump(config_file, open('./config/config.toml', 'w'))
 
     """
     draws and some event
