@@ -173,7 +173,7 @@ class ClientWindow(Window):
 
     def start_game(self) -> None:
         self.run_input = True
-        self.read_input()
+        # self.read_input()
         pyglet.app.run()
 
     @new_thread('window read_input', daemon=True)
@@ -193,11 +193,11 @@ class ClientWindow(Window):
 
     @new_thread('window save_info')
     def save_info(self):
-        print('save_info start')
-        config_file = tools.load_file('./config/config.toml')
+        self.logger.info('save_info start')
+        config_file = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
-        toml.dump(config_file, open('./config/config.toml', 'w'))
+        toml.dump(config_file, open('./configs/main.toml', 'w'))
 
     """
     draws and some event
@@ -211,9 +211,10 @@ class ClientWindow(Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_fps()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS}] \n{self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS}] {self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self, *dt):
+        # self.logger.debug('on_draw call dt: {}'.format(dt))
         self.clear()
         self.draw_batch()
 

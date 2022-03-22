@@ -70,7 +70,7 @@ class Game:
     # @new_thread('main')
     def _start(self):
         self.server.run()
-        threaded = True
+        threaded = False
         if threaded:
             try:
                 game_process = multiprocessing.Process(target=self.client.start(), name='pyglet app')

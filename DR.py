@@ -38,14 +38,17 @@ if __name__ == '__main__':
     print(sys.path)
     print(hi)
 
-    DEBUGGING = False
+    DEBUGGING = True
     from Difficult_Rocket.api.Exp import *
     from Difficult_Rocket.crash import crash
     try:
         from Difficult_Rocket import main
+
         game = main.Game()
-        from libs.pyglet.gl import glClearColor
-        glClearColor(0, 0, 0, 0)
+
+        # from libs.pyglet.gl import glClearColor
+        # glClearColor(0, 0, 0, 0)
+
         cprofile = False
         if cprofile:
             cProfile.run('game.start()', sort='calls')

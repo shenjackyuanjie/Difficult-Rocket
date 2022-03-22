@@ -2,9 +2,9 @@
 fps = 60
 version = "0.6.1"
 language = "zh-CN"
-date_fmt = '%Y-%m-%d %H-%M-%S'
+date_fmt = "%Y-%m-%d %H-%M-%S"
 write_py_v = "3.8.10"
-fonts_folder = 'libs/fonts'
+fonts_folder = "libs/fonts"
 
 [window]
 style = "None"
@@ -18,4 +18,3 @@ full_screen = false
 [window.default]
 width = 1024
 height = 768
-
