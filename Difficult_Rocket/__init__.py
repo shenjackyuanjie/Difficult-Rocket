@@ -11,15 +11,22 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from MCDR.version import Version
+from libs.MCDR.version import Version
 
 game_version = Version("0.6.2")
 __version__ = game_version
 
+DR_options = {
+    'InputBox_use_TextEntry': False,
+    'playing': False
+}
 
-playing = False
+_DR_options_type = {
+    'InputBox_use_TextEntry': bool,
+    'playing': bool
+}
 
-if playing:
+if DR_options['playing']:
     from .api import new_thread
 
     @new_thread('think')

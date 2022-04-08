@@ -13,6 +13,7 @@ gitee:  @shenjackyuanjie
 
 from Difficult_Rocket import translate
 from Difficult_Rocket.guis.format import html
+from Difficult_Rocket import DR_options
 
 # from libs import pyglet
 from libs.pyglet import font
@@ -21,7 +22,7 @@ from libs.pyglet.window import key
 from libs.pyglet.gui import widgets
 from libs.pyglet.sprite import Sprite
 from libs.pyglet.shapes import Rectangle
-from libs.pyglet.image import AbstractImage
+# from libs.pyglet.image import AbstractImage
 from libs.pyglet.graphics import Batch, Group
 from libs.pyglet.text.document import FormattedDocument
 from libs.pyglet.text.layout import IncrementalTextLayout
@@ -41,7 +42,8 @@ class Parts(widgets.WidgetBase):
                  y: int,
                  width: int,
                  height: int,
-                 textures: AbstractImage,
+                 # textures: AbstractImage,
+                 textures,
                  batch: Batch,
                  parts_data: dict):
         super().__init__(x, y, width, height)
@@ -79,37 +81,39 @@ class InputBox(widgets.WidgetBase):
                               dpi=font_dpi)
         self.font_height = self.font.ascent - self.font.descent
         self.out_bound = out_line
-        # 基于IncrementalTextLayout的处理系统
-        self._doc = FormattedDocument(message)
-        # self._doc.set_style()
-        self._layout = IncrementalTextLayout(self._doc, self.font, width, height,
-                                             batch=batch, group=group)
-        # 基于Label的处理系统
-        self._input_box = Label(x=x + out_line, y=y + out_line,
-                                width=width, height=self.font_height + self.out_bound * 2,
-                                color=text_color,
-                                font_name=font_name, font_size=font_size,
-                                batch=batch, group=group,
-                                text=message)
-        self._HTML_box = HTMLLabel(x=x + out_line, y=y + out_line + 30,
-                                   width=width, height=self.font_height + self.out_bound * 2,
-                                   batch=batch, group=group,
-                                   text=message)
-        self._out_box = Rectangle(x=x - out_line, y=y - out_line,
-                                  color=out_line_color,
-                                  width=width + (out_line * 2), height=height + (out_line * 2),
-                                  batch=batch, group=group)
-        self._光标 = Rectangle(x=x + out_line, y=y + out_line,
-                             color=cursor_color,
-                             width=1, height=self.font_height,
-                             batch=batch, group=group)
-        self._选择框 = Rectangle(x=x, y=y, width=0, height=self.font_height,
-                              color=select_color)
-        self._选择的字 = Label(x=x, y=y, width=0, height=self.font_height,
-                           color=text_color,
-                           font_name=font_name, font_size=font_size,
-                           batch=batch, group=group,
-                           text='')
+        if DR_options['InputBox_use_TextEntry']:
+            # 基于IncrementalTextLayout的处理系统
+            self._doc = FormattedDocument(message)
+            # self._doc.set_style()
+            self._layout = IncrementalTextLayout(self._doc, self.font, width, height,
+                                                 batch=batch, group=group)
+        else:
+            # 基于Label的处理系统
+            self._input_box = Label(x=x + out_line, y=y + out_line,
+                                    width=width, height=self.font_height + self.out_bound * 2,
+                                    color=text_color,
+                                    font_name=font_name, font_size=font_size,
+                                    batch=batch, group=group,
+                                    text=message)
+            self._HTML_box = HTMLLabel(x=x + out_line, y=y + out_line + 30,
+                                       width=width, height=self.font_height + self.out_bound * 2,
+                                       batch=batch, group=group,
+                                       text=message)
+            self._out_box = Rectangle(x=x - out_line, y=y - out_line,
+                                      color=out_line_color,
+                                      width=width + (out_line * 2), height=height + (out_line * 2),
+                                      batch=batch, group=group)
+            self._光标 = Rectangle(x=x + out_line, y=y + out_line,
+                                 color=cursor_color,
+                                 width=1, height=self.font_height,
+                                 batch=batch, group=group)
+            self._选择框 = Rectangle(x=x, y=y, width=0, height=self.font_height,
+                                  color=select_color)
+            self._选择的字 = Label(x=x, y=y, width=0, height=self.font_height,
+                               color=text_color,
+                               font_name=font_name, font_size=font_size,
+                               batch=batch, group=group,
+                               text='')
 
     """
     输入框的属性

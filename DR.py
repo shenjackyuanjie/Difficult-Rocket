@@ -38,16 +38,20 @@ if __name__ == '__main__':
     print(sys.path)
     print(hi)
 
-    DEBUGGING = True
+    DEBUGGING = False
+    import Difficult_Rocket
     from Difficult_Rocket.api.Exp import *
     from Difficult_Rocket.crash import crash
     try:
+        import pyglet
+        pyglet.options["win32_gdi_font"] = True
+
         from Difficult_Rocket import main
 
-        game = main.Game()
+        from libs.pyglet.gl import glClearColor
+        glClearColor(0.5, 0.5, 0.5, 0)
 
-        # from libs.pyglet.gl import glClearColor
-        # glClearColor(0, 0, 0, 0)
+        game = main.Game()
 
         cprofile = False
         if cprofile:
