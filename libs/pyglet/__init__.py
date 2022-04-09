@@ -131,7 +131,7 @@ if getattr(sys, 'frozen', None):
 #:     library instead of the system installed version. This option is set
 #:     to True by default.
 #:
-#:     .. versionadded:: 1.2
+#:     .. versionadded:: 1.2pyglet
 #:
 options = {
     'audio': ('xaudio2', 'directsound', 'openal', 'pulse', 'silent'),

@@ -70,8 +70,12 @@ class InputBox(widgets.WidgetBase):
                  cursor_color: [int, int, int] = (187, 187, 187),
                  select_color: [int, int, int] = (63, 115, 255),
                  out_line: int = 2,
-                 batch: Batch = Batch(),
-                 group: Group = Group()):
+                 batch: Batch = None,
+                 group: Group = None):
+        if batch is None:
+            batch = Batch()
+        if group is None:
+            group = Group()
         super().__init__(x, y, width, height)
         self.enabled = False
         self._text = message
@@ -86,6 +90,9 @@ class InputBox(widgets.WidgetBase):
             self._doc = FormattedDocument(message)
             # self._doc.set_style()
             self._layout = IncrementalTextLayout(self._doc, self.font, width, height,
+                                                 batch=batch, group=group)
+            self._input_box = widgets.TextEntry(x, y, width, height,
+                                                 self._doc, self._layout,
                                                  batch=batch, group=group)
         else:
             # 基于Label的处理系统
