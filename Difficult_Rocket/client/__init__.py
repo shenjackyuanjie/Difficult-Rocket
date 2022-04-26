@@ -20,18 +20,13 @@ import traceback
 
 from decimal import Decimal
 
-if __name__ == '__main__':  # been start will not run this
-    sys.path.append('/bin/libs')
-    sys.path.append('/bin')
-
 # Difficult_Rocket function
-from Difficult_Rocket import translate
 from Difficult_Rocket.api.Exp import *
-from Difficult_Rocket.translate import tr
+from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.command import line
 from Difficult_Rocket.guis.widgets import InputBox
 from Difficult_Rocket.api import new_thread
-from utils import tools
+from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
 # libs function
@@ -133,7 +128,7 @@ class ClientWindow(Window):
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            width=self.width - 20, height=20,
                                            anchor_x='left', anchor_y='top',
-                                           font_name=translate.微软等宽无线, font_size=20,
+                                           font_name=tr.微软等宽无线, font_size=20,
                                            multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率

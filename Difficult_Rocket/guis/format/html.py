@@ -12,10 +12,8 @@ gitee:  @shenjackyuanjie
 """
 
 import re
-import julia
 
-from Difficult_Rocket import translate
-
+from utils import translate
 
 default_style = {
     'font_name': 'Times New Roman',

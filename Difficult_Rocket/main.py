@@ -24,7 +24,7 @@ if __name__ == '__main__':  # been start will not run this
 
 from Difficult_Rocket import client, server
 from utils import tools
-from Difficult_Rocket.translate import tr
+from utils.translate import tr
 
 
 class Game:

@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket import translate
+from utils import translate
 from Difficult_Rocket.guis.format import html
 from Difficult_Rocket import DR_options
 
@@ -27,7 +27,7 @@ from libs.pyglet.graphics import Batch, Group
 from libs.pyglet.text.document import FormattedDocument
 from libs.pyglet.text.layout import IncrementalTextLayout
 # from libs import pyperclip
-from libs.pyperclip import paste, copy
+from libs.pyperclip import paste
 
 __all__ = ['Parts']
 
@@ -42,8 +42,8 @@ class Parts(widgets.WidgetBase):
                  y: int,
                  width: int,
                  height: int,
-                 # textures: AbstractImage,
-                 textures,
+                 textures: AbstractImage,
+                 # textures,
                  batch: Batch,
                  parts_data: dict):
         super().__init__(x, y, width, height)

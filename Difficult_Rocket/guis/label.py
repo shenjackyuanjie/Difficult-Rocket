@@ -11,11 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import re
-from typing import Dict, List
-
-from Difficult_Rocket import translate
-
 from libs.pyglet.text import DocumentLabel
 
 

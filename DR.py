@@ -39,7 +39,6 @@ if __name__ == '__main__':
     print(hi)
 
     DEBUGGING = False
-    import Difficult_Rocket
     from Difficult_Rocket.api.Exp import *
     from Difficult_Rocket.crash import crash
     try:
@@ -61,8 +60,6 @@ if __name__ == '__main__':
         if DEBUGGING:
             raise TestError('debugging')
     except Exception as exp:
-        from Difficult_Rocket.translate import tr
-
         print(error_format['error.happen'])
         error = traceback.format_exc()
         name = type(exp).__name__
