@@ -6,6 +6,10 @@ DR.code-workspace
 # PYCharm file
 .idea/
 
+# C .so .dll
+*.so
+*.dll
+
 # log files
 logs/
 
