@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2021 pyglet contributors
+# Copyright (c) 2008-2022 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -669,7 +669,6 @@ class TextLayoutGroup(graphics.Group):
 
     def unset_state(self):
         glDisable(GL_BLEND)
-        glBindTexture(self.texture.target, 0)
         self.program.stop()
 
     def __repr__(self):
@@ -714,7 +713,6 @@ class ScrollableTextLayoutGroup(graphics.Group):
 
     def unset_state(self):
         glDisable(GL_BLEND)
-        glBindTexture(self.texture.target, 0)
         self.program.stop()
 
     def __repr__(self):

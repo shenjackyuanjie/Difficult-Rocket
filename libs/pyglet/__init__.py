@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2021 pyglet contributors
+# Copyright (c) 2008-2022 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ import sys
 from typing import TYPE_CHECKING
 
 #: The release version
-version = '2.0.a3'
+version = '2.0.dev14'
 __version__ = version
 
 if sys.version_info < (3, 6):
@@ -159,6 +159,7 @@ options = {
     'headless': False,
     'headless_device': 0,
     'win32_disable_shaping': False,
+    'xinput_controllers': True,
 }
 
 _option_types = {
@@ -186,7 +187,8 @@ _option_types = {
     'win32_gdi_font': bool,
     'headless': bool,
     'headless_device': int,
-    'win32_disable_shaping': bool
+    'win32_disable_shaping': bool,
+    'xinput_controllers': bool
 }
 
 
