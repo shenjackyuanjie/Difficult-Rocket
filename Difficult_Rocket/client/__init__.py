@@ -128,7 +128,7 @@ class ClientWindow(Window):
         self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
                                            width=self.width - 20, height=20,
                                            anchor_x='left', anchor_y='top',
-                                           font_name=tr.微软等宽无线, font_size=20,
+                                           font_name=translate.微软等宽无线, font_size=20,
                                            multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率

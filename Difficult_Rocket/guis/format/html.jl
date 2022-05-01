@@ -10,10 +10,10 @@ using PyCall
 include("../../utils/translate.jl")
 
 struct default_style
-#     font_name::String = fonts.HOS_S()
+    font_name::String
     font_size::UInt8
     bold::Bool
     italic::Bool
 end
 
-a = default_style(1, true, true)
+default_style = default_style(fonts.HOS)

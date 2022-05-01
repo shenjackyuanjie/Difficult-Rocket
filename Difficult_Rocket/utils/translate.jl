@@ -8,10 +8,10 @@ translate:
 module fonts
 
 export HOS, HOS_C, HOS_S, HOS_T
-HOS = "HarmonyOS Sans" :: String
-HOS_S = "HarmonyOS Sans SC" :: String
-HOS_T = "HarmonyOS Sans TC" :: String
-HOS_C = "HarmonyOS Sans Condensed" :: String
+const HOS = "HarmonyOS Sans" :: String
+const HOS_S = "HarmonyOS Sans SC" :: String
+const HOS_T = "HarmonyOS Sans TC" :: String
+const HOS_C = "HarmonyOS Sans Condensed" :: String
 
 export 鸿蒙字体, 鸿蒙简体, 鸿蒙繁体, 鸿蒙窄体
 鸿蒙字体 = HOS
