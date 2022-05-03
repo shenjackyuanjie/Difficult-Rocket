@@ -1,4 +1,10 @@
-/* by shenjackyuanjie  一些数据类型的转换 */
+/* 一个好用的头文件
+-------------------------------
+Difficult Rocket
+Copyright © 2021-2022 by shenjackyuanjie
+All rights reserved
+-------------------------------
+*/
 
 // 基本的头文件引用
 #include<stdio.h>
@@ -21,7 +27,7 @@
 #define float32 float
 #define float64 double
 // bool 布尔值
-#define bool int8
+#define bool int
 #define true 1
 #define false 0
 // 字符串
