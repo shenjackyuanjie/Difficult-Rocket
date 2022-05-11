@@ -16,6 +16,11 @@ import re
 
 from typing import Union
 
+# DR
+from Difficult_Rocket.api.Exp import CommandQuotationMarkError
+
+search_re = re.compile(r'(?<!\\)"')
+
 
 class CommandText:
     """
@@ -23,9 +28,23 @@ class CommandText:
     """
 
     def __init__(self, text: str):
+        self.plain_command = text
         self.text = text
+        self.error = False
         self.value_dict = {}
         self.value_list = []
+        self.command_tree = {}
+        tree_list = text.split(' ')
+
+        pass_node = False
+        for node in tree_list:
+            if node[0] == "\"" and len(node) > 1:  # |"xxxxx|
+                if pass_node:  # |"xxxx "xxxx|
+                    self.error = CommandQuotationMarkError
+                pass_node = True
+                first_node = tree_list.index(node)
+            if node[-1] == "\"" and len(node) > 1:  # |xxxxxx"|
+                pass_node = False
 
     def find(self, text: str) -> Union[str, bool]:
         finding = re.match(text, self.text)
@@ -51,16 +70,20 @@ class CommandText:
         else:
             return False
 
-    def greedy(self, name: str = None) -> str:
-        if name:
-            self.value_dict[name] = self.text
-        self.value_list.append(self.text)
-        return self.text
-
     def value(self,
               name: str = None,
               split: str = ' ',
               middle: list = ('\'', '\"')):
+        pass
+
+    def get_all(self, value_name: str):
+        self.value_list.append(self.text)
+        if value_name:
+            self.value_dict[value_name] = self.text
+        self.text = ''
+        return self.value_list[-1]
+
+    def get_value(self):
         pass
 
     def __str__(self):

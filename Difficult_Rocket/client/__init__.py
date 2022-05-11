@@ -22,10 +22,10 @@ from decimal import Decimal
 
 # Difficult_Rocket function
 from Difficult_Rocket.api.Exp import *
-from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.command import line
-from Difficult_Rocket.guis.widgets import InputBox
+from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.api import new_thread
+from Difficult_Rocket.utils.translate import tr
+from Difficult_Rocket.guis.widgets import InputBox
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
@@ -73,6 +73,16 @@ class Client:
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
 
+def pyglet_load_fonts_folder(folder) -> None:
+    file_folder_list = os.listdir(folder)
+    for obj in file_folder_list:
+        if os.path.isfile(os.path.join(folder, obj)):
+            if obj[-4:] == '.ttf':
+                pyglet.font.add_file(os.path.join(folder, obj))
+        else:
+            pyglet_load_fonts_folder(os.path.join(folder, obj))
+
+
 class ClientWindow(Window):
 
     def __init__(self, net_mode='local', *args, **kwargs):
@@ -95,10 +105,6 @@ class ClientWindow(Window):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.main_config = tools.load_file('./configs/main.toml')
         self.game_config = tools.load_file('./configs/game.config')
-        # dic
-        self.environment = {}
-        self.textures = {}  # all textures
-        self.runtime = {}
         # FPS
         self.FPS = Decimal(int(self.main_config['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
@@ -113,13 +119,7 @@ class ClientWindow(Window):
         self.setup()
         # 命令显示
         self.command_group = pyglet.graphics.Group(0)
-        # self.command = line.CommandLine(x=50, y=30,  # 实例化
-        #                                 width=self.width - 100, height=40,
-        #                                 length=int(self.game_config['command']['show']),
-        #                                 batch=self.label_batch, group=self.command_group)
-        # self.push_handlers(self.command)
-        # self.command.set_handler('on_command', self.on_command)
-        # self.command.set_handler('on_message', self.on_message)
+        self.command_tree = tree.CommandTree(tree.DR_command)
         self.input_box = InputBox(x=50, y=30, width=300, height=20,
                                   batch=self.label_batch)  # 实例化
         self.push_handlers(self.input_box)
@@ -147,23 +147,11 @@ class ClientWindow(Window):
     def load_fonts(self):
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
         # 加载字体路径
-        for fonts_folders in os.listdir(fonts_folder_path):
-            # 从字体路径内加载字体文件夹
-            for files in os.listdir(os.path.join(fonts_folder_path, fonts_folders)):
-                # 从字体文件夹加载字体（或是字体类文件夹）
-                if os.path.isfile(os.path.join(fonts_folder_path, fonts_folders, files)):
-                    # 如果是字体文件，则直接加载
-                    # self.logger.debug(tr.lang('window', 'fonts.load').format(os.path.join(fonts_folder_path, fonts_folders, files)))
-                    pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files))
-                else:  # 否则，遍历加载字体类文件夹并加载
-                    for font in os.listdir(os.path.join(fonts_folder_path, fonts_folders, files)):
-                        if not font[-4:] == '.ttf':
-                            continue
-                        # self.logger.debug(tr.lang('window', 'fonts.load').format(os.path.join(fonts_folder_path, fonts_folders, files, font)))
-                        pyglet.font.add_file(os.path.join(fonts_folder_path, fonts_folders, files, font))
+        # 淦，还写了个递归来处理
+        pyglet_load_fonts_folder(fonts_folder_path)
 
     # @new_thread('window load_editor')
-    def load_Editor(self):
+    def load_editor(self):
         pass
 
     def start_game(self) -> None:
@@ -240,6 +228,7 @@ class ClientWindow(Window):
                 self.command.push_line(self.fps_log.min_fps, block_line=True)
         elif command.match('default'):
             self.set_size(int(self.main_config['window_default']['width']), int(self.main_config['window_default']['height']))
+        self.command_tree.parse(command.plain_command)
 
     def on_message(self, message: line.CommandLine.text):
         self.logger.info(tr.lang('window', 'message.text').format(message))

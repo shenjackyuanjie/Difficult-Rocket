@@ -15,7 +15,20 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202202 V 0.6.2
+## 20220511 V 0.6.3
+
+- 咕了好久的 update log 了
+- github copilot 卒了，所以没有英文
+  - GitHub copy alot break , so no English
+
+### Change
+
+- 将 `api/Exp` 改为文件夹 `api/Exp/__init__.py`
+- 再次重写了 `client.load_fonts()` 现在改为直接加载单独的 `pyglet_load_fonts_folder()`
+
+
+
+## 202202xx V 0.6.2
 
 ### Add
 
@@ -99,6 +112,7 @@
 - 增加内置模块 `toml` 和对应的 `LICENSE.txt`
   - Added built-in module `toml` and corresponding `LICENSE.txt`
 
+
 ## 20211025 V 0.6.0
 
 #### Command Line Update!
@@ -163,6 +177,7 @@
   - `/default`
     - switch window size to default size
 
+
 ## 20210928 V 0.5.2
 
 ### Change
@@ -212,6 +227,7 @@
   - `tr[xxx]` can also use but won't solve error when item not found
   - so best use `tr.lang(xx, xx)`
 
+
 ## 20210902 V 0.5.1
 
 ### Change
@@ -227,6 +243,7 @@
 - auto crash report in `bin/crash/create_crash_report`
 - `bin/api/Exp.py` some Exception
 - `bin/api/translate` to create a `translate` class that can reload language
+
 
 ## 20210823 V 0.5.0
 
@@ -246,6 +263,7 @@
 ### Delete
 
 - `name_hanlder` in `configs.py`
+
 
 ## 20210811 V 0.4.6
 
@@ -273,6 +291,7 @@
 - delete some useless code
 - delete some useless file
 
+
 ## 20210723 V 0.4.5
 
 ### DEBUG
@@ -289,6 +308,7 @@
 - `README.md` and `README-cn.md` some label style change
 - Pre-installed `pyglet` upgrade from `1.5.16` -> `1.5.18`
 - Pre-installed `json5` upgrade from `0.9.5` -> `0.9.6`
+
 
 ## 20210708 V 0.4.4
 
@@ -312,6 +332,7 @@
 - `test_logging_conf.py`
 - `test_speed_of_sprite.py`
 
+
 ## 2021/06/26 V 0.4.3
 
 ### DEBUG
@@ -328,6 +349,7 @@
 - add performance_test folder
 - add some performances test
 
+
 ## 2021/05/24 V 0.4.2
 
 ### DEBUG
@@ -343,6 +365,7 @@
 ### Need Do
 
 - debug name_format
+
 
 ## 2021/04/17 V 0.4.1
 
@@ -365,6 +388,7 @@ PS:
 - plan to change config file format to .config (plan to)
 - reformat all files (including libs)
 
+
 ## 2021/04/09 V 0.2.3/4
 
 ### Add
@@ -381,6 +405,7 @@ PS:
 - many `tools.name_handler()` use bug(cause crashes)
 - `{date}` can be successful use in `tools.name_handler()` (if you define the format of date)
 - log file's filename incorrect (should be `xxxx-xx-xx xx-xx-xx DR.log` but be `{date} DR.log`)
+
 
 ## 2021/03/27 V 0.2.2/1
 

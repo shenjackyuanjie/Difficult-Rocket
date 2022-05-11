@@ -11,9 +11,13 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+from .command import CommandParseError, CommandQuotationMarkError
+
 __all__ = ['TexturesError',
            'LanguageError',
            'CommandError',
+           'CommandParseError',
+           'CommandQuotationMarkError',
            'TestError']
 
 
@@ -33,7 +37,7 @@ class CommandError(Error):
 
 
 class LanguageError(Error):
-    """lang 文件相关 error"""
+    """语言相关 error"""
     pass
 
 

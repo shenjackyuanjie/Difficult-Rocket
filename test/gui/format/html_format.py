@@ -26,7 +26,9 @@ try_texts = [
     '从前有座山，山里有座庙, **is it**?',
     '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊。阿巴巴巴',
     '阿瓦达达瓦的，aiwdhaihdwia.awdaiwhdahwido[12312](123131)',
-    '1231231dawdawd65ewwe56er56*awdadad*aaa**阿伟大的阿瓦打我的**'
+    '1231231dawdawd65ewwe56er56*awdadad*aaa**阿伟大的阿瓦打我的**',
+    'adwiuahiaa奥迪帮我auawuawdawdadw阿达达瓦aawd 2313',
+    '阿松大阿瓦达达娃啊aawadaawdawd阿瓦达达娃'
 ]
 
 

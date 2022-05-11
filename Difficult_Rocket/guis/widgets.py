@@ -29,7 +29,7 @@ from libs.pyglet.text.layout import IncrementalTextLayout
 # from libs import pyperclip
 from libs.pyperclip import paste
 
-__all__ = ['Parts']
+__all__ = ['Parts', 'InputBox']
 
 
 class Parts(widgets.WidgetBase):
