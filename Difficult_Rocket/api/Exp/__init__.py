@@ -11,13 +11,8 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from .command import CommandParseError, CommandQuotationMarkError
-
 __all__ = ['TexturesError',
            'LanguageError',
-           'CommandError',
-           'CommandParseError',
-           'CommandQuotationMarkError',
            'TestError']
 
 
@@ -28,11 +23,6 @@ class Error(Exception):
 
 class TexturesError(Error):
     """材质相关 error"""
-    pass
-
-
-class CommandError(Error):
-    """命令解析相关 error"""
     pass
 
 

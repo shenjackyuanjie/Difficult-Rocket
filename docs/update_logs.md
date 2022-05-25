@@ -25,6 +25,8 @@
 
 - 将 `api/Exp` 改为文件夹 `api/Exp/__init__.py`
 - 再次重写了 `client.load_fonts()` 现在改为直接加载单独的 `pyglet_load_fonts_folder()`
+- 更新了 `command/` 里的一大堆东西
+- 退钱！开摆！
 
 
 

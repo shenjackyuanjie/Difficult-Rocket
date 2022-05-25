@@ -15,18 +15,20 @@ gitee:  @shenjackyuanjie
 import os
 import sys
 import time
+import ctypes
 import logging
 import traceback
 
 from decimal import Decimal
 
 # Difficult_Rocket function
-from Difficult_Rocket.api.Exp import *
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.api import new_thread
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.guis.widgets import InputBox
+# from Difficult_Rocket.client.screen import DRScreen
 from Difficult_Rocket.utils import tools, translate
+from Difficult_Rocket.api.Exp.command import CommandError
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
 # libs function
@@ -115,6 +117,7 @@ class ClientWindow(Window):
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
+        # self.DRscreen = DRScreen(self)
         # setup
         self.setup()
         # 命令显示

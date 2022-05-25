@@ -11,16 +11,22 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from . import CommandError
+from . import Error
+
+
+class CommandError(Error):
+    """命令解析相关 error"""
 
 
 class CommandParseError(CommandError):
     """命令解析时出现错误"""
-    pass
 
 
-class CommandQuotationMarkError(CommandParseError):
+class CommandQuotationMarkPositionError(CommandParseError):
     """命令中,引号位置不正确
-    例如： /command "aabcc "awdawd
-    """
-    pass
+    例如： /command "aabcc "awdawd"""
+
+
+class CommandQuotationMarkMissing(CommandParseError):
+    """命令中引号缺失
+    例如: /command "aawwdawda awdaw """

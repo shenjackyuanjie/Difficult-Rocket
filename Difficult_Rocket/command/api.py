@@ -14,10 +14,10 @@ gitee:  @shenjackyuanjie
 # system function
 import re
 
-from typing import Union
+from typing import Union, Optional, Type, Tuple
 
 # DR
-from Difficult_Rocket.api.Exp import CommandQuotationMarkError
+from Difficult_Rocket.api.Exp.command import *
 
 search_re = re.compile(r'(?<!\\)"')
 
@@ -36,15 +36,16 @@ class CommandText:
         self.command_tree = {}
         tree_list = text.split(' ')
 
-        pass_node = False
-        for node in tree_list:
-            if node[0] == "\"" and len(node) > 1:  # |"xxxxx|
-                if pass_node:  # |"xxxx "xxxx|
-                    self.error = CommandQuotationMarkError
-                pass_node = True
-                first_node = tree_list.index(node)
-            if node[-1] == "\"" and len(node) > 1:  # |xxxxxx"|
-                pass_node = False
+        self.tree_node = tree_list
+
+    @staticmethod
+    def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[list, Optional[Type[CommandParseError]]]:
+        spilt_list = str(raw_command).split(" ")
+
+        for spilted in spilt_list:
+            pass
+
+        return spilt_list, CommandQuotationMarkPositionError
 
     def find(self, text: str) -> Union[str, bool]:
         finding = re.match(text, self.text)
