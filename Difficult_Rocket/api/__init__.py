@@ -13,18 +13,14 @@ gitee:  @shenjackyuanjie
 
 # 单独导入的(或者就这一个有用的)
 from .delivery import Delivery
-from utils.new_thread import new_thread
 
 # lazy之后之前全部导入的(太多了写不动__all__了)
 from .Exp import *
-from utils.tools import *
 from .calculation import *
 from .scientific_unit import *
 
 __all__ = ['TexturesError',
            'LanguageError',
            'TestError',
-           'new_thread',
-           'Delivery',
-           'load_file']
+           'Delivery']
 
