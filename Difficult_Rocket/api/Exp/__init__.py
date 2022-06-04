@@ -18,19 +18,17 @@ __all__ = ['TexturesError',
 
 class Error(Exception):
     """基础 Exception"""
-    pass
+    def __bool__(self):
+        return False
 
 
 class TexturesError(Error):
     """材质相关 error"""
-    pass
 
 
 class LanguageError(Error):
     """语言相关 error"""
-    pass
 
 
 class TestError(Error):
     """就像名字一样 用于测试的 error"""
-    pass

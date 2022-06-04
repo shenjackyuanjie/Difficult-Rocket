@@ -22,11 +22,26 @@ class CommandParseError(CommandError):
     """命令解析时出现错误"""
 
 
-class CommandQuotationMarkPositionError(CommandParseError):
+# QMark -> Quotation marks
+# Pos -> Position
+
+class CommandQMarkPosError(CommandParseError):
     """命令中,引号位置不正确
     例如： /command "aabcc "awdawd"""
 
 
-class CommandQuotationMarkMissing(CommandParseError):
+class CommandQMarkMissing(CommandParseError):
     """命令中引号缺失
     例如: /command "aawwdawda awdaw """
+
+
+class CommandQMarkPreMissing(CommandQMarkMissing):
+    """命令中 前面的引号缺失
+    例如: /command aaaa" aaaaaa"""
+    suf_qmark_pos = None
+
+
+class CommandQMarkSufMissing(CommandQMarkMissing):
+    """命令中 后面的引号缺失(引号未闭合)
+    例如: /command "aaaawaa some command"""
+    pre_qmark_pos = None

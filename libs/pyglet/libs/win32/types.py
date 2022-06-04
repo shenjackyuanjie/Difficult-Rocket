@@ -35,7 +35,7 @@
 
 import sys
 import ctypes
-from pyglet import com
+from . import com
 from ctypes import *
 from ctypes.wintypes import *
 
@@ -266,6 +266,25 @@ class LOGFONT(Structure):
         ('lfQuality', BYTE),
         ('lfPitchAndFamily', BYTE),
         ('lfFaceName', (c_char * LF_FACESIZE))  # Use ASCII
+    ]
+
+
+class LOGFONTW(Structure):
+    _fields_ = [
+        ('lfHeight', LONG),
+        ('lfWidth', LONG),
+        ('lfEscapement', LONG),
+        ('lfOrientation', LONG),
+        ('lfWeight', LONG),
+        ('lfItalic', BYTE),
+        ('lfUnderline', BYTE),
+        ('lfStrikeOut', BYTE),
+        ('lfCharSet', BYTE),
+        ('lfOutPrecision', BYTE),
+        ('lfClipPrecision', BYTE),
+        ('lfQuality', BYTE),
+        ('lfPitchAndFamily', BYTE),
+        ('lfFaceName', (WCHAR * LF_FACESIZE))
     ]
 
 

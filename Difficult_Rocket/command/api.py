@@ -39,13 +39,22 @@ class CommandText:
         self.tree_node = tree_list
 
     @staticmethod
-    def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[list, Optional[Type[CommandParseError]]]:
+    def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[list, Union[Type[CommandParseError], type(True)]]:
         spilt_list = str(raw_command).split(" ")
 
-        for spilted in spilt_list:
-            pass
+        spilts = [None, None]
+        for spited in spilt_list:
+            if len(spited) > 1:
+                if spited[0] == "\"":  # 开头有一个 "
+                    if spilts[0] is None:  # 如果没有标记一个字符串开头
+                        pass
+                    else:  # 已经标记了一个字符串开头
+                        return spilt_list, CommandQMarkPosError
+                if spited[-1] == "\"" and spited[-2] != "\\":  # 末尾有一个没有被转义的 "
 
-        return spilt_list, CommandQuotationMarkPositionError
+                    ...
+
+        return spilt_list, True
 
     def find(self, text: str) -> Union[str, bool]:
         finding = re.match(text, self.text)

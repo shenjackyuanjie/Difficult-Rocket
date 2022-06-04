@@ -184,6 +184,7 @@ class ClientWindow(Window):
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
         toml.dump(config_file, open('./configs/main.toml', 'w'))
+        self.logger.info('save_info end')
 
     """
     draws and some event
@@ -195,9 +196,10 @@ class ClientWindow(Window):
         self.fps_log.update_tick(Decimal(tick))
 
     def FPS_update(self, tick: Decimal):
-        now_FPS = pyglet.clock.get_fps()
+        now_FPS = pyglet.clock.get_frequency()
         self.fps_log.update_tick(tick)
-        self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS}]\n {self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
+
+        self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n {self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self, *dt):
         # self.logger.debug('on_draw call dt: {}'.format(dt))
