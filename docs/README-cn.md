@@ -4,8 +4,8 @@
 
 中文 | [English](https://github.com/shenjackyuanjie/Difficult-Rocket).
 
-- [github](https://github.com/shenjackyuanjie/Difficult-Rocket)
-- [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+- [GitHub](https://github.com/shenjackyuanjie/Difficult-Rocket)
+- [Gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/编写于_Python_版本-3.8.10-blue.svg)](https://Python.org)
