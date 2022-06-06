@@ -70,7 +70,7 @@
 - `toml` toml parser
 - `xmltodict`: translate data between xml and dict
 - `pyperclip`: paste board!
-- [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some transelates
+- [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some translates
 - [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
 - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 
