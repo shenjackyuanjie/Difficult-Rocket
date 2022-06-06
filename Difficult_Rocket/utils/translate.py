@@ -35,10 +35,10 @@ class Lang:
     lang.lang(xxx, xxx)来获取翻译过的值
     """
 
-    def __init__(self, language: str = 'zh-CN'):
+    def __init__(self, language: str = 'zh-CN') -> None:
         self.语言 = language
-        self.翻译结果 = tools.load_file(f'configs/lang/{language}.json5')
-        self.默认翻译 = tools.load_file('configs/lang/zh-CN.json5')
+        self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
+        self.默认翻译 = tools.load_file('configs/lang/zh-CN.toml')
 
     def __str__(self) -> str:
         return self.语言
@@ -52,22 +52,22 @@ class Lang:
             except KeyError:
                 raise LanguageError(f'there\'s no key {item} in both {self.语言} and zh-CN')
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value) -> None:
         if key == 'language' or key == 'lang':
             try:
-                self.翻译结果 = tools.load_file(f'configs/lang/{value}.json5')
+                self.翻译结果 = tools.load_file(f'configs/lang/{value}.toml')
                 self.语言 = value
             except FileNotFoundError:
-                raise LanguageError(f'{value}\'s language json5 file not found')
+                raise LanguageError(f'{value}\'s language toml file not found')
         else:
             raise NotImplementedError
 
     def set_language(self, language) -> None:
         try:
-            self.翻译结果 = tools.load_file(f'configs/lang/{language}.json5')
+            self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
             self.语言 = language
         except FileNotFoundError:
-            raise LanguageError(f'{language}\'s language json5 file not found')
+            raise LanguageError(f'{language}\'s language toml file not found')
 
     def lang(self, *args) -> Union[int, str, list, dict]:
         try:

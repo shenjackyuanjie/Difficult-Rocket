@@ -14,7 +14,7 @@ gitee:  @shenjackyuanjie
 # system function
 import re
 
-from typing import Union, Optional, Type, Tuple
+from typing import Union, Optional, Type, Tuple, List
 
 # DR
 from Difficult_Rocket.api.Exp.command import *
@@ -39,22 +39,16 @@ class CommandText:
         self.tree_node = tree_list
 
     @staticmethod
-    def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[list, Union[Type[CommandParseError], type(True)]]:
-        spilt_list = str(raw_command).split(" ")
+    def parse_text(raw_text: str) -> str:
+        q_mark_iter = re.finditer('\\"', raw_text)
+        for q_mark in q_mark_iter:
+            ...
 
-        spilts = [None, None]
-        for spited in spilt_list:
-            if len(spited) > 1:
-                if spited[0] == "\"":  # 开头有一个 "
-                    if spilts[0] is None:  # 如果没有标记一个字符串开头
-                        pass
-                    else:  # 已经标记了一个字符串开头
-                        return spilt_list, CommandQMarkPosError
-                if spited[-1] == "\"" and spited[-2] != "\\":  # 末尾有一个没有被转义的 "
-
-                    ...
-
-        return spilt_list, True
+    @staticmethod
+    def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[List[str], Union[CommandParseError, type(True)]]:
+        spilt_list = re.split(r'', raw_command)
+        done_list = [re.sub(r'\\"', '"', raw_text) for raw_text in spilt_list]
+        return done_list, True  # 完事了
 
     def find(self, text: str) -> Union[str, bool]:
         finding = re.match(text, self.text)
