@@ -19,11 +19,6 @@ GNU Lesser General Public License v3.0（GNU LGPL v3)
 (have some changes)
 """
 
-__all__ = [
-    'new_thread',
-    'FunctionThread'
-]
-
 
 def copy_signature(target: Callable, origin: Callable) -> Callable:
     """

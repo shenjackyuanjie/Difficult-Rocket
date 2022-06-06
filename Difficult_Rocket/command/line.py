@@ -19,7 +19,7 @@ from decimal import Decimal
 
 # from DR
 from utils import translate
-from Difficult_Rocket.api import new_thread
+from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.command.api import CommandText
 
 # from libs.pyglet

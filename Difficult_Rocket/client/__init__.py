@@ -23,7 +23,7 @@ from decimal import Decimal
 
 # Difficult_Rocket function
 from Difficult_Rocket.command import line, tree
-from Difficult_Rocket.api import new_thread
+from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.guis.widgets import InputBox
 # from Difficult_Rocket.client.screen import DRScreen

@@ -19,6 +19,7 @@ from decimal import Decimal
 
 from libs.pyglet.clock import get_frequency
 
+
 class FpsLogger:
     def __init__(self,
                  stable_fps: int = 60,
@@ -31,7 +32,6 @@ class FpsLogger:
         self.get_fps_list = [stable_fps]  # type: list[Union[int, float]]
         self._max_fps = stable_fps
         self._min_fps = stable_fps
-
 
     def update_tick(self,
                     tick: Decimal):

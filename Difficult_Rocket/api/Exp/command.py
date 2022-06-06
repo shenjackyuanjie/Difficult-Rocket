@@ -35,6 +35,13 @@ class CommandQMarkMissing(CommandParseError):
     例如: /command "aawwdawda awdaw """
 
 
+class CommandQMarkConflict(CommandParseError):
+    """命令中引号位置冲突
+    例如: /command "aaaa "aaaa aaaa"""
+    first_qmark_pos = None
+    conflict_qmark_pos = None
+
+
 class CommandQMarkPreMissing(CommandQMarkMissing):
     """命令中 前面的引号缺失
     例如: /command aaaa" aaaaaa"""

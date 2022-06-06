@@ -10,3 +10,7 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
+
+from .new_thread import new_thread
+
+__all__ = ['new_thread']
