@@ -67,8 +67,8 @@
 - `toml`: toml解析器
 - `xmltodict`: xml 与 dict 转换器
 - `pyperclip`: 剪贴板!
+- [@Rayawa](https://github.com/Rayawa) : 文档矫正&翻译部分lang
 - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译lang
-- [@Rayawa](https://github.com/Rayawa) : 文档矫正
 - [@Billchyi](https://github.com/Billchyi) : 文档矫正
 
 ## 相关链接
