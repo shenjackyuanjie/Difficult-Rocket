@@ -20,7 +20,7 @@
 
 ## 中文README请移步 [这里](/docs/README-cn.md)
 
-> It's a Simple Rocket liked game build with Python (in short: rocket simulator)
+> Difficult-rocket is a Simple Rocket liked game build with Python (in short: rocket simulator)
 
 ## Advantage
 
@@ -70,8 +70,8 @@
 - `toml` toml parser
 - `xmltodict`: translate data between xml and dict
 - `pyperclip`: paste board!
+- [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some transelates
 - [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
-- [@Rayawa](https://github.com/Rayawa) : check mistake in docs
 - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 
 ## Other links
