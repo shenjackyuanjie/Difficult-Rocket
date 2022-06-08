@@ -7,9 +7,10 @@ All rights reserved
 */
 
 // 基本的头文件引用
-#include<stdio.h>
-#include<stdlib.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 // 一些用于直观感受类型字节长度的数据类型
 // 看着舒服而已（
@@ -26,9 +27,4 @@ All rights reserved
 // float 浮点数
 #define float32 float
 #define float64 double
-// bool 布尔值
-#define bool int
-#define true 1
-#define false 0
-// 字符串
-#define string char*
+#define float128 long double
