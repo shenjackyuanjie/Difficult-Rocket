@@ -1,4 +1,4 @@
- # Difficult Rocket
+# Difficult Rocket
 
 [中文](../README.md) | English
 
