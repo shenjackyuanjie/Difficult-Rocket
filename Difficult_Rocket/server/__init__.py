@@ -19,9 +19,10 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from utils import tools
+from Difficult_Rocket.utils import tools
+from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.api.delivery import Delivery
-from utils.new_thread import new_thread
+from Difficult_Rocket.utils.new_thread import new_thread
 
 
 # TODO 改变服务端启动逻辑 0.6.0会写完的（
@@ -40,10 +41,7 @@ class Server:
         self.config = tools.load_file('configs/main.config')
         self.dev = Dev
         self.net_mode = net_mode
-        # lang
-        self.lang = tools.load_file('configs/lang/%s.json5' % self.config['runtime']['language'], 'server')
-        self.logger.info('%s' % self.lang['setup.done'])
+        self.logger.info(tr.lang('server', 'setup.done'))
 
-    @new_thread('Server')
     def run(self):
-        self.logger.info(self.lang['os.pid_is'].format(os.getpid(), os.getppid()))
+        self.logger.info(tr.lang('server', 'os.pid_is').format(os.getpid(), os.getppid()))

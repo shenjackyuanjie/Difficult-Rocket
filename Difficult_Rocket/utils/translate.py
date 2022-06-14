@@ -39,6 +39,7 @@ class Lang:
         self.语言 = language
         self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
         self.默认翻译 = tools.load_file('configs/lang/zh-CN.toml')
+        self.直接返回原始数据 = True
 
     def __str__(self) -> str:
         return self.语言
@@ -58,6 +59,8 @@ class Lang:
                 self.翻译结果 = tools.load_file(f'configs/lang/{value}.toml')
                 self.语言 = value
             except FileNotFoundError:
+                if self.直接返回原始数据:
+                    return None
                 raise LanguageError(f'{value}\'s language toml file not found')
         else:
             raise NotImplementedError
@@ -82,6 +85,8 @@ class Lang:
                     结果 = 结果[选项]
                 return 结果
             except KeyError:
+                if self.直接返回原始数据:
+                    return args
                 raise LanguageError(f'there\'s no key {args} in both {self.语言} and zh-CN')
 
     def 翻译(self, *args) -> Union[int, str, list, dict]:

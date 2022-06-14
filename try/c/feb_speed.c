@@ -5,18 +5,28 @@
 
 int64_t feb(int64_t* cache, int32_t count)
 {
-    if(count == 1 + count == 0){
+    if ((count == 1) + (count == 0)) {
         return 1;
     };
-    return count;
+    if (cache[count] == 0) {
+        return cache[count];
+    };
+    cache[count] = feb(cache, --count) + feb(cache, --count);
+    return cache[count];
 };
 
 int main()
 {
-    int64_t count;
+    int32_t count;
+    printf("ºÙ£¡¸øÎÒ¸öÊı×Ö£¬±ğÌ«´ó£¡");
     scanf("%d", &count);
-    printf("å°†è¦è¾“å‡ºç¬¬%dä¸ªfeb", count);
-    int64_t* cache[count];
-     
+    printf("½«ÒªÊä³öµÚ %d ¸öfeb\n", count);
+    int64_t* cache;
+    cache = calloc(count, sizeof(int64_t));
+
+    int64_t result = feb(cache, count);
+
+    printf("%d", result);
+
     return 0;
 }
