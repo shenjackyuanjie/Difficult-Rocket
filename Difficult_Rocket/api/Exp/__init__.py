@@ -11,23 +11,14 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-__all__ = ['TexturesError',
-           'LanguageError',
-           'TestError']
-
-
-class Error(Exception):
-    """基础 Exception"""
-    def __bool__(self):
-        return False
+from Difficult_Rocket.api.Exp.main import Error
+from Difficult_Rocket.api.Exp.command import CommandError, CommandParseError, CommandQMarkPosError, \
+    CommandQMarkConflict, CommandQMarkMissing, CommandQMarkPreMissing, CommandQMarkSufMissing
+from Difficult_Rocket.api.Exp.unsupport import NoMoreJson5
 
 
 class TexturesError(Error):
     """材质相关 error"""
-
-
-class LanguageError(Error):
-    """语言相关 error"""
 
 
 class TestError(Error):

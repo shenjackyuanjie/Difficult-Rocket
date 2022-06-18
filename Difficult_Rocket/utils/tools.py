@@ -15,20 +15,14 @@ import os
 import sys
 import time
 import math
-import decimal
 import logging
 import configparser
 
 from xml.dom.minidom import parse
 
-if __name__ == '__main__':  # 如果是直接运行该文件，则将工作目录切换到该文件所在目录
-    sys.path.append('./libs')
-    sys.path.append('./')
+from libs import toml
 
-import toml
-
-from libs import json5
-
+from Difficult_Rocket.api.Exp import NoMoreJson5
 # logger
 tools_logger = logging.getLogger('part-tools')
 """
@@ -44,17 +38,7 @@ def load_file(file_name: str, stack=None):
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     try:
         get_file = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
-        if (f_type == 'json5') or (f_type == 'json'):
-            try:
-                with open(file_name, 'r', encoding='utf-8') as jf:  # jf -> json file
-                    get_file = json5.load(jf, encoding='uft-8')
-            except UnicodeDecodeError:
-                with open(file_name, 'r', encoding='gbk') as jf:
-                    get_file = json5.load(jf)
-                tools_logger.info('文件 %s 解码错误，已重新使用gbk编码打开' % file_name)
-            if stack is not None:
-                get_file = get_file[stack]
-        elif f_type == 'xml':
+        if f_type == 'xml':
             xml_load = parse(file_name)
             if stack is not None:
                 get_file = xml_load.getElementsByTagName(stack)
@@ -65,6 +49,8 @@ def load_file(file_name: str, stack=None):
                 get_file = get_file[stack]
         elif f_type == 'toml':
             get_file = toml.load(file_name)
+        elif f_type == 'json5':
+            raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:
         error_type = type(exp).__name__
         if error_type in file_error:
@@ -83,7 +69,7 @@ def get_At(name, in_xml, need_type=str):
     """
     get Attribute from a XML tree
     will raise TypeError if input is not str or list
-    XML no!   Json5 yes!
+    XML json5 no!   toml yes!
     """
     name_type = type(name)
     if name_type == list:

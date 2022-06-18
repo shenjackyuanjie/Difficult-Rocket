@@ -18,13 +18,15 @@ import logging
 import logging.config
 import multiprocessing
 
+import pyglet.clock
+
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
 from Difficult_Rocket import client, server
-from utils import tools
-from utils.translate import tr
+from Difficult_Rocket.utils import tools
+from Difficult_Rocket.utils.translate import tr
 
 
 class Game:
@@ -37,7 +39,7 @@ class Game:
         self.language = tools.load_file('configs/main.config', 'runtime')['language']
         tr.set_language(self.language)
         # logging config
-        log_config = tools.load_file('configs/logger.json5')
+        log_config = tools.load_file('configs/logger.toml')
         file_name = log_config['handlers']['file']['filename']
         del log_config['handlers']['file']['datefmt']
         log_config['handlers']['file']['filename'] = f'logs/{file_name.format(self.start_time)}'
@@ -56,6 +58,7 @@ class Game:
 
     def setup(self) -> None:
         self.client = client.Client(net_mode='local')
+        pyglet.clock.schedule(self.client.window.draw_update)
         self.server = server.Server(net_mode='local')
 
     def python_version_check(self) -> None:  # best 3.8+ and write at 3.8.10

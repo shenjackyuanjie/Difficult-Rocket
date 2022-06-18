@@ -17,8 +17,6 @@ import statistics
 from typing import Union
 from decimal import Decimal
 
-from libs.pyglet.clock import get_frequency
-
 
 class FpsLogger:
     def __init__(self,
@@ -34,12 +32,15 @@ class FpsLogger:
         self._min_fps = stable_fps
 
     def update_tick(self,
+                    pyglet_fps: float,
                     tick: Decimal):
-        now_fps = get_frequency()
-        if now_fps != 0:
-            self.fps_list.append(now_fps)
+        if pyglet_fps != 0:
+            self.fps_list.append(pyglet_fps)
         else:
-            self.fps_list.append(1)
+            if tick != 0:
+                self.fps_list.append(float(1 / tick))
+            else:
+                self.fps_list.append(1)
         if len(self.fps_list) > self.count:
             self.fps_list = self.fps_list[-self.count + 1:]  # 整个列表往前挪一位
         if len(self.get_fps_list) > self.count:

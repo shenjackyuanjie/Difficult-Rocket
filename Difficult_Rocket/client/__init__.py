@@ -13,9 +13,7 @@ gitee:  @shenjackyuanjie
 
 # system function
 import os
-import sys
 import time
-import ctypes
 import logging
 import traceback
 
@@ -135,7 +133,7 @@ class ClientWindow(Window):
                                            multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
-        pyglet.clock.schedule_interval(self.update, float(self.SPF))
+        pyglet.clock.schedule(self.draw_update)
         # 完成设置后的信息输出
         self.logger.info(tr.lang('window', 'setup.done'))
         self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
@@ -143,6 +141,7 @@ class ClientWindow(Window):
         self.use_time = end_time - start_time
         self.logger.info(tr.lang('window', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
+        self.count = 0
 
     def setup(self):
         self.load_fonts()
@@ -159,8 +158,8 @@ class ClientWindow(Window):
 
     def start_game(self) -> None:
         self.run_input = True
-        # self.read_input()
-        pyglet.app.run()
+        self.read_input()
+        pyglet.app.event_loop.run(1/self.main_config['runtime']['fps'])
 
     @new_thread('window read_input', daemon=True)
     def read_input(self):
@@ -190,15 +189,21 @@ class ClientWindow(Window):
     draws and some event
     """
 
-    def update(self, tick: float):
+    def draw_update(self, tick: float):
+        self.count += 1
+        if self.count >= 100:
+            try:
+                self.count = 0
+                self.logger.debug(tick)
+                self.logger.debug('update! {} {}'.format(tick, pyglet.clock.get_frequency()))
+            except ZeroDivisionError:
+                pass
         decimal_tick = Decimal(str(tick)[:10])
         self.FPS_update(decimal_tick)
-        self.fps_log.update_tick(Decimal(tick))
 
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_frequency()
-        self.fps_log.update_tick(tick)
-
+        self.fps_log.update_tick(now_FPS, tick)
         self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n {self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self, *dt):
@@ -209,6 +214,9 @@ class ClientWindow(Window):
     def on_resize(self, width: int, height: int):
         super().on_resize(width, height)
         self.fps_label.y = height - 10
+
+    def on_refresh(self, dt):
+        ...
 
     def draw_batch(self):
         self.part_batch.draw()
@@ -221,6 +229,9 @@ class ClientWindow(Window):
     def on_command(self, command: line.CommandText):
         self.logger.info(tr.lang('window', 'command.text').format(command))
         if command.match('stop'):
+            self.is_running = False
+            self.dispatch_event('on_exit')
+            platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command
         elif command.match('fps'):
             if command.match('log'):

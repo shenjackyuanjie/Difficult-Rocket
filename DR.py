@@ -4,6 +4,7 @@ mail: 3695888@qq.com
 """
 import os
 import sys
+import time
 import cProfile
 import traceback
 
@@ -42,6 +43,7 @@ if __name__ == '__main__':
     from Difficult_Rocket.api.Exp import *
     from Difficult_Rocket.crash import crash
     try:
+        start_time = time.perf_counter_ns()
         import pyglet
         pyglet.options["win32_gdi_font"] = True
 
@@ -51,6 +53,8 @@ if __name__ == '__main__':
         glClearColor(0.5, 0.5, 0.5, 0)
 
         game = main.Game()
+
+        print(time.perf_counter_ns() - start_time)
 
         cprofile = False
         if cprofile:
