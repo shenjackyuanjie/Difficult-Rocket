@@ -1,5 +1,2 @@
-semver
 psutil
-pyglet
 pillow
-json5
