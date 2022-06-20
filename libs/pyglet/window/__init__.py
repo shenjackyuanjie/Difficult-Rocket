@@ -1851,7 +1851,7 @@ class FPSDisplay:
     #: :type: float
     update_period = 0.25
 
-    def __init__(self, window, color=(127, 127, 127, 127), samples=240):
+    def __init__(self, window, color=(127, 127, 127, 127), samples=60):
         from time import time
         from statistics import mean
         from collections import deque
@@ -1879,7 +1879,19 @@ class FPSDisplay:
 
         if self._elapsed >= self.update_period:
             self._elapsed = 0
-            self.label.text = f"{1 / self._mean(self._delta_times):.2f}"
+            self._set_fps_text(1 / self._mean(self._delta_times))
+
+    def _set_fps_text(self, fps):
+        """Set the label text for the given FPS estimation.
+
+        Called by `update` every `update_period` seconds.
+
+        :Parameters:
+            `fps` : float
+                Estimated framerate of the window.
+
+        """
+        self.label.text = '%.2f' % fps
 
     def draw(self):
         """Draw the label."""

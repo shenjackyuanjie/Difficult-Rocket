@@ -13,7 +13,9 @@ gitee:  @shenjackyuanjie
 
 # system function
 import os
+import sys
 import time
+import ctypes
 import logging
 import traceback
 
@@ -29,17 +31,11 @@ from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.api.Exp.command import CommandError
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
-# libs function
-local_lib = True
-if local_lib:
-    from libs import pyglet
-    from libs.pyglet.window import Window
-    from libs.pyglet.window import key, mouse
-    from libs import toml
-else:
-    import pyglet
-    from pyglet.window import key, mouse
-    import toml
+
+from libs import pyglet
+from libs.pyglet.window import Window
+from libs.pyglet.window import key, mouse
+from libs import toml
 
 
 class Client:
@@ -133,7 +129,7 @@ class ClientWindow(Window):
                                            multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
-        pyglet.clock.schedule(self.draw_update)
+        pyglet.clock.schedule_interval(self.update, float(self.SPF))
         # 完成设置后的信息输出
         self.logger.info(tr.lang('window', 'setup.done'))
         self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
@@ -204,6 +200,7 @@ class ClientWindow(Window):
     def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_frequency()
         self.fps_log.update_tick(now_FPS, tick)
+
         self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n {self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
 
     def on_draw(self, *dt):
@@ -231,7 +228,7 @@ class ClientWindow(Window):
         if command.match('stop'):
             self.is_running = False
             self.dispatch_event('on_exit')
-            platform_event_loop.stop()
+            # platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command
         elif command.match('fps'):
             if command.match('log'):

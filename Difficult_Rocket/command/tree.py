@@ -14,11 +14,6 @@ gitee:  @shenjackyuanjie
 from Difficult_Rocket import game_version
 from Difficult_Rocket.command import line
 
-
-class Command:
-    """一个空类 用于标记命令信息"""
-
-
 COMMAND = 'command'
 SUB_COMMAND = 'sub_command'
 INFO = 'info'

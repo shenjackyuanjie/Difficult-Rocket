@@ -21,5 +21,9 @@ class TexturesError(Error):
     """材质相关 error"""
 
 
+class LanguageError(Error):
+    """语言相关 error"""
+
+
 class TestError(Error):
     """就像名字一样 用于测试的 error"""

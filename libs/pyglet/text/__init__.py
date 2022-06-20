@@ -73,11 +73,9 @@ creating scrollable layouts.
 .. versionadded:: 1.1
 """
 
-from os.path import dirname as _dirname
-from os.path import splitext as _splitext
+import os.path
 
 import pyglet
-
 from pyglet.text import layout, document, caret
 
 
@@ -132,7 +130,7 @@ def get_decoder(filename, mimetype=None):
     :rtype: `DocumentDecoder`
     """
     if mimetype is None:
-        _, ext = _splitext(filename)
+        _, ext = os.path.splitext(filename)
         if ext.lower() in ('.htm', '.html', '.xhtml'):
             mimetype = 'text/html'
         else:
@@ -178,7 +176,7 @@ def load(filename, file=None, mimetype=None):
     if hasattr(file_contents, "decode"):
         file_contents = file_contents.decode()
 
-    location = pyglet.resource.FileLocation(_dirname(filename))
+    location = pyglet.resource.FileLocation(os.path.dirname(filename))
     return decoder.decode(file_contents, location)
 
 
@@ -267,7 +265,11 @@ class DocumentLabel(layout.TextLayout):
                 Optional graphics group to use.
 
         """
-        super().__init__(document, width, height, multiline, dpi, batch, group)
+        super(DocumentLabel, self).__init__(document,
+                                            width=width, height=height,
+                                            multiline=multiline,
+                                            dpi=dpi, batch=batch, group=group)
+
         self._x = x
         self._y = y
         self._anchor_x = anchor_x
@@ -345,7 +347,8 @@ class DocumentLabel(layout.TextLayout):
 
     @font_size.setter
     def font_size(self, font_size):
-        self.document.set_style(0, len(self.document.text), {'font_size': font_size})
+        self.document.set_style(0, len(self.document.text),
+                                {'font_size': font_size})
 
     @property
     def bold(self):
@@ -357,7 +360,8 @@ class DocumentLabel(layout.TextLayout):
 
     @bold.setter
     def bold(self, bold):
-        self.document.set_style(0, len(self.document.text), {'bold': bold})
+        self.document.set_style(0, len(self.document.text),
+                                {'bold': bold})
 
     @property
     def italic(self):
@@ -369,7 +373,8 @@ class DocumentLabel(layout.TextLayout):
 
     @italic.setter
     def italic(self, italic):
-        self.document.set_style(0, len(self.document.text), {'italic': italic})
+        self.document.set_style(0, len(self.document.text),
+                                {'italic': italic})
 
     def get_style(self, name):
         """Get a document style value by name.
@@ -398,9 +403,6 @@ class DocumentLabel(layout.TextLayout):
 
         """
         self.document.set_style(0, len(self.document.text), {name: value})
-
-    def __del__(self):
-        self.delete()
 
 
 class Label(DocumentLabel):
@@ -461,8 +463,10 @@ class Label(DocumentLabel):
                 Optional graphics group to use.
 
         """
-        doc = decode_text(text)
-        super().__init__(doc, x, y, width, height, anchor_x, anchor_y, multiline, dpi, batch, group)
+        document = decode_text(text)
+        super(Label, self).__init__(document, x, y, width, height,
+                                    anchor_x, anchor_y,
+                                    multiline, dpi, batch, group)
 
         self.document.set_style(0, len(self.document.text), {
             'font_name': font_name,
@@ -521,8 +525,10 @@ class HTMLLabel(DocumentLabel):
         """
         self._text = text
         self._location = location
-        doc = decode_html(text, location)
-        super().__init__(doc, x, y, width, height, anchor_x, anchor_y, multiline, dpi, batch, group)
+        document = decode_html(text, location)
+        super(HTMLLabel, self).__init__(document, x, y, width, height,
+                                        anchor_x, anchor_y,
+                                        multiline, dpi, batch, group)
 
     @property
     def text(self):
@@ -536,3 +542,4 @@ class HTMLLabel(DocumentLabel):
     def text(self, text):
         self._text = text
         self.document = decode_html(text, self._location)
+

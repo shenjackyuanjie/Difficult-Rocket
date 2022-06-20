@@ -43,6 +43,5 @@ class Server:
         self.net_mode = net_mode
         self.logger.info(tr.lang('server', 'setup.done'))
 
-    @new_thread('Server')
     def run(self):
         self.logger.info(tr.lang('server', 'os.pid_is').format(os.getpid(), os.getppid()))

@@ -3,7 +3,7 @@
 IFS=$'\n';
 
 # 默认值是 10个  可以一次性展示更多 就修改第15行代码  | head -n 30 或者更多
-objects=`git verify-pack -v .git/objects/pack/pack-aba4bfc55979194c86dbd466c86e57d8199ae7ad.idx | grep -v chain | sort -k3nr | head -n 100`
+objects=`git verify-pack -v .git/objects/pack/pack-aba4bfc55979194c86dbd466c86e57d8199ae7ad.idx | grep -v chain | sort -k3nr | head -n 50`
 
 echo "All sizes are in kB. The pack column is the size of the object, compressed, inside the pack file."
 

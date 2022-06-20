@@ -35,7 +35,6 @@
 
 import atexit
 import struct
-import warnings
 
 import pyglet
 from . import com
