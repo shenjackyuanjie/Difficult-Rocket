@@ -18,5 +18,21 @@ class NoMoreJson5(Error):
     """说什么我也不用Json5了！"""
 
 
-class NopeImTeapot418(Error):
+class Nope418ImTeapot(Error):
     """我只是个茶壶而已，我不能煮咖啡！"""
+
+
+class ThinkError(Error):
+    """进不去，进不去，怎么想都进不去！"""
+
+
+class BrainError(Error):
+    """clever brain.png"""
+
+
+class BigBrainError(BrainError):
+    """bigbrain.png"""
+
+
+class BrainTimeoutError(BrainError, ThinkError):
+    """脑子····超时·······················啦！"""
