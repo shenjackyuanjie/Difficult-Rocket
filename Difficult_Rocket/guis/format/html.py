@@ -23,7 +23,6 @@ default_style = {
 }
 
 
-
 class SingleTextStyle:
     """
     单个字符的字体样式
@@ -79,16 +78,16 @@ class SingleTextStyle:
         """
         assert type(other) == SingleTextStyle, f'SingleTextStyle + other\n other must be the same type, not a {type(other)}'
         return SingleTextStyle(
-                font_name=other.font_name or self.font_name,
-                font_size=other.font_size or self.font_size,
-                bold=other.bold or self.bold,
-                italic=other.italic or self.italic,
-                color=other.color or self.color,
-                text_tag=other.tag + self.tag,
-                show=other.show or self.show,
-                prefix=other.prefix + self.prefix,
-                suffix=other.suffix + self.suffix,
-                text=self.text
+            font_name=other.font_name or self.font_name,
+            font_size=other.font_size or self.font_size,
+            bold=other.bold or self.bold,
+            italic=other.italic or self.italic,
+            color=other.color or self.color,
+            text_tag=other.tag + self.tag,
+            show=other.show or self.show,
+            prefix=other.prefix + self.prefix,
+            suffix=other.suffix + self.suffix,
+            text=self.text
         )
 
     def __iadd__(self, other: 'SingleTextStyle') -> 'SingleTextStyle':
@@ -223,7 +222,7 @@ default_fonts_config = [
         # Markdown 粗体语法规则匹配
         'match': re.compile(r'\*\*(.*?(?<!\s))\*\*'),
         'shown': re.compile(r'(?<=\*\*)(.*?(?<!\s))(?=\*\*)'),
-        'tag':   {
+        'tag': {
             # 为 match 匹配到的字符添加标签
             'match': re.compile(r'\*\*'),
             'style': SingleTextStyle(text_tag=['bold'])
@@ -232,14 +231,14 @@ default_fonts_config = [
     },
     {
         # Markdown 斜体语法规则匹配
-        'match':  re.compile(r'\*(.*?(?<!\s))\*'),
-        'shown':  re.compile(r'(?<=\*)(.*?(?<!\s))(?=\*)'),
+        'match': re.compile(r'\*(.*?(?<!\s))\*'),
+        'shown': re.compile(r'(?<=\*)(.*?(?<!\s))(?=\*)'),
         'ignore': {
             # 如果匹配到的字符含有 tag 就忽略本次解析
             'match': re.compile(r'\*'),
-            'tag':   SingleTextStyle(text_tag=['italic'])
+            'tag': SingleTextStyle(text_tag=['italic'])
         },
-        'style':  SingleTextStyle(italic=True)
+        'style': SingleTextStyle(italic=True)
     },
     {
         # Markdown 链接规则匹配

@@ -17,5 +17,3 @@ from xml.etree import ElementTree as ET
 # Difficult_Rocket function
 
 # libs function
-
-

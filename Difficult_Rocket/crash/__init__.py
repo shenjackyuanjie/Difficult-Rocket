@@ -13,7 +13,6 @@ gitee:  @shenjackyuanjie
 
 from .crash import *
 
-
 __all__ = ['all_thread',
            'all_process',
            'crash']

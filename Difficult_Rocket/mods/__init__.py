@@ -27,7 +27,6 @@ mod系统参数
 MOD_loader_version = "0.0.1"  # mod系统版本 版本号遵守semver2.0.0
 semver_loader_version = Version(MOD_loader_version)
 
-
 """
 加载mod时会更改的参数
 这里的只是范例,实际加载时会根据mod配置修改
@@ -70,4 +69,3 @@ MOD_info = MODInfo(
 """
 一些重置用函数
 """
-

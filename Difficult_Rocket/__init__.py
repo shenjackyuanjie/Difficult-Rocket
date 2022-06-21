@@ -29,17 +29,12 @@ _DR_options_type = {
 if DR_options['playing']:
     from .api import new_thread
 
+
     def think_it(something):
         return something
 
 
     @new_thread('think')
     def think(some_thing_to_think):
-
-
-
-
-
-
         gotcha = think_it(some_thing_to_think)
         return gotcha

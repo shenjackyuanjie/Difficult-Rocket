@@ -61,7 +61,6 @@ class PartType(Serializable):
     data: dict  # 输出的数据格式
 
 
-
 # 所有部件的格式的存储
 class PartTypes(Serializable):
     data: dict = {}  # 所有部件的格式

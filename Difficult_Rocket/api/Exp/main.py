@@ -14,5 +14,6 @@ gitee:  @shenjackyuanjie
 
 class Error(Exception):
     """基础 Exception"""
+
     def __bool__(self):
         return False

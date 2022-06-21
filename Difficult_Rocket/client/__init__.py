@@ -31,7 +31,6 @@ from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.api.Exp.command import CommandError
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
-
 from libs import pyglet
 from libs.pyglet.window import Window
 from libs.pyglet.window import key, mouse
@@ -129,7 +128,7 @@ class ClientWindow(Window):
                                            multiline=True,
                                            batch=self.label_batch, group=self.command_group)
         # 设置刷新率
-        pyglet.clock.schedule_interval(self.update, float(self.SPF))
+        pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
         self.logger.info(tr.lang('window', 'setup.done'))
         self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
@@ -155,7 +154,7 @@ class ClientWindow(Window):
     def start_game(self) -> None:
         self.run_input = True
         self.read_input()
-        pyglet.app.event_loop.run(1/self.main_config['runtime']['fps'])
+        pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
 
     @new_thread('window read_input', daemon=True)
     def read_input(self):
@@ -186,14 +185,14 @@ class ClientWindow(Window):
     """
 
     def draw_update(self, tick: float):
-        self.count += 1
-        if self.count >= 100:
-            try:
-                self.count = 0
-                self.logger.debug(tick)
-                self.logger.debug('update! {} {}'.format(tick, pyglet.clock.get_frequency()))
-            except ZeroDivisionError:
-                pass
+        # self.count += 1
+        # if self.count >= 100:
+        #     try:
+        #         self.count = 0
+        #         self.logger.debug(tick)
+        #         self.logger.debug('update! {} {}'.format(tick, pyglet.clock.get_frequency()))
+        #     except ZeroDivisionError:
+        #         pass
         decimal_tick = Decimal(str(tick)[:10])
         self.FPS_update(decimal_tick)
 
@@ -226,7 +225,6 @@ class ClientWindow(Window):
     def on_command(self, command: line.CommandText):
         self.logger.info(tr.lang('window', 'command.text').format(command))
         if command.match('stop'):
-            self.is_running = False
             self.dispatch_event('on_exit')
             # platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command

@@ -305,4 +305,3 @@ class ScientificNumber:
             self.指数 -= 1
         self.除单位.sort()
         self.乘单位.sort()
-
