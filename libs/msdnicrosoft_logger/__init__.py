@@ -154,6 +154,34 @@ class File:
             )
         )
 
+import atexit
+
+color_reset_suffix = "\033[0m"
+
+
+class Logger:
+    """shenjack logger"""
+
+    def __init__(self, config: dict = None) -> None:
+        if config is None:
+            self.config = {}
+        else:
+            self.config = config
+
+
+class GetLogger:
+    """shenjack牌logger"""
+
+    def __init__(self):
+        self.configs = {}
+
+    def add_config(self, name: str, config: dict) -> dict:
+        self.configs[name] = config
+        return self.configs
+
+    def logger(self, name: str = 'root') -> Logger:
+        return Logger(config=self.configs)
+
 
 if __name__ == '__main__':
     from time import sleep

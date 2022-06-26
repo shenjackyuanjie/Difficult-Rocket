@@ -14,7 +14,8 @@ gitee:  @shenjackyuanjie
 from Difficult_Rocket.api.Exp.main import Error
 from Difficult_Rocket.api.Exp.command import CommandError, CommandParseError, CommandQMarkPosError, \
     CommandQMarkConflict, CommandQMarkMissing, CommandQMarkPreMissing, CommandQMarkSufMissing
-from Difficult_Rocket.api.Exp.unsupport import NoMoreJson5
+from Difficult_Rocket.api.Exp.unsupport import NoMoreJson5, Nope418ImTeapot, ThinkError, BrainError, \
+    BrainTimeoutError, BigBrainError
 
 
 class TexturesError(Error):

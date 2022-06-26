@@ -1,2 +1,2 @@
-python DR.py
+python -O DR.py
 pause
