@@ -4,13 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
+from Difficult_Rocket.api.Exp import Error
 
-from .new_thread import new_thread
 
-__all__ = ['new_thread']

@@ -1,9 +1,8 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021-2022 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-# 本文件以 GNU Lesser General Public License v3.0（GNU LGPL v3) 开源协议进行授权 (谢谢狐狸写出这么好的MCDR)
 
 import functools
 import inspect

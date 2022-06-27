@@ -1,6 +1,6 @@
 #  -------------------------------
 #  Difficult Rocket
-#  Copyright © 2021-2022 by shenjackyuanjie
+#  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
 
@@ -11,9 +11,3 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-
-class Error(Exception):
-    """基础 Exception"""
-
-    def __bool__(self):
-        return False
