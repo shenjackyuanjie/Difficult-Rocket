@@ -156,7 +156,16 @@ class File:
 
 import atexit
 
+from typing import Optional
+
 color_reset_suffix = "\033[0m"
+
+
+class LogFileCache:
+    """日志文件缓存"""
+    def __init__(self, time_cache: Optional[int, float] = 1, log_cache: int = 10):
+        self.time_cache = time_cache
+        self.log_cache = log_cache
 
 
 class Logger:
