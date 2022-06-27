@@ -1,4 +1,5 @@
 import atexit
+import threading
 from time import strftime
 from typing import Optional
 
@@ -15,8 +16,10 @@ class LogFileCache:
         self.cache_entries_num = cache_entries_num
         # 写入缓存数
         self.cache_count = 0
-
+        # 日志缓存表
         self.log_caches = []
+        # 同步锁
+        self.thread_log = threading.Lock
 
 
     def _log_file_time_write(self) -> None:
@@ -25,9 +28,12 @@ class LogFileCache:
             return None
         ...
 
-    def make_log(self, string: str, wait4cache=True) -> None:
-        if wait4cache:
-            self.have_log_cache = True
+    def make_log(self, string: str, wait_for_cache: bool = True) -> None:
+        if wait_for_cache:
+            with open(file=self.log_file_name, encoding='utf-8', mode='a') as log_file:
+                log_file.writelines(self.log_caches)
+                log_file.write(string)
+            ...
         else:
             ...
 
