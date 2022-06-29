@@ -28,7 +28,7 @@ from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.guis.widgets import InputBox
 # from Difficult_Rocket.client.screen import DRScreen
 from Difficult_Rocket.utils import tools, translate
-from Difficult_Rocket.api.Exp.command import CommandError
+from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 
 from libs import pyglet

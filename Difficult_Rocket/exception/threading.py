@@ -3,7 +3,10 @@
 #  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
+from exception import BaseRuntimeError
 
-from Difficult_Rocket.api.Exp import Error
+__all__ = ["LockTimeOutError"]
 
 
+class LockTimeOutError(BaseRuntimeError):
+    """没有特殊指定的 ”某个“ 锁超时了"""

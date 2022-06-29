@@ -13,7 +13,7 @@ gitee:  @shenjackyuanjie
 
 from typing import Union
 
-from Difficult_Rocket.api.Exp import *
+from Difficult_Rocket.exception.language import *
 from Difficult_Rocket.utils import tools
 
 """
@@ -51,7 +51,7 @@ class Lang:
             try:
                 return self.默认翻译[item]
             except KeyError:
-                raise LanguageError(f'there\'s no key {item} in both {self.语言} and zh-CN')
+                raise TranslateKeyNotFound(f'there\'s no key {item} in both {self.语言} and zh-CN')
 
     def __setitem__(self, key, value) -> None:
         if key == 'language' or key == 'lang':
@@ -61,7 +61,7 @@ class Lang:
             except FileNotFoundError:
                 if self.直接返回原始数据:
                     return None
-                raise LanguageError(f'{value}\'s language toml file not found')
+                raise TranslateKeyNotFound(f'{value}\'s language toml file not found')
         else:
             raise NotImplementedError
 
@@ -70,7 +70,7 @@ class Lang:
             self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
             self.语言 = language
         except FileNotFoundError:
-            raise LanguageError(f'{language}\'s language toml file not found')
+            raise TranslateKeyNotFoundError(f'{language}\'s language toml file not found')
 
     def lang(self, *args) -> Union[int, str, list, dict]:
         try:
@@ -87,7 +87,7 @@ class Lang:
             except KeyError:
                 if self.直接返回原始数据:
                     return args
-                raise LanguageError(f'there\'s no key {args} in both {self.语言} and zh-CN')
+                raise TranslateKeyNotFoundError(f'there\'s no key {args} in both {self.语言} and zh-CN')
 
     def 翻译(self, *args) -> Union[int, str, list, dict]:
         return self.lang(args)

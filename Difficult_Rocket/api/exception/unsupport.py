@@ -11,10 +11,12 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-# 单独导入的(或者就这一个有用的)
-from .delivery import Delivery
+from Difficult_Rocket.exception.unsupport import *
 
-# lazy之后之前全部导入的(太多了写不动__all__了)
-from .calculation import *
-from .scientific_unit import *
-
+__all__ = [
+    'NoMoreJson5',
+    'Nope418ImATeapot',
+    'ThinkError',
+    'BrainError',
+    'BigBrainError'
+]

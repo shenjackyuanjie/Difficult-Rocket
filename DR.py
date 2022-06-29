@@ -40,7 +40,7 @@ if __name__ == '__main__':
     print(hi)
 
     DEBUGGING = False
-    from Difficult_Rocket.api.Exp import *
+    from Difficult_Rocket.exception import TestError
     from Difficult_Rocket.crash import crash
     try:
         start_time = time.perf_counter_ns()

@@ -3,7 +3,7 @@ import threading
 from time import strftime
 from typing import Optional
 
-from Difficult_Rocket.api.Exp.threading import
+from Difficult_Rocket.exception import
 
 color_reset_suffix = "\033[0m"
 
@@ -19,7 +19,7 @@ class LogFileCache:
         # 写入缓存数
         self.cache_count = 0
         # 日志缓存表
-        self.log_caches = []
+        self.logs_cache = []
         # 同步锁
         self.thread_lock = threading.Lock()
 
@@ -29,6 +29,8 @@ class LogFileCache:
 
     @logfile_name.setter
     def logfile_name(self, value: str) -> None:
+        with self.thread_lock.acquire(timeout=1/60):
+            ...
         self.thread_lock.acquire(timeout=1/60)
         if not self.thread_lock.locked():
             ...
@@ -39,10 +41,10 @@ class LogFileCache:
             return None
         ...
 
-    def make_log(self, string: str, wait_for_cache: bool = True) -> None:
+    def write_logs(self, string: str, wait_for_cache: bool = True) -> None:
         if wait_for_cache:
             with open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
-                log_file.writelines(self.log_caches)
+                log_file.writelines(self.logs_cache)
                 log_file.write(string)
             ...
         else:
@@ -59,7 +61,7 @@ class Logger:
             self.config = config
 
 
-class GetLogger:
+class LoggerManager:
     """shenjack牌logger"""
 
     def __init__(self):
@@ -69,5 +71,12 @@ class GetLogger:
         self.configs[name] = config
         return self.configs
 
-    def logger(self, name: str = 'root') -> Logger:
+    def get_logger(self, name: str = 'root', config: dict = None) -> Logger:
+        """相当于 logging.getLogger(name='root')"""
+        if not config is None:
+            self.add_config(name, config)
         return Logger(config=self.configs)
+
+logger_manager = LoggerManager()
+get_logger = logger_manager.get_logger
+# shenjack.get_logger()

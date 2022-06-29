@@ -4,11 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
+from Difficult_Rocket.exception.threading import *
 
-from Difficult_Rocket.api.Exp.main import Error
+__all__ = [
+    "LockTimeOutError"
+]
