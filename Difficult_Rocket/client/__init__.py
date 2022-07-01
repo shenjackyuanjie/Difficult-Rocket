@@ -13,9 +13,7 @@ gitee:  @shenjackyuanjie
 
 # system function
 import os
-import sys
 import time
-import ctypes
 import logging
 import traceback
 
@@ -28,8 +26,8 @@ from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.guis.widgets import InputBox
 # from Difficult_Rocket.client.screen import DRScreen
 from Difficult_Rocket.utils import tools, translate
-from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
+from Difficult_Rocket.exception.command import CommandError
 
 from libs import pyglet
 from libs.pyglet.window import Window
@@ -247,6 +245,9 @@ class ClientWindow(Window):
     """
     keyboard and mouse input
     """
+
+    def activate(self):
+        super().activate()
 
     def on_mouse_motion(self, x, y, dx, dy) -> None:
         pass

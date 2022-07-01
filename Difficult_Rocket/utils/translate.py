@@ -11,15 +11,36 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+import inspect
+import objprint
+
 from typing import Union
 
 from Difficult_Rocket.exception.language import *
 from Difficult_Rocket.utils import tools
 
+
 """
 这部分代码使用了中文编程，why？
 你觉得呢？
 """
+
+
+class Tr:
+    """
+    我不装了，我就复刻tr
+    """
+    def __init__(self):
+        self.frame = inspect.currentframe()
+        objprint.objprint(self.frame,
+                          honor_existing=False,
+                          depth=1)
+
+        objprint.objprint(self.frame.f_back,
+                          honor_existing=False,
+                          depth=1)
+
+
 
 
 class Lang:
@@ -70,9 +91,15 @@ class Lang:
             self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
             self.语言 = language
         except FileNotFoundError:
-            raise TranslateKeyNotFoundError(f'{language}\'s language toml file not found')
+            raise TranslateKeyNotFound(f'{language}\'s language toml file not found')
 
     def lang(self, *args) -> Union[int, str, list, dict]:
+        frame = inspect.currentframe()
+        print("调用当前log的函数名:", frame.f_back.f_code.co_name)
+        # print("调用当前log的文件名:", frame.f_back.f_code.co_filename)
+        objprint.objprint(frame.f_back.f_code,
+                          honor_existing=False,
+                          depth=2)
         try:
             结果 = self.翻译结果
             for 选项 in args:
@@ -87,7 +114,7 @@ class Lang:
             except KeyError:
                 if self.直接返回原始数据:
                     return args
-                raise TranslateKeyNotFoundError(f'there\'s no key {args} in both {self.语言} and zh-CN')
+                raise TranslateKeyNotFound(f'there\'s no key {args} in both {self.语言} and zh-CN')
 
     def 翻译(self, *args) -> Union[int, str, list, dict]:
         return self.lang(args)
