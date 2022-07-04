@@ -1,1 +1,0 @@
-gcc -Wall -Werror -O3 -o feb_speed.exe .\feb_speed.c

@@ -1,3 +1,4 @@
 psutil
 pillow
 objprint
+selenium
