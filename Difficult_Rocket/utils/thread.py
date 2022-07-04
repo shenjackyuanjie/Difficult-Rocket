@@ -33,7 +33,6 @@ class ThreadLock:
         self.lock = the_lock
 
     def __enter__(self, timeout: Union[float, int] = 1/60):
-        print(timeout)
         self.lock.acquire(timeout=timeout)
         if not self.lock.locked():
             raise LockTimeOutError
