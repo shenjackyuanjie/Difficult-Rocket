@@ -3,7 +3,7 @@ import threading
 from time import strftime
 from typing import Optional
 
-from Difficult_Rocket.exception import
+from Difficult_Rocket.exception.logger import LogFileLockTimeOutError
 
 color_reset_suffix = "\033[0m"
 
@@ -37,6 +37,7 @@ class LogFileCache:
 
     def _log_file_time_write(self) -> None:
         """使用 threading.Timer 调用的定时写入日志文件的函数"""
+
         if self.cache_count == 0:
             return None
         ...

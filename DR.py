@@ -33,38 +33,37 @@ if __name__ == '__main__':
     print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
     file_path = os.path.split(os.path.realpath(__file__))[0]
-    os.chdir(file_path)
-    sys.path.append(f'{file_path}/Difficult_Rocket')
-    sys.path.append(f'{file_path}/libs')
-    print(sys.path)
-    print(hi)
+    os.chdir(file_path)  # 将运行路径切换到文件位置 防止bug
+    sys.path.append(f'{file_path}/Difficult_Rocket')  # 添加local path
+    sys.path.append(f'{file_path}/libs')  # 添加 libs path
+    print(sys.path)  # 输出路径
+    print(hi)  # hi！
 
-    DEBUGGING = False
+    DEBUGGING = False  # 是否在 DEBUG
     from Difficult_Rocket.exception import TestError
     from Difficult_Rocket.crash import crash
     try:
-        start_time = time.perf_counter_ns()
-        import pyglet
-        pyglet.options["win32_gdi_font"] = True
+        start_time = time.perf_counter_ns()  # 记录启动时间
+        import pyglet  # 导入pyglet
 
         from Difficult_Rocket import main
 
-        from libs.pyglet.gl import glClearColor
+        from libs.pyglet.gl import glClearColor  # 调整背景颜色
         glClearColor(0.5, 0.5, 0.5, 0)
 
-        game = main.Game()
+        game = main.Game()  # 实例化一个游戏
 
-        print(time.perf_counter_ns() - start_time)
+        print(time.perf_counter_ns() - start_time)  # 输出一下启动用时
 
-        cprofile = False
+        cprofile = False  # 是否使用cprofile
         if cprofile:
-            cProfile.run('game.start()', sort='calls')
+            cProfile.run('game.start()', sort='calls')  # 使用 cprofile 启动
         else:
-            game.start()
+            game.start()  # 直接启动
         if DEBUGGING:
-            raise TestError('debugging')
-    except Exception as exp:
-        print(error_format['error.happen'])
+            raise TestError('debugging')  # debug 嘛，试试crash
+    except Exception as exp:  # 出毛病了
+        print(error_format['error.happen'])  #
         error = traceback.format_exc()
         name = type(exp).__name__
         if name in error_format:

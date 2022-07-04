@@ -16,8 +16,8 @@ import objprint
 
 from typing import Union
 
-from Difficult_Rocket.exception.language import *
 from Difficult_Rocket.utils import tools
+from Difficult_Rocket.exception.language import *
 
 
 """
@@ -31,14 +31,18 @@ class Tr:
     我不装了，我就复刻tr
     """
     def __init__(self):
-        self.frame = inspect.currentframe()
-        objprint.objprint(self.frame,
-                          honor_existing=False,
-                          depth=1)
+        self.config_regs = {}
 
-        objprint.objprint(self.frame.f_back,
-                          honor_existing=False,
-                          depth=1)
+    def add_config(self, configs: dict) -> None:
+        frame = inspect.currentframe()
+        self.config_regs[frame.f_back.f_code.co_filename] = configs
+
+    def __call__(self, *args, **kwargs):
+        frame = inspect.currentframe()
+        if frame.f_back.f_code.co_filename in self.config_regs:
+            ...
+        else:
+            ...
 
 
 
@@ -94,12 +98,11 @@ class Lang:
             raise TranslateKeyNotFound(f'{language}\'s language toml file not found')
 
     def lang(self, *args) -> Union[int, str, list, dict]:
-        frame = inspect.currentframe()
-        print("调用当前log的函数名:", frame.f_back.f_code.co_name)
-        # print("调用当前log的文件名:", frame.f_back.f_code.co_filename)
-        objprint.objprint(frame.f_back.f_code,
-                          honor_existing=False,
-                          depth=2)
+        # frame = inspect.currentframe()
+        # # print("调用当前log的文件名:", frame.f_back.f_code.co_filename)
+        # objprint.objprint(frame.f_back.f_code,
+        #                   honor_existing=False,
+        #                   depth=2)
         try:
             结果 = self.翻译结果
             for 选项 in args:
