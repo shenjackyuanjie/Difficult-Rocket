@@ -149,5 +149,4 @@ dmypy.json
 other things/
 .git-/
 
-try/cprint/cmake-build-debug
-try/c/cmake-build-debug
+*cmake-build-debug

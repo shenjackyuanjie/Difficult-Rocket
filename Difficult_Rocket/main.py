@@ -26,7 +26,6 @@ from Difficult_Rocket import client, server
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
 
-
 class Game:
     def __init__(self):
         # basic config
