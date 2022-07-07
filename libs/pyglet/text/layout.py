@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------
 # pyglet
 # Copyright (c) 2006-2008 Alex Holkner
-# Copyright (c) 2008-2022 pyglet contributors
+# Copyright (c) 2008-2021 pyglet contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -324,12 +324,11 @@ class _GlyphBox(_AbstractBox):
 
     def place(self, layout, i, x, y, context):
         assert self.glyphs
-        program = get_default_layout_shader()
 
         try:
             group = layout.group_cache[self.owner]
         except KeyError:
-            group = layout.group_class(self.owner, program, order=1, parent=layout.group)
+            group = layout.group_class(self.owner, get_default_layout_shader(), order=1, parent=layout.group)
             layout.group_cache[self.owner] = group
 
         n_glyphs = self.length
@@ -357,19 +356,19 @@ class _GlyphBox(_AbstractBox):
         for start, end, color in context.colors_iter.ranges(i, i + n_glyphs):
             if color is None:
                 color = (0, 0, 0, 255)
-            if len(color) != 4:
-                raise ValueError("Color requires 4 values (R, G, B, A). Value received: {}".format(color))
             colors.extend(color * ((end - start) * 4))
 
         indices = []
         # Create indices for each glyph quad:
-        for glyph_idx in range(n_glyphs):
-            indices.extend([element + (glyph_idx * 4) for element in [0, 1, 2, 0, 2, 3]])
+        for i in range(n_glyphs):
+            indices.extend([element + (i * 4) for element in [0, 1, 2, 0, 2, 3]])
 
-        vertex_list = program.vertex_list_indexed(n_glyphs * 4, GL_TRIANGLES, indices, layout.batch, group,
-                                                  position=('f', vertices),
-                                                  colors=('Bn', colors),
-                                                  tex_coords=('f', tex_coords))
+        vertex_list = layout.batch.add_indexed(n_glyphs * 4, GL_TRIANGLES, group,
+                                               indices,
+                                               ('position2f/dynamic', vertices),
+                                               ('colors4Bn/dynamic', colors),
+                                               ('tex_coords3f/dynamic', tex_coords),
+                                               'translation2f/dynamic')
 
         context.add_list(vertex_list)
 
@@ -386,7 +385,6 @@ class _GlyphBox(_AbstractBox):
         y1 = y + self.descent + baseline
         y2 = y + self.ascent + baseline
         x1 = x
-
         for start, end, decoration in context.decoration_iter.ranges(i, i + n_glyphs):
             bg, underline = decoration
             x2 = x1
@@ -394,38 +392,30 @@ class _GlyphBox(_AbstractBox):
                 x2 += glyph.advance + kern
 
             if bg is not None:
-                if len(bg) != 4:
-                    raise ValueError("Background color requires 4 values (R, G, B, A). Value received: {}".format(bg))
-
                 background_vertices.extend([x1, y1, x2, y1, x2, y2, x1, y2])
                 background_colors.extend(bg * 4)
 
             if underline is not None:
-                if len(underline) != 4:
-                    raise ValueError("Underline color requires 4 values (R, G, B, A). Value received: {}".format(underline))
-
                 underline_vertices.extend([x1, y + baseline - 2, x2, y + baseline - 2])
                 underline_colors.extend(underline * 2)
 
             x1 = x2
 
         if background_vertices:
-            background_indices = []
-            bg_count = len(background_vertices) // 2
-            for glyph_idx in range(bg_count):
-                background_indices.extend([element + (glyph_idx * 4) for element in [0, 1, 2, 0, 2, 3]])
-
-            background_list = program.vertex_list_indexed(bg_count, GL_TRIANGLES, background_indices,
-                                                          layout.batch, layout.background_decoration_group,
-                                                          position=('f', background_vertices),
-                                                          colors=('Bn', background_colors))
+            background_list = layout.batch.add_indexed(len(background_vertices) // 2,
+                                                       GL_TRIANGLES, layout.background_decoration_group,
+                                                       [0, 1, 2, 0, 2, 3],
+                                                       ('position2f/dynamic', background_vertices),
+                                                       ('colors4Bn/dynamic', background_colors),
+                                                       'translation2f/dynamic')
             context.add_list(background_list)
 
         if underline_vertices:
-            underline_list = program.vertex_list(len(underline_vertices) // 2, GL_LINES,
-                                                 layout.batch, layout.foreground_decoration_group,
-                                                 position=('f',underline_vertices),
-                                                 colors=('Bn', underline_colors))
+            underline_list = layout.batch.add(len(underline_vertices) // 2,
+                                              GL_LINES, layout.foreground_decoration_group,
+                                              ('position2f/dynamic', underline_vertices),
+                                              ('colors4Bn/dynamic', underline_colors),
+                                              'translation2f/dynamic')
             context.add_list(underline_list)
 
     def delete(self, layout):
@@ -548,9 +538,12 @@ layout_vertex_source = """#version 330 core
 
     void main()
     {
-        gl_Position = window.projection * window.view * vec4(position + translation, 0.0, 1.0);
+        mat4 translate_mat = mat4(1.0);
+        translate_mat[3] = vec4(translation, 1.0, 1.0);
 
-        vert_position = vec4(position + translation, 0.0, 1.0);
+        gl_Position = window.projection * window.view * translate_mat * vec4(position, 0, 1);
+
+        vert_position = vec4(position + translation, 0, 1);
         text_colors = colors;
         texture_coords = tex_coords.xy;
     }
@@ -564,11 +557,11 @@ layout_fragment_source = """#version 330 core
     out vec4 final_colors;
 
     uniform sampler2D text;
-    uniform bool scissor;
+    uniform bool scissor = false;
     uniform vec4 scissor_area;
 
     void main()
-    {
+    {   
         final_colors = vec4(text_colors.rgb, texture(text, texture_coords).a * text_colors.a);
         if (scissor == true) {
             if (vert_position.x < scissor_area[0]) discard;                     // left
@@ -587,6 +580,7 @@ decoration_vertex_source = """#version 330 core
     out vec4 vert_colors;
     out vec4 vert_position;
 
+
     uniform WindowBlock
     {
         mat4 projection;
@@ -595,9 +589,12 @@ decoration_vertex_source = """#version 330 core
 
     void main()
     {
-        gl_Position = window.projection * window.view * vec4(position + translation, 0.0, 1.0);
+        mat4 translate_mat = mat4(1.0);
+        translate_mat[3] = vec4(translation, 1.0, 1.0);
 
-        vert_position = vec4(position + translation, 0.0, 1.0);
+        gl_Position = window.projection * window.view * translate_mat * vec4(position, 0, 1);
+
+        vert_position = vec4(position + translation, 0, 1);
         vert_colors = colors;
     }
 """
@@ -608,7 +605,7 @@ decoration_fragment_source = """#version 330 core
 
     out vec4 final_colors;
 
-    uniform bool scissor;
+    uniform bool scissor = false;
     uniform vec4 scissor_area;
 
     void main()
@@ -628,10 +625,10 @@ def get_default_layout_shader():
     try:
         return pyglet.gl.current_context.pyglet_text_layout_shader
     except AttributeError:
-        pyglet.gl.current_context.pyglet_text_layout_shader = shader.ShaderProgram(
-            shader.Shader(layout_vertex_source, 'vertex'),
-            shader.Shader(layout_fragment_source, 'fragment'),
-        )
+        _default_vert_shader = shader.Shader(layout_vertex_source, 'vertex')
+        _default_frag_shader = shader.Shader(layout_fragment_source, 'fragment')
+        default_shader_program = shader.ShaderProgram(_default_vert_shader, _default_frag_shader)
+        pyglet.gl.current_context.pyglet_text_layout_shader = default_shader_program
         return pyglet.gl.current_context.pyglet_text_layout_shader
 
 
@@ -639,10 +636,10 @@ def get_default_decoration_shader():
     try:
         return pyglet.gl.current_context.pyglet_text_decoration_shader
     except AttributeError:
-        pyglet.gl.current_context.pyglet_text_decoration_shader = shader.ShaderProgram(
-            shader.Shader(decoration_vertex_source, 'vertex'),
-            shader.Shader(decoration_fragment_source, 'fragment'),
-        )
+        _default_vert_shader = shader.Shader(decoration_vertex_source, 'vertex')
+        _default_frag_shader = shader.Shader(decoration_fragment_source, 'fragment')
+        default_shader_program = shader.ShaderProgram(_default_vert_shader, _default_frag_shader)
+        pyglet.gl.current_context.pyglet_text_decoration_shader = default_shader_program
         return pyglet.gl.current_context.pyglet_text_decoration_shader
 
 
@@ -669,6 +666,7 @@ class TextLayoutGroup(graphics.Group):
 
     def unset_state(self):
         glDisable(GL_BLEND)
+        glBindTexture(self.texture.target, 0)
         self.program.stop()
 
     def __repr__(self):
@@ -713,6 +711,7 @@ class ScrollableTextLayoutGroup(graphics.Group):
 
     def unset_state(self):
         glDisable(GL_BLEND)
+        glBindTexture(self.texture.target, 0)
         self.program.stop()
 
     def __repr__(self):
@@ -870,8 +869,12 @@ class TextLayout:
         self.content_height = 0
 
         self._user_group = group
+
+        decoration_shader = get_default_decoration_shader()
+        self.background_decoration_group = self.decoration_class(decoration_shader, order=0, parent=self._user_group)
+        self.foreground_decoration_group = self.decoration_class(decoration_shader, order=2, parent=self._user_group)
+
         self.group_cache = {}
-        self._initialize_groups()
 
         if batch is None:
             batch = graphics.Batch()
@@ -891,20 +894,9 @@ class TextLayout:
         self._dpi = dpi or 96
         self.document = document
 
-    def _initialize_groups(self):
-        decoration_shader = get_default_decoration_shader()
-        self.background_decoration_group = self.decoration_class(decoration_shader, order=0, parent=self._user_group)
-        self.foreground_decoration_group = self.decoration_class(decoration_shader, order=2, parent=self._user_group)
-
     @property
     def group(self):
         return self._user_group
-
-    @group.setter
-    def group(self, group):
-        self._user_group = group
-        self._initialize_groups()
-        self._update()
 
     @property
     def dpi(self):

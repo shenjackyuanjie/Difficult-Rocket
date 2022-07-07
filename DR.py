@@ -4,9 +4,9 @@ mail: 3695888@qq.com
 """
 import os
 import sys
-import time
-import cProfile
 import traceback
+import threading
+import multiprocessing
 
 # TODO 默认位置配置文件
 # TODO 可自定义工作路径
@@ -30,40 +30,30 @@ if __name__ == '__main__':
     print(f'{os.getcwd()=}')
     print(f'{os.path.abspath(__file__)=}')
     print(f'{os.path.realpath(__file__)=}')
-    print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
     file_path = os.path.split(os.path.realpath(__file__))[0]
-    os.chdir(file_path)  # 将运行路径切换到文件位置 防止bug
-    sys.path.append(f'{file_path}/Difficult_Rocket')  # 添加local path
-    sys.path.append(f'{file_path}/libs')  # 添加 libs path
-    print(sys.path)  # 输出路径
-    print(hi)  # hi！
+    os.chdir(file_path)
+    sys.path.append(f'{file_path}/Difficult_Rocket')
+    sys.path.append(f'{file_path}/libs')
+    print(sys.path)
+    print(hi)
 
-    DEBUGGING = False  # 是否在 DEBUG
-    from Difficult_Rocket.exception import TestError
-    from Difficult_Rocket.crash import crash
+    DEBUGGING = False
+    from SRtool.api.Exp import *
+
     try:
-        start_time = time.perf_counter_ns()  # 记录启动时间
-        import pyglet  # 导入pyglet
+        from SRtool.crash import crash
+        from SRtool import main
 
-        from Difficult_Rocket import main
+        game = main.Game()
+        game.start()
 
-        from libs.pyglet.gl import glClearColor  # 调整背景颜色
-        glClearColor(0.5, 0.5, 0.5, 0)
-
-        game = main.Game()  # 实例化一个游戏
-
-        print(time.perf_counter_ns() - start_time)  # 输出一下启动用时
-
-        cprofile = False  # 是否使用cprofile
-        if cprofile:
-            cProfile.run('game.start()', sort='calls')  # 使用 cprofile 启动
-        else:
-            game.start()  # 直接启动
         if DEBUGGING:
-            raise TestError('debugging')  # debug 嘛，试试crash
-    except Exception as exp:  # 出毛病了
-        print(error_format['error.happen'])  #
+            raise TestError('debugging')
+    except Exception as exp:
+        from SRtool.translate import tr
+
+        print(error_format['error.happen'])
         error = traceback.format_exc()
         name = type(exp).__name__
         if name in error_format:

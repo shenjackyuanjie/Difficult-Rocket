@@ -1,96 +1,52 @@
 # Difficult Rocket Update Logs
 
-- 感谢 `Github copilot` 的翻译(甚至这句话也是`copilot`翻译的)
-  - 也就意味着以后的更新日志是中文记录+`copilot`翻译的(当然，也有可能是`Easy Translate`翻译的)
 - Thanks `Github copilot` for translate (lazy yes!)
-  - Means the update logs will lodge in Chinese and translated by `copilot`
+- 感谢 `Github copilot` 的翻译(甚至这句话也是copilot翻译的)
+
+# SR tool PC Update Logs
+
+- 从~~0.6.1~~1.0版本开始，这个更新日志将主要用于记录SRtool的更新
+  - 并且使用中文记录更新
+- ~~github copilot 真好用~~
 
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.6.1-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-1.0-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 20220627
-
-## 20220511 V 0.6.3
-
-- 咕了好久的 update log 了
-- github copilot 卒了，所以没有英文
-  - GitHub copy alot break , so no English
+## 202112 V 1.1
 
 ### Change
 
-- 将 `api/Exp` 改为文件夹 `api/Exp/__init__.py`
-- 再次重写了 `client.load_fonts()` 现在改为直接加载单独的 `pyglet_load_fonts_folder()`
-- 更新了 `command/` 里的一大堆东西
-- 退钱！开摆！
+- 以后DR的更新日志不会再在这里同步（咕咕咕）
+- 没啥
+- 同步了DR的更新（虽说其实没有）
 
+## 20211110 V 1.0 (V 0.6.1)
 
-
-## 202202xx V 0.6.2
-
-### Add
-
-[然后就很快被替换成MCDR的了]: <> (- 添加模块 `semver` 和协议 &#40;`LICENSE.txt`&#41;)
-[Add soon been replace by MCDR]: <> (  - Add modules `semver` Add LICENSE &#40;`LICENSE.txt`&#41;)
-- 添加了 `libs.MCDR` 文件夹 (`new_thread`没有包含在内)
-  - Add `libs.MCDR` folder (`new_thread` not included)
-- 添加对 mod 的支持(还在写啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊)
-- 计划写个设计文档
-  - Plan to write a design document
-
-
-## ~~202111 202112xx 20220119~~ 20220207 V 0.6.1
-
-~~争取12月内发一个release~~
-
-~~行了，这都2022年了，我接着摸，等我考完试(20220110)再发~~
-
-20220207 可算是发了，ruaaaa
+- 热烈祝贺1.0的发布！
+- lazy了，1.1再把一些版本参数改成1.1吧
 
 ### Change
 
-- 修改了 readme 文件的语言切换格式
-  - Change the language switch format in readme
-- 更新了所有文件的版权信息 (2021-2022)
-  - Update all files copyright information (2021-2022)
-- 重命名 `Difficult_Rocket.py` -> `DR.py`
-  - 用于修复 `Pycharm` 检测模块时总是会把主文件检测成主程序，导致一些模块总是检测不到的问题
-    - Rename `Difficult_Rocket.py` -> `DR.py`
-    - Use it to fix `Pycharm` module detection problem
-      - When the main file is detected as the main program, some modules will always be detected as the main program
 - 把`api/translate`移动到根目录下
   - move `api/translate` to root directory
 - 现在命令会慢慢消失，而不是立即消失
   - Now the command will disappear slowly, not immediately
-- 重写了一遍` client.load_fonts()`
-  - rewrite `client.load_fonts()`
-- 重写了 `tools.load_file()` 的错误处理和 `.config` 文件的解析方式
-  - 现在 `.config` 文件解析后会直接返回一个 `ConfigParser` 对象
-  - 也就意味着不能再直接遍历 `.config` 文件返回的解析 ~~谁遍历.config文件啊~~
-  - 同时也意味着可以直接用解析好的 `.config` 文件来修改 `.config` 文件
-    - rewrite `tools.load_file()` error handling and `.config` file parsing method
-      - now `.config` file parsing after return `ConfigParser` object
-      - that means you can not directly traverse `.config` file return parsing ~~who traverse .config file~~
-      - also means you can directly use parsed `.config` file to modify `.config` file
-- 为 `pyglet` 添加 `Ctrl+C` 和 `Ctrl+V` 的快捷键解析
-  - add `Ctrl+C` and `Ctrl+V` shortcut for `pyglet`
-- 更新 `pyglet` 到 `2.0dev13`
-  - update `pyglet` to `2.0dev13`
 
 ### Command
 
-- `log_tick` 指令改为 `fps log`
-  - command `log_tick` change to `fps log`
-- `maxfps` 指令改为 `fps max`
-  - command `maxfps` change to `fps max`
-- `minfps` 指令改为 `fps min`
-  - command `minfps` change to `fps min`
+- 现在可以使用`set long xxx(int)` 指令来在拖入图片后设置坐标轴点的长度
+  - Now you can use `set long xxx(int)` command to set the length of the axis point
+- `set scale xxx(int)` 用于设置坐标缩放
+  - `set scale xxx(int)` to set the scale of the coordinate
+- 删除了`fps`相关指令(因为没有fps记录器了)
+  - Delete `fps` related command (because there is no fps recorder now)
 
 - 命令内容输出使用`CommandText`而不是`str`
   - 也就是说可以使用`CommandText.match`来匹配命令内容
@@ -101,21 +57,8 @@
 
 ### Add
 
-- 添加内置字体`Cascadia_Code`
-  - add built-in font `Cascadia_Code`
-- 添加模块 `xmltodict` `pyperclip`
-  - add modules `xmltodict` `pyperclip`
-- 添加了`json5` `pyglet` `pyperclip` `xmltodict` 的协议
-  - 非常感谢上述模块的作者和维护者们
-  - added `json5` `pyglet` `pyperclip` `xmltodict` LICENSE
-    - thanks a lot to above module's author and maintainer
-- 继续~~重~~新写了一个基于 `HTMLLabel` 的 `HTMLformatedLabel`
-  - 同时为他写了一个 `decode_text2HTML` 工具(这也是咕咕咕的一大部分原因)
-  - add a `HTMLformatedLabel` Label based on `HTMLLabel`
-    - also write a `decode_text2HTML` tool (also a big reason why lazy)
-- 增加内置模块 `toml` 和对应的 `LICENSE.txt`
-  - Added built-in module `toml` and corresponding `LICENSE.txt`
-
+- `gui/widgets.py` InputBox
+  - making
 
 ## 20211025 V 0.6.0
 
@@ -123,22 +66,24 @@
 
 ### Change
 
-- 现在 `Difficult Rocket` 只适用于 python3.8+
-  - 因为 `:=` 的使用
-  - now `Difficult Rocket` will only fit python3.8+
-    - because `:=`
-- 现在主程序崩溃时的报告处理方式有了新的方式
-  - now main crash report handler have new way to handler crash
-- 现在字体文件夹的名字改为 `HarmonyOS_Sans`
-  - now fonts' folder's name is `HarmonyOS_Sans`
+- now `Difficult Rocket` will only fit python3.8+
+  - because `:=`
+  - 现在 `Difficult Rocket` 只适用于 python3.8+
+    - 因为 `:=` 的使用
+- now main crash report handler have new way to handler crash
+  - 现在主程序崩溃时的报告处理方式有了新的方式
+- now fonts' folder's name is `HarmonyOS_Sans`
+  - 现在字体文件夹的名字改为 `HarmonyOS_Sans`
 
 ### Add
 
 - `Difficult_Rocket.graphics.widgets.Parts`
   - have many costume value
-- now `libs/fonts` have `HarmonyOS_Sans` font
+  - 有很多自定义数值
+- `libs/fonts` now have `HarmonyOS_Sans` font
+  - 现在 `libs/fonts` 有 `HarmonyOS_Sans` 字体
 - handler of `on_key_press` and `on_key_release` and `on_text`
-  - `on_key_press` 和 `on_key_release` 和 `on_text` 的处理方式
+  - 添加了 `on_key_press` 和 `on_key_release` 和 `on_text` 的处理方式
 - `game.config` config file
 - `lang/en-us.json5` now up to date with `lang/zh-CN.json5`
 - `translate/Lang.翻译` same as `Lang.lang`
@@ -180,7 +125,6 @@
     - stop the game
   - `/default`
     - switch window size to default size
-
 
 ## 20210928 V 0.5.2
 
@@ -231,7 +175,6 @@
   - `tr[xxx]` can also use but won't solve error when item not found
   - so best use `tr.lang(xx, xx)`
 
-
 ## 20210902 V 0.5.1
 
 ### Change
@@ -247,7 +190,6 @@
 - auto crash report in `bin/crash/create_crash_report`
 - `bin/api/Exp.py` some Exception
 - `bin/api/translate` to create a `translate` class that can reload language
-
 
 ## 20210823 V 0.5.0
 
@@ -267,7 +209,6 @@
 ### Delete
 
 - `name_hanlder` in `configs.py`
-
 
 ## 20210811 V 0.4.6
 
@@ -295,7 +236,6 @@
 - delete some useless code
 - delete some useless file
 
-
 ## 20210723 V 0.4.5
 
 ### DEBUG
@@ -312,7 +252,6 @@
 - `README.md` and `README-cn.md` some label style change
 - Pre-installed `pyglet` upgrade from `1.5.16` -> `1.5.18`
 - Pre-installed `json5` upgrade from `0.9.5` -> `0.9.6`
-
 
 ## 20210708 V 0.4.4
 
@@ -336,7 +275,6 @@
 - `test_logging_conf.py`
 - `test_speed_of_sprite.py`
 
-
 ## 2021/06/26 V 0.4.3
 
 ### DEBUG
@@ -353,7 +291,6 @@
 - add performance_test folder
 - add some performances test
 
-
 ## 2021/05/24 V 0.4.2
 
 ### DEBUG
@@ -369,7 +306,6 @@
 ### Need Do
 
 - debug name_format
-
 
 ## 2021/04/17 V 0.4.1
 
@@ -392,7 +328,6 @@ PS:
 - plan to change config file format to .config (plan to)
 - reformat all files (including libs)
 
-
 ## 2021/04/09 V 0.2.3/4
 
 ### Add
@@ -409,7 +344,6 @@ PS:
 - many `tools.name_handler()` use bug(cause crashes)
 - `{date}` can be successful use in `tools.name_handler()` (if you define the format of date)
 - log file's filename incorrect (should be `xxxx-xx-xx xx-xx-xx DR.log` but be `{date} DR.log`)
-
 
 ## 2021/03/27 V 0.2.2/1
 

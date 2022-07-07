@@ -6,26 +6,15 @@
 
 - [GitHub](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+- [npm](https://www.npmjs.com/package/Difficult-Rocket)
+# 本分支是 SRtool 的开发分支 与Difficult Rocket基本无关
 
-[![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-[![Generic badge](https://img.shields.io/badge/编写于_Python_版本-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/编写于_Pyglet_版本-2.0dev11-blue.svg)](https://pyglet.org)
-[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_-blue.svg)](https://Python.org)
-
-## 版本
-
-[![Generic badge](https://img.shields.io/badge/Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-
-## English README please look [here](../README.md)
-
-> 这是一个用Python制作的类Simple Rocket游戏(简称：火箭模拟器)
-
-## 优势
-
-> 相对于原版SR比较“轻量化”
-
+- 因为窗口框架、整体结构、API接口跟DR相同，所以作为Difficult Rocket的分支存在
+- 以后DR的API和库更新也会更新到这里
+- 另外，这里的很多函数就直接中文编程了
+- 另外的话，这个分支就不会怎么对英文做支持了(lazy)
+- pyglet的库还是会照常更新的
+- 
 ## [计划特性列表](./plan_features)
 
 - [microsoft TODO](https://to-do.microsoft.com/sharing?InvitationToken=Q6SN1kdtitK8cwFktFl71gSnsRMNmrH7CC7kHY_Tq6ReMRwHgInP4_q5ie2IwrHx8)
