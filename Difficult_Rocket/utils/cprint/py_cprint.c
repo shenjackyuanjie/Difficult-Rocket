@@ -3,6 +3,7 @@
 //
 
 #define PY_SSIZE_T_CLEAN
+#define Py_size long long int
 #include <Python.h>
 #include <stdint.h>
 
@@ -16,14 +17,31 @@ static PyObject *pycprint_print(PyObject *self, PyObject *args){
 };
 
 static PyObject *pycpint_printf(PyObject *self, PyObject *args, PyObject *kwargs){
-    PyObject *a;
-    if(!PyArg_ParseTuple(args, "O", &a)){
-        return NULL;
-    };
+    printf("args == NULL: %d\n", args == NULL);
+    printf("kwargs == NULL: %d\n", kwargs == NULL);
 
+    const char *end = "\n";
+    const char *sep = " ";
+
+    if(args != NULL){ // 传入了字符串
+        Py_ssize_t text_len = PyTuple_Size(args);
+
+
+        printf("text_len = %lld\n", (Py_size)text_len);
+        char *text_list;
+        char **text_lists = malloc(sizeof(char) * text_len);
+        const char *args_text = malloc(sizeof(char) * text_len);
+
+        PyArg_ParseTuple(args, , &);
+    };
+    if(kwargs != NULL){ // 传入了 end 或者 sep
+        Py_ssize_t kwargs_len = PyDict_Size(kwargs);
+        printf("kwargs_len = %lld\n", (Py_size) kwargs_len);;
+        char *kwlist[] = {"end", "sep", NULL};
+        PyArg_ParseTupleAndKeywords(args, kwargs, "ss", kwlist, &end, &sep);
+    };
     Py_ssize_t text_len = PyTuple_Size(args);
-    int int_text_len = (int)text_len;
-    printf("%d", int_text_len);
+    printf("%s", end);
     Py_RETURN_NONE;
 };
 

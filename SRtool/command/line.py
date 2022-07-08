@@ -20,7 +20,7 @@ from decimal import Decimal
 
 # from DR
 from SRtool import translate
-from SRtool.api import new_thread
+from SRtool.api.new_thread import new_thread
 
 # from libs.pyglet
 from libs import pyglet

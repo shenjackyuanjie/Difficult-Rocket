@@ -5,3 +5,5 @@
 #  -------------------------------
 
 def print(text: str) -> None: ...  # 直接调用fprint
+
+def printf(text: str) -> None: ...  # 测试中

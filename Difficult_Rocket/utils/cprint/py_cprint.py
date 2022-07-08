@@ -7,3 +7,11 @@
 from build import pycprint
 
 pycprint.print("aaa\n")
+
+pycprint.printf("aaa\n", "aaa", "aaa", end='')
+
+print()
+
+pycprint.printf()
+
+pycprint.printf("aaa\n", "aaa", "aaa")

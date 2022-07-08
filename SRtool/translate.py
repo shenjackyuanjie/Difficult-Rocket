@@ -37,8 +37,8 @@ class Lang:
 
     def __init__(self, language: str = 'zh-CN'):
         self.语言 = language
-        self.翻译结果 = tools.load_file(f'configs/lang/{language}.json5')
-        self.默认翻译 = tools.load_file('configs/lang/zh-CN.json5')
+        self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
+        self.默认翻译 = tools.load_file('configs/lang/zh-CN.toml')
 
     def __str__(self) -> str:
         return self.语言
@@ -55,7 +55,7 @@ class Lang:
     def __setitem__(self, key, value):
         if key == 'language' or key == 'lang':
             try:
-                self.翻译结果 = tools.load_file(f'configs/lang/{value}.json5')
+                self.翻译结果 = tools.load_file(f'configs/lang/{value}.toml')
                 self.语言 = value
             except FileNotFoundError:
                 raise LanguageError(f'{value}\'s language json5 file not found')
@@ -64,7 +64,7 @@ class Lang:
 
     def set_language(self, language) -> None:
         try:
-            self.翻译结果 = tools.load_file(f'configs/lang/{language}.json5')
+            self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
             self.语言 = language
         except FileNotFoundError:
             raise LanguageError(f'{language}\'s language json5 file not found')

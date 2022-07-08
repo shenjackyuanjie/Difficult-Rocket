@@ -31,7 +31,8 @@ from SRtool import translate
 from SRtool.api.Exp import *
 from SRtool.translate import tr
 from SRtool.command import line
-from SRtool.api import tools, new_thread
+from SRtool.api import tools
+from SRtool.api.new_thread import new_thread
 
 # libs function
 from libs import pyglet
