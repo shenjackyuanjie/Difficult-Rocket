@@ -6,4 +6,12 @@
 
 from build import pycprint
 
-pycprint.print("aaa\n")
+pycprint.print("a啊a\n")
+
+pycprint.printf("a啊a\n", "aaa", "aaa", end='')
+
+print()
+
+pycprint.printf()
+
+pycprint.printf("aaa\n", "aaa", "aaa")
