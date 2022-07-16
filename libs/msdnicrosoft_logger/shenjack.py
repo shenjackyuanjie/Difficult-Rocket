@@ -173,14 +173,14 @@ def add_dict_config_to_global(some_dict: dict, name: str) -> dict:
     @return: 修改过的 logger 配置
     """
     logger_configs[name] = some_dict
-    return logger_configs
+    return logger_configs  # 修改过的 logger 配置
 
 
 def add_kwargs_to_global(**kwargs) -> dict:
     """
 
-    @param kwargs:
-    @return:
+    @param kwargs: 你要改的 logger配置
+    @return: 修改过的 logger 配置
     """
     ...
 
