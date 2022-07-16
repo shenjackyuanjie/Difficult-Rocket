@@ -7,18 +7,42 @@
 #include <Python.h>
 #include <stdint.h>
 
+
+
+int *print_PyUcs4(PyObject *pyObject){
+    if(PyUnicode_READY(pyObject) == -1){
+        PyErr_SetString(PyExc_UnicodeDecodeError, "failed");
+        return NULL;
+    }
+    #if defined(__linux__)
+    const char *out_char = PyUnicode_AsUTF8(pyObject);
+    printf("%s\n", out_char);
+    #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    Py_UCS4 *ucs4 = PyUnicode_4BYTE_DATA(pyObject);
+    printf("%ws\n", ucs4); // win
+    #endif
+    return (int *) 1;
+};
+
 static PyObject *pycprint_print(PyObject *self, PyObject *args){
-    const char *text;
-    if(!PyArg_ParseTuple(args, "s", &text)){ // 解析 text
+    if(!print_PyUcs4(PyTuple_GetItem(args, 0))){
         return NULL;
     };
-    printf("%s", text);
     Py_RETURN_NONE;
 };
 
-Py_UCS4 *get_ucs4from_unicode(PyObject *unicode){
-    
+const char *get_char_from_PyUnicode(PyObject *unicodeObject){
+    if(!PyUnicode_READY(unicodeObject)){
+        return NULL;
+    };
+    const char *char_obj = PyUnicode_AsUTF8(unicodeObject);
+    if(char_obj == NULL){
+        return NULL;
+    } else {
+        return char_obj;
+    };
 };
+
 
 static PyObject *pycpint_printf(PyObject *self, PyObject *args, PyObject *kwargs){
     printf("args == NULL: %d\n", args == NULL);
@@ -34,14 +58,13 @@ static PyObject *pycpint_printf(PyObject *self, PyObject *args, PyObject *kwargs
         for (Py_ssize_t i = 0; i < text_len; i++){  // for 遍历
             cache_obj = PyTuple_GetItem(args, i);  // 获取一个字符串
             if (cache_obj == NULL){ return NULL; };  // 出毛病了就报错
-            if (PyUnicode_Check(cache_obj) == 1) {  // 他不是个字符串(实际上如果有pyi文件就不需要这个检查)
-
+            if (PyUnicode_Check(cache_obj) == 1) {
+                print_PyUcs4(cache_obj);
             } else if (PyList_Check(cache_obj) == 1) {
 
             };
         };
         printf("text_len = %lld\n", (Py_size)text_len);
-
     };
     if(kwargs != NULL){ // 传入了 end 或者 sep
         Py_ssize_t kwargs_len = PyDict_Size(kwargs);
@@ -49,13 +72,8 @@ static PyObject *pycpint_printf(PyObject *self, PyObject *args, PyObject *kwargs
         if(PyDict_Contains(kwargs, PyUnicode_FromString("end"))){  // 如果包含 end 的参数
             PyObject *end_unicode; // 整个缓存
             end_unicode = PyDict_GetItemString(kwargs, "end");  // 先获取出来 Pyobj
-            if(!PyUnicode_READY(end_unicode)){ return NULL; };  // 确认这个字符串对象可以用宏
 
-            Py_ssize_t end_unicode_len = PyUnicode_GetLength(end_unicode);  // 缓存一手长度
-            Py_UCS4 *new_end = malloc(sizeof(char) * end_unicode_len);  // 提前分配好不定长度的字符串内存
-            for (Py_ssize_t i = 0; i < end_unicode_len; i++){
-                new_end[i] = PyUnicode_ReadChar(end_unicode, i);  // 每一位对应读取
-            };
+            end = PyUnicode_AsUTF8(end_unicode);
         };
     };
     printf("%s", end);

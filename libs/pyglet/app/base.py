@@ -245,7 +245,7 @@ class EventLoop(event.EventDispatcher):
         self.clock.call_scheduled_functions(dt)
 
         # Update timout
-        return self.clock.get_sleep_time(False)
+        return self.clock.get_sleep_time(True)
 
     @property
     def has_exit(self):

@@ -29,13 +29,15 @@ class Threads(threading.Thread):
 
 class ThreadLock:
 
-    def __init__(self, the_lock: Lock) -> None:
+    def __init__(self, the_lock: Lock, time_out: Union[float, int] = 1/60) -> None:
         self.lock = the_lock
+        self.time_out = time_out
 
-    def __enter__(self, timeout: Union[float, int] = 1/60):
-        self.lock.acquire(timeout=timeout)
+    def __enter__(self):
+        self.lock.acquire(timeout=self.time_out)
         if not self.lock.locked():
             raise LockTimeOutError
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if (exc_type is None) and (exc_val is None) and (exc_tb is None):

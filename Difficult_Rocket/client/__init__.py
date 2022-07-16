@@ -79,14 +79,14 @@ def pyglet_load_fonts_folder(folder) -> None:
 class ClientWindow(Window):
 
     def __init__(self, net_mode='local', *args, **kwargs):
+        """
+
+        @param net_mode:
+        @param args:
+        @param kwargs:
+        """
         start_time = time.time_ns()
         super().__init__(*args, **kwargs)
-        """
-        :param dev_list: 共享内存
-        :param dev_dic: 共享内存
-        :param logger: logger
-        :param net_mode: 网络模式 # local / ip
-        """
         # logging
         self.logger = logging.getLogger('client')
         # value
