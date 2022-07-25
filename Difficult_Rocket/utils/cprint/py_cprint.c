@@ -16,10 +16,10 @@ int *print_PyUcs4(PyObject *pyObject){
     }
     #if defined(__linux__)
     const char *out_char = PyUnicode_AsUTF8(pyObject);
-    printf("%s\n", out_char);
+    printf("%s", out_char);
     #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     Py_UCS4 *ucs4 = PyUnicode_4BYTE_DATA(pyObject);
-    printf("%ws\n", ucs4); // win
+    printf("%ws", ucs4); // win
     #endif
     return (int *) 1;
 };
@@ -58,6 +58,7 @@ static PyObject *pycpint_printf(PyObject *self, PyObject *args, PyObject *kwargs
         for (Py_ssize_t i = 0; i < text_len; i++){  // for 遍历
             cache_obj = PyTuple_GetItem(args, i);  // 获取一个字符串
             if (cache_obj == NULL){ return NULL; };  // 出毛病了就报错
+
             if (PyUnicode_Check(cache_obj) == 1) {
                 print_PyUcs4(cache_obj);
             } else if (PyList_Check(cache_obj) == 1) {
@@ -69,9 +70,9 @@ static PyObject *pycpint_printf(PyObject *self, PyObject *args, PyObject *kwargs
     if(kwargs != NULL){ // 传入了 end 或者 sep
         Py_ssize_t kwargs_len = PyDict_Size(kwargs);
         printf("kwargs_len = %lld\n", (Py_size) kwargs_len);;
-        if(PyDict_Contains(kwargs, PyUnicode_FromString("end"))){  // 如果包含 end 的参数
-            PyObject *end_unicode; // 整个缓存
-            end_unicode = PyDict_GetItemString(kwargs, "end");  // 先获取出来 Pyobj
+        if(PyDict_Contains(kwargs, PyUnicode_FromString("end"))){ // 如果包含 end 的参数
+
+            PyObject *end_unicode = PyDict_GetItemString(kwargs, "end");  // 先获取出来 Pyobj
 
             end = PyUnicode_AsUTF8(end_unicode);
         };
@@ -97,4 +98,4 @@ static struct PyModuleDef pycprintmodule = {
 
 PyMODINIT_FUNC PyInit_pycprint(void){
     return PyModule_Create(&pycprintmodule);
-}
+};

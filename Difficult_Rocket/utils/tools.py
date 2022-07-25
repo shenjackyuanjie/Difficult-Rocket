@@ -18,6 +18,7 @@ import math
 import logging
 import configparser
 
+from typing import Union
 from xml.dom.minidom import parse
 
 from libs import toml
@@ -30,12 +31,14 @@ tools_logger = logging.getLogger('part-tools')
 file configs
 """
 
-file_error = {'FileNotFoundError': 'no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}',
-              'KeyError': 'no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}',
-              'Error': 'get some unknown error when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
+file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}',
+              KeyError: 'no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}',
+              Exception: 'get some {error_type} error when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
 
 
-def load_file(file_name: str, stack=None):
+
+
+def load_file(file_name: str, stack:Union[str, list, dict] = None, raise_error: bool = True) -> Union[dict, list]:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     try:
         get_file = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
@@ -53,12 +56,13 @@ def load_file(file_name: str, stack=None):
         elif f_type == 'json5':
             raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:
-        error_type = type(exp).__name__
+        error_type = type(exp)
         if error_type in file_error:
             tools_logger.error(file_error[error_type].format(filetype=f_type, filename=file_name, stack=stack))
         else:
-            tools_logger.error(file_error['Error'].format(filetype=f_type, filename=file_name, stack=stack))
-        raise
+            tools_logger.error(file_error[Exception].format(error_type=error_type, filetype=f_type, filename=file_name, stack=stack))
+        if raise_error:
+            raise
     return get_file
 
 

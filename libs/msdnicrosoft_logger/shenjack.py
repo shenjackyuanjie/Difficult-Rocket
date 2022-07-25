@@ -6,7 +6,7 @@ import atexit
 import threading
 
 from time import strftime
-from typing import Optional, Union, List, Iterable
+from typing import Optional, Union, Dict, Iterable, Tuple, List
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 
 from Difficult_Rocket.utils.thread import ThreadLock
@@ -24,8 +24,10 @@ from Difficult_Rocket.utils.thread import ThreadLock
 #
 
 color_reset_suffix = "\033[0m"
+""" 只是用来重置颜色的后缀 """
 
 """
+OFF > FATAL > ERROR > WARN > INFO > FINE > FINER > DEBUG > TRACE > ALL
 logging.py
 CRITICAL = 50
 FATAL = CRITICAL
@@ -36,8 +38,8 @@ INFO = 20
 DEBUG = 10
 NOTSET = 0
 """
-
-DETAIL = 5
+ALL = NOTSET
+TRACE = 5
 
 
 class LogFileCache:
@@ -148,7 +150,7 @@ class Logger:
         if level < self.level:
             return None
         print(level, values, sep, end, flush, sep='|')
-        write_text = sep.join(*values)
+        write_text = sep.join(values)
         print(write_text)
         ...
 
@@ -194,10 +196,26 @@ class Logger:
         self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush)
 
 
+def color_in_033(*args) -> str:
+    color_text = ';'.join(args)
+    color_text = f'\033[{color_text}m'
+    return color_text
+
+
+def rgb(r: int, g: int, b: int) -> Tuple[int, int, int]:
+    return r, g, b
+
+
+def logging_color() -> Dict:
+    ...
+    return {'info': ..., 'message': ...}
+
+
+
 logger_configs = {
     'Logger': {
         'root': {
-            'level': DETAIL,
+            'level': TRACE,
             'color': {
                 DEBUG: '\033[0m'
             },
@@ -205,17 +223,23 @@ logger_configs = {
         },
     },
     'Color': {
-        'detail'
+        TRACE: {'info': '', 'message': '\033[48;2;40;40;40m'},
+        DEBUG: {'info': '', 'message': '\033[32;40m'},
+        INFO: {'info': '', 'message': '\033[33;40m'},
+        WARNING: {'info': '', 'message': ''},
+        ERROR: {'info': '', 'message': ''},
+        FATAL: {'info': '', 'message': ''}
     },
     'File': {
         'main_log_file': {
             'mode': 'a',
             'encoding': 'utf-8',
             'level': DEBUG,
-            'file_name': '{main_time}_logs.md'
+            'file_name': '{file_time}_logs.md'
         },
     },
     'Formatter': {
+        'file_time': {'strftime': '%Y-%m-%d %H-%M'},
         'main_time': {'strftime': '%Y-%m-%d %H-%M-%S'},
         'version': 'game.version',
         'level': 'level',
