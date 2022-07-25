@@ -1,4 +1,3 @@
-import _winapi
 import os
 
 os.system('')
@@ -32,23 +31,6 @@ def color_print(*args):
     line = ';'.join(args)
     print(f'\033[{line}m{out}\033[0m')
 
-
-if os.name == "nt":
-    from ctypes import windll
-    from ctypes.wintypes import BOOL, HANDLE, WORD
-
-    handle = _winapi.GetStdHandle(_winapi.STD_OUTPUT_HANDLE)
-    kernel32 = windll.LoadLibrary("Kernel32.dll")
-    SetConsoleAttribute = kernel32.SetConsoleTextAttribute
-    SetConsoleAttribute.argtypes = (HANDLE, WORD)
-    SetConsoleAttribute.restype = BOOL
-    # FOREGROUND_INTENSITY|FOREGROUND_RED
-    res: bool = SetConsoleAttribute(handle, 5)
-    print(res)
-    string = "Hello World!"
-    _winapi.WriteFile(handle, string.encode("utf-8"), 0)
-else:
-    pass
 
 reset_color = '\033[0m'
 
