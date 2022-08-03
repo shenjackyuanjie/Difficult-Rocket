@@ -89,11 +89,9 @@ def create_crash_report(info: str = None) -> None:
         crash_file.write(markdown_line_handler(f'DR Version: {str(Difficult_Rocket.Version)}', level=1))
         # # DR 的游戏设置
         crash_file.write(DR_configs)
-        try:
-            for key, value in Difficult_Rocket.DR_options.items():
-                crash_file.write(markdown_line_handler(f'Option: {to_code(key)} Type: {to_code(Difficult_Rocket)}', level=1))
-        except RuntimeError:
-            pass
+        for key, value in Difficult_Rocket.DR_options.items():
+            crash_file.write(markdown_line_handler(f'Option: {to_code(key)} Type: {to_code(Difficult_Rocket.DR_option_type(key))}', level=1))
+            crash_file.write(markdown_line_handler(f'Value: {to_code(value)}', level=2))
         # 多进程信息
         crash_file.write(Process_message)
         for process in all_process:
