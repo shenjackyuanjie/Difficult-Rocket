@@ -6,7 +6,7 @@ import atexit
 import threading
 
 from time import strftime
-from typing import Optional, Union, Dict, Iterable, Tuple, List
+from typing import Optional, Union, Dict, Iterable, Tuple, List, Callable
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 
 from Difficult_Rocket.utils.thread import ThreadLock
@@ -40,6 +40,7 @@ NOTSET = 0
 """
 ALL = NOTSET
 TRACE = 5
+FINE = 7
 
 
 class LogFileCache:
@@ -140,7 +141,6 @@ class Logger:
 
         self.file_cache = LogFileCache()
         self.warn = self.warning
-        self.fine = self.detail
 
     def make_log(self, *values: object,
                  level: int,
@@ -150,50 +150,56 @@ class Logger:
         if level < self.level:
             return None
         print(level, values, sep, end, flush, sep='|')
-        write_text = sep.join(values)
-        print(write_text)
+        write_text = sep.join(i if type(i) is str else str(i) for i in values).__add__(end)
+        print(write_text, end='')
         ...
 
-    def detail(self, *values: object,
-               sep: Optional[str] = ' ',
-               end: Optional[str] = '\n',
-               flush: Optional[bool] = False) -> None:
-        self.make_log(*values, level=DETAIL, sep=sep, end=end, flush=flush)
+    def trace(self, *values: object,
+              sep: Optional[str] = ' ',
+              end: Optional[str] = '\n',
+              flush: Optional[bool] = False) -> None:
+        return self.make_log(*values, level=TRACE, sep=sep, end=end, flush=flush)
+
+    def fine(self, *values: object,
+             sep: Optional[str] = ' ',
+             end: Optional[str] = '\n',
+             flush: Optional[bool] = False) -> None:
+        return self.make_log(*values, level=FINE, sep=sep, end=end, flush=flush)
 
     def debug(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False) -> None:
-        self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush)
+        return self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush)
 
     def info(self,
              *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
              flush: Optional[bool] = False) -> None:
-        self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush)
+        return self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush)
 
     def warning(self,
                 *values: object,
                 sep: Optional[str] = ' ',
                 end: Optional[str] = '\n',
                 flush: Optional[bool] = False) -> None:
-        self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush)
+        return self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush)
 
     def error(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False) -> None:
-        self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush)
+        return self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush)
 
     def fatal(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False) -> None:
-        self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush)
+        return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush)
 
 
 def color_in_033(*args) -> str:
@@ -211,7 +217,6 @@ def logging_color() -> Dict:
     return {'info': ..., 'message': ...}
 
 
-
 logger_configs = {
     'Logger': {
         'root': {
@@ -223,12 +228,13 @@ logger_configs = {
         },
     },
     'Color': {
-        TRACE: {'info': '', 'message': '\033[48;2;40;40;40m'},
-        DEBUG: {'info': '', 'message': '\033[32;40m'},
-        INFO: {'info': '', 'message': '\033[33;40m'},
-        WARNING: {'info': '', 'message': ''},
-        ERROR: {'info': '', 'message': ''},
-        FATAL: {'info': '', 'message': ''}
+        TRACE: {'info': '\033[34;40m', 'message': '\033[48;2;40;40;40m'},
+        FINE: {'info': '', 'message': '\033[35m'},
+        DEBUG: {'info': '', 'message': '\033[38;2;133;138;149m'},
+        INFO: {'info': '\033[32;40m', 'message': ''},
+        WARNING: {'info': '', 'message': '\033[33m'},
+        ERROR: {'info': '', 'message': '\033[31m'},
+        FATAL: {'info': '', 'message': '\033[33;41'}
     },
     'File': {
         'main_log_file': {
@@ -283,6 +289,6 @@ def get_logger(name: str = 'name') -> Logger:
 if __name__ == "__main__":
     # 在这里可以使用 add_kwargs_to_global
     some_logger = Logger(name='aaa')
-    some_logger.level = DETAIL
+    some_logger.level = ALL
     some_logger.warn('aaaa', 'aaaa')
     ...

@@ -26,22 +26,24 @@ from typing import Optional
 #  this can't be crash , or the game will really crash!
 
 # TODO 写完它
+import Difficult_Rocket
 
 Head_message = """# ----- Difficult Rocket Crash Report -----
+## Time: {now_time}
 ## Traceback
 """
 
-Process_message = """##  Process info
-"""
+Run_message = """## Difficult Rocket running status\n"""
 
-Thread_message = """##  Thread info
-"""
+DR_configs = """### game config"""
 
-Python_message = """##  Python info
-"""
+Process_message = """##  Process info\n"""
 
-System_message = """##  System info
-"""
+Thread_message = """##  Thread info\n"""
+
+Python_message = """##  Python info\n"""
+
+System_message = """##  System info\n"""
 
 all_thread = [threading.main_thread()]
 all_process = [multiprocessing.current_process()]
@@ -50,7 +52,7 @@ record_thread = True
 
 def crash_info_handler(info: str = None) -> str:
     if not info:
-        info = traceback.format_exc()
+        info = traceback.format_exc().replace('<', '< ')
     format_info = f"<pre>\n{info}</pre>\n"
     return format_info
 
@@ -63,6 +65,10 @@ def markdown_line_handler(string: Optional[str or bool or int or float], code: b
     return '{}{}{}'.format(lvl, f_string, end)
 
 
+def to_code(string: str):
+    return '`' + string + '`'
+
+
 def create_crash_report(info: str = None) -> None:
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
@@ -71,9 +77,23 @@ def create_crash_report(info: str = None) -> None:
     filename = 'crash-{}.md'.format(date_time)
     with open('./crash_report/{}'.format(filename), 'w+', encoding='utf-8') as crash_file:
         # 开头信息
-        crash_file.write(Head_message)
+        crash_file.write(Head_message.format(now_time=time.strftime('%Y/%m/%d %H:%M:%S', time.gmtime(time.time()))))
         # 崩溃信息
         crash_file.write(crash_info)
+        # 运行状态信息
+        crash_file.write(Run_message)
+        crash_file.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
+        crash_file.write(markdown_line_handler(f'Running Dir: {os.path.abspath(os.curdir)}', level=1))
+        crash_file.write(markdown_line_handler(f': {os.name=}', level=1))
+        crash_file.write(markdown_line_handler(f'DR Version: {str(Difficult_Rocket.Version)}', level=1))
+        crash_file.write(markdown_line_handler(f'DR Version: {str(Difficult_Rocket.Version)}', level=1))
+        # # DR 的游戏设置
+        crash_file.write(DR_configs)
+        try:
+            for key, value in Difficult_Rocket.DR_options.items():
+                crash_file.write(markdown_line_handler(f'Option: {to_code(key)} Type: {to_code(Difficult_Rocket)}', level=1))
+        except RuntimeError:
+            pass
         # 多进程信息
         crash_file.write(Process_message)
         for process in all_process:
@@ -92,24 +112,24 @@ def create_crash_report(info: str = None) -> None:
             crash_file.write(markdown_line_handler(f'Running: {thread.is_alive()}', level=2))
         # Python 信息
         crash_file.write(Python_message)
-        crash_file.write(markdown_line_handler(f'Version: {platform.python_version()}', code=True, level=1))
-        # crash_file.write(markdown_line_handler(f'Version tuple: {platform.python_version_tuple()}', code=True, level=1))
-        # crash_file.write(markdown_line_handler(f'Build: {platform.python_build()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'Implementation: {platform.python_implementation()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'Compiler: {platform.python_compiler()}', code=True, level=1))
+        crash_file.write(markdown_line_handler(f'Version: {to_code(platform.python_version())}', level=1))
+        crash_file.write(markdown_line_handler(f'Branch: {to_code(platform.python_branch())}', level=1))
+        # crash_file.write(markdown_line_handler(f'Build: {platform.python_implementation()}', code=True, level=1))
+        crash_file.write(markdown_line_handler(f'Implementation: {to_code(platform.python_implementation())}', level=1))
+        crash_file.write(markdown_line_handler(f'Compiler: {to_code(platform.python_compiler())}', level=1))
         # 电脑系统信息
         crash_file.write(System_message)
-        crash_file.write(markdown_line_handler(f'System: {platform.platform()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'Computer name: {platform.node()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'machine: {platform.machine()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'processor: {platform.processor()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'release: {platform.release()}', code=True, level=1))
-        crash_file.write(markdown_line_handler(f'version: {platform.version()}', code=True, level=1))
+        crash_file.write(markdown_line_handler(f'System: {to_code(platform.platform())}', level=1))
+        crash_file.write(markdown_line_handler(f'Computer name: {to_code(platform.node())}', level=1))
+        crash_file.write(markdown_line_handler(f'machine: {to_code(platform.machine())}', level=1))
+        crash_file.write(markdown_line_handler(f'processor: {to_code(platform.processor())}', level=1))
+        crash_file.write(markdown_line_handler(f'release: {to_code(platform.release())}', level=1))
+        crash_file.write(markdown_line_handler(f'version: {to_code(platform.version())}', level=1))
 
 
 if __name__ == '__main__':
-    os.chdir('../')
+    os.chdir('../../')
     try:
         raise FileNotFoundError('abc')
-    except:
+    except FileNotFoundError:
         create_crash_report()

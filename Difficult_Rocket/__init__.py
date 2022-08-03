@@ -11,6 +11,8 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+from typing import Any
+
 from libs.MCDR.version import Version
 
 game_version = Version("0.6.2")
@@ -18,16 +20,25 @@ __version__ = game_version
 
 DR_options = {
     'InputBox_use_TextEntry': False,
-    'playing': False
+    'playing': False,
+    'debugging': False
 }
 
 _DR_options_type = {
     'InputBox_use_TextEntry': bool,
-    'playing': bool
+    'playing': bool,
+    'debugging': bool
 }
 
+
+def DR_option_type(config_name: str):
+    if config_name in _DR_options_type:
+        return _DR_options_type[config_name]
+    return Any
+
+
 if DR_options['playing']:
-    from .api import new_thread
+    from .utils import new_thread
 
 
     def think_it(something):

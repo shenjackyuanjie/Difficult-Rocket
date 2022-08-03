@@ -75,5 +75,5 @@ color_print(31)
 print('some error', reset_color)
 
 print('fatal: ', end='')
-color_print(37, 41)
+color_print(33, 41)
 print('some fatal', reset_color)
