@@ -66,7 +66,7 @@ def markdown_line_handler(string: Optional[str or bool or int or float], code: b
 
 
 def to_code(string: str):
-    return '`' + string + '`'
+    return f'`{string}`'
 
 
 def create_crash_report(info: str = None) -> None:
