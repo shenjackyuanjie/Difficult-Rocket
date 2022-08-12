@@ -361,6 +361,15 @@ if __name__ == "__main__":
 
     os.chdir('../../')
     # 在这里可以使用 add_kwargs_to_global
+    logger = Logger(name="Main")
+    logger1 = Logger(name="RenderThread")
+    logger2 = Logger(name="TaskExecuter#1-1")
+    while True:
+        logger.info("Hello World!!")
+        logger1.error("OpenGL Error 10086")
+        logger2.warning("Cannot write file.")
+    exit(0)
+
     some_logger = Logger(name='aaa')
     some_logger.level = ALL
     some_logger.warn('aaaa', 'aaaa')
