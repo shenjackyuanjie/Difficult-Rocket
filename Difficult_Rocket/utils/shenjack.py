@@ -2,12 +2,17 @@
 @author shenjackyuanjie
 @contact 3695888@qq.com
 """
+import os
+# if __name__ == "__main__":
+# os.chdir('../')
+
 import atexit
 import threading
 
+from os import PathLike
 from time import strftime
-from typing import Optional, Union, Dict, Iterable, Tuple, List, Callable
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
+from typing import Optional, Union, Dict, Iterable, Tuple, List, Callable
 
 from Difficult_Rocket.utils.thread import ThreadLock
 
@@ -42,11 +47,87 @@ ALL = NOTSET
 TRACE = 5
 FINE = 7
 
+level_name_map = {
+    ALL: 'ALL',  # NOTSET
+    TRACE: 'TRACE',
+    FINE: 'FINE',
+    DEBUG: 'DEBUG',
+    INFO: 'INFO',
+    WARNING: 'WARNING',  # WARN
+    ERROR: 'ERROR',
+    FATAL: 'FATAL'
+}
+
+name_level_map = {
+    'NOTSET': ALL,
+    'ALL': ALL,
+    'TRACE': TRACE,
+    'FINE': FINE,
+    'DEBUG': DEBUG,
+    'INFO': INFO,
+    'WARNING': WARNING,
+    'WARN': WARNING,
+    'ERROR': ERROR,
+    'CRITICAL': FATAL,
+    'FATAL': FATAL
+}
+
+
+class ListCache:
+    """一个线程安全的列表缓存"""
+
+    def __init__(self, lock: ThreadLock):
+        self._cache = []
+        self.with_thread_lock = lock
+
+    def append(self, value: Union[str, Iterable]):
+        if isinstance(value, str):
+            with self.with_thread_lock:
+                self._cache.append(value)
+        elif isinstance(value, Iterable):
+            with self.with_thread_lock:
+                self._cache.append(*value)
+        else:
+            raise TypeError(f"cache must be string or Iterable. not a {type(value)}")
+
+    def __getitem__(self, item):
+        assert isinstance(item, int)
+        with self.with_thread_lock:
+            try:
+                return self._cache[item]
+            except IndexError as exp:
+                print(f'cache:{self.cache}')
+                raise IndexError(f'there is no cache at {item}!\ncache:{self.cache}')
+
+    def __call__(self, *args, **kwargs):
+        return self.cache
+
+    def __iter__(self):
+        with self.with_thread_lock:
+            self._iter_cache = self._cache.copy()
+            self._iter_len = len(self.cache)
+        return self
+
+    def __next__(self):
+        if self._iter_cache == -1:
+            raise StopIteration
+        returns = self._iter_cache[-self._iter_len]
+        self._iter_cache -= 1
+        return returns
+
+    def __bool__(self):
+        with self.with_thread_lock:
+            return True if len(self.cache) > 0 else False
+
+    @property
+    def cache(self):
+        return self._cache
+
 
 class LogFileCache:
     """日志文件缓存"""
 
-    def __init__(self, file_name: str = 'logs//log.log', flush_time: Optional[Union[int, float]] = 1, log_cache_lens_max: int = 10):
+    def __init__(self, file_name: PathLike = 'logs//log.log', flush_time: Optional[Union[int, float]] = 1, log_cache_lens_max: int = 10):
         """
 
         @param file_name: 日志文件名称
@@ -57,89 +138,74 @@ class LogFileCache:
         self._logfile_name = file_name  # log 文件名称
         self.flush_time = flush_time  # 缓存刷新时长
         self.cache_entries_num = log_cache_lens_max
-        # 日志缓存表
-        self._log_cache = []
+        self.started = False
+        self.log
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
         self.write_lock = threading.Lock()  # 写入锁
         self.with_thread_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
         self.threaded_write = threading.Timer(1, self._log_file_time_write)  # 基于 timer 的多线程
+        # 日志缓存表
+        self.log_cache = ListCache(self.with_thread_lock)
 
     def end_thread(self) -> None:
         """结束日志写入进程，顺手把目前的缓存写入"""
         self.cache_lock.acquire(blocking=True)
+        self.write_lock.acquire(blocking=True)
         self.threaded_write.cancel()
+        self.started = False
         self._log_file_time_write()
+        atexit.unregister(self.end_thread)
 
     def start_thread(self) -> None:
         self.threaded_write.start()
+        self.started = True
         atexit.register(self.end_thread)
 
     @property
-    def logfile_name(self) -> str:
+    def logfile_name(self) -> PathLike:
         return self._logfile_name
 
     @logfile_name.setter
-    def logfile_name(self, value: str) -> None:
+    def logfile_name(self, value: PathLike) -> None:
         with self.with_thread_lock:
             self._logfile_name = value
 
-    @property
-    def log_caches(self) -> list:
-        return self._log_cache
-
-    @log_caches.setter
-    def log_caches(self, value: Union[str, Iterable[str]]):
-        if type(value) == str:
-            with self.with_thread_lock:
-                self._log_cache.append(value)
-                return
-        elif isinstance(value, Iterable):
-            with self.with_thread_lock:
-                list(map(self._log_cache.append, value))
-        ...
-
     def _log_file_time_write(self) -> None:
         """使用 threading.Timer 调用的定时写入日志文件的函数"""
-        if self.log_caches:
+        if self.log_cache:
             with self.with_thread_lock:
-                if self.log_caches:
-                    ...
-
-        ...
+                if self.log_cache:
+                    with open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
+                        log_file.writelines(self.log_cache)
 
     def write_logs(self, string: str, wait_for_cache: bool = True) -> None:
-        if wait_for_cache:
+        if not wait_for_cache:
             with self.with_thread_lock and open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
-                log_file.writelines(self._log_cache)
+                if self.log_cache:
+                    log_file.writelines(self.log_cache)
                 log_file.write(string)
-            ...
         else:
-            ...
+            self.log_cache.append(string)
 
 
 class Logger:
     """shenjack logger"""
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, name: str = None, level: int = None, file_name: PathLike = None, **kwargs) -> None:
         """
         配置模式: 使用 kwargs 配置
-        @param config: 字典格式的配置
-        @param kwargs: key word 格式的配置
+        @param name: logger 名称 默认为 root
+        @param level: logging 输出等级 默认为 DEBUG(10)
+        @param file_name: logging 写入文件名称 默认为 None(不写入)
         """
-        self.name = 'root'
-        self.level = DEBUG
+        self.name = name or 'root'
+        self.level = level or DEBUG
         self.colors = None
-        if kwargs is not None:  # 使用 kwargs 尝试配置
-            if name := kwargs.pop('name', False):  # 顺手把获取到的配置填入临时变量 如果成功获取再填入 self
-                self.name = name
-            if level := kwargs.pop('level', False):
-                self.level = level
+        if file_name:
+            self.file_cache = LogFileCache(file_name=file_name)
         else:
-
-            ...
-
-        self.file_cache = LogFileCache()
+            self.file_cache = False
         self.warn = self.warning
 
     def make_log(self, *values: object,
@@ -149,10 +215,14 @@ class Logger:
                  flush: Optional[bool] = False) -> None:
         if level < self.level:
             return None
-        print(level, values, sep, end, flush, sep='|')
+        # print(level, values, sep, end, flush, sep='|')
         write_text = sep.join(i if type(i) is str else str(i) for i in values).__add__(end)
         print(write_text, end='')
-        ...
+        # self.file_cache.write_logs()
+        if self.file_cache:
+            self.file_cache: LogFileCache
+            if not self.file_cache.started:
+                self.file_cache.start_thread()
 
     def trace(self, *values: object,
               sep: Optional[str] = ' ',
@@ -221,20 +291,20 @@ logger_configs = {
     'Logger': {
         'root': {
             'level': TRACE,
-            'color': {
-                DEBUG: '\033[0m'
-            },
+            'color': 'main_color',
             'file': 'main_log_file',
         },
     },
     'Color': {
-        TRACE: {'info': '\033[34;40m', 'message': '\033[48;2;40;40;40m'},
-        FINE: {'info': '', 'message': '\033[35m'},
-        DEBUG: {'info': '', 'message': '\033[38;2;133;138;149m'},
-        INFO: {'info': '\033[32;40m', 'message': ''},
-        WARNING: {'info': '', 'message': '\033[33m'},
-        ERROR: {'info': '', 'message': '\033[31m'},
-        FATAL: {'info': '', 'message': '\033[33;41'}
+        'main_color': {
+            TRACE: {'info': '\033[34;40m', 'message': '\033[48;2;40;40;40m'},
+            FINE: {'info': '', 'message': '\033[35m'},
+            DEBUG: {'info': '', 'message': '\033[38;2;133;138;149m'},
+            INFO: {'info': '\033[32;40m', 'message': ''},
+            WARNING: {'info': '', 'mes sage': '\033[33m'},
+            ERROR: {'info': '', 'message': '\033[31m'},
+            FATAL: {'info': '', 'message': '\033[33;41'}
+        }
     },
     'File': {
         'main_log_file': {
@@ -287,8 +357,17 @@ def get_logger(name: str = 'name') -> Logger:
 
 
 if __name__ == "__main__":
+    import os
+
+    os.chdir('../../')
     # 在这里可以使用 add_kwargs_to_global
     some_logger = Logger(name='aaa')
     some_logger.level = ALL
     some_logger.warn('aaaa', 'aaaa')
-    ...
+
+    a_lock = threading.Lock()
+    a_with_lock = ThreadLock(a_lock)
+    a_cache = ListCache(a_with_lock)
+    a_cache.append('123123')
+    print(a_cache[0])
+    print(a_cache)

@@ -16,6 +16,7 @@ import objprint
 
 from typing import Union
 
+from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.exception.language import *
 
@@ -60,14 +61,13 @@ class Lang:
     lang.lang(xxx, xxx)来获取翻译过的值
     """
 
-    def __init__(self, language: str = 'zh-CN') -> None:
-        self.语言 = language
-        self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
+    def __init__(self) -> None:
+        self.翻译结果 = tools.load_file(f'configs/lang/{DR_runtime.language}.toml')
         self.默认翻译 = tools.load_file('configs/lang/zh-CN.toml')
         self.直接返回原始数据 = True
 
     def __str__(self) -> str:
-        return self.语言
+        return DR_option.language
 
     def __getitem__(self, item) -> Union[int, str, list, dict]:
         try:
@@ -76,26 +76,7 @@ class Lang:
             try:
                 return self.默认翻译[item]
             except KeyError:
-                raise TranslateKeyNotFound(f'there\'s no key {item} in both {self.语言} and zh-CN')
-
-    def __setitem__(self, key, value) -> None:
-        if key == 'language' or key == 'lang':
-            try:
-                self.翻译结果 = tools.load_file(f'configs/lang/{value}.toml')
-                self.语言 = value
-            except FileNotFoundError:
-                if self.直接返回原始数据:
-                    return None
-                raise TranslateKeyNotFound(f'{value}\'s language toml file not found')
-        else:
-            raise NotImplementedError
-
-    def set_language(self, language) -> None:
-        try:
-            self.翻译结果 = tools.load_file(f'configs/lang/{language}.toml')
-            self.语言 = language
-        except FileNotFoundError:
-            raise TranslateKeyNotFound(f'{language}\'s language toml file not found')
+                raise TranslateKeyNotFound(f'there\'s no key {item} in both {DR_option.language} and zh-CN')
 
     def lang(self, *args) -> Union[int, str, list, dict]:
         # frame = inspect.currentframe()
@@ -117,13 +98,22 @@ class Lang:
             except KeyError:
                 if self.直接返回原始数据:
                     return args
-                raise TranslateKeyNotFound(f'there\'s no key {args} in both {self.语言} and zh-CN')
+                raise TranslateKeyNotFound(f'there\'s no key {args} in both {DR_option.language} and zh-CN')
 
     def 翻译(self, *args) -> Union[int, str, list, dict]:
         return self.lang(args)
 
+    def _update_lang(self) -> str:
+        """
+        用于更新语言(内部调用)
+        @return: 设置完成后的语言
+        """
+        self.翻译结果 = tools.load_file(f'configs/lang/{DR_option.language}.toml')
+        return DR_option.language
 
-tr = Lang('zh-CN')
+
+if not __name__ == '__main__':
+    tr = Lang()
 
 # font's value
 

@@ -30,8 +30,6 @@ from Difficult_Rocket.utils.new_thread import new_thread
 
 class Server:
     def __init__(self, net_mode='local', Dev: Delivery = Delivery):
-        # father class __init__()
-        # mp.Process.__init__(self)
         # logging
         self.logger = logging.getLogger('server')
         # value

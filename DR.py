@@ -11,7 +11,6 @@ import traceback
 # TODO 默认位置配置文件
 # TODO 可自定义工作路径
 
-
 hi = """Difficult Rocket is writen by shenjackyuanjie
 mail: 3695888@qq.com or shyj3695888@163.com
 QQ: 3695888"""
@@ -24,6 +23,8 @@ error_format = {
 }
 
 if __name__ == '__main__':
+    start_time_ns = time.time_ns()
+    start_time_perf_ns = time.perf_counter_ns()
     print(f'{__file__=}')
     print(f'{sys.path[0]=}')
     print(f'{sys.argv[0]=}')
@@ -39,28 +40,30 @@ if __name__ == '__main__':
     print(sys.path)  # 输出路径
     print(hi)  # hi！
 
-    DEBUGGING = False  # 是否在 DEBUG
     from Difficult_Rocket.exception import TestError
     from Difficult_Rocket.crash import crash
+    from Difficult_Rocket import DR_option
     try:
-        start_time = time.perf_counter_ns()  # 记录启动时间
         import pyglet  # 导入pyglet
+        pyglet.resource.path = ['/textures/']
+        pyglet.resource.reindex()
 
-        from Difficult_Rocket import main
+        from Difficult_Rocket import main, DR_runtime
+        DR_runtime.start_time_ns = start_time_ns
 
         from libs.pyglet.gl import glClearColor  # 调整背景颜色
         glClearColor(0.5, 0.5, 0.5, 0)
 
         game = main.Game()  # 实例化一个游戏
 
-        print(time.perf_counter_ns() - start_time)  # 输出一下启动用时
+        print(time.perf_counter_ns() - start_time_perf_ns, (time.perf_counter_ns() - start_time_perf_ns) / (10 ** 9), 'start')  # 输出一下启动用时
 
         cprofile = False  # 是否使用cprofile
         if cprofile:
             cProfile.run('game.start()', sort='calls')  # 使用 cprofile 启动
         else:
             game.start()  # 直接启动
-        if DEBUGGING:
+        if DR_option.crash_report_test:
             raise TestError('debugging')  # debug 嘛，试试crash
     except Exception as exp:  # 出毛病了
         print(error_format['error.happen'])  #

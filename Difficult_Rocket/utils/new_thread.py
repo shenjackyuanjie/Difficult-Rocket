@@ -7,7 +7,7 @@
 import functools
 import inspect
 import threading
-from Difficult_Rocket import crash
+from Difficult_Rocket import crash, DR_option
 from typing import Optional, Callable
 
 """
@@ -76,7 +76,7 @@ def new_thread(thread_name: Optional[str or Callable] = None,
             thread = FunctionThread(target=func, args=args, kwargs=kwargs, name=thread_name)
             thread.daemon = daemon
             thread.start()
-            if log_thread:
+            if log_thread and DR_option.record_threads:
                 crash.all_thread.append(thread)
             return thread
 

@@ -12,6 +12,7 @@ gitee:  @shenjackyuanjie
 """
 
 import os
+import sys
 import time
 import platform
 import traceback
@@ -29,25 +30,26 @@ from typing import Optional
 import Difficult_Rocket
 
 Head_message = """# ----- Difficult Rocket Crash Report -----
+
 ## Time: {now_time}
+
 ## Traceback
 """
 
-Run_message = """## Difficult Rocket running status\n"""
+Run_message = """\n## Difficult Rocket running status\n"""
 
-DR_configs = """### game config"""
+DR_configs = """\n### game config\n"""
 
-Process_message = """##  Process info\n"""
+Process_message = """\n##  Process info\n"""
 
-Thread_message = """##  Thread info\n"""
+Thread_message = """\n##  Thread info\n"""
 
-Python_message = """##  Python info\n"""
+Python_message = """\n##  Python info\n"""
 
-System_message = """##  System info\n"""
+System_message = """\n##  System info\n"""
 
 all_thread = [threading.main_thread()]
 all_process = [multiprocessing.current_process()]
-record_thread = True
 
 
 def crash_info_handler(info: str = None) -> str:
@@ -69,7 +71,7 @@ def to_code(string: str):
     return f'`{string}`'
 
 
-def create_crash_report(info: str = None) -> None:
+def create_crash_report(info: str = None) -> None: 
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
         os.mkdir('./crash_report')
@@ -81,17 +83,17 @@ def create_crash_report(info: str = None) -> None:
         # 崩溃信息
         crash_file.write(crash_info)
         # 运行状态信息
+        from Difficult_Rocket import DR_option, DR_runtime
         crash_file.write(Run_message)
         crash_file.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
+        crash_file.write(markdown_line_handler(f'DR language: {DR_option.language}', level=1))
         crash_file.write(markdown_line_handler(f'Running Dir: {os.path.abspath(os.curdir)}', level=1))
-        crash_file.write(markdown_line_handler(f': {os.name=}', level=1))
-        crash_file.write(markdown_line_handler(f'DR Version: {str(Difficult_Rocket.Version)}', level=1))
-        crash_file.write(markdown_line_handler(f'DR Version: {str(Difficult_Rocket.Version)}', level=1))
         # # DR 的游戏设置
         crash_file.write(DR_configs)
-        for key, value in Difficult_Rocket.DR_options.items():
-            crash_file.write(markdown_line_handler(f'Option: {to_code(key)} Type: {to_code(Difficult_Rocket.DR_option_type(key))}', level=1))
+        for key, value in Difficult_Rocket.DR_option.option().items():
+            crash_file.write(markdown_line_handler(f'Option: {to_code(key)} Type: {to_code(type(key))}', level=1))
             crash_file.write(markdown_line_handler(f'Value: {to_code(value)}', level=2))
+        print(DR_option.option(), DR_runtime.option(), DR_option.__dict__)
         # 多进程信息
         crash_file.write(Process_message)
         for process in all_process:

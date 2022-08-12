@@ -8,7 +8,7 @@ from enum import EnumMeta
 from threading import Lock
 from typing import Union, TypeVar, List, Dict, Type, get_type_hints, Any
 
-from MCDR.version import Version
+from libs.MCDR.version import Version
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)

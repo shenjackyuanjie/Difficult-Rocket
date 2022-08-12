@@ -22,9 +22,10 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from Difficult_Rocket import client, server
+from Difficult_Rocket import client, server, DR_option
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
+
 
 class Game:
     def __init__(self):
@@ -34,7 +35,7 @@ class Game:
         self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
         # lang_config
         self.language = tools.load_file('configs/main.config', 'runtime')['language']
-        tr.set_language(self.language)
+        DR_option.language = self.language
         # logging config
         log_config = tools.load_file('configs/logger.toml')
         file_name = log_config['handlers']['file']['filename']

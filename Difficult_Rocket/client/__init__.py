@@ -20,6 +20,7 @@ import traceback
 from decimal import Decimal
 
 # Difficult_Rocket function
+from Difficult_Rocket import Options
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.utils.translate import tr
@@ -76,6 +77,10 @@ def pyglet_load_fonts_folder(folder) -> None:
             pyglet_load_fonts_folder(os.path.join(folder, obj))
 
 
+class _DR_Client_option(Options):
+    ...
+
+
 class ClientWindow(Window):
 
     def __init__(self, net_mode='local', *args, **kwargs):
@@ -93,8 +98,6 @@ class ClientWindow(Window):
         self.net_mode = net_mode
         self.run_input = False
         # configs
-        pyglet.resource.path = ['/textures/']
-        pyglet.resource.reindex()
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.main_config = tools.load_file('./configs/main.toml')
         self.game_config = tools.load_file('./configs/game.config')

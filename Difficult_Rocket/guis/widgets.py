@@ -13,7 +13,7 @@ gitee:  @shenjackyuanjie
 
 from utils import translate
 from Difficult_Rocket.guis.format import html
-from Difficult_Rocket import DR_options
+from Difficult_Rocket import DR_option
 
 # from libs import pyglet
 from libs.pyglet import font
@@ -51,7 +51,7 @@ class Parts(widgets.WidgetBase):
         self._value = 0
 
 
-if not DR_options['InputBox_use_TextEntry']:
+if not DR_option.InputBox_use_TextEntry:
     class InputBox(widgets.WidgetBase):
         """
         input box
@@ -86,7 +86,7 @@ if not DR_options['InputBox_use_TextEntry']:
                                   dpi=font_dpi)
             self.font_height = self.font.ascent - self.font.descent
             self.out_bound = out_line
-            if DR_options['InputBox_use_TextEntry']:
+            if DR_option.InputBox_use_TextEntry:
                 # 基于IncrementalTextLayout的处理系统
                 self._doc = FormattedDocument(message)
                 # self._doc.set_style()
