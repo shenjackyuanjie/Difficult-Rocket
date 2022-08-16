@@ -29,7 +29,8 @@ from Difficult_Rocket.exception.language import *
 
 class Tr:
     """
-    我不装了，我就复刻tr
+    我不装了，我就抄了tr
+    GOOD
     """
     def __init__(self):
         self.config_regs = {}

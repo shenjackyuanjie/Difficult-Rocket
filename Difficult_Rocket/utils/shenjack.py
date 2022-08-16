@@ -3,6 +3,10 @@
 @contact 3695888@qq.com
 """
 import os
+# os.chdir('../../')
+import sys
+sys.path.append(os.path.abspath('./Difficult_Rocket'))
+print(sys.path)
 # if __name__ == "__main__":
 # os.chdir('../')
 
@@ -25,8 +29,7 @@ from Difficult_Rocket.utils.thread import ThreadLock
 # 将会创建一个空 logger
 # 可以自行通过
 # 配置方式二
-#
-#
+
 
 color_reset_suffix = "\033[0m"
 """ 只是用来重置颜色的后缀 """
@@ -357,9 +360,8 @@ def get_logger(name: str = 'name') -> Logger:
 
 
 if __name__ == "__main__":
-    import os
+    # import os
 
-    os.chdir('../../')
     # 在这里可以使用 add_kwargs_to_global
     logger = Logger(name="Main")
     logger1 = Logger(name="RenderThread")
@@ -368,7 +370,6 @@ if __name__ == "__main__":
         logger.info("Hello World!!")
         logger1.error("OpenGL Error 10086")
         logger2.warning("Cannot write file.")
-    exit(0)
 
     some_logger = Logger(name='aaa')
     some_logger.level = ALL
@@ -380,3 +381,4 @@ if __name__ == "__main__":
     a_cache.append('123123')
     print(a_cache[0])
     print(a_cache)
+ 
