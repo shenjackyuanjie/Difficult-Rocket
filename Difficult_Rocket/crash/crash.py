@@ -18,7 +18,7 @@ import platform
 import traceback
 import threading
 import multiprocessing
-from typing import Optional
+from typing import Optional, TextIO
 
 # import psutil
 # for more system info
@@ -71,6 +71,11 @@ def to_code(string: str):
     return f'`{string}`'
 
 
+def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
+    a_len, b_len, c_len = tablet[0]
+    ...
+
+
 def create_crash_report(info: str = None) -> None: 
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
@@ -85,15 +90,31 @@ def create_crash_report(info: str = None) -> None:
         # 运行状态信息
         from Difficult_Rocket import DR_option, DR_runtime
         crash_file.write(Run_message)
+
         crash_file.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
-        crash_file.write(markdown_line_handler(f'DR language: {DR_option.language}', level=1))
+        crash_file.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
         crash_file.write(markdown_line_handler(f'Running Dir: {os.path.abspath(os.curdir)}', level=1))
+        option_with_len = DR_runtime.option_with_len()
+        option_with_len[1] = max(option_with_len[1], 6)
+        option_with_len[2] = max(option_with_len[2], 5)
+        option_with_len[3] = max(option_with_len[3], 10)
+        crash_file.write(f'\n| Option{" " * (option_with_len[1] - 4)} | Value{" " * (option_with_len[2] - 3)} | Value Type{" " * (option_with_len[3] - 8)} |\n')
+        crash_file.write(f'|:{"-" * (option_with_len[1] + 3)}|:{"-" * (option_with_len[2] + 3)}|:{"-" * (option_with_len[3] + 3)}|\n')
+        for a, b, c in option_with_len[0]:
+            b, c = str(b), str(c)
+            crash_file.write(f'| `{a}`{" " * (option_with_len[1] - len(a))} | `{b}`{" " * (option_with_len[2] - len(b))} | `{c}`{" " * (option_with_len[3] - len(c))} |\n')
+
         # # DR 的游戏设置
         crash_file.write(DR_configs)
-        for key, value in Difficult_Rocket.DR_option.option().items():
-            crash_file.write(markdown_line_handler(f'Option: {to_code(key)} Type: {to_code(type(key))}', level=1))
-            crash_file.write(markdown_line_handler(f'Value: {to_code(value)}', level=2))
-        print(DR_option.option(), DR_runtime.option(), DR_option.__dict__)
+        option_with_len = DR_option.option_with_len()
+        option_with_len[1] = max(option_with_len[1], 6)
+        option_with_len[2] = max(option_with_len[2], 5)
+        option_with_len[3] = max(option_with_len[3], 10)
+        crash_file.write(f'| Option{" " * (option_with_len[1] - 4)} | Value{" " * (option_with_len[2] - 3)} | Value Type{" " * (option_with_len[3] - 8)} |\n')
+        crash_file.write(f'|:{"-" * (option_with_len[1] + 3)}|:{"-" * (option_with_len[2] + 3)}|:{"-" * (option_with_len[3] + 3)}|\n')
+        for a, b, c in option_with_len[0]:
+            b, c = str(b), str(c)
+            crash_file.write(f'| `{a}`{" " * (option_with_len[1] - len(a))} | `{b}`{" " * (option_with_len[2] - len(b))} | `{c}`{" " * (option_with_len[3] - len(c))} |\n')
         # 多进程信息
         crash_file.write(Process_message)
         for process in all_process:
@@ -108,7 +129,7 @@ def create_crash_report(info: str = None) -> None:
             crash_file.write(markdown_line_handler(f'{thread.name}', code=True))
             crash_file.write(markdown_line_handler(f'order: {all_thread.index(thread)}', level=2))
             crash_file.write(markdown_line_handler(f'Ident: {thread.ident}', level=2))
-            crash_file.write(markdown_line_handler(f'Daemon: {thread.isDaemon()}', level=2))
+            crash_file.write(markdown_line_handler(f'Daemon: {thread.daemon}', level=2))
             crash_file.write(markdown_line_handler(f'Running: {thread.is_alive()}', level=2))
         # Python 信息
         crash_file.write(Python_message)
