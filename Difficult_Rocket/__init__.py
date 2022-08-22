@@ -40,7 +40,7 @@ class Options:
                 values[option] = getattr(self, option)
         return values
 
-    def option_with_len(self) -> list[list[Tuple[str, Any, Any]] | int | Any]:
+    def option_with_len(self) -> List[Union[List[Tuple[str, Any, Any]], int, Any]]:
         options = self.option()
         max_len_key = 1
         max_len_value = 1
