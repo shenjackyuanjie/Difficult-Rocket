@@ -15,7 +15,7 @@ from typing import Any, Dict, Callable, Union, Tuple, List, Type
 
 from libs.MCDR.version import Version
 
-game_version = Version("0.6.2")
+game_version = Version("0.6.3")
 __version__ = game_version
 
 
