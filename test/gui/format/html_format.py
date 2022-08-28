@@ -18,8 +18,7 @@ os.chdir('..')
 os.chdir('..')
 os.chdir('..')
 
-
-from Difficult_Rocket.guis.format import html
+from client.guis.format import html
 
 try_texts = [
     '明天天气很好',

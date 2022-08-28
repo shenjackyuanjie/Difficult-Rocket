@@ -11,8 +11,8 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from utils import translate
-from Difficult_Rocket.guis.format import html
+from Difficult_Rocket.utils import translate
+from Difficult_Rocket.client.guis.format import html
 from Difficult_Rocket import DR_option
 
 # from libs import pyglet

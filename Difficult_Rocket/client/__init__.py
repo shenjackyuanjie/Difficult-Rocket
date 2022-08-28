@@ -24,7 +24,7 @@ from Difficult_Rocket import Options
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.guis.widgets import InputBox
+from Difficult_Rocket.client.guis.widgets import InputBox
 # from Difficult_Rocket.client.screen import DRScreen
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.client.fps.fps_log import FpsLogger

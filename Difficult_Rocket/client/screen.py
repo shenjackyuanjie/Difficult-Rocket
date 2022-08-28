@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-import ctypes
+# import ctypes
 
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.command.tree import CommandTree

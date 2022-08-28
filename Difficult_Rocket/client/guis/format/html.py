@@ -208,8 +208,8 @@ class SingleTextStyle:
 # [\u4e00-\u9fa5] 中文字符
 default_fonts_config = [
     {
-        'match': re.compile(r'.'),  # 匹配的字符  匹配选项是re.compile()
-        'shown': re.compile(r'.'),  # 匹配到的字符中显示的部分  匹配选项是re.compile()
+        'match': re.compile(r''),  # 匹配的字符  匹配选项是re.compile()
+        'shown': re.compile(r''),  # 匹配到的字符中显示的部分  匹配选项是re.compile()
         'style': SingleTextStyle(font_name=translate.鸿蒙简体, font_size=15, bold=False, italic=False, show=True, color='white'),
     },
     {
