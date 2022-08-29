@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket import game_version
+from Difficult_Rocket import DR_runtime
 from Difficult_Rocket.command import line
 
 COMMAND = 'command'
@@ -21,7 +21,7 @@ RUN = 'run'
 
 DR_command = {
     'name': 'DR-root',
-    'version': game_version,
+    'version': DR_runtime.DR_version,
     INFO: 'DR的自带命令解析树',
     COMMAND: {
         INFO: '这里是DR的根命令节点',
