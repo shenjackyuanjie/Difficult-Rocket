@@ -15,7 +15,7 @@ from os import PathLike
 from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 from types import FrameType
-from typing import Optional, Union, Dict, Iterable, Tuple, List, Callable
+from typing import Optional, Union, Dict, Iterable, Tuple, Any, List, Callable
 
 print(os.path.abspath(os.curdir))
 os.chdir('../../')
@@ -88,34 +88,46 @@ logger_configs = {
             'color': 'main_color',
             'file': 'main_log_file',
         },
+        'client': {
+            'level': TRACE,
+            'color': 'main_color',
+            'file': 'main_log_file',
+        },
+        'server': {
+            'level': TRACE,
+            'color': 'main_color',
+            'file': 'main_log_file',
+        },
     },
     'Color': {
         'main_color': {
-            'date': {},
-            TRACE: {'info': '\033[34;48;2;44;44;54m', 'message': '\033[34;48;2;40;40;40m'},
+            'date': '\033[38;2;201;222;56m',
+            'file': '\033[38;2;0;255;180m',
+            'line': '\033[38;2;0;255;180m',
+            'logger': '\033[0m',
+            TRACE: {'info': '\033[34;48;2;44;44;54m', 'message': '\033[34;48;2;40;40;70m'},
             FINE: {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
-            DEBUG: {'info': '\033[38;2;133;138;149;48;2;44;44;54m', 'message': '\033[38;2;133;138;149m'},
-            INFO: {'info': '\033[32;48;2;44;44;54m', 'message': '\033[32m'},
-            WARNING: {'info': '\033[33;48;2;44;44;54m', 'message': '\033[33m'},
-            ERROR: {'info': '\033[31;48;2;44;44;54m', 'message': '\033[31m'},
-            FATAL: {'info': '\033[38;2;255;200;72;48;2;120;10;10m', 'message': '\033[38;2;255;200;72;48;2;120;10;10m'}
+            DEBUG: {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            INFO: {'info': '\033[0m', 'message': '\033[0m'},
+            WARNING: {'info': '\033[33m', 'message': '\033[33m'},
+            ERROR: {'info': '\033[31m', 'message': '\033[31m'},
+            FATAL: {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m'}
         }
     },
     'File': {
         'main_log_file': {
             'mode': 'a',
             'encoding': 'utf-8',
-            'level': DEBUG,
-            'file_name': '{file_time}_logs.md'
+            'level': TRACE,
+            'file_name': './logs/{file_time}_logs.md'
         },
     },
     'Formatter': {
         'MESSAGE': {
-            'format': '[\033[38;2;201;222;56m{main_time}\033[0m] {level} | {file_name}:{code_line} | {message}'
+            'format': '[{main_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
         },
         'file_time': {'strftime': '%Y-%m-%d %H-%M'},
         'main_time': {'strftime': '%Y-%m-%d %H-%M-%S:%%S'},  # %%S  三位毫秒
-        'encoding': 'utf-8',
         ...: ...
     }
 }
@@ -129,14 +141,13 @@ class ListCache:
         self.with_thread_lock = lock
 
     def append(self, value: Union[str, Iterable]):
-        if isinstance(value, str):
-            with self.with_thread_lock:
+        with self.with_thread_lock:
+            if isinstance(value, str):
                 self._cache.append(value)
-        elif isinstance(value, Iterable):
-            with self.with_thread_lock:
+            elif isinstance(value, Iterable):
                 self._cache.append(*value)
-        else:
-            raise TypeError(f"cache must be string or Iterable. not a {type(value)}")
+            else:
+                raise TypeError(f"cache must be string or Iterable. not a {type(value)}")
 
     def __getitem__(self, item):
         assert isinstance(item, int)
@@ -145,23 +156,24 @@ class ListCache:
                 return self._cache[item]
             except IndexError as exp:
                 print(f'cache:{self.cache}')
-                raise IndexError(f'there is no cache at {item}!\ncache:{self.cache}')
+                raise IndexError(f'there is no cache at {item}!\ncache:{self.cache}\n{exp}')
 
     def __call__(self, *args, **kwargs):
         return self.cache
 
     def __iter__(self):
-        with self.with_thread_lock:
-            self._iter_cache = self._cache.copy()
-            self._iter_len = len(self.cache)
+        # with self.with_thread_lock:
+        #     self._iter_cache = self._cache.copy()
+        #     self._iter_len = len(self.cache)
+        self._iter_len = len(self.cache)
         return self
 
     def __next__(self):
-        if self._iter_cache == -1:
-            del self._iter_cache
+        if self._iter_len == -1:
+            del self._iter_len
             raise StopIteration('there is no more cache')
-        returns = self._iter_cache[-self._iter_len]
-        self._iter_cache -= 1
+        returns = self.cache[-self._iter_len]
+        self._iter_len -= 1
         return returns
 
     def __bool__(self):
@@ -172,29 +184,43 @@ class ListCache:
     def cache(self):
         return self._cache
 
+    def clear(self):
+        with self.with_thread_lock:
+            self.cache.clear()
+
 
 class LogFileCache:
     """日志文件缓存"""
 
-    def __init__(self, file_name: PathLike = 'logs//log.log', flush_time: Optional[Union[int, float]] = 1, log_cache_lens_max: int = 10):
+    def __init__(self, file_conf: Dict, flush_time: Optional[Union[int, float]] = 1, log_cache_lens_max: int = 10):
         """
 
-        @param file_name: 日志文件名称
+        @param file_conf: 日志文件配置
         @param flush_time: 刷新日志缓存，写入文件的时长间隔
         @param log_cache_lens_max: 日志缓存在自动写入前的最大缓存长度
         """
         # 配置相关
-        self._logfile_name = file_name  # log 文件名称
+        self._logfile_name = os.path.abspath(format_str(file_conf['file_name']))  # log 文件名称
+        self.level = get_key_from_dict(file_conf, 'level', DEBUG)
+        self.file_conf = file_conf
         self.flush_time = flush_time  # 缓存刷新时长
         self.cache_entries_num = log_cache_lens_max
         self.started = False
-        # self.log
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
         self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
         self.threaded_write = threading.Timer(1, self._log_file_time_write)  # 基于 timer 的多线程
         # 日志缓存表
         self.log_cache = ListCache(self.time_limit_lock)
+        self.file_setup()
+
+    def file_setup(self):
+        cache_time = 0
+        file_type = self.logfile_name[self.logfile_name.rfind('.'):]
+        file_pure_name = self.logfile_name[:self.logfile_name.rfind('.')]
+        while os.path.isfile(self.logfile_name):
+            cache_time += 1
+            self.logfile_name = f'{file_pure_name}-{cache_time}{file_type}'
 
     def end_thread(self) -> None:
         """结束日志写入进程，顺手把目前的缓存写入"""
@@ -211,6 +237,7 @@ class LogFileCache:
 
     @property
     def logfile_name(self) -> PathLike:
+        self._logfile_name: PathLike
         return self._logfile_name
 
     @logfile_name.setter
@@ -223,23 +250,26 @@ class LogFileCache:
         if self.log_cache:
             with self.time_limit_lock:
                 if self.log_cache:
-                    with open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
-                        log_file.writelines(self.log_cache)
+                    with open(file=self.logfile_name,
+                              encoding=get_key_from_dict(self.file_conf, 'encoding', 'utf-8'),
+                              mode=get_key_from_dict(self.file_conf, 'mode', 'a')) as log_file:
+                        log_file.writelines(self.log_cache.cache.copy())
+                    self.log_cache.clear()
 
-    def write_logs(self, string: str, wait_for_cache: bool = True) -> None:
-        if not wait_for_cache:
-            with self.time_limit_lock and open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
-                if self.log_cache:
-                    log_file.writelines(self.log_cache)
-                log_file.write(string)
-        else:
-            self.log_cache.append(string)
+    def write_logs(self, string: str, flush: bool = False) -> None:
+        self.log_cache.append(string)
+        if len(self.log_cache.cache) >= 10:
+            self._log_file_time_write()
+            return None
+        if flush:
+            self._log_file_time_write()
+        print(self.log_cache.cache)
 
 
 class Logger:
     """shenjack logger"""
 
-    def __init__(self, name: str = None, level: int = None, file_name: PathLike = None, colors: Dict[int, Dict[str, str]] = None, formats=None, **kwargs) -> None:
+    def __init__(self, name: str = None, level: int = None, file_conf: Dict = None, colors: Dict[Union[int, str], Dict[str, str]] = None, formats=None, **kwargs) -> None:
         """
         配置模式: 使用 kwargs 配置
         @param name: logger 名称 默认为 root
@@ -250,8 +280,9 @@ class Logger:
         self.level = level if level is not None else DEBUG
         self.colors = colors or logger_configs['Color']['main_color']
         self.formats = formats or logger_configs['Formatter']
-        if file_name:
-            self.file_cache = LogFileCache(file_name=file_name)
+        if file_conf:
+            self.file_cache = LogFileCache(file_conf=file_conf)
+            self.file_cache.start_thread()
         else:
             self.file_cache = False
         self.warn = self.warning
@@ -262,7 +293,11 @@ class Logger:
                  end: Optional[str] = '\n',
                  flush: Optional[bool] = False,
                  frame: Optional[FrameType] = None) -> None:
-        if level < self.level:
+        # print(level, self.level,
+        #       self.file_cache.level if self.file_cache else False,
+        #       level >= self.level,
+        #       self.file_cache and (level >= self.file_cache.level))
+        if level < self.level and self.file_cache and (level < self.file_cache.level):
             return None
         if not frame:
             frame = inspect.currentframe()
@@ -272,10 +307,11 @@ class Logger:
         text = sep.join(i if type(i) is str else str(i) for i in values)
         text = f"{self.colors[level]['message']}{text}{color_reset_suffix}"
         print_text = self.format_text(level=level, text=text, frame=frame)
-        print(print_text, end=end)
-        if self.file_cache:
+        if level >= self.level:
+            print(print_text, end=end)
+        if self.file_cache and (level >= self.file_cache.level):
             self.file_cache: LogFileCache
-            self.file_cache.write_logs(re.sub(re_find_color_code, '', print_text), wait_for_cache=flush)
+            self.file_cache.write_logs(f"{re.sub(re_find_color_code, '', print_text)}{end}", flush=flush)
         return None
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
@@ -288,17 +324,18 @@ class Logger:
             formats['file_name'] = 'no frame'
             formats['code_line'] = 'no frame'
         else:
-            formats['file_name'] = os.path.split(frame.f_code.co_filename)[-1]
-            formats['code_line'] = frame.f_lineno
+            formats['file_name'] = f"{self.colors['file']}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
+            formats['code_line'] = f"{self.colors['line']}{frame.f_lineno}{color_reset_suffix}"
         now_time = str(time.time())
         for key, value in formats.items():
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
-                    formats[key] = strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))
-            elif value == 'game.version':
-                formats[key] = DR_runtime.DR_version
-        print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color, level=level_with_color, message=text, **formats)
+                    formats[key] = f"{self.colors['date']}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))}{color_reset_suffix}"
+        print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
+                                                              level=level_with_color, message=text,
+                                                              logger_name=self.name,
+                                                              **formats)
         return print_text
 
     def trace(self, *values: object,
@@ -349,6 +386,24 @@ class Logger:
         return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush)
 
 
+def get_key_from_dict(a_dict: Dict, key: Any, default: Any = None) -> Optional[Any]:
+    try:
+        return a_dict[key]
+    except KeyError:
+        return default
+
+
+def format_str(text: str) -> str:
+    formats = logger_configs['Formatter'].copy()
+    now_time = str(time.time())
+    for key, value in formats.items():
+        if isinstance(value, dict):
+            if 'strftime' in value:
+                value['strftime']: str
+                formats[key] = strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))
+    return text.format(**formats)
+
+
 def color_in_033(*args) -> str:
     color_text = ';'.join(args)
     color_text = f'\033[{color_text}m'
@@ -395,17 +450,26 @@ def add_kwargs_to_global(**kwargs) -> dict:
     ...
 
 
-def get_logger(name: str = 'name') -> Logger:
+def get_logger(name: str = 'root') -> Logger:
     """
     此函数用于从 global_config 中取出对应的配置建立一个相应的 logger
     @param name: logger的名称
     @return: 创建好的 logger
     """
-    ...
+    if name in logger_configs['Logger']:
+        the_config = logger_configs['Logger'][name]
+    else:
+        the_config = logger_configs['Logger']['root']
+    a_logger = Logger(name=name,
+                      level=the_config['level'],
+                      file_conf=logger_configs['File'][the_config['file']] if 'file' in the_config else None,
+                      colors=logger_configs['Color'][get_key_from_dict(the_config, 'color', 'main_color')],
+                      formats=logger_configs['Formatter'])
+    return a_logger
 
 
 if __name__ == "__main__":
-
+    os.chdir('githubs/DR')
     # 在这里可以使用 add_kwargs_to_global
     logger = Logger(name="Main", level=NOTSET)
     for x in range(5):
@@ -416,3 +480,21 @@ if __name__ == "__main__":
         logger.warn('warning')
         logger.error('error haaaa')
         logger.fatal('oh no')
+    a_logger = get_logger('client')
+    a_logger.trace('tracing')
+    # time.sleep(5)
+    a_logger.fine('some fine!')
+    a_logger.debug('debugging')
+    # time.sleep(5)
+    a_logger.info("Hello World!!")
+    a_logger.warn('warning')
+    a_logger.error('error haaaa')
+    a_logger.fatal('oh no')
+    for x in range(5):
+        a_logger.trace('tracing')
+        a_logger.fine('some fine!')
+        a_logger.debug('debugging')
+        a_logger.info("Hello World!!")
+        a_logger.warn('warning')
+        a_logger.error('error haaaa')
+        a_logger.fatal('oh no')

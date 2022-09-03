@@ -41,7 +41,8 @@ class ThreadLock:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.lock.release()
+        if self.lock.locked():
+            self.lock.release()
         if (exc_type is None) and (exc_val is None) and (exc_tb is None):
             # 没有出 bug
             # print('exit with no error')
