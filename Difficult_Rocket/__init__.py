@@ -69,6 +69,7 @@ class _DR_option(Options):
     InputBox_use_TextEntry: bool = False
     use_local_logging: bool = False
     record_threads: bool = True
+    use_cProfile: bool = False
 
     # tests
     playing: bool = False

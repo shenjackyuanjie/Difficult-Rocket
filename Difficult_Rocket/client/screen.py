@@ -11,7 +11,8 @@ from Difficult_Rocket.command.tree import CommandTree
 
 
 class BaseScreen:
-    def __init__(self, main_window: "ClientWindow"):
+    def __init__(self, main_window: ClientWindow):
+        self.window_pointer = main_window
         self.command_tree = None
         self.create_command_tree()
 
@@ -23,5 +24,12 @@ class BaseScreen:
 
 
 class DRScreen(BaseScreen):
-    def __init__(self, main_window: "ClientWindow"):
+    def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
+
+
+class DRDEBUGScreen(BaseScreen):
+    def __init__(self, main_window: ClientWindow):
+        super().__init__(main_window)
+
+

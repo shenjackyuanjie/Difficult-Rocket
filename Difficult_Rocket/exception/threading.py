@@ -3,7 +3,7 @@
 #  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-from exception import BaseRuntimeError
+from Difficult_Rocket.exception import BaseRuntimeError
 
 __all__ = ["LockTimeOutError"]
 

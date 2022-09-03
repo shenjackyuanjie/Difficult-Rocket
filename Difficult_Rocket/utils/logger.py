@@ -2,21 +2,25 @@
 @author shenjackyuanjie
 @contact 3695888@qq.com
 """
+import re
 import os
-# os.chdir('../../')
 import sys
-sys.path.append(os.path.abspath('./Difficult_Rocket'))
-print(sys.path)
-# if __name__ == "__main__":
-# os.chdir('../')
-
+import time
 import atexit
+import inspect
 import threading
 
+# from inspect import F
 from os import PathLike
 from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
+from types import FrameType
 from typing import Optional, Union, Dict, Iterable, Tuple, List, Callable
+
+print(os.path.abspath(os.curdir))
+os.chdir('../../')
+sys.path.append('D:/githubs/DR')
+sys.path.append(os.path.abspath('./Difficult_Rocket'))
 
 from Difficult_Rocket.utils.thread import ThreadLock
 
@@ -33,6 +37,8 @@ from Difficult_Rocket.utils.thread import ThreadLock
 
 color_reset_suffix = "\033[0m"
 """ 只是用来重置颜色的后缀 """
+
+re_find_color_code = r'\033\[[^\f\n\r\t\vm]*m'
 
 """
 OFF > FATAL > ERROR > WARN > INFO > FINE > FINER > DEBUG > TRACE > ALL
@@ -75,6 +81,45 @@ name_level_map = {
     'FATAL': FATAL
 }
 
+logger_configs = {
+    'Logger': {
+        'root': {
+            'level': TRACE,
+            'color': 'main_color',
+            'file': 'main_log_file',
+        },
+    },
+    'Color': {
+        'main_color': {
+            'date': {},
+            TRACE: {'info': '\033[34;48;2;44;44;54m', 'message': '\033[34;48;2;40;40;40m'},
+            FINE: {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
+            DEBUG: {'info': '\033[38;2;133;138;149;48;2;44;44;54m', 'message': '\033[38;2;133;138;149m'},
+            INFO: {'info': '\033[32;48;2;44;44;54m', 'message': '\033[32m'},
+            WARNING: {'info': '\033[33;48;2;44;44;54m', 'message': '\033[33m'},
+            ERROR: {'info': '\033[31;48;2;44;44;54m', 'message': '\033[31m'},
+            FATAL: {'info': '\033[38;2;255;200;72;48;2;120;10;10m', 'message': '\033[38;2;255;200;72;48;2;120;10;10m'}
+        }
+    },
+    'File': {
+        'main_log_file': {
+            'mode': 'a',
+            'encoding': 'utf-8',
+            'level': DEBUG,
+            'file_name': '{file_time}_logs.md'
+        },
+    },
+    'Formatter': {
+        'MESSAGE': {
+            'format': '[\033[38;2;201;222;56m{main_time}\033[0m] {level} | {file_name}:{code_line} | {message}'
+        },
+        'file_time': {'strftime': '%Y-%m-%d %H-%M'},
+        'main_time': {'strftime': '%Y-%m-%d %H-%M-%S:%%S'},  # %%S  三位毫秒
+        'encoding': 'utf-8',
+        ...: ...
+    }
+}
+
 
 class ListCache:
     """一个线程安全的列表缓存"""
@@ -113,7 +158,8 @@ class ListCache:
 
     def __next__(self):
         if self._iter_cache == -1:
-            raise StopIteration
+            del self._iter_cache
+            raise StopIteration('there is no more cache')
         returns = self._iter_cache[-self._iter_len]
         self._iter_cache -= 1
         return returns
@@ -142,19 +188,17 @@ class LogFileCache:
         self.flush_time = flush_time  # 缓存刷新时长
         self.cache_entries_num = log_cache_lens_max
         self.started = False
-        self.log
+        # self.log
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
-        self.write_lock = threading.Lock()  # 写入锁
-        self.with_thread_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
+        self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
         self.threaded_write = threading.Timer(1, self._log_file_time_write)  # 基于 timer 的多线程
         # 日志缓存表
-        self.log_cache = ListCache(self.with_thread_lock)
+        self.log_cache = ListCache(self.time_limit_lock)
 
     def end_thread(self) -> None:
         """结束日志写入进程，顺手把目前的缓存写入"""
         self.cache_lock.acquire(blocking=True)
-        self.write_lock.acquire(blocking=True)
         self.threaded_write.cancel()
         self.started = False
         self._log_file_time_write()
@@ -171,20 +215,20 @@ class LogFileCache:
 
     @logfile_name.setter
     def logfile_name(self, value: PathLike) -> None:
-        with self.with_thread_lock:
+        with self.time_limit_lock:
             self._logfile_name = value
 
     def _log_file_time_write(self) -> None:
         """使用 threading.Timer 调用的定时写入日志文件的函数"""
         if self.log_cache:
-            with self.with_thread_lock:
+            with self.time_limit_lock:
                 if self.log_cache:
                     with open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
                         log_file.writelines(self.log_cache)
 
     def write_logs(self, string: str, wait_for_cache: bool = True) -> None:
         if not wait_for_cache:
-            with self.with_thread_lock and open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
+            with self.time_limit_lock and open(file=self.logfile_name, encoding='utf-8', mode='a') as log_file:
                 if self.log_cache:
                     log_file.writelines(self.log_cache)
                 log_file.write(string)
@@ -195,7 +239,7 @@ class LogFileCache:
 class Logger:
     """shenjack logger"""
 
-    def __init__(self, name: str = None, level: int = None, file_name: PathLike = None, **kwargs) -> None:
+    def __init__(self, name: str = None, level: int = None, file_name: PathLike = None, colors: Dict[int, Dict[str, str]] = None, formats=None, **kwargs) -> None:
         """
         配置模式: 使用 kwargs 配置
         @param name: logger 名称 默认为 root
@@ -203,8 +247,9 @@ class Logger:
         @param file_name: logging 写入文件名称 默认为 None(不写入)
         """
         self.name = name or 'root'
-        self.level = level or DEBUG
-        self.colors = None
+        self.level = level if level is not None else DEBUG
+        self.colors = colors or logger_configs['Color']['main_color']
+        self.formats = formats or logger_configs['Formatter']
         if file_name:
             self.file_cache = LogFileCache(file_name=file_name)
         else:
@@ -215,17 +260,46 @@ class Logger:
                  level: int,
                  sep: Optional[str] = ' ',
                  end: Optional[str] = '\n',
-                 flush: Optional[bool] = False) -> None:
+                 flush: Optional[bool] = False,
+                 frame: Optional[FrameType] = None) -> None:
         if level < self.level:
             return None
-        # print(level, values, sep, end, flush, sep='|')
-        write_text = sep.join(i if type(i) is str else str(i) for i in values).__add__(end)
-        print(write_text, end='')
-        # self.file_cache.write_logs()
+        if not frame:
+            frame = inspect.currentframe()
+            frame = frame.f_back.f_back
+        elif (frame := inspect.currentframe()) is not None:
+            frame = frame.f_back
+        text = sep.join(i if type(i) is str else str(i) for i in values)
+        text = f"{self.colors[level]['message']}{text}{color_reset_suffix}"
+        print_text = self.format_text(level=level, text=text, frame=frame)
+        print(print_text, end=end)
         if self.file_cache:
             self.file_cache: LogFileCache
-            if not self.file_cache.started:
-                self.file_cache.start_thread()
+            self.file_cache.write_logs(re.sub(re_find_color_code, '', print_text), wait_for_cache=flush)
+        return None
+
+    def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
+        from Difficult_Rocket import DR_option, DR_runtime
+        level_with_color = f"[{self.colors[level]['info']}{level_name_map[level]}{color_reset_suffix}]"
+        level_with_color = f"{level_with_color}{' ' * (9 - len_without_color_maker(level_with_color))}"
+        formats = self.formats.copy()
+        formats.pop('MESSAGE')
+        if frame is None:
+            formats['file_name'] = 'no frame'
+            formats['code_line'] = 'no frame'
+        else:
+            formats['file_name'] = os.path.split(frame.f_code.co_filename)[-1]
+            formats['code_line'] = frame.f_lineno
+        now_time = str(time.time())
+        for key, value in formats.items():
+            if isinstance(value, dict):
+                if 'strftime' in value:
+                    value['strftime']: str
+                    formats[key] = strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))
+            elif value == 'game.version':
+                formats[key] = DR_runtime.DR_version
+        print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color, level=level_with_color, message=text, **formats)
+        return print_text
 
     def trace(self, *values: object,
               sep: Optional[str] = ' ',
@@ -281,6 +355,11 @@ def color_in_033(*args) -> str:
     return color_text
 
 
+def len_without_color_maker(text: str) -> int:
+    with_out_text = re.sub(re_find_color_code, '', text)
+    return len(with_out_text)
+
+
 def rgb(r: int, g: int, b: int) -> Tuple[int, int, int]:
     return r, g, b
 
@@ -290,42 +369,8 @@ def logging_color() -> Dict:
     return {'info': ..., 'message': ...}
 
 
-logger_configs = {
-    'Logger': {
-        'root': {
-            'level': TRACE,
-            'color': 'main_color',
-            'file': 'main_log_file',
-        },
-    },
-    'Color': {
-        'main_color': {
-            TRACE: {'info': '\033[34;40m', 'message': '\033[48;2;40;40;40m'},
-            FINE: {'info': '', 'message': '\033[35m'},
-            DEBUG: {'info': '', 'message': '\033[38;2;133;138;149m'},
-            INFO: {'info': '\033[32;40m', 'message': ''},
-            WARNING: {'info': '', 'mes sage': '\033[33m'},
-            ERROR: {'info': '', 'message': '\033[31m'},
-            FATAL: {'info': '', 'message': '\033[33;41'}
-        }
-    },
-    'File': {
-        'main_log_file': {
-            'mode': 'a',
-            'encoding': 'utf-8',
-            'level': DEBUG,
-            'file_name': '{file_time}_logs.md'
-        },
-    },
-    'Formatter': {
-        'file_time': {'strftime': '%Y-%m-%d %H-%M'},
-        'main_time': {'strftime': '%Y-%m-%d %H-%M-%S'},
-        'version': 'game.version',
-        'level': 'level',
-        'encoding': 'utf-8',
-        ...: ...
-    }
-}
+def setup_logger() -> None:
+    ...
 
 
 def add_dict_config_to_global(some_dict: Union[dict, list, str], name: str) -> dict:
@@ -360,25 +405,14 @@ def get_logger(name: str = 'name') -> Logger:
 
 
 if __name__ == "__main__":
-    # import os
 
     # 在这里可以使用 add_kwargs_to_global
-    logger = Logger(name="Main")
-    logger1 = Logger(name="RenderThread")
-    logger2 = Logger(name="TaskExecuter#1-1")
-    while True:
+    logger = Logger(name="Main", level=NOTSET)
+    for x in range(5):
+        logger.trace('tracing')
+        logger.fine('some fine!')
+        logger.debug('debugging')
         logger.info("Hello World!!")
-        logger1.error("OpenGL Error 10086")
-        logger2.warning("Cannot write file.")
-
-    some_logger = Logger(name='aaa')
-    some_logger.level = ALL
-    some_logger.warn('aaaa', 'aaaa')
-
-    a_lock = threading.Lock()
-    a_with_lock = ThreadLock(a_lock)
-    a_cache = ListCache(a_with_lock)
-    a_cache.append('123123')
-    print(a_cache[0])
-    print(a_cache)
- 
+        logger.warn('warning')
+        logger.error('error haaaa')
+        logger.fatal('oh no')

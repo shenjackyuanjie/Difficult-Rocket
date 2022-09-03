@@ -17,15 +17,17 @@ import time
 import logging
 import traceback
 
+from typing import List, Union
 from decimal import Decimal
 
 # Difficult_Rocket function
-from Difficult_Rocket import Options
+from Difficult_Rocket import Options, DR_runtime
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.client.guis.widgets import InputBox
 # from Difficult_Rocket.client.screen import DRScreen
+# from Difficult_Rocket.client.screen import DRDEBUGScreen
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.exception.command import CommandError
@@ -112,6 +114,7 @@ class ClientWindow(Window):
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
         # self.DRscreen = DRScreen(self)
+        self.screen_list = []
         # setup
         self.setup()
         # 命令显示
@@ -135,14 +138,19 @@ class ClientWindow(Window):
         self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
         self.use_time = end_time - start_time
+        DR_runtime.client_setup_time_ns = self.use_time
         self.logger.info(tr.lang('window', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
         self.count = 0
 
     def setup(self):
         self.load_fonts()
+        from Difficult_Rocket.client.screen import DRDEBUGScreen, DRScreen, BaseScreen
+        self.screen_list: List[BaseScreen]
+        self.screen_list.append(DRDEBUGScreen(self))
+        self.screen_list.append(DRScreen(self))
 
-    def load_fonts(self):
+    def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
         # 加载字体路径
         # 淦，还写了个递归来处理

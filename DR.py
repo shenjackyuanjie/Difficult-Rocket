@@ -55,7 +55,6 @@ if __name__ == '__main__':
         glClearColor(0.5, 0.5, 0.5, 0)
 
         game = main.Game()  # 实例化一个游戏
-
         print(time.perf_counter_ns() - start_time_perf_ns, (time.perf_counter_ns() - start_time_perf_ns) / (10 ** 9), 'start')  # 输出一下启动用时
 
         cprofile = False  # 是否使用cprofile
