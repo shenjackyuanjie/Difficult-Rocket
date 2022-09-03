@@ -162,9 +162,6 @@ class ListCache:
         return self.cache
 
     def __iter__(self):
-        # with self.with_thread_lock:
-        #     self._iter_cache = self._cache.copy()
-        #     self._iter_len = len(self.cache)
         self._iter_len = len(self.cache)
         return self
 
@@ -263,7 +260,6 @@ class LogFileCache:
             return None
         if flush:
             self._log_file_time_write()
-        print(self.log_cache.cache)
 
 
 class Logger:
