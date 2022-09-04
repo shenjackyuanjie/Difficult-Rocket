@@ -32,8 +32,8 @@ file configs
 """
 
 file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}',
-              KeyError: 'no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}',
-              Exception: 'get some {error_type} error when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
+              KeyError:          'no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}',
+              Exception:         'get some {error_type} error when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
 
 
 def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error: bool = True) -> Union[dict, list]:

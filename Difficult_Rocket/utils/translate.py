@@ -20,7 +20,6 @@ from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.exception.language import *
 
-
 """
 这部分代码使用了中文编程，why？
 你觉得呢？
@@ -32,6 +31,7 @@ class Tr:
     我不装了，我就抄了tr
     GOOD
     """
+
     def __init__(self):
         self.config_regs = {}
 
@@ -45,8 +45,6 @@ class Tr:
             ...
         else:
             ...
-
-
 
 
 class Lang:

@@ -20,32 +20,32 @@ INFO = 'info'
 RUN = 'run'
 
 DR_command = {
-    'name': 'DR-root',
+    'name':    'DR-root',
     'version': DR_runtime.DR_version,
-    INFO: 'DR的自带命令解析树',
-    COMMAND: {
-        INFO: '这里是DR的根命令节点',
-        RUN: None,
+    INFO:      'DR的自带命令解析树',
+    COMMAND:   {
+        INFO:        '这里是DR的根命令节点',
+        RUN:         None,
         SUB_COMMAND: {
-            'stop': {
+            'stop':    {
                 INFO: '退出游戏',
-                RUN: None
+                RUN:  None
             },
-            'fps': {
-                INFO: 'FPS相关命令',
-                RUN: None,
+            'fps':     {
+                INFO:        'FPS相关命令',
+                RUN:         None,
                 SUB_COMMAND: {
                     'log': {
                         INFO: '输出FPS信息',
-                        RUN: None
+                        RUN:  None
                     },
                     'min': {
                         INFO: '输出一段时间内最小fps',
-                        RUN: None
+                        RUN:  None
                     },
                     'max': {
                         INFO: '输出一段时间内最大FPS',
-                        RUN: None
+                        RUN:  None
                     }
                 }
             },

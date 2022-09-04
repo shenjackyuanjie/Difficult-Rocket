@@ -28,5 +28,3 @@ class BaseRuntimeError(RuntimeError):
 
 class TestError(BaseRuntimeError):
     """在 test 啦"""
-
-

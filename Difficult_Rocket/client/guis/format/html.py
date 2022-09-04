@@ -18,8 +18,8 @@ from utils import translate
 default_style = {
     'font_name': 'Times New Roman',
     'font_size': 12,
-    'bold': False,
-    'italic': False
+    'bold':      False,
+    'italic':    False
 }
 
 
@@ -222,7 +222,7 @@ default_fonts_config = [
         # Markdown 粗体语法规则匹配
         'match': re.compile(r'\*\*(.*?(?<!\s))\*\*'),
         'shown': re.compile(r'(?<=\*\*)(.*?(?<!\s))(?=\*\*)'),
-        'tag': {
+        'tag':   {
             # 为 match 匹配到的字符添加标签
             'match': re.compile(r'\*\*'),
             'style': SingleTextStyle(text_tag=['bold'])
@@ -231,14 +231,14 @@ default_fonts_config = [
     },
     {
         # Markdown 斜体语法规则匹配
-        'match': re.compile(r'\*(.*?(?<!\s))\*'),
-        'shown': re.compile(r'(?<=\*)(.*?(?<!\s))(?=\*)'),
+        'match':  re.compile(r'\*(.*?(?<!\s))\*'),
+        'shown':  re.compile(r'(?<=\*)(.*?(?<!\s))(?=\*)'),
         'ignore': {
             # 如果匹配到的字符含有 tag 就忽略本次解析
             'match': re.compile(r'\*'),
-            'tag': SingleTextStyle(text_tag=['italic'])
+            'tag':   SingleTextStyle(text_tag=['italic'])
         },
-        'style': SingleTextStyle(italic=True)
+        'style':  SingleTextStyle(italic=True)
     },
     {
         # Markdown 链接规则匹配

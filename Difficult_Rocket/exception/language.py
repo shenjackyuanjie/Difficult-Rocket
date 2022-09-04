@@ -6,7 +6,6 @@
 
 from Difficult_Rocket.exception import BaseError, BaseRuntimeError
 
-
 __all__ = ['LanguageNotFound',
            'TranslateError',
            'TranslateKeyNotFound',
@@ -27,4 +26,3 @@ class TranslateKeyNotFound(TranslateError):
 
 class TranslateFileNotFound(TranslateError):
     """翻译文件缺失"""
-

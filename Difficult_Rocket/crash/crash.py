@@ -76,7 +76,7 @@ def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
     ...
 
 
-def create_crash_report(info: str = None) -> None: 
+def create_crash_report(info: str = None) -> None:
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
         os.mkdir('./crash_report')

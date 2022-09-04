@@ -61,4 +61,3 @@ class CommandQMarkSufMissing(CommandQMarkMissing):
     """命令中 后面的引号缺失(引号未闭合)
     例如: /command "aaaawaa some command"""
     pre_qmark_pos = None
-

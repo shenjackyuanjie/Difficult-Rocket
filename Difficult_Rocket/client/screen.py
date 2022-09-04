@@ -31,5 +31,3 @@ class DRScreen(BaseScreen):
 class DRDEBUGScreen(BaseScreen):
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
-
-

@@ -1,4 +1,3 @@
-
 import os
 
 # include 目录
@@ -7,10 +6,10 @@ include_paths = ["C:\\Users\\shenjack.SHENJACK-5600X\\AppData\\Local\\Programs\\
 # 编译选项
 compile_options = {
     "-shared": None,
-    "-O3": None,
-    "-Wall": None,
+    "-O3":     None,
+    "-Wall":   None,
     "-Werror": None,
-    "-o": "./py_cprint.dll"
+    "-o":      "./py_cprint.dll"
 }
 
 include_command = "-I "
@@ -38,4 +37,3 @@ compile_command = "gcc.exe ./py_cprint.c {}{}".format(include_command, compile_o
 print(compile_command)
 
 os.system(compile_command)
-

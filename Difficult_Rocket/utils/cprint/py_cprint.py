@@ -14,4 +14,3 @@ pycprint.print("abcdefg\n")
 pycprint.printf('aaaa')
 
 pycprint.printf("啊啊啊abc啊，怎么了")
-

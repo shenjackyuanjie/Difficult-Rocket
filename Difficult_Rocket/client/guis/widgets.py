@@ -112,16 +112,16 @@ if not DR_option.InputBox_use_TextEntry:
                                           width=width + (out_line * 2), height=height + (out_line * 2),
                                           batch=batch, group=group)
                 self._光标 = Rectangle(x=x + out_line, y=y + out_line,
-                                     color=cursor_color,
-                                     width=1, height=self.font_height,
-                                     batch=batch, group=group)
+                                       color=cursor_color,
+                                       width=1, height=self.font_height,
+                                       batch=batch, group=group)
                 self._选择框 = Rectangle(x=x, y=y, width=0, height=self.font_height,
-                                      color=select_color)
+                                         color=select_color)
                 self._选择的字 = Label(x=x, y=y, width=0, height=self.font_height,
-                                   color=text_color,
-                                   font_name=font_name, font_size=font_size,
-                                   batch=batch, group=group,
-                                   text='')
+                                       color=text_color,
+                                       font_name=font_name, font_size=font_size,
+                                       batch=batch, group=group,
+                                       text='')
 
         """
         输入框的属性
