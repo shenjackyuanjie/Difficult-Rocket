@@ -12,7 +12,7 @@ import threading
 from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 from types import FrameType
-from typing import Optional, Union, Dict, Iterable, Tuple, Any
+from typing import Optional, Union, Dict, Iterable, Tuple, Any, List
 
 os.system('')
 # print(os.path.abspath(os.curdir))
@@ -99,7 +99,7 @@ logger_configs = {
             'file_name': '\033[38;2;0;255;180m',
             'code_line': '\033[38;2;0;255;180m',
             'logger':    '\033[0m',
-            TRACE:       {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;40;40;200m'},
+            TRACE:       {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
             FINE:        {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
             DEBUG:       {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
             INFO:        {'info': '\033[0m', 'message': '\033[0m'},
@@ -219,7 +219,7 @@ class ListCache:
 class LogFileCache:
     """日志文件缓存"""
 
-    def __init__(self, file_conf: dict, ):
+    def __init__(self, file_conf: dict):
         """
 
         @param file_conf: 日志文件配置
@@ -306,7 +306,7 @@ class Logger:
     def __init__(self,
                  name: str = None,
                  level: int = None,
-                 file_conf: Dict = None,
+                 file_conf: List[LogFileCache] = None,
                  colors: Dict[Union[int, str], Dict[str, str]] = None,
                  formats=None) -> None:
         """
@@ -321,11 +321,21 @@ class Logger:
         self.level = level if level is not None else DEBUG
         self.colors = colors or logger_configs['Color']['main_color']
         self.formats = formats or logger_configs['Formatter'].copy()
+        self.min_level = self.level
         if file_conf:
-            self.file_cache = LogFileCache(file_conf=file_conf)
+            self.file_cache = file_conf
+            self.min_level = min(*[file.level for file in file_conf], self.level)
         else:
-            self.file_cache = False
+            self.file_cache = []
         self.warn = self.warning
+
+    def add_file(self, handler: LogFileCache):
+        self.file_cache.append(handler)
+        self.min_level = min(*[file.level for file in self.file_cache], self.level)
+
+    def remove_file(self, handler: LogFileCache):
+        self.file_cache.pop(self.file_cache.index(handler))
+        self.min_level = min(*[file.level for file in self.file_cache], self.level)
 
     def make_log(self, *values: object,
                  level: int,
@@ -333,12 +343,7 @@ class Logger:
                  end: Optional[str] = '\n',
                  flush: Optional[bool] = False,
                  frame: Optional[FrameType] = None) -> None:
-        # print(level, self.level,
-        #       self.file_cache.level if self.file_cache else False,
-        #       level >= self.level,
-        #       self.file_cache and (level >= self.file_cache.level))
-        self.file_cache: Union[bool, LogFileCache]
-        if level < self.level and self.file_cache and (level < self.file_cache.level):
+        if level < self.min_level:
             return None
         if not frame:
             frame = inspect.currentframe()
@@ -350,9 +355,11 @@ class Logger:
         print_text = self.format_text(level=level, text=text, frame=frame)
         if level >= self.level:
             print(print_text, end=end)
-        if self.file_cache and (level >= self.file_cache.level):
-            self.file_cache: LogFileCache
-            self.file_cache.write_logs(f"{re.sub(re_find_color_code, '', print_text)}{end}", flush=flush)
+        for file in self.file_cache:
+            file: LogFileCache
+            if level < file.level:
+                continue
+            file.write_logs(f"{re.sub(re_find_color_code, '', print_text)}{end}", flush=flush)
         return None
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
@@ -489,7 +496,7 @@ def logger_with_default_settings(name: str,
                                  formats: dict = None) -> Logger:
     return Logger(name=name,
                   level=level,
-                  file_conf=gen_file_conf(**file_conf),
+                  file_conf=[LogFileCache(gen_file_conf(**file_conf))],
                   colors=gen_color_conf(**colors),
                   formats=logger_configs['Formatter'].copy().update(formats))
 
@@ -517,9 +524,12 @@ def get_logger(name: str = 'root') -> Logger:
         the_config = logger_configs['Logger'][name]
     else:
         the_config = logger_configs['Logger']['root']
+    file_handler = None
+    if 'file' in the_config:
+        file_handler = [LogFileCache(logger_configs['File'][the_config['file']])]
     return Logger(name=name,
                   level=the_config['level'],
-                  file_conf=logger_configs['File'][the_config['file']] if 'file' in the_config else None,
+                  file_conf=file_handler,
                   colors=logger_configs['Color'][get_key_from_dict(the_config, 'color', 'main_color')],
                   formats=logger_configs['Formatter'].copy())
 
@@ -556,10 +566,10 @@ if __name__ == "__main__":
     a_logger = get_logger('client')
 
     a_logger.trace('tracing')
-    time.sleep(1.1)
+    # time.sleep(1.1)
     a_logger.fine('some fine!')
     a_logger.debug('debugging')
-    time.sleep(1.1)
+    # time.sleep(1.1)
     a_logger.info("Hello World!!")
     a_logger.warn('warning')
     a_logger.error('error haaaa')
