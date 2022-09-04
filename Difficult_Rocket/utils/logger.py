@@ -4,25 +4,17 @@
 """
 import re
 import os
-import sys
 import time
 import atexit
 import inspect
 import threading
 
-# from inspect import F
-from os import PathLike
 from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 from types import FrameType
-from typing import Optional, Union, Dict, Iterable, Tuple, Any, List, Callable
+from typing import Optional, Union, Dict, Iterable, Tuple, Any
 
-print(os.path.abspath(os.curdir))
-os.chdir('../../')
-sys.path.append('D:/githubs/DR')
-sys.path.append(os.path.abspath('./Difficult_Rocket'))
-
-from Difficult_Rocket.utils.thread import ThreadLock
+# print(os.path.abspath(os.curdir))
 
 # 如果想要直接使用 logger 来 logging
 # 直接调用 logger.debug() 即可
@@ -101,9 +93,24 @@ logger_configs = {
     },
     'Color': {
         'main_color': {
-            'date': '\033[38;2;201;222;56m',
-            'file': '\033[38;2;0;255;180m',
-            'line': '\033[38;2;0;255;180m',
+            'file_time': '\033[38;2;201;222;56m',
+            'main_time': '\033[38;2;201;222;56m',
+            'file_name': '\033[38;2;0;255;180m',
+            'code_line': '\033[38;2;0;255;180m',
+            'logger': '\033[0m',
+            TRACE: {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;40;40;70m'},
+            FINE: {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
+            DEBUG: {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            INFO: {'info': '\033[0m', 'message': '\033[0m'},
+            WARNING: {'info': '\033[33m', 'message': '\033[33m'},
+            ERROR: {'info': '\033[31m', 'message': '\033[31m'},
+            FATAL: {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m'}
+        },
+        'DiGua_color': {
+            'file_time': '\033[38;2;201;222;56m',
+            'main_time': '\033[38;2;201;222;56m',
+            'file_name': '\033[38;2;0;255;180m',
+            'code_line': '\033[38;2;0;255;180m',
             'logger': '\033[0m',
             TRACE: {'info': '\033[34;48;2;44;44;54m', 'message': '\033[34;48;2;40;40;70m'},
             FINE: {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
@@ -119,18 +126,39 @@ logger_configs = {
             'mode': 'a',
             'encoding': 'utf-8',
             'level': TRACE,
-            'file_name': './logs/{file_time}_logs.md'
+            'file_name': './logs/{file_time}_logs.md',
+            'cache_len': 10,
+            'cache_time': 1
         },
     },
     'Formatter': {
         'MESSAGE': {
             'format': '[{main_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
         },
+        'file_name': 'no frame',
+        'code_line': 'no frame',
         'file_time': {'strftime': '%Y-%m-%d %H-%M'},
         'main_time': {'strftime': '%Y-%m-%d %H-%M-%S:%%S'},  # %%S  三位毫秒
         ...: ...
     }
 }
+
+
+class ThreadLock:
+
+    def __init__(self, the_lock: threading.Lock, time_out: Union[float, int] = 1 / 60) -> None:
+        self.lock = the_lock
+        self.time_out = time_out
+
+    def __enter__(self):
+        self.lock.acquire(timeout=self.time_out)
+        if not self.lock.locked():
+            raise RuntimeError(f'Lock time Out with {self.time_out}')
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.lock.locked():
+            self.lock.release()
 
 
 class ListCache:
@@ -189,24 +217,23 @@ class ListCache:
 class LogFileCache:
     """日志文件缓存"""
 
-    def __init__(self, file_conf: Dict, flush_time: Optional[Union[int, float]] = 1, log_cache_lens_max: int = 10):
+    def __init__(self, file_conf: dict, ):
         """
 
         @param file_conf: 日志文件配置
-        @param flush_time: 刷新日志缓存，写入文件的时长间隔
-        @param log_cache_lens_max: 日志缓存在自动写入前的最大缓存长度
         """
         # 配置相关
         self._logfile_name = os.path.abspath(format_str(file_conf['file_name']))  # log 文件名称
         self.level = get_key_from_dict(file_conf, 'level', DEBUG)
         self.file_conf = file_conf
-        self.flush_time = flush_time  # 缓存刷新时长
-        self.cache_entries_num = log_cache_lens_max
-        self.started = False
+        self.flush_time = file_conf['cache_time']  # 缓存刷新时长
+        self.cache_entries_num = file_conf['cache_len']
+        self.started = True
+        self.running = False
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
         self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
-        self.threaded_write = threading.Timer(1, self._log_file_time_write)  # 基于 timer 的多线程
+        self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={'thread': True})  # 基于 timer 的多线程
         # 日志缓存表
         self.log_cache = ListCache(self.time_limit_lock)
         self.file_setup()
@@ -222,7 +249,9 @@ class LogFileCache:
     def end_thread(self) -> None:
         """结束日志写入进程，顺手把目前的缓存写入"""
         self.cache_lock.acquire(blocking=True)
-        self.threaded_write.cancel()
+        if self.running:
+            self.threaded_write.cancel()
+            self.running = False
         self.started = False
         self._log_file_time_write()
         atexit.unregister(self.end_thread)
@@ -230,20 +259,22 @@ class LogFileCache:
     def start_thread(self) -> None:
         self.threaded_write.start()
         self.started = True
+        self.running = True
         atexit.register(self.end_thread)
 
     @property
-    def logfile_name(self) -> PathLike:
-        self._logfile_name: PathLike
+    def logfile_name(self) -> str:
+        self._logfile_name: str
         return self._logfile_name
 
     @logfile_name.setter
-    def logfile_name(self, value: PathLike) -> None:
+    def logfile_name(self, value: str) -> None:
         with self.time_limit_lock:
             self._logfile_name = value
 
-    def _log_file_time_write(self) -> None:
+    def _log_file_time_write(self, thread: bool = False) -> None:
         """使用 threading.Timer 调用的定时写入日志文件的函数"""
+        print(f'write! {thread}{self.log_cache.cache}')
         if self.log_cache:
             with self.time_limit_lock:
                 if self.log_cache:
@@ -252,6 +283,8 @@ class LogFileCache:
                               mode=get_key_from_dict(self.file_conf, 'mode', 'a')) as log_file:
                         log_file.writelines(self.log_cache.cache.copy())
                     self.log_cache.clear()
+                    if thread:
+                        self.running = False
 
     def write_logs(self, string: str, flush: bool = False) -> None:
         self.log_cache.append(string)
@@ -260,25 +293,36 @@ class LogFileCache:
             return None
         if flush:
             self._log_file_time_write()
+        if self.started and not self.running:
+            self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={'thread': True})  # 基于 timer 的多线程
+            self.threaded_write.start()
+            self.running = True
 
 
 class Logger:
     """shenjack logger"""
 
-    def __init__(self, name: str = None, level: int = None, file_conf: Dict = None, colors: Dict[Union[int, str], Dict[str, str]] = None, formats=None, **kwargs) -> None:
+    def __init__(self,
+                 name: str = None,
+                 level: int = None,
+                 file_conf: Dict = None,
+                 colors: Dict[Union[int, str], Dict[str, str]] = None,
+                 formats=None) -> None:
         """
         配置模式: 使用 kwargs 配置
         @param name: logger 名称 默认为 root
         @param level: logging 输出等级 默认为 DEBUG(10)
-        @param file_name: logging 写入文件名称 默认为 None(不写入)
+        @param file_conf: logger 的文件处理配置
+        @param colors: dict 颜色配置
+        @param formats: 格式化配置
         """
         self.name = name or 'root'
         self.level = level if level is not None else DEBUG
         self.colors = colors or logger_configs['Color']['main_color']
-        self.formats = formats or logger_configs['Formatter']
+        self.formats = formats or logger_configs['Formatter'].copy()
+        self.formats['logger_name'] = f'{self.colors["logger"]}{self.name}{color_reset_suffix}'
         if file_conf:
             self.file_cache = LogFileCache(file_conf=file_conf)
-            self.file_cache.start_thread()
         else:
             self.file_cache = False
         self.warn = self.warning
@@ -293,6 +337,7 @@ class Logger:
         #       self.file_cache.level if self.file_cache else False,
         #       level >= self.level,
         #       self.file_cache and (level >= self.file_cache.level))
+        self.file_cache: Union[bool, LogFileCache]
         if level < self.level and self.file_cache and (level < self.file_cache.level):
             return None
         if not frame:
@@ -311,26 +356,20 @@ class Logger:
         return None
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
-        from Difficult_Rocket import DR_option, DR_runtime
         level_with_color = f"[{self.colors[level]['info']}{level_name_map[level]}{color_reset_suffix}]"
         level_with_color = f"{level_with_color}{' ' * (9 - len_without_color_maker(level_with_color))}"
         formats = self.formats.copy()
-        formats.pop('MESSAGE')
-        if frame is None:
-            formats['file_name'] = 'no frame'
-            formats['code_line'] = 'no frame'
-        else:
-            formats['file_name'] = f"{self.colors['file']}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
-            formats['code_line'] = f"{self.colors['line']}{frame.f_lineno}{color_reset_suffix}"
+        if frame is not None:
+            formats['file_name'] = f"{self.colors['file_name']}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
+            formats['code_line'] = f"{self.colors['code_line']}{frame.f_lineno}{color_reset_suffix}"
         now_time = str(time.time())
         for key, value in formats.items():
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
-                    formats[key] = f"{self.colors['date']}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))}{color_reset_suffix}"
+                    formats[key] = f"{self.colors[key]}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))}{color_reset_suffix}"
         print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
                                                               level=level_with_color, message=text,
-                                                              logger_name=self.name,
                                                               **formats)
         return print_text
 
@@ -420,8 +459,36 @@ def logging_color() -> Dict:
     return {'info': ..., 'message': ...}
 
 
-def setup_logger() -> None:
-    ...
+def gen_file_conf(file_name: str,
+                  file_level: int = DEBUG,
+                  file_mode: str = 'a',
+                  file_encoding: str = 'utf-8',
+                  file_cache_len: int = 10,
+                  file_cache_time: Union[int, float] = 1) -> dict:
+    return {'file_name': file_name,
+            'level': file_level,
+            'mode': file_mode,
+            'encoding': file_encoding,
+            'cache_len': file_cache_len,
+            'cache_time': file_cache_time}
+
+
+def gen_color_conf(**colors) -> dict:
+    default_color = logger_configs['Color']['main_color'].copy()
+    default_color.update(colors)
+    return default_color
+
+
+def logger_with_default_settings(name: str,
+                                 level: int = DEBUG,
+                                 file_conf: dict = None,
+                                 colors: dict = None,
+                                 formats: dict = None) -> Logger:
+    return Logger(name=name,
+                  level=level,
+                  file_conf=gen_file_conf(**file_conf),
+                  colors=gen_color_conf(**colors),
+                  formats=logger_configs['Formatter'].copy().update(formats))
 
 
 def add_dict_config_to_global(some_dict: Union[dict, list, str], name: str) -> dict:
@@ -437,15 +504,6 @@ def add_dict_config_to_global(some_dict: Union[dict, list, str], name: str) -> d
     return logger_configs  # 修改过的 logger 配置
 
 
-def add_kwargs_to_global(**kwargs) -> dict:
-    """
-
-    @param kwargs: 你要改的 logger配置
-    @return: 修改过的 logger 配置
-    """
-    ...
-
-
 def get_logger(name: str = 'root') -> Logger:
     """
     此函数用于从 global_config 中取出对应的配置建立一个相应的 logger
@@ -456,41 +514,38 @@ def get_logger(name: str = 'root') -> Logger:
         the_config = logger_configs['Logger'][name]
     else:
         the_config = logger_configs['Logger']['root']
-    a_logger = Logger(name=name,
-                      level=the_config['level'],
-                      file_conf=logger_configs['File'][the_config['file']] if 'file' in the_config else None,
-                      colors=logger_configs['Color'][get_key_from_dict(the_config, 'color', 'main_color')],
-                      formats=logger_configs['Formatter'])
-    return a_logger
+    return Logger(name=name,
+                  level=the_config['level'],
+                  file_conf=logger_configs['File'][the_config['file']] if 'file' in the_config else None,
+                  colors=logger_configs['Color'][get_key_from_dict(the_config, 'color', 'main_color')],
+                  formats=logger_configs['Formatter'])
+
+
+def test_logger(the_logger: Logger):
+    the_logger.trace('tracing')
+    the_logger.fine('some fine!')
+    the_logger.debug('debugging')
+    the_logger.info("Hello World!!")
+    the_logger.warn('warning')
+    the_logger.error('error haaaa')
+    the_logger.fatal('oh no')
 
 
 if __name__ == "__main__":
-    os.chdir('githubs/DR')
-    # 在这里可以使用 add_kwargs_to_global
+    os.chdir('D:/githubs/DR')
     logger = Logger(name="Main", level=NOTSET)
-    for x in range(5):
-        logger.trace('tracing')
-        logger.fine('some fine!')
-        logger.debug('debugging')
-        logger.info("Hello World!!")
-        logger.warn('warning')
-        logger.error('error haaaa')
-        logger.fatal('oh no')
+    logger.info('my name is:', logger.name)
     a_logger = get_logger('client')
     a_logger.trace('tracing')
-    # time.sleep(5)
+    time.sleep(1.1)
     a_logger.fine('some fine!')
     a_logger.debug('debugging')
-    # time.sleep(5)
+    time.sleep(1.1)
     a_logger.info("Hello World!!")
     a_logger.warn('warning')
     a_logger.error('error haaaa')
     a_logger.fatal('oh no')
+    logger.info('my name is:', logger.name)
     for x in range(5):
-        a_logger.trace('tracing')
-        a_logger.fine('some fine!')
-        a_logger.debug('debugging')
-        a_logger.info("Hello World!!")
-        a_logger.warn('warning')
-        a_logger.error('error haaaa')
-        a_logger.fatal('oh no')
+        test_logger(logger)
+        test_logger(a_logger)

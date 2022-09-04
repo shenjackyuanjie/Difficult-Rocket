@@ -16,13 +16,13 @@ import threading
 from typing import Union
 from threading import Lock
 
-from Difficult_Rocket import crash
+from Difficult_Rocket import DR_option, crash
 from Difficult_Rocket.exception.threading import LockTimeOutError
 
 
 class Threads(threading.Thread):
     def run(self):
-        if crash.record_thread:
+        if DR_option.record_thread:
             crash.all_thread.append(self)
         super().run()
 
@@ -34,27 +34,14 @@ class ThreadLock:
         self.time_out = time_out
 
     def __enter__(self):
-        # print('enter!')
         self.lock.acquire(timeout=self.time_out)
         if not self.lock.locked():
-            raise LockTimeOutError('')
+            raise LockTimeOutError(f'Lock time Out with {self.time_out}')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.lock.locked():
             self.lock.release()
-        if (exc_type is None) and (exc_val is None) and (exc_tb is None):
-            # 没有出 bug
-            # print('exit with no error')
-            return None
-        else:
-            # 出 bug 了
-            # print(f'exit with error {exc_type} {exc_val}')
-            return None
-
-    # def __del__(self):
-    # print('del me!')
-    # self.__del__()
 
 
 if __name__ == "__main__":
