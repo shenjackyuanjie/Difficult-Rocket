@@ -363,19 +363,19 @@ class Logger:
         return None
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
-        level_with_color = f"[{self.colors[level]['info']}{level_name_map[level]}{color_reset_suffix}]"
+        level_with_color = f"[{get_key_from_dict(self.colors[level], 'info')}{level_name_map[level]}{color_reset_suffix}]"
         level_with_color = f"{level_with_color}{' ' * (9 - len_without_color_maker(level_with_color))}"
         formats = self.formats.copy()
         if frame is not None:
-            formats['file_name'] = f"{self.colors[level]['file_name']}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
-            formats['code_line'] = f"{self.colors[level]['code_line']}{frame.f_lineno}{color_reset_suffix}"
-        formats['logger_name'] = f'{self.colors[level]["logger"]}{self.name}{color_reset_suffix}'
+            formats['file_name'] = f"{get_key_from_dict(self.colors[level], 'file_name', self.colors['file_name'])}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
+            formats['code_line'] = f"{get_key_from_dict(self.colors[level], 'code_line', self.colors['code_line'])}{frame.f_lineno}{color_reset_suffix}"
+        formats['logger_name'] = f'{get_key_from_dict(self.colors[level], "logger", self.colors["logger"])}{self.name}{color_reset_suffix}'
         now_time = str(time.time())
         for key, value in formats.items():
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
-                    formats[key] = f"{self.colors[level][key]}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))}{color_reset_suffix}"
+                    formats[key] = f"{get_key_from_dict(self.colors[level], key, self.colors[key])}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))}{color_reset_suffix}"
         print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
                                                               level=level_with_color, message=text,
                                                               **formats)
@@ -464,11 +464,6 @@ def rgb(r: int, g: int, b: int) -> Tuple[int, int, int]:
     return r, g, b
 
 
-def logging_color() -> Dict:
-    ...
-    return {'info': ..., 'message': ...}
-
-
 def gen_file_conf(file_name: str,
                   file_level: int = DEBUG,
                   file_mode: str = 'a',
@@ -534,7 +529,7 @@ def get_logger(name: str = 'root') -> Logger:
                   formats=logger_configs['Formatter'].copy())
 
 
-def format_colors(colors: dict) -> None:
+def _format_colors(colors: dict) -> None:
     for key, value in colors.items():
         if not isinstance(key, str):
             continue
@@ -544,8 +539,8 @@ def format_colors(colors: dict) -> None:
             colors[level][key] = get_key_from_dict(colors[level], key, colors[key])
 
 
-for color in logger_configs['Color']:
-    format_colors(logger_configs['Color'][color])
+# for color in logger_configs['Color']:
+#     format_colors(logger_configs['Color'][color])
 
 
 def test_logger(the_logger: Logger):
