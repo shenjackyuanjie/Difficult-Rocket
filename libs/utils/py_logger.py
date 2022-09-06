@@ -2,6 +2,11 @@
 @author shenjackyuanjie
 @contact 3695888@qq.com
 """
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
+#  All rights reserved
+#  -------------------------------
 import re
 import os
 import time
@@ -9,6 +14,7 @@ import atexit
 import inspect
 import threading
 
+from objprint import op
 from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 from types import FrameType
@@ -32,6 +38,7 @@ color_reset_suffix = "\033[0m"
 """ 只是用来重置颜色的后缀 """
 
 re_find_color_code = r'\033\[[^\f\n\r\t\vm]*m'
+re_color_code = re.compile(re_find_color_code)
 
 """
 OFF > FATAL > ERROR > WARN > INFO > FINE > FINER > DEBUG > TRACE > ALL
@@ -84,7 +91,7 @@ logger_configs = {
         'client': {
             'level': TRACE,
             'color': 'main_color',
-            'file':  'main_log_file',
+            # 'file':  'main_log_file',
         },
         'server': {
             'level': TRACE,
@@ -147,6 +154,7 @@ logger_configs = {
 
 
 class ThreadLock:
+    """一个用来 with 的线程锁"""
 
     def __init__(self, the_lock: threading.Lock, time_out: Union[float, int] = 1 / 60) -> None:
         self.lock = the_lock
@@ -170,7 +178,7 @@ class ListCache:
         self._cache = []
         self.with_thread_lock = lock
 
-    def append(self, value: Union[str, Iterable]):
+    def append(self, value: Union[str, Iterable[str]]):
         with self.with_thread_lock:
             if isinstance(value, str):
                 self._cache.append(value)
@@ -179,7 +187,7 @@ class ListCache:
             else:
                 raise TypeError(f"cache must be string or Iterable. not a {type(value)}")
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> str:
         assert isinstance(item, int)
         with self.with_thread_lock:
             try:
@@ -188,7 +196,7 @@ class ListCache:
                 print(f'cache:{self.cache}')
                 raise IndexError(f'there is no cache at {item}!\ncache:{self.cache}\n{exp}')
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> List[str]:
         return self.cache
 
     def __iter__(self):
@@ -304,8 +312,8 @@ class Logger:
     """shenjack logger"""
 
     def __init__(self,
-                 name: str = None,
-                 level: int = None,
+                 name: str = 'root',
+                 level: int = DEBUG,
                  file_conf: List[LogFileCache] = None,
                  colors: Dict[Union[int, str], Dict[str, str]] = None,
                  formats=None) -> None:
@@ -317,8 +325,8 @@ class Logger:
         @param colors: dict 颜色配置
         @param formats: 格式化配置
         """
-        self.name = name or 'root'
-        self.level = level if level is not None else DEBUG
+        self.name = name
+        self.level = level
         self.colors = colors or logger_configs['Color']['main_color']
         self.formats = formats or logger_configs['Formatter'].copy()
         self.min_level = self.level
@@ -345,13 +353,12 @@ class Logger:
                  frame: Optional[FrameType] = None) -> None:
         if level < self.min_level:
             return None
-        if not frame:
-            frame = inspect.currentframe()
-            frame = frame.f_back.f_back
-        elif (frame := inspect.currentframe()) is not None:
-            frame = frame.f_back
-        text = sep.join(i if type(i) is str else str(i) for i in values)
-        text = f"{self.colors[level]['message']}{text}{color_reset_suffix}"
+        if frame is None:
+            if (frame := inspect.currentframe()) is not None:
+                # print(frame.f_code.co_filename, frame.f_back.f_code.co_filename, frame.f_back.f_back.f_code.co_filename)
+                frame = frame if frame.f_back is None else frame.f_back if frame.f_back.f_back is None else frame.f_back.f_back
+        # text = sep.join(i if type(i) is str else str(i) for i in values)
+        text = f"{self.colors[level]['message']}{sep.join(i if type(i) is str else str(i) for i in values)}{color_reset_suffix}"
         print_text = self.format_text(level=level, text=text, frame=frame)
         if level >= self.level:
             print(print_text, end=end)
@@ -384,49 +391,56 @@ class Logger:
     def trace(self, *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=TRACE, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=TRACE, sep=sep, end=end, flush=flush, frame=frame)
 
     def fine(self, *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
-             flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=FINE, sep=sep, end=end, flush=flush)
+             flush: Optional[bool] = False,
+             frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=FINE, sep=sep, end=end, flush=flush, frame=frame)
 
     def debug(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush, frame=frame)
 
     def info(self,
              *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
-             flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush)
+             flush: Optional[bool] = False,
+             frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush, frame=frame)
 
     def warning(self,
                 *values: object,
                 sep: Optional[str] = ' ',
                 end: Optional[str] = '\n',
-                flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush)
+                flush: Optional[bool] = False,
+                frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush, frame=frame)
 
     def error(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush, frame=frame)
 
     def fatal(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush, frame=frame)
 
 
 def get_key_from_dict(a_dict: Dict, key: Any, default: Any = None) -> Optional[Any]:
@@ -449,19 +463,9 @@ def format_str(text: str) -> str:
     return text.format(**formats)
 
 
-def color_in_033(*args) -> str:
-    color_text = ';'.join(args)
-    color_text = f'\033[{color_text}m'
-    return color_text
-
-
 def len_without_color_maker(text: str) -> int:
     with_out_text = re.sub(re_find_color_code, '', text)
     return len(with_out_text)
-
-
-def rgb(r: int, g: int, b: int) -> Tuple[int, int, int]:
-    return r, g, b
 
 
 def gen_file_conf(file_name: str,
@@ -470,6 +474,16 @@ def gen_file_conf(file_name: str,
                   file_encoding: str = 'utf-8',
                   file_cache_len: int = 10,
                   file_cache_time: Union[int, float] = 1) -> dict:
+    """
+    生成一个文件配置
+    @param file_name: 日志文件名
+    @param file_level: 日志文件记录级别
+    @param file_mode: 文件模式
+    @param file_encoding: 文件编码
+    @param file_cache_len: 文件缓存长度
+    @param file_cache_time: 文件缓存时间
+    @return: 生成的配置
+    """
     return {'file_name':  file_name,
             'level':      file_level,
             'mode':       file_mode,
@@ -479,7 +493,7 @@ def gen_file_conf(file_name: str,
 
 
 def gen_color_conf(color_name: str = None, **colors) -> dict:
-    default_color = logger_configs['Color']['main_color'].copy()
+    default_color = logger_configs['Color']['main_color' if color_name is None else color_name].copy()
     default_color.update(colors)
     return default_color
 
@@ -494,6 +508,32 @@ def logger_with_default_settings(name: str,
                   file_conf=[LogFileCache(gen_file_conf(**file_conf))],
                   colors=gen_color_conf(**colors),
                   formats=logger_configs['Formatter'].copy().update(formats))
+
+
+def add_file_config(conf_name: str,
+                    file_name: str,
+                    file_level: int = DEBUG,
+                    file_mode: str = 'a',
+                    file_encoding: str = 'utf-8',
+                    file_cache_len: int = 10,
+                    file_cache_time: Union[int, float] = 1) -> None:
+    """
+    向 logger config 里添加一个文件配置
+    @param conf_name: 文件配置名称
+    @param file_name: 日志文件名
+    @param file_level: 日志文件记录级别
+    @param file_mode: 文件模式
+    @param file_encoding: 文件编码
+    @param file_cache_len: 文件缓存长度
+    @param file_cache_time: 文件缓存时间
+    @return: None
+    """
+    logger_configs['File'][conf_name] = {'file_name':  file_name,
+                                         'level':      file_level,
+                                         'mode':       file_mode,
+                                         'encoding':   file_encoding,
+                                         'cache_len':  file_cache_len,
+                                         'cache_time': file_cache_time}
 
 
 def add_dict_config_to_global(some_dict: Union[dict, list, str], name: str) -> dict:
@@ -529,20 +569,6 @@ def get_logger(name: str = 'root') -> Logger:
                   formats=logger_configs['Formatter'].copy())
 
 
-def _format_colors(colors: dict) -> None:
-    for key, value in colors.items():
-        if not isinstance(key, str):
-            continue
-        for level, value_ in colors.items():
-            if not isinstance(level, int):
-                continue
-            colors[level][key] = get_key_from_dict(colors[level], key, colors[key])
-
-
-# for color in logger_configs['Color']:
-#     format_colors(logger_configs['Color'][color])
-
-
 def test_logger(the_logger: Logger):
     the_logger.trace('tracing')
     the_logger.fine('some fine!')
@@ -554,17 +580,15 @@ def test_logger(the_logger: Logger):
 
 
 if __name__ == "__main__":
-    os.chdir('D:/githubs/DR')
+    os.chdir('../../')
     logger = get_logger('server')
 
     logger.info('my name is:', logger.name)
     a_logger = get_logger('client')
 
     a_logger.trace('tracing')
-    # time.sleep(1.1)
     a_logger.fine('some fine!')
     a_logger.debug('debugging')
-    # time.sleep(1.1)
     a_logger.info("Hello World!!")
     a_logger.warn('warning')
     a_logger.error('error haaaa')
