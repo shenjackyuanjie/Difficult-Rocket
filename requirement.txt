@@ -2,3 +2,8 @@ psutil
 pillow
 objprint
 # selenium
+
+toml
+setuptools
+Cython
+colorama

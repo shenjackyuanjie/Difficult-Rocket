@@ -2,6 +2,11 @@
 @author shenjackyuanjie
 @contact 3695888@qq.com
 """
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
+#  All rights reserved
+#  -------------------------------
 import re
 import os
 import time
@@ -147,6 +152,7 @@ logger_configs = {
 
 
 class ThreadLock:
+    """一个用来 with 的线程锁"""
 
     def __init__(self, the_lock: threading.Lock, time_out: Union[float, int] = 1 / 60) -> None:
         self.lock = the_lock
@@ -170,7 +176,7 @@ class ListCache:
         self._cache = []
         self.with_thread_lock = lock
 
-    def append(self, value: Union[str, Iterable]):
+    def append(self, value: Union[str, Iterable[str]]):
         with self.with_thread_lock:
             if isinstance(value, str):
                 self._cache.append(value)
@@ -179,7 +185,7 @@ class ListCache:
             else:
                 raise TypeError(f"cache must be string or Iterable. not a {type(value)}")
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> str:
         assert isinstance(item, int)
         with self.with_thread_lock:
             try:
@@ -188,7 +194,7 @@ class ListCache:
                 print(f'cache:{self.cache}')
                 raise IndexError(f'there is no cache at {item}!\ncache:{self.cache}\n{exp}')
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> List[str]:
         return self.cache
 
     def __iter__(self):
@@ -345,11 +351,12 @@ class Logger:
                  frame: Optional[FrameType] = None) -> None:
         if level < self.min_level:
             return None
+        _frame = inspect.currentframe()
         if not frame:
             frame = inspect.currentframe()
             frame = frame.f_back.f_back
-        elif (frame := inspect.currentframe()) is not None:
-            frame = frame.f_back
+        elif _frame is not None:
+            frame = _frame.f_back
         text = sep.join(i if type(i) is str else str(i) for i in values)
         text = f"{self.colors[level]['message']}{text}{color_reset_suffix}"
         print_text = self.format_text(level=level, text=text, frame=frame)
@@ -384,49 +391,56 @@ class Logger:
     def trace(self, *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=TRACE, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=TRACE, sep=sep, end=end, flush=flush, frame=frame)
 
     def fine(self, *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
-             flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=FINE, sep=sep, end=end, flush=flush)
+             flush: Optional[bool] = False,
+             frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=FINE, sep=sep, end=end, flush=flush, frame=frame)
 
     def debug(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush, frame=frame)
 
     def info(self,
              *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
-             flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush)
+             flush: Optional[bool] = False,
+             frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush, frame=frame)
 
     def warning(self,
                 *values: object,
                 sep: Optional[str] = ' ',
                 end: Optional[str] = '\n',
-                flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush)
+                flush: Optional[bool] = False,
+                frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush, frame=frame)
 
     def error(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush, frame=frame)
 
     def fatal(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
-              flush: Optional[bool] = False) -> None:
-        return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush)
+              flush: Optional[bool] = False,
+              frame: Optional[FrameType] = None) -> None:
+        return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush, frame=frame)
 
 
 def get_key_from_dict(a_dict: Dict, key: Any, default: Any = None) -> Optional[Any]:
@@ -554,17 +568,15 @@ def test_logger(the_logger: Logger):
 
 
 if __name__ == "__main__":
-    os.chdir('D:/githubs/DR')
+    os.chdir('../../')
     logger = get_logger('server')
 
     logger.info('my name is:', logger.name)
     a_logger = get_logger('client')
 
     a_logger.trace('tracing')
-    # time.sleep(1.1)
     a_logger.fine('some fine!')
     a_logger.debug('debugging')
-    # time.sleep(1.1)
     a_logger.info("Hello World!!")
     a_logger.warn('warning')
     a_logger.error('error haaaa')
