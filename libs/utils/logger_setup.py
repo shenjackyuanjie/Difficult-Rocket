@@ -8,4 +8,6 @@ from setuptools import setup
 from Cython.Build import cythonize
 setup(name='logger',
       zip_safe=False,
-      ext_modules=cythonize('logger.py', language_level=3))
+      ext_modules=cythonize('logger.pyx',
+                            language_level=3,
+                            annotate=True))
