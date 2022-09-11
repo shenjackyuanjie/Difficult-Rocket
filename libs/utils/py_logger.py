@@ -355,7 +355,6 @@ class Logger:
             return None
         if frame is None:
             if (frame := inspect.currentframe()) is not None:
-                # print(frame.f_code.co_filename, frame.f_back.f_code.co_filename, frame.f_back.f_back.f_code.co_filename)
                 frame = frame if frame.f_back is None else frame.f_back if frame.f_back.f_back is None else frame.f_back.f_back
         # text = sep.join(i if type(i) is str else str(i) for i in values)
         text = f"{self.colors[level]['message']}{sep.join(i if type(i) is str else str(i) for i in values)}{color_reset_suffix}"
