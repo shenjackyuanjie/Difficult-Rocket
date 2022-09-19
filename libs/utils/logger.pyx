@@ -537,19 +537,6 @@ cdef void add_file_config(str conf_name,
                                          'cache_len':  file_cache_len,
                                          'cache_time': file_cache_time}
 
-def add_dict_config_to_global(some_dict: Union[dict, list, str],
-                              str name) -> dict:
-    """
-    提前声明，这个函数很有可能搞坏 config
-    请使用 add_kwargs_to_global 来修改配置
-    如果你不知道你在改什么，请**务必不要**用这个函数来修改配置
-    @param some_dict: 一个你丢进来的 logger 设置
-    @param name: 这个 logger 设置的名称
-    @return: 修改过的 logger 配置
-    """
-    logger_configs[name] = some_dict
-    return logger_configs  # 修改过的 logger 配置
-
 
 def get_logger(str name = 'root') -> Logger:
     """

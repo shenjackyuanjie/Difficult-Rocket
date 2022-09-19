@@ -535,23 +535,10 @@ def add_file_config(conf_name: str,
                                          'cache_time': file_cache_time}
 
 
-def add_dict_config_to_global(some_dict: Union[dict, list, str], name: str) -> dict:
-    """
-    提前声明，这个函数很有可能搞坏 config
-    请使用 add_kwargs_to_global 来修改配置
-    如果你不知道你在改什么，请**务必不要**用这个函数来修改配置
-    @param some_dict: 一个你丢进来的 logger 设置
-    @param name: 这个 logger 设置的名称
-    @return: 修改过的 logger 配置
-    """
-    logger_configs[name] = some_dict
-    return logger_configs  # 修改过的 logger 配置
-
-
 def get_logger(name: str = 'root') -> Logger:
     """
     此函数用于从 global_config 中取出对应的配置建立一个相应的 logger
-    @param name: logger的名称
+    @param name: logger的名称 默认为 root
     @return: 创建好的 logger
     """
     if name in logger_configs['Logger']:
