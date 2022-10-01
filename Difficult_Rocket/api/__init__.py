@@ -15,4 +15,3 @@ gitee:  @shenjackyuanjie
 from .delivery import Delivery
 
 # lazy之后之前全部导入的(太多了写不动__all__了
-from .scientific_unit import *

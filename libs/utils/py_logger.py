@@ -10,6 +10,7 @@
 import re
 import os
 import time
+import enum
 import atexit
 import inspect
 import threading
@@ -55,6 +56,21 @@ NOTSET = 0
 ALL = NOTSET
 TRACE = 5
 FINE = 7
+
+
+class LoggingLevel(enum.IntEnum):
+    CRITICAL = 50
+    FATAL = CRITICAL
+    ERROR = 40
+    WARNING = 30
+    WARN = WARNING
+    INFO = 20
+    DEBUG = 10
+    FINE = 7
+    TRACE = 5
+    NOTSET = 0
+    ALL = NOTSET
+
 
 level_name_map = {
     ALL:     'ALL',  # NOTSET

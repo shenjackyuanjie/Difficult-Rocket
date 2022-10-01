@@ -11,7 +11,7 @@
 import re
 import os
 import time
-import cython
+import enum
 import atexit
 import inspect
 import threading
@@ -58,6 +58,21 @@ NOTSET = 0
 cdef int ALL = NOTSET
 cdef int TRACE = 5
 cdef int FINE = 7
+
+
+class LoggingLevel(enum.IntEnum):
+    CRITICAL = 50
+    FATAL = CRITICAL
+    ERROR = 40
+    WARNING = 30
+    WARN = WARNING
+    INFO = 20
+    DEBUG = 10
+    FINE = 7
+    TRACE = 5
+    NOTSET = 0
+    ALL = NOTSET
+
 
 cdef dict level_name_map = {
     ALL:     'ALL',  # NOTSET
@@ -257,8 +272,8 @@ class LogFileCache:
 
     def file_setup(self):
         cdef int cache_time = 0
-        cdef str file_type = self.logfile_name[self.logfile_name.rfind('.'):]
-        cdef str file_pure_name = self.logfile_name[:self.logfile_name.rfind('.')]
+        cdef char file_type = self.logfile_name[self.logfile_name.rfind('.'):]
+        cdef char file_pure_name = self.logfile_name[:self.logfile_name.rfind('.')]
         while os.path.isfile(self.logfile_name):
             cache_time += 1
             self.logfile_name = f'{file_pure_name}-{cache_time}{file_type}'
