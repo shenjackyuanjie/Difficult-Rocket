@@ -15,24 +15,26 @@ import atexit
 import inspect
 import threading
 
-from objprint import op
 from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 from types import FrameType
-from typing import Optional, Union, Dict, Iterable, Tuple, Any, List
+from typing import Optional, Union, Dict, Iterable, Any, List
 
 os.system('')
 # print(os.path.abspath(os.curdir))
-
-# 如果想要直接使用 logger 来 logging
-# 直接调用 logger.debug() 即可
-# 默认配置会有
-# ----------
-# 配置方式一
-# 直接使用 logger.Logger()
-# 将会创建一个空 logger
-# 可以自行通过
-# 配置方式二
+"""
+如果想要直接使用 logger 来 logging
+直接调用 logger.debug() 即可
+默认配置会有
+----------
+配置方式一
+直接使用 logger.Logger()
+将会创建一个空 logger
+可以自行通过
+配置方式二
+logger = logger.get_logger(name)
+直接获取一个配置好的logger
+"""
 
 
 color_reset_suffix = "\033[0m"
@@ -53,12 +55,13 @@ INFO = 20
 DEBUG = 10
 NOTSET = 0
 """
-ALL = NOTSET
-TRACE = 5
 FINE = 7
+TRACE = 5
+ALL = NOTSET
 
 
 class LoggingLevel(enum.IntEnum):
+    """定义LoggingLevel属性（即是变量） """
     CRITICAL = 50
     FATAL = CRITICAL
     ERROR = 40
@@ -73,44 +76,52 @@ class LoggingLevel(enum.IntEnum):
 
 
 level_name_map = {
-    ALL:     'ALL',  # NOTSET
-    TRACE:   'TRACE',
-    FINE:    'FINE',
-    DEBUG:   'DEBUG',
-    INFO:    'INFO',
-    WARNING: 'WARNING',  # WARN
-    ERROR:   'ERROR',
-    FATAL:   'FATAL'
+    LoggingLevel.ALL:     'ALL',  # NOTSET
+    LoggingLevel.TRACE:   'TRACE',
+    LoggingLevel.FINE:    'FINE',
+    LoggingLevel.DEBUG:   'DEBUG',
+    LoggingLevel.INFO:    'INFO',
+    LoggingLevel.WARNING: 'WARNING',  # WARN
+    LoggingLevel.ERROR:   'ERROR',
+    LoggingLevel.FATAL:   'FATAL'
 }
 
 name_level_map = {
-    'NOTSET':   ALL,
-    'ALL':      ALL,
-    'TRACE':    TRACE,
-    'FINE':     FINE,
-    'DEBUG':    DEBUG,
-    'INFO':     INFO,
-    'WARNING':  WARNING,
-    'WARN':     WARNING,
-    'ERROR':    ERROR,
-    'CRITICAL': FATAL,
-    'FATAL':    FATAL
+    'NOTSET':   LoggingLevel.ALL,
+    'ALL':      LoggingLevel.ALL,
+    'TRACE':    LoggingLevel.TRACE,
+    'FINE':     LoggingLevel.FINE,
+    'DEBUG':    LoggingLevel.DEBUG,
+    'INFO':     LoggingLevel.INFO,
+    'WARNING':  LoggingLevel.WARNING,
+    'WARN':     LoggingLevel.WARNING,
+    'ERROR':    LoggingLevel.ERROR,
+    'CRITICAL': LoggingLevel.FATAL,
+    'FATAL':    LoggingLevel.FATAL
 }
+
+
+# class LoggerConfig(enum.Enum):
+#     loggers = {}
+#     colors = {}
+#     files = {}
+#     formatters = {}
+
 
 logger_configs = {
     'Logger':    {
         'root':   {
-            'level': TRACE,
+            'level': LoggingLevel.DEBUG,
             'color': 'main_color',
             'file':  'main_log_file',
         },
         'client': {
-            'level': TRACE,
+            'level': LoggingLevel.TRACE,
             'color': 'main_color',
-            # 'file':  'main_log_file',
+            'file':  'main_log_file',
         },
         'server': {
-            'level': TRACE,
+            'level': LoggingLevel.TRACE,
             'color': 'DiGua_color',
             'file':  'main_log_file',
         },
@@ -122,13 +133,13 @@ logger_configs = {
             'file_name': '\033[38;2;0;255;180m',
             'code_line': '\033[38;2;0;255;180m',
             'logger':    '\033[0m',
-            TRACE:       {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
-            FINE:        {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
-            DEBUG:       {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            INFO:        {'info': '\033[0m', 'message': '\033[0m'},
-            WARNING:     {'info': '\033[33m', 'message': '\033[33m'},
-            ERROR:       {'info': '\033[31m', 'message': '\033[31m'},
-            FATAL:       {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m'}
+            LoggingLevel.TRACE:       {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE:        {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
+            LoggingLevel.DEBUG:       {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO:        {'info': '\033[0m', 'message': '\033[0m'},
+            LoggingLevel.WARNING:     {'info': '\033[33m', 'message': '\033[33m'},
+            LoggingLevel.ERROR:       {'info': '\033[31m', 'message': '\033[31m'},
+            LoggingLevel.FATAL:       {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'DiGua_color': {
             # catppuccin Macchiato
@@ -137,20 +148,20 @@ logger_configs = {
             'file_name': '\033[38;2;139;213;202m',
             'code_line': '\033[38;2;166;218;149m',
             'logger':    '\033[0m',
-            TRACE:       {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
-            FINE:        {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
-            DEBUG:       {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            INFO:        {'info': '\033[0m', 'message': '\033[0m'},
-            WARNING:     {'info': '\033[38;2;245;169;127m', 'message': '\033[38;2;245;169;127m'},
-            ERROR:       {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
-            FATAL:       {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.TRACE:       {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE:        {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
+            LoggingLevel.DEBUG:       {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO:        {'info': '\033[0m', 'message': '\033[0m'},
+            LoggingLevel.WARNING:     {'info': '\033[38;2;245;169;127m', 'message': '\033[38;2;245;169;127m'},
+            LoggingLevel.ERROR:       {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
+            LoggingLevel.FATAL:       {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         }
     },
     'File':      {
         'main_log_file': {
             'mode':       'a',
             'encoding':   'utf-8',
-            'level':      TRACE,
+            'level':      LoggingLevel.TRACE,
             'file_name':  './logs/{file_time}_logs.md',
             'cache_len':  10,
             'cache_time': 1
@@ -173,6 +184,11 @@ class ThreadLock:
     """一个用来 with 的线程锁"""
 
     def __init__(self, the_lock: threading.Lock, time_out: Union[float, int] = 1 / 60) -> None:
+        """
+
+        :param the_lock: 用于 with 的线程锁
+        :param time_out: with 的超时时间
+        """
         self.lock = the_lock
         self.time_out = time_out
 
@@ -228,8 +244,7 @@ class ListCache:
         return returns
 
     def __bool__(self):
-        with self.with_thread_lock:
-            return True if len(self.cache) > 0 else False
+        return True if len(self.cache) > 0 else False
 
     @property
     def cache(self):
@@ -240,13 +255,20 @@ class ListCache:
             self.cache.clear()
 
 
+class Formatter(object):
+    """用于格式化 log 信息的类
+
+
+    """
+
+
+
 class LogFileCache:
     """日志文件缓存"""
 
     def __init__(self, file_conf: dict):
         """
-
-        @param file_conf: 日志文件配置
+        :param file_conf: 日志文件配置
         """
         # 配置相关
         self._logfile_name = os.path.abspath(format_str(file_conf['file_name']))  # log 文件名称
@@ -335,11 +357,11 @@ class Logger:
                  formats=None) -> None:
         """
         配置模式: 使用 kwargs 配置
-        @param name: logger 名称 默认为 root
-        @param level: logging 输出等级 默认为 DEBUG(10)
-        @param file_conf: logger 的文件处理配置
-        @param colors: dict 颜色配置
-        @param formats: 格式化配置
+        :param name: logger 名称 默认为 root
+        :param level: logging 输出等级 默认为 DEBUG(10)
+        :param file_conf: logger 的文件处理配置
+        :param colors: dict 颜色配置
+        :param formats: 格式化配置
         """
         self.name = name
         self.level = level
@@ -366,7 +388,7 @@ class Logger:
                  sep: Optional[str] = ' ',
                  end: Optional[str] = '\n',
                  flush: Optional[bool] = False,
-                 frame: Optional[FrameType] = None) -> None:
+                 frame: Optional[FrameType] = None) -> Optional[str]:
         if level < self.min_level:
             return None
         if frame is None:
@@ -382,7 +404,7 @@ class Logger:
             if level < file.level:
                 continue
             file.write_logs(f"{re.sub(re_find_color_code, '', print_text)}{end}", flush=flush)
-        return None
+        return print_text
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
         level_with_color = f"[{get_key_from_dict(self.colors[level], 'info')}{level_name_map[level]}{color_reset_suffix}]"
@@ -397,7 +419,7 @@ class Logger:
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
-                    formats[key] = f"{get_key_from_dict(self.colors[level], key, self.colors[key])}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))}{color_reset_suffix}"
+                    formats[key] = f"{get_key_from_dict(self.colors[level], key, self.colors[key])}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
         print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
                                                               level=level_with_color, message=text,
                                                               **formats)
@@ -407,55 +429,55 @@ class Logger:
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
-              frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=TRACE, sep=sep, end=end, flush=flush, frame=frame)
+              frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.TRACE, sep=sep, end=end, flush=flush, frame=frame)
 
     def fine(self, *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
              flush: Optional[bool] = False,
-             frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=FINE, sep=sep, end=end, flush=flush, frame=frame)
+             frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.FINE, sep=sep, end=end, flush=flush, frame=frame)
 
     def debug(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
-              frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=DEBUG, sep=sep, end=end, flush=flush, frame=frame)
+              frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.DEBUG, sep=sep, end=end, flush=flush, frame=frame)
 
     def info(self,
              *values: object,
              sep: Optional[str] = ' ',
              end: Optional[str] = '\n',
              flush: Optional[bool] = False,
-             frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=INFO, sep=sep, end=end, flush=flush, frame=frame)
+             frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.INFO, sep=sep, end=end, flush=flush, frame=frame)
 
     def warning(self,
                 *values: object,
                 sep: Optional[str] = ' ',
                 end: Optional[str] = '\n',
                 flush: Optional[bool] = False,
-                frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=WARNING, sep=sep, end=end, flush=flush, frame=frame)
+                frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.WARNING, sep=sep, end=end, flush=flush, frame=frame)
 
     def error(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
-              frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=ERROR, sep=sep, end=end, flush=flush, frame=frame)
+              frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.ERROR, sep=sep, end=end, flush=flush, frame=frame)
 
     def fatal(self,
               *values: object,
               sep: Optional[str] = ' ',
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
-              frame: Optional[FrameType] = None) -> None:
-        return self.make_log(*values, level=FATAL, sep=sep, end=end, flush=flush, frame=frame)
+              frame: Optional[FrameType] = None) -> Optional[str]:
+        return self.make_log(*values, level=LoggingLevel.FATAL, sep=sep, end=end, flush=flush, frame=frame)
 
 
 def get_key_from_dict(a_dict: Dict, key: Any, default: Any = None) -> Optional[Any]:
@@ -474,7 +496,7 @@ def format_str(text: str) -> str:
         if isinstance(value, dict):
             if 'strftime' in value:
                 value['strftime']: str
-                formats[key] = strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 4]))
+                formats[key] = strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))
     return text.format(**formats)
 
 
@@ -491,13 +513,13 @@ def gen_file_conf(file_name: str,
                   file_cache_time: Union[int, float] = 1) -> dict:
     """
     生成一个文件配置
-    @param file_name: 日志文件名
-    @param file_level: 日志文件记录级别
-    @param file_mode: 文件模式
-    @param file_encoding: 文件编码
-    @param file_cache_len: 文件缓存长度
-    @param file_cache_time: 文件缓存时间
-    @return: 生成的配置
+    :param file_name: 日志文件名
+    :param file_level: 日志文件记录级别
+    :param file_mode: 文件模式
+    :param file_encoding: 文件编码
+    :param file_cache_len: 文件缓存长度
+    :param file_cache_time: 文件缓存时间
+    :return: 生成的配置
     """
     return {'file_name':  file_name,
             'level':      file_level,
@@ -534,14 +556,14 @@ def add_file_config(conf_name: str,
                     file_cache_time: Union[int, float] = 1) -> None:
     """
     向 logger config 里添加一个文件配置
-    @param conf_name: 文件配置名称
-    @param file_name: 日志文件名
-    @param file_level: 日志文件记录级别
-    @param file_mode: 文件模式
-    @param file_encoding: 文件编码
-    @param file_cache_len: 文件缓存长度
-    @param file_cache_time: 文件缓存时间
-    @return: None
+    :param conf_name: 文件配置名称
+    :param file_name: 日志文件名
+    :param file_level: 日志文件记录级别
+    :param file_mode: 文件模式
+    :param file_encoding: 文件编码
+    :param file_cache_len: 文件缓存长度
+    :param file_cache_time: 文件缓存时间
+    :return: None
     """
     logger_configs['File'][conf_name] = {'file_name':  file_name,
                                          'level':      file_level,
@@ -554,8 +576,8 @@ def add_file_config(conf_name: str,
 def get_logger(name: str = 'root') -> Logger:
     """
     此函数用于从 global_config 中取出对应的配置建立一个相应的 logger
-    @param name: logger的名称 默认为 root
-    @return: 创建好的 logger
+    :param name: logger的名称 默认为 root
+    :return: 创建好的 logger
     """
     if name in logger_configs['Logger']:
         the_config = logger_configs['Logger'][name]

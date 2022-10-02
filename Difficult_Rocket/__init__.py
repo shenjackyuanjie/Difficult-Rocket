@@ -23,14 +23,18 @@ class Options:
     """
     Difficult Rocket 的游戏配置的存储基类
     """
-    _options: Dict[str, Union[Callable, object]] = {}
+    __options: Dict[str, Union[Callable, object]] = {}
 
     def option(self) -> Dict[str, Any]:
+        """
+        获取配置类的所有配置
+        :return: 自己的所有配置
+        """
         values = {}
         for ann in self.__annotations__:  # 获取类型注释
             values[ann] = getattr(self, ann, None) if getattr(self, ann, None) else self.__annotations__[ann]
 
-        for option, a_fun in self._options.items():  # 获取额外内容
+        for option, a_fun in self.__options.items():  # 获取额外内容
             values[option] = a_fun
 
         for option, a_fun in values.items():  # 检查是否为 property
@@ -57,8 +61,8 @@ class Options:
 
     @classmethod
     def add_option(cls, name, value: Union[Callable, object]) -> Dict:
-        cls._options[name] = value
-        return cls._options
+        cls.__options[name] = value
+        return cls.__options
 
 
 class _DR_option(Options):
@@ -93,7 +97,7 @@ class _DR_runtime(Options):
     _language = 'zh-CN'
 
     def __init__(self):
-        self._options = {'language': self.language}
+        self.__options = {'language': self.language}
 
     @property
     def language(self):
