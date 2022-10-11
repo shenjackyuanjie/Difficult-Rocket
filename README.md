@@ -6,6 +6,8 @@
 
 - [GitHub](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+- [discord](https://discord.gg/kWzw2JrG6M)
+- [kook](https://kook.co/sRPjFG)
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/编写于_Python_版本-3.8.10-blue.svg)](https://Python.org)
