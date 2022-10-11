@@ -19,7 +19,7 @@ from MCDR.version import Version
 from MCDR.serializer import Serializable
 
 # from DR
-from Difficult_Rocket import semver_game_version
+from Difficult_Rocket import DR_runtime, Options
 
 """
 mod系统参数
@@ -51,16 +51,20 @@ class MODInfo(Serializable):
     """版本兼容信息"""
     write_version: Version  # mod编写版本
     write_loader_version: Version  # mod编写的加载器版本
-    compatible_version: Tuple[Version, Version] = (semver_game_version, semver_game_version)  # mod兼容版本
+    compatible_version: Tuple[Version, Version] = (DR_runtime.DR_version, DR_runtime.DR_version)  # mod兼容版本
     # 第一个是最低兼容版本,第二个是最高兼容版本
     # 例如: ("1.0.0", "1.1.0") 表示从1.0.0版本开始兼容,到1.1.0版本结束兼容
+
+
+class MODInfos(Options):
+    ...
 
 
 MOD_info = MODInfo(
     name="Difficult_Rocket",
     version="0.0.1",
     writer="shenjackyuanjie",
-    write_version=semver_game_version,
+    write_version=DR_runtime.DR_version,
     write_loader_version=semver_loader_version
 )
 
