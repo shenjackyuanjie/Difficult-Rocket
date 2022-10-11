@@ -160,11 +160,11 @@ class VersionRequirement:
     CRITERIONS = {
         '<=': lambda base, ver: ver <= base,
         '>=': lambda base, ver: ver >= base,
-        '<':  lambda base, ver: ver < base,
-        '>':  lambda base, ver: ver > base,
-        '=':  lambda base, ver: ver == base,
-        '^':  lambda base, ver: ver >= base and ver[0] == base[0],
-        '~':  lambda base, ver: ver >= base and ver[0] == base[0] and ver[1] == base[1],
+        '<': lambda base, ver: ver < base,
+        '>': lambda base, ver: ver > base,
+        '=': lambda base, ver: ver == base,
+        '^': lambda base, ver: ver >= base and ver[0] == base[0],
+        '~': lambda base, ver: ver >= base and ver[0] == base[0] and ver[1] == base[1],
     }
 
     def __init__(self, requirements: str):

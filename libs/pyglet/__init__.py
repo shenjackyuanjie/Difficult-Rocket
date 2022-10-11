@@ -44,7 +44,7 @@ import sys
 from typing import TYPE_CHECKING
 
 #: The release version
-version = '2.0.dev22'
+version = '2.0.dev23'
 __version__ = version
 
 MIN_PYTHON_VERSION = 3, 7
@@ -163,7 +163,6 @@ options = {
     'headless': False,
     'headless_device': 0,
     'win32_disable_shaping': False,
-    'xinput_controllers': True,
 }
 
 _option_types = {
@@ -193,7 +192,6 @@ _option_types = {
     'headless': bool,
     'headless_device': int,
     'win32_disable_shaping': bool,
-    'xinput_controllers': bool
 }
 
 
