@@ -42,7 +42,7 @@
   - `json5 0.9.6`
   - `pillow 8.1.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0.dev13`
+  - `pyglet 2.0.dev23`
   - `xmltodict 0.12.0`
   - `toml 0.10.2`
   - `AMD R5 5600X`
@@ -67,7 +67,7 @@
 
 ## thanks to
 
-- [pyglet](https://github.com/pyglet/pyglet): GUI
+- [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
 - `json5`: json5 parser
 - `toml` toml parser
 - `xmltodict`: translate data between xml and dict

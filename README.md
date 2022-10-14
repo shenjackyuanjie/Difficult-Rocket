@@ -42,13 +42,13 @@
   - `json5 0.9.6`
   - `pillow 8.1.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0.dev11`
+  - `pyglet 2.0.dev23`
   - `xmltodict 0.12.0`
   - `toml 0.10.2`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 - `开发平台 2 - macOS Big Sur`
-  - `Python 3.8.7`
+  - `Python 3.8.10`
   - `macOS Big Sur 11.2.1`
   - `Pyglet 1.5.15`
   - `Json5 0.9.5`
@@ -67,13 +67,13 @@
 
 ## 感谢
 
-- [pyglet](https://github.com/pyglet/pyglet) : 图形界面
-- `json5`: json5解析器
-- `toml`: toml解析器
+- [pyglet](https://github.com/pyglet/pyglet) : GUI 和画面渲染
+- `json5`: json5 解析器
+- `toml`: toml 解析器
 - `xmltodict`: xml 与 dict 转换器
 - `pyperclip`: 剪贴板!
-- [@Rayawa](https://github.com/Rayawa) : 文档矫正&翻译部分lang
-- [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译lang
+- [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang
+- [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译 lang
 - [@Billchyi](https://github.com/Billchyi) : 文档矫正
 
 ## 相关链接
