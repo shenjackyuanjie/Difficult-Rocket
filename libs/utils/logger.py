@@ -346,18 +346,13 @@ class StreamHandlerTemplate:
 
 
 class StdHandler(StreamHandlerTemplate):
-    """
-    向标准输入输出流输出信息
-    """
-
-
+    """ 向标准输入输出流输出信息 """
     name = "std handler"
 
     def __init__(self, level: int, formatter: Formatter = None):
         """
-
-        :param level:
-        :param formatter:
+        :param level: 级别
+        :param formatter: 格式器
         """
         super().__init__(level=level, formatter=formatter)
 
@@ -372,6 +367,28 @@ class StdHandler(StreamHandlerTemplate):
         print('', end='', flush=True)
         return True
 
+
+class CachedFileHandler(StreamHandlerTemplate):
+    """ 缓存文件的处理器 """
+    name = 'cached file handler'
+
+    def __init__(self, level: int, formatter: Formatter = None, file_name: str = ''):
+        """
+        :param level:
+        :param formatter:
+        :param file_name: 文件名称
+        """
+        super().__init__(level=level, formatter=formatter)
+        # self.quene = queue
+
+    def write(self, message: str, flush: Optional[bool]) -> bool:
+        ...
+
+    def close(self) -> bool:
+        ...
+
+    def flush(self) -> bool:
+        ...
 
 
 class LogFileCache:
