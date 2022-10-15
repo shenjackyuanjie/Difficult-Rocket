@@ -36,7 +36,6 @@ logger = logger.get_logger(name)
 直接获取一个配置好的logger
 """
 
-
 color_reset_suffix = "\033[0m"
 """ 只是用来重置颜色的后缀 """
 
@@ -80,28 +79,28 @@ class LoggingLevel(enum.IntEnum):
 
 
 level_name_map = {
-    LoggingLevel.ALL: 'ALL',  # NOTSET
-    LoggingLevel.TRACE: 'TRACE',
-    LoggingLevel.FINE: 'FINE',
-    LoggingLevel.DEBUG: 'DEBUG',
-    LoggingLevel.INFO: 'INFO',
+    LoggingLevel.ALL:     'ALL',  # NOTSET
+    LoggingLevel.TRACE:   'TRACE',
+    LoggingLevel.FINE:    'FINE',
+    LoggingLevel.DEBUG:   'DEBUG',
+    LoggingLevel.INFO:    'INFO',
     LoggingLevel.WARNING: 'WARNING',  # WARN
-    LoggingLevel.ERROR: 'ERROR',
-    LoggingLevel.FATAL: 'FATAL'
+    LoggingLevel.ERROR:   'ERROR',
+    LoggingLevel.FATAL:   'FATAL'
 }
 
 name_level_map = {
-    'NOTSET': LoggingLevel.ALL,
-    'ALL': LoggingLevel.ALL,
-    'TRACE': LoggingLevel.TRACE,
-    'FINE': LoggingLevel.FINE,
-    'DEBUG': LoggingLevel.DEBUG,
-    'INFO': LoggingLevel.INFO,
-    'WARNING': LoggingLevel.WARNING,
-    'WARN': LoggingLevel.WARNING,
-    'ERROR': LoggingLevel.ERROR,
+    'NOTSET':   LoggingLevel.ALL,
+    'ALL':      LoggingLevel.ALL,
+    'TRACE':    LoggingLevel.TRACE,
+    'FINE':     LoggingLevel.FINE,
+    'DEBUG':    LoggingLevel.DEBUG,
+    'INFO':     LoggingLevel.INFO,
+    'WARNING':  LoggingLevel.WARNING,
+    'WARN':     LoggingLevel.WARNING,
+    'ERROR':    LoggingLevel.ERROR,
     'CRITICAL': LoggingLevel.FATAL,
-    'FATAL': LoggingLevel.FATAL
+    'FATAL':    LoggingLevel.FATAL
 }
 
 # class LoggerConfig(enum.Enum):
@@ -112,73 +111,73 @@ name_level_map = {
 
 
 logger_configs = {
-    'Logger': {
-        'root': {
+    'Logger':    {
+        'root':   {
             'level': LoggingLevel.DEBUG,
             'color': 'main_color',
-            'file': 'main_log_file',
+            'file':  'main_log_file',
         },
         'client': {
             'level': LoggingLevel.TRACE,
             'color': 'main_color',
-            'file': 'main_log_file',
+            'file':  'main_log_file',
         },
         'server': {
             'level': LoggingLevel.TRACE,
             'color': 'DiGua_color',
-            'file': 'main_log_file',
+            'file':  'main_log_file',
         },
     },
-    'Color': {
-        'main_color': {
-            'file_time': '\033[38;2;201;222;56m',
-            'main_time': '\033[38;2;201;222;56m',
-            'file_name': '\033[38;2;0;255;180m',
-            'code_line': '\033[38;2;0;255;180m',
-            'logger': '\033[0m',
-            LoggingLevel.TRACE: {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
-            LoggingLevel.FINE: {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
-            LoggingLevel.DEBUG: {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO: {'info': '\033[0m', 'message': '\033[0m'},
+    'Color':     {
+        'main_color':  {
+            'file_time':          '\033[38;2;201;222;56m',
+            'main_time':          '\033[38;2;201;222;56m',
+            'file_name':          '\033[38;2;0;255;180m',
+            'code_line':          '\033[38;2;0;255;180m',
+            'logger':             '\033[0m',
+            LoggingLevel.TRACE:   {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE:    {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
+            LoggingLevel.DEBUG:   {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO:    {'info': '\033[0m', 'message': '\033[0m'},
             LoggingLevel.WARNING: {'info': '\033[33m', 'message': '\033[33m'},
-            LoggingLevel.ERROR: {'info': '\033[31m', 'message': '\033[31m'},
-            LoggingLevel.FATAL: {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.ERROR:   {'info': '\033[31m', 'message': '\033[31m'},
+            LoggingLevel.FATAL:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'DiGua_color': {
             # catppuccin Macchiato
-            'file_time': '\033[38;2;238;212;159m',
-            'main_time': '\033[38;2;202;211;245m',
-            'file_name': '\033[38;2;139;213;202m',
-            'code_line': '\033[38;2;166;218;149m',
-            'logger': '\033[0m',
-            LoggingLevel.TRACE: {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
-            LoggingLevel.FINE: {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
-            LoggingLevel.DEBUG: {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO: {'info': '\033[0m', 'message': '\033[0m'},
+            'file_time':          '\033[38;2;238;212;159m',
+            'main_time':          '\033[38;2;202;211;245m',
+            'file_name':          '\033[38;2;139;213;202m',
+            'code_line':          '\033[38;2;166;218;149m',
+            'logger':             '\033[0m',
+            LoggingLevel.TRACE:   {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE:    {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
+            LoggingLevel.DEBUG:   {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO:    {'info': '\033[0m', 'message': '\033[0m'},
             LoggingLevel.WARNING: {'info': '\033[38;2;245;169;127m', 'message': '\033[38;2;245;169;127m'},
-            LoggingLevel.ERROR: {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
-            LoggingLevel.FATAL: {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.ERROR:   {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
+            LoggingLevel.FATAL:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         }
     },
-    'File': {
+    'File':      {
         'main_log_file': {
-            'mode': 'a',
-            'encoding': 'utf-8',
-            'level': LoggingLevel.TRACE,
-            'file_name': './logs/{file_time}_logs.md',
-            'cache_len': 10,
+            'mode':       'a',
+            'encoding':   'utf-8',
+            'level':      LoggingLevel.TRACE,
+            'file_name':  './logs/{file_time}_logs.md',
+            'cache_len':  10,
             'cache_time': 1
         },
     },
     'Formatter': {
-        'MESSAGE': {
+        'MESSAGE':   {
             'format': '[{main_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
         },
         'file_name': 'no frame',
         'code_line': 'no frame',
         'file_time': {'strftime': '%Y-%m-%d %H-%M'},
         'main_time': {'strftime': '%Y-%m-%d %H-%M-%S:%%S'},  # %%S  三位毫秒
-        ...: ...
+        ...:         ...
     }
 }
 
@@ -625,6 +624,82 @@ class Logger:
         return self.make_log(*values, level=LoggingLevel.FATAL, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
 
 
+_loggerClass = Logger
+
+
+class RootLogger(Logger):
+    """ 默认的 logger """
+    def __init__(self, level: int = LoggingLevel.WARNING, *args, **kwargs):
+        super().__init__(level=level, *args, **kwargs)
+
+
+
+root_logger = RootLogger()
+
+
+def trace(*values: object,
+          marker: Optional[str] = None,
+          sep: Optional[str] = ' ',
+          end: Optional[str] = '\n',
+          flush: Optional[bool] = False,
+          frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
+def fine(*values: object,
+         marker: Optional[str] = None,
+         sep: Optional[str] = ' ',
+         end: Optional[str] = '\n',
+         flush: Optional[bool] = False,
+         frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
+def debug(*values: object,
+          marker: Optional[str] = None,
+          sep: Optional[str] = ' ',
+          end: Optional[str] = '\n',
+          flush: Optional[bool] = False,
+          frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
+def info(*values: object,
+         marker: Optional[str] = None,
+         sep: Optional[str] = ' ',
+         end: Optional[str] = '\n',
+         flush: Optional[bool] = False,
+         frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
+def warning(*values: object,
+            marker: Optional[str] = None,
+            sep: Optional[str] = ' ',
+            end: Optional[str] = '\n',
+            flush: Optional[bool] = False,
+            frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
+def error(*values: object,
+          marker: Optional[str] = None,
+          sep: Optional[str] = ' ',
+          end: Optional[str] = '\n',
+          flush: Optional[bool] = False,
+          frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
+def fatal(*values: object,
+          marker: Optional[str] = None,
+          sep: Optional[str] = ' ',
+          end: Optional[str] = '\n',
+          flush: Optional[bool] = False,
+          frame: Optional[FrameType] = None) -> Optional[str]:
+    ...
+
+
 def get_key_from_dict(a_dict: Dict, key: Any, default: Any = None) -> Optional[Any]:
     if default is None:
         return a_dict[key]
@@ -666,11 +741,11 @@ def gen_file_conf(file_name: str,
     :param file_cache_time: 文件缓存时间
     :return: 生成的配置
     """
-    return {'file_name': file_name,
-            'level': file_level,
-            'mode': file_mode,
-            'encoding': file_encoding,
-            'cache_len': file_cache_len,
+    return {'file_name':  file_name,
+            'level':      file_level,
+            'mode':       file_mode,
+            'encoding':   file_encoding,
+            'cache_len':  file_cache_len,
             'cache_time': file_cache_time}
 
 
@@ -710,11 +785,11 @@ def add_file_config(conf_name: str,
     :param file_cache_time: 文件缓存时间
     :return: None
     """
-    logger_configs['File'][conf_name] = {'file_name': file_name,
-                                         'level': file_level,
-                                         'mode': file_mode,
-                                         'encoding': file_encoding,
-                                         'cache_len': file_cache_len,
+    logger_configs['File'][conf_name] = {'file_name':  file_name,
+                                         'level':      file_level,
+                                         'mode':       file_mode,
+                                         'encoding':   file_encoding,
+                                         'cache_len':  file_cache_len,
                                          'cache_time': file_cache_time}
 
 

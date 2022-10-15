@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from typing import Any, Dict, Callable, Union, Tuple, List, Type
+from typing import Any, Dict, Callable, Union, Tuple, List
 
 from libs.MCDR.version import Version
 
@@ -19,11 +19,23 @@ game_version = Version("0.6.3")
 __version__ = game_version
 
 
+class OptionNameNotDefined(Exception):
+    """向初始化的 option 里添加了一个不存在于选项里的选项"""
+
+
 class Options:
     """
     Difficult Rocket 的游戏配置的存储基类
     """
     __options: Dict[str, Union[Callable, object]] = {}
+    cached_options: Dict[str, Union[str, Any]] = {}
+
+    def __init__(self, **kwargs):
+        for option, value in kwargs.items():
+            if option not in self.option():
+                raise OptionNameNotDefined(f"option: {option} with value: {value} is not defined")
+            setattr(self, option, value)
+        self.flush_option()
 
     def option(self) -> Dict[str, Any]:
         """
@@ -44,8 +56,16 @@ class Options:
                 values[option] = getattr(self, option)
         return values
 
+    def flush_option(self) -> Dict[str, Any]:
+        """
+        刷新缓存 options 的内容
+        :return: 刷新过的 options
+        """
+        self.cached_options = self.option()
+        return self.cached_options
+
     def option_with_len(self) -> List[Union[List[Tuple[str, Any, Any]], int, Any]]:
-        options = self.option()
+        options = self.flush_option()
         max_len_key = 1
         max_len_value = 1
         max_len_value_t = 1
@@ -96,7 +116,8 @@ class _DR_runtime(Options):
     # game options
     _language = 'zh-CN'
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.__options = {'language': self.language}
 
     @property
