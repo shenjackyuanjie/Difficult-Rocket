@@ -44,7 +44,7 @@ if __name__ == '__main__':
     from Difficult_Rocket.crash import crash
     from Difficult_Rocket import DR_option
     try:
-        import pyglet  # 导入pyglet
+        from libs import pyglet  # 导入pyglet
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
 

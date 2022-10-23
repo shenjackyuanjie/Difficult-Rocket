@@ -18,9 +18,8 @@ from typing import Union
 from decimal import Decimal
 
 # from DR
-from utils import translate
-from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.command.api import CommandText
+from Difficult_Rocket.utils import new_thread, translate
 
 # from libs.pyglet
 from libs import pyglet

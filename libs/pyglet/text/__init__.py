@@ -148,7 +148,7 @@ def get_decoder(filename, mimetype=None):
         from pyglet.text.formats import attributed
         return attributed.AttributedTextDecoder()
     else:
-        raise DocumentDecodeException('Unknown format "%s"' % mimetype)
+        raise DocumentDecodeException(f'Unknown format "{mimetype}"')
 
 
 def load(filename, file=None, mimetype=None):
@@ -234,7 +234,7 @@ class DocumentLabel(layout.TextLayout):
     """
 
     def __init__(self, document=None,
-                 x=0, y=0, width=None, height=None,
+                 x=0, y=0, z=0, width=None, height=None,
                  anchor_x='left', anchor_y='baseline',
                  multiline=False, dpi=None, batch=None, group=None, rotation=0):
         """Create a label for a given document.
@@ -246,6 +246,8 @@ class DocumentLabel(layout.TextLayout):
                 X coordinate of the label.
             `y` : int
                 Y coordinate of the label.
+            `z` : int
+                Z coordinate of the label.
             `width` : int
                 Width of the label in pixels, or None
             `height` : int
@@ -274,6 +276,7 @@ class DocumentLabel(layout.TextLayout):
         super().__init__(document, width, height, multiline, dpi, batch, group)
         self._x = x
         self._y = y
+        self._z = z
         self._rotation = rotation
         self._anchor_x = anchor_x
         self._anchor_y = anchor_y
@@ -415,7 +418,7 @@ class Label(DocumentLabel):
     def __init__(self, text='',
                  font_name=None, font_size=None, bold=False, italic=False, stretch=False,
                  color=(255, 255, 255, 255),
-                 x=0, y=0, width=None, height=None,
+                 x=0, y=0, z=0, width=None, height=None,
                  anchor_x='left', anchor_y='baseline',
                  align='left',
                  multiline=False, dpi=None, batch=None, group=None, rotation=0):
@@ -441,6 +444,8 @@ class Label(DocumentLabel):
                 X coordinate of the label.
             `y` : int
                 Y coordinate of the label.
+            `z` : int
+                Z coordinate of the label.
             `width` : int
                 Width of the label in pixels, or None
             `height` : int
@@ -471,7 +476,7 @@ class Label(DocumentLabel):
 
         """
         doc = decode_text(text)
-        super().__init__(doc, x, y, width, height, anchor_x, anchor_y, multiline, dpi, batch, group, rotation)
+        super().__init__(doc, x, y, z, width, height, anchor_x, anchor_y, multiline, dpi, batch, group, rotation)
 
         self.document.set_style(0, len(self.document.text), {
             'font_name': font_name,
@@ -492,7 +497,7 @@ class HTMLLabel(DocumentLabel):
     """
 
     def __init__(self, text='', location=None,
-                 x=0, y=0, width=None, height=None,
+                 x=0, y=0, z=0, width=None, height=None,
                  anchor_x='left', anchor_y='baseline',
                  multiline=False, dpi=None, batch=None, group=None, rotation=0):
         """Create a label with an HTML string.
@@ -507,6 +512,8 @@ class HTMLLabel(DocumentLabel):
                 X coordinate of the label.
             `y` : int
                 Y coordinate of the label.
+            `z` : int
+                Z coordinate of the label.
             `width` : int
                 Width of the label in pixels, or None
             `height` : int
@@ -535,7 +542,7 @@ class HTMLLabel(DocumentLabel):
         self._text = text
         self._location = location
         doc = decode_html(text, location)
-        super().__init__(doc, x, y, width, height, anchor_x, anchor_y, multiline, dpi, batch, group, rotation)
+        super().__init__(doc, x, y, z, width, height, anchor_x, anchor_y, multiline, dpi, batch, group, rotation)
 
     @property
     def text(self):

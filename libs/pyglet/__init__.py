@@ -44,7 +44,7 @@ import sys
 from typing import TYPE_CHECKING
 
 #: The release version
-version = '2.0.b1'
+version = '2.0.b2'
 __version__ = version
 
 MIN_PYTHON_VERSION = 3, 7
@@ -198,7 +198,7 @@ _option_types = {
 for key in options:
     """Read defaults for options from environment"""
     assert key in _option_types, f"Option '{key}' must have a type set in _option_types."
-    env = 'PYGLET_%s' % key.upper()
+    env = f'PYGLET_{key.upper()}'
     try:
         value = os.environ[env]
         if _option_types[key] is tuple:
@@ -265,21 +265,21 @@ def _trace_frame(thread, frame, indent):
                 filename = os.path.join('...', filename)
             _trace_filename_abbreviations[path] = filename
 
-        location = '(%s:%d)' % (filename, line)
+        location = f'({filename}:{line})'
 
     if indent:
-        name = 'Called from %s' % name
-    print('[%d] %s%s %s' % (thread, indent, name, location))
+        name = f'Called from {name}'
+    print(f'[{thread}] {indent}{name} {location}')
 
     if _trace_args:
         if is_ctypes:
             args = [_trace_repr(arg) for arg in frame.f_locals['args']]
-            print('  %sargs=(%s)' % (indent, ', '.join(args)))
+            print(f'  {indent}args=({", ".join(args)})')
         else:
             for argname in code.co_varnames[:code.co_argcount]:
                 try:
                     argvalue = _trace_repr(frame.f_locals[argname])
-                    print('  %s%s=%s' % (indent, argname, argvalue))
+                    print(f'  {indent}{argname}={argvalue}')
                 except:
                     pass
 
@@ -335,7 +335,7 @@ class _ModuleProxy:
             if self._module is not None:
                 raise
 
-            import_name = 'pyglet.%s' % self._module_name
+            import_name = f'pyglet.{self._module_name}'
             __import__(import_name)
             module = sys.modules[import_name]
             object.__setattr__(self, '_module', module)
@@ -349,7 +349,7 @@ class _ModuleProxy:
             if self._module is not None:
                 raise
 
-            import_name = 'pyglet.%s' % self._module_name
+            import_name = f'pyglet.{self._module_name}'
             __import__(import_name)
             module = sys.modules[import_name]
             object.__setattr__(self, '_module', module)

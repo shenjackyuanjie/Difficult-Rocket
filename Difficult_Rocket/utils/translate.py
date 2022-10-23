@@ -12,7 +12,6 @@ gitee:  @shenjackyuanjie
 """
 
 import inspect
-import objprint
 
 from typing import Union
 
