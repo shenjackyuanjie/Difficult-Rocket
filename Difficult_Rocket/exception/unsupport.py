@@ -10,7 +10,7 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
-from exception import BaseError
+from Difficult_Rocket.exception import BaseError
 
 __all__ = [
     'NoMoreJson5',

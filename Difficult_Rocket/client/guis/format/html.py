@@ -13,7 +13,7 @@ gitee:  @shenjackyuanjie
 
 import re
 
-from utils import translate
+from Difficult_Rocket.utils import translate
 
 default_style = {
     'font_name': 'Times New Roman',
