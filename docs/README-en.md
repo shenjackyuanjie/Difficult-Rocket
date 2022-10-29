@@ -39,12 +39,12 @@
 - `Develop platform 1 - Windows 10`
   - `Python 3.8.10`
   - `Windows10 x64`
-  - `json5 0.9.6`
-  - `pillow 8.1.0`
+  - `json5 0.9.9`
+  - `pillow 9.2.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0.dev23`
+  - `pyglet 2.0b2`
   - `xmltodict 0.12.0`
-  - `toml 0.10.2`
+  - `tomlkit 0.11.5`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 - `Develop platform 2 - macOS Big Sur`
@@ -58,8 +58,8 @@
 ## Required python modules
 
 - `json5` (pre-installed V0.9.6 path:`./libs/json5`)
-- `toml` (pre-installed V0.10.2 path:`./libs/toml`)
-- `pyglet` (pre-installed V2.0.dev18 path:`./libs/pyglet`)
+- `tomlkit`
+- `pyglet` (pre-installed V2.0b2 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
 - `pillow`
@@ -69,7 +69,7 @@
 
 - [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
 - `json5`: json5 parser
-- `toml` toml parser
+- `tomlkit` toml parser
 - `xmltodict`: translate data between xml and dict
 - `pyperclip`: paste board!
 - [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some translates

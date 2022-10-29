@@ -44,14 +44,14 @@ if __name__ == '__main__':
     from Difficult_Rocket.crash import crash
     from Difficult_Rocket import DR_option
     try:
-        from libs import pyglet  # 导入pyglet
+        import pyglet  # 导入pyglet
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
 
         from Difficult_Rocket import main, DR_runtime
         DR_runtime.start_time_ns = start_time_ns
 
-        from libs.pyglet.gl import glClearColor  # 调整背景颜色
+        from pyglet.gl import glClearColor  # 调整背景颜色
         glClearColor(0.5, 0.5, 0.5, 0)
 
         game = main.Game()  # 实例化一个游戏

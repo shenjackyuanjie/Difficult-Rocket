@@ -18,7 +18,7 @@
 
 [![Generic badge](https://img.shields.io/badge/Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Devloping-0.6.3-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 ## English README please look [here](../README.md)
 
@@ -28,23 +28,23 @@
 
 > 相对于原版SR比较“轻量化”
 
-## [计划特性列表](./plan_features)
+## [计划特性列表](/docs/plan_features)
 
 - [microsoft TODO](https://to-do.microsoft.com/sharing?InvitationToken=Q6SN1kdtitK8cwFktFl71gSnsRMNmrH7CC7kHY_Tq6ReMRwHgInP4_q5ie2IwrHx8)
 
-## [更新日志](./update_logs.md)
+## [更新日志](/docs/update_logs.md)
 
 ## 环境需求 (测试过的 / 开发平台)
 
 - `开发平台 1 - Windows 10`
   - `Python 3.8.10`
   - `Windows10 x64`
-  - `json5 0.9.6`
-  - `pillow 8.1.0`
+  - `json5 0.9.9`
+  - `pillow 9.2.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0.dev23`
+  - `pyglet 2.0b2`
   - `xmltodict 0.12.0`
-  - `toml 0.10.2`
+  - `tomlkit 0.11.5`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 - `开发平台 2 - macOS Big Sur`
@@ -58,8 +58,8 @@
 ## 需要的Python模块
 
 - `json5` (已经内置 V0.9.6 路径：`./libs/json5`)
-- `toml` (已经内置 V0.10.2 路径：`./libs/toml`)
-- `pyglet` (已经内置 V2.0.dev18 路径：`./libs/pyglet`)
+- `tomlkit`
+- `pyglet` (已经内置 V2.0b2 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
 - `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
 - `pillow`
@@ -69,7 +69,7 @@
 
 - [pyglet](https://github.com/pyglet/pyglet) : GUI 和画面渲染
 - `json5`: json5 解析器
-- `toml`: toml 解析器
+- `tomlkit`: toml 解析器
 - `xmltodict`: xml 与 dict 转换器
 - `pyperclip`: 剪贴板!
 - [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang

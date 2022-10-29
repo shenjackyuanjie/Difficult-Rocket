@@ -21,12 +21,12 @@ from decimal import Decimal
 from Difficult_Rocket.command.api import CommandText
 from Difficult_Rocket.utils import new_thread, translate
 
-# from libs.pyglet
-from libs import pyglet
-from libs.pyglet.text import Label
-from libs.pyglet.window import key
-from libs.pyglet.gui import widgets
-from libs.pyglet.graphics import Batch, Group
+# from pyglet
+import pyglet
+from pyglet.text import Label
+from pyglet.window import key
+from pyglet.gui import widgets
+from pyglet.graphics import Batch, Group
 
 
 class CommandLine(widgets.WidgetBase):

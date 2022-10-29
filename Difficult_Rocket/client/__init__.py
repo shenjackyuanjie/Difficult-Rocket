@@ -32,10 +32,10 @@ from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.exception.command import CommandError
 
-from libs import pyglet
-from libs.pyglet.window import Window
-from libs.pyglet.window import key, mouse
-from libs import toml
+import tomlkit
+import pyglet
+from pyglet.window import Window
+from pyglet.window import key, mouse
 
 
 class Client:
@@ -186,7 +186,7 @@ class ClientWindow(Window):
         config_file = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
-        toml.dump(config_file, open('./configs/main.toml', 'w'))
+        tomlkit.dump(config_file, open('./configs/main.toml', 'w'))
         self.logger.info('save_info end')
 
     """
@@ -194,14 +194,6 @@ class ClientWindow(Window):
     """
 
     def draw_update(self, tick: float):
-        # self.count += 1
-        # if self.count >= 100:
-        #     try:
-        #         self.count = 0
-        #         self.logger.debug(tick)
-        #         self.logger.debug('update! {} {}'.format(tick, pyglet.clock.get_frequency()))
-        #     except ZeroDivisionError:
-        #         pass
         decimal_tick = Decimal(str(tick)[:10])
         self.FPS_update(decimal_tick)
 

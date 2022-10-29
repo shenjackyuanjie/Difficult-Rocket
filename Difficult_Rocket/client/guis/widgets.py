@@ -16,16 +16,16 @@ from Difficult_Rocket.client.guis.format import html
 from Difficult_Rocket import DR_option
 
 # from libs import pyglet
-from libs.pyglet import font
-from libs.pyglet.text import Label, HTMLLabel
-from libs.pyglet.window import key
-from libs.pyglet.gui import widgets
-from libs.pyglet.sprite import Sprite
-from libs.pyglet.shapes import Rectangle
-from libs.pyglet.image import AbstractImage
-from libs.pyglet.graphics import Batch, Group
-from libs.pyglet.text.document import FormattedDocument
-from libs.pyglet.text.layout import IncrementalTextLayout
+from pyglet import font
+from pyglet.text import Label, HTMLLabel
+from pyglet.window import key
+from pyglet.gui import widgets
+from pyglet.sprite import Sprite
+from pyglet.shapes import Rectangle
+from pyglet.image import AbstractImage
+from pyglet.graphics import Batch, Group
+from pyglet.text.document import FormattedDocument
+from pyglet.text.layout import IncrementalTextLayout
 # from libs import pyperclip
 from libs.pyperclip import paste
 

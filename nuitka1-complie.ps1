@@ -1,1 +1,1 @@
-python3.8.exe -m nuitka --mingw64 --show-memory --show-progress --output-dir=build/nuitka --enable-plugin=numpy --nofollow-import-to=objprint,numpy,http,urllib,ssl,socket,html,email,pyglet  --standalone .\DR.py
+python3.8.exe -m nuitka --jobs=24 --mingw64 --show-memory --show-progress --output-dir=build/nuitka --enable-plugin=numpy --nofollow-import-to=objprint,numpy,http,urllib,ssl,socket,html,email,pyglet  --standalone .\DR.py

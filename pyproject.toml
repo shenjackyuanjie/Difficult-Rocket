@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "difficult-rocket"
+version = "0.6.3"
+description = "A rocket game"
+authors = ["shenjackyuanjie <3695888@qq.com>"]
+license = "CC-BY-NA-SA 4.0"
+readme = "README.md"
+packages = [{include = "difficult_rocket"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+psutil = "^5.9.3"
+objprint = "^0.2.2"
+Pillow = "^9.2.0"
+tomlkit = "^0.11.6"
+setuptools = "^65.5.0"
+viztracer = "^0.15.4"
+vizplugins = "^0.1.2"
+Cython = "^0.29.32"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from libs.pyglet.text import DocumentLabel
+from pyglet.text import DocumentLabel
 
 
 class FontsLabel(DocumentLabel):

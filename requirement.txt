@@ -3,7 +3,7 @@ pillow
 objprint
 # selenium
 
-toml
+tomlkit
 setuptools
 Cython
 colorama
