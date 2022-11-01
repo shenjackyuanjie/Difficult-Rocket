@@ -120,11 +120,11 @@ class XlibDisplay(XlibSelectDevice, Display):
 
         self._display = xlib.XOpenDisplay(name)
         if not self._display:
-            raise NoSuchDisplayException(f'Cannot connect to "{name}"')
+            raise NoSuchDisplayException('Cannot connect to "%s"' % name)
 
         screen_count = xlib.XScreenCount(self._display)
         if x_screen >= screen_count:
-            raise NoSuchDisplayException(f'Display "{name}" has no screen {x_screen:d}')
+            raise NoSuchDisplayException('Display "%s" has no screen %d' % (name, x_screen))
 
         super(XlibDisplay, self).__init__()
         self.name = name
@@ -274,8 +274,9 @@ class XlibScreen(Screen):
             self.set_mode(self._initial_mode)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(display={self.display!r}, x={self.x}, y={self.y}, " \
-               f"width={self.width}, height={self.height}, xinerama={self._xinerama})"
+        return 'XlibScreen(display=%r, x=%d, y=%d, ' \
+               'width=%d, height=%d, xinerama=%d)' % \
+               (self.display, self.x, self.y, self.width, self.height, self._xinerama)
 
 
 

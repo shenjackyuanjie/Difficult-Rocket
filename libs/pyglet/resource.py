@@ -184,16 +184,16 @@ def get_settings_path(name):
         if 'APPDATA' in os.environ:
             return os.path.join(os.environ['APPDATA'], name)
         else:
-            return os.path.expanduser(f'~/{name}')
+            return os.path.expanduser('~/%s' % name)
     elif pyglet.compat_platform == 'darwin':
-        return os.path.expanduser(f'~/Library/Application Support/{name}')
+        return os.path.expanduser('~/Library/Application Support/%s' % name)
     elif pyglet.compat_platform.startswith('linux'):
         if 'XDG_CONFIG_HOME' in os.environ:
             return os.path.join(os.environ['XDG_CONFIG_HOME'], name)
         else:
-            return os.path.expanduser(f'~/.config/{name}')
+            return os.path.expanduser('~/.config/%s' % name)
     else:
-        return os.path.expanduser(f'~/.{name}')
+        return os.path.expanduser('~/.%s' % name)
 
 
 def get_data_path(name):
@@ -225,16 +225,16 @@ def get_data_path(name):
         if 'APPDATA' in os.environ:
             return os.path.join(os.environ['APPDATA'], name)
         else:
-            return os.path.expanduser(f'~/{name}')
+            return os.path.expanduser('~/%s' % name)
     elif pyglet.compat_platform == 'darwin':
-        return os.path.expanduser(f'~/Library/Application Support/{name}')
+        return os.path.expanduser('~/Library/Application Support/%s' % name)
     elif pyglet.compat_platform.startswith('linux'):
         if 'XDG_DATA_HOME' in os.environ:
             return os.path.join(os.environ['XDG_DATA_HOME'], name)
         else:
-            return os.path.expanduser(f'~/.local/share/{name}')
+            return os.path.expanduser('~/.local/share/%s' % name)
     else:
-        return os.path.expanduser(f'~/.{name}')
+        return os.path.expanduser('~/.%s' % name)
 
 
 class Location:

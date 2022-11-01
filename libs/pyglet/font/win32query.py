@@ -515,7 +515,7 @@ if __name__ == '__main__':
     print('\n'.join(fonts))
 
     if DEBUG:
-        print(f"Total: {len(font_list())}")
+        print("Total: %s" % len(font_list()))
 
 
 # -- CHAPTER 2: WORK WITH FONT DIMENSIONS --

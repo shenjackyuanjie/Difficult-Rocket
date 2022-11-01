@@ -134,7 +134,9 @@ class Win32ScreenMode(ScreenMode):
         self.scaling = mode.dmDisplayFixedOutput
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(width={self.width!r}, height={self.height!r}, depth={self.depth!r}, rate={self.rate}, scaling={self.scaling})'
+        return '%s(width=%r, height=%r, depth=%r, rate=%r, scaling=%r)' % (
+            self.__class__.__name__,
+            self.width, self.height, self.depth, self.rate, self.scaling)
 
 class Win32Canvas(Canvas):
     def __init__(self, display, hwnd, hdc):

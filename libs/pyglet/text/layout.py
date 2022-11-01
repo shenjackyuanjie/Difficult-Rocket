@@ -180,7 +180,7 @@ def _parse_distance(distance, dpi):
         return int(distance)
 
     match = _distance_re.match(distance)
-    assert match, f'Could not parse distance {distance}'
+    assert match, 'Could not parse distance %s' % distance
     if not match:
         return 0
 
@@ -199,7 +199,7 @@ def _parse_distance(distance, dpi):
     elif unit == 'cm':
         return int(value * dpi * 0.393700787)
     else:
-        assert False, f'Unknown distance unit {unit}'
+        assert False, 'Unknown distance unit %s' % unit
 
 
 class _Line:
@@ -225,7 +225,7 @@ class _Line:
         self.boxes = []
 
     def __repr__(self):
-        return f'_Line({self.boxes})'
+        return '_Line(%r)' % self.boxes
 
     def add_box(self, box):
         self.boxes.append(box)
@@ -460,7 +460,7 @@ class _GlyphBox(_AbstractBox):
         return position
 
     def __repr__(self):
-        return f'_GlyphBox({self.glyphs})'
+        return '_GlyphBox(%r)' % self.glyphs
 
 
 class _InlineElementBox(_AbstractBox):
@@ -495,7 +495,7 @@ class _InlineElementBox(_AbstractBox):
             return 1
 
     def __repr__(self):
-        return f'_InlineElementBox({self.element})'
+        return '_InlineElementBox(%r)' % self.element
 
 
 class _InvalidRange:
@@ -1131,8 +1131,8 @@ class TextLayout:
             dz = z - self._z
             for vertex_list in self._vertex_lists:
                 vertices = vertex_list.position[:]
-                vertices[::2] = [x + dx for x in vertices[::2]]
-                vertices[1::2] = [y + dy for y in vertices[1::2]]
+                vertices[::3] = [x + dx for x in vertices[::3]]
+                vertices[1::3] = [y + dy for y in vertices[1::3]]
                 vertices[2::3] = [z + dz for z in vertices[2::3]]
                 vertex_list.position[:] = vertices
             self._x = x
@@ -2046,8 +2046,6 @@ class IncrementalTextLayout(TextLayout, EventDispatcher):
         self._update_scissor_area()
 
     def _update_scissor_area(self):
-        if not self.document.text:
-            return
         area = self._get_left(), self._get_bottom(self._get_lines()), self._width, self._height
         for group in self.group_cache.values():
             group.scissor_area = area
@@ -2127,6 +2125,7 @@ class IncrementalTextLayout(TextLayout, EventDispatcher):
                                 self.invalid_flow.is_invalid() or
                                 self.invalid_lines.is_invalid())
 
+        len_groups = len(self.group_cache)
         # Special care if there is no text:
         if not self.glyphs:
             for line in self.lines:
@@ -2144,6 +2143,11 @@ class IncrementalTextLayout(TextLayout, EventDispatcher):
         self._update_flow_lines()
         self._update_visible_lines()
         self._update_vertex_lists()
+
+        # Update group cache areas if the count has changed. Usually if it starts with no text.
+        # Group cache is only cleared in a regular TextLayout. May need revisiting if that changes.
+        if len_groups != len(self.group_cache):
+            self._update_scissor_area()
 
         if trigger_update_event:
             self.dispatch_event('on_layout_update')

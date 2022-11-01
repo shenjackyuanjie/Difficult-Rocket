@@ -148,7 +148,7 @@ def get_decoder(filename, mimetype=None):
         from pyglet.text.formats import attributed
         return attributed.AttributedTextDecoder()
     else:
-        raise DocumentDecodeException(f'Unknown format "{mimetype}"')
+        raise DocumentDecodeException('Unknown format "%s"' % mimetype)
 
 
 def load(filename, file=None, mimetype=None):

@@ -138,7 +138,7 @@ class LibraryLoader:
         if self.platform.startswith('linux'):
             for name in names:
                 libname = self.find_library(name)
-                platform_names.append(libname or f'lib{name}.so')
+                platform_names.append(libname or 'lib%s.so' % name)
 
         platform_names.extend(names)
         for name in platform_names:
@@ -165,7 +165,7 @@ class LibraryLoader:
                     if _debug_lib:
                         print(f"Unexpected error loading library {name}: {str(o)}")
 
-        raise ImportError(f'Library "{names[0]}" not found.')
+        raise ImportError('Library "%s" not found.' % names[0])
 
     def find_library(self, name):
         return ctypes.util.find_library(name)
@@ -272,7 +272,7 @@ class MachOLibraryLoader(LibraryLoader):
                 lib = _TraceLibrary(lib)
             return lib
 
-        raise ImportError(f"Can't find framework {name}.")
+        raise ImportError("Can't find framework %s." % name)
 
 
 class LinuxLibraryLoader(LibraryLoader):

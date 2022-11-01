@@ -44,7 +44,7 @@ class _Run:
         self.count = count
 
     def __repr__(self):
-        return f'Run({self.value}, {self.count})'
+        return 'Run(%r, %d)' % (self.value, self.count)
 
 
 class RunList:

@@ -340,7 +340,9 @@ class ScreenMode:
         self.screen = screen
 
     def __repr__(self):
-        return f'{self.__class__.__name__}(width={self.width!r}, height={self.height!r}, depth={self.depth!r}, rate={self.rate})'
+        return '%s(width=%r, height=%r, depth=%r, rate=%r)' % (
+            self.__class__.__name__,
+            self.width, self.height, self.depth, self.rate)
 
 
 class Canvas:
