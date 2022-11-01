@@ -10,4 +10,4 @@ with open(sys.argv[1], encoding='utf-8', mode='r') as f:
     else:
         a = json.load(f)
     print(a)
-    pprint.pprint(a)
+    pprint.pprint(a, width=100)

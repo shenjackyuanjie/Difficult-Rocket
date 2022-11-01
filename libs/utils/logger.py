@@ -10,7 +10,6 @@
 import re
 import os
 import time
-import enum
 import atexit
 import inspect
 import threading
@@ -20,9 +19,6 @@ from time import strftime
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
 from types import FrameType
 from typing import NoReturn, Optional, Type, Union, Dict, Iterable, Any, List
-import ctypes
-
-from ordered_set import T
 
 os.system('')
 # print(os.path.abspath(os.curdir))
@@ -152,7 +148,7 @@ logger_configs = {
     },
     'Color':     {
         'main_color':       {
-            'file_time':            '\033[38;2;201;222;56m',
+            # 'file_time':            '\033[38;2;201;222;56m',
             'main_time':            '\033[38;2;201;222;56m',
             'file_name':            '\033[38;2;0;255;180m',
             'code_line':            '\033[38;2;0;255;180m',
@@ -165,10 +161,11 @@ logger_configs = {
             LoggingLevel.INFO_t:    {'info': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[33m'},
             LoggingLevel.ERROR_t:   {'info': '\033[31m'},
-            LoggingLevel.FATAL_t:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.FATAL_t:   {
+                'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'fancy_main_color': {
-            'file_time':            '\033[38;2;201;222;56m',
+            # 'file_time':            '\033[38;2;201;222;56m',
             'main_time':            '\033[38;2;201;222;56m',
             'file_name':            '\033[38;2;0;255;180m',
             'code_line':            '\033[38;2;0;255;180m',
@@ -180,11 +177,12 @@ logger_configs = {
             LoggingLevel.INFO_t:    {'info': '\033[0m', 'message': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[33m', 'message': '\033[33m'},
             LoggingLevel.ERROR_t:   {'info': '\033[31m', 'message': '\033[31m'},
-            LoggingLevel.FATAL_t:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.FATAL_t:   {'info':    '\033[38;2;255;255;0;48;2;120;10;10m',
+                                     'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'DiGua_color':      {
             # catppuccin Macchiato
-            'file_time':            '\033[38;2;238;212;159m',
+            # 'file_time':            '\033[38;2;238;212;159m',
             'main_time':            '\033[38;2;202;211;245m',
             'file_name':            '\033[38;2;139;213;202m',
             'code_line':            '\033[38;2;166;218;149m',
@@ -196,7 +194,8 @@ logger_configs = {
             LoggingLevel.INFO_t:    {'info': '\033[0m', 'message': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[38;2;245;169;127m', 'message': '\033[38;2;245;169;127m'},
             LoggingLevel.ERROR_t:   {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
-            LoggingLevel.FATAL_t:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.FATAL_t:   {'info':    '\033[38;2;255;255;0;48;2;120;10;10m',
+                                     'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         }
     },
     'File':      {
@@ -204,19 +203,19 @@ logger_configs = {
             'mode':       'a',
             'encoding':   'utf-8',
             'level':      TRACE,
-            'file_name':  './logs/{file_time}_logs.md',
+            'file_name':  './logs/{long_time}_logs.md',
             'cache_len':  10,
             'cache_time': 1
         },
     },
     'Formatter': {
-        'MESSAGE':   {
+        'MESSAGE':    {
             'format': '[{long_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
         },
-        'file_name': 'no frame',
-        'code_line': 'no frame',
+        'file_name':  'no frame',
+        'code_line':  'no frame',
         'short_time': '%Y-%m-%d %H-%M-%S',
-        'long_time': '%Y-%m-%d %H-%M-%S:%%S',
+        'long_time':  '%Y-%m-%d %H-%M-%S:%%S',
     }
 }
 
@@ -273,7 +272,8 @@ class ListCache:
             elif isinstance(value, Iterable):
                 self._cache.append(*value)
             else:
-                raise TypeError(f"cache must be string or Iterable. not a {type(value)}")
+                raise TypeError(
+                    f"cache must be string or Iterable. not a {type(value)}")
 
     def __getitem__(self, item) -> str:
         assert isinstance(item, int)
@@ -282,7 +282,8 @@ class ListCache:
                 return self._cache[item]
             except IndexError as exp:
                 print(f'cache:{self.cache}')
-                raise IndexError(f'there is no cache at {item}!\ncache:{self.cache}\n{exp}')
+                raise IndexError(
+                    f'there is no cache at {item}!\ncache:{self.cache}\n{exp}')
 
     def __call__(self, *args, **kwargs) -> List[str]:
         return self.cache
@@ -433,7 +434,8 @@ class CachedFileHandler(StreamHandlerTemplate):
         """
         super().__init__(level=level, formatter=formatter)
         if file_conf is not None:
-            self.file_conf = file_conf if type(file_conf) is LogFileConf else LogFileConf(**file_conf)  # type: ignore
+            self.file_conf = file_conf if type(
+                file_conf) is LogFileConf else LogFileConf(**file_conf)  # type: ignore
         else:
             ...
         self.string_queue = Queue(maxsize=self.file_conf.file_cache_len)
@@ -456,8 +458,10 @@ class LogFileCache:
         :param file_conf: 日志文件配置
         """
         # 配置相关
-        self._logfile_name = os.path.abspath(format_str(file_conf['file_name']))  # log 文件名称
-        self.level: logging_level_type = get_key_from_dict(file_conf, 'level', DEBUG)
+        self._logfile_name = os.path.abspath(
+            format_str(file_conf['file_name']))  # log 文件名称
+        self.level: logging_level_type = get_key_from_dict(
+            file_conf, 'level', DEBUG)
         self.file_conf = file_conf
         self.flush_time = file_conf['cache_time']  # 缓存刷新时长
         self.cache_entries_num = file_conf['cache_len']
@@ -465,8 +469,10 @@ class LogFileCache:
         self.running = False
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
-        self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
-        self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={'thread': True})  # 基于 timer 的多线程
+        self.time_limit_lock = ThreadLock(
+            self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
+        self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={
+            'thread': True})  # 基于 timer 的多线程
         # 日志缓存表
         self.log_cache = ListCache(self.time_limit_lock)
         self.file_setup()
@@ -511,7 +517,8 @@ class LogFileCache:
             with self.time_limit_lock:
                 if self.log_cache:
                     with open(file=self.logfile_name,
-                              encoding=get_key_from_dict(self.file_conf, 'encoding', 'utf-8'),
+                              encoding=get_key_from_dict(
+                                  self.file_conf, 'encoding', 'utf-8'),
                               mode=get_key_from_dict(self.file_conf, 'mode', 'a')) as log_file:
                         log_file.writelines(self.log_cache.cache.copy())
                     self.log_cache.clear()
@@ -526,7 +533,8 @@ class LogFileCache:
         if flush:
             self._log_file_time_write()
         if self.started and not self.running:
-            self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={'thread': True})  # 基于 timer 的多线程
+            self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={
+                'thread': True})  # 基于 timer 的多线程
             self.threaded_write.start()
             self.running = True
 
@@ -538,7 +546,8 @@ class Logger:
                  name: str = 'root',
                  level: int = DEBUG,
                  file_conf: Optional[List[LogFileCache]] = None,
-                 colors: Optional[Dict[Union[int, str], Dict[str, str]]] = None,
+                 colors: Optional[Dict[Union[int, str],
+                                       Dict[str, str]]] = None,
                  formats=None) -> None:
         """
         配置模式: 使用 kwargs 配置
@@ -558,13 +567,17 @@ class Logger:
         self.min_level = self.level
         if file_conf:
             self.file_cache = file_conf
-            self.min_level = min(*[file.level for file in file_conf], self.level)
+            self.min_level = min(
+                *[file.level for file in file_conf], self.level)
         else:
             self.file_cache = []
         self.warn = self.warning
-    
-    def format_formats(self) -> NoReturn:
-        ...
+
+    def format_formats(self) -> None:
+        if 'long_time' not in self.formats:
+            self.formats['long_time'] = '%Y-%m-%d %H-%M-%S:%%S'
+        if 'short_time' not in self.formats:
+            self.formats['short_time'] = '%Y-%m-%d %H-%M-%S'
 
     def add_stream(self, stream: StreamHandlerTemplate) -> bool:
         """
@@ -581,13 +594,16 @@ class Logger:
         if not self.enable:
             return False
         return True
-    
+
     def format_time(self, input_time: Optional[float] = None) -> Dict[str, str]:
         # 毫秒
         get_time: float = input_time or time.time()
-        millisecond = (get_time - int(get_time)) * 1000
-        long_time = time.strftime(self.formats['long_time'] if 'long_time' in self.formats else '%Y-%m-%d %H-%M-%S:%%S', get_time)
-        return {'long_time': time.strftime(self.formats['long_time'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}
+        millisecond = str((get_time - int(get_time)) * 1000)
+        long_time = time.strftime(
+            self.formats['long_time'].replace('%%S', millisecond))
+        short_time = time.strftime(
+            self.formats['short_time'].replace('%%S', millisecond))
+        return {'long_time': long_time, 'short_time': short_time}
 
     # def filter_and_make_log(): make_log(formatted_string)
     def make_log(self, *values: object,
@@ -601,7 +617,8 @@ class Logger:
             if (frame := inspect.currentframe()) is not None:
                 frame = frame if frame.f_back is None else frame.f_back if frame.f_back.f_back is None else frame.f_back.f_back
         # text = sep.join(i if type(i) is str else str(i) for i in values)
-        message_color = self.colors[get_name_by_level(level)]['message'] if 'message' in self.colors[get_name_by_level(level)] else self.colors['message']
+        message_color = self.colors[get_name_by_level(
+            level)]['message'] if 'message' in self.colors[get_name_by_level(level)] else self.colors['message']
         text = f"{message_color}{sep.join(i if type(i) is str else str(i) for i in values)}{color_reset_suffix}"
         # print('abc', 'abc', marker='123')
         print_text = self.format_text(level=level, text=text, frame=frame)
@@ -611,7 +628,8 @@ class Logger:
             file: LogFileCache
             if level < file.level:
                 continue
-            file.write_logs(f"{re.sub(re_find_color_code, '', print_text)}{end}", flush=flush)
+            file.write_logs(
+                f"{re.sub(re_find_color_code, '', print_text)}{end}", flush=flush)
         return print_text
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
@@ -786,7 +804,8 @@ def format_str(text: str) -> str:
         if isinstance(value, dict):
             if 'strftime' in value:
                 value['strftime']: str
-                formats[key] = strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))
+                formats[key] = strftime(value['strftime'].replace(
+                    '%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))
     return text.format(**formats)
 
 
@@ -820,7 +839,8 @@ def gen_file_conf(file_name: str,
 
 
 def gen_color_conf(color_name: Optional[str] = None, **colors) -> dict:
-    default_color = logger_configs['Color']['main_color' if color_name is None else color_name].copy()
+    default_color = logger_configs['Color']['main_color' if color_name is None else color_name].copy(
+    )
     default_color.update(colors)
     return default_color
 
@@ -875,7 +895,8 @@ def get_logger(name: str = 'root') -> Logger:
         the_config = logger_configs['Logger']['root']
     file_handler = None
     if 'file' in the_config:
-        file_handler = [LogFileCache(logger_configs['File'][the_config['file']])]
+        file_handler = [LogFileCache(
+            logger_configs['File'][the_config['file']])]
     color = the_config['color'] if 'color' in the_config else 'main_color'
     return Logger(name=name,
                   level=the_config['level'],

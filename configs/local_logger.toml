@@ -1,24 +1,44 @@
 version = 1.0
 
-# [Loggers]
+[Loggers]
 
-[Loggers.root]
-level = 'DEBUG'
-color = 'main_color'
-file = 'main_log_file'
+    [Loggers.root]
+    level = 'DEBUG'
+    color = 'main_color'
+    file = 'main_log_file'
+    format = 'format.main_format'
 
-[Loggers.client]
-level = 'TRACE'
-color = 'main_color'
-file = 'main_log_file'
+    [Loggers.client]
+    level = 'TRACE'
+    color = 'main_color'
+    file = 'main_log_file'
+    format = 'format.main_format'
 
-[Loggers.server]
-level = 'TRACE'
-color = 'DiGua_color'
-file = 'main_log_file'
+    [Loggers.server]
+    level = 'TRACE'
+    color = 'DiGua_color'
+    file = 'main_log_file'
+    format = 'format.main_format'
 
 [Files]
+    
+    [Files.main_log_file]
+    name = './logs/{file_time}_logs.md'
+    level = 'TRACE'
+    cache_len = 20
+    cache_time = 1
+    mode = 'a'
+    encoding = 'utf-8'
+
+[Formatter]
+
+main_format = '[{long_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
+file_name = 'no frame'
+code_line = 'no frame'
+short_time = '%Y-%m-%d %H-%M-%S'
+long_time = '%Y-%m-%d %H-%M-%S:%%S'
 
 [Colors]
 
-[Formatter]
+    [Colors.main_color]
+    # file_time
