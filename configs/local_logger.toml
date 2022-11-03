@@ -6,29 +6,39 @@ version = 1.0
     level = 'DEBUG'
     color = 'main_color'
     file = 'main_log_file'
-    format = 'format.main_format'
+    handlers = ['main_std_handler']
 
     [Loggers.client]
     level = 'TRACE'
     color = 'main_color'
     file = 'main_log_file'
-    format = 'format.main_format'
+    handlers = ['main_std_handler']
 
     [Loggers.server]
     level = 'TRACE'
     color = 'DiGua_color'
     file = 'main_log_file'
-    format = 'format.main_format'
+    handlers = ['main_std_handler']
 
 [Files]
     
     [Files.main_log_file]
-    name = './logs/{file_time}_logs.md'
+    name = './logs/{long_time}_logs.md'
     level = 'TRACE'
     cache_len = 20
     cache_time = 1
     mode = 'a'
     encoding = 'utf-8'
+
+[Handler]
+
+    [Handler.main_std_handler]
+    class = 'str handler'
+    format = 'format.main_format'
+
+    [Handler.main_file_hander]
+    class = 'cached file handler'
+    format = 'format.main_format'
 
 [Formatter]
 

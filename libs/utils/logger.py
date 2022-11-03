@@ -434,14 +434,39 @@ class CachedFileHandler(StreamHandlerTemplate):
         """
         super().__init__(level=level, formatter=formatter)
         if file_conf is not None:
-            self.file_conf = file_conf if type(
-                file_conf) is LogFileConf else LogFileConf(**file_conf)  # type: ignore
+            if isinstance(file_conf, dict):
+                self.file_conf = LogFileConf(**file_conf)
+            elif isinstance(file_conf, LogFileConf):
+                self.file_conf = file_conf
         else:
-            ...
+            self.file_conf = LogFileConf()
+        # 缓存
         self.string_queue = Queue(maxsize=self.file_conf.file_cache_len)
+        # 状态
+        self.started = True
+        self.running = False
+        # 同步锁
+        self.cache_lock = threading.Lock()  # 主锁
+        self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
+        self.threaded_write = threading.Timer(1, self._thread_write, kwargs={'by_thread': True})  # 基于 timer 的多线程
+
+    def _thread_write(self, by_thread: bool) -> None:
+        if not self.string_queue.empty():  # 队列非空
+            if by_thread:
+                with self.time_limit_lock:
+                    with open(file=self.file_conf.file_name, mode=self.file_conf.file_mode,
+                                encoding=self.file_conf.file_encoding) as log_file:
+                        ...
 
     def write(self, message: str, flush: Optional[bool]) -> bool:
-        ...
+        if not flush:
+            if self.string_queue.qsize() + 1 <= self.file_conf.file_cache_len:
+                self.string_queue.put_nowait(message)
+            else:
+                ...
+        else:
+            ...
+        return True
 
     def close(self) -> bool:
         ...
@@ -458,10 +483,8 @@ class LogFileCache:
         :param file_conf: 日志文件配置
         """
         # 配置相关
-        self._logfile_name = os.path.abspath(
-            format_str(file_conf['file_name']))  # log 文件名称
-        self.level: logging_level_type = get_key_from_dict(
-            file_conf, 'level', DEBUG)
+        self._logfile_name = os.path.abspath(format_str(file_conf['file_name']))  # log 文件名称
+        self.level: logging_level_type = get_key_from_dict(file_conf, 'level', DEBUG)
         self.file_conf = file_conf
         self.flush_time = file_conf['cache_time']  # 缓存刷新时长
         self.cache_entries_num = file_conf['cache_len']
@@ -469,10 +492,8 @@ class LogFileCache:
         self.running = False
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
-        self.time_limit_lock = ThreadLock(
-            self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
-        self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={
-            'thread': True})  # 基于 timer 的多线程
+        self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
+        self.threaded_write = threading.Timer(1, self._log_file_time_write, kwargs={'thread': True})  # 基于 timer 的多线程
         # 日志缓存表
         self.log_cache = ListCache(self.time_limit_lock)
         self.file_setup()
