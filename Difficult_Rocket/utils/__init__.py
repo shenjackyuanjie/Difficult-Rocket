@@ -11,6 +11,11 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from .new_thread import new_thread
+from typing import TYPE_CHECKING
 
-__all__ = ['new_thread']
+if TYPE_CHECKING:
+    from .new_thread import new_thread
+    from .typings import get_type_hints_
+
+__all__ = ['new_thread', 'get_type_hints_']
+

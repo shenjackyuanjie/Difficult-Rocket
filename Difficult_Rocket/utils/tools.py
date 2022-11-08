@@ -21,7 +21,7 @@ import configparser
 from typing import Union
 from xml.dom.minidom import parse
 
-from libs import toml
+import tomlkit
 
 from Difficult_Rocket.exception.unsupport import NoMoreJson5
 
@@ -50,7 +50,8 @@ def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error:
             if stack:
                 get_file = get_file[stack]
         elif f_type == 'toml':
-            get_file = toml.load(file_name)
+            with open(file_name, mode='r', encoding='utf-8') as file:
+                get_file = tomlkit.load(file)
         elif f_type == 'json5':
             raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:

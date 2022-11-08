@@ -40,7 +40,7 @@ def _get_origin(cls: Type):
 def _get_args(cls: Type) -> tuple:
     return getattr(cls, '__args__', ())
 
-
+    
 _BASIC_CLASSES = (type(None), bool, int, float, str, list, dict, Version)
 
 

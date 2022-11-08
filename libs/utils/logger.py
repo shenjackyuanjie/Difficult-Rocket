@@ -7,8 +7,8 @@
 #  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-import re
 import os
+import re
 import time
 import atexit
 import inspect
@@ -16,12 +16,13 @@ import threading
 
 from queue import Queue
 from time import strftime
-from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, FATAL
+from logging import NOTSET, DEBUG
 from types import FrameType
-from typing import NoReturn, Optional, Type, Union, Dict, Iterable, Any, List
+from typing import Optional, Type, Union, Dict, Iterable, Any, List
 
 os.system('')
 # print(os.path.abspath(os.curdir))
+# TODO 这个文件就是个大TODO
 """
 如果想要直接使用 logger 来 logging
 直接调用 logger.debug() 即可
@@ -161,8 +162,7 @@ logger_configs = {
             LoggingLevel.INFO_t:    {'info': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[33m'},
             LoggingLevel.ERROR_t:   {'info': '\033[31m'},
-            LoggingLevel.FATAL_t:   {
-                'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.FATAL_t:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'fancy_main_color': {
             # 'file_time':            '\033[38;2;201;222;56m',
@@ -455,8 +455,9 @@ class CachedFileHandler(StreamHandlerTemplate):
             if by_thread:
                 with self.time_limit_lock:
                     with open(file=self.file_conf.file_name, mode=self.file_conf.file_mode,
-                                encoding=self.file_conf.file_encoding) as log_file:
-                        ...
+                              encoding=self.file_conf.file_encoding) as log_file:
+                        while not self.string_queue.empty():
+                            log_file.write(self.string_queue.get())
 
     def write(self, message: str, flush: Optional[bool]) -> bool:
         if not flush:

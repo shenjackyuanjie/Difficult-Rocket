@@ -23,13 +23,13 @@ from decimal import Decimal
 # Difficult_Rocket function
 from Difficult_Rocket import Options, DR_runtime
 from Difficult_Rocket.command import line, tree
-from Difficult_Rocket.utils import new_thread
 from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.client.guis.widgets import InputBox
 # from Difficult_Rocket.client.screen import DRScreen
 # from Difficult_Rocket.client.screen import DRDEBUGScreen
 from Difficult_Rocket.utils import tools, translate
+from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
+from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.command import CommandError
 
 import tomlkit

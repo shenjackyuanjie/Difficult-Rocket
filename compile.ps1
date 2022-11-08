@@ -1,0 +1,6 @@
+allPython.ps1 -m compileall 'libs\'
+allPython.ps1 -m compileall 'Difficult_Rocket\'
+allPython.ps1 -O -m compileall 'libs\'
+allPython.ps1 -O -m compileall 'Difficult_Rocket\'
+allPython.ps1 -OO -m compileall 'libs\'
+allPython.ps1 -OO -m compileall 'Difficult_Rocket\'
