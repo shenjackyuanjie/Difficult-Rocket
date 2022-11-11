@@ -22,7 +22,7 @@ __version__ = game_version
 
 
 
-class _DR_option(Options):
+class DR_option(Options):
     """
     DR 的整体配置存储类
     """
@@ -71,18 +71,11 @@ class _DR_runtime(Options):
         translate.tr._update_lang()
 
 
-# _DR_runtime.add_option('language', _DR_runtime.language)
+_DR_runtime.add_option('language', _DR_runtime.language)
 
 
-DR_option = _DR_option()
+# DR_option = _DR_option()
 DR_runtime = _DR_runtime()
-print(DR_option.option())
-print(_DR_option.option())
-_DR_option.use_cProfile = True
-print(_DR_option.option())
-# print(_DR_option.__dict__)
-# print(DR_option.__dir__())
-# print(_DR_option.__dir__)
 
 if DR_option.playing:
     from Difficult_Rocket.utils import new_thread

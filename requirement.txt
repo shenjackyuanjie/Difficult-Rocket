@@ -4,6 +4,7 @@ objprint
 # selenium
 
 tomlkit
+rtoml
 setuptools
 Cython
 colorama

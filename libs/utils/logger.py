@@ -9,16 +9,20 @@
 #  -------------------------------
 import os
 import re
+import sys
 import time
 import atexit
 import inspect
 import threading
+import dataclasses
 
+from abc import ABC
 from queue import Queue
 from time import strftime
-from logging import NOTSET, DEBUG
 from types import FrameType
-from typing import Optional, Type, Union, Dict, Iterable, Any, List
+from collections import namedtuple
+from logging import NOTSET, DEBUG
+from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
 
 os.system('')
 # print(os.path.abspath(os.curdir))
@@ -156,6 +160,7 @@ logger_configs = {
             'info':                 '\033[0m',
             'message':              '\033[0m',
             'logger':               '\033[0m',
+            'marker':               '\033[0m',
             LoggingLevel.TRACE_t:   {'info': '\033[38;2;138;173;244m'},
             LoggingLevel.FINE_t:    {'info': '\033[35;48;2;44;44;54m'},
             LoggingLevel.DEBUG_t:   {'info': '\033[38;2;133;138;149m'},
@@ -220,19 +225,25 @@ logger_configs = {
 }
 
 
+@dataclasses.dataclass
 class LogFileConf:
-    def __init__(self, file_name: str = 'logs/log.txt',
-                 file_mode: str = 'a',
-                 file_encoding: str = 'utf-8',
-                 file_level: logging_level_type = LoggingLevel.DEBUG,
-                 file_cache_len: int = 20,
-                 file_cache_time: Union[float, int] = 1):
-        self.file_name: str = file_name
-        self.file_mode: str = file_mode
-        self.file_encoding: str = file_encoding
-        self.file_level: logging_level_type = file_level
-        self.file_cache_len: int = file_cache_len
-        self.file_cache_time: Union[int, float] = file_cache_time
+    file_name: str = 'logs/log.txt'
+    file_mode: str = 'a'
+    file_encoding: str = 'utf-8'
+    file_level: logging_level_type = LoggingLevel.DEBUG
+    file_cache_len: int = 20
+    file_cache_time: Union[int, float] = 1
+
+
+class Message_content(NamedTuple):
+    """用于存储 log 信息的不可变元组"""
+    log_time: float
+    text: str
+    level: int
+    marker: Optional[str] = None
+    end: Optional[str] = '\n'
+    flush: Optional[bool] = False
+    frame: Optional[FrameType] = None
 
 
 class ThreadLock:
@@ -240,7 +251,6 @@ class ThreadLock:
 
     def __init__(self, the_lock: threading.Lock, time_out: Union[float, int] = 1 / 60) -> None:
         """
-
         :param the_lock: 用于 with 的线程锁
         :param time_out: with 的超时时间
         """
@@ -312,13 +322,24 @@ class ListCache:
             self.cache.clear()
 
 
-class Formatter(object):
-    """用于格式化 log 信息的类"""
+class FormatterTemplate(ABC):
+    """用于格式化 log 信息的模板类"""
 
-    def __init__(self):
-        pass
+    def __init__(self, formats: str):
+        self.formats = formats
 
     def format(self, message: str) -> str:
+        raise NotImplementedError('There is a formatter that not implemented')
+
+
+class StdFormatter(FormatterTemplate):
+    """ 一个标准的格式化类 """
+
+    def __init__(self, formats: str):
+        super().__init__(formats=formats)
+        ...
+
+    def format(self, message: Message_content) -> Message_content:
         ...
 
 
@@ -345,20 +366,19 @@ class StreamHandlerTemplate:
     """ 一个一个一个 stream template 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊 """
     name = "handler temple"
 
-    def __init__(self, level: int, formatter: Optional[Formatter] = None):
+    def __init__(self, level: int, formatter: Optional[FormatterTemplate] = None):
         """
         :param level: 处理器输出等级
         :param formatter: 格式化处理器
         """
         self.enable = True
         self.level = level
-        self.formatter = formatter or Formatter()
+        self.formatter = formatter
 
-    def write(self, message: str, flush: Optional[bool]) -> bool:
+    def write(self, message: Message_content) -> bool:
         """
         向 输出 文件/stdio 写入信息
-        :param flush: 是否刷新缓冲区
-        :param message: 要写入的信息
+        :param message: 要写入的信息包
         :return: 是否写入成功
         """
         raise NotImplementedError("You Need to Implement the 'write' method")
@@ -370,21 +390,13 @@ class StreamHandlerTemplate:
         """
         return True
 
-    def format(self, message: str) -> str:
-        """
-        格式化传进来的信息
-        :param message: 传进来的信息
-        :return: 格式化完成的信息
-        """
-        return self.formatter.format(message)
-
     def close(self) -> bool:
         """
         :return: stream 是否关闭成功
         """
         raise NotImplementedError("You Need to Implement the 'close' method")
 
-    def setFormatter(self, fmt: Formatter) -> None:
+    def setFormatter(self, fmt: FormatterTemplate) -> None:
         """
         用于与 logging 兼容
         :param fmt: 要设置的格式化处理器
@@ -403,15 +415,15 @@ class StdHandler(StreamHandlerTemplate):
     """ 向标准输入输出流输出信息 """
     name = "std handler"
 
-    def __init__(self, level: int, formatter: Optional[Formatter] = None):
+    def __init__(self, level: int, formatter: Optional[FormatterTemplate] = None):
         """
         :param level: 级别
         :param formatter: 格式器
         """
         super().__init__(level=level, formatter=formatter)
 
-    def write(self, message: str, flush: Optional[bool] = True) -> bool:
-        print(self.formatter.format(message), end='', flush=flush or False)
+    def write(self, message: Message_content) -> bool:
+        print(self.formatter.format(message.text), end=message.end, flush=message.flush)
         return True
 
     def close(self) -> bool:
@@ -426,7 +438,7 @@ class CachedFileHandler(StreamHandlerTemplate):
     """ 缓存文件的处理器 """
     name = 'cached file handler'
 
-    def __init__(self, level: int, formatter: Optional[Formatter] = None, file_conf: Union[dict, LogFileConf, None] = None):
+    def __init__(self, level: int, formatter: Optional[FormatterTemplate] = None, file_conf: Union[dict, LogFileConf, None] = None):
         """
         :param level:
         :param formatter:
@@ -444,27 +456,51 @@ class CachedFileHandler(StreamHandlerTemplate):
         self.string_queue = Queue(maxsize=self.file_conf.file_cache_len)
         # 状态
         self.started = True
+        self.thread_started = False
         self.running = False
         # 同步锁
         self.cache_lock = threading.Lock()  # 主锁
         self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
         self.threaded_write = threading.Timer(1, self._thread_write, kwargs={'by_thread': True})  # 基于 timer 的多线程
 
+    def _start_thread(self) -> bool:
+        """
+        如果成功启动 返回 True
+        已经启动则返回 False
+        :return: 是否启动
+        """
+        if self.thread_started:
+            return False
+        self.threaded_write = threading.Timer(1, self._thread_write, kwargs={'by_thread': True})
+        self.threaded_write.start()
+        self.thread_started = True
+        return True
+
+    def _stop_thread(self) -> bool:
+        """
+        成功关闭 返回 True
+        未开启/关闭失败 返回 False
+        :return: 是否成功关闭
+        """
+        if not self.threaded_write.is_alive():
+            self.thread_started = False
+            return False
+        self.threaded_write.cancel()
+
     def _thread_write(self, by_thread: bool) -> None:
         if not self.string_queue.empty():  # 队列非空
-            if by_thread:
-                with self.time_limit_lock:
-                    with open(file=self.file_conf.file_name, mode=self.file_conf.file_mode,
-                              encoding=self.file_conf.file_encoding) as log_file:
-                        while not self.string_queue.empty():
-                            log_file.write(self.string_queue.get())
+            with self.time_limit_lock and open(file=self.file_conf.file_name, mode=self.file_conf.file_mode,
+                                               encoding=self.file_conf.file_encoding) as log_file:
+                while not self.string_queue.empty():
+                    log_file.write(self.string_queue.get())
 
-    def write(self, message: str, flush: Optional[bool]) -> bool:
-        if not flush:
+    def write(self, message: Message_content) -> bool:
+        if not message.flush:
             if self.string_queue.qsize() + 1 <= self.file_conf.file_cache_len:
                 self.string_queue.put_nowait(message)
             else:
-                ...
+                if not self.thread_started:
+                    self.threaded_write.start()
         else:
             ...
         return True
@@ -587,6 +623,7 @@ class Logger:
         self.formats = formats or logger_configs['Formatter'].copy()
         self.streams = []  # type: List[StreamHandlerTemplate]
         self.min_level = self.level
+        self.handler = []
         if file_conf:
             self.file_cache = file_conf
             self.min_level = min(
@@ -638,7 +675,9 @@ class Logger:
         if frame is None:
             if (frame := inspect.currentframe()) is not None:
                 frame = frame if frame.f_back is None else frame.f_back if frame.f_back.f_back is None else frame.f_back.f_back
-        # text = sep.join(i if type(i) is str else str(i) for i in values)
+        message = Message_content(log_time=time.time(),
+                                  text=sep.join(i if type(i) is str else str(i) for i in values),
+                                  level=level, marker=marker, end=end, flush=flush, frame=frame)
         message_color = self.colors[get_name_by_level(
             level)]['message'] if 'message' in self.colors[get_name_by_level(level)] else self.colors['message']
         text = f"{message_color}{sep.join(i if type(i) is str else str(i) for i in values)}{color_reset_suffix}"
@@ -955,6 +994,13 @@ if __name__ == "__main__":
     for x in range(5):
         test_logger(logger)
         test_logger(a_logger)
-    import tomlkit
+    import rtoml
 
-    parse_config = tomlkit.dumps(logger_configs)
+    parse_config = rtoml.dumps(logger_configs, pretty=True)
+    import pprint
+
+    sys.stdout.write(rtoml.dumps(logger_configs, pretty=True))
+    print('-----------------')
+    sys.stdout.write(rtoml.dumps(logger_configs, pretty=False))
+    print('-----------------')
+    pprint.pprint(rtoml.loads(parse_config))

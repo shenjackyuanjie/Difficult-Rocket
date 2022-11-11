@@ -51,4 +51,10 @@ long_time = '%Y-%m-%d %H-%M-%S:%%S'
 [Colors]
 
     [Colors.main_color]
-    # file_time
+    main_time = '\u001b[38;2;201;222;56m'
+    code_line = '\u001b[38;2;0;255;180m'
+    file_name = '\u001b[38;2;0;255;180m'
+    info      = '\u001b[0m'
+    message   = '\u001b[0m'
+    logger    = '\u001b[0m'
+    marker    = '\u001b[0m'
