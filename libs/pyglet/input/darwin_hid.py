@@ -313,6 +313,31 @@ class HIDDevice:
         return (self.manufacturer, self.product, self.vendorID, self.productID,
                 self.versionNumber, self.primaryUsage, self.primaryUsagePage)
 
+    def get_guid(self):
+        """Generate an SDL2 style GUID from the product guid."""
+
+        if self.transport == 'USB':
+            bustype = 0x03
+            vendor = self.vendorID or 0
+            product = self.productID or 0
+            version = self.versionNumber or 0
+            # Byte swap (ABCD --> CDAB):
+            bustype = ((bustype << 8) | (bustype >> 8)) & 0xFFFF
+            vendor = ((vendor << 8) | (vendor >> 8)) & 0xFFFF
+            product = ((product << 8) | (product >> 8)) & 0xFFFF
+            version = ((version << 8) | (version >> 8)) & 0xFFFF
+            return "{:04x}0000{:04x}0000{:04x}0000{:04x}0000".format(bustype, vendor, product, version)
+
+        elif self.transport == 'BLUETOOTH':
+            bustype = 0x05
+            # Byte swap (ABCD --> CDAB):
+            bustype = ((bustype << 8) | (bustype >> 8)) & 0xFFFF
+
+            # TODO: test fallback to vendor id if no product name:
+            name = self.product or str(self.vendorID)
+            name = name.encode().hex()
+            return "{:04x}0000{:0<24}".format(bustype, name)
+
     def get_property(self, name):
         cfname = CFSTR(name)
         cfvalue = c_void_p(iokit.IOHIDDeviceGetProperty(self.deviceRef, cfname))
@@ -598,27 +623,7 @@ class PygletDevice(Device):
         return list(self._controls.values())
 
     def get_guid(self):
-        """Generate an SDL2 style GUID from the product guid."""
-
-        if self.device.transport == 'USB':
-            bustype = 0x03
-            vendor, product, version = self.device_identifier[2:5]
-            # Byte swap (ABCD --> CDAB):
-            bustype = ((bustype << 8) | (bustype >> 8)) & 0xFFFF
-            vendor = ((vendor << 8) | (vendor >> 8)) & 0xFFFF
-            product = ((product << 8) | (product >> 8)) & 0xFFFF
-            version = ((version << 8) | (version >> 8)) & 0xFFFF
-            return "{:04x}0000{:04x}0000{:04x}0000{:04x}0000".format(bustype, vendor, product, version)
-
-        elif self.device.transport == 'BLUETOOTH':
-            bustype = 0x05
-            # Byte swap (ABCD --> CDAB):
-            bustype = ((bustype << 8) | (bustype >> 8)) & 0xFFFF
-
-            # TODO: test fallback to vendor id if no product name:
-            name = self.device.product or str(self.device.vendorID)
-            name = name.encode().hex()
-            return "{:04x}0000{:0<24}".format(bustype, name)
+        return self.device.get_guid()
 
     def device_removed(self, hid_device):
         # Called by device when it is unplugged.
@@ -721,10 +726,11 @@ def get_apple_remote(display=None):
 
 
 def _create_controller(device, display):
-    mapping = get_mapping(device.get_guid())
-    if not mapping:
-        return
-    return Controller(PygletDevice(display, device, _hid_manager), mapping)
+    if device.transport in ('USB', 'BLUETOOTH'):
+        mapping = get_mapping(device.get_guid())
+        if not mapping:
+            return
+        return Controller(PygletDevice(display, device, _hid_manager), mapping)
 
 
 def get_controllers(display=None):

@@ -24,6 +24,8 @@ from collections import namedtuple
 from logging import NOTSET, DEBUG
 from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
 
+Version = '1.0.0'
+
 os.system('')
 # print(os.path.abspath(os.curdir))
 # TODO 这个文件就是个大TODO
@@ -47,7 +49,7 @@ color_reset_suffix = "\033[0m"
 re_find_color_code = r'\033\[[^\f\n\r\t\vm]*m'
 re_color_code = re.compile(re_find_color_code)
 
-re_find_level_code = r'[INFO]||'
+re_find_level_code = r''
 
 """
 OFF > FATAL > ERROR > WARN > INFO > FINE > FINER > DEBUG > TRACE > ALL
