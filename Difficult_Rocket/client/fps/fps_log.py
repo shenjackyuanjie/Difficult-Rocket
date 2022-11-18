@@ -11,7 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import time
 import statistics
 
 from typing import Union

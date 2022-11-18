@@ -246,8 +246,8 @@ default_fonts_config = [
         # 即：链接名称不能是空格等空白字符开头，链接名称不能是空格等空白字符结尾
         # 匹配的内容：[abc](def)
         # 显示的内容：abc
-        'match': re.compile(r'\[(.*?(?<!\s))\]\((.*?(?<!\s))\)'),
-        'shown': re.compile(r'(?<=\[)(.*?(?<!\s))(?=\]\((.*?(?<!\s))\))'),
+        'match': re.compile(r'\[(.*?(?<!\s))]\((.*?(?<!\s))\)'),
+        'shown': re.compile(r'(?<=\[)(.*?(?<!\s))(?=]\((.*?(?<!\s))\))'),
         'style': SingleTextStyle(bold=True)
     }
 ]
