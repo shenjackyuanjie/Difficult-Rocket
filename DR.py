@@ -1,4 +1,5 @@
-﻿"""
+﻿# -*- coding: utf-8 -*-
+"""
 writen by shenjackyuanjie
 mail: 3695888@qq.com
 """

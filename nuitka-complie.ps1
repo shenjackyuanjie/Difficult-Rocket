@@ -1,1 +1,0 @@
-python3.8.exe -m nuitka --mingw64 --show-memory --show-progress --output-dir=build/nuitka --enable-plugin=numpy --nofollow-import-to=objprint,numpy,http,urllib,ssl,socket,html,email --follow-import-to=Difficult_Rocket,libs.pyglet --standalone .\DR.py
