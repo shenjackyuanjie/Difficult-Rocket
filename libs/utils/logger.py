@@ -20,7 +20,6 @@ from abc import ABC
 from queue import Queue
 from time import strftime
 from types import FrameType
-from collections import namedtuple
 from logging import NOTSET, DEBUG
 from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
 

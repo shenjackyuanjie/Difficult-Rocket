@@ -131,7 +131,7 @@ def init_osx_pbcopy_clipboard():
 
 def init_osx_pyobjc_clipboard():
     def copy_osx_pyobjc(text):
-        '''Copy string argument to clipboard'''
+        """Copy string argument to clipboard"""
         text = _stringifyText(text) # Converts non-str values to str.
         newStr = Foundation.NSString.stringWithString_(text).nsstring()
         newData = newStr.dataUsingEncoding_(Foundation.NSUTF8StringEncoding)
@@ -140,7 +140,7 @@ def init_osx_pyobjc_clipboard():
         board.setData_forType_(newData, AppKit.NSStringPboardType)
 
     def paste_osx_pyobjc():
-        "Returns contents of clipboard"
+        """Returns contents of clipboard"""
         board = AppKit.NSPasteboard.generalPasteboard()
         content = board.stringForType_(AppKit.NSStringPboardType)
         return content
@@ -521,10 +521,10 @@ def init_wsl_clipboard():
 
 # Automatic detection of clipboard mechanisms and importing is done in deteremine_clipboard():
 def determine_clipboard():
-    '''
+    """
     Determine the OS/platform and set the copy() and paste() functions
     accordingly.
-    '''
+    """
 
     global Foundation, AppKit, gtk, qtpy, PyQt4, PyQt5
 
@@ -601,7 +601,7 @@ def determine_clipboard():
 
 
 def set_clipboard(clipboard):
-    '''
+    """
     Explicitly sets the clipboard mechanism. The "clipboard mechanism" is how
     the copy() and paste() functions interact with the operating system to
     implement the copy/paste feature. The clipboard parameter must be one of:
@@ -614,7 +614,7 @@ def set_clipboard(clipboard):
         - klipper
         - windows (default on Windows)
         - no (this is what is set when no clipboard mechanism can be found)
-    '''
+    """
     global copy, paste
 
     clipboard_types = {
@@ -638,7 +638,7 @@ def set_clipboard(clipboard):
 
 
 def lazy_load_stub_copy(text):
-    '''
+    """
     A stub function for copy(), which will load the real copy() function when
     called so that the real copy() function is used for later calls.
 
@@ -653,14 +653,14 @@ def lazy_load_stub_copy(text):
     simply calls copy() or paste() without calling set_clipboard() first,
     will fall back on whatever clipboard mechanism that determine_clipboard()
     automatically chooses.
-    '''
+    """
     global copy, paste
     copy, paste = determine_clipboard()
     return copy(text)
 
 
 def lazy_load_stub_paste():
-    '''
+    """
     A stub function for paste(), which will load the real paste() function when
     called so that the real paste() function is used for later calls.
 
@@ -675,7 +675,7 @@ def lazy_load_stub_paste():
     simply calls copy() or paste() without calling set_clipboard() first,
     will fall back on whatever clipboard mechanism that determine_clipboard()
     automatically chooses.
-    '''
+    """
     global copy, paste
     copy, paste = determine_clipboard()
     return paste()
