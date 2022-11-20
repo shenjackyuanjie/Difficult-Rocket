@@ -11,7 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from typing import Any, Dict, Callable, Union, Tuple, List, get_type_hints, Type
 
 from Difficult_Rocket.utils.typings import Options
 
@@ -26,6 +25,7 @@ class DR_option(Options):
     """
     DR 的整体配置存储类
     """
+    name = 'DR Option'
     # runtime options
     InputBox_use_TextEntry: bool = False
     record_threads: bool = True
@@ -42,6 +42,7 @@ class _DR_runtime(Options):
     """
     DR 的运行时配置
     """
+    name = 'DR Runtime'
     # game statue
     DR_version: Version = game_version
 
@@ -74,7 +75,7 @@ class _DR_runtime(Options):
 _DR_runtime.add_option('language', _DR_runtime.language)
 
 
-# DR_option = _DR_option()
+DR_option = DR_option()
 DR_runtime = _DR_runtime()
 
 if DR_option.playing:
