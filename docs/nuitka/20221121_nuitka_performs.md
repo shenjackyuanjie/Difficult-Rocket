@@ -72,8 +72,24 @@
 
 ## 结论综述
 
-有 `ccache` 的情况下 `clang` 的性能略微落后于 `mingw64`
-TODO
+补充：`lto=yes` 的情况下经常有报错
+
+### 有 `Ccache` (全 hit 无实际编译)
+
+`clang lto=no` 效率最高
+
+`mingw lto=no` 效率低于 `lto=yes`，但是更加稳定（不会报错）
+
+### 无 `Ccache` (测试编译器实际效率)
+
+`clang lto=no` 效率最高
+
+`mingw lto=no` 同样效率相对高
+
+### 总结
+
+尽量使用 `lto=no` 配合 `ccache` 以及 `clang`
+
 
 # 原始数据
 
