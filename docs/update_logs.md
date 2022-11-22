@@ -21,7 +21,7 @@
 
 - 咕了好久的 update log 了
 - github copilot 卒了，所以没有英文
-  - GitHub copy alot break , so no English
+  - GitHub copy alot break , so no more English
 
 ### Change
 

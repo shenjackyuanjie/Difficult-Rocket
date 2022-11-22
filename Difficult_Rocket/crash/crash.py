@@ -18,6 +18,7 @@ import platform
 import traceback
 import threading
 import multiprocessing
+from pathlib import Path
 from typing import Optional, TextIO
 
 # import psutil
@@ -72,8 +73,11 @@ def to_code(string: str):
 
 
 def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
-    a_len, b_len, c_len = tablet[1:4]
-    ...
+    a_len = max(tablet[1], 6)
+    b_len = max(tablet[2], 5)
+    c_len = max(tablet[3], 10)
+    crash_file.write(f'\n| Option{" " * (a_len - 4)}| Value{" " * (b_len[2] - 3)} | Value Type{" " * (c_len[3] - 8)} |\n')
+    crash_file.write(f'|:{"-" * (a_len + 3)}|:{"-" * (b_len + 3)}|:{"-" * (c_len + 3)}|\n')
 
 
 def create_crash_report(info: str = None) -> None:
@@ -94,7 +98,7 @@ def create_crash_report(info: str = None) -> None:
 
         cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
         cache_stream.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
-        cache_stream.write(markdown_line_handler(f'Running Dir: {os.path.abspath(os.curdir)}', level=1))
+        cache_stream.write(markdown_line_handler(f'Running Dir: {Path(os.curdir).resolve()}', level=1))
         option_with_len = DR_runtime.option_with_len()
         option_with_len[1] = max(option_with_len[1], 6)
         option_with_len[2] = max(option_with_len[2], 5)
@@ -146,6 +150,8 @@ def create_crash_report(info: str = None) -> None:
         cache_stream.write(markdown_line_handler(f'processor: {to_code(platform.processor())}', level=1))
         cache_stream.write(markdown_line_handler(f'release: {to_code(platform.release())}', level=1))
         cache_stream.write(markdown_line_handler(f'version: {to_code(platform.version())}', level=1))
+    except io.BlockingIOError:
+        raise
     finally:
         get_cache = cache_stream.getvalue()
     with open('./crash_report/{}'.format(filename), 'w+', encoding='utf-8') as crash_file:
