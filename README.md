@@ -39,26 +39,26 @@
 - `开发平台 1 - Windows 10`
   - `Python 3.8.10`
   - `Windows10 x64`
-  - `json5 0.9.9`
   - `pillow 9.2.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0b2`
+  - `pyglet 2.0`
   - `xmltodict 0.12.0`
   - `tomlkit 0.11.5`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
-- `开发平台 2 - macOS Big Sur`
-  - `Python 3.8.10`
-  - `macOS Big Sur 11.2.1`
-  - `Pyglet 1.5.15`
-  - `Json5 0.9.5`
-  - `pillow 8.1.2`
-  - `Intel I5 8279U`
+
+[//]: # (- `开发平台 2 - macOS Big Sur`)
+[//]: # (  - `Python 3.8.10`)
+[//]: # (  - `macOS Big Sur 11.2.1`)
+[//]: # (  - `Pyglet 1.5.15`)
+[//]: # (  - `Json5 0.9.5`)
+[//]: # (  - `pillow 8.1.2`)
+[//]: # (  - `Intel I5 8279U`)
 
 ## 需要的Python模块
 
-- `json5` (已经内置 V0.9.6 路径：`./libs/json5`)
 - `tomlkit`
+- `rtoml`
 - `pyglet` (已经内置 V2.0b2 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
 - `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
@@ -68,8 +68,7 @@
 ## 感谢
 
 - [pyglet](https://github.com/pyglet/pyglet) : GUI 和画面渲染
-- `json5`: json5 解析器
-- `tomlkit`: toml 解析器
+- `tomlkit` / `rtoml` : toml 解析器
 - `xmltodict`: xml 与 dict 转换器
 - `pyperclip`: 剪贴板!
 - [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang

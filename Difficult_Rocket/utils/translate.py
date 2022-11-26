@@ -20,10 +20,63 @@ from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.exception.language import *
 
-"""
-这部分代码使用了中文编程，why？
-你觉得呢？
-"""
+
+class Translated:
+    def __init__(self, value: Union[list, tuple, dict, str], raise_error: bool = False):
+        self.value = value
+        self.raise_error = raise_error
+        self.item_names = []
+
+    def __getattr__(self, item):
+        if hasattr(object, item):
+            return getattr(object, item)
+        self.item_names.append(item)
+        return self
+
+    def __getitem__(self, item):
+        self.item_names.append(item)
+        return self
+
+    def __str__(self):
+        if not self.item_names:
+            return self.value
+        else:
+            return f'{self.value}.{".".join(self.item_names)}'
+
+
+class Translating:
+    def __init__(self, value: Union[Dict[str, Any], list, tuple], raise_error: bool = False, get_list: list = None):
+        self.value: Union[Dict[str, Any], list, tuple] = value
+        self.raise_error = raise_error
+        self.get_list = get_list or []
+
+    def __getitem__(self, item: Union[str, Hashable]) -> Union["Translating", Translated]:
+        cache_get_list = self.get_list.copy()
+        cache_get_list.append(item)
+        try:
+            cache = self.value[item]
+        except (KeyError, TypeError):
+            if DR_option.report_translate_no_found:
+                frame = inspect.currentframe()
+                last_frame = frame.f_back
+                if last_frame.f_code == self.__getattr__.__code__:
+                    last_frame = last_frame.f_back
+                call_info = f'Translate Not Found at {last_frame.f_code.co_name} by {".".join(cache_get_list)} at:' \
+                            f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
+                print(call_info)
+            if not self.raise_error:
+                return Translated('.'.join(cache_get_list), raise_error=False)
+            else:
+                raise TranslateKeyNotFound(item_names=cache_get_list)
+        return Translating(value=cache, raise_error=self.raise_error, get_list=cache_get_list)
+
+    def __getattr__(self, item: Union[str, Hashable]) -> Union["Translating", Translated]:
+        if hasattr(object, item):
+            return getattr(object, item)
+        return self.__getitem__(item)
+
+    def __str__(self):
+        return str(self.value)
 
 class Translated:
     def __init__(self, value: Union[list, tuple, dict, str], raise_error: bool = False):

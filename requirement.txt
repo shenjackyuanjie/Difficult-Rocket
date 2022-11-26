@@ -8,5 +8,4 @@ pymunk
 rtoml
 setuptools
 Cython
-colorama
 viztracer
