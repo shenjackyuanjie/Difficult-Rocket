@@ -8,12 +8,23 @@
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.6.1-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.6.4-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](README-cn.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
+
+## 20221124 V 0.6.4
+
+### 最后的 0.6 呢
+
+### Add
+
+- `Logger!`
+- nuitka 文档
+- 准备给我的 5600x 的散热器洗一洗（
+- 一些 client
 
 ## 20220627
 

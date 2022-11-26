@@ -10,15 +10,20 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
-
+import ctypes
 
 from Difficult_Rocket.utils.typings import Options
 
 from libs.MCDR.version import Version
 
-game_version = Version("0.6.3")
+game_version = Version("0.6.4")
 __version__ = game_version
 
+long_version: int = 1
+"""
+long_version: 一个用于标记内部协议的整数
+1: 我可算想起来还有这回事了 v0.6.4
+"""
 
 
 class DR_option(Options):
@@ -31,6 +36,7 @@ class DR_option(Options):
     record_threads: bool = True
     use_cProfile: bool = False
     use_local_logging: bool = False
+    report_translate_no_found: bool = True
 
     # tests
     playing: bool = False
@@ -45,14 +51,16 @@ class _DR_runtime(Options):
     name = 'DR Runtime'
     # game statue
     DR_version: Version = game_version
+    DR_long_version: int = long_version
 
     # run status
     start_time_ns: int = None
-    client_setup_time_ns: int = None
-    server_setup_time_ns: int = None
+    client_setup_cause_ns: int = None
+    server_setup_cause_ns: int = None
 
     # game options
     _language = 'zh-CN'
+    default_language: str = 'zh-CN'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

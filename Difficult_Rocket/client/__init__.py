@@ -24,7 +24,7 @@ from decimal import Decimal
 from Difficult_Rocket import Options, DR_runtime
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
-# from Difficult_Rocket.client.screen import DRScreen
+from Difficult_Rocket.client.screen import DRScreen
 # from Difficult_Rocket.client.screen import DRDEBUGScreen
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.utils.new_thread import new_thread
@@ -138,7 +138,7 @@ class ClientWindow(Window):
         self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
         self.use_time = end_time - start_time
-        DR_runtime.client_setup_time_ns = self.use_time
+        DR_runtime.client_setup_cause_ns = self.use_time
         self.logger.info(tr.lang('window', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
         self.count = 0

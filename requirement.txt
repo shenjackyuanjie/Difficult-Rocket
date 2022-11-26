@@ -4,6 +4,7 @@ objprint
 # selenium
 
 tomlkit
+pymunk
 rtoml
 setuptools
 Cython

@@ -7,6 +7,7 @@
 #  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
+import io
 import os
 import re
 import sys
@@ -17,8 +18,6 @@ import threading
 import dataclasses
 
 from abc import ABC
-from queue import Queue
-from time import strftime
 from types import FrameType
 from logging import NOTSET, DEBUG
 from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
@@ -434,6 +433,10 @@ class StdHandler(StreamHandlerTemplate):
         print('', end='', flush=True)
         return True
 
+    def __repr__(self):
+        return f'StdHandler(level={self.level}, formatter={self.formatter})'
+
+
 
 class CachedFileHandler(StreamHandlerTemplate):
     """ 缓存文件的处理器 """
@@ -454,15 +457,14 @@ class CachedFileHandler(StreamHandlerTemplate):
         else:
             self.file_conf = LogFileConf()
         # 缓存
-        self.string_queue = Queue(maxsize=self.file_conf.file_cache_len)
+        self.len = 0
+        self.cache_stream = io.StringIO()
         # 状态
         self.started = True
         self.thread_started = False
-        self.running = False
+        self.flushing = False
         # 同步锁
-        self.cache_lock = threading.Lock()  # 主锁
-        self.time_limit_lock = ThreadLock(self.cache_lock, time_out=1 / 60)  # 直接用于 with 的主锁
-        self.threaded_write = threading.Timer(1, self._thread_write, kwargs={'by_thread': True})  # 基于 timer 的多线程
+        self.threaded_write = threading.Timer(1, self.flush, kwargs={'by_thread': True})  # 基于 timer 的多线程
 
     def _start_thread(self) -> bool:
         """
@@ -472,7 +474,7 @@ class CachedFileHandler(StreamHandlerTemplate):
         """
         if self.thread_started:
             return False
-        self.threaded_write = threading.Timer(1, self._thread_write, kwargs={'by_thread': True})
+        self.threaded_write = threading.Timer(1, self.flush, kwargs={'by_thread': True})
         self.threaded_write.start()
         self.thread_started = True
         return True
@@ -488,29 +490,38 @@ class CachedFileHandler(StreamHandlerTemplate):
             return False
         self.threaded_write.cancel()
 
-    def _thread_write(self, by_thread: bool) -> None:
-        if not self.string_queue.empty():  # 队列非空
-            with self.time_limit_lock and open(file=self.file_conf.file_name, mode=self.file_conf.file_mode,
-                                               encoding=self.file_conf.file_encoding) as log_file:
-                while not self.string_queue.empty():
-                    log_file.write(self.string_queue.get())
-
     def write(self, message: Message_content) -> bool:
-        if not message.flush:
-            if self.string_queue.qsize() + 1 <= self.file_conf.file_cache_len:
-                self.string_queue.put_nowait(message)
-            else:
-                if not self.thread_started:
-                    self.threaded_write.start()
-        else:
-            ...
+        self.len += 1
+        self.cache_stream.write(message.text)
+        if message.flush or self.len >= self.file_conf.file_cache_len:
+            if not self.flush():
+                self.flush()
+        elif not self.thread_started:
+            self._start_thread()
         return True
 
     def close(self) -> bool:
-        ...
+        self.cache_stream.close()
+        return True
 
-    def flush(self) -> bool:
-        ...
+    def flush(self, by_thread: Optional[bool] = False) -> bool:
+        if by_thread:
+            self.threaded_write = threading.Timer(1, self.flush, kwargs={'by_thread': True})
+            self.threaded_write.start()
+        if self.flushing:
+            return False
+        self.flushing = True
+        if cache := self.cache_stream.getvalue():
+            self.flushing = True
+            self.cache_stream.close()
+            self.cache_stream = io.StringIO()
+            self.len = 0
+            with open(file=self.file_conf.file_name, mode=self.file_conf.file_mode,
+                      encoding=self.file_conf.file_encoding) as log_file:
+                log_file.write(cache)
+        self.flushing = False
+        return True
+
 
 
 class LogFileCache:
@@ -707,7 +718,7 @@ class Logger:
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
-                    formats[key] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], key, self.colors[key])}{strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
+                    formats[key] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], key, self.colors[key])}{time.strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
         print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
                                                               level=level_with_color, message=text,
                                                               **formats)
@@ -866,7 +877,7 @@ def format_str(text: str) -> str:
         if isinstance(value, dict):
             if 'strftime' in value:
                 value['strftime']: str
-                formats[key] = strftime(value['strftime'].replace(
+                formats[key] = time.strftime(value['strftime'].replace(
                     '%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))
     return text.format(**formats)
 

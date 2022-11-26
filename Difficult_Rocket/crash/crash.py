@@ -76,8 +76,11 @@ def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
     a_len = max(tablet[1], 6)
     b_len = max(tablet[2], 5)
     c_len = max(tablet[3], 10)
-    crash_file.write(f'\n| Option{" " * (a_len - 4)}| Value{" " * (b_len[2] - 3)} | Value Type{" " * (c_len[3] - 8)} |\n')
+    crash_file.write(f'\n| Option{" " * (a_len - 4)} | Value{" " * (b_len - 3)} | Value Type{" " * (c_len - 8)} |\n')
     crash_file.write(f'|:{"-" * (a_len + 3)}|:{"-" * (b_len + 3)}|:{"-" * (c_len + 3)}|\n')
+    for a, b, c in tablet[0]:
+        b, c = str(b), str(c)
+        crash_file.write(f'| `{a}`{" " * (a_len - len(a))} | `{b}`{" " * (b_len - len(b))} | `{c}`{" " * (c_len - len(c))} |\n')
 
 
 def create_crash_report(info: str = None) -> None:
@@ -95,31 +98,15 @@ def create_crash_report(info: str = None) -> None:
         # 运行状态信息
         from Difficult_Rocket import DR_option, DR_runtime
         cache_stream.write(Run_message)
-
         cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
         cache_stream.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
         cache_stream.write(markdown_line_handler(f'Running Dir: {Path(os.curdir).resolve()}', level=1))
         option_with_len = DR_runtime.option_with_len()
-        option_with_len[1] = max(option_with_len[1], 6)
-        option_with_len[2] = max(option_with_len[2], 5)
-        option_with_len[3] = max(option_with_len[3], 10)
-        cache_stream.write(f'\n| Option{" " * (option_with_len[1] - 4)} | Value{" " * (option_with_len[2] - 3)} | Value Type{" " * (option_with_len[3] - 8)} |\n')
-        cache_stream.write(f'|:{"-" * (option_with_len[1] + 3)}|:{"-" * (option_with_len[2] + 3)}|:{"-" * (option_with_len[3] + 3)}|\n')
-        for a, b, c in option_with_len[0]:
-            b, c = str(b), str(c)
-            cache_stream.write(f'| `{a}`{" " * (option_with_len[1] - len(a))} | `{b}`{" " * (option_with_len[2] - len(b))} | `{c}`{" " * (option_with_len[3] - len(c))} |\n')
-
+        write_markdown_tablet(crash_file=cache_stream, tablet=option_with_len)
         # # DR 的游戏设置
         cache_stream.write(DR_configs)
         option_with_len = DR_option.option_with_len()
-        option_with_len[1] = max(option_with_len[1], 6)
-        option_with_len[2] = max(option_with_len[2], 5)
-        option_with_len[3] = max(option_with_len[3], 10)
-        cache_stream.write(f'| Option{" " * (option_with_len[1] - 4)} | Value{" " * (option_with_len[2] - 3)} | Value Type{" " * (option_with_len[3] - 8)} |\n')
-        cache_stream.write(f'|:{"-" * (option_with_len[1] + 3)}|:{"-" * (option_with_len[2] + 3)}|:{"-" * (option_with_len[3] + 3)}|\n')
-        for a, b, c in option_with_len[0]:
-            b, c = str(b), str(c)
-            cache_stream.write(f'| `{a}`{" " * (option_with_len[1] - len(a))} | `{b}`{" " * (option_with_len[2] - len(b))} | `{c}`{" " * (option_with_len[3] - len(c))} |\n')
+        write_markdown_tablet(crash_file=cache_stream, tablet=option_with_len)
         # 多进程信息
         cache_stream.write(Process_message)
         for process in all_process:
@@ -150,10 +137,9 @@ def create_crash_report(info: str = None) -> None:
         cache_stream.write(markdown_line_handler(f'processor: {to_code(platform.processor())}', level=1))
         cache_stream.write(markdown_line_handler(f'release: {to_code(platform.release())}', level=1))
         cache_stream.write(markdown_line_handler(f'version: {to_code(platform.version())}', level=1))
-    except io.BlockingIOError:
-        raise
     finally:
         get_cache = cache_stream.getvalue()
+        cache_stream.close()
     with open('./crash_report/{}'.format(filename), 'w+', encoding='utf-8') as crash_file:
         crash_file.write(get_cache)
 
