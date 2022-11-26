@@ -8,5 +8,7 @@ if ($args -eq "run") {
     run
 } elseif ($args -eq "viz") {
     viz_run
+} else {
+    run
 }
 pause

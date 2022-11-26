@@ -39,11 +39,15 @@
 - `开发平台 1 - Windows 10`
   - `Python 3.8.10`
   - `Windows10 x64`
-  - `pillow 9.2.0`
+  - `pillow 9.3.0`
   - `pyperclip 1.8.2`
   - `pyglet 2.0`
+  - `psutil 5.9.4`
+  - `objprint 0.2.2`
+  - `rtoml 0.9.0`
+  - `pymunk 6.4.0`
   - `xmltodict 0.12.0`
-  - `tomlkit 0.11.5`
+  - `tomlkit 0.11.6`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 
