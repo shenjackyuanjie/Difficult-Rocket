@@ -22,17 +22,29 @@ from Difficult_Rocket.exception.language import *
 
 
 class Translates:
-    def __init__(self, value: Union[Dict[str, Any], list, tuple, str], raise_error: bool = False, get_list: list = None, final: bool = False):
+    def __init__(self,
+                 value: Union[Dict[str, Any], list, tuple, str],
+                 raise_error: bool = False,
+                 get_list: list = None,
+                 final: bool = False):
+        """
+        一个用于
+        :param value: 翻译键节点
+        :param raise_error: 是否抛出错误
+        :param get_list: 尝试获取的列表
+        :param final: 是否为翻译结果 (偷懒用的)
+        """
         self.value: Union[Dict[str, Any], list, tuple] = value
         self.raise_error = raise_error
         self.get_list = get_list or []
         self.final = final
 
-    def __getitem__(self, item: Union[str, Hashable]) -> Union["Translates"]:
+    def __getitem__(self, item: Union[str, int, Hashable]) -> Union["Translates", str]:
         cache_get_list = self.get_list.copy()
         cache_get_list.append(item)
         try:
-            cache = self.value[item]
+            if not self.final:
+                cache = self.value[item]
         except (KeyError, TypeError):
             if DR_option.report_translate_no_found:
                 frame = inspect.currentframe()
@@ -45,8 +57,11 @@ class Translates:
             if not self.raise_error:
                 return Translates(value='.'.join(cache_get_list), raise_error=False, final=True)
             else:
-                raise TranslateKeyNotFound(item_names=cache_get_list)
-        return Translates(value=cache, raise_error=self.raise_error, get_list=cache_get_list)
+                raise TranslateKeyNotFound(item_names=cache_get_list) from None
+        if self.final:
+            return self
+        else:
+            return Translates(value=cache, raise_error=self.raise_error, get_list=cache_get_list)
 
     def __getattr__(self, item: Union[str, Hashable]) -> Union["Translates"]:
         if hasattr(object, item):
@@ -54,6 +69,8 @@ class Translates:
         return self.__getitem__(item)
 
     def __str__(self):
+        if self.final:
+            return f'{self.final}.{".".join(self.get_list)}'
         return str(self.value)
 
 
@@ -63,14 +80,11 @@ class Tr:
     GOOD
     """
 
-    def __init__(self, language: str = DR_runtime.language):
-        self.language_name = language
-        self.translates: Dict = tools.load_file(f'configs/lang/{language}.toml')
+    def __init__(self, language: str = None):
+        self.language_name = language or DR_runtime.language
+        self.translates: Dict = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
         self.不抛出异常 = False
-
-    def __call__(self):
-        ...
 
 
 class Lang:
@@ -139,6 +153,10 @@ class Lang:
 
 if not __name__ == '__main__':
     tr = Lang()
+else:
+    print(DR_runtime.language or None)
+    print(None or DR_runtime.language)
+    tr_ = Tr()
 
 # font's value
 
@@ -163,3 +181,5 @@ CMPL = 'Cascadia Mono PL'
 微软等宽带电线无线 = CMPL
 
 得意黑 = '得意黑'
+# SS = smiley-sans
+SS = 得意黑

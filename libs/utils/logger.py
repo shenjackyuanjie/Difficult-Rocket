@@ -141,7 +141,7 @@ logger_configs = {
         },
         'client': {
             'level': TRACE,
-            'color': 'main_color',
+            'color': 'fancy_main_color',
             'file':  'main_log_file',
         },
         'server': {
@@ -153,7 +153,6 @@ logger_configs = {
     },
     'Color':     {
         'main_color':       {
-            # 'file_time':            '\033[38;2;201;222;56m',
             'main_time':            '\033[38;2;201;222;56m',
             'file_name':            '\033[38;2;0;255;180m',
             'code_line':            '\033[38;2;0;255;180m',
@@ -170,16 +169,17 @@ logger_configs = {
             LoggingLevel.FATAL_t:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'fancy_main_color': {
-            # 'file_time':            '\033[38;2;201;222;56m',
             'main_time':            '\033[38;2;201;222;56m',
             'file_name':            '\033[38;2;0;255;180m',
             'code_line':            '\033[38;2;0;255;180m',
-            'logger':               '\033[0m',
+            'info':                 '\033[0m',
             'message':              '\033[0m',
+            'logger':               '\033[0m',
+            'marker':               '\033[0m',
             LoggingLevel.TRACE_t:   {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
             LoggingLevel.FINE_t:    {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
             LoggingLevel.DEBUG_t:   {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO_t:    {'info': '\033[0m', 'message': '\033[0m'},
+            LoggingLevel.INFO_t:    {'info': '\033[0m',  'message': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[33m', 'message': '\033[33m'},
             LoggingLevel.ERROR_t:   {'info': '\033[31m', 'message': '\033[31m'},
             LoggingLevel.FATAL_t:   {'info':    '\033[38;2;255;255;0;48;2;120;10;10m',
@@ -187,16 +187,17 @@ logger_configs = {
         },
         'DiGua_color':      {
             # catppuccin Macchiato
-            # 'file_time':            '\033[38;2;238;212;159m',
             'main_time':            '\033[38;2;202;211;245m',
             'file_name':            '\033[38;2;139;213;202m',
             'code_line':            '\033[38;2;166;218;149m',
+            'info':                 '\033[0m',
             'logger':               '\033[0m',
             'message':              '\033[0m',
+            'marker':               '\033[0m',
             LoggingLevel.TRACE_t:   {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
             LoggingLevel.FINE_t:    {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
             LoggingLevel.DEBUG_t:   {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO_t:    {'info': '\033[0m', 'message': '\033[0m'},
+            LoggingLevel.INFO_t:    {'info': '\033[0m',                'message': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[38;2;245;169;127m', 'message': '\033[38;2;245;169;127m'},
             LoggingLevel.ERROR_t:   {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
             LoggingLevel.FATAL_t:   {'info':    '\033[38;2;255;255;0;48;2;120;10;10m',
@@ -244,6 +245,11 @@ class Message_content(NamedTuple):
     end: Optional[str] = '\n'
     flush: Optional[bool] = False
     frame: Optional[FrameType] = None
+
+    def __str__(self):
+        return f"Message Content at {self.log_time}|in level {self.level}|with marker {self.marker}|ends as {self.end}|" \
+               f"by frame {self.frame}|{'and will flush' if self.flush else 'and will not flush'}|" \
+               f"text are: {self.text}"
 
 
 class ThreadLock:
@@ -325,7 +331,7 @@ class ListCache:
 class FormatterTemplate(ABC):
     """用于格式化 log 信息的模板类"""
 
-    def __init__(self, formats: str):
+    def __init__(self, formats: dict):
         self.formats = formats
 
     def format(self, message: str) -> str:
@@ -335,11 +341,21 @@ class FormatterTemplate(ABC):
 class StdFormatter(FormatterTemplate):
     """ 一个标准的格式化类 """
 
-    def __init__(self, formats: str):
+    def __init__(self, formats: dict, configs: dict):
         super().__init__(formats=formats)
+        self.configs = configs
         ...
 
+    def format_time(self, input_time: Optional[float] = None) -> Dict[str, str]:
+        millisecond = str((input_time - int(input_time)) * 1000)
+        long_time = time.strftime(
+            self.formats['long_time'].replace('%%S', millisecond))
+        short_time = time.strftime(
+            self.formats['short_time'].replace('%%S', millisecond))
+        return {'long_time': long_time, 'short_time': short_time}
+
     def format(self, message: Message_content) -> Message_content:
+        times = self.format_time(input_time=message.log_time)
         ...
 
 
@@ -630,11 +646,10 @@ class Logger:
         self.enable = True
         self.name = name
         self.level = level
-        self.low_level = level
+        self.min_level = self.level
         self.colors = colors or logger_configs['Color']['main_color']
         self.formats = formats or logger_configs['Formatter'].copy()
         self.streams = []  # type: List[StreamHandlerTemplate]
-        self.min_level = self.level
         self.handler = []
         if file_conf:
             self.file_cache = file_conf
@@ -664,17 +679,19 @@ class Logger:
     def enabled_for(self, level: logging_level_type) -> bool:
         if not self.enable:
             return False
+        if level < self.min_level:
+            return False
         return True
 
-    def format_time(self, input_time: Optional[float] = None) -> Dict[str, str]:
-        # 毫秒
-        get_time: float = input_time or time.time()
-        millisecond = str((get_time - int(get_time)) * 1000)
-        long_time = time.strftime(
-            self.formats['long_time'].replace('%%S', millisecond))
-        short_time = time.strftime(
-            self.formats['short_time'].replace('%%S', millisecond))
-        return {'long_time': long_time, 'short_time': short_time}
+    # def format_time(self, input_time: Optional[float] = None) -> Dict[str, str]:
+    #     # 毫秒
+    #     get_time: float = input_time or time.time()
+    #     millisecond = str((get_time - int(get_time)) * 1000)
+    #     long_time = time.strftime(
+    #         self.formats['long_time'].replace('%%S', millisecond))
+    #     short_time = time.strftime(
+    #         self.formats['short_time'].replace('%%S', millisecond))
+    #     return {'long_time': long_time, 'short_time': short_time}
 
     # def filter_and_make_log(): make_log(formatted_string)
     def make_log(self, *values: object,
@@ -690,6 +707,11 @@ class Logger:
         message = Message_content(log_time=time.time(),
                                   text=sep.join(i if type(i) is str else str(i) for i in values),
                                   level=level, marker=marker, end=end, flush=flush, frame=frame)
+
+        # 调用 steams
+        for stream in self.streams:
+            stream.write(message)
+
         message_color = self.colors[get_name_by_level(
             level)]['message'] if 'message' in self.colors[get_name_by_level(level)] else self.colors['message']
         text = f"{message_color}{sep.join(i if type(i) is str else str(i) for i in values)}{color_reset_suffix}"
@@ -980,10 +1002,22 @@ def get_logger(name: str = 'root') -> Logger:
 
 def test_logger(the_logger: Logger):
     the_logger.trace('tracing')
+    the_logger.trace('tracing')
+    the_logger.trace('tracing')
+    the_logger.fine('some fine!')
+    the_logger.fine('some fine!')
     the_logger.fine('some fine!')
     the_logger.debug('debugging')
+    the_logger.debug('debugging')
+    the_logger.debug('debugging')
+    the_logger.info("Hello World!!")
+    the_logger.info("Hello World!!")
+    the_logger.info("Hello World!!")
+    the_logger.info("Hello World!!")
     the_logger.info("Hello World!!")
     the_logger.warn('warning')
+    the_logger.warn('warning')
+    the_logger.error('error haaaa')
     the_logger.error('error haaaa')
     the_logger.fatal('oh no')
 
@@ -1016,3 +1050,4 @@ if __name__ == "__main__":
     sys.stdout.write(rtoml.dumps(logger_configs, pretty=False))
     print('-----------------')
     pprint.pprint(rtoml.loads(parse_config))
+    print(Message_content(log_time=time.time(), text='aaa', level=4, marker='abc', end='abc', flush=False, frame=inspect.currentframe()))
