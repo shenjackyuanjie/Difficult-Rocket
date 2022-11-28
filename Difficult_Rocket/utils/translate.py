@@ -154,8 +154,6 @@ class Lang:
 if not __name__ == '__main__':
     tr = Lang()
 else:
-    print(DR_runtime.language or None)
-    print(None or DR_runtime.language)
     tr_ = Tr()
 
 # font's value
