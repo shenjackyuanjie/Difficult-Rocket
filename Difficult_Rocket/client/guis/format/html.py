@@ -15,12 +15,18 @@ import re
 
 from Difficult_Rocket.utils import translate
 
+from pyglet.text.formats import structured
+
 default_style = {
     'font_name': 'Times New Roman',
     'font_size': 12,
     'bold':      False,
     'italic':    False
 }
+
+
+class MarkdownTextDecoder(structured.StructuredTextDecoder):
+    ...
 
 
 class SingleTextStyle:

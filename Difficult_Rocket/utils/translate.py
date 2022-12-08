@@ -40,11 +40,15 @@ class Translates:
         self.final = final
 
     def __getitem__(self, item: Union[str, int, Hashable]) -> Union["Translates", str]:
+        """
+        一坨答辩
+        :param item: 取用的内容/小天才
+        :return:
+        """
         cache_get_list = self.get_list.copy()
         cache_get_list.append(item)
         try:
-            if not self.final:
-                cache = self.value[item]
+            cache = self.value[item]
         except (KeyError, TypeError):
             if DR_option.report_translate_no_found:
                 frame = inspect.currentframe()
@@ -54,6 +58,7 @@ class Translates:
                 call_info = f'Translate Not Found at {last_frame.f_code.co_name} by {".".join(cache_get_list)} at:' \
                             f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
                 print(call_info)
+
             if not self.raise_error:
                 return Translates(value='.'.join(cache_get_list), raise_error=False, final=True)
             else:
@@ -79,12 +84,19 @@ class Tr:
     我不装了，我就抄了tr
     GOOD
     """
-
-    def __init__(self, language: str = None):
+    def __init__(self, language: str = None, raise_error: bool = False):
+        """
+        诶嘿，我抄的MCDR
+        :param language: Tr 所使用的的语言
+        :param raise_error: 解析失败的时候是否报错
+        """
         self.language_name = language or DR_runtime.language
         self.translates: Dict = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
-        self.不抛出异常 = False
+        self.不抛出异常 = raise_error
+
+    def __call__(self, ):
+        ...
 
 
 class Lang:
@@ -117,7 +129,7 @@ class Lang:
             except KeyError:
                 raise TranslateKeyNotFound(f'there\'s no key {item} in both {DR_option.language} and zh-CN')
 
-    def lang(self, *args) -> Union[int, str, list, dict]:
+    def lang(self, *args) -> Union[int, str, list, dict, tuple]:
         # frame = inspect.currentframe()
         # # print("调用当前log的文件名:", frame.f_back.f_code.co_filename)
         # objprint.objprint(frame.f_back.f_code,

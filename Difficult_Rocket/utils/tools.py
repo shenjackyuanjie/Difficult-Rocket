@@ -21,7 +21,7 @@ import configparser
 from typing import Union
 from xml.dom.minidom import parse
 
-import tomlkit
+import rtoml
 
 from Difficult_Rocket.exception.unsupport import NoMoreJson5
 
@@ -51,7 +51,7 @@ def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error:
                 get_file = get_file[stack]
         elif f_type == 'toml':
             with open(file_name, mode='r', encoding='utf-8') as file:
-                get_file = tomlkit.load(file)
+                get_file = rtoml.load(file)
         elif f_type == 'json5':
             raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:
@@ -61,7 +61,7 @@ def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error:
         else:
             tools_logger.error(file_error[Exception].format(error_type=error_type, filetype=f_type, filename=file_name, stack=stack))
         if raise_error:
-            raise
+            raise exp from None
     return get_file
 
 
@@ -87,12 +87,12 @@ def get_At(name, in_xml, need_type=str):
         return At_list
     elif name_type == str:
         if in_xml.hasAttribute(name):
-            At = in_xml.getAttribute(name)
+            attr = in_xml.getAttribute(name)
         else:
             return None
     else:
         raise TypeError('only str and list type is ok but you give me a' + name_type + 'type')
-    return need_type(At)
+    return need_type(attr)
 
 
 def default_name_handler(name_: str) -> str:

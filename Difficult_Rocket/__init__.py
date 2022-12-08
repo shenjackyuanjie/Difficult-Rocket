@@ -11,6 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 import ctypes
+import logging
 
 from Difficult_Rocket.utils.typings import Options
 
@@ -57,6 +58,9 @@ class _DR_runtime(Options):
     start_time_ns: int = None
     client_setup_cause_ns: int = None
     server_setup_cause_ns: int = None
+
+    # game runtimes
+    global_logger: logging.Logger
 
     # game options
     _language = 'zh-CN'

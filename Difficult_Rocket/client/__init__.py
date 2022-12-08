@@ -25,7 +25,7 @@ from Difficult_Rocket import Options, DR_runtime
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.client.screen import DRScreen
-# from Difficult_Rocket.client.screen import DRDEBUGScreen
+from Difficult_Rocket.client.screen import DRDEBUGScreen
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
@@ -34,6 +34,9 @@ from Difficult_Rocket.exception.command import CommandError
 
 import tomlkit
 import pyglet
+from pyglet import gl
+from pyglet.gl import *
+from pyglet.libs.win32 import _user32
 from pyglet.window import Window
 from pyglet.window import key, mouse
 
@@ -205,6 +208,7 @@ class ClientWindow(Window):
 
     def on_draw(self, *dt):
         # self.logger.debug('on_draw call dt: {}'.format(dt))
+        pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
         self.draw_batch()
 
@@ -214,6 +218,15 @@ class ClientWindow(Window):
 
     def on_refresh(self, dt):
         ...
+
+    def on_show(self):
+        # HWND_TOPMOST = -1
+        # _user32.SetWindowPos(self._hwnd, HWND_TOPMOST, 0, 0, self.width, self.height, 0)
+        ...
+
+    def on_hide(self):
+        # self.set_location(*self.get_location())
+        print('on hide!')
 
     def draw_batch(self):
         self.part_batch.draw()
