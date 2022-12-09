@@ -17,14 +17,26 @@ import inspect
 import threading
 import dataclasses
 
-from abc import ABC
 from types import FrameType
 from logging import NOTSET, DEBUG
 from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
 
 Version = '1.0.0'
 
-os.system('')
+# os.system('')
+color_support = True
+
+
+if sys.platform == "win32":
+    try:
+        # https://stackoverflow.com/questions/36760127/...
+        # how-to-use-the-new-support-for-ansi-escape-sequences-in-the-windows-10-console
+        from ctypes import windll
+        kernel32 = windll.kernel32
+        kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+    except OSError:  # pragma: no cover
+        color_support = False
+
 # print(os.path.abspath(os.curdir))
 # TODO 这个文件就是个大TODO
 """
@@ -328,7 +340,7 @@ class ListCache:
             self.cache.clear()
 
 
-class FormatterTemplate(ABC):
+class FormatterTemplate:
     """用于格式化 log 信息的模板类"""
 
     def __init__(self, formats: dict):
