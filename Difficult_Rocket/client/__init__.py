@@ -34,9 +34,9 @@ from Difficult_Rocket.exception.command import CommandError
 
 import tomlkit
 import pyglet
-from pyglet import gl
+# from pyglet import gl
 from pyglet.gl import *
-from pyglet.libs.win32 import _user32
+# from pyglet.libs.win32 import _user32
 from pyglet.window import Window
 from pyglet.window import key, mouse
 
@@ -82,8 +82,8 @@ def pyglet_load_fonts_folder(folder) -> None:
             pyglet_load_fonts_folder(os.path.join(folder, obj))
 
 
-class _DR_Client_option(Options):
-    ...
+# class _DR_Client_option(Options):
+#     ...
 
 
 class ClientWindow(Window):
