@@ -18,8 +18,9 @@ setuptools = "^65.5.0"
 viztracer = "^0.15.4"
 vizplugins = "^0.1.2"
 Cython = "^0.29.32"
+defusedxml = "*"
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["setuptools"]
 build-backend = "poetry.core.masonry.api"
