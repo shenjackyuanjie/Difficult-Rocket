@@ -22,7 +22,7 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from Difficult_Rocket import client, server, DR_option
+from Difficult_Rocket import client, DR_option
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
 
@@ -56,7 +56,6 @@ class Game:
 
     def setup(self) -> None:
         self.client = client.Client(net_mode='local')
-        self.server = server.Server(net_mode='local')
 
     def python_version_check(self) -> None:  # best 3.8+ and write at 3.8.10
         self.logger.info('{} {}'.format(tr['main']['version.now_on'], self.on_python_v))
@@ -69,7 +68,6 @@ class Game:
 
     # @new_thread('main')
     def _start(self):
-        self.server.run()
         threaded = False
         if threaded:
             try:
