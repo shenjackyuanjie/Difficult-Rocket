@@ -2,7 +2,7 @@ psutil
 pillow
 objprint
 # selenium
-
+defusedxml
 tomlkit
 pymunk
 rtoml
