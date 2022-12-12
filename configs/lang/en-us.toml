@@ -9,11 +9,11 @@ language = "English"
 "logger.created" = "Log handler created"
 "logger.mkdir" = "logs/ folder not found, now created"
 "logger.main_done" = "Main log handler created "
-"logger.logfile_name" = "Log file name :"
-"logger.logfile_level" = "Log file record level :"
-"logger.logfile_fmt" = "Log file record format :"
-"logger.logfile_datefmt" = "Log file date format :"
-"game_start.at" = "The main thread of the game starts with:"
+"logger.logfile_name" = "Log file name : "
+"logger.logfile_level" = "Log file record level : "
+"logger.logfile_fmt" = "Log file record format : "
+"logger.logfile_datefmt" = "Log file date format : "
+"game_start.at" = "The main thread of the game starts with : "
 
 [client]
 "setup.done" = "Client loaded"
@@ -25,7 +25,7 @@ language = "English"
 "setup.use_time" = "Window loading has used: {} second"
 "setup.use_time_ns" = "Window loading has used: {} nano second"
 "os.pid_is" = "Window's PID: {} PPID: {}"
-"button.been_press" = "Button pressed, the current state of the button is:"
+"button.been_press" = "Button pressed, the current state of the button is: "
 "mouse.press" = "mouse was click at {} button is: {}"
 "mouse.release" = "mouse release at {} button is: {}"
 "mouse.RIGHT" = "right button"
@@ -53,3 +53,6 @@ language = "English"
 [server]
 "setup.done" = "Server loaded "
 "os.pid_is" = "Server PID: {} PPID: {}"
+
+[game]
+
