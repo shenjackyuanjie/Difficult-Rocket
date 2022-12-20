@@ -11,10 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket.utils import translate
-from Difficult_Rocket.client.guis.format import html
-from Difficult_Rocket import DR_option
-
 # from libs import pyglet
 from pyglet import font
 from pyglet.text import Label, HTMLLabel
@@ -26,8 +22,13 @@ from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
 from pyglet.text.document import FormattedDocument
 from pyglet.text.layout import IncrementalTextLayout
+
 # from libs import pyperclip
 from libs.pyperclip import paste
+
+from Difficult_Rocket.utils import translate
+from Difficult_Rocket.client.guis.format import html
+from Difficult_Rocket import DR_option
 
 __all__ = ['Parts', 'InputBox']
 
@@ -49,6 +50,28 @@ class Parts(widgets.WidgetBase):
         super().__init__(x, y, width, height)
         self.sprite = Sprite(img=textures, x=x, y=y, batch=batch)
         self._value = 0
+
+
+class TextButton(widgets.WidgetBase):
+    """
+    自带字符的按钮，就不用单独做材质了
+    """
+
+    def __init__(self,
+                 x: int, y: int, width: int, height: int,
+                 text: str,
+                 font: str):
+        super().__init__(x, y, width, height)
+        self.text = text
+        self.text_label = Label()
+
+    @property
+    def value(self):
+        return self.text
+
+    def _update_position(self):
+        self.text_label.position = self._x, self._y
+        ...
 
 
 if not DR_option.InputBox_use_TextEntry:
@@ -209,7 +232,8 @@ if not DR_option.InputBox_use_TextEntry:
                 elif motion in (key.MOTION_DOWN, key.MOTION_RIGHT):  # 往下一个移动
                     self.cursor_poi = min(len(self.text), self._cursor_poi + 1)
                 # 大前后移动(开头或结尾)
-                elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):  # 开头
+                elif motion in (
+                        key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):  # 开头
                     self.cursor_poi = 0
                 elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):  # 结尾
                     self.cursor_poi = len(self.text)
@@ -250,5 +274,6 @@ if not DR_option.InputBox_use_TextEntry:
 
     InputBox.register_event_type('on_commit')
 else:
-    class InputBox(widgets.TextEntry):
-        pass
+    InputBox = widgets.TextEntry
+    # class InputBox(widgets.TextEntry):
+    #     pass
