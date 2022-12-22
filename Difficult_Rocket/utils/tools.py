@@ -52,6 +52,8 @@ def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error:
         elif f_type == 'toml':
             with open(file_name, mode='r', encoding='utf-8') as file:
                 get_file = rtoml.load(file)
+            if stack is not None:
+                get_file = get_file[stack]
         elif f_type == 'json5':
             raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:
@@ -66,7 +68,7 @@ def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error:
 
 
 # main config
-main_config_file = load_file('./configs/main.config')
+main_config_file = load_file('./configs/main.toml')
 
 
 def get_At(name, in_xml, need_type=str):

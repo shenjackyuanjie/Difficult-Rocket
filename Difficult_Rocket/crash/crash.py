@@ -57,6 +57,7 @@ def crash_info_handler(info: str = None) -> str:
     if not info:
         info = traceback.format_exc().replace('<', '< ')
     format_info = f"<pre>\n{info}</pre>\n"
+    format_info.replace('<module>', '< module>')
     return format_info
 
 

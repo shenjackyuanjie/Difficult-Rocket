@@ -34,7 +34,7 @@ class Server:
         # os.set
         self.process_name = 'server process'
         # config
-        self.config = tools.load_file('configs/main.config')
+        self.config = tools.load_file('configs/main.toml')
         # self.dev = Dev
         # self.net_mode = net_mode
         self.logger.info(tr.lang('server', 'setup.done'))

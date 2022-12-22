@@ -75,7 +75,7 @@ class Translates:
 
     def __str__(self):
         if self.final:
-            return f'{self.final}.{".".join(self.get_list)}'
+            return f'{self.value}.{".".join(self.get_list)}'
         return str(self.value)
 
 

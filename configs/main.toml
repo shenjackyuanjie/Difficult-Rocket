@@ -11,6 +11,7 @@ style = "None"
 width = 907
 height = 570
 visible = true
+gui_scale = 1
 caption = "Difficult Rocket {version}"
 resizable = true
 full_screen = false
@@ -18,3 +19,4 @@ full_screen = false
 [window.default]
 width = 1024
 height = 768
+gui_scale = 1
