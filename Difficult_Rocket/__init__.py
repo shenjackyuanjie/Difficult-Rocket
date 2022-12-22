@@ -33,16 +33,19 @@ class DR_option(Options):
     """
     name = 'DR Option'
     # runtime options
-    InputBox_use_TextEntry: bool = False
-    record_threads: bool = True
-    use_cProfile: bool = False
-    use_local_logging: bool = False
+    InputBox_use_TextEntry:    bool = False
+    record_threads:            bool = True
+    use_cProfile:              bool = False
+    use_local_logging:         bool = False
     report_translate_no_found: bool = True
 
     # tests
-    playing: bool = False
-    debugging: bool = False
+    playing:           bool = False
+    debugging:         bool = False
     crash_report_test: bool = True
+
+    # window option
+    gui_scale: int = 1  # default 1 2 -> 2x 3 -> 3x
 
 
 class _DR_runtime(Options):
