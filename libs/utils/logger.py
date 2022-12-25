@@ -2,6 +2,7 @@
 @author shenjackyuanjie
 @contact 3695888@qq.com
 """
+import enum
 #  -------------------------------
 #  Difficult Rocket
 #  Copyright © 2021-2022 by shenjackyuanjie 3695888@qq.com
@@ -12,6 +13,7 @@ import os
 import re
 import sys
 import time
+import enum
 import atexit
 import inspect
 import threading
@@ -26,12 +28,12 @@ Version = '1.0.0'
 # os.system('')
 color_support = True
 
-
 if sys.platform == "win32":
     try:
         # https://stackoverflow.com/questions/36760127/...
         # how-to-use-the-new-support-for-ansi-escape-sequences-in-the-windows-10-console
         from ctypes import windll
+
         kernel32 = windll.kernel32
         kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
     except OSError:  # pragma: no cover
@@ -111,28 +113,28 @@ class LoggingLevel:
 logging_level_type = int
 
 level_name_map: Dict[logging_level_type, str] = {
-    LoggingLevel.ALL:     'ALL',  # NOTSET
-    LoggingLevel.TRACE:   'TRACE',
-    LoggingLevel.FINE:    'FINE',
-    LoggingLevel.DEBUG:   'DEBUG',
-    LoggingLevel.INFO:    'INFO',
+    LoggingLevel.ALL: 'ALL',  # NOTSET
+    LoggingLevel.TRACE: 'TRACE',
+    LoggingLevel.FINE: 'FINE',
+    LoggingLevel.DEBUG: 'DEBUG',
+    LoggingLevel.INFO: 'INFO',
     LoggingLevel.WARNING: 'WARNING',  # WARN
-    LoggingLevel.ERROR:   'ERROR',
-    LoggingLevel.FATAL:   'FATAL'
+    LoggingLevel.ERROR: 'ERROR',
+    LoggingLevel.FATAL: 'FATAL'
 }
 
 name_level_map: Dict[str, logging_level_type] = {
-    'NOTSET':   LoggingLevel.ALL,
-    'ALL':      LoggingLevel.ALL,
-    'TRACE':    LoggingLevel.TRACE,
-    'FINE':     LoggingLevel.FINE,
-    'DEBUG':    LoggingLevel.DEBUG,
-    'INFO':     LoggingLevel.INFO,
-    'WARNING':  LoggingLevel.WARNING,
-    'WARN':     LoggingLevel.WARNING,
-    'ERROR':    LoggingLevel.ERROR,
+    'NOTSET': LoggingLevel.ALL,
+    'ALL': LoggingLevel.ALL,
+    'TRACE': LoggingLevel.TRACE,
+    'FINE': LoggingLevel.FINE,
+    'DEBUG': LoggingLevel.DEBUG,
+    'INFO': LoggingLevel.INFO,
+    'WARNING': LoggingLevel.WARNING,
+    'WARN': LoggingLevel.WARNING,
+    'ERROR': LoggingLevel.ERROR,
     'CRITICAL': LoggingLevel.FATAL,
-    'FATAL':    LoggingLevel.FATAL
+    'FATAL': LoggingLevel.FATAL
 }
 
 
@@ -145,95 +147,95 @@ def get_name_by_level(level: logging_level_type) -> str:
 
 
 logger_configs = {
-    'Logger':    {
-        'root':   {
+    'Logger': {
+        'root': {
             'level': DEBUG,
             'color': 'main_color',
-            'file':  'main_log_file',
+            'file': 'main_log_file',
         },
         'client': {
             'level': TRACE,
             'color': 'fancy_main_color',
-            'file':  'main_log_file',
+            'file': 'main_log_file',
         },
         'server': {
             'level': TRACE,
             'color': 'DiGua_color',
-            'file':  'main_log_file',
+            'file': 'main_log_file',
         },
 
     },
-    'Color':     {
-        'main_color':       {
-            'main_time':            '\033[38;2;201;222;56m',
-            'file_name':            '\033[38;2;0;255;180m',
-            'code_line':            '\033[38;2;0;255;180m',
-            'info':                 '\033[0m',
-            'message':              '\033[0m',
-            'logger':               '\033[0m',
-            'marker':               '\033[0m',
-            LoggingLevel.TRACE_t:   {'info': '\033[38;2;138;173;244m'},
-            LoggingLevel.FINE_t:    {'info': '\033[35;48;2;44;44;54m'},
-            LoggingLevel.DEBUG_t:   {'info': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO_t:    {'info': '\033[0m'},
+    'Color': {
+        'main_color': {
+            'main_time': '\033[38;2;201;222;56m',
+            'file_name': '\033[38;2;0;255;180m',
+            'code_line': '\033[38;2;0;255;180m',
+            'info': '\033[0m',
+            'message': '\033[0m',
+            'logger': '\033[0m',
+            'marker': '\033[0m',
+            LoggingLevel.TRACE_t: {'info': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE_t: {'info': '\033[35;48;2;44;44;54m'},
+            LoggingLevel.DEBUG_t: {'info': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO_t: {'info': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[33m'},
-            LoggingLevel.ERROR_t:   {'info': '\033[31m'},
-            LoggingLevel.FATAL_t:   {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.ERROR_t: {'info': '\033[31m'},
+            LoggingLevel.FATAL_t: {'info': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
         'fancy_main_color': {
-            'main_time':            '\033[38;2;201;222;56m',
-            'file_name':            '\033[38;2;0;255;180m',
-            'code_line':            '\033[38;2;0;255;180m',
-            'info':                 '\033[0m',
-            'message':              '\033[0m',
-            'logger':               '\033[0m',
-            'marker':               '\033[0m',
-            LoggingLevel.TRACE_t:   {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
-            LoggingLevel.FINE_t:    {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
-            LoggingLevel.DEBUG_t:   {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO_t:    {'info': '\033[0m',  'message': '\033[0m'},
+            'main_time': '\033[38;2;201;222;56m',
+            'file_name': '\033[38;2;0;255;180m',
+            'code_line': '\033[38;2;0;255;180m',
+            'info': '\033[0m',
+            'message': '\033[0m',
+            'logger': '\033[0m',
+            'marker': '\033[0m',
+            LoggingLevel.TRACE_t: {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE_t: {'info': '\033[35;48;2;44;44;54m', 'message': '\033[35m'},
+            LoggingLevel.DEBUG_t: {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO_t: {'info': '\033[0m', 'message': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[33m', 'message': '\033[33m'},
-            LoggingLevel.ERROR_t:   {'info': '\033[31m', 'message': '\033[31m'},
-            LoggingLevel.FATAL_t:   {'info':    '\033[38;2;255;255;0;48;2;120;10;10m',
-                                     'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.ERROR_t: {'info': '\033[31m', 'message': '\033[31m'},
+            LoggingLevel.FATAL_t: {'info': '\033[38;2;255;255;0;48;2;120;10;10m',
+                                   'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         },
-        'DiGua_color':      {
+        'DiGua_color': {
             # catppuccin Macchiato
-            'main_time':            '\033[38;2;202;211;245m',
-            'file_name':            '\033[38;2;139;213;202m',
-            'code_line':            '\033[38;2;166;218;149m',
-            'info':                 '\033[0m',
-            'logger':               '\033[0m',
-            'message':              '\033[0m',
-            'marker':               '\033[0m',
-            LoggingLevel.TRACE_t:   {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
-            LoggingLevel.FINE_t:    {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
-            LoggingLevel.DEBUG_t:   {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
-            LoggingLevel.INFO_t:    {'info': '\033[0m',                'message': '\033[0m'},
+            'main_time': '\033[38;2;202;211;245m',
+            'file_name': '\033[38;2;139;213;202m',
+            'code_line': '\033[38;2;166;218;149m',
+            'info': '\033[0m',
+            'logger': '\033[0m',
+            'message': '\033[0m',
+            'marker': '\033[0m',
+            LoggingLevel.TRACE_t: {'info': '\033[38;2;138;173;244m', 'message': '\033[38;2;138;173;244m'},
+            LoggingLevel.FINE_t: {'info': '\033[38;2;198;160;246m', 'message': '\033[38;2;198;160;246m'},
+            LoggingLevel.DEBUG_t: {'info': '\033[38;2;133;138;149m', 'message': '\033[38;2;133;138;149m'},
+            LoggingLevel.INFO_t: {'info': '\033[0m', 'message': '\033[0m'},
             LoggingLevel.WARNING_t: {'info': '\033[38;2;245;169;127m', 'message': '\033[38;2;245;169;127m'},
-            LoggingLevel.ERROR_t:   {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
-            LoggingLevel.FATAL_t:   {'info':    '\033[38;2;255;255;0;48;2;120;10;10m',
-                                     'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
+            LoggingLevel.ERROR_t: {'info': '\033[38;2;237;135;150m', 'message': '\033[38;2;237;135;150m'},
+            LoggingLevel.FATAL_t: {'info': '\033[38;2;255;255;0;48;2;120;10;10m',
+                                   'message': '\033[38;2;255;255;0;48;2;120;10;10m', 'logger': '\033[38;2;245;189;230m'}
         }
     },
-    'File':      {
+    'File': {
         'main_log_file': {
-            'mode':       'a',
-            'encoding':   'utf-8',
-            'level':      TRACE,
-            'file_name':  './logs/{long_time}_logs.md',
-            'cache_len':  10,
+            'mode': 'a',
+            'encoding': 'utf-8',
+            'level': TRACE,
+            'file_name': './logs/{long_time}_logs.md',
+            'cache_len': 10,
             'cache_time': 1
         },
     },
     'Formatter': {
-        'MESSAGE':    {
+        'MESSAGE': {
             'format': '[{long_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
         },
-        'file_name':  'no frame',
-        'code_line':  'no frame',
+        'file_name': 'no frame',
+        'code_line': 'no frame',
         'short_time': '%Y-%m-%d %H-%M-%S',
-        'long_time':  '%Y-%m-%d %H-%M-%S:%%S',
+        'long_time': '%Y-%m-%d %H-%M-%S:%%S',
     }
 }
 
@@ -248,7 +250,7 @@ class LogFileConf:
     file_cache_time: Union[int, float] = 1
 
 
-class Message_content(NamedTuple):
+class  Message_content(NamedTuple):
     """用于存储 log 信息的不可变元组"""
     log_time: float
     text: str
@@ -350,6 +352,16 @@ class FormatterTemplate:
         raise NotImplementedError('There is a formatter that not implemented')
 
 
+class ColorCodeEnum(enum.Enum):
+    main_time = "main_time"
+    code_line = "code_line"
+    file_name = "file_name"
+    info = "info"
+    message = "message"
+    logger = "logger"
+    marker = "marker"
+
+
 class StdFormatter(FormatterTemplate):
     """ 一个标准的格式化类 """
 
@@ -365,6 +377,15 @@ class StdFormatter(FormatterTemplate):
         short_time = time.strftime(
             self.formats['short_time'].replace('%%S', millisecond))
         return {'long_time': long_time, 'short_time': short_time}
+
+    def get_color_code(self, level: str, content: ColorCodeEnum) -> str:
+        assert content in ColorCodeEnum
+        if content in self.configs[level]:
+            return self.configs[level][content.name].replace("\\u001b", '\u001b')
+        return self.configs[content.name].replace('\\u001b', '\u001b')
+
+    def color_format(self, message: Message_content) -> Message_content:
+        times = self.format_time(input_time=message.log_time)
 
     def format(self, message: Message_content) -> Message_content:
         times = self.format_time(input_time=message.log_time)
@@ -465,12 +486,12 @@ class StdHandler(StreamHandlerTemplate):
         return f'StdHandler(level={self.level}, formatter={self.formatter})'
 
 
-
 class CachedFileHandler(StreamHandlerTemplate):
     """ 缓存文件的处理器 """
     name = 'cached file handler'
 
-    def __init__(self, level: int, formatter: Optional[FormatterTemplate] = None, file_conf: Union[dict, LogFileConf, None] = None):
+    def __init__(self, level: int, formatter: Optional[FormatterTemplate] = None,
+                 file_conf: Union[dict, LogFileConf, None] = None):
         """
         :param level:
         :param formatter:
@@ -549,7 +570,6 @@ class CachedFileHandler(StreamHandlerTemplate):
                 log_file.write(cache)
         self.flushing = False
         return True
-
 
 
 class LogFileCache:
@@ -645,7 +665,7 @@ class Logger:
                  level: int = DEBUG,
                  file_conf: Optional[List[LogFileCache]] = None,
                  colors: Optional[Dict[Union[int, str],
-                                       Dict[str, str]]] = None,
+                 Dict[str, str]]] = None,
                  formats=None) -> None:
         """
         配置模式: 使用 kwargs 配置
@@ -744,15 +764,19 @@ class Logger:
         level_with_color = f"{level_with_color}{' ' * (9 - len_without_color_maker(level_with_color))}"
         formats = self.formats.copy()
         if frame is not None:
-            formats['file_name'] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], 'file_name', self.colors['file_name'])}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
-            formats['code_line'] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], 'code_line', self.colors['code_line'])}{frame.f_lineno}{color_reset_suffix}"
-        formats['logger_name'] = f'{get_key_from_dict(self.colors[get_name_by_level(level)], "logger", self.colors["logger"])}{self.name}{color_reset_suffix}'
+            formats[
+                'file_name'] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], 'file_name', self.colors['file_name'])}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
+            formats[
+                'code_line'] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], 'code_line', self.colors['code_line'])}{frame.f_lineno}{color_reset_suffix}"
+        formats[
+            'logger_name'] = f'{get_key_from_dict(self.colors[get_name_by_level(level)], "logger", self.colors["logger"])}{self.name}{color_reset_suffix}'
         now_time = str(time.time())
         for key, value in formats.items():
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
-                    formats[key] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], key, self.colors[key])}{time.strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
+                    formats[
+                        key] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], key, self.colors[key])}{time.strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
         print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
                                                               level=level_with_color, message=text,
                                                               **formats)
@@ -764,7 +788,8 @@ class Logger:
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
               frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.TRACE, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.TRACE, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
     def fine(self, *values: object,
              marker: Optional[str] = None,
@@ -772,7 +797,8 @@ class Logger:
              end: Optional[str] = '\n',
              flush: Optional[bool] = False,
              frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.FINE, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.FINE, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
     def debug(self, *values: object,
               marker: Optional[str] = None,
@@ -780,7 +806,8 @@ class Logger:
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
               frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.DEBUG, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.DEBUG, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
     def info(self, *values: object,
              marker: Optional[str] = None,
@@ -788,7 +815,8 @@ class Logger:
              end: Optional[str] = '\n',
              flush: Optional[bool] = False,
              frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.INFO, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.INFO, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
     def warning(self, *values: object,
                 marker: Optional[str] = None,
@@ -796,7 +824,8 @@ class Logger:
                 end: Optional[str] = '\n',
                 flush: Optional[bool] = False,
                 frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.WARNING, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.WARNING, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
     def error(self, *values: object,
               marker: Optional[str] = None,
@@ -804,7 +833,8 @@ class Logger:
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
               frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.ERROR, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.ERROR, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
     def fatal(self, *values: object,
               marker: Optional[str] = None,
@@ -812,7 +842,8 @@ class Logger:
               end: Optional[str] = '\n',
               flush: Optional[bool] = False,
               frame: Optional[FrameType] = None) -> Optional[str]:
-        return self.make_log(*values, level=LoggingLevel.FATAL, marker=marker, sep=sep, end=end, flush=flush, frame=frame)
+        return self.make_log(*values, level=LoggingLevel.FATAL, marker=marker, sep=sep, end=end, flush=flush,
+                             frame=frame)
 
 
 _logger_class = Logger
@@ -937,11 +968,11 @@ def gen_file_conf(file_name: str,
     :param file_cache_time: 文件缓存时间
     :return: 生成的配置
     """
-    return {'file_name':  file_name,
-            'level':      file_level,
-            'mode':       file_mode,
-            'encoding':   file_encoding,
-            'cache_len':  file_cache_len,
+    return {'file_name': file_name,
+            'level': file_level,
+            'mode': file_mode,
+            'encoding': file_encoding,
+            'cache_len': file_cache_len,
             'cache_time': file_cache_time}
 
 
@@ -982,11 +1013,11 @@ def add_file_config(conf_name: str,
     :param file_cache_time: 文件缓存时间
     :return: None
     """
-    logger_configs['File'][conf_name] = {'file_name':  file_name,
-                                         'level':      file_level,
-                                         'mode':       file_mode,
-                                         'encoding':   file_encoding,
-                                         'cache_len':  file_cache_len,
+    logger_configs['File'][conf_name] = {'file_name': file_name,
+                                         'level': file_level,
+                                         'mode': file_mode,
+                                         'encoding': file_encoding,
+                                         'cache_len': file_cache_len,
                                          'cache_time': file_cache_time}
 
 
@@ -1062,4 +1093,6 @@ if __name__ == "__main__":
     sys.stdout.write(rtoml.dumps(logger_configs, pretty=False))
     print('-----------------')
     pprint.pprint(rtoml.loads(parse_config))
-    print(Message_content(log_time=time.time(), text='aaa', level=4, marker='abc', end='abc', flush=False, frame=inspect.currentframe()))
+    print(Message_content(log_time=time.time(), text='aaa', level=4, marker='abc', end='abc', flush=False,
+                          frame=inspect.currentframe()))
+    print(ColorCodeEnum.code_line.name)
