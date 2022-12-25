@@ -42,7 +42,7 @@ logger_version = '1.0.0'
 
 [Formatter]
 
-main_format = '[{long_time}] [{logger_name}] {level} | {file_name}:{code_line} | {message}'
+main_format = '[{long_time}] [{logger_name}] {level} | {file_name}:{code_line} | {marker} | {message}'
 file_name = 'no frame'
 code_line = 'no frame'
 short_time = '%Y-%m-%d %H-%M-%S'

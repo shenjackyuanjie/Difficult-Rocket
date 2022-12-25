@@ -10,14 +10,15 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
-
+import inspect
 # system function
 import os
 import time
 import logging
+import functools
 import traceback
 
-from typing import List, Union
+from typing import List, Callable, Union
 from decimal import Decimal
 
 # third function
@@ -30,11 +31,10 @@ from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
-from Difficult_Rocket import Options, DR_runtime
+from Difficult_Rocket import DR_runtime
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.client.screen import DRScreen
-from Difficult_Rocket.client.screen import DRDEBUGScreen
+from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
@@ -54,7 +54,8 @@ class Client:
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.net_mode = net_mode
-        self.caption = tools.name_handler(self.config['window']['caption'], {'version': self.config['runtime']['version']})
+        self.caption = tools.name_handler(self.config['window']['caption'],
+                                          {'version': self.config['runtime']['version']})
         self.window = ClientWindow(net_mode=self.net_mode,
                                    width=int(self.config['window']['width']),
                                    height=int(self.config['window']['height']),
@@ -83,8 +84,30 @@ def pyglet_load_fonts_folder(folder) -> None:
             pyglet_load_fonts_folder(os.path.join(folder, obj))
 
 
-# class _DR_Client_option(Options):
-#     ...
+def _call_screen_after(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def warped(self, *args, **kwargs):
+        result = func(self, *args, **kwargs)
+        for a_screen in self.screen_list:
+            if hasattr(a_screen, func.__name__):
+                getattr(a_screen, func.__name__)(*args, **kwargs)
+        return result
+
+    warped.__signature__ = inspect.signature(func)
+    return warped
+
+
+def _call_screen_before(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def warped(self, *args, **kwargs):
+        for a_screen in self.screen_list:
+            if hasattr(a_screen, func.__name__):
+                getattr(a_screen, func.__name__)(*args, **kwargs)
+        result = func(self, *args, **kwargs)
+        return result
+
+    warped.__signature__ = inspect.signature(func)
+    return warped
 
 
 class ClientWindow(Window):
@@ -117,7 +140,6 @@ class ClientWindow(Window):
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
-        # self.DRscreen = DRScreen(self)
         self.screen_list = []
         # setup
         self.setup()
@@ -128,13 +150,6 @@ class ClientWindow(Window):
                                   batch=self.label_batch)  # 实例化
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
-        # fps显示
-        self.fps_label = pyglet.text.Label(x=10, y=self.height - 10,
-                                           width=self.width - 20, height=20,
-                                           anchor_x='left', anchor_y='top',
-                                           font_name=translate.微软等宽无线, font_size=20,
-                                           multiline=True,
-                                           batch=self.label_batch, group=self.command_group)
         # 设置刷新率
         pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
@@ -149,7 +164,6 @@ class ClientWindow(Window):
 
     def setup(self):
         self.load_fonts()
-        from Difficult_Rocket.client.screen import DRDEBUGScreen, DRScreen, BaseScreen
         self.screen_list: List[BaseScreen]
         self.screen_list.append(DRDEBUGScreen(self))
         self.screen_list.append(DRScreen(self))
@@ -197,38 +211,39 @@ class ClientWindow(Window):
     draws and some event
     """
 
+    @_call_screen_after
     def draw_update(self, tick: float):
         decimal_tick = Decimal(str(tick)[:10])
-        self.FPS_update(decimal_tick)
-
-    def FPS_update(self, tick: Decimal):
         now_FPS = pyglet.clock.get_frequency()
-        self.fps_log.update_tick(now_FPS, tick)
+        self.fps_log.update_tick(now_FPS, decimal_tick)
 
-        self.fps_label.text = f'FPS: {self.fps_log.fps: >5.1f}({self.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n {self.fps_log.max_fps: >7.1f} {self.fps_log.min_fps:>5.1f}'
-
+    @_call_screen_after
     def on_draw(self, *dt):
         # self.logger.debug('on_draw call dt: {}'.format(dt))
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
         self.draw_batch()
 
+    @_call_screen_after
     def on_resize(self, width: int, height: int):
         super().on_resize(width, height)
-        self.fps_label.y = height - 10
 
+    @_call_screen_after
     def on_refresh(self, dt):
         ...
 
+    @_call_screen_after
     def on_show(self):
         # HWND_TOPMOST = -1
         # _user32.SetWindowPos(self._hwnd, HWND_TOPMOST, 0, 0, self.width, self.height, 0)
         ...
 
+    @_call_screen_after
     def on_hide(self):
         # self.set_location(*self.get_location())
         print('on hide!')
 
+    @_call_screen_after
     def draw_batch(self):
         self.part_batch.draw()
         self.label_batch.draw()
@@ -237,11 +252,12 @@ class ClientWindow(Window):
     command line event
     """
 
+    @_call_screen_after
     def on_command(self, command: line.CommandText):
         self.logger.info(tr.lang('window', 'command.text').format(command))
         if command.match('stop'):
-            self.dispatch_event('on_exit')
-            # platform_event_loop.stop()
+            # self.dispatch_event('on_exit')
+            pyglet.app.platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command
         elif command.match('fps'):
             if command.match('log'):
@@ -253,9 +269,11 @@ class ClientWindow(Window):
                 self.logger.info(self.fps_log.min_fps)
                 self.command.push_line(self.fps_log.min_fps, block_line=True)
         elif command.match('default'):
-            self.set_size(int(self.main_config['window_default']['width']), int(self.main_config['window_default']['height']))
+            self.set_size(int(self.main_config['window_default']['width']),
+                          int(self.main_config['window_default']['height']))
         self.command_tree.parse(command.plain_command)
 
+    @_call_screen_after
     def on_message(self, message: line.CommandLine.text):
         self.logger.info(tr.lang('window', 'message.text').format(message))
 
@@ -263,31 +281,51 @@ class ClientWindow(Window):
     keyboard and mouse input
     """
 
-    def activate(self):
+    @_call_screen_after
+    def on_activate(self):
         super().activate()
 
+    @_call_screen_after
+    def on_deactivate(self):
+        ...
+
+    @_call_screen_after
     def on_mouse_motion(self, x, y, dx, dy) -> None:
         pass
 
+    @_call_screen_after
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers) -> None:
         pass
 
+    @_call_screen_after
     def on_mouse_press(self, x, y, button, modifiers) -> None:
-        self.logger.debug(tr.lang('window', 'mouse.press').format([x, y], tr.lang('window', 'mouse.{}'.format(mouse.buttons_string(button)))))
+        self.logger.debug(tr.lang('window', 'mouse.press').format([x, y], tr.lang('window', 'mouse.{}'.format(
+            mouse.buttons_string(button)))))
 
+    @_call_screen_after
     def on_mouse_release(self, x, y, button, modifiers) -> None:
-        self.logger.debug(tr.lang('window', 'mouse.release').format([x, y], tr.lang('window', 'mouse.{}'.format(mouse.buttons_string(button)))))
+        self.logger.debug(tr.lang('window', 'mouse.release').format([x, y], tr.lang('window', 'mouse.{}'.format(
+            mouse.buttons_string(button)))))
 
+    @_call_screen_after
     def on_key_press(self, symbol, modifiers) -> None:
         if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
             self.dispatch_event('on_close')
-        self.logger.debug(tr.lang('window', 'key.press').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+        self.logger.debug(
+            tr.lang('window', 'key.press').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
+    @_call_screen_after
     def on_key_release(self, symbol, modifiers) -> None:
-        self.logger.debug(tr.lang('window', 'key.release').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+        self.logger.debug(
+            tr.lang('window', 'key.release').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
+    @_call_screen_after
+    def on_file_drop(self, x, y, paths):
+        ...
+
+    @_call_screen_after
     def on_text(self, text):
         if text == '\r':
             self.logger.debug(tr.lang('window', 'text.new_line'))
@@ -296,18 +334,22 @@ class ClientWindow(Window):
             if text == 't':
                 self.input_box.enabled = True
 
+    @_call_screen_after
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
         self.logger.debug(tr.lang('window', 'text.motion').format(motion_string))
 
+    @_call_screen_after
     def on_text_motion_select(self, motion):
         motion_string = key.motion_string(motion)
         self.logger.debug(tr.lang('window', 'text.motion_select').format(motion_string))
 
+    @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
         self.logger.info(tr.lang('window', 'game.stop_get').format(tr.lang('window', f'game.{source}_stop')))
         self.logger.info(tr.lang('window', 'game.stop'))
         self.fps_log.check_list = False
+        DR_runtime.running = False
         if self.run_input:
             self.run_input = False
         self.save_info()

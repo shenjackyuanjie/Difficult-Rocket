@@ -25,10 +25,11 @@ class Translates:
     def __init__(self,
                  value: Union[Dict[str, Any], list, tuple, str],
                  raise_error: bool = False,
-                 get_list: list = None,
+                 get_list: List[str] = None,
+                 error_get_list: List[str] = None,
                  final: bool = False):
         """
-        一个用于
+        一个用于翻译的东西
         :param value: 翻译键节点
         :param raise_error: 是否抛出错误
         :param get_list: 尝试获取的列表
@@ -37,19 +38,23 @@ class Translates:
         self.value: Union[Dict[str, Any], list, tuple] = value
         self.raise_error = raise_error
         self.get_list = get_list or []
+        self.error_get_list = error_get_list or []
         self.final = final
 
-    def __getitem__(self, item: Union[str, int, Hashable]) -> Union["Translates", str]:
+    def __getitem__(self, item: Union[str, int, Hashable]) -> Union["Translates", str, int]:
         """
         一坨答辩
         :param item: 取用的内容/小天才
         :return:
         """
         cache_get_list = self.get_list.copy()
+        cache_error_get_list = self.error_get_list.copy()
         cache_get_list.append(item)
         try:
             cache = self.value[item]
+            cache_get_list.append(item)
         except (KeyError, TypeError):
+            # 出现问题
             if DR_option.report_translate_no_found:
                 frame = inspect.currentframe()
                 last_frame = frame.f_back
@@ -58,15 +63,17 @@ class Translates:
                 call_info = f'Translate Not Found at {last_frame.f_code.co_name} by {".".join(cache_get_list)} at:' \
                             f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
                 print(call_info)
-
-            if not self.raise_error:
-                return Translates(value='.'.join(cache_get_list), raise_error=False, final=True)
-            else:
+            # 如果不抛出错误
+            if self.raise_error:
                 raise TranslateKeyNotFound(item_names=cache_get_list) from None
-        if self.final:
-            return self
+            cache_error_get_list.append(item)
+            if self.final:  # 如果已经是翻译结果
+                return Translates(value='.'.join(cache_get_list), raise_error=False, final=True, error_get_list=cache_error_get_list)
         else:
-            return Translates(value=cache, raise_error=self.raise_error, get_list=cache_get_list)
+            if self.final:
+                return self
+            else:
+                return Translates(value=cache, raise_error=self.raise_error, get_list=cache_get_list)
 
     def __getattr__(self, item: Union[str, Hashable]) -> Union["Translates"]:
         if hasattr(object, item):
@@ -74,7 +81,7 @@ class Translates:
         return self.__getitem__(item)
 
     def __str__(self):
-        if self.final:
+        if self.final:  # 如果是字符串
             return f'{self.value}.{".".join(self.get_list)}'
         return str(self.value)
 

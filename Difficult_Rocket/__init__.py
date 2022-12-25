@@ -38,11 +38,12 @@ class DR_option(Options):
     use_cProfile:              bool = False
     use_local_logging:         bool = False
     report_translate_no_found: bool = True
+    use_muitprocess:           bool = False
 
     # tests
     playing:           bool = False
     debugging:         bool = False
-    crash_report_test: bool = True
+    crash_report_test: bool = False
 
     # window option
     gui_scale: int = 1  # default 1 2 -> 2x 3 -> 3x
@@ -58,7 +59,8 @@ class _DR_runtime(Options):
     DR_long_version: int = long_version
 
     # run status
-    start_time_ns: int = None
+    running:               bool = False
+    start_time_ns:         int = None
     client_setup_cause_ns: int = None
     server_setup_cause_ns: int = None
 
