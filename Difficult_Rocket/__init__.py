@@ -92,7 +92,7 @@ class _DR_runtime(Options):
 _DR_runtime.add_option('language', _DR_runtime.language)
 
 
-DR_option = DR_option()
+dDR_option = DR_option()
 DR_runtime = _DR_runtime()
 
 if DR_option.playing:

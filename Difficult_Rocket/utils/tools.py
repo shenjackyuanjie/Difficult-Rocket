@@ -19,9 +19,11 @@ import logging
 import configparser
 
 from typing import Union
-from xml.dom.minidom import parse
+from xml.etree import ElementTree
 
 import rtoml
+
+from defusedxml.ElementTree import parse
 
 from Difficult_Rocket.exception.unsupport import NoMoreJson5
 
@@ -36,14 +38,16 @@ file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: 
               Exception:         'get some {error_type} error when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
 
 
-def load_file(file_name: str, stack: Union[str, list, dict] = None, raise_error: bool = True) -> Union[dict, list]:
+def load_file(file_name: str,
+              stack: Union[str, list, dict] = None,
+              raise_error: bool = True) -> Union[dict, list]:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     get_file = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
     try:
         if f_type == 'xml':
-            xml_load = parse(file_name)
+            xml_load: ElementTree.ElementTree = parse(file_name)
             if stack is not None:
-                get_file = xml_load.getElementsByTagName(stack)
+                get_file = xml_load.find(stack)
         elif (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
             get_file = configparser.ConfigParser()
             get_file.read(file_name)

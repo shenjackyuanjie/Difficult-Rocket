@@ -31,15 +31,16 @@ from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
-from Difficult_Rocket import DR_runtime
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
+from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.command import CommandError
+from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
+from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
 
 
 class Client:
@@ -62,7 +63,8 @@ class Client:
                                    fullscreen=tools.format_bool(self.config['window']['full_screen']),
                                    caption=self.caption,
                                    resizable=tools.format_bool(self.config['window']['resizable']),
-                                   visible=tools.format_bool(self.config['window']['visible']))
+                                   visible=tools.format_bool(self.config['window']['visible']),
+                                   file_drops=True)
         self.logger.info(tr.lang('client', 'setup.done'))
         end_time = time.time_ns()
         self.use_time = end_time - start_time
@@ -90,7 +92,10 @@ def _call_screen_after(func: Callable) -> Callable:
         result = func(self, *args, **kwargs)
         for a_screen in self.screen_list:
             if hasattr(a_screen, func.__name__):
-                getattr(a_screen, func.__name__)(*args, **kwargs)
+                try:
+                    getattr(a_screen, func.__name__)(*args, **kwargs)
+                except:
+                    traceback.print_exc()
         return result
 
     warped.__signature__ = inspect.signature(func)
@@ -102,7 +107,10 @@ def _call_screen_before(func: Callable) -> Callable:
     def warped(self, *args, **kwargs):
         for a_screen in self.screen_list:
             if hasattr(a_screen, func.__name__):
-                getattr(a_screen, func.__name__)(*args, **kwargs)
+                try:
+                    getattr(a_screen, func.__name__)(*args, **kwargs)
+                except:
+                    traceback.print_exc()
         result = func(self, *args, **kwargs)
         return result
 
@@ -167,6 +175,7 @@ class ClientWindow(Window):
         self.screen_list: List[BaseScreen]
         self.screen_list.append(DRDEBUGScreen(self))
         self.screen_list.append(DRScreen(self))
+        self.screen_list.append(SR1ShipRender(self, DR_option.gui_scale))
 
     def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']

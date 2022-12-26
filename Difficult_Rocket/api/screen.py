@@ -12,7 +12,7 @@ from typing import List
 from pyglet.event import EventDispatcher
 
 # Difficult Rocket function
-
+from Difficult_Rocket.command.api import CommandText
 
 if typing.TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
@@ -388,14 +388,14 @@ class BaseScreen(EventDispatcher):
 
             """
 
-        def on_command(self, command):
+        def on_command(self, command: CommandText):
             """
 
             :param command:
             :return:
             """
 
-        def on_message(self, message):
+        def on_message(self, message: str):
             """
 
             :param message:
