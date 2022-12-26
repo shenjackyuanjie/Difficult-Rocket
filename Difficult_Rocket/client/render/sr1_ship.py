@@ -16,7 +16,7 @@ from pyglet.resource import texture
 
 # Difficult Rocket
 from Difficult_Rocket import DR_option
-from Difficult_Rocket.api.types.SR1 import SR1Textures
+from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 
@@ -59,11 +59,12 @@ class SR1ShipRender(BaseScreen):
             part_flip_x = part.attrib.get('flippedX') or 0
             part_flip_y = part.attrib.get('flippedY') or 0
             part_explode = part.attrib.get('exploded') or 0
-            if part_id not in self.textures.cached_options:
+            if part_type not in SR1PartTexture.part_type_sprite:
                 print('Textures None found!')
             print(f'id: {part_id:<4} type: {part_type:<10} x: {part_x} y: {part_y} activated: {part_activate} '
                   f'angle: {part_angle} angle_v: {part_angle_v} editor_angle: {part_editor_angle} '
-                  f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode}')
+                  f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
+                  f'textures: {SR1PartTexture.get_sprite_from_type(part_type)}')
 
     def on_draw(self):
         ...

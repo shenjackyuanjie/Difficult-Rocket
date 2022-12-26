@@ -20,10 +20,11 @@ from libs.MCDR.version import Version
 game_version = Version("0.6.4")
 __version__ = game_version
 
-long_version: int = 1
+long_version: ctypes.c_longlong = ctypes.c_longlong(2)
 """
 long_version: 一个用于标记内部协议的整数
 1: 我可算想起来还有这回事了 v0.6.4
+2: 哦，对 longlong 好耶！
 """
 
 
@@ -92,7 +93,7 @@ class _DR_runtime(Options):
 _DR_runtime.add_option('language', _DR_runtime.language)
 
 
-dDR_option = DR_option()
+DR_option = DR_option()
 DR_runtime = _DR_runtime()
 
 if DR_option.playing:

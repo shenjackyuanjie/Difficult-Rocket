@@ -25,7 +25,7 @@ from decimal import Decimal
 import tomlkit
 import pyglet
 # from pyglet import gl
-from pyglet.gl import *
+from pyglet.gl import glClearColor
 # from pyglet.libs.win32 import _user32
 from pyglet.window import Window
 from pyglet.window import key, mouse
