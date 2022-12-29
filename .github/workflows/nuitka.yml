@@ -29,15 +29,8 @@ jobs:
         uses: actions/checkout@v3
 
       # 获取短 sha
-      - name: Get short commit sha (bash)
-        if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
-        id: get_short_sha_bash
-        run: |
-          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
-          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
-      - name: Get short commit sha (powershell)
-        if: runner.os == 'Windows'
-        id: get_short_sha_powershell
+      - name: Get short commit sha
+        id: get_short_sha
         shell: pwsh
         run: |
           $short_sha = echo $`{GITHUB_SHA`}
@@ -67,19 +60,23 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          ./action_build.ps1
-#          $arg = "--standalone --assume-yes-for-download "
-#          $arg += "--msvc=latest --clang --lto=no --output-dir=build "
-#          $arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
-#          $arg += "--include-data-dir=./libs/pyglet=./pyglet "
-#          $arg += "--include-data-dir=./libs/fonts=./libs/fonts "
-#          $arg += "--include-data-dir=./textures=./textures "
-#          $arg += "--include-data-dir=./configs=./configs "
-#          python -m nuitka $arg DR.py
+          $arg = @()
+          $arg += @("--standalone")
+          $arg += @("--assume-yes-for-download")
+          $arg += @("--msvc=latest")
+          $arg += @("--clang")
+          $arg += @("--lto=no")
+          $arg += @("--output-dir=build")
+          $arg += @("--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet")
+          $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
+          $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
+          $arg += @("--include-data-dir=./textures=./textures")
+          $arg += @("--include-data-dir=./configs=./configs")
+          python -m nuitka $arg DR.py
 
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
-        shell: pwsh
+        shell: bash
         run: |
           arg="--standalone --assume-yes-for-download --output-dir=build "
           arg+="--clang --lto=no "
@@ -93,21 +90,10 @@ jobs:
       - name: after build
         run: python after_compile.py
 
-
-      # Uploads artifact
-      - name: Upload Artifact (bash)
-        if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ runner.os }} Build.${{ github.run_number}}+${{ steps.get_short_sha_bash.outputs.short_sha }}
-          path: |
-            build/*.zip
-
       # Uploads artifact
       - name: Upload Artifact (powershell)
-        if: runner.os == 'Windows'
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }} Build.${{ github.run_number}}+${{ steps.get_short_sha_powershell.outputs.short_sha }}
+          name: ${{ runner.os }} Build.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
           path: |
             build/*.zip
