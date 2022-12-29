@@ -1,0 +1,59 @@
+# 名称
+name: Build
+
+# 运行条件
+on:
+  # 触发条件
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+# 主任务
+jobs:
+  build:
+    # 全都要！
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    runs-on:  ${{ matrix.os }}
+
+    steps:
+      # Check-out repository
+      - name: Check out
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # 为了支持 win7 我还是得用 3.8
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          cache: 'pip'
+          cache-dependency-path: '**/requirements*.txt'
+
+      # 安装依赖
+      - name: Install env
+        run: pip install -r requirements.txt
+
+
+      # Build python script into a stand-alone exe
+      - name: Build
+      - uses: Nuitka/Nuitka-Action@v0.4
+        with:
+          script-name: DR.py
+          standalone: true
+          include-package-data: ['./configs=./configs', './libs/fonts=./libs/fonts']
+          assume-yes-for-download: true
+
+
+      # Uploads artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
