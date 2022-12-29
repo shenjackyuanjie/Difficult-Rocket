@@ -110,6 +110,6 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Difficult-Rocket-${{ runner.os }}-${{ matrix.python-version }}-Build.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
+          name: Difficult-Rocket_v${{steps.DR_info.outputs.DR_version}}-${{runner.os}}_${{matrix.python-version}}-Build.${{github.run_number}}+${{steps.get_short_sha.outputs.short_sha}}
           path: |
             build/*.zip
