@@ -40,7 +40,7 @@ jobs:
 
       # Build python script into a stand-alone exe
       - name: Build
-      - uses: Nuitka/Nuitka-Action@v0.4
+        uses: Nuitka/Nuitka-Action@v0.4
         with:
           script-name: DR.py
           standalone: true
