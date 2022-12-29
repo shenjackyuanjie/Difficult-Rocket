@@ -35,7 +35,7 @@ jobs:
         run: |
           $short_sha = Write-Output $`{GITHUB_SHA`}
           $short_sha = $short_sha.substring(1,7)
-          Write-Output "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          Write-Output "short_sha=$short_sha" | $GITHUB_OUTPUT
 
 
       # 安装 Python
