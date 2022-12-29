@@ -20,11 +20,12 @@ from libs.MCDR.version import Version
 game_version = Version("0.6.4")
 __version__ = game_version
 
-long_version: ctypes.c_longlong = ctypes.c_longlong(2)
+long_version: ctypes.c_longlong = ctypes.c_longlong(3)
 """
 long_version: 一个用于标记内部协议的整数
 1: 我可算想起来还有这回事了 v0.6.4
 2: 哦，对 longlong 好耶！
+3: 就是试试改一下，正好 compiler 要用
 """
 
 
