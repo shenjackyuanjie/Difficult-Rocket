@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.10", "3.11"]
+        python-version: ["3.8", "3.10"]  # 3.11 will come later
 
     runs-on:  ${{ matrix.os }}
 
@@ -38,6 +38,7 @@ jobs:
       - name: Get short commit sha (powershell)
         if: runner.os == 'Windows'
         id: get_short_sha_powershell
+        shell: pwsh
         run: |
           $short_sha = echo $`{GITHUB_SHA`}
           $short_sha = $short_sha.substring(1,7)
@@ -64,7 +65,7 @@ jobs:
       # 还是得我自己写脚本
       - name: Build on Windows
         if: runner.os == 'Windows'
-        shell: powershell7
+        shell: pwsh
         run: |
           ./action_build.ps1
 #          $arg = "--standalone --assume-yes-for-download "
@@ -78,7 +79,7 @@ jobs:
 
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
-        shell: powershell
+        shell: pwsh
         run: |
           arg="--standalone --assume-yes-for-download --output-dir=build "
           arg+="--clang --lto=no "
