@@ -70,6 +70,7 @@ jobs:
         shell: pwsh
         run: |
           Write-Output $GITHUB_OUTPUT
+          Write-Output $`{GITHUB_OUTPUT`}
           $arg = @()
           $arg += @("--standalone")
           $arg += @("--msvc=latest")
@@ -84,6 +85,7 @@ jobs:
           # $arg += @("--show-progress")
           $arg += @("--assume-yes-for-download")
           python -m nuitka $arg DR.py
+          Write-Output $GITHUB_OUTPUT
 
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}

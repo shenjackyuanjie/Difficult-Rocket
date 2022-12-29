@@ -15,5 +15,6 @@ print(sys.path)
 
 from Difficult_Rocket import DR_runtime
 
-os.system(f'echo "DR_version={DR_runtime.DR_version.__str__()}" >> $GITHUB_OUTPUT')
+print(f'DR_version={DR_runtime.DR_version}')
+os.system(f'echo "DR_version={DR_runtime.DR_version}" >> $GITHUB_OUTPUT')
 

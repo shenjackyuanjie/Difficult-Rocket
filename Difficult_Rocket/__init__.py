@@ -29,7 +29,7 @@ long_version: 一个用于标记内部协议的整数
 """
 
 
-class DR_option(Options):
+class _DR_option(Options):
     """
     DR 的整体配置存储类
     """
@@ -94,7 +94,7 @@ class _DR_runtime(Options):
 _DR_runtime.add_option('language', _DR_runtime.language)
 
 
-DR_option = DR_option()
+DR_option = _DR_option()
 DR_runtime = _DR_runtime()
 
 if DR_option.playing:
