@@ -62,7 +62,7 @@ jobs:
       - name: Get Difficult-Rocket info
         id: DR_info
         shell: shell
-        run: python ./.github/workflows/get_info.py
+        run: python .github/workflows/get_info.py
 
       # 还是得我自己写脚本
       - name: Build on Windows
