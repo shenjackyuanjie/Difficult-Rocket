@@ -39,7 +39,7 @@ jobs:
       - name: Install env
         run: |
           pip install -r requirement.txt
-          pip install nuitka
+          pip install nuitka, orderedset
 
 
 #      # Build python script into a stand-alone exe
