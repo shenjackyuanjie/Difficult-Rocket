@@ -64,7 +64,7 @@ jobs:
       # 还是得我自己写脚本
       - name: Build on Windows
         if: runner.os == 'Windows'
-        shell: powershell
+        shell: powershell7
         run: |
           ./action_build.ps1
 #          $arg = "--standalone --assume-yes-for-download "
@@ -78,7 +78,7 @@ jobs:
 
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
-        shell: bash
+        shell: powershell
         run: |
           arg="--standalone --assume-yes-for-download --output-dir=build "
           arg+="--clang --lto=no "
@@ -94,9 +94,19 @@ jobs:
 
 
       # Uploads artifact
-      - name: Upload Artifact
+      - name: Upload Artifact (bash)
+        if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }} Build
+          name: ${{ runner.os }} Build.${{ github.run_number}}+${{ steps.get_short_sha_bash.outputs.short_sha }}
+          path: |
+            build/*.zip
+
+      # Uploads artifact
+      - name: Upload Artifact (powershell)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build.${{ github.run_number}}+${{ steps.get_short_sha_powershell.outputs.short_sha }}
           path: |
             build/*.zip
