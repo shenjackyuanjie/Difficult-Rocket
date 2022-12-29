@@ -44,7 +44,7 @@ jobs:
         with:
           script-name: DR.py
           standalone: true
-          include-package-data: ['./configs=./configs', './libs/fonts=./libs/fonts']
+          include-package-data: './configs=./configs'
           assume-yes-for-download: true
 
 
