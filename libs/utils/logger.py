@@ -16,6 +16,7 @@ import time
 import enum
 import atexit
 import inspect
+import warnings
 import threading
 import dataclasses
 
@@ -23,7 +24,7 @@ from types import FrameType
 from logging import NOTSET, DEBUG
 from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
 
-Version = '1.0.0'
+Version = '1.1.0'
 
 # os.system('')
 color_support = True
@@ -60,8 +61,8 @@ color_reset_suffix = "\033[0m"
 
 re_find_color_code = r'\033\[[^\f\n\r\t\vm]*m'
 re_color_code = re.compile(re_find_color_code)
-
-re_find_level_code = r''
+re_find_formats = re.compile(r'\{\w+}')
+# re_find_level_code = r''
 
 """
 OFF > FATAL > ERROR > WARN > INFO > FINE > FINER > DEBUG > TRACE > ALL
@@ -250,7 +251,7 @@ class LogFileConf:
     file_cache_time: Union[int, float] = 1
 
 
-class  Message_content(NamedTuple):
+class Message_content(NamedTuple):
     """用于存储 log 信息的不可变元组"""
     log_time: float
     text: str
@@ -342,16 +343,6 @@ class ListCache:
             self.cache.clear()
 
 
-class FormatterTemplate:
-    """用于格式化 log 信息的模板类"""
-
-    def __init__(self, formats: dict):
-        self.formats = formats
-
-    def format(self, message: str) -> str:
-        raise NotImplementedError('There is a formatter that not implemented')
-
-
 class ColorCodeEnum(enum.Enum):
     main_time = "main_time"
     code_line = "code_line"
@@ -362,32 +353,86 @@ class ColorCodeEnum(enum.Enum):
     marker = "marker"
 
 
+class FormatCodeEnum(enum.Enum):
+    long_time: str = '%Y-%m-%d %H-%M-%S:%%S'
+    short_time: str = '%Y-%m-%d %H-%M-%S'
+    logger_name: str = '{logger_name}'
+    level: str = '{level}'
+    fine_name: str = '{file_name}'
+    code_line: str = '{code_line}'
+    marker: str = '{marker}'
+    message: str = '{message}'
+
+
+class FormatterConfig(NamedTuple):
+    """ Named Tuple 真好用 """
+    support_color: bool
+    format: str
+    formats: Dict[str, str]
+    color: Dict[str, Union[str, Dict[str, str]]]
+
+
+class FormatterTemplate:
+    """用于格式化 log 信息的模板类"""
+
+    def __init__(self, configs: FormatterConfig):
+        self.configs = configs
+
+    def format(self, message: Message_content) -> str:
+        raise NotImplementedError('There is a formatter that not implemented')
+
+
 class StdFormatter(FormatterTemplate):
     """ 一个标准的格式化类 """
 
-    def __init__(self, formats: dict, configs: dict):
-        super().__init__(formats=formats)
-        self.configs = configs
+    def __init__(self, configs: FormatterConfig):
+        super().__init__(configs=configs)
         ...
 
     def format_time(self, input_time: Optional[float] = None) -> Dict[str, str]:
         millisecond = str((input_time - int(input_time)) * 1000)
-        long_time = time.strftime(
-            self.formats['long_time'].replace('%%S', millisecond))
-        short_time = time.strftime(
-            self.formats['short_time'].replace('%%S', millisecond))
+        long_time = time.strftime(self.configs.formats['long_time'].replace('%%S', millisecond))
+        short_time = time.strftime(self.configs.formats['short_time'].replace('%%S', millisecond))
         return {'long_time': long_time, 'short_time': short_time}
 
     def get_color_code(self, level: str, content: ColorCodeEnum) -> str:
         assert content in ColorCodeEnum
-        if content in self.configs[level]:
-            return self.configs[level][content.name].replace("\\u001b", '\u001b')
-        return self.configs[content.name].replace('\\u001b', '\u001b')
+        if content in self.configs.color[level]:
+            return self.configs.color[level][content.name].replace("\\u001b", '\u001b')
+        return self.configs.color[content.name].replace('\\u001b', '\u001b')
 
-    def color_format(self, message: Message_content) -> Message_content:
+    """
+    format 支持的内容:  嘿，帮我写一下说明呗
+    {long_time}: 长时间
+    {short_time}: 短时间
+    {logger_name}: logger 名称
+    {level}: 记录等级
+    {file_name}: 文件名
+    {code_line}: 代码行
+    {marker}: 标记
+    {message}: 消息
+    """
+
+    def color_format(self, message: Message_content) -> str:
+        if not self.configs.support_color:
+            return self.format(message=message)
         times = self.format_time(input_time=message.log_time)
+        need_colors = [x for x in re_find_formats.findall(self.configs.format)]
+        new_message = self.configs.format
+        for need_color in need_colors:
+            if not hasattr(FormatCodeEnum, need_color[1:-1]):
+                warnings.warn(f'logger config wrong! get {need_color}')
+                continue
+            color_code = color_reset_suffix
+            if need_color[1:-1] in self.configs.color[level_name_map[message.level]]:
+                color_code = self.configs.color[level_name_map[message.level]][need_color[1:-1]]
+            elif need_color[1:-1] in self.configs.color:
+                color_code = self.configs.color[need_color[1:-1]]
+            new_message.replace(need_color, f'{color_code}{need_color}{color_reset_suffix}')
 
-    def format(self, message: Message_content) -> Message_content:
+
+
+    def format(self, message: Message_content) -> str:
         times = self.format_time(input_time=message.log_time)
         ...
 
@@ -472,7 +517,7 @@ class StdHandler(StreamHandlerTemplate):
         super().__init__(level=level, formatter=formatter)
 
     def write(self, message: Message_content) -> bool:
-        print(self.formatter.format(message.text), end=message.end, flush=message.flush)
+        print(self.formatter.format(message), end=message.end, flush=message.flush)
         return True
 
     def close(self) -> bool:
@@ -541,7 +586,9 @@ class CachedFileHandler(StreamHandlerTemplate):
 
     def write(self, message: Message_content) -> bool:
         self.len += 1
-        self.cache_stream.write(message.text)
+        formatted_message = self.formatter.format(message)
+        formatted_message = f'{formatted_message}{message.end}'
+        self.cache_stream.write(formatted_message)
         if message.flush or self.len >= self.file_conf.file_cache_len:
             if not self.flush():
                 self.flush()
@@ -1083,16 +1130,6 @@ if __name__ == "__main__":
     for x in range(5):
         test_logger(logger)
         test_logger(a_logger)
-    import rtoml
-
-    parse_config = rtoml.dumps(logger_configs, pretty=True)
-    import pprint
-
-    sys.stdout.write(rtoml.dumps(logger_configs, pretty=True))
-    print('-----------------')
-    sys.stdout.write(rtoml.dumps(logger_configs, pretty=False))
-    print('-----------------')
-    pprint.pprint(rtoml.loads(parse_config))
     print(Message_content(log_time=time.time(), text='aaa', level=4, marker='abc', end='abc', flush=False,
                           frame=inspect.currentframe()))
     print(ColorCodeEnum.code_line.name)
