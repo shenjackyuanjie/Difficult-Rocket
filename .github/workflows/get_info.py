@@ -8,5 +8,6 @@ import os
 import sys
 
 print(os.curdir)
+print(os.listdir('.'))
 print(sys.path)
 

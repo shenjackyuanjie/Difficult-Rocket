@@ -69,6 +69,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
+          Write-Output $GITHUB_OUTPUT
           $arg = @()
           $arg += @("--standalone")
           $arg += @("--msvc=latest")
