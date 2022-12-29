@@ -28,11 +28,19 @@ jobs:
         uses: actions/checkout@v3
 
       # 获取短 sha
-      - name: Get short commit sha
+      - name: Get short commit sha (bash)
+        if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
         id: get_short_sha
         run: |
           short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+      - name: Get short commit sha (powershell)
+        if: runner.os == 'Windows'
+        id: get_short_sha
+        run: |
+          $short_sha=${GITHUB_SHA}.substring(1,7)
+          Write-Output "short_sha=$short_sha" >> $GITHUB_OUTPUT
+
 
       # 安装 Python
       - name: Setup Python
