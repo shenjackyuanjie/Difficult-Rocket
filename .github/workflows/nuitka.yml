@@ -37,7 +37,9 @@ jobs:
 
       # 安装依赖
       - name: Install env
-        run: pip install -r requirement.txt
+        run: |
+          pip install -r requirement.txt
+          pip install nuitka
 
 
 #      # Build python script into a stand-alone exe
@@ -68,19 +70,17 @@ jobs:
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
         shell: bash
         run: |
-          arg = "--standalone --assume-yes-for-download "
-          arg += "--clang --lto=no "
-          arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
-          arg += "--include-data-dir=./libs/pyglet=./pyglet "
-          arg += "--include-data-dir=./libs/fonts=./libs/fonts "
-          arg += "--include-data-dir=./textures=./textures "
-          arg += "--include-data-dir=./configs=./configs "
+          arg="--standalone --assume-yes-for-download "
+          arg+="--clang --lto=no "
+          arg+="--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
+          arg+="--include-data-dir=./libs/pyglet=./pyglet "
+          arg+="--include-data-dir=./libs/fonts=./libs/fonts "
+          arg+="--include-data-dir=./textures=./textures "
+          arg+="--include-data-dir=./configs=./configs "
           python -m nuitka $arg DR.py
 
       - name: after build
-        shell: powershell7
-        run: |
-          python after_compile.py
+        run: python after_compile.py
 
 
 #      # Uploads artifact
