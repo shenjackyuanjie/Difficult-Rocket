@@ -32,11 +32,11 @@ jobs:
           python-version: '3.8'  # 为了支持 win7 我还是得用 3.8
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
-          cache-dependency-path: '**/requirements*.txt'
+          cache-dependency-path: '**/requirement*.txt'
 
       # 安装依赖
       - name: Install env
-        run: pip install -r requirements.txt
+        run: pip install -r requirement.txt
 
 
       # Build python script into a stand-alone exe
