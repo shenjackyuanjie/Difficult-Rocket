@@ -38,7 +38,8 @@ jobs:
         if: runner.os == 'Windows'
         id: get_short_sha_powershell
         run: |
-          $short_sha = (echo ${GITHUB_SHA}).substring(1,7)
+          $short_sha = echo ${GITHUB_SHA
+          $short_sha = $short_sha.substring(1,7)
           Write-Output "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
 
