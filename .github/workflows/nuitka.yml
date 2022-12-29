@@ -61,7 +61,7 @@ jobs:
       # 提取 DR 版本和其他信息
       - name: Get Difficult-Rocket info
         id: DR_info
-        shell: shell
+        shell: bash
         run: python .github/workflows/get_info.py
 
       # 还是得我自己写脚本
