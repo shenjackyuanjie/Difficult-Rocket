@@ -63,7 +63,7 @@ jobs:
           $arg += "--include-data-dir=./libs/pyglet=./pyglet "
           $arg += "--include-data-dir=./libs/fonts=./libs/fonts "
           $arg += "--include-data-dir=./textures=./textures "
-          $arg += "--include-data-dir=./configs=./configs "
+          $arg += "--include-data-dir=./configs=./configs"
           python -m nuitka $arg DR.py
 
       - name: Build on MacOS / Linux
@@ -76,7 +76,7 @@ jobs:
           arg+="--include-data-dir=./libs/pyglet=./pyglet "
           arg+="--include-data-dir=./libs/fonts=./libs/fonts "
           arg+="--include-data-dir=./textures=./textures "
-          arg+="--include-data-dir=./configs=./configs "
+          arg+="--include-data-dir=./configs=./configs"
           python -m nuitka $arg DR.py
 
       - name: after build
