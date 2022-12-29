@@ -57,7 +57,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
-          action_build.ps1
+          ./action_build.ps1
 #          $arg = "--standalone --assume-yes-for-download "
 #          $arg += "--msvc=latest --clang --lto=no --output-dir=build "
 #          $arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
