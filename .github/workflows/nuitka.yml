@@ -35,6 +35,7 @@ jobs:
         run: |
           short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
           echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
           # $short_sha = Write-Output $`{GITHUB_SHA`}
           # $short_sha = $short_sha.substring(1,7)
           # Write-Output $short_sha
