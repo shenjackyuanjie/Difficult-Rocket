@@ -58,6 +58,12 @@ jobs:
           pip install -r requirement.txt
           pip install nuitka orderedset
 
+      # 提取 DR 版本和其他信息
+      - name: Get Difficult-Rocket info
+        id: DR_info
+        shell: shell
+        run: python ./.github/workflows/get_info.py
+
       # 还是得我自己写脚本
       - name: Build on Windows
         if: runner.os == 'Windows'
@@ -65,8 +71,6 @@ jobs:
         run: |
           $arg = @()
           $arg += @("--standalone")
-          $arg += @("--assume-yes-for-download")
-          $arg += @("--show-progress")
           $arg += @("--msvc=latest")
           $arg += @("--clang")
           $arg += @("--lto=no")
@@ -76,6 +80,8 @@ jobs:
           $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
+          $arg += @("--show-progress")
+          $arg += @("--assume-yes-for-download")
           python -m nuitka $arg DR.py
 
       - name: Build on MacOS / Linux
@@ -92,12 +98,12 @@ jobs:
           python -m nuitka $arg DR.py
 
       - name: after build
-        run: python after_compile.py
+        run: python ./.github/workflows/after_compile.py
 
       # Uploads artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }}-${{ matrix.python-version }}-Build.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
+          name: Difficult-Rocket-${{ runner.os }}-${{ matrix.python-version }}-Build.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
           path: |
             build/*.zip
