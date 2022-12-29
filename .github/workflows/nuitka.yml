@@ -33,7 +33,7 @@ jobs:
         id: get_short_sha
         shell: pwsh
         run: |
-          $short_sha = echo $`{GITHUB_SHA`}
+          $short_sha = Write-Output $`{GITHUB_SHA`}
           $short_sha = $short_sha.substring(1,7)
           Write-Output "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
@@ -63,6 +63,7 @@ jobs:
           $arg = @()
           $arg += @("--standalone")
           $arg += @("--assume-yes-for-download")
+          $arg += @("--show-progress")
           $arg += @("--msvc=latest")
           $arg += @("--clang")
           $arg += @("--lto=no")
@@ -79,7 +80,7 @@ jobs:
         shell: bash
         run: |
           arg="--standalone --assume-yes-for-download --output-dir=build "
-          arg+="--clang --lto=no "
+          arg+="--clang --lto=no --show-progress "
           arg+="--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
           arg+="--include-data-dir=./libs/pyglet=./pyglet "
           arg+="--include-data-dir=./libs/fonts=./libs/fonts "
@@ -91,9 +92,9 @@ jobs:
         run: python after_compile.py
 
       # Uploads artifact
-      - name: Upload Artifact (powershell)
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }} Build.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
+          name: ${{ runner.os }}-${{ matrix.python-version }}-Build.${{ github.run_number}}+${{ steps.get_short_sha.outputs.short_sha }}
           path: |
             build/*.zip
