@@ -26,6 +26,7 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
 
+      # 安装 Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -39,22 +40,55 @@ jobs:
         run: pip install -r requirement.txt
 
 
-      # Build python script into a stand-alone exe
-      - name: Build
-        uses: Nuitka/Nuitka-Action@v0.4
-        with:
-          script-name: DR.py
-          standalone: true
-          include-package-data: './configs=./configs'
-          assume-yes-for-download: true
+#      # Build python script into a stand-alone exe
+#      - name: Build
+#        uses: Nuitka/Nuitka-Action@v0.4
+#        with:
+#          script-name: DR.py
+#          standalone: true
+#          onefile: false
+##          include-package-data: './configs=./configs'
+#          assume-yes-for-download: true
+
+      # 还是得我自己写脚本
+      - name: Build on Windows
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $arg = "--standalone --assume-yes-for-download "
+          $arg += "--msvc=latest --clang --lto=no "
+          $arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
+          $arg += "--include-data-dir=./libs/pyglet=./pyglet "
+          $arg += "--include-data-dir=./libs/fonts=./libs/fonts "
+          $arg += "--include-data-dir=./textures=./textures "
+          $arg += "--include-data-dir=./configs=./configs "
+          python -m nuitka $arg DR.py
+
+      - name: Build on MacOS / Linux
+        if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
+        shell: bash
+        run: |
+          arg = "--standalone --assume-yes-for-download "
+          arg += "--clang --lto=no "
+          arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
+          arg += "--include-data-dir=./libs/pyglet=./pyglet "
+          arg += "--include-data-dir=./libs/fonts=./libs/fonts "
+          arg += "--include-data-dir=./textures=./textures "
+          arg += "--include-data-dir=./configs=./configs "
+          python -m nuitka $arg DR.py
+
+      - name: after build
+        shell: powershell7
+        run: |
+          python after_compile.py
 
 
-      # Uploads artifact
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ runner.os }} Build
-          path: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
+#      # Uploads artifact
+#      - name: Upload Artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: ${{ runner.os }} Build
+#          path: |
+#            build/*.exe
+#            build/*.bin
+#            build/*.app/**/*
