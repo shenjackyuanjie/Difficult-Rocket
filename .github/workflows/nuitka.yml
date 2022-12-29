@@ -19,6 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: ["3.8", "3.10", "3.11"]
 
     runs-on:  ${{ matrix.os }}
 
@@ -38,36 +39,27 @@ jobs:
         if: runner.os == 'Windows'
         id: get_short_sha_powershell
         run: |
-          $short_sha = echo ${GITHUB_SHA
+          $short_sha = echo $`{GITHUB_SHA`}
           $short_sha = $short_sha.substring(1,7)
           Write-Output "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
 
       # 安装 Python
-      - name: Setup Python
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'  # 为了支持 win7 我还是得用 3.8
+          python-version: ${{ matrix.python-version }}  # 为了支持 win7 我还是得用 3.8
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
           cache-dependency-path: '**/requirement*.txt'
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
 
       # 安装依赖
       - name: Install env
         run: |
           pip install -r requirement.txt
           pip install nuitka orderedset
-
-
-#      # Build python script into a stand-alone exe
-#      - name: Build
-#        uses: Nuitka/Nuitka-Action@v0.4
-#        with:
-#          script-name: DR.py
-#          standalone: true
-#          onefile: false
-##          include-package-data: './configs=./configs'
-#          assume-yes-for-download: true
 
       # 还是得我自己写脚本
       - name: Build on Windows
