@@ -13,6 +13,7 @@ on:
 # 主任务
 jobs:
   build:
+    if: ${{ github.event_name == 'push' && !startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[build skip]') == false }}
     # 全都要！
     strategy:
       fail-fast: false
@@ -25,6 +26,13 @@ jobs:
       # Check-out repository
       - name: Check out
         uses: actions/checkout@v3
+
+      # 获取短 sha
+      - name: Get short commit sha
+        id: get_short_sha
+        run: |
+          short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
 
       # 安装 Python
       - name: Setup Python
