@@ -84,10 +84,10 @@ jobs:
         run: python after_compile.py
 
 
-#      # Uploads artifact
-#      - name: Upload Artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ runner.os }} Build
-#          path: |
-#            build/*.zip
+      # Uploads artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.zip
