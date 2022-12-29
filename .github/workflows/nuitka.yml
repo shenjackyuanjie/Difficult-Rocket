@@ -57,7 +57,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
-          $arg = "--standalone --assume-yes-for-download "
+          $arg = "--standalone --assume-yes-for-download --output-dir=build "
           $arg += "--msvc=latest --clang --lto=no "
           $arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
           $arg += "--include-data-dir=./libs/pyglet=./pyglet "
@@ -70,7 +70,7 @@ jobs:
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
         shell: bash
         run: |
-          arg="--standalone --assume-yes-for-download "
+          arg="--standalone --assume-yes-for-download --output-dir=build "
           arg+="--clang --lto=no "
           arg+="--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
           arg+="--include-data-dir=./libs/pyglet=./pyglet "
