@@ -1,0 +1,1 @@
+python -m nuitka --standalone --assume-yes-for-download --msvc=latest --clang --lto=no --output-dir=build --nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet --include-data-dir=./libs/pyglet=./pyglet --include-data-dir=./libs/fonts=./libs/fonts --include-data-dir=./textures=./textures --include-data-dir=./configs=./configs DR.py

@@ -57,14 +57,15 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
-          $arg = "--standalone --assume-yes-for-download --output-dir=build "
-          $arg += "--msvc=latest --clang --lto=no "
-          $arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
-          $arg += "--include-data-dir=./libs/pyglet=./pyglet "
-          $arg += "--include-data-dir=./libs/fonts=./libs/fonts "
-          $arg += "--include-data-dir=./textures=./textures "
-          $arg += "--include-data-dir=./configs=./configs"
-          python -m nuitka $arg DR.py
+          action_build.ps1
+#          $arg = "--standalone --assume-yes-for-download "
+#          $arg += "--msvc=latest --clang --lto=no --output-dir=build "
+#          $arg += "--nofollow-import-to=objprint,numpy,pillow,cffi,PIL,pyglet "
+#          $arg += "--include-data-dir=./libs/pyglet=./pyglet "
+#          $arg += "--include-data-dir=./libs/fonts=./libs/fonts "
+#          $arg += "--include-data-dir=./textures=./textures "
+#          $arg += "--include-data-dir=./configs=./configs "
+#          python -m nuitka $arg DR.py
 
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
@@ -89,6 +90,4 @@ jobs:
 #        with:
 #          name: ${{ runner.os }} Build
 #          path: |
-#            build/*.exe
-#            build/*.bin
-#            build/*.app/**/*
+#            build/*.zip
