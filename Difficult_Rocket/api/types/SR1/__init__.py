@@ -5,6 +5,7 @@
 #  -------------------------------
 
 from typing import Dict, Union
+from dataclasses import dataclass
 
 # pyglet
 # import pyglet
@@ -12,6 +13,21 @@ from pyglet.image import load, AbstractImage
 
 # Difficult Rocket
 from Difficult_Rocket.utils.typings import Options
+
+
+@dataclass
+class SR1PartData:
+    x: float
+    y: float
+    id: int
+    type: str
+    angle: float
+    angle_v: float
+    editor_angle: int
+    flip_x: bool
+    flip_y: bool
+    explode: bool
+    textures: str
 
 
 class SR1Textures(Options):
@@ -22,6 +38,10 @@ class SR1Textures(Options):
         for image_name in self.cached_options:
             setattr(self, image_name, load(f'textures/parts/{image_name}.png'))
         self.flush_option()
+
+    def get_texture(self, name: str):
+        assert name in self.cached_options
+        return self.cached_options.get(name)
 
     Battery:               AbstractImage = None
     Beam:                  AbstractImage = None
@@ -62,33 +82,33 @@ class SR1Textures(Options):
 
 
 class SR1PartTexture:
-    part_type_sprite: Dict[str, str] = {'pod-1      ': 'Pod',
-                                        'detacher-1 ': 'DetacherVertical',
-                                        'detacher-2 ': 'DetacherRadial',
-                                        'wheel-1    ': 'Wheel',
-                                        'wheel-2    ': 'Wheel',
-                                        'fuselage-1 ': 'Fuselage',
-                                        'strut-1    ': 'Beam',
-                                        'fueltank-0 ': 'TankTiny',
-                                        'fueltank-1 ': 'TankSmall',
-                                        'fueltank-2 ': 'TankMedium',
-                                        'fueltank-3 ': 'TankLarge',
-                                        'fueltank-4 ': 'Puffy750',
-                                        'fueltank-5 ': 'SideTank',
-                                        'engine-0   ': 'EngineTiny',
-                                        'engine-1   ': 'EngineSmall',
-                                        'engine-2   ': 'EngineMedium',
-                                        'engine-3   ': 'EngineLarge',
-                                        'engine-4   ': 'SolidRocketBooster',
-                                        'ion-0      ': 'EngineIon',
+    part_type_sprite: Dict[str, str] = {'pod-1': 'Pod',
+                                        'detacher-1': 'DetacherVertical',
+                                        'detacher-2': 'DetacherRadial',
+                                        'wheel-1': 'Wheel',
+                                        'wheel-2': 'Wheel',
+                                        'fuselage-1': 'Fuselage',
+                                        'strut-1': 'Beam',
+                                        'fueltank-0': 'TankTiny',
+                                        'fueltank-1': 'TankSmall',
+                                        'fueltank-2': 'TankMedium',
+                                        'fueltank-3': 'TankLarge',
+                                        'fueltank-4': 'Puffy750',
+                                        'fueltank-5': 'SideTank',
+                                        'engine-0': 'EngineTiny',
+                                        'engine-1': 'EngineSmall',
+                                        'engine-2': 'EngineMedium',
+                                        'engine-3': 'EngineLarge',
+                                        'engine-4': 'SolidRocketBooster',
+                                        'ion-0': 'EngineIon',
                                         'parachute-1': 'ParachuteCanister',
-                                        'nosecone-1 ': 'NoseCone',
-                                        'rcs-1      ': 'RcsBlock',
-                                        'solar-1    ': 'SolarPanelBase',
-                                        'battery-0  ': 'Battery',
-                                        'dock-1     ': 'DockingConnector',
-                                        'port-1     ': 'DockingPort',
-                                        'lander-1   ': 'LanderLegPreview'}
+                                        'nosecone-1': 'NoseCone',
+                                        'rcs-1': 'RcsBlock',
+                                        'solar-1': 'SolarPanelBase',
+                                        'battery-0': 'Battery',
+                                        'dock-1': 'DockingConnector',
+                                        'port-1': 'DockingPort',
+                                        'lander-1': 'LanderLegPreview'}
 
     @classmethod
     def get_sprite_from_type(cls, name: str) -> Union[None, str]:
@@ -112,6 +132,6 @@ class SR1PartTexture:
 #
 # for part_type in list(part_list_root):
 #     part_type: Element
-#     print(f'\'{part_type.attrib.get("id"):<11}\': \'{part_type.attrib.get("sprite")}\'')
+#     print(f'\'{part_type.attrib.get("id")}\': \'{part_type.attrib.get("sprite")}\'')
 #
 #

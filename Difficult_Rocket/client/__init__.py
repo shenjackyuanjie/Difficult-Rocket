@@ -156,6 +156,7 @@ class ClientWindow(Window):
         self.command_tree = tree.CommandTree(tree.DR_command)
         self.input_box = InputBox(x=50, y=30, width=300, height=20,
                                   batch=self.label_batch)  # 实例化
+        self.input_box.push_handlers(self)
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
