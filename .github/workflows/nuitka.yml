@@ -67,13 +67,6 @@ jobs:
           $infos = python .github/workflows/get_info.py
           Write-Output $infos >> $env:GITHUB_ENV
 
-      - name: Get DR toml info
-        id: toml_info
-        uses: SebRollen/toml-action@v1.0.1
-        with:
-          file: 'configs/main.toml'
-          field: 'runtime.version'
-
       # 还是得我自己写脚本
       - name: Build on Windows
         if: runner.os == 'Windows'
@@ -119,6 +112,6 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Difficult-Rocket_v${{steps.toml_info.outputs.value}}-${{runner.os}}_${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}
+          name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}_${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}.zip
           path: |
             build/*.zip
