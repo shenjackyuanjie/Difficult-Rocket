@@ -17,5 +17,6 @@ if os.path.abspath(os.curdir) in sys.path:
     from Difficult_Rocket import DR_runtime
 
     print(f'DR_version={DR_runtime.DR_version}')
+    print(f'DR_language={DR_runtime.language}')
     # os.system(f'echo "DR_version={DR_runtime.DR_version}" >> $GITHUB_OUTPUT')
 

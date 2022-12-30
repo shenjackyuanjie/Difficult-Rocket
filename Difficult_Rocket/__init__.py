@@ -58,7 +58,7 @@ class _DR_runtime(Options):
     name = 'DR Runtime'
     # game statue
     DR_version: Version = game_version
-    DR_long_version: int = long_version
+    DR_long_version: ctypes.c_longlong = long_version
 
     # run status
     running:               bool = False
