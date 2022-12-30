@@ -62,8 +62,10 @@ jobs:
       # 提取 DR 版本和其他信息
       - name: Get Difficult-Rocket info
         id: DR_info
-        shell: bash
-        run: python .github/workflows/get_info.py
+        shell: pwsh
+        run: |
+          $infos = python .github/workflows/get_info.py
+          Write-Output $infos >> $env:GITHUB_ENV
 
       - name: Get DR toml info
         id: toml_info
