@@ -7,11 +7,11 @@
 import os
 import sys
 
-
-# print(os.path.abspath(os.curdir))
-# print(os.listdir('.'))
 sys.path.append(os.path.abspath(os.curdir))
-# print(sys.path)
+if '-env' not in sys.argv:
+    print(os.path.abspath(os.curdir))
+    print(os.listdir('.'))
+    print(sys.path)
 
 if os.path.abspath(os.curdir) in sys.path:
     from Difficult_Rocket import DR_runtime
