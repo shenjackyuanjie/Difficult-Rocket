@@ -13,8 +13,9 @@ print(os.listdir('.'))
 sys.path.append(os.path.abspath(os.curdir))
 print(sys.path)
 
-from Difficult_Rocket import DR_runtime
+if os.path.abspath(os.curdir) in sys.path:
+    from Difficult_Rocket import DR_runtime
 
-print(f'DR_version={DR_runtime.DR_version}')
-os.system(f'echo "DR_version={DR_runtime.DR_version}" >> $GITHUB_OUTPUT')
+    print(f'DR_version={DR_runtime.DR_version}')
+    os.system(f'echo "DR_version={DR_runtime.DR_version}" >> $GITHUB_OUTPUT')
 
