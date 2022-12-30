@@ -67,7 +67,6 @@ jobs:
 
       - name: Get DR toml info
         id: toml_info
-        shell: pwsh
         uses: SebRollen/toml-action@v1.0.1
         with:
           file: 'configs/main.toml'
