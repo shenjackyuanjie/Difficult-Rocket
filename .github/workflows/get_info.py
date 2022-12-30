@@ -9,9 +9,8 @@ import sys
 
 sys.path.append(os.path.abspath(os.curdir))
 if '-env' not in sys.argv:
-    print(os.path.abspath(os.curdir))
-    print(os.listdir('.'))
-    print(sys.path)
+    print(sys.version)
+    print(os.getenv('env:GITHUB_SHA'))
 
 if os.path.abspath(os.curdir) in sys.path:
     from Difficult_Rocket import DR_runtime

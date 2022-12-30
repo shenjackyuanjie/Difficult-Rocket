@@ -50,8 +50,6 @@ jobs:
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
           cache-dependency-path: '**/requirement*.txt'
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
 
       # 安装依赖
       - name: Install env
@@ -60,13 +58,13 @@ jobs:
           pip install nuitka orderedset
 
       # 提取 DR 版本和其他信息
-      - name: Get Difficult-Rocket info
+      - name: Display Difficult-Rocket info
         id: DR_info
         shell: pwsh
         run: |
-          python .github/workflows/get_info.py
           $infos = python .github/workflows/get_info.py -env
           Write-Output $infos >> $env:GITHUB_ENV
+          python .github/workflows/get_info.py
 
       # 还是得我自己写脚本
       - name: Build on Windows
