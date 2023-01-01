@@ -11,8 +11,8 @@
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0dev13-blue.svg)](https://pyglet.org)
-[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_-blue.svg)](https://Python.org)
+[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.2.1-blue.svg)](https://pyglet.org)
+[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_|_3.11_-blue.svg)](https://Python.org)
 
 ## Version
 
