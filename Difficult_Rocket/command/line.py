@@ -17,17 +17,24 @@ import time
 from typing import Union
 from decimal import Decimal
 
-# from DR
-from Difficult_Rocket.utils import translate
-from Difficult_Rocket.command.api import CommandText
-from Difficult_Rocket.utils.new_thread import new_thread
-
 # from pyglet
 import pyglet
 from pyglet.text import Label
 from pyglet.window import key
 from pyglet.gui import widgets
 from pyglet.graphics import Batch, Group
+
+# from DR
+from Difficult_Rocket.utils import translate
+from Difficult_Rocket.command.api import CommandText
+from Difficult_Rocket.utils.new_thread import new_thread
+
+
+
+class CommandLineTextEntry(widgets.TextEntry):
+    """
+    基于 Text Entry 重写的 Command Line
+    """
 
 
 class CommandLine(widgets.WidgetBase):

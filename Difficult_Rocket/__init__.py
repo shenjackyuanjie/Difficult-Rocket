@@ -35,7 +35,7 @@ class _DR_option(Options):
     """
     name = 'DR Option'
     # runtime options
-    CommandBox_use_TextEntry:  bool = False
+    InputBox_use_TextEntry:    bool = False
     record_threads:            bool = True
     use_cProfile:              bool = False
     use_local_logging:         bool = False
