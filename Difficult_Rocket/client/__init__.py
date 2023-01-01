@@ -22,7 +22,7 @@ from typing import List, Callable, Union
 from decimal import Decimal
 
 # third function
-import tomlkit
+import rtoml
 import pyglet
 # from pyglet import gl
 from pyglet.gl import glClearColor
@@ -214,7 +214,7 @@ class ClientWindow(Window):
         config_file = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
-        tomlkit.dump(config_file, open('./configs/main.toml', 'w'))
+        rtoml.dump(config_file, open('./configs/main.toml', 'w'))
         self.logger.info('save_info end')
 
     """

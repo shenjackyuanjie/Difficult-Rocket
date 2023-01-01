@@ -6,11 +6,17 @@
 
 import os
 import sys
+import rtoml
 
 sys.path.append(os.path.abspath(os.curdir))
 if '-env' not in sys.argv:
     print(sys.version)
     print(os.getenv('env:GITHUB_SHA'))
+    from Difficult_Rocket.utils import tools
+    config_file = tools.load_file('./configs/main.toml')
+    config_file['window']['width'] = 1024
+    config_file['window']['height'] = 768
+    rtoml.dump(config_file, open('./configs/main.toml', 'w'))
 
 if os.path.abspath(os.curdir) in sys.path:
     from Difficult_Rocket import DR_runtime

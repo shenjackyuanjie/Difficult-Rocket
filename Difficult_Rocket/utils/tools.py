@@ -15,6 +15,7 @@ import os
 import sys
 import time
 import math
+import json
 import logging
 import configparser
 
@@ -40,22 +41,28 @@ file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: 
 
 def load_file(file_name: str,
               stack: Union[str, list, dict] = None,
-              raise_error: bool = True) -> Union[dict, list]:
+              raise_error: bool = True,
+              encoding: str = 'utf-8') -> Union[dict, list, ElementTree.ElementTree]:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     get_file = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
     try:
         if f_type == 'xml':
             xml_load: ElementTree.ElementTree = parse(file_name)
             if stack is not None:
-                get_file = xml_load.find(stack)
+                get_file = xml_load.findall(stack)
         elif (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
             get_file = configparser.ConfigParser()
             get_file.read(file_name)
             if stack:
                 get_file = get_file[stack]
         elif f_type == 'toml':
-            with open(file_name, mode='r', encoding='utf-8') as file:
+            with open(file_name, mode='r', encoding=encoding) as file:
                 get_file = rtoml.load(file)
+            if stack is not None:
+                get_file = get_file[stack]
+        elif f_type == 'json':
+            with open(file_name, mode='r', encoding=encoding) as file:
+                get_file = json.load(file)
             if stack is not None:
                 get_file = get_file[stack]
         elif f_type == 'json5':
@@ -69,6 +76,25 @@ def load_file(file_name: str,
         if raise_error:
             raise exp from None
     return get_file
+
+
+def save_dict_file(file_name: str,
+                   data: dict,
+                   encoding: str = 'utf-8') -> bool:
+    f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
+    try:
+        if (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
+            return False
+        elif f_type == 'toml':
+            with open(file_name, mode='w', encoding=encoding) as file:
+                rtoml.dump(data, file)
+        elif f_type == 'json':
+            with open(file_name, mode='w', encoding=encoding) as file:
+                json.dump(data, file)
+        elif f_type == 'json5':
+            raise NoMoreJson5("我说什么也不用json5了！喵的")
+    except Exception as exp:
+        raise exp
 
 
 # main config
