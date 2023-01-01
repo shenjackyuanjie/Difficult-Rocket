@@ -22,7 +22,8 @@ from pyglet.gui import widgets
 from pyglet.shapes import Rectangle
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
-from pyglet.text.document import FormattedDocument
+from pyglet.text.caret import Caret
+from pyglet.text.document import FormattedDocument, UnformattedDocument
 from pyglet.text.layout import IncrementalTextLayout
 
 # from libs import pyperclip
@@ -66,7 +67,7 @@ class TextButton(widgets.WidgetBase):
         super().__init__(x, y, width, height)
         self.text = text
         self.text_label = Label(
-                                font_name=font, font_size=font_size)
+            font_name=font, font_size=font_size)
 
     @property
     def value(self):
@@ -78,15 +79,44 @@ class TextButton(widgets.WidgetBase):
 
 
 if not DR_option.InputBox_use_TextEntry:
-    class InputBox(widgets.WidgetBase):
+    class InputBox(widgets.TextEntry):
         """ 自定义的输入框 """
-        
-        def __init__(self, x: int, y: int, width: int,
-                     message: str,
-                     batch: Optional[Batch], group: Optional[Group]):
 
-            super().__init__(x=x, y=y, width=width)
-            ...
+        def __init__(self, x: int, y: int, width: int,
+                     text: str,
+                     side_width: int = 2,
+                     font_name: str = translate.鸿蒙简体,
+                     font_size: str = 13,
+                     color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
+                     text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
+                     caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
+                     batch: Optional[Batch] = None, group: Optional[Group] = None):
+            self._doc = UnformattedDocument(text)
+            self._doc.set_style(0, len(self._doc.text), dict(color=text_color, font_name=font_name))
+            font = self._doc.get_font()
+            height = font.ascent - font.descent
+
+            self._user_group = group
+            bg_group = Group(order=0, parent=group)
+            fg_group = Group(order=1, parent=group)
+
+            # Rectangular outline with 2-pixel pad:
+            self._pad = p = side_width
+            self._outline = Rectangle(x-p, y-p, width+p+p, height+p+p, color[:3], batch, bg_group)
+            self._outline.opacity = color[3]
+
+            # Text and Caret:
+            self._layout = IncrementalTextLayout(self._doc, width, height, multiline=False, batch=batch, group=fg_group)
+            self._layout.x = x
+            self._layout.y = y
+            self._caret = Caret(self._layout, color=caret_color)
+            self._caret.visible = False
+
+            self._focus = False
+
+    # InputBox.register_event_type('on_commit')
+
+
     # class InputBox(widgets.WidgetBase):
     #     """
     #     input box
@@ -283,8 +313,6 @@ if not DR_option.InputBox_use_TextEntry:
     #     def on_commit(self, text: str):
     #         pass
 
-
-    InputBox.register_event_type('on_commit')
 else:
     InputBox = widgets.TextEntry
     # class InputBox(widgets.TextEntry):

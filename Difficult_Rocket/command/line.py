@@ -43,7 +43,7 @@ class CommandLineTextEntry(widgets.TextEntry):
         super().__init__(x=x, y=y, width=width,
                          color=color, text_color=text_color, caret_color=caret_color,
                          batch=batch, group=group, text='')
-
+        ...
 
 
 class CommandLine(widgets.WidgetBase):

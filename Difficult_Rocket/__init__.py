@@ -13,7 +13,7 @@ gitee:  @shenjackyuanjie
 import ctypes
 import logging
 
-from Difficult_Rocket.utils.typings import Options
+from Difficult_Rocket.api.types import Options
 
 from libs.MCDR.version import Version
 

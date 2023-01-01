@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from pyglet.image import load, AbstractImage
 
 # Difficult Rocket
-from Difficult_Rocket.utils.typings import Options
+from Difficult_Rocket.api.types import Options
 
 
 @dataclass
