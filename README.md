@@ -50,14 +50,6 @@
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 
-[//]: # (- `开发平台 2 - macOS Big Sur`)
-[//]: # (  - `Python 3.8.10`)
-[//]: # (  - `macOS Big Sur 11.2.1`)
-[//]: # (  - `Pyglet 1.5.15`)
-[//]: # (  - `Json5 0.9.5`)
-[//]: # (  - `pillow 8.1.2`)
-[//]: # (  - `Intel I5 8279U`)
-
 ## 需要的Python模块
 
 - `rtoml`

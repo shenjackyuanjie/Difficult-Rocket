@@ -50,14 +50,6 @@
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 
-[//]: # (- `Develop platform 2 - macOS Big Sur`)
-[//]: # (  - `Python 3.8.7`)
-[//]: # (  - `macOS Big Sur 11.2.1`)
-[//]: # (  - `Pyglet 1.5.15`)
-[//]: # (  - `Json5 0.9.5`)
-[//]: # (  - `pillow 8.1.2`)
-[//]: # (  - `Intel I5 8279U`)
-
 ## Required python modules
 
 - `rtoml`
