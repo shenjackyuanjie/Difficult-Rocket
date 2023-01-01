@@ -37,7 +37,7 @@ from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
-from Difficult_Rocket.client.guis.widgets import InputBox
+from Difficult_Rocket.client.guis.widgets import CommandBox
 from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
 from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
@@ -154,8 +154,8 @@ class ClientWindow(Window):
         # 命令显示
         self.command_group = pyglet.graphics.Group(0)
         self.command_tree = tree.CommandTree(tree.DR_command)
-        self.input_box = InputBox(x=50, y=30, width=300, height=20,
-                                  batch=self.label_batch)  # 实例化
+        self.input_box = CommandBox(x=50, y=30, width=300,
+                                    batch=self.label_batch, text='')  # 实例化
         self.input_box.push_handlers(self)
         self.push_handlers(self.input_box)
         self.input_box.enabled = True

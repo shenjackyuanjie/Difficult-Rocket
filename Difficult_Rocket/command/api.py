@@ -38,11 +38,11 @@ class CommandText:
 
         self.tree_node = tree_list
 
-    @staticmethod
-    def parse_text(raw_text: str) -> str:
-        q_mark_iter = re.finditer('\\"', raw_text)
-        for q_mark in q_mark_iter:
-            ...
+    # @staticmethod
+    # def parse_text(raw_text: str) -> str:
+    #     q_mark_iter = re.finditer('\\"', raw_text)
+    #     for q_mark in q_mark_iter:
+    #         ...
 
     @staticmethod
     def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[List[str], Union[CommandParseError, type(True)]]:
