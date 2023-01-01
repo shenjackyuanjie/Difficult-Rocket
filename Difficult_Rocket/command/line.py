@@ -14,7 +14,7 @@ gitee:  @shenjackyuanjie
 # system function
 import time
 
-from typing import Union
+from typing import Union, Optional, Tuple
 from decimal import Decimal
 
 # from pyglet
@@ -30,11 +30,20 @@ from Difficult_Rocket.command.api import CommandText
 from Difficult_Rocket.utils.new_thread import new_thread
 
 
-
 class CommandLineTextEntry(widgets.TextEntry):
     """
     基于 Text Entry 重写的 Command Line
     """
+
+    def __init__(self, x: int, y: int, width: int,
+                 color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
+                 text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
+                 caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
+                 batch: Optional[Batch] = None, group: Optional[Group] = None):
+        super().__init__(x=x, y=y, width=width,
+                         color=color, text_color=text_color, caret_color=caret_color,
+                         batch=batch, group=group, text='')
+
 
 
 class CommandLine(widgets.WidgetBase):
@@ -172,7 +181,8 @@ class CommandLine(widgets.WidgetBase):
         self._label[0].visible = True
         time.sleep(wait)
         if self._label[0].visible and not self.editing:
-            while (self._label[0].opacity >= 30) and self._label[0].visible and (self._label[0] is this) and not self.editing:
+            while (self._label[0].opacity >= 30) and self._label[0].visible and (
+                    self._label[0] is this) and not self.editing:
                 # (label 的透明度不是 0) and (label 还在显示) and (label 还是载入线程时候的那个label) and (现在不在输入新行)
                 self._label[0].opacity -= 2
                 time.sleep(0.01)
