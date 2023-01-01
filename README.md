@@ -36,9 +36,8 @@
 
 ## 环境需求 (测试过的 / 开发平台)
 
-- `开发平台 1 - Windows 10`
+- `开发平台 1 - Windows 10 x64 22H2`
   - `Python 3.8.10`
-  - `Windows10 x64`
   - `pillow 9.3.0`
   - `pyperclip 1.8.2`
   - `pyglet 2.0`
@@ -46,7 +45,7 @@
   - `objprint 0.2.2`
   - `rtoml 0.9.0`
   - `pymunk 6.4.0`
-  - `xmltodict 0.12.0`
+  - `xmltodict 0.13.0`
   - `tomlkit 0.11.6`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
@@ -61,13 +60,16 @@
 
 ## 需要的Python模块
 
-- `tomlkit`
 - `rtoml`
-- `pyglet` (已经内置 V2.0b2 路径：`./libs/pyglet`)
+- `tomlkit`
+- `pyglet` (已经内置 V2.0.2.1 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
 - `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
 - `pillow`
-- `semver`
+- `pymunk`
+- `defusedxml`
+- `objprint`
+- `psutil`
 
 ## 感谢
 

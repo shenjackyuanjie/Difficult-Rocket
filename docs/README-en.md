@@ -36,40 +36,45 @@
 
 ## Environment (been tested / develop on)
 
-- `Develop platform 1 - Windows 10`
+- `Develop platform 1 - Windows 10 x64 22H2`
   - `Python 3.8.10`
-  - `Windows10 x64`
-  - `json5 0.9.9`
-  - `pillow 9.2.0`
+  - `pillow 9.3.0`
   - `pyperclip 1.8.2`
-  - `pyglet 2.0b2`
-  - `xmltodict 0.12.0`
-  - `tomlkit 0.11.5`
+  - `pyglet 2.0`
+  - `psutil 5.9.4`
+  - `objprint 0.2.2`
+  - `rtoml 0.9.0`
+  - `pymunk 6.4.0`
+  - `xmltodict 0.13.0`
+  - `tomlkit 0.11.6`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
-- `Develop platform 2 - macOS Big Sur`
-  - `Python 3.8.7`
-  - `macOS Big Sur 11.2.1`
-  - `Pyglet 1.5.15`
-  - `Json5 0.9.5`
-  - `pillow 8.1.2`
-  - `Intel I5 8279U`
+
+[//]: # (- `Develop platform 2 - macOS Big Sur`)
+[//]: # (  - `Python 3.8.7`)
+[//]: # (  - `macOS Big Sur 11.2.1`)
+[//]: # (  - `Pyglet 1.5.15`)
+[//]: # (  - `Json5 0.9.5`)
+[//]: # (  - `pillow 8.1.2`)
+[//]: # (  - `Intel I5 8279U`)
 
 ## Required python modules
 
-- `json5` (pre-installed V0.9.6 path:`./libs/json5`)
+- `rtoml`
 - `tomlkit`
-- `pyglet` (pre-installed V2.0b2 path:`./libs/pyglet`)
+- `pyglet` (pre-installed V2.0.2.1 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
 - `pillow`
-- `semver`
+- `pymunk`
+- `defusedxml`
+- `objprint`
+- `psutil`
 
 ## thanks to
 
 - [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
-- `json5`: json5 parser
-- `tomlkit` toml parser
+- `tomlkit` / `rtoml` toml parser
 - `xmltodict`: translate data between xml and dict
 - `pyperclip`: paste board!
 - [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some translates
