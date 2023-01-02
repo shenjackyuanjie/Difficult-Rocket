@@ -1,11 +1,18 @@
-psutil
-pillow
-objprint
-# selenium
-defusedxml
-tomlkit
-pymunk
-rtoml
-setuptools
 Cython
+pymunk
+setuptools
+
+# 处理文件
+pillow
+
+# 读取系统信息
+psutil
+
+# 读写文件
+rtoml
+tomlkit
+defusedxml
+
+# 用于 debug
+objprint
 viztracer
