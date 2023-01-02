@@ -10,7 +10,7 @@ import cProfile
 import traceback
 
 hi = """Difficult Rocket is writen by shenjackyuanjie
-mail: 3695888@qq.com or shyj3695888@163.com
+email: 3695888@qq.com or shyj3695888@163.com
 QQ: 3695888"""
 
 errors = {
