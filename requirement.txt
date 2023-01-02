@@ -16,3 +16,7 @@ defusedxml
 # 用于 debug
 objprint
 # viztracer
+
+# 编译
+nuitka
+orderedset

@@ -55,7 +55,7 @@ jobs:
       - name: Install env
         run: |
           pip install -r requirement.txt
-          pip install nuitka orderedset==2.0.2
+          # pip install nuitka orderedset==2.0.2
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
@@ -96,6 +96,9 @@ jobs:
           $arg += @("--assume-yes-for-download")
           python -m nuitka $arg DR.py
 
+          Rename-Item ./build/DR.dist Difficult-Rocket
+
+
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
         shell: pwsh
@@ -124,6 +127,7 @@ jobs:
           $arg += @("--assume-yes-for-download")
           python -m nuitka $arg DR.py
           
+          Rename-Item ./build/DR.dist Difficult-Rocket
           
           # # 输出配置
           # arg="--standalone "
@@ -144,9 +148,9 @@ jobs:
           # arg+="--assume-yes-for-download "
           # python -m nuitka $arg DR.py
 
-      - name: after build
-        shell: pwsh
-        run: python ./.github/workflows/after_compile.py
+      # - name: after build
+      #   shell: pwsh
+      #   run: python ./.github/workflows/after_compile.py
 
       # Uploads artifact
       - name: Upload Artifact
@@ -154,4 +158,4 @@ jobs:
         with:
           name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}.zip
           path: |
-            build/*.zip
+            build/Difficult-Rocket*

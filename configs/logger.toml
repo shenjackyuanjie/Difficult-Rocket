@@ -7,17 +7,17 @@ handlers = [ "console", "file"]
 [formatters.file]
 class = "logging.Formatter"
 format = "[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s"
-datefmt = "%Y-%m-%d %H-%M-%S"
+datefmt = "%Y-%m-%d %H:%M:%S"
 
 [formatters.client]
 class = "logging.Formatter"
 format = "[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s"
-datefmt = "%Y-%m-%d %H-%M-%S"
+datefmt = "%Y-%m-%d %H:%M:%S"
 
 [formatters.server]
 class = "logging.Formatter"
 format = "[%(asctime)s][%(name)s]:[%(levelname)s] %(message)s"
-datefmt = "%Y-%m-%d %H-%M-%S"
+datefmt = "%Y-%m-%d %H:%M:%S"
 
 [handlers.console]
 class = "logging.StreamHandler"
@@ -27,7 +27,7 @@ level = "DEBUG"
 [handlers.file]
 class = "logging.FileHandler"
 filename = "{} DR.log"
-datefmt = "%Y-%m-%d %H-%M-%S"
+datefmt = "%Y-%m-%d %H:%M:%S"
 encoding = "utf-8"
 formatter = "file"
 level = "DEBUG"
