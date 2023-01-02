@@ -30,6 +30,9 @@
 ### Changes
 
 - 将 `utils.translates` 中的字体名称常量移动至 `api.types.Fonts` 中
+- 删除了 `README-cn.md` ( 合并到 `README.md` 中 )
+- 将 `README.md` 与 `README-en.md` 的内容统一
+- 重新调整 `requirement.txt` 的内容 ( 使内容更加有条理性 )
 
 ## 20220627
 
