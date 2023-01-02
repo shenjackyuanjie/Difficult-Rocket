@@ -14,7 +14,7 @@ if sys.platform == "win32":
 print(os.listdir('./build'))
 
 with zipfile.ZipFile('./build/main.zip', 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as dist_zip:
-    for path, sub_paths, sub_files in os.walk('./build/DR.dist'):
+    for path, sub_paths, sub_files in os.walk('./build/Difficult-Rocket'):
         print(f'writing {path}')
         for file in sub_files:
             file_path = os.path.join(path, file)
