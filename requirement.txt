@@ -1,11 +1,10 @@
-psutil
-pillow
-objprint
-# selenium
-defusedxml
-tomlkit
-pymunk
 rtoml
-setuptools
-Cython
-viztracer
+tomlkit
+pillow
+pymunk
+defusedxml
+objprint
+psutil
+pyglet
+xmltodict
+pyperclip
