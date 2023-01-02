@@ -2,21 +2,21 @@
 pymunk
 setuptools
 
-# 处理文件
+# for images
 pillow
 
-# 读取系统信息
+# for sys info
 psutil
 
-# 读写文件
+# for files
 rtoml
 tomlkit
 defusedxml
 
-# 用于 debug
+# for debug
 objprint
 # viztracer
 
-# 编译
-nuitka
-orderedset
+# for compile
+# nuitka
+# orderedset
