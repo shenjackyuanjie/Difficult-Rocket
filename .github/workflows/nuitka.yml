@@ -98,7 +98,6 @@ jobs:
 
           Rename-Item ./build/DR.dist Difficult-Rocket
 
-
       - name: Build on MacOS / Linux
         if: ${{ runner.os == 'macOS' || runner.os == 'Linux' }}
         shell: pwsh
@@ -128,25 +127,6 @@ jobs:
           python -m nuitka $arg DR.py
           
           Rename-Item ./build/DR.dist Difficult-Rocket
-          
-          # # 输出配置
-          # arg="--standalone "
-          # arg+="--output-dir=build "
-          # 
-          # # 编译器配置
-          # arg+="--clang "
-          # arg+="--lto=no "
-          # # 包配置
-          # arg+="--nofollow-import-to=objprint,pillow,cffi,PIL,pyglet "
-          # # 数据配置
-          # arg+="--include-data-dir=./libs/pyglet=./pyglet "
-          # arg+="--include-data-dir=./libs/fonts=./libs/fonts "
-          # arg+="--include-data-dir=./textures=./textures "
-          # arg+="--include-data-dir=./configs=./configs"
-          # # 编译配置
-          # # arg+="--show-progress "
-          # arg+="--assume-yes-for-download "
-          # python -m nuitka $arg DR.py
 
       - name: after build
         shell: pwsh
