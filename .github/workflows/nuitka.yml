@@ -148,9 +148,9 @@ jobs:
           # arg+="--assume-yes-for-download "
           # python -m nuitka $arg DR.py
 
-      # - name: after build
-      #   shell: pwsh
-      #   run: python ./.github/workflows/after_compile.py
+      - name: after build
+        shell: pwsh
+        run: python ./.github/workflows/after_compile.py
 
       # Uploads artifact
       - name: Upload Artifact
@@ -158,4 +158,4 @@ jobs:
         with:
           name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}.zip
           path: |
-            build/Difficult-Rocket*
+            build/main.zip
