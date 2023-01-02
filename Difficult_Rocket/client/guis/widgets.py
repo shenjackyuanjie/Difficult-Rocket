@@ -29,30 +29,12 @@ from pyglet.text.layout import IncrementalTextLayout
 # from libs import pyperclip
 # from libs.pyperclip import paste
 
+from Difficult_Rocket.api.types import FontData
 from Difficult_Rocket.utils import translate
 from Difficult_Rocket.client.guis.format import html
 from Difficult_Rocket import DR_option
 
 __all__ = ['InputBox']
-
-
-# class Parts(widgets.WidgetBase):
-#     """
-#     parts
-#     """
-#
-#     def __init__(self,
-#                  x: int,
-#                  y: int,
-#                  width: int,
-#                  height: int,
-#                  textures: AbstractImage,
-#                  # textures,
-#                  batch: Batch,
-#                  parts_data: dict):
-#         super().__init__(x, y, width, height)
-#         self.sprite = Sprite(img=textures, x=x, y=y, batch=batch)
-#         self._value = 0
 
 
 class TextButton(widgets.WidgetBase):
@@ -85,14 +67,13 @@ if not DR_option.InputBox_use_TextEntry:
         def __init__(self, x: int, y: int, width: int,
                      text: str,
                      side_width: int = 2,
-                     font_name: str = translate.鸿蒙简体,
-                     font_size: str = 13,
+                     font_data: Optional[FontData] = None,
                      color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
                      text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
                      caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
                      batch: Optional[Batch] = None, group: Optional[Group] = None):
             self._doc = UnformattedDocument(text)
-            self._doc.set_style(0, len(self._doc.text), dict(color=text_color, font_name=font_name))
+            self._doc.set_style(0, len(self._doc.text), {**font_data.dict(), 'text_color': text_color})
             font = self._doc.get_font()
             height = font.ascent - font.descent
 
@@ -113,6 +94,7 @@ if not DR_option.InputBox_use_TextEntry:
             self._caret.visible = False
 
             self._focus = False
+            super().__init__()
 
     # InputBox.register_event_type('on_commit')
 

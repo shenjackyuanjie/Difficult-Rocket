@@ -11,15 +11,11 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-"""
-存档模块
-尽量同时兼容SR1和DR
-包含:
-    解析存档文件
-    创建存档文件
-"""
-
+import dataclasses
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple
+
+# from Difficult Rocket
+from Difficult_Rocket.utils import translate
 
 
 def get_type_hints_(cls: Type):
@@ -110,3 +106,21 @@ class Options:
             cls.options: Dict[str, Union[Callable, object]] = {}
         cls.options[name] = value
         return cls.options
+
+
+@dataclasses.dataclass
+class FontData:
+    """ 用于保存字体的信息 """
+    font_name: str = translate.鸿蒙简体
+    font_size: int = 13
+    bold: bool = False
+    italic: bool = False
+    stretch: bool = False
+
+    def dict(self) -> Dict[str, Union[str, int, bool]]:
+        return dict(font_name=self.font_name,
+                    font_size=self.font_size,
+                    bold=self.bold,
+                    italic=self.italic,
+                    stretch=self.stretch)
+
