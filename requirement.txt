@@ -1,4 +1,4 @@
-Cython
+# Cython
 pymunk
 setuptools
 
@@ -15,4 +15,4 @@ defusedxml
 
 # 用于 debug
 objprint
-viztracer
+# viztracer
