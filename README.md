@@ -20,7 +20,7 @@
 [![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.4-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Devloping-0.7.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
-## English README please look [here](../README.md)
+## English README please look [here](./docs/README-en.md)
 
 > 这是一个用Python制作的类Simple Rocket游戏(简称：火箭模拟器)
 
