@@ -11,6 +11,7 @@ from pyglet.graphics import Batch, Group
 from pyglet.clock import get_frequency
 
 # Difficult Rocket function
+from Difficult_Rocket.api.types import Fonts
 from Difficult_Rocket.utils import translate
 from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.command.tree import CommandTree
@@ -32,7 +33,7 @@ class DRDEBUGScreen(BaseScreen):
         self.fps_label = Label(x=10, y=main_window.height - 10,
                                width=main_window.width - 20, height=20,
                                anchor_x='left', anchor_y='top',
-                               font_name=translate.微软等宽无线, font_size=20,
+                               font_name=Fonts.微软等宽无线, font_size=20,
                                multiline=True,
                                batch=self.main_batch, group=self.main_group)
         self.fps_label.text = "11111114514"

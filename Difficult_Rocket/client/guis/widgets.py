@@ -29,8 +29,7 @@ from pyglet.text.layout import IncrementalTextLayout
 # from libs import pyperclip
 # from libs.pyperclip import paste
 
-from Difficult_Rocket.api.types import FontData
-from Difficult_Rocket.utils import translate
+from Difficult_Rocket.api.types import FontData, Fonts
 from Difficult_Rocket.client.guis.format import html
 from Difficult_Rocket import DR_option
 
@@ -45,7 +44,7 @@ class TextButton(widgets.WidgetBase):
     def __init__(self,
                  x: int, y: int, width: int, height: int,
                  text: str,
-                 font: str = translate.鸿蒙简体, font_size: int = 13):
+                 font: str = Fonts.鸿蒙简体, font_size: int = 13):
         super().__init__(x, y, width, height)
         self.text = text
         self.text_label = Label(
@@ -72,6 +71,8 @@ if not DR_option.InputBox_use_TextEntry:
                      text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
                      caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
                      batch: Optional[Batch] = None, group: Optional[Group] = None):
+            if font_data is None:
+                font_data = FontData()
             self._doc = UnformattedDocument(text)
             self._doc.set_style(0, len(self._doc.text), {**font_data.dict(), 'text_color': text_color})
             font = self._doc.get_font()

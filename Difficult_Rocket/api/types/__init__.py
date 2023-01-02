@@ -15,7 +15,17 @@ import dataclasses
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple
 
 # from Difficult Rocket
-from Difficult_Rocket.utils import translate
+
+__all__ = ['get_type_hints_',
+           'Options',
+           'Fonts',
+           'FontData',
+           'OptionsError',
+           'OptionNotFound',
+           'OptionNameNotDefined']
+
+
+
 
 
 def get_type_hints_(cls: Type):
@@ -74,8 +84,8 @@ class Options:
             if isinstance(a_fun, property):
                 try:
                     values[option] = getattr(self, option)
-                except AttributeError as e:
-                    raise OptionNotFound(f'Option {option} is not found in {self.name}')
+                except AttributeError:
+                    raise OptionNotFound(f'Option {option} is not found in {self.name}') from None
         return values
 
     def flush_option(self) -> Dict[str, Any]:
@@ -108,10 +118,38 @@ class Options:
         return cls.options
 
 
+class Fonts(Options):
+    # font's value
+
+    HOS: str = 'HarmonyOS Sans'
+    HOS_S: str = 'HarmonyOS Sans SC'
+    HOS_T: str = 'HarmonyOS Sans TC'
+    HOS_C: str = 'HarmonyOS Sans Condensed'
+
+    鸿蒙字体: str = HOS
+    鸿蒙简体: str = HOS_S
+    鸿蒙繁体: str = HOS_T
+    鸿蒙窄体: str = HOS_C
+
+    CC: str = 'Cascadia Code'
+    CM: str = 'Cascadia Mono'
+    CCPL: str = 'Cascadia Code PL'
+    CMPL: str = 'Cascadia Mono PL'
+
+    微软等宽: str = CC
+    微软等宽无线: str = CM
+    微软等宽带电线: str = CCPL
+    微软等宽带电线无线: str = CMPL
+
+    得意黑: str = '得意黑'
+    # SS = smiley-sans
+    SS: str = 得意黑
+
+
 @dataclasses.dataclass
 class FontData:
     """ 用于保存字体的信息 """
-    font_name: str = translate.鸿蒙简体
+    font_name: str = Fonts.鸿蒙简体
     font_size: int = 13
     bold: bool = False
     italic: bool = False
@@ -123,4 +161,3 @@ class FontData:
                     bold=self.bold,
                     italic=self.italic,
                     stretch=self.stretch)
-

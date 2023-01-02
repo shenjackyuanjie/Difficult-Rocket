@@ -174,29 +174,3 @@ if not __name__ == '__main__':
     tr = Lang()
 else:
     tr_ = Tr()
-
-# font's value
-
-HOS = 'HarmonyOS Sans'
-HOS_S = 'HarmonyOS Sans SC'
-HOS_T = 'HarmonyOS Sans TC'
-HOS_C = 'HarmonyOS Sans Condensed'
-
-鸿蒙字体 = HOS
-鸿蒙简体 = HOS_S
-鸿蒙繁体 = HOS_T
-鸿蒙窄体 = HOS_C
-
-CC = 'Cascadia Code'
-CM = 'Cascadia Mono'
-CCPL = 'Cascadia Code PL'
-CMPL = 'Cascadia Mono PL'
-
-微软等宽 = CC
-微软等宽无线 = CM
-微软等宽带电线 = CCPL
-微软等宽带电线无线 = CMPL
-
-得意黑 = '得意黑'
-# SS = smiley-sans
-SS = 得意黑
