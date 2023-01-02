@@ -1,8 +1,8 @@
 # Difficult Rocket
 
-[中文](../README.md) | English
-
 [comment]: <> (中文 | [English]&#40;https://github.com/shenjackyuanjie/Difficult-Rocket&#41;.)
+
+[中文](../README.md) | English
 
 - [GitHub](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
@@ -17,8 +17,8 @@
 ## Version
 
 [![Generic badge](https://img.shields.io/badge/Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Devloping-0.6.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.4-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Devloping-0.7.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 ## 中文README请移步 [这里](../README.md)
 
@@ -34,7 +34,7 @@
 
 ## [Update logs](/docs/update_logs.md)
 
-## Environment (been tested / develop on)
+## Environment (been tested / developed on)
 
 - `Develop platform 1 - Windows 10 x64 22H2`
   - `Python 3.8.10`
