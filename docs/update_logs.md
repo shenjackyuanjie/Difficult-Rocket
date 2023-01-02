@@ -25,6 +25,11 @@
 - nuitka 文档
 - 准备给我的 5600x 的散热器洗一洗（
 - 一些 client
+- `Github Action` 的自动 build
+
+### Changes
+
+- 将 `utils.translates` 中的字体名称常量移动至 `api.types.Fonts` 中
 
 ## 20220627
 
