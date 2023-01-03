@@ -22,5 +22,5 @@ defusedxml = "*"
 
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=42", "wheel", "nuitka", "toml", "imageio"]
+build-backend = "nuitka.distutils.Build"

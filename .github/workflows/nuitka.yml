@@ -55,7 +55,7 @@ jobs:
       - name: Install env
         run: |
           pip install -r requirement.txt
-          pip install nuitka ordered-set
+          pip install nuitka ordered-set imageio
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
@@ -78,8 +78,10 @@ jobs:
           $arg += @("--company-name=tool-shenjack-workshop")
           $arg += @("--product-name=Difficult-Rocket")
           $arg += @("--product-version=$env:DR_version")
+          $arg += @("--file-version=$env:Build_version")
           $arg += @("--file-description=Difficult-Rocket!")
-          $arg += @("--file-version=0.0.0.1")
+          $arg += @("--windows-icon-from-ico=textures/icon.png")
+          $arg += @("--macos-app-icon=textures/icon.png")
           # 编译器配置
           $arg += @("--msvc=latest")
           $arg += @("--clang")
@@ -109,8 +111,10 @@ jobs:
           $arg += @("--company-name=tool-shenjack-workshop")
           $arg += @("--product-name=Difficult-Rocket")
           $arg += @("--product-version=$env:DR_version")
-          $arg += @("--file-version=0.0.0.1")
+          $arg += @("--file-version=$env:Build_version")
           $arg += @("--file-description=Difficult-Rocket!")
+          $arg += @("--windows-icon-from-ico=textures/icon.png")
+          $arg += @("--macos-app-icon=textures/icon.png")
           # 编译器配置
           $arg += @("--clang")
           $arg += @("--lto=no")

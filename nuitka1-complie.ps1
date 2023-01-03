@@ -10,6 +10,8 @@ $arg += @("--product-name=Difficult-Rocket")
 $arg += @("--product-version=0.6.4")
 $arg += @("--file-version=0.0.0.1")
 $arg += @("--file-description=Difficult-Rocket!")
+$arg += @("--windows-icon-from-ico=textures/icon.png")
+$arg += @("--macos-app-icon=textures/icon.png")
 # 编译器配置
 $arg += @("--mingw64")
 $arg += @("--clang")
