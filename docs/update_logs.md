@@ -213,7 +213,7 @@
 - now `crash-report` have more information
 - now when pressed, the sprite will rotate randomly
 - now `pyglet.app.run()` use multiprocess
-- now will allways use `libs/` lib when using `pyglet` or `json5`
+- now will always use `libs/` lib when using `pyglet` or `json5`
 - now `tools.config()` is `tools.load_file()`
 - now `lang` file have `server``client` and `window`
 
@@ -292,7 +292,7 @@
 
 ### DEBUG
 
-- game window doesn't use input `(*args, **kwargs)` to setup
+- game window doesn't use input `(*args, **kwargs)` to set up
 
 ### Change
 
