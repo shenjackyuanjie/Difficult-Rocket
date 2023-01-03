@@ -17,12 +17,15 @@ from Difficult_Rocket.api.types import Options
 
 from libs.MCDR.version import Version
 
-game_version = Version("0.6.4")
+game_version = Version("0.6.4.1")  # 游戏版本
+build_version = Version("0.0.1.0")  # 编译文件版本(与游戏本体无关)
 __version__ = game_version
 
-long_version: ctypes.c_longlong = ctypes.c_longlong(4)
+long_version: ctypes.c_longlong = ctypes.c_longlong(5)
 """
 long_version: 一个用于标记内部协议的整数
+5: 添加 build_version 信息,用于标记编译文件版本,
+   游戏版本改为四位数，终于有一个可以让我随便刷的版本号位数了
 4: 把 translate 的字体常量位置改了一下,顺便调换顺序
 3: 就是试试改一下，正好 compiler 要用
 2: 哦，对 longlong 好耶！
@@ -59,6 +62,7 @@ class _DR_runtime(Options):
     name = 'DR Runtime'
     # game statue
     DR_version: Version = game_version
+    Build_version: Version = build_version
     DR_long_version: ctypes.c_longlong = long_version
 
     # run status

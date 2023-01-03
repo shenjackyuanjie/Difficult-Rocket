@@ -18,9 +18,9 @@ import atexit
 import inspect
 import warnings
 import threading
-import dataclasses
 
 from types import FrameType
+from dataclasses import dataclass
 from logging import NOTSET, DEBUG
 from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
 
@@ -241,7 +241,7 @@ logger_configs = {
 }
 
 
-@dataclasses.dataclass
+@dataclass
 class LogFileConf:
     file_name: str = 'logs/log.txt'
     file_mode: str = 'a'
