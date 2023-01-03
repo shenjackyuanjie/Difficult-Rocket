@@ -81,7 +81,7 @@ jobs:
           $arg += @("--file-version=$env:Build_version")
           $arg += @("--file-description=Difficult-Rocket!")
           $arg += @("--windows-icon-from-ico=textures/icon.png")
-          $arg += @("--macos-app-icon=textures/icon.png")
+          # $arg += @("--macos-app-icon=textures/icon.png")
           # 编译器配置
           $arg += @("--msvc=latest")
           $arg += @("--clang")
@@ -113,7 +113,7 @@ jobs:
           $arg += @("--product-version=$env:DR_version")
           $arg += @("--file-version=$env:Build_version")
           $arg += @("--file-description=Difficult-Rocket!")
-          $arg += @("--windows-icon-from-ico=textures/icon.png")
+          # $arg += @("--windows-icon-from-ico=textures/icon.png")
           $arg += @("--macos-app-icon=textures/icon.png")
           # 编译器配置
           $arg += @("--clang")
