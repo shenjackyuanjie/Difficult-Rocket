@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "difficult-rocket"
-version = "0.6.4"
+version = "0.6.4.1"
 description = "A rocket game"
 authors = ["shenjackyuanjie <3695888@qq.com>"]
 license = "CC-BY-NA-SA 4.0"
