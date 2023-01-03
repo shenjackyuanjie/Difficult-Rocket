@@ -12,34 +12,60 @@ gitee:  @shenjackyuanjie
 """
 
 import inspect
-# import dataclasses
 
-from typing import Union, Tuple, Any, Type, List, Dict, Hashable
+from dataclasses import dataclass
+from typing import Union, Tuple, Any, Type, List, Dict, Hashable, Optional
 
 from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.exception.language import *
 
 
+@dataclass
+class TranslateConfig:
+    raise_error: bool = False
+    # 引用错误时抛出错误
+    crack_normal: bool = False
+    # 出现错误引用后 将引用到的正确内容替换为引用路径
+    insert_crack: bool = True
+    # 加入引用的错误内容
+    is_final: bool = False
+    # 是否为最终内容
+    keep_get: bool = True
+    # 引用错误后是否继续引用
+
+    def set(self, item: str, value: bool) -> 'TranslateConfig':
+        assert getattr(self, item, None) is not None, f'Config {item} is not in TranslateConfig'
+        assert type(value) is bool
+        setattr(self, item, value)
+        return self
+
+
 class Translates:
     def __init__(self,
                  value: Union[Dict[str, Any], list, tuple, str],
-                 raise_error: bool = False,
+                 config: Optional[TranslateConfig] = None,
                  get_list: List[str] = None,
-                 error_get_list: List[str] = None,
-                 final: bool = False):
+                 error_get_list: List[str] = None):
         """
         一个用于翻译的东西
         :param value: 翻译键节点
-        :param raise_error: 是否抛出错误
-        :param get_list: 尝试获取的列表
-        :param final: 是否为翻译结果 (偷懒用的)
+        :param config:
+        :param get_list:
+        :param error_get_list:
         """
         self.value: Union[Dict[str, Any], list, tuple] = value
-        self.raise_error = raise_error
+        self.config = config or TranslateConfig()
         self.get_list = get_list or []
         self.error_get_list = error_get_list or []
-        self.final = final
+
+    def set_option(self, option: Union[str, TranslateConfig],
+                   value: Optional[Union[bool, List[str]]] = None) -> 'Translates':
+        assert type(option) is str or isinstance(option, TranslateConfig)
+        if isinstance(option, TranslateConfig):
+            self.config = option
+            return self
+        self.config.set(option, value)
 
     def __getitem__(self, item: Union[str, int, Hashable]) -> Union["Translates", str, int]:
         """
@@ -51,6 +77,9 @@ class Translates:
         cache_error_get_list = self.error_get_list.copy()
         cache_get_list.append(item)
         try:
+            if not self.final:
+                if item not in self.value and (type(item) is int and len(self.value) < item):
+                    raise KeyError
             cache = self.value[item]
             cache_get_list.append(item)
         except (KeyError, TypeError):
@@ -64,16 +93,16 @@ class Translates:
                             f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
                 print(call_info)
             # 如果不抛出错误
-            if self.raise_error:
+            if self.config.raise_error:
                 raise TranslateKeyNotFound(item_names=cache_get_list) from None
             cache_error_get_list.append(item)
             if self.final:  # 如果已经是翻译结果
-                return Translates(value='.'.join(cache_get_list), raise_error=False, final=True, error_get_list=cache_error_get_list)
+                return Translates(value='.'.join(cache_get_list), error_get_list=cache_error_get_list)
         else:
             if self.final:
                 return self
             else:
-                return Translates(value=cache, raise_error=self.raise_error, get_list=cache_get_list)
+                return Translates(value=cache, get_list=cache_get_list)
 
     def __getattr__(self, item: Union[str, Hashable]) -> Union["Translates"]:
         if hasattr(object, item):
@@ -91,6 +120,7 @@ class Tr:
     我不装了，我就抄了tr
     GOOD
     """
+
     def __init__(self, language: str = None, raise_error: bool = False):
         """
         诶嘿，我抄的MCDR
@@ -101,9 +131,14 @@ class Tr:
         self.translates: Dict = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
         self.不抛出异常 = raise_error
+        self.translates_cache = Translates(value=self.translates, raise_error=self.不抛出异常)
 
-    def __call__(self, ):
-        ...
+    # def __call__(self, ):
+    #     ...
+
+    def __getitem__(self, item):
+        if item in self.translates:
+            return getattr(self.translates_cache, item)
 
 
 class Lang:
@@ -134,7 +169,8 @@ class Lang:
             try:
                 return self.default_translates[item]
             except KeyError:
-                raise TranslateKeyNotFound(f'there\'s no key {item} in both {DR_option.language} and zh-CN')
+                raise TranslateKeyNotFound
+                # raise TranslateKeyNotFound(f'there\'s no key {item} in both {DR_option.language} and zh-CN')
 
     def lang(self, *args) -> Union[int, str, list, dict, tuple]:
         # frame = inspect.currentframe()
@@ -156,7 +192,8 @@ class Lang:
             except KeyError as e:
                 if self.直接返回原始数据:
                     return args
-                raise TranslateKeyNotFound(f'there\'s no key {args} in both {DR_option.language} and zh-CN') from e
+                raise TranslateKeyNotFound from e
+                # raise TranslateKeyNotFound(f'there\'s no key {args} in both {DR_option.language} and zh-CN') from e
 
     def 翻译(self, *args) -> Union[int, str, list, dict]:
         return self.lang(args)

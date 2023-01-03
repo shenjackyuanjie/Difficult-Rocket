@@ -72,6 +72,7 @@ class Client:
         self.logger.debug(tr.lang('client', 'setup.use_time_ns').format(self.use_time))
 
     def start(self):
+        DR_runtime.running = True
         self.window.start_game()  # 游戏启动
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
@@ -155,7 +156,7 @@ class ClientWindow(Window):
         self.command_group = pyglet.graphics.Group(0)
         self.command_tree = tree.CommandTree(tree.DR_command)
         self.input_box = InputBox(x=50, y=30, width=300,
-                                    batch=self.label_batch, text='')  # 实例化
+                                  batch=self.label_batch, text='')  # 实例化
         self.input_box.push_handlers(self)
         self.push_handlers(self.input_box)
         self.input_box.enabled = True

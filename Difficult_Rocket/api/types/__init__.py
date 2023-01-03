@@ -11,7 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import dataclasses
+from dataclasses import dataclass
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple
 
 # from Difficult Rocket
@@ -146,7 +146,7 @@ class Fonts(Options):
     SS: str = 得意黑
 
 
-@dataclasses.dataclass
+@dataclass
 class FontData:
     """ 用于保存字体的信息 """
     font_name: str = Fonts.鸿蒙简体
