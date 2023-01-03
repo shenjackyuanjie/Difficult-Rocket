@@ -49,7 +49,7 @@ class _DR_option(Options):
     # tests
     playing:           bool = False
     debugging:         bool = False
-    crash_report_test: bool = False
+    crash_report_test: bool = True
 
     # window option
     gui_scale: int = 1  # default 1 2 -> 2x 3 -> 3x

@@ -40,18 +40,28 @@ class TranslateConfig:
         setattr(self, item, value)
         return self
 
+    def __copy__(self) -> 'TranslateConfig':
+        return TranslateConfig(raise_error=self.raise_error,
+                               crack_normal=self.crack_normal,
+                               insert_crack=self.insert_crack,
+                               is_final=self.is_final,
+                               keep_get=self.keep_get)
+
+    def copy(self) -> 'TranslateConfig':
+        return self.__copy__()
+
 
 class Translates:
     def __init__(self,
                  value: Union[Dict[str, Any], list, tuple, str],
                  config: Optional[TranslateConfig] = None,
-                 get_list: List[str] = None,
-                 error_get_list: List[str] = None):
+                 get_list: List[Tuple[int, str]] = None,
+                 error_get_list: List[Tuple[int, str]] = None):
         """
         一个用于翻译的东西
         :param value: 翻译键节点
-        :param config:
-        :param get_list:
+        :param config: 配置
+        :param get_list: 获取列表
         :param error_get_list:
         """
         self.value: Union[Dict[str, Any], list, tuple] = value
@@ -121,17 +131,17 @@ class Tr:
     GOOD
     """
 
-    def __init__(self, language: str = None, raise_error: bool = False):
+    def __init__(self, language: str = None, config: Optional[TranslateConfig] = None):
         """
         诶嘿，我抄的MCDR
         :param language: Tr 所使用的的语言
-        :param raise_error: 解析失败的时候是否报错
+        :param config: 配置
         """
         self.language_name = language or DR_runtime.language
         self.translates: Dict = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
-        self.不抛出异常 = raise_error
-        self.translates_cache = Translates(value=self.translates, raise_error=self.不抛出异常)
+        self.default_config = config or TranslateConfig()
+        self.translates_cache = Translates(value=self.translates, config=TranslateConfig().copy())
 
     # def __call__(self, ):
     #     ...
