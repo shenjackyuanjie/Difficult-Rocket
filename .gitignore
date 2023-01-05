@@ -10,6 +10,9 @@ trytry/
 # log files
 logs/
 
+# mdbook build
+docs/page/docs
+
 # crash report files
 crash_report/
 

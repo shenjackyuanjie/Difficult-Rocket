@@ -3,7 +3,7 @@
 - [update logs](./update_logs.md)
 - [contributors](./contributors.md)
 
-- [rua! 奇怪的东西](./rua!.md)
+- [rua! 奇怪的东西~](./rua!.md)
 
 - [nuitka test](./nuitka/20221121_nuitka_performs.md)
 
