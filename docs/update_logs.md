@@ -33,6 +33,15 @@
 - 删除了 `README-cn.md` ( 合并到 `README.md` 中 )
 - 将 `README.md` 与 `README-en.md` 的内容统一
 - 重新调整 `requirement.txt` 的内容 ( 使内容更加有条理性 )
+- 删除了一些无用的代码 ( For second-dev )
+- 更新了 `Toml` 文件 ( 使其更加规范 )
+- 更新了 `screen api`
+- 更新了 `pyglet` 版本
+- 删除了 `main.config`
+- 更新了 `logger`
+- 更新了 `nuitka.yml`
+- 尝试加载 `icon`
+- 更新了主项目
 
 ## 20220627
 
