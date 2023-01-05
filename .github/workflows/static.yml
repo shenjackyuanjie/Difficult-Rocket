@@ -34,6 +34,19 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
         
+      - name: Setup Cargo
+        uses: actions-rs/toolchain@v1
+
+      - name: install mdbook
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: mdbook
+
+      - name: build mdbook
+        shell: pwsh
+        run: mdbook build ./docs/page
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
