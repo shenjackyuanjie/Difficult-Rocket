@@ -12,3 +12,8 @@
   - [更多保存信息](./plan_features/extra-save-info.md)
   - [联机](./plan_features/multi-connect.md)
   - [muit control](./plan_features/multi-control.md)
+
+- [how to](./howto/readme.md)
+  - [client](./howto/client.md)
+  - [mod loader](./howto/mod/loader.md)
+  - [game name](./howto/game/命名.md)

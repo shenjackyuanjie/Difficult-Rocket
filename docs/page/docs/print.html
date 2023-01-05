@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="update_logs.html"><strong aria-hidden="true">1.</strong> update logs</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">2.</strong> contributors</a></li><li class="chapter-item expanded "><a href="rua!.html"><strong aria-hidden="true">3.</strong> rua! 奇怪的东西</a></li><li class="chapter-item expanded "><a href="nuitka/20221121_nuitka_performs.html"><strong aria-hidden="true">4.</strong> nuitka test</a></li><li class="chapter-item expanded "><a href="plan_features/index.html"><strong aria-hidden="true">5.</strong> plan features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="plan_features/格式.html"><strong aria-hidden="true">5.1.</strong> 格式</a></li><li class="chapter-item expanded "><a href="plan_features/extra-save-info.html"><strong aria-hidden="true">5.2.</strong> extra save info</a></li><li class="chapter-item expanded "><a href="plan_features/multi-connect.html"><strong aria-hidden="true">5.3.</strong> muit connect</a></li><li class="chapter-item expanded "><a href="plan_features/multi-control.html"><strong aria-hidden="true">5.4.</strong> muit control</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="update_logs.html"><strong aria-hidden="true">1.</strong> update logs</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">2.</strong> contributors</a></li><li class="chapter-item expanded "><a href="rua!.html"><strong aria-hidden="true">3.</strong> rua! 奇怪的东西</a></li><li class="chapter-item expanded "><a href="nuitka/20221121_nuitka_performs.html"><strong aria-hidden="true">4.</strong> nuitka test</a></li><li class="chapter-item expanded "><a href="plan_features/index.html"><strong aria-hidden="true">5.</strong> plan features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="plan_features/格式.html"><strong aria-hidden="true">5.1.</strong> 格式</a></li><li class="chapter-item expanded "><a href="plan_features/extra-save-info.html"><strong aria-hidden="true">5.2.</strong> 更多保存信息</a></li><li class="chapter-item expanded "><a href="plan_features/multi-connect.html"><strong aria-hidden="true">5.3.</strong> 联机</a></li><li class="chapter-item expanded "><a href="plan_features/multi-control.html"><strong aria-hidden="true">5.4.</strong> muit control</a></li></ol></li><li class="chapter-item expanded "><a href="howto/index.html"><strong aria-hidden="true">6.</strong> how to</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="howto/client.html"><strong aria-hidden="true">6.1.</strong> client</a></li><li class="chapter-item expanded "><a href="howto/mod/loader.html"><strong aria-hidden="true">6.2.</strong> mod loader</a></li><li class="chapter-item expanded "><a href="howto/game/命名.html"><strong aria-hidden="true">6.3.</strong> game name</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1085,6 +1085,110 @@
 <p>可以让火箭在操作其他火箭的时候继续燃烧</p>
 <p>（就是说操纵A火箭的时候，B火箭还能继续燃烧）</p>
 <h3 id="底层机制-3"><a class="header" href="#底层机制-3">底层机制</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="其实也没啥东西啦就是个占位符"><a class="header" href="#其实也没啥东西啦就是个占位符">其实也没啥东西啦，就是个占位符</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="设计文档"><a class="header" href="#设计文档">设计文档</a></h1>
+<p>20220208</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mod加载器设计文档"><a class="header" href="#mod加载器设计文档">MOD加载器设计文档</a></h1>
+<h2 id="v1-20220307"><a class="header" href="#v1-20220307">v1-20220307</a></h2>
+<h3 id="initpy"><a class="header" href="#initpy"><strong>init</strong>.py</a></h3>
+<ul>
+<li>MODInfo类
+<ul>
+<li>MODInfo类的属性
+<ul>
+<li>一些基本的MOD信息</li>
+<li>版本类信息
+<ul>
+<li>MOD版本号</li>
+<li>DR MOD加载器兼容版本</li>
+<li>DR 内容兼容版本</li>
+<li>需要的MOD版本号</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="关于命名的设计文档"><a class="header" href="#关于命名的设计文档">关于命名的设计文档</a></h1>
+<h2 id="命名规则"><a class="header" href="#命名规则">命名规则</a></h2>
+<h2 id="命名空间"><a class="header" href="#命名空间">命名空间</a></h2>
+<ul>
+<li>DR: Difficult Rocket
+<ul>
+<li>DR单独的部件、格式、结构的命名空间</li>
+<li>例子
+<ul>
+<li><code>DR:pod-1</code></li>
+<li><code>DR:solar.expand</code></li>
+<li><code>DR:wheel.big</code></li>
+<li><code>DR:planet.smearth</code></li>
+<li><code>DR:planet.smars</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SR: SimpleRockets
+<ul>
+<li>SR的原生组件、格式、结构的命名空间(大概不会用多少)</li>
+<li>例子
+<ul>
+<li><code>SR:pod-1</code></li>
+<li><code>SR:wheel.small</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>其他:
+<ul>
+<li>命名规则:
+<ul>
+<li>可以包含
+<ul>
+<li><code>ABC</code></li>
+<li><code>abc</code></li>
+<li><code>-</code> <code>_</code></li>
+<li><code>123</code></li>
+<li><code>从前有座山</code></li>
+<li><code>Unicode表情</code></li>
+<li>各种中文标点符号
+<ul>
+<li>中文的啊！</li>
+<li><code>，</code> <code>。</code> <code>、</code> <code>·</code></li>
+<li><code>；</code> <code>：</code></li>
+<li><code>？</code> <code>！</code></li>
+<li><code>（</code> <code>）</code></li>
+<li><code>【</code> <code>】</code></li>
+<li><code>《</code> <code>》</code></li>
+<li><code>“</code> <code>”</code></li>
+<li><code>‘</code> <code>’</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>不能以数字开头</li>
+<li>不能包含
+<ul>
+<li><code>.</code> <code>/</code> <code>:</code></li>
+<li><code>&lt;</code> <code>&gt;</code></li>
+<li><code>|</code> <code>*</code> <code>?</code></li>
+<li><code>&quot;</code> <code>'</code></li>
+</ul>
+</li>
+<li>例子:
+<ul>
+<li><code>Simple_Mod</code></li>
+<li><code>真·简单mod</code></li>
+<li><code>啊啊啊啊，↑↓Jundroo！</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mod添加的部件、格式、结构的命名空间</li>
+</ul>
 
                     </main>
 

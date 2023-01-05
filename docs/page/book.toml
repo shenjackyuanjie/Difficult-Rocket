@@ -13,6 +13,7 @@ extra-watch-dirs = []             # directories to watch for triggering builds
 
 [output.html]
 input-404 = "404.md"
+cname = 'hws.shenjack.top'
 
 [output.html.search]
 limit-results = 15
@@ -21,9 +22,9 @@ limit-results = 15
 enable = true    # include support for printable output
 page-break = true # insert page-break after each chapter
 
-[output.copy-resources]
-optional = true
-command = 'python output.py'
+# [output.copy-resources]
+# optional = true
+# command = 'python output.py'
 
 [rust]
 edition = "2021"   # the default edition for code blocks
