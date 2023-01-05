@@ -18,5 +18,6 @@ __all__ = [
     'Nope418ImATeapot',
     'ThinkError',
     'BrainError',
-    'BigBrainError'
+    'BigBrainError',
+    'GrammarError'
 ]

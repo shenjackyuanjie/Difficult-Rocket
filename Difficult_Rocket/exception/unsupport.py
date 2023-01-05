@@ -10,14 +10,15 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
-from Difficult_Rocket.exception import BaseError
+from Difficult_Rocket.exception import BaseError, BaseRuntimeError
 
 __all__ = [
     'NoMoreJson5',
     'Nope418ImATeapot',
     'ThinkError',
     'BrainError',
-    'BigBrainError'
+    'BigBrainError',
+    'GrammarError'
 ]
 
 
@@ -43,3 +44,7 @@ class BigBrainError(BrainError):
 
 class BrainTimeoutError(BrainError, ThinkError):
     """脑子····超时·······················啦！"""
+
+
+class GrammarError(BaseRuntimeError):
+    """嘿NMD语法！"""

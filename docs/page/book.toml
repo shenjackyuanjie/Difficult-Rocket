@@ -1,0 +1,30 @@
+[book]
+authors = ["shenjack"]
+language = "zh-cn"
+multilingual = false
+src = "src"
+title = "Difficult-Rocket-docs"
+
+[build]
+build-dir = './docs'
+create-missing = false
+use-default-preprocessors = true  # use the default preprocessors
+extra-watch-dirs = []             # directories to watch for triggering builds
+
+[output.html]
+input-404 = "404.md"
+
+[output.html.search]
+limit-results = 15
+
+[output.html.print]
+enable = true    # include support for printable output
+page-break = true # insert page-break after each chapter
+
+[output.copy-resources]
+optional = true
+command = 'python output.py'
+
+[rust]
+edition = "2021"   # the default edition for code blocks
+

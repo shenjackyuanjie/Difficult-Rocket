@@ -1,0 +1,1147 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Difficult-Rocket-docs</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="update_logs.html"><strong aria-hidden="true">1.</strong> update logs</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">2.</strong> contributors</a></li><li class="chapter-item expanded "><a href="rua!.html"><strong aria-hidden="true">3.</strong> rua! 奇怪的东西</a></li><li class="chapter-item expanded "><a href="nuitka/20221121_nuitka_performs.html"><strong aria-hidden="true">4.</strong> nuitka test</a></li><li class="chapter-item expanded "><a href="plan_features/index.html"><strong aria-hidden="true">5.</strong> plan features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="plan_features/格式.html"><strong aria-hidden="true">5.1.</strong> 格式</a></li><li class="chapter-item expanded "><a href="plan_features/extra-save-info.html"><strong aria-hidden="true">5.2.</strong> extra save info</a></li><li class="chapter-item expanded "><a href="plan_features/multi-connect.html"><strong aria-hidden="true">5.3.</strong> muit connect</a></li><li class="chapter-item expanded "><a href="plan_features/multi-control.html"><strong aria-hidden="true">5.4.</strong> muit control</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Difficult-Rocket-docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="difficult-rocket-update-logs"><a class="header" href="#difficult-rocket-update-logs">Difficult Rocket Update Logs</a></h1>
+<ul>
+<li>感谢 <code>Github copilot</code> 的翻译(甚至这句话也是<code>copilot</code>翻译的)
+<ul>
+<li>也就意味着以后的更新日志是中文记录+<code>copilot</code>翻译的(当然，也有可能是<code>Easy Translate</code>翻译的)</li>
+</ul>
+</li>
+<li>Thanks <code>Github copilot</code> for translate (lazy yes!)
+<ul>
+<li>Means the update logs will lodge in Chinese and translated by <code>copilot</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="readme-first"><a class="header" href="#readme-first">Readme First!</a></h2>
+<h5 id="most-badge-can-be-clicked-and-jump"><a class="header" href="#most-badge-can-be-clicked-and-jump">most badge can be clicked and jump</a></h5>
+<p><a href="https://Semver.org/"><img src="https://img.shields.io/badge/SemVer-2.0.0-blue.svg" alt="Generic badge" /></a>
+<img src="https://img.shields.io/badge/Version-0.6.4.1-yellow.svg" alt="Generic badge" /></p>
+<ul>
+<li><a href="https://github.com/shenjackyuanjie/Difficult-Rocket"><img src="https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&amp;logo=Github" alt="Readme-github" /></a></li>
+<li><a href="https://gitee.com/shenjackyuanjie/Difficult-Rocket"><img src="https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&amp;logo=Gitee" alt="Readme-gitee" /></a></li>
+<li><a href="../README.html"><img src="https://img.shields.io/badge/Readme-%E4%B8%AD%E6%96%87(%E7%82%B9%E6%88%91!)-blue.svg?style=flat-square" alt="Readme-gitee" /></a></li>
+<li>Using <a href="https://semver.org/">SemVer 2.0.0</a> to manage version</li>
+</ul>
+<h2 id="20221124-v-064"><a class="header" href="#20221124-v-064">20221124 V 0.6.4</a></h2>
+<h3 id="最后的-06-呢"><a class="header" href="#最后的-06-呢">最后的 0.6 呢</a></h3>
+<h3 id="add"><a class="header" href="#add">Add</a></h3>
+<ul>
+<li><code>Logger!</code></li>
+<li>nuitka 文档</li>
+<li>准备给我的 5600x 的散热器洗一洗（</li>
+<li>一些 client</li>
+<li><code>Github Action</code> 的自动 build</li>
+</ul>
+<h3 id="changes"><a class="header" href="#changes">Changes</a></h3>
+<ul>
+<li>将 <code>utils.translates</code> 中的字体名称常量移动至 <code>api.types.Fonts</code> 中</li>
+<li>删除了 <code>README-cn.md</code> ( 合并到 <code>README.md</code> 中 )</li>
+<li>将 <code>README.md</code> 与 <code>README-en.md</code> 的内容统一</li>
+<li>重新调整 <code>requirement.txt</code> 的内容 ( 使内容更加有条理性 )</li>
+<li>删除了一些无用的代码 ( For second-dev )</li>
+<li>更新了 <code>Toml</code> 文件 ( 使其更加规范 )</li>
+<li>更新了 <code>screen api</code></li>
+<li>更新了 <code>pyglet</code> 版本</li>
+<li>删除了 <code>main.config</code></li>
+<li>更新了 <code>logger</code></li>
+<li>更新了 <code>nuitka.yml</code></li>
+<li>尝试加载 <code>icon</code></li>
+<li>更新了主项目</li>
+</ul>
+<h2 id="20220627"><a class="header" href="#20220627">20220627</a></h2>
+<h2 id="20220511-v-063"><a class="header" href="#20220511-v-063">20220511 V 0.6.3</a></h2>
+<ul>
+<li>咕了好久的 update log 了</li>
+<li>github copilot 卒了，所以没有英文
+<ul>
+<li>GitHub copy alot break , so no more English</li>
+</ul>
+</li>
+</ul>
+<h3 id="change"><a class="header" href="#change">Change</a></h3>
+<ul>
+<li>将 <code>api/Exp</code> 改为文件夹 <code>api/Exp/__init__.py</code></li>
+<li>再次重写了 <code>client.load_fonts()</code> 现在改为直接加载单独的 <code>pyglet_load_fonts_folder()</code></li>
+<li>更新了 <code>command/</code> 里的一大堆东西</li>
+<li>退钱！开摆！</li>
+</ul>
+<h2 id="202202xx-v-062"><a class="header" href="#202202xx-v-062">202202xx V 0.6.2</a></h2>
+<h3 id="add-1"><a class="header" href="#add-1">Add</a></h3>
+<ul>
+<li>添加了 <code>libs.MCDR</code> 文件夹 (<code>new_thread</code>没有包含在内)
+<ul>
+<li>Add <code>libs.MCDR</code> folder (<code>new_thread</code> not included)</li>
+</ul>
+</li>
+<li>添加对 mod 的支持(还在写啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊)</li>
+<li>计划写个设计文档
+<ul>
+<li>Plan to write a design document</li>
+</ul>
+</li>
+</ul>
+<h2 id="202111-202112xx-20220119-20220207-v-061"><a class="header" href="#202111-202112xx-20220119-20220207-v-061"><del>202111 202112xx 20220119</del> 20220207 V 0.6.1</a></h2>
+<p><del>争取12月内发一个release</del></p>
+<p><del>行了，这都2022年了，我接着摸，等我考完试(20220110)再发</del></p>
+<p>20220207 可算是发了，ruaaaa</p>
+<h3 id="change-1"><a class="header" href="#change-1">Change</a></h3>
+<ul>
+<li>修改了 readme 文件的语言切换格式
+<ul>
+<li>Change the language switch format in readme</li>
+</ul>
+</li>
+<li>更新了所有文件的版权信息 (2021-2022)
+<ul>
+<li>Update all files copyright information (2021-2022)</li>
+</ul>
+</li>
+<li>重命名 <code>Difficult_Rocket.py</code> -&gt; <code>DR.py</code>
+<ul>
+<li>用于修复 <code>Pycharm</code> 检测模块时总是会把主文件检测成主程序，导致一些模块总是检测不到的问题
+<ul>
+<li>Rename <code>Difficult_Rocket.py</code> -&gt; <code>DR.py</code></li>
+<li>Use it to fix <code>Pycharm</code> module detection problem
+<ul>
+<li>When the main file is detected as the main program, some modules will always be detected as the main program</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>把<code>api/translate</code>移动到根目录下
+<ul>
+<li>move <code>api/translate</code> to root directory</li>
+</ul>
+</li>
+<li>现在命令会慢慢消失，而不是立即消失
+<ul>
+<li>Now the command will disappear slowly, not immediately</li>
+</ul>
+</li>
+<li>重写了一遍<code> client.load_fonts()</code>
+<ul>
+<li>rewrite <code>client.load_fonts()</code></li>
+</ul>
+</li>
+<li>重写了 <code>tools.load_file()</code> 的错误处理和 <code>.config</code> 文件的解析方式
+<ul>
+<li>现在 <code>.config</code> 文件解析后会直接返回一个 <code>ConfigParser</code> 对象</li>
+<li>也就意味着不能再直接遍历 <code>.config</code> 文件返回的解析 <del>谁遍历.config文件啊</del></li>
+<li>同时也意味着可以直接用解析好的 <code>.config</code> 文件来修改 <code>.config</code> 文件
+<ul>
+<li>rewrite <code>tools.load_file()</code> error handling and <code>.config</code> file parsing method
+<ul>
+<li>now <code>.config</code> file parsing after return <code>ConfigParser</code> object</li>
+<li>that means you can not directly traverse <code>.config</code> file return parsing <del>who traverse .config file</del></li>
+<li>also means you can directly use parsed <code>.config</code> file to modify <code>.config</code> file</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为 <code>pyglet</code> 添加 <code>Ctrl+C</code> 和 <code>Ctrl+V</code> 的快捷键解析
+<ul>
+<li>add <code>Ctrl+C</code> and <code>Ctrl+V</code> shortcut for <code>pyglet</code></li>
+</ul>
+</li>
+<li>更新 <code>pyglet</code> 到 <code>2.0dev13</code>
+<ul>
+<li>update <code>pyglet</code> to <code>2.0dev13</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="command"><a class="header" href="#command">Command</a></h3>
+<ul>
+<li>
+<p><code>log_tick</code> 指令改为 <code>fps log</code></p>
+<ul>
+<li>command <code>log_tick</code> change to <code>fps log</code></li>
+</ul>
+</li>
+<li>
+<p><code>maxfps</code> 指令改为 <code>fps max</code></p>
+<ul>
+<li>command <code>maxfps</code> change to <code>fps max</code></li>
+</ul>
+</li>
+<li>
+<p><code>minfps</code> 指令改为 <code>fps min</code></p>
+<ul>
+<li>command <code>minfps</code> change to <code>fps min</code></li>
+</ul>
+</li>
+<li>
+<p>命令内容输出使用<code>CommandText</code>而不是<code>str</code></p>
+<ul>
+<li>也就是说可以使用<code>CommandText.match</code>来匹配命令内容</li>
+<li>command output use <code>CommandText</code> instead of <code>str</code>
+<ul>
+<li>means you can use <code>CommandText.match</code> to match command content</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>命令解析现在使用新的<code>CommandText.match</code></p>
+<ul>
+<li>command parse now use new <code>CommandText.match</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="add-2"><a class="header" href="#add-2">Add</a></h3>
+<ul>
+<li>添加内置字体<code>Cascadia_Code</code>
+<ul>
+<li>add built-in font <code>Cascadia_Code</code></li>
+</ul>
+</li>
+<li>添加模块 <code>xmltodict</code> <code>pyperclip</code>
+<ul>
+<li>add modules <code>xmltodict</code> <code>pyperclip</code></li>
+</ul>
+</li>
+<li>添加了<code>json5</code> <code>pyglet</code> <code>pyperclip</code> <code>xmltodict</code> 的协议
+<ul>
+<li>非常感谢上述模块的作者和维护者们</li>
+<li>added <code>json5</code> <code>pyglet</code> <code>pyperclip</code> <code>xmltodict</code> LICENSE
+<ul>
+<li>thanks a lot to above module's author and maintainer</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>继续~~重~~新写了一个基于 <code>HTMLLabel</code> 的 <code>HTMLformatedLabel</code>
+<ul>
+<li>同时为他写了一个 <code>decode_text2HTML</code> 工具(这也是咕咕咕的一大部分原因)</li>
+<li>add a <code>HTMLformatedLabel</code> Label based on <code>HTMLLabel</code>
+<ul>
+<li>also write a <code>decode_text2HTML</code> tool (also a big reason why lazy)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>增加内置模块 <code>toml</code> 和对应的 <code>LICENSE.txt</code>
+<ul>
+<li>Added built-in module <code>toml</code> and corresponding <code>LICENSE.txt</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="20211025-v-060"><a class="header" href="#20211025-v-060">20211025 V 0.6.0</a></h2>
+<h4 id="command-line-update"><a class="header" href="#command-line-update">Command Line Update!</a></h4>
+<h3 id="change-2"><a class="header" href="#change-2">Change</a></h3>
+<ul>
+<li>现在 <code>Difficult Rocket</code> 只适用于 python3.8+
+<ul>
+<li>因为 <code>:=</code> 的使用</li>
+<li>now <code>Difficult Rocket</code> will only fit python3.8+
+<ul>
+<li>because <code>:=</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>现在主程序崩溃时的报告处理方式有了新的方式
+<ul>
+<li>now main crash report handler have new way to handler crash</li>
+</ul>
+</li>
+<li>现在字体文件夹的名字改为 <code>HarmonyOS_Sans</code>
+<ul>
+<li>now fonts' folder's name is <code>HarmonyOS_Sans</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="add-3"><a class="header" href="#add-3">Add</a></h3>
+<ul>
+<li><code>Difficult_Rocket.graphics.widgets.Parts</code>
+<ul>
+<li>have many costume value</li>
+</ul>
+</li>
+<li>now <code>libs/fonts</code> have <code>HarmonyOS_Sans</code> font</li>
+<li>handler of <code>on_key_press</code> and <code>on_key_release</code> and <code>on_text</code>
+<ul>
+<li><code>on_key_press</code> 和 <code>on_key_release</code> 和 <code>on_text</code> 的处理方式</li>
+</ul>
+</li>
+<li><code>game.config</code> config file</li>
+<li><code>lang/en-us.json5</code> now up to date with <code>lang/zh-CN.json5</code></li>
+<li><code>translate/Lang.翻译</code> same as <code>Lang.lang</code></li>
+<li><code>command/CommandLine</code> to render command line</li>
+<li><code>@new_thread</code> now can option if log this thread to <code>crash</code> or not</li>
+<li><code>start.cmd</code> witch could debug easier</li>
+</ul>
+<h3 id="translate"><a class="header" href="#translate">Translate</a></h3>
+<ul>
+<li>Add
+<ul>
+<li><code>window</code>
+<ul>
+<li><code>message.text</code></li>
+<li><code>command.text</code></li>
+<li><code>text.motion</code></li>
+<li><code>text.motion_select</code></li>
+<li><code>setup.use_time_ns</code></li>
+<li><code>fonts.found</code></li>
+<li><code>game.input_stop</code></li>
+<li><code>game.command_stop</code></li>
+<li><code>game.window_stop</code></li>
+<li><code>game.stop_get</code></li>
+<li><code>game.stop</code></li>
+<li><code>game.end</code></li>
+</ul>
+</li>
+<li><code>client</code>
+<ul>
+<li><code>setup.use_time_ns</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="command-1"><a class="header" href="#command-1">Command</a></h3>
+<ul>
+<li>now you can press <code>t</code> to call out a message window
+<ul>
+<li>or press <code>/</code> to open command line</li>
+<li>not done</li>
+<li><del>useless until now</del></li>
+</ul>
+</li>
+<li>new command
+<ul>
+<li><code>/min_fps</code>
+<ul>
+<li>get min fps in 5 second</li>
+</ul>
+</li>
+<li><code>/max_fps</code>
+<ul>
+<li>get max fps in 5 second</li>
+</ul>
+</li>
+<li><code>/stop</code>
+<ul>
+<li>stop the game</li>
+</ul>
+</li>
+<li><code>/default</code>
+<ul>
+<li>switch window size to default size</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="20210928-v-052"><a class="header" href="#20210928-v-052">20210928 V 0.5.2</a></h2>
+<h3 id="change-3"><a class="header" href="#change-3">Change</a></h3>
+<ul>
+<li>now bin folder use the name <code>Difficult_Rocket</code></li>
+<li>now test files no longer have <code>_test_</code> prefix</li>
+<li>now will always use local <code>pyglet</code> 
+<ul>
+<li>may change later</li>
+</ul>
+</li>
+<li>fitting <code>pypy3.10</code> (well······ not success (because OpenGL, blame it))</li>
+<li>now <code>crash-report</code> have more information</li>
+<li>now when pressed, the sprite will rotate randomly</li>
+<li>now <code>pyglet.app.run()</code> use multiprocess</li>
+<li>now will always use <code>libs/</code> lib when using <code>pyglet</code> or <code>json5</code></li>
+<li>now <code>tools.config()</code> is <code>tools.load_file()</code></li>
+<li>now <code>lang</code> file have <code>server``client</code> and <code>window</code></li>
+</ul>
+<h3 id="add-4"><a class="header" href="#add-4">Add</a></h3>
+<ul>
+<li><del>mods support will be done in 1.0.0</del>
+<ul>
+<li>just maybe</li>
+</ul>
+</li>
+<li>now you can use <code>DEBUGGING</code> to test or check game run stats
+<ul>
+<li>when <code>True</code> it will always make a crash report</li>
+</ul>
+</li>
+<li>now <code>Difficult_Rocket.api.translate.Lang</code> can be used to auto translate text in <code>configs/lang/xxx.json5</code>
+<ul>
+<li>you can use <code>translate.tr[xxx]</code> to use translated info</li>
+<li>and use <code>.format</code> to format info's <code>{}</code></li>
+<li>if translate is not found, <code>Lang</code> will try to find translate in default language translate</li>
+<li>(witch was <code>zh-CN</code>)</li>
+</ul>
+</li>
+<li><code>crash</code> now have more information about multiprocess</li>
+<li>add some unused read_input in <code>client</code></li>
+<li>now when <code>logs/</code> is not found logger will info <code>logger.mkdir</code></li>
+</ul>
+<h3 id="debug"><a class="header" href="#debug">DEBUG</a></h3>
+<ul>
+<li>now version on the window will be <code>0.5.2</code></li>
+</ul>
+<h3 id="delete"><a class="header" href="#delete">Delete</a></h3>
+<ul>
+<li>now <code>client.Client</code> and <code>server.Server</code> only use <code>net_mode</code> option</li>
+<li><code>api.new_thread</code> have no more extra line of testing</li>
+<li><code>configs/view.json5</code> now removed</li>
+</ul>
+<h3 id="translate-1"><a class="header" href="#translate-1">Translate</a></h3>
+<ul>
+<li>add <code>mouse.release</code> and <code>language</code> to en-us</li>
+<li>add <code>language</code> to <code>zh-CN</code></li>
+<li>add <code>tr.lang(xx, xx)</code> that can solve error on getting item from lang file
+<ul>
+<li><code>tr[xxx]</code> can also use but won't solve error when item not found</li>
+<li>so best use <code>tr.lang(xx, xx)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="20210902-v-051"><a class="header" href="#20210902-v-051">20210902 V 0.5.1</a></h2>
+<h3 id="change-4"><a class="header" href="#change-4">Change</a></h3>
+<ul>
+<li>crash report's format</li>
+<li>crash report now use multithreading!</li>
+<li>some info in <code>client</code></li>
+<li><code>tools/format_bool</code> now use more clever way to format</li>
+</ul>
+<h3 id="add-5"><a class="header" href="#add-5">Add</a></h3>
+<ul>
+<li><code>on_resize(self, width, height):</code> in <code>client</code></li>
+<li>auto crash report in <code>bin/crash/create_crash_report</code></li>
+<li><code>bin/api/Exp.py</code> some Exception</li>
+<li><code>bin/api/translate</code> to create a <code>translate</code> class that can reload language</li>
+</ul>
+<h2 id="20210823-v-050"><a class="header" href="#20210823-v-050">20210823 V 0.5.0</a></h2>
+<h3 id="change-5"><a class="header" href="#change-5">Change</a></h3>
+<ul>
+<li>many <code>sys.path.append()</code> and</li>
+<li><code>try: import xxx except: from bin import xxx</code> has been removed</li>
+<li>and now IDE won't blame you when you open the file anymore!(LOL)</li>
+<li><code>Server</code> now use Dev to delivery message between thread(will be done in 0.6.0)</li>
+<li>test files now use <code>_test_*.py</code> for names</li>
+</ul>
+<h3 id="add-6"><a class="header" href="#add-6">Add</a></h3>
+<ul>
+<li><code>crash.py</code> to handle and create crash report (not done)</li>
+<li><code>DragSprite</code> (maybe will add in future pyglet update PR has been published)</li>
+</ul>
+<h3 id="delete-1"><a class="header" href="#delete-1">Delete</a></h3>
+<ul>
+<li><code>name_hanlder</code> in <code>configs.py</code></li>
+</ul>
+<h2 id="20210811-v-046"><a class="header" href="#20210811-v-046">20210811 V 0.4.6</a></h2>
+<h3 id="debug-1"><a class="header" href="#debug-1">DEBUG</a></h3>
+<ul>
+<li>game window doesn't use input <code>(*args, **kwargs)</code> to set up</li>
+</ul>
+<h3 id="change-6"><a class="header" href="#change-6">Change</a></h3>
+<ul>
+<li>language type <code>zh-cn</code> -&gt; <code>zh-CN</code></li>
+<li>game window config now use <code>configs/main.config</code> to config</li>
+<li><code>on_mouse_click</code> function's debug message now use <code>self.lang</code> to debug message (witch is multi-language)</li>
+<li>server client and main now use <code>logging.getLogger()</code></li>
+</ul>
+<h3 id="add-7"><a class="header" href="#add-7">Add</a></h3>
+<ul>
+<li><code>[window_default]</code> in <code>configs/main.config</code></li>
+<li>server and client now will output <code>PID</code> and <code>PPID</code> info as <code>INFO</code></li>
+<li><code>client</code> now change to <code>ClientWindow</code></li>
+</ul>
+<h3 id="delete-2"><a class="header" href="#delete-2">Delete</a></h3>
+<ul>
+<li>all game window render has been deleted
+<ul>
+<li>will be rewritten in 0.5.0</li>
+</ul>
+</li>
+<li>delete some useless code</li>
+<li>delete some useless file</li>
+</ul>
+<h2 id="20210723-v-045"><a class="header" href="#20210723-v-045">20210723 V 0.4.5</a></h2>
+<h3 id="debug-2"><a class="header" href="#debug-2">DEBUG</a></h3>
+<ul>
+<li><code>new_thread.py</code> link of stackoverflow have an extra 'find' in the middle REMOVED</li>
+</ul>
+<h3 id="add-8"><a class="header" href="#add-8">Add</a></h3>
+<ul>
+<li><code>new_thread.py</code> now can use @new_thread to get a threaded fun</li>
+</ul>
+<h3 id="change-7"><a class="header" href="#change-7">Change</a></h3>
+<ul>
+<li><code>README.md</code> and <code>README-cn.md</code> change URL to file path</li>
+<li><code>README.md</code> and <code>README-cn.md</code> some label style change</li>
+<li>Pre-installed <code>pyglet</code> upgrade from <code>1.5.16</code> -&gt; <code>1.5.18</code></li>
+<li>Pre-installed <code>json5</code> upgrade from <code>0.9.5</code> -&gt; <code>0.9.6</code></li>
+</ul>
+<h2 id="20210708-v-044"><a class="header" href="#20210708-v-044">20210708 V 0.4.4</a></h2>
+<h3 id="ps"><a class="header" href="#ps">PS</a></h3>
+<ul>
+<li>Nice day everyone!</li>
+<li>I have finish my final exam on grade 8.</li>
+<li>Will soon reach grade 9, so update will be late very much.</li>
+</ul>
+<h3 id="change-8"><a class="header" href="#change-8">Change</a></h3>
+<ul>
+<li>function <code>tools.config()</code> way of raise error change <code>tools.report_file_error()</code></li>
+<li>function <code>tools.cb()</code> change name to <code>tools.format_bool()</code></li>
+<li>config.py clear some useless import class</li>
+<li>changing configfile to main.config *doing</li>
+</ul>
+<h3 id="test-change"><a class="header" href="#test-change">Test change</a></h3>
+<ul>
+<li><code>test_config_file.py</code></li>
+<li><code>test_for_speed.py</code></li>
+<li><code>test_logging_conf.py</code></li>
+<li><code>test_speed_of_sprite.py</code></li>
+</ul>
+<h2 id="20210626-v-043"><a class="header" href="#20210626-v-043">2021/06/26 V 0.4.3</a></h2>
+<h3 id="debug-3"><a class="header" href="#debug-3">DEBUG</a></h3>
+<ul>
+<li>some name_format bug</li>
+</ul>
+<h3 id="change-9"><a class="header" href="#change-9">Change</a></h3>
+<ul>
+<li>doing: change render pip line ('m really doing)</li>
+<li>default FPS from 120 -&gt; 60</li>
+</ul>
+<h3 id="add-9"><a class="header" href="#add-9">Add</a></h3>
+<ul>
+<li>add performance_test folder</li>
+<li>add some performances test</li>
+</ul>
+<h2 id="20210524-v-042"><a class="header" href="#20210524-v-042">2021/05/24 V 0.4.2</a></h2>
+<h3 id="debug-4"><a class="header" href="#debug-4">DEBUG</a></h3>
+<ul>
+<li>using python version 3.8.9 still report <code>best3.8+</code>(lang name)(actually is debugging)</li>
+</ul>
+<h3 id="change-10"><a class="header" href="#change-10">Change</a></h3>
+<ul>
+<li>change back how configs.py/name_format work(replace str) fix some issue</li>
+<li>doing remake for config sys (lazy yes!)</li>
+<li>clear bin/pyglet (already exits in bin/lib)</li>
+</ul>
+<h3 id="need-do"><a class="header" href="#need-do">Need Do</a></h3>
+<ul>
+<li>debug name_format</li>
+</ul>
+<h2 id="20210417-v-041"><a class="header" href="#20210417-v-041">2021/04/17 V 0.4.1</a></h2>
+<p>PS:</p>
+<ul>
+<li>
+<p><code>Va.b.c</code></p>
+</li>
+<li>
+<p>a : Big Version (Big rewrite times) (now at DEMO making)</p>
+</li>
+<li>
+<p>b : Middle Rewrite Times (Yes I've rewritten for 4 times)</p>
+</li>
+<li>
+<p>c : normal updates</p>
+</li>
+</ul>
+<h3 id="debug-5"><a class="header" href="#debug-5">DEBUG</a></h3>
+<ul>
+<li>solve pre-installed lib can't use</li>
+<li>solve pre-installed lib's bug</li>
+<li>some other bugs</li>
+</ul>
+<h3 id="change-11"><a class="header" href="#change-11">Change</a></h3>
+<ul>
+<li>plan to change config file format to .config (plan to)</li>
+<li>reformat all files (including libs)</li>
+</ul>
+<h2 id="20210409-v-0234"><a class="header" href="#20210409-v-0234">2021/04/09 V 0.2.3/4</a></h2>
+<h3 id="add-10"><a class="header" href="#add-10">Add</a></h3>
+<ul>
+<li>support many things(also forget)</li>
+</ul>
+<h3 id="change-12"><a class="header" href="#change-12">Change</a></h3>
+<ul>
+<li><code>tools.name_handler()</code> now use <code>str.format</code> to handler str</li>
+<li><code>DR/sys_value</code> folder now move to <code>DR/configs/sys_value</code></li>
+</ul>
+<h3 id="debug-6"><a class="header" href="#debug-6">DEBUG</a></h3>
+<ul>
+<li>many <code>tools.name_handler()</code> use bug(cause crashes)</li>
+<li><code>{date}</code> can be successful use in <code>tools.name_handler()</code> (if you define the format of date)</li>
+<li>log file's filename incorrect (should be <code>xxxx-xx-xx xx-xx-xx DR.log</code> but be <code>{date} DR.log</code>)</li>
+</ul>
+<h2 id="20210327-v-0221"><a class="header" href="#20210327-v-0221">2021/03/27 V 0.2.2/1</a></h2>
+<h3 id="add-11"><a class="header" href="#add-11">Add</a></h3>
+<ul>
+<li>add local libs
+<ul>
+<li><code>pyglet 1.5.15</code></li>
+<li><code>json5  0.9.5</code></li>
+</ul>
+</li>
+</ul>
+<p>PS: now I'm not sure witch lib will be import first</p>
+<p>the local lib or the pip libs</p>
+<p>So I'll add some other code to make sure that DR will first try to import pip libs</p>
+<p>not the local libs (todo)</p>
+<h3 id="debug-7"><a class="header" href="#debug-7">DEBUG</a></h3>
+<ul>
+<li>some bugs(I forget them)</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="如何帮助-dr-开发"><a class="header" href="#如何帮助-dr-开发">如何帮助 DR 开发</a></h1>
+<p>aaaa</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pyglet相关"><a class="header" href="#pyglet相关">pyglet相关</a></h1>
+<p>pyglet 坐标轴原点是左上角</p>
+<h1 id="坐标记录相关"><a class="header" href="#坐标记录相关">坐标记录相关</a></h1>
+<p>记录的是部件碰撞箱中心的相对于控制仓碰撞箱中心的相对坐标</p>
+<p>然后控制仓的坐标是单独记录的</p>
+<p>记录的是区块坐标+区块内坐标</p>
+<h1 id="渲染"><a class="header" href="#渲染">渲染</a></h1>
+<p>屏幕坐标系需要*100（有待测试）</p>
+<h1 id="素材提供"><a class="header" href="#素材提供">素材提供</a></h1>
+<p><a href="background.png">背景候选1号</a>
+来自 @底层萌新 QQ：1744251171</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="nuitka-121-的性能测试"><a class="header" href="#nuitka-121-的性能测试">nuitka 1.2.1 的性能测试</a></h1>
+<p>大家好！ 这里是shenjack！
+这篇文章就是 <a href="nuitka/%E8%BF%98%E6%B2%A1%E5%8F%91%E5%87%BA%E6%9D%A5%E5%91%A2">B站</a> 专栏的原文！</p>
+<h1 id="综述"><a class="header" href="#综述">综述</a></h1>
+<h2 id="环境"><a class="header" href="#环境">环境</a></h2>
+<ul>
+<li>
+<p>硬件</p>
+<ul>
+<li>CPU: <code>AMD R5 5600X</code></li>
+<li>内存: <code>64G DDR4 3200 (32×2)</code></li>
+</ul>
+</li>
+<li>
+<p>软件</p>
+<ul>
+<li><img src="nuitka/gcc_clang_version.png" alt="gcc clang" /></li>
+<li><img src="nuitka/python_nuitka_version.png" alt="python nuitka" /></li>
+<li><img src="nuitka/DR_git_commit.png" alt="DR" /></li>
+<li><code>gcc 12.2.0</code></li>
+<li><code>clang 14.0.6</code></li>
+<li><code>nuitka v1.2.1</code></li>
+<li><code>Python 3.8.10</code></li>
+<li><a href="https://github.com/shenjackyuanjie/Difficult-Rocket">DR</a> commit <code>e6a2b7b36cc98e508efbc61c4646181f5817fc7c</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="编译选项"><a class="header" href="#编译选项">编译选项</a></h2>
+<ul>
+<li>核心编译选项
+<ul>
+<li>
+<p>环境</p>
+<ul>
+<li><code>--standalone</code>
+<ul>
+<li>将环境一并打包进完成的文件夹中</li>
+<li>
+<pre><code>--standalone Enable standalone mode for output. This allows you to
+             transfer the created binary to other machines without
+             it using an existing Python installation. This also
+             means it will become big. It implies these option: &quot;--
+             follow-imports&quot; and &quot;--python-flag=no_site&quot;. Defaults
+             to off.```
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>编译器</p>
+<ul>
+<li><code>--clang</code>
+<ul>
+<li>强制使用 <code>clang</code> 编译器</li>
+<li>
+<pre><code>--clang Enforce the use of clang. On Windows this requires a
+        working Visual Studio version to piggy back on.
+        Defaults to off.```
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li><code>--mingw64</code> (常量)
+<ul>
+<li>强制使用 <code>mingw64</code> 编译器</li>
+<li>
+<pre><code>--mingw64 Enforce the use of MinGW64 on Windows. Defaults to
+          off.```
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li><code>--jobs=24</code> (常量)
+<ul>
+<li>最多同时运行的 C 编译器 <code>(clang|mingw64)</code> 数量</li>
+<li>
+<pre><code> -j N, --jobs=N Specify the allowed number of parallel C compiler
+                jobs. Defaults to the system CPU count.```
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li><code>--lto=</code> <code>yes|no|auto(None)</code>
+<ul>
+<li>是否启用 链接</li>
+<li>
+<pre><code>--lto=choice Use link time optimizations (MSVC, gcc, clang).
+              Allowed values are &quot;yes&quot;, &quot;no&quot;, and &quot;auto&quot; (when it's
+              known to work). Defaults to &quot;auto&quot;.```
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li><code>--disable-ccache</code>
+<ul>
+<li>不使用 <code>ccache</code> 或者 <code>clcache</code> 的缓存</li>
+<li>
+<pre><code>--disable-ccache Do not attempt to use ccache (gcc, clang, etc.) or
+                 clcache (MSVC, clangcl).```
+
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="结论综述"><a class="header" href="#结论综述">结论综述</a></h2>
+<p>补充：<code>lto=yes</code> 的情况下经常有报错</p>
+<h3 id="有-ccache-全-hit-无实际编译"><a class="header" href="#有-ccache-全-hit-无实际编译">有 <code>Ccache</code> (全 hit 无实际编译)</a></h3>
+<p><code>clang lto=no</code> 效率最高</p>
+<p><code>mingw lto=no</code> 效率低于 <code>lto=yes</code>，但是更加稳定（不会报错）</p>
+<h3 id="无-ccache-测试编译器实际效率"><a class="header" href="#无-ccache-测试编译器实际效率">无 <code>Ccache</code> (测试编译器实际效率)</a></h3>
+<p><code>clang lto=no</code> 效率最高</p>
+<p><code>mingw lto=no</code> 同样效率相对高</p>
+<h3 id="总结"><a class="header" href="#总结">总结</a></h3>
+<p>尽量使用 <code>lto=no</code> 配合 <code>ccache</code> 以及 <code>clang</code></p>
+<h1 id="原始数据"><a class="header" href="#原始数据">原始数据</a></h1>
+<h2 id="因为视频使用cpu编码所以很多数据没法看到这里使用的是后面再次测试微信群内存档的数据"><a class="header" href="#因为视频使用cpu编码所以很多数据没法看到这里使用的是后面再次测试微信群内存档的数据">因为视频使用CPU编码，所以很多数据没法看到，这里使用的是后面再次测试/微信群内存档的数据</a></h2>
+<h2 id="视频应该会再次测试数据可能不同请谅解obs更新完没注意编码啊啊啊啊"><a class="header" href="#视频应该会再次测试数据可能不同请谅解obs更新完没注意编码啊啊啊啊">视频应该会再次测试，数据可能不同，请谅解(obs更新完没注意编码啊啊啊啊)</a></h2>
+<table>
+  <tr>
+    <th>编译器</th> <th colspan="2">有ccache</th> <th colspan="2">无ccache</th>
+  </tr>
+  <tr>
+    <th>编译器</th> <th>lto=no</th> <th>lto=yes</th> <th>lto=no</th> <th>lto=yes</th>
+  </tr>
+  <tr>
+    <td>clang</td> <td>50s</td> <td>86s</td> <td>83s</td> <td>67s</td>
+  </tr>
+  <tr>
+    <td>gcc</td> <td>59s</td> <td>641s</td> <td>227s</td> <td>630s</td>
+  </tr>
+</table>
+<ul>
+<li>
+<p><code>clang</code></p>
+<ul>
+<li>
+<p><code>with ccache</code></p>
+<ul>
+<li>
+<p><code>lto=no</code></p>
+<ul>
+<li><code>视频内数据</code></li>
+<li><code>--clang</code> </li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=no</code></li>
+<li>耗时: 50000ms (50s)</li>
+<li><img src="nuitka/clang_mingw_lto_no_ccache.png" alt="clang mingw lto no ccache" /></li>
+</ul>
+</li>
+<li>
+<p><code>lto=yes</code></p>
+<ul>
+<li><code>后期测试数据</code></li>
+<li><code>--clang</code> </li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=yes</code></li>
+<li>耗时 86000ms (86s)</li>
+<li><img src="nuitka/clang_mingw_lto_yes_ccache.png" alt="clang mingw lto yes ccache" /></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>no ccache</code></p>
+<ul>
+<li>
+<p><code>lto=no</code></p>
+<ul>
+<li><code>视频内数据</code></li>
+<li><code>--clang</code></li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=no</code></li>
+<li><code>--disable-ccache</code></li>
+<li>耗时 83000ms (83s)</li>
+<li><img src="nuitka/clang_mingw_lto_no.png" alt="clang mingw lto no" /></li>
+</ul>
+</li>
+<li>
+<p><code>lto=yes</code></p>
+<ul>
+<li><code>后期测试数据</code></li>
+<li><code>--clang</code></li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=yes</code></li>
+<li><code>--disable-ccache</code></li>
+<li>耗时 67000ms (67s)</li>
+<li><img src="nuitka/clang_mingw_lto_yes.png" alt="clang mingw lto yes" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>mingw64</code></p>
+<ul>
+<li>
+<p><code>with ccache</code></p>
+<ul>
+<li>
+<p><code>lto=no</code></p>
+<ul>
+<li><code>后期测试数据</code></li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=no</code></li>
+<li>耗时 59000ms (59s)</li>
+<li><img src="nuitka/mingw_lto_no_ccache.png" alt="mingw lto no ccache" /></li>
+</ul>
+</li>
+<li>
+<p><code>lto=yes</code></p>
+<ul>
+<li><code>后期测试数据</code></li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=yes</code></li>
+<li>耗时 641000ms (641s) (10.68min)</li>
+<li><img src="nuitka/mingw_lto_yes_ccache.png" alt="mingw lto yes ccache" /></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>no ccache</code></p>
+<ul>
+<li>
+<p><code>lto=no</code></p>
+<ul>
+<li><code>视频内数据</code></li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=no</code></li>
+<li><code>--disable-ccache</code></li>
+<li>耗时 227000ms (227s) (3.78min)</li>
+<li><img src="nuitka/mingw_lto_no.png" alt="mingw lto no" /></li>
+</ul>
+</li>
+<li>
+<p><code>lto=yes</code></p>
+<ul>
+<li><code>后期测试数据</code></li>
+<li><code>--mingw64</code></li>
+<li><code>--lto=yes</code></li>
+<li><code>--disable-ccache</code></li>
+<li>耗时 630000ms (630s) (10.5min)</li>
+<li><img src="nuitka/mingw_lto_yes.png" alt="mingw lto yes" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="difficult-rocket-计划特性页面"><a class="header" href="#difficult-rocket-计划特性页面">Difficult Rocket 计划特性页面</a></h1>
+<p>这里会用中文列出。DR未来的计划特性（已经做出来的也会有标注）</p>
+<p>别问为什么用中文，问就是写不动English了</p>
+<p>正文开始</p>
+<p>注：文件名指的是本文件夹里的详细说明文件的文件名，如果没有则代表没有详细说明</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">特性描述</th><th style="text-align: center">文件名</th><th style="text-align: center">状态</th></tr></thead><tbody>
+<tr><td style="text-align: center">轨道规划</td><td style="text-align: center">orbit-plan</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">部件可成环</td><td style="text-align: center">multi-connect</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">多指令舱控制</td><td style="text-align: center">multi-control</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">自定义部件旋转角度</td><td style="text-align: center">custom-turn-angle</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">自定义warp速度</td><td style="text-align: center">custom-warp-speed</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">Dv计算</td><td style="text-align: center">Dv-calculation</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">socket 联机</td><td style="text-align: center">online-play</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">操作界面可视化轨道</td><td style="text-align: center">visible-orbit</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">可堆叠部件</td><td style="text-align: center">part-stack</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">可压缩结构</td><td style="text-align: center">part-zip</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">部件平移</td><td style="text-align: center">part-move</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">存档额外信息</td><td style="text-align: center">extra-save-info</td><td style="text-align: center">planing</td></tr>
+<tr><td style="text-align: center">自定义部件分组开关</td><td style="text-align: center">custom-stage-on-off</td><td style="text-align: center">planing</td></tr>
+</tbody></table>
+</div>
+<h1 id="文件范例"><a class="header" href="#文件范例">文件范例</a></h1>
+<h1 id="中文简称-文件名英文名称"><a class="header" href="#中文简称-文件名英文名称">中文简称 文件名<code>英文名称</code></a></h1>
+<h2 id="日期"><a class="header" href="#日期">日期</a></h2>
+<h2 id="发起人"><a class="header" href="#发起人">发起人</a></h2>
+<h2 id="状态"><a class="header" href="#状态">状态</a></h2>
+<h2 id="描述"><a class="header" href="#描述">描述</a></h2>
+<h3 id="底层机制-实现方法大致"><a class="header" href="#底层机制-实现方法大致">底层机制 <code>实现方法（大致）</code></a></h3>
+<h3 id="效果"><a class="header" href="#效果">效果</a></h3>
+<h2 id="别的什么的"><a class="header" href="#别的什么的">别的什么的</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="中文简称-文件名"><a class="header" href="#中文简称-文件名">中文简称 文件名</a></h1>
+<h2 id="日期-1"><a class="header" href="#日期-1">日期</a></h2>
+<h2 id="发起人-1"><a class="header" href="#发起人-1">发起人</a></h2>
+<h2 id="状态-1"><a class="header" href="#状态-1">状态</a></h2>
+<h2 id="描述-1"><a class="header" href="#描述-1">描述</a></h2>
+<h3 id="底层机制"><a class="header" href="#底层机制">底层机制</a></h3>
+<h3 id="效果-1"><a class="header" href="#效果-1">效果</a></h3>
+<h2 id="别的什么的-1"><a class="header" href="#别的什么的-1">别的什么的</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="存档额外信息-extra-save-info"><a class="header" href="#存档额外信息-extra-save-info">存档额外信息 extra save info</a></h1>
+<h2 id="20210514"><a class="header" href="#20210514">20210514</a></h2>
+<h2 id="shenjackyuanjie"><a class="header" href="#shenjackyuanjie">shenjackyuanjie</a></h2>
+<h2 id="planing"><a class="header" href="#planing">planing</a></h2>
+<h2 id="描述-2"><a class="header" href="#描述-2">描述</a></h2>
+<p>存档中会额外保存一些信息</p>
+<h3 id="底层机制-1"><a class="header" href="#底层机制-1">底层机制</a></h3>
+<p>保存存档时会读取 <code>partlist</code> 中的部件信息</p>
+<p>比如部件碰撞箱、重量等</p>
+<p>并保存到存档中</p>
+<h3 id="效果-2"><a class="header" href="#效果-2">效果</a></h3>
+<p>存档会根据部件使用情况</p>
+<p>增大体积(直到所有种类的部件都被用)</p>
+<h2 id="别的什么的-2"><a class="header" href="#别的什么的-2">别的什么的</a></h2>
+<p>没了</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="部件可成环-multi-connect"><a class="header" href="#部件可成环-multi-connect">部件可成环 multi-connect</a></h1>
+<h2 id="2021-4-25"><a class="header" href="#2021-4-25">2021-4-25</a></h2>
+<h2 id="shenjackyuanjiewriter"><a class="header" href="#shenjackyuanjiewriter">shenjackyuanjie(writer)</a></h2>
+<h2 id="描述-3"><a class="header" href="#描述-3">描述</a></h2>
+<h3 id="底层机制-2"><a class="header" href="#底层机制-2">底层机制</a></h3>
+<p>单个部件可以同时连接到2个或两个以上部件</p>
+<h3 id="效果-3"><a class="header" href="#效果-3">效果</a></h3>
+<p>可以搞点 环世界 之类的巨构</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="多指令舱控制-multi-control"><a class="header" href="#多指令舱控制-multi-control">多指令舱控制 multi-control</a></h1>
+<h2 id="2021-4-25-1"><a class="header" href="#2021-4-25-1">2021-4-25</a></h2>
+<h2 id="shenjackyuanjiewriter-1"><a class="header" href="#shenjackyuanjiewriter-1">shenjackyuanjie(writer)</a></h2>
+<h2 id="planing-1"><a class="header" href="#planing-1">planing</a></h2>
+<h2 id="描述-4"><a class="header" href="#描述-4">描述</a></h2>
+<h3 id="示例1"><a class="header" href="#示例1">示例1</a></h3>
+<p>可以让多个指令舱同时进行动作</p>
+<p>比如一个空间站由很多部分组成</p>
+<p>每一个部分都由不同的指令舱控制</p>
+<p>多指令舱控制就可以实现空间站所有部分统一加速、减速</p>
+<p>其实也是某种程度上的统一控制</p>
+<h3 id="示例2"><a class="header" href="#示例2">示例2</a></h3>
+<p>在同时发射多枚火箭/卫星时</p>
+<p>可以让火箭在操作其他火箭的时候继续燃烧</p>
+<p>（就是说操纵A火箭的时候，B火箭还能继续燃烧）</p>
+<h3 id="底层机制-3"><a class="header" href="#底层机制-3">底层机制</a></h3>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
