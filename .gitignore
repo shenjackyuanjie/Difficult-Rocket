@@ -4,8 +4,11 @@
 DR.code-workspace
 trytry/
 
-# PYCharm file
+# PyCharm file
 .idea/
+
+# Fleet files
+.fleet/
 
 # log files
 logs/
@@ -25,7 +28,7 @@ __pycache__/
 */*.DS_Store
 
 # C extensions
-# *.so
+*.so
 
 # Distribution / packaging
 .Python
@@ -153,5 +156,3 @@ other things/
 .git-/
 
 *cmake-build-debug
-trytry/c/logger/logger.html
-.fleet
