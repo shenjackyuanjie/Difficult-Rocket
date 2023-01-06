@@ -6,7 +6,7 @@ src = "src"
 title = "Difficult-Rocket-docs"
 
 [build]
-build-dir = './docs'
+build-dir = './book'
 create-missing = false
 use-default-preprocessors = true  # use the default preprocessors
 extra-watch-dirs = []             # directories to watch for triggering builds

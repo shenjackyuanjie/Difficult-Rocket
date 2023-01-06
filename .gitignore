@@ -14,7 +14,7 @@ trytry/
 logs/
 
 # mdbook build
-docs/page/docs
+docs/book/
 
 # crash report files
 crash_report/
