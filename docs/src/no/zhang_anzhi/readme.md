@@ -4,4 +4,4 @@
 
 ![translate](./translate.png)
 
-![bridge](./bridge.png)
+<!-- ![bridge](./bridge.png) -->
