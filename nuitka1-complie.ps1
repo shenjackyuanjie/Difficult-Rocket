@@ -1,6 +1,8 @@
 $start_time = Get-Uptime
 Write-Output $start_time
 
+python .\.github\workflows\get_info.py
+
 $arg = @()
 # 输出配置
 $arg += @("--standalone")

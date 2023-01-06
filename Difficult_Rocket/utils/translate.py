@@ -52,6 +52,8 @@ class TranslateConfig:
 
 
 class Translates:
+    name = 'Translate'
+
     def __init__(self,
                  value: Union[Dict[str, Any], list, tuple, str],
                  config: Optional[TranslateConfig] = None,
@@ -84,13 +86,15 @@ class Translates:
             cache = self.value[item]
             cache_get_list.append((True, item))
         except (KeyError, TypeError):
+            cache_get_list.append((False, item))
             # 出现问题
             if DR_option.report_translate_no_found:
                 frame = inspect.currentframe()
                 last_frame = frame.f_back
                 if last_frame.f_code == self.__getattr__.__code__:
                     last_frame = last_frame.f_back
-                call_info = f'Translate Not Found at {last_frame.f_code.co_name} by {".".join([x[1] for x in cache_get_list])} at:' \
+                call_info = f'{self.name} Not Found at {last_frame.f_code.co_name} by ' \
+                            f'{".".join([x[1] for x in cache_get_list])} at:' \
                             f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
                 print(call_info)
             # 如果不抛出错误
