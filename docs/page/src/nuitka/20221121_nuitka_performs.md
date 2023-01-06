@@ -1,6 +1,6 @@
 # nuitka 1.2.1 的性能测试
 大家好！ 这里是shenjack！
-这篇文章就是 [B站](还没发出来呢) 专栏的原文！
+这篇文章就是 [B站](https://www.bilibili.com/read/cv20208726) 专栏的原文！
 
 # 综述
 
