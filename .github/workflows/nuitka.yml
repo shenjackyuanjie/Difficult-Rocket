@@ -62,7 +62,7 @@ jobs:
         id: DR_info
         shell: pwsh
         run: |
-          $infos = python .github/workflows/get_info.py -github-env
+          $infos = python .github/workflows/get_info.py -github
           Write-Output $infos >> $env:GITHUB_ENV
           python .github/workflows/get_info.py
 
