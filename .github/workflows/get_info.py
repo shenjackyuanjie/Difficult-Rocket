@@ -14,7 +14,7 @@ from Difficult_Rocket import DR_runtime
 
 args = ['-env', '-github-dev']
 
-if not any([x in sys.argv for x in args]):  # 没有输入参数，直接输出默认信息并输出
+if sys.argv == '':  # 没有输入参数，直接输出默认信息并输出
     print(sys.version)
     from Difficult_Rocket.utils import tools
     # 重置窗口信息
@@ -23,7 +23,7 @@ if not any([x in sys.argv for x in args]):  # 没有输入参数，直接输出�
     config_file['window']['height'] = 768
     rtoml.dump(config_file, open('./configs/main.toml', 'w'))
 
-if os.path.abspath(os.curdir) in sys.path and sys.argv == '-env':
+elif os.path.abspath(os.curdir) in sys.path and sys.argv == '-env':
     with open('./.github/workflows/env.ps1', encoding='utf-8', mode='w') as env_file:
         print(f'$env:DR_version = "{DR_runtime.DR_version}"', file=env_file)
         print(f'$env:DR_language = "{DR_runtime.language}"', file=env_file)
