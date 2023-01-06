@@ -40,7 +40,6 @@ jobs:
       - name: build mdbook
         shell: pwsh
         run: |
-          cargo install mdbook-open-on-gh
           mdbook build ./docs/page
 
       - name: Upload artifact
