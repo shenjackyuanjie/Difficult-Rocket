@@ -4,6 +4,10 @@
 DR.code-workspace
 trytry/
 
+# nuitka build
+build/
+.github/workflows/env.ps1
+
 # PyCharm file
 .idea/
 
@@ -32,7 +36,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/

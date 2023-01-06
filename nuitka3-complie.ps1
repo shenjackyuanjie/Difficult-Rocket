@@ -1,6 +1,15 @@
 $start_time = Get-Uptime
 Write-Output $start_time
 
+python .\.github\workflows\get_info.py -env
+
+if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
+{
+    Throw "No env file found as ./github/workflows/env.ps1 !"
+}
+
+./.github/workflows/env.ps1
+
 $arg = @()
 # 输出配置
 $arg += @("--standalone")
