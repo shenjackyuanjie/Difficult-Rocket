@@ -7,11 +7,12 @@
 
 - [nuitka performents test](./nuitka/20221121_nuitka_performs.md)
 
-- [plan features](./plan_features/README.md)
+- [计划特性](./plan_features/README.md)
   - [格式](./plan_features/格式.md)
   - [更多保存信息](./plan_features/extra-save-info.md)
-  - [联机](./plan_features/multi-connect.md)
-  - [muit control](./plan_features/multi-control.md)
+  - [部件可成环](./plan_features/multi-connect.md)
+  - [多指令舱控制](./plan_features/multi-control.md)
+  - [轨道规划](./plan_features/orbit-plan.md)
 
 - [how to](./howto/readme.md)
   - [client](./howto/client.md)
