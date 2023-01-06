@@ -13,7 +13,6 @@ extra-watch-dirs = []             # directories to watch for triggering builds
 
 [output.html]
 input-404 = "404.md"
-additional-css = ["open-in.css"]
 # cname = 'hws.shenjack.top'
 
 # Required: Your repository URL used in the link.
@@ -32,10 +31,6 @@ limit-results = 15
 [output.html.print]
 enable = true    # include support for printable output
 page-break = true # insert page-break after each chapter
-
-[preprocessor.open-on-gh]
-command = "mdbook-open-on-gh"
-renderer = ["html"]
 
 # [output.copy-resources]
 # optional = true

@@ -5,7 +5,7 @@
 
 - [rua! 奇怪的东西~](./rua!.md)
 
-- [nuitka test](./nuitka/20221121_nuitka_performs.md)
+- [nuitka performents test](./nuitka/20221121_nuitka_performs.md)
 
 - [plan features](./plan_features/README.md)
   - [格式](./plan_features/格式.md)
