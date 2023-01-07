@@ -14,10 +14,10 @@
   - [多指令舱控制](./plan_features/multi-control.md)
   - [轨道规划](./plan_features/orbit-plan.md)
 
-- [how to](./howto/readme.md)
+- [开发文档](./howto/readme.md)
   - [client](./howto/client.md)
-  - [mod loader](./howto/mod/loader.md)
-  - [game name](./howto/game/命名.md)
+  - [mod 加载器](./howto/mod/loader.md)
+  - [命名规范](./howto/game/命名.md)
 
 - [NOOOOOOOOOO](./no/readme.md)
   - [Andy Zhang](./no/zhang_anzhi/readme.md)
