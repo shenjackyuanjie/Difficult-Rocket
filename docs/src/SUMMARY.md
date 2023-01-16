@@ -4,8 +4,10 @@
 - [contributors](./contributors.md)
 
 - [rua! 奇怪的东西~](./rua!.md)
-
-- [nuitka performents test](./nuitka/20221121_nuitka_performs.md)
+- [nuitka](./nuitka/readme.md)
+  - [nuitka performents test](./nuitka/20221121_nuitka_performs.md)
+  - [nuitka options](./nuitka/20230116_nuitka_options.md)
+  - [nuitka 1.3.7 compile options](./nuitka/nuitka_options_137.md)
 
 - [计划特性](./plan_features/README.md)
   - [格式](./plan_features/格式.md)
