@@ -23,16 +23,12 @@ from Difficult_Rocket.exception.language import *
 
 @dataclass
 class TranslateConfig:
-    raise_error: bool = False
-    # 引用错误时抛出错误
-    crack_normal: bool = False
-    # 出现错误引用后 将引用到的正确内容替换为引用路径
-    insert_crack: bool = True
-    # 加入引用的错误内容
-    is_final: bool = False
-    # 是否为最终内容
-    keep_get: bool = True
-    # 引用错误后是否继续引用
+    raise_error: bool = False  # 引用错误时抛出错误
+    crack_normal: bool = False  # 出现错误引用后 将引用到的正确内容替换为引用路径
+    insert_crack: bool = True  # 加入引用的错误内容
+    is_final: bool = False  # 是否为最终内容
+    keep_get: bool = True  # 引用错误后是否继续引用
+    always_copy: bool = False  # 是否一直新建 Translate (为 True 会降低性能)
 
     def set(self, item: str, value: bool) -> 'TranslateConfig':
         assert getattr(self, item, None) is not None, f'Config {item} is not in TranslateConfig'
@@ -45,10 +41,14 @@ class TranslateConfig:
                                crack_normal=self.crack_normal,
                                insert_crack=self.insert_crack,
                                is_final=self.is_final,
-                               keep_get=self.keep_get)
+                               keep_get=self.keep_get,
+                               always_copy=self.always_copy)
 
     def copy(self) -> 'TranslateConfig':
         return self.__copy__()
+
+
+key_type = Union[str, int, Hashable]
 
 
 class Translates:
@@ -68,45 +68,77 @@ class Translates:
         self.config = config or TranslateConfig()
         self.get_list = get_list or []
 
-    def set_option(self, option: Union[str, TranslateConfig],
-                   value: Optional[Union[bool, List[str]]] = None) -> 'Translates':
+    def set_conf_(self, option: Union[str, TranslateConfig],
+                  value: Optional[Union[bool, List[str]]] = None) -> 'Translates':
+        """
+        设置翻译设置
+        :param option: 设置名称 / 新设置
+        :param value:
+        :return:
+        """
         assert type(option) is str or isinstance(option, TranslateConfig)
         if isinstance(option, TranslateConfig):
             self.config = option
             return self
         self.config.set(option, value)
+        return self
 
-    def __getitem__(self, item: Union[str, int, Hashable]) -> Union["Translates"]:
+    def _raise_no_value(self, e: Exception, item: key_type):
+        if self.config.raise_error:
+            raise TranslateKeyNotFound(self.value, [x[1] for x in self.get_list]) from None
+        elif DR_option.report_translate_no_found:
+            frame = inspect.currentframe()
+            if frame is not None:
+                frame = frame.f_back
+                if frame.f_back.f_code is not self.__getattr__.__code__:
+                    frame = frame.f_back
+                frame = f'call at {frame.f_code.co_filename}:{frame.f_lineno}'
+            else:
+                frame = 'but No Frame environment'
+            raise_info = f"{self.name} Cause a error when getting {item} {frame}"
+            print(raise_info)
+
+    def __getitem__(self, item: key_type) -> Union["Translates"]:
         """
         :param item: 取用的内容/小天才
         :return:
         """
-        cache_get_list = self.get_list.copy()
         try:
-            cache = self.value[item]
-            cache_get_list.append((True, item))
-        except (KeyError, TypeError):
-            cache_get_list.append((False, item))
-            # 出现问题
-            if DR_option.report_translate_no_found:
-                frame = inspect.currentframe()
-                last_frame = frame.f_back
-                if last_frame.f_code == self.__getattr__.__code__:
-                    last_frame = last_frame.f_back
-                call_info = f'{self.name} Not Found at {last_frame.f_code.co_name} by ' \
-                            f'{".".join([x[1] for x in cache_get_list])} at:' \
-                            f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
-                print(call_info)
-            # 如果不抛出错误
-            if self.config.raise_error:
-                raise TranslateKeyNotFound(item_names=cache_get_list) from None
-            if self.final:  # 如果已经是翻译结果
-                return Translates(value='.'.join(cache_get_list))
-        else:
-            if self.final:
-                return self
-            else:
-                return Translates(value=cache, get_list=cache_get_list)
+            cache_value = self.value[item]
+            self.get_list.append((True, item))
+            if self.config.always_copy:
+                return self.copy
+        except (KeyError, TypeError, AttributeError) as e:
+            self.get_list.append((False, item))
+            self._raise_no_value(e, item)
+
+        # except (KeyError, TypeError):s
+        #     cache_get_list.append((False, item))
+        #     # 出现问题
+        #     if DR_option.report_translate_no_found:
+        #         frame = inspect.currentframe()
+        #         last_frame = frame.f_back
+        #         if last_frame.f_code == self.__getattr__.__code__:
+        #             last_frame = last_frame.f_back
+        #         call_info = f'{self.name} Not Found at {last_frame.f_code.co_name} by ' \
+        #                     f'{".".join([x[1] for x in cache_get_list])} at:' \
+        #                     f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
+        #         print(call_info)
+        #     # 如果不抛出错误
+        #     if self.config.raise_error:
+        #         raise TranslateKeyNotFound(item_names=cache_get_list) from None
+        #     if self.final:  # 如果已经是翻译结果
+        #         return Translates(value='.'.join(cache_get_list))
+        # else:
+        #     if self.final:
+        #         return self
+        #     else:
+        #         return Translates(value=cache, get_list=cache_get_list)
+
+    def __copy__(self) -> 'Translates':
+        return Translates(value=self.value,
+                          config=self.config,
+                          get_list=self.get_lists)
 
     def __getattr__(self, item: Union[str, Hashable]) -> Union["Translates"]:
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
@@ -120,7 +152,7 @@ class Translates:
 
 class Tr:
     """
-    我不装了，我就抄了tr
+    我不装了，我就抄了tr(实际上没啥关系)
     GOOD
     """
 

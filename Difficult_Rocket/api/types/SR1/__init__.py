@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-from typing import Dict, Union
+from typing import Dict, Union, List, Optional
 from dataclasses import dataclass
 
 # pyglet
@@ -28,6 +28,7 @@ class SR1PartData:
     flip_y: bool
     explode: bool
     textures: str
+    connections: Optional[List[int]] = None
 
 
 class SR1Textures(Options):

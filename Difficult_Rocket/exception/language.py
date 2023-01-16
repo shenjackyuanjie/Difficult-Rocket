@@ -22,11 +22,12 @@ class TranslateError(BaseError):
 
 class TranslateKeyNotFound(TranslateError):
     """语言文件某项缺失"""
-    def __init__(self, item_names: list):
+    def __init__(self, value: dict = None, item_names: list = None):
         self.item_names: list = item_names
+        self.value: dict = value
 
     def __str__(self):
-        return f"{self.__class__.__name__}: Can't get item {'. '.join(self.item_names)}"
+        return f"{self.__class__.__name__}: Can't get item {'. '.join(self.item_names)} from: {self.value}"
 
 
 class TranslateFileNotFound(TranslateError):
