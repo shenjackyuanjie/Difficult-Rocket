@@ -54,7 +54,7 @@
 
     在 Python 3.5+ 是需要的? 在 非 Windows 上 Python 2.6/2.7 也需要
 
-## 控制包含模块和内容的选项:
+## 编译模块和内容选项:
 
   - `--include-package=PACKAGE`
     - 编译给定的整个模块和子包
@@ -67,12 +67,7 @@
     - 编译给定的单个模块
     - 输入格式: Python 命名空间
       - 例如: `一个模块.的子包`
-    - nuitka 会寻找并编译这个模块
-                          Include a single module. Give as a Python namespace,
-                          e.g. "some_package.some_module" and Nuitka will then
-                          find it and include it in the binary or extension
-                          module it creates, and make it available for import by
-                          the code. Default empty.
+    - nuitka 会寻找并编译这个模块，并让给定的包可以在代码中引用
 
   - `--include-plugin-directory=MODULE/PACKAGE`
                           Include also the code found in that directory,
@@ -123,7 +118,7 @@
                           lot and is also not well tested at this time and
                           sometimes won't work. Defaults to off.
 
-    Onefile options:
+### Onefile 选项:
 
   - `--onefile-tempdir-spec=ONEFILE_TEMPDIR_SPEC`
                           Use this as a folder to unpack to in onefile mode.
@@ -133,7 +128,7 @@
                           '%CACHE_DIR%/%COMPANY%/%PRODUCT%/%VERSION%' which is a
                           good static cache path, this will then not be removed.
 
-    Data files:
+### 数据文件:
 
   - `--include-package-data=PACKAGE`
                           Include data files for the given package name. DLLs
@@ -148,8 +143,8 @@
                           package-data=package_name" (all files) "--include-
                           package-data=package_name=*.txt" (only certain type) "
                       -
-  - `--include-package-data=package_name=some_filename.dat
-                     ``     (concrete file) Default empty.
+  - `--include-package-data=package_name=some_filename.dat`
+    - (concrete file) Default empty.
 
   - `--include-data-files=DESC`
                           Include data files by filenames in the distribution.
@@ -182,7 +177,7 @@
                           "package_name/*.txt". Or for the whole directory
                           simply use "package_name". Default empty.
 
-    DLL files:
+### DLL 文件:
 
   - `--noinclude-dlls=PATTERN`
                           Do not include DLL files matching the filename pattern
@@ -195,7 +190,7 @@
                           Output the DLLs found for a given package name.
                           Default not done.
 
-    Control the warnings to be given by Nuitka:
+### 哪些警告会给到 Nuitka:
 
   - `--warn-implicit-exceptions`
                           Enable warnings for implicit exceptions detected at
@@ -221,11 +216,15 @@
 
     Immediate execution after compilation:
 
-  - `--run               Execute immediately the created binary (or import the`
-                          compiled module). Defaults to off.
+  - `--run`
+    - 编译后立即运行二进制文件(或者导入编译的模块)
+    - 默认: `禁用`
 
-  - `--debugger          Execute inside a debugger, e.g. "gdb" or "lldb" to`
-                          automatically get a stack trace. Defaults to off.
+  - `--debugger`
+    - 在 debugger 中运行
+      - 例如: "gdb" 或 "lldb"
+    - 用于自动获取堆栈跟踪
+    - 默认: `禁用`
 
   - `--execute-with-pythonpath`
                           When immediately executing the created binary or
@@ -298,7 +297,7 @@
                           created by Nuitka. This is used to detect implicit
                           imports. Defaults to off.
 
-    Debug features:
+## Debug 特性:
 
   - `--debug             Executing all self checks possible to find errors in`
                           Nuitka, do not use for production. Defaults to off.
@@ -306,8 +305,10 @@
   - `--unstripped        Keep debug info in the resulting object file for`
                           better debugger interaction. Defaults to off.
 
-  - `--profile           Enable vmprof based profiling of time spent. Not`
-                          working currently. Defaults to off.
+  - `--profile`
+    - 启用基于 `vmprof` 的效率检测
+    - 现在还用不了
+    - 默认: `禁用`
 
   - `--internal-graph    Create graph of optimization process internals, do not`
                           use for whole programs, but only for small test cases.
@@ -328,10 +329,11 @@
   - `--xml=XML_FILENAME  Write the internal program structure, result of`
                           optimization in XML form to given filename.
 
-  - `--generate-c-only   Generate only C source code, and do not compile it to`
-                          binary or module. This is for debugging and code
-                          coverage analysis that doesn't waste CPU. Defaults to
-                          off. Do not think you can use this directly.
+  - `--generate-c-only`
+    - 仅编译成 C 代码，不编译为可执行文件或者模块
+    - 此选项是为了那些不想浪费 CPU 资源的 单纯为了 debug 或者 覆盖率检测的编译
+      - 不要觉得你能直接做到这样
+    - 默认: `禁用`
 
   - `--experimental=FLAG`
                           Use features declared as 'experimental'. May have no
@@ -344,29 +346,37 @@
                           memory. For use on embedded machines. Use this in case
                           of out of memory problems. Defaults to off.
 
-    Backend C compiler choice:
+### 后端 C 编译器选项:
 
-  - `--clang             Enforce the use of clang. On Windows this requires a`
-                          working Visual Studio version to piggy back on.
-                          Defaults to off.
+  - `--clang
+    - 强制使用 `clang` 编译器
+    - 在 Windows 上需要一个可用的 Visual Studio Enforce the use of clang. On Windows this requires a`
+                            working Visual Studio version to piggy back on.
+                            Defaults to off.
 
-  - `--mingw64           Enforce the use of MinGW64 on Windows. Defaults to off`
-                          unless MSYS2 with MinGW Python is used.
+  - `--mingw64
+    - 在 Windows 上强制使用 MinGW64 编译器
+      - 除非运行在 MSYS2 和 Mingw 编译的 Python 上
+    - 默认: `禁用`
 
   - `--msvc=MSVC_VERSION`
-                          Enforce the use of specific MSVC version on Windows.
-                          Allowed values are e.g. "14.3" (MSVC 2022) and other
-                          MSVC version numbers, specify "list" for a list of
-                          installed compilers, or use "latest".  Defaults to
-                          latest MSVC being used if installed, otherwise MinGW64
-                          is used.
+    - 在 Windows 上强制使用给定版本的 MSVC 编译器
+                            Enforce the use of specific MSVC version on Windows.
+                            Allowed values are e.g. "14.3" (MSVC 2022) and other
+                            MSVC version numbers, specify "list" for a list of
+                            installed compilers, or use "latest".  Defaults to
+                            latest MSVC being used if installed, otherwise MinGW64
+                            is used.
 
-  - `--jobs=N            Specify the allowed number of parallel C compiler`
-                          jobs. Defaults to the system CPU count.
+  - `--jobs=N
+    - 指定最多可同时运行的 C 编译器数量
+    - 默认: 你的 CPU 线程数
 
-  - `--lto=choice        Use link time optimizations (MSVC, gcc, clang).`
-                          Allowed values are "yes", "no", and "auto" (when it's
-                          known to work). Defaults to "auto".
+  - `--lto=choice
+    - 使用 来自编译器的 链接时间优化
+    - Use link time optimizations (MSVC, gcc, clang).`
+                            Allowed values are "yes", "no", and "auto" (when it's
+                            known to work). Defaults to "auto".
 
   - `--static-libpython=choice`
                           Use static link library of Python. Allowed values are
@@ -411,7 +421,7 @@
                           folder, but might be used in case the cache is suspect
                           to cause errors or known to need an update.
 
-    PGO compilation choices:
+## PGO 编译选项:
 
   - `--pgo               Enables C level profile guided optimization (PGO), by`
                           executing a dedicated build first for a profiling run,
@@ -432,7 +442,7 @@
                           through a script that prepares it to run. Default use
                           created program.
 
-    Tracing features:
+### Tracing features:
 
   - `--report=REPORT_FILENAME`
                           Report module, data files, compilation, plugin, etc.
