@@ -16,5 +16,5 @@ pyglet 坐标轴原点是左上角
 
 # 素材提供
 
-[背景候选1号](background.png)
+[背景候选1号](../../textures/runtime/background.png)
 来自 @底层萌新 QQ：1744251171
