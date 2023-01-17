@@ -13,7 +13,6 @@ extra-watch-dirs = []             # directories to watch for triggering builds
 
 [output.html]
 input-404 = "404.md"
-# cname = 'hws.shenjack.top'
 
 # Required: Your repository URL used in the link.
 git-repository-url = "https://github.com/shenjackyuanjie/Difficult-Rocket"
@@ -25,12 +24,23 @@ git-branch = "main"
 # The link text is marked by `[]`
 open-on-text = "Found a bug? [Edit this page on GitHub.]"
 
+[output.linkcheck]
+# Should we check links on the internet? Enabling this option adds a
+# non-negligible performance impact
+follow-web-links = false
+
+# Are we allowed to link to files outside of the book's root directory? This
+# may help prevent linking to sensitive files (e.g. "../../../../etc/shadow")
+traverse-parent-directories = true
+
 [output.html.search]
 limit-results = 15
 
 [output.html.print]
 enable = true    # include support for printable output
 page-break = true # insert page-break after each chapter
+
+# [output.pdf]
 
 # [output.copy-resources]
 # optional = true

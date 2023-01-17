@@ -34,13 +34,12 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
 
-      #- name: install mdbook
-      #  uses: extractions/setup-mdbook@v1
+      - name: install mdbook
+        uses: extractions/setup-mdbook@v1
 
       - name: setup、build mdbook
         shell: pwsh
         run: |
-          cargo install mdbook
           mdbook build ./docs/
 
       - name: Upload artifact

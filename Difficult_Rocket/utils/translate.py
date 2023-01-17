@@ -106,6 +106,7 @@ class Translates:
         try:
             cache_value = self.value[item]
             self.get_list.append((True, item))
+
             if self.config.always_copy:
                 return self.copy
         except (KeyError, TypeError, AttributeError) as e:
