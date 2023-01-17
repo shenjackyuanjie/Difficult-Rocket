@@ -112,7 +112,7 @@ vertex_source = """#version 150 core
     {
         m_translate[3][0] = translation.x;
         m_translate[3][1] = translation.y;
-        m_rotation[0][0] =  cos(-radians(rotation)); 
+        m_rotation[0][0] =  cos(-radians(rotation));
         m_rotation[0][1] =  sin(-radians(rotation));
         m_rotation[1][0] = -sin(-radians(rotation));
         m_rotation[1][1] =  cos(-radians(rotation));
@@ -599,6 +599,111 @@ class Arc(ShapeBase):
         self._vertex_list.draw(self._draw_mode)
 
 
+class BezierCurve(ShapeBase):
+    _draw_mode = GL_LINES
+
+    def __init__(self, *points, t=1.0, segments=100, color=(255, 255, 255, 255), batch=None, group=None):
+        """Create a Bézier curve.
+
+        The curve's anchor point (x, y) defaults to its first control point.
+
+        :Parameters:
+            `points` : List[[int, int]]
+                Control points of the curve.
+            `t` : float
+                Draw `100*t` percent of the curve. 0.5 means the curve
+                is half drawn and 1.0 means draw the whole curve.
+            `segments` : int
+                You can optionally specify how many line segments the
+                curve should be made from.
+            `color` : (int, int, int, int)
+                The RGB or RGBA color of the curve, specified as a
+                tuple of 3 or 4 ints in the range of 0-255. RGB colors
+                will be treated as having an opacity of 255.
+            `batch` : `~pyglet.graphics.Batch`
+                Optional batch to add the curve to.
+            `group` : `~pyglet.graphics.Group`
+                Optional parent group of the curve.
+        """
+        self._points = list(points)
+        self._t = t
+        self._segments = segments
+        self._num_verts = self._segments * 2
+        r, g, b, *a = color
+        self._rgba = r, g, b, a[0] if a else 255
+
+        program = get_default_shader()
+        self._batch = batch or Batch()
+        self._group = _ShapeGroup(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, program, group)
+
+        self._create_vertex_list()
+        self._update_vertices()
+
+    def _make_curve(self, t):
+        n = len(self._points) - 1
+        p = [0, 0]
+        for i in range(n + 1):
+            m = math.comb(n, i) * (1 - t) ** (n - i) * t ** i
+            p[0] += m * self._points[i][0]
+            p[1] += m * self._points[i][1]
+        return p
+
+    def _create_vertex_list(self):
+        self._vertex_list = self._group.program.vertex_list(
+            self._num_verts, self._draw_mode, self._batch, self._group,
+            colors=('Bn', self._rgba * self._num_verts),
+            translation=('f', (self._points[0]) * self._num_verts))
+
+    def _update_vertices(self):
+        if not self._visible:
+            vertices = (0,) * self._segments * 4
+        else:
+            x = -self._anchor_x
+            y = -self._anchor_y
+
+            # Calculate the points of the curve:
+            points = [(x + self._make_curve(self._t * t / self._segments)[0],
+                       y + self._make_curve(self._t * t / self._segments)[1]) for t in range(self._segments + 1)]
+            trans_x, trans_y = points[0]
+            trans_x += self._anchor_x
+            trans_y += self._anchor_y
+            coords = [[x - trans_x, y - trans_y] for x, y in points]
+
+            # Create a list of doubled-up points from the points:
+            vertices = []
+            for i in range(len(coords) - 1):
+                line_points = *coords[i], *coords[i + 1]
+                vertices.extend(line_points)
+
+        self._vertex_list.vertices[:] = vertices
+
+    @property
+    def points(self):
+        """Control points of the curve.
+
+        :type: List[[int, int]]
+        """
+        return self._points
+
+    @points.setter
+    def points(self, value):
+        self._points = value
+        self._update_vertices()
+
+    @property
+    def t(self):
+        """Draw `100*t` percent of the curve.
+
+        :type: float
+        """
+        return self._t
+
+    @t.setter
+    def t(self, value):
+        self._t = value
+        self._update_vertices()
+
+
 class Circle(ShapeBase):
     def __init__(self, x, y, radius, segments=None, color=(255, 255, 255, 255),
                  batch=None, group=None):
@@ -798,14 +903,6 @@ class Ellipse(ShapeBase):
     def rotation(self, rotation):
         self._rotation = rotation
         self._vertex_list.rotation[:] = (rotation,) * self._num_verts
-
-    def draw(self):
-        """Draw the shape at its current position.
-
-        Using this method is not recommended. Instead, add the
-        shape to a `pyglet.graphics.Batch` for efficient rendering.
-        """
-        self._vertex_list.draw(self._draw_mode)
 
 
 class Sector(ShapeBase):
@@ -1677,4 +1774,4 @@ class Polygon(ShapeBase):
         self._vertex_list.rotation[:] = (rotation,) * self._num_verts
 
 
-__all__ = 'Arc', 'Circle', 'Ellipse', 'Line', 'Rectangle', 'BorderedRectangle', 'Triangle', 'Star', 'Polygon', 'Sector'
+__all__ = 'Arc', 'BezierCurve', 'Circle', 'Ellipse', 'Line', 'Rectangle', 'BorderedRectangle', 'Triangle', 'Star', 'Polygon', 'Sector'
