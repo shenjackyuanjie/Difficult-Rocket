@@ -10,8 +10,9 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
-import ctypes
+# import ctypes
 import logging
+from typing import List, Dict, Union, Optional
 
 from Difficult_Rocket.api.types import Options
 
@@ -53,7 +54,7 @@ class _DR_option(Options):
     crash_report_test: bool = True
 
     # window option
-    gui_scale: int = 1  # default 1 2 -> 2x 3 -> 3x
+    gui_scale: float = 1.0  # default 1 2 -> 2x 3 -> 3x
 
 
 class _DR_runtime(Options):
@@ -61,7 +62,7 @@ class _DR_runtime(Options):
     DR 的运行时配置
     """
     name = 'DR Runtime'
-    # game statue
+    # game status
     DR_version: Version = game_version
     Build_version: Version = build_version
     DR_long_version: int = long_version

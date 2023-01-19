@@ -37,7 +37,10 @@ class SR1Textures(Options):
         super().__init__(**kwargs)
         self.flush_option()
         for image_name in self.cached_options:
-            setattr(self, image_name, load(f'textures/parts/{image_name}.png'))
+            img = load(f'textures/parts/{image_name}.png')
+            img.anchor_x = img.width // 2
+            img.anchor_y = img.height // 2
+            setattr(self, image_name, img)
         self.flush_option()
 
     def get_texture(self, name: str):

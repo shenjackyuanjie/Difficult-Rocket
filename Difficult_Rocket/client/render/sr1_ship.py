@@ -4,8 +4,9 @@
 #  All rights reserved
 #  -------------------------------
 
+import math
 from xml.etree import ElementTree
-from typing import List, TYPE_CHECKING, Union
+from typing import List, TYPE_CHECKING, Union, Dict
 
 # third party package
 from defusedxml.ElementTree import parse
@@ -38,7 +39,7 @@ class SR1ShipRender(BaseScreen):
         self.part_batch = Batch()
         self.part_group = Group()
         self.part_data = {}
-        self.parts_sprite = {}
+        self.parts_sprite: Dict[int, Sprite] = {}
 
     def load_textures(self):
         self.textures = SR1Textures()
@@ -80,18 +81,32 @@ class SR1ShipRender(BaseScreen):
                                     editor_angle=part_editor_angle, flip_x=part_flip_x,
                                     flip_y=part_flip_y, explode=part_explode, textures=part_textures)
             self.part_data[part_id] = part_data
-            self.parts_sprite[part_id] = Sprite(img=self.textures.get_texture(part_data.textures),
-                                                x=10, y=10, batch=self.part_batch, group=self.part_group)
+            # 下面就是调用 pyglet 去渲染的部分
+            render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
+            # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
+            # 在不缩放的情况下，XML的1个单位长度对应60个像素
+            render_x = part_x * render_scale * 60 + self.window_pointer.width / 2
+            render_y = part_y * render_scale * 60 + self.window_pointer.height / 2
+            # 你就这里改吧
+            cache_sprite = Sprite(img=self.textures.get_texture(part_data.textures),
+                                  x=render_x, y=render_y,
+                                  batch=self.part_batch, group=self.part_group)
+            # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系（OK
+            # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
+            if part_flip_x:
+                cache_sprite.scale_x = -cache_sprite.scale_x  # 就是直接取反缩放，应该没问题····吧？（待会试试就知道了
+            if part_flip_y:
+                cache_sprite.scale_y = -cache_sprite.scale_y
+            cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
+            cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
+            cache_sprite.rotation = part_data.angle / math.pi * 180
+            if not part_render:  # 如果不渲染(渲染有毛病)
+                self.parts_sprite[part_id].visible = False
+
+            self.parts_sprite[part_id] = cache_sprite
 
     def on_draw(self):
         self.part_batch.draw()
 
     def on_file_drop(self, x: int, y: int, paths: List[str]):
-        self.scale = DR_option.gui_scale
         self.render_ship()
-        ...
-
-    def on_command(self, command: CommandText):
-        if command.match('render'):
-            print('rua, render ship!')
-            self.render_ship()
