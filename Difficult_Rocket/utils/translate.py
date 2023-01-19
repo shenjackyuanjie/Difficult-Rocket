@@ -215,7 +215,7 @@ class Lang:
         return DR_option.language
 
 
-if not __name__ == '__main__':
-    tr = Lang()
-else:
+if __name__ == '__main__':
     tr_ = Tr()
+else:
+    tr = Lang()
