@@ -22,9 +22,10 @@ game_version = Version("0.6.4.2")  # 游戏版本
 build_version = Version("0.1.0.0")  # 编译文件版本(与游戏本体无关)
 __version__ = game_version
 
-long_version: int = 6
+long_version: int = 7
 """
 long_version: 一个用于标记内部协议的整数
+7: 为 DR_option 添加 std_font_size
 6: 事实证明, 不如直接用int
 5: 添加 build_version 信息,用于标记编译文件版本,
    游戏版本改为四位数，终于有一个可以让我随便刷的版本号位数了
@@ -54,7 +55,11 @@ class _DR_option(Options):
     crash_report_test: bool = True
 
     # window option
-    gui_scale: float = 1.0  # default 1 2 -> 2x 3 -> 3x
+    gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
+
+    @property
+    def std_font_size(self) -> int:
+        return round(11 * self.gui_scale)
 
 
 class _DR_runtime(Options):

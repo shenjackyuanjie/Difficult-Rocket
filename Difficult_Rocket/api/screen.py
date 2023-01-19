@@ -25,6 +25,7 @@ class BaseScreen(EventDispatcher):
 
     def __init__(self, main_window: "ClientWindow"):
         super().__init__()
+        self.focus = False
         self.window_pointer = main_window
 
     if typing.TYPE_CHECKING:

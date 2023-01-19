@@ -4,6 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
+import math
 from typing import Dict, Union, List, Optional
 from dataclasses import dataclass
 
@@ -21,13 +22,14 @@ class SR1PartData:
     y: float
     id: int
     type: str
+    active: bool
     angle: float
     angle_v: float
     editor_angle: int
     flip_x: bool
     flip_y: bool
     explode: bool
-    textures: str
+    textures: Optional[str]
     connections: Optional[List[int]] = None
 
 
@@ -115,10 +117,43 @@ class SR1PartTexture:
                                         'lander-1': 'LanderLegPreview'}
 
     @classmethod
-    def get_sprite_from_type(cls, name: str) -> Union[None, str]:
+    def get_textures_from_type(cls, name: str) -> Union[None, str]:
         if name not in cls.part_type_sprite:
             return None
         return cls.part_type_sprite[name]
+
+
+class SR1Rotation(Options):
+    radian_angle_map: Dict[float, float] = {
+        0.0: 0,
+        1.570796: 270,
+        3.141593: 180,
+        4.712389: 90
+    }
+
+    @classmethod
+    def get_rotation(cls, radian: float) -> float:
+        if radian in cls.radian_angle_map:
+            return cls.radian_angle_map[radian]
+        else:
+            return (radian / math.pi) * 180
+
+
+def xml_bool(bool_like: Union[str, int, bool, None]) -> bool:
+    if bool_like is None:
+        return False
+    if isinstance(bool_like, bool):
+        return bool_like
+    if isinstance(bool_like, int):
+        if bool_like == 0:
+            return False
+        else:
+            return True
+    if bool_like == '0':
+        return False
+    if bool_like.lower() == 'false':
+        return False
+    return True
 
 #
 #

@@ -300,9 +300,25 @@ class ClientWindow(Window):
     def on_deactivate(self):
         ...
 
+    @_call_screen_before
+    def on_move(self, x, y):
+        ...
+
     @_call_screen_after
     def on_mouse_motion(self, x, y, dx, dy) -> None:
         pass
+
+    @_call_screen_after
+    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+        ...
+
+    @_call_screen_after
+    def on_mouse_enter(self, x, y):
+        ...
+
+    @_call_screen_after
+    def on_mouse_leave(self, x, y):
+        ...
 
     @_call_screen_after
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers) -> None:
