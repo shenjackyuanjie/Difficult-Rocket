@@ -54,12 +54,10 @@ key_type = Union[str, int, Hashable]
 class Translates:
     name = 'Translate'
 
-    def __init__(self,
-                 value: Union[Dict[str, Any], list, tuple, str],
+    def __init__(self, value: Union[Dict[str, Any], list, tuple, str],
                  config: Optional[TranslateConfig] = None,
-                 get_list: List[Tuple[bool, str]] = None):
-        """
-        一个用于翻译的东西
+                 get_list: Optional[List[Tuple[bool, str]]] = None):
+        """ 一个用于翻译的东西
         :param value: 翻译键节点
         :param config: 配置
         :param get_list: 获取列表
@@ -70,13 +68,7 @@ class Translates:
 
     def set_conf_(self, option: Union[str, TranslateConfig],
                   value: Optional[Union[bool, List[str]]] = None) -> 'Translates':
-        """
-        设置翻译设置
-        :param option: 设置名称 / 新设置
-        :param value:
-        :return:
-        """
-        assert type(option) is str or isinstance(option, TranslateConfig)
+        assert isinstance(option, (TranslateConfig, str))
         if isinstance(option, TranslateConfig):
             self.config = option
             return self
@@ -98,57 +90,38 @@ class Translates:
             raise_info = f"{self.name} Cause a error when getting {item} {frame}"
             print(raise_info)
 
-    def __getitem__(self, item: key_type) -> Union["Translates"]:
-        """
-        :param item: 取用的内容/小天才
-        :return:
-        """
+    def __getitem__(self, item: key_type) -> "Translates":
         try:
             cache_value = self.value[item]
+            if isinstance(cache_value, (int, str,)):
+                self.config.is_final = True
             self.get_list.append((True, item))
-
             if self.config.always_copy:
-                return self.copy
+                return Translates(value=cache_value, config=self.config, get_list=self.get_list)
+            self.value = cache_value
+            return self
         except (KeyError, TypeError, AttributeError) as e:
             self.get_list.append((False, item))
             self._raise_no_value(e, item)
+            if not self.config.keep_get:
+                self.config.is_final = True
 
-        # except (KeyError, TypeError):s
-        #     cache_get_list.append((False, item))
-        #     # 出现问题
-        #     if DR_option.report_translate_no_found:
-        #         frame = inspect.currentframe()
-        #         last_frame = frame.f_back
-        #         if last_frame.f_code == self.__getattr__.__code__:
-        #             last_frame = last_frame.f_back
-        #         call_info = f'{self.name} Not Found at {last_frame.f_code.co_name} by ' \
-        #                     f'{".".join([x[1] for x in cache_get_list])} at:' \
-        #                     f'{last_frame.f_code.co_filename}:{last_frame.f_lineno}'
-        #         print(call_info)
-        #     # 如果不抛出错误
-        #     if self.config.raise_error:
-        #         raise TranslateKeyNotFound(item_names=cache_get_list) from None
-        #     if self.final:  # 如果已经是翻译结果
-        #         return Translates(value='.'.join(cache_get_list))
-        # else:
-        #     if self.final:
-        #         return self
-        #     else:
-        #         return Translates(value=cache, get_list=cache_get_list)
+    def copy(self):
+        return self.__copy__()
 
     def __copy__(self) -> 'Translates':
-        return Translates(value=self.value,
-                          config=self.config,
-                          get_list=self.get_lists)
+        return Translates(value=self.value, config=self.config, get_list=self.get_lists)
 
-    def __getattr__(self, item: Union[str, Hashable]) -> Union["Translates"]:
+    def __getattr__(self, item: key_type) -> "Translates":
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
         return self.__getitem__(item)
 
     def __str__(self):
-        if self.final:  # 如果是字符串
-            return f'{self.value}.{".".join(self.get_list)}'
-        return str(self.value)
+        if self.config.crack_normal:
+            return f'{".".join(f"{gets[1]}({gets[0]})" for gets in self.get_list)}'
+        elif self.config.insert_crack:
+            return f'{self.value}.{".".join(gets[1] for gets in self.get_list if not gets[0])}'
+        return self.value
 
 
 class Tr:
@@ -164,13 +137,10 @@ class Tr:
         :param config: 配置
         """
         self.language_name = language or DR_runtime.language
-        self.translates: Dict = tools.load_file(f'configs/lang/{self.language_name}.toml')
+        self.translates: Dict[str,] = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
         self.default_config = config or TranslateConfig()
         self.translates_cache = Translates(value=self.translates, config=TranslateConfig().copy())
-
-    # def __call__(self, ):
-    #     ...
 
     def __getattr__(self, item) -> Translates:
         ...
