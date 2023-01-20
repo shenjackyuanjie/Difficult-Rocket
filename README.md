@@ -16,8 +16,8 @@
 
 ## 版本
 
-[![Generic badge](https://img.shields.io/badge/Release-0.6.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.4.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Release-0.6.5.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Pre_Release-0.6.5.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Devloping-0.7.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 ## English README please look [here](./docs/README-en.md)

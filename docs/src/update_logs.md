@@ -8,12 +8,20 @@
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.6.4.2-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.6.5-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
+
+## 20230120 V 0.6.5.0
+
+### 抱歉，我撒谎了（
+
+### Add
+
+- 现在将文件拖拽至屏幕内可以渲染默认船只/渲染拖拽上来的解析成功的第一艘船
 
 ## 20221124 V 0.6.4
 

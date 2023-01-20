@@ -47,10 +47,10 @@ def get_part_data_from_xml(part_xml: Element) -> Optional[SR1PartData]:
         part_textures = None
     else:
         part_textures = SR1PartTexture.get_textures_from_type(part_type)
-    print(f'id: {part_id:<4} type: {part_type:<10} x: {part_x} y: {part_y} activated: {part_activate} '
-          f'angle: {part_angle} angle_v: {part_angle_v} editor_angle: {part_editor_angle} '
-          f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
-          f'textures: {SR1PartTexture.get_textures_from_type(part_type)}')
+    # print(f'id: {part_id:<4} type: {part_type:<10} x: {part_x} y: {part_y} activated: {part_activate} '
+    #       f'angle: {part_angle} angle_v: {part_angle_v} editor_angle: {part_editor_angle} '
+    #       f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
+    #       f'textures: {SR1PartTexture.get_textures_from_type(part_type)}')
     part_data = SR1PartData(x=part_x, y=part_y, id=part_id, type=part_type,
                             active=part_activate, angle=part_angle, angle_v=part_angle_v,
                             editor_angle=part_editor_angle, flip_x=part_flip_x,
@@ -168,6 +168,6 @@ class SR1ShipRender(BaseScreen):
 
     def on_file_drop(self, x: int, y: int, paths: List[str]):
         for path in paths:
-            if self.load_xml(path):
+            if self.load_xml(path):  # 加载成功一个就停下
                 break
         self.render_ship()
