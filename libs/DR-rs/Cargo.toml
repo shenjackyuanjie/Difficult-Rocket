@@ -7,6 +7,10 @@ edition = "2021"
 
 [dependencies]
 
+[lib]
+name = 'Difficult_Rocket_rs'
+crate-type = ["cdylib", "rlib"]
+
 [dependencies.pyo3]
 version = "0.18.0"
 features = ["extension-module"]
