@@ -55,12 +55,22 @@ class Options:
     cached_options: Dict[str, Union[str, Any]] = {}
 
     def __init__(self, **kwargs):
+        """
+        创建一个新的 Options 的时候的配置
+        如果存在 init 方法 会在设置完 kwargs 之后运行子类的 init 方法
+        :param kwargs:
+        """
         self.flush_option()
         for option, value in kwargs.items():
             if option not in self.cached_options:
                 raise OptionNameNotDefined(f"option: {option} with value: {value} is not defined")
             setattr(self, option, value)
+        if hasattr(self, 'init'):
+            self.init(**kwargs)
         self.flush_option()
+
+    def init(self, **kwargs) -> None:
+        ...
 
     def option(self) -> Dict[str, Any]:
         """

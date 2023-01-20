@@ -20,11 +20,15 @@ from libs.MCDR.version import Version
 
 game_version = Version("0.6.5.0")  # 游戏版本
 build_version = Version("1.0.0.0")  # 编译文件版本(与游戏本体无关)
+DR_rust_version = Version("0.0.0.1")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
-long_version: int = 7
+long_version: int = 8
 """
 long_version: 一个用于标记内部协议的整数
+8: 为 DR_runtime 添加 DR_rust_version
+    为 DR_option 添加 DR_rust_available
+    以后就有 DR_rust 了
 7: 为 DR_option 添加 std_font_size
 6: 事实证明, 不如直接用int
 5: 添加 build_version 信息,用于标记编译文件版本,
@@ -48,6 +52,7 @@ class _DR_option(Options):
     use_local_logging:         bool = False
     report_translate_no_found: bool = True
     use_muitprocess:           bool = False
+    DR_rust_available:         bool = False
 
     # tests
     playing:           bool = False
@@ -57,9 +62,16 @@ class _DR_option(Options):
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
+    def init(self, **kwargs):
+        try:
+            self.DR_rust_available = True
+        except ImportError:
+            self.DR_rust_available = False
+        self.flush_option()
+
     @property
     def std_font_size(self) -> int:
-        return round(11 * self.gui_scale)
+        return round(12 * self.gui_scale)
 
 
 class _DR_runtime(Options):
@@ -70,6 +82,7 @@ class _DR_runtime(Options):
     # game status
     DR_version: Version = game_version
     Build_version: Version = build_version
+    DR_Rust_version: Version = DR_rust_version
     DR_long_version: int = long_version
 
     # run status
