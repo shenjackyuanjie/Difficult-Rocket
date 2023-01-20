@@ -22,5 +22,29 @@ defusedxml = "*"
 
 
 [build-system]
-requires = ["setuptools>=42", "wheel", "nuitka", "toml", "imageio"]
+requires = ["setuptools>=61",
+            "wheel",
+            "nuitka",
+            "imageio",
+            "setuptools-rust"]
 build-backend = "nuitka.distutils.Build"
+
+[project]
+name = 'Difficult_Rocket'
+dynamic = ['version']
+authors = [
+    {name = 'shenjackyuanjie', email = '3695888@qq.com'}
+]
+description = 'A rocket simlater'
+readme = 'README.md'
+requires-python = '>=3.8'
+license = {text = 'CC BY-NC-SA 4.0'}
+dependencies = [
+    'nuitka=1.3.x',
+    'psutil=5.9.x',
+    'defusedxml=0.7.x',
+    'rtoml=0.9.x',
+    'tomlkit=0.11.x',
+    'Pillow',
+    'pymunk'
+]

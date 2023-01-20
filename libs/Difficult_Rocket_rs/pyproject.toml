@@ -1,2 +1,15 @@
 [build-system]
 requires = ["setuptools", "wheel", "setuptools-rust"]
+
+[project]
+name = 'Difficult_Rocket_rs'
+dynamic = ['version']
+authors = [
+    {name = 'shenjackyuanjie', email = '3695888@qq.com'}
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]

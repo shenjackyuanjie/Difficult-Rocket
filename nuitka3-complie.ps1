@@ -43,7 +43,7 @@ $end_time = Get-Uptime
 $out = $end_time.TotalMilliseconds - $start_time.TotalMilliseconds
 Write-Output $end_time.TotalSeconds $start_time.TotalSeconds $out s
 Write-Output $start_time $end_time
-Write-Output "--jobs=24 --mingw64 --lto=no and $args"
+Write-Output "--jobs=24 --clang --msvc=latest --lto=no and $args"
 # --include-data-dir=./libs/pyglet=./pyglet
 # --run
 # --disable-ccache
