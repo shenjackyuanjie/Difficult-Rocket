@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-#[allow(non_snake_case)]
+
 /// Formats the sum of two numbers as string.
 #[pyfunction]
 fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
