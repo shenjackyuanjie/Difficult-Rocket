@@ -12,7 +12,7 @@ gitee:  @shenjackyuanjie
 """
 
 from dataclasses import dataclass
-from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple
+from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional
 
 # from Difficult Rocket
 
@@ -126,6 +126,11 @@ class Options:
             cls.options: Dict[str, Union[Callable, object]] = {}
         cls.options[name] = value
         return cls.options
+
+    @staticmethod
+    def init_option(options_class: 'Options'.__class__, init_value: Optional[dict] = None) -> 'Options':
+        options_class_instance = options_class(**init_value)
+        return options_class_instance
 
 
 class Fonts(Options):

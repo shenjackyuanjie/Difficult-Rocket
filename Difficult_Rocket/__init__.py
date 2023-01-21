@@ -104,8 +104,8 @@ class _DR_runtime(Options):
     default_language: str = 'zh-CN'
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self.__options = {'language': self.language}
+        super().__init__(**kwargs)
 
     @property
     def language(self):

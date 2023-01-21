@@ -14,12 +14,13 @@ from defusedxml.ElementTree import parse
 
 # pyglet
 from pyglet.text import Label
+from pyglet.shapes import Line
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 
 # Difficult Rocket
 from Difficult_Rocket import DR_option
-from Difficult_Rocket.api.types import Fonts
+from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
@@ -58,6 +59,13 @@ def get_part_data_from_xml(part_xml: Element) -> Optional[SR1PartData]:
     return part_data
 
 
+@Options.init_option
+class SR1ShipRender_Option(Options):
+    # debug option
+    draw_delta_line: bool = True
+    draw_mouse_line: bool = True
+
+
 class SR1ShipRender(BaseScreen):
     """用于渲染 sr1 船的类"""
 
@@ -70,6 +78,16 @@ class SR1ShipRender(BaseScreen):
         self.focus = True
         self.dx = 0
         self.dy = 0
+        self.debug_line = Line(main_window.width / 2, main_window.height / 2,
+                               main_window.width / 2, main_window.height / 2,
+                               width=3, color=(200, 10, 200, 255))
+        self.debug_mouse_line = Line(main_window.width / 2, main_window.height / 2,
+                                     main_window.width / 2, main_window.height / 2,
+                                     width=3, color=(10, 200, 200, 255))
+        self.debug_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
+                                 x=main_window.width / 2, y=main_window.height / 2,)
+        self.debug_mouse_label = Label('debug mouse_label NODATA', font_name=Fonts.微软等宽无线,
+                                       x=main_window.width / 2, y=main_window.height / 2)
         self.textures: Union[SR1Textures, None] = None
         self.xml_doc: ElementTree = parse('configs/dock1.xml')
         self.xml_root: ElementTree.Element = self.xml_doc.getroot()
@@ -118,7 +136,7 @@ class SR1ShipRender(BaseScreen):
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
             render_x = part.x * render_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
-            render_y =  part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
+            render_y = part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y,
@@ -141,6 +159,9 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
+        self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2)
+        self.debug_label.text = f'x: {self.dx} y: {self.dy}'
+        self.debug_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2) + 10, 0
         for part_id in self.part_data:
             # x y scale
             self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
@@ -149,17 +170,37 @@ class SR1ShipRender(BaseScreen):
 
     def on_draw(self):
         self.part_batch.draw()
+        if SR1ShipRender_Option.draw_delta_line:
+            self.debug_line.draw()
+            self.debug_label.draw()
+        if SR1ShipRender_Option.draw_mouse_line:
+            self.debug_mouse_line.draw()
+            self.debug_mouse_label.draw()
 
     def on_resize(self, width: int, height: int):
         if not self.rendered:
             return
+        self.debug_line.x = width / 2
+        self.debug_line.y = height / 2
+        self.debug_line._update_vertices()
+        self.debug_mouse_line.x = width / 2
+        self.debug_mouse_line.y = height / 2
+        self.debug_mouse_line._update_vertices()
         self.update_parts()
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
         if not self.rendered:
             return
+        mouse_dx = x - (self.window_pointer.width / 2)
+        mouse_dy = y - (self.window_pointer.height / 2)
+        self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
+
         if not (self.scale + scroll_y * 0.1 == 0.0):
             self.scale += scroll_y * 0.1
+        self.dx -= (scroll_x * 0.1) * (mouse_dx + self.dx)
+        self.dy -= (scroll_y * 0.1) * (mouse_dy + self.dy)
+        self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
+        self.debug_mouse_label.position = x, y + 10, 0
         self.update_parts()
 
     def on_command(self, command: CommandText):
