@@ -11,10 +11,10 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 # import ctypes
+import sys
 import logging
 from typing import List, Dict, Union, Optional
 
-import pyglet
 from Difficult_Rocket.api.types import Options
 
 from libs.MCDR.version import Version
@@ -66,7 +66,7 @@ class _DR_option(Options):
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
     def init(self, **kwargs):
-        if not pyglet.compat_platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
+        if not sys.platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
             self.DR_rust_available = True
@@ -129,6 +129,7 @@ DR_runtime = _DR_runtime()
 
 if __name__ == '__main__':
     print(DR_option.InputBox_use_TextEntry)
+    print(sys.platform)
     ...
 
 if DR_option.playing:
