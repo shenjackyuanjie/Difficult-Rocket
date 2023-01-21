@@ -127,6 +127,10 @@ _DR_runtime.add_option('language', _DR_runtime.language)
 DR_option = _DR_option()
 DR_runtime = _DR_runtime()
 
+if __name__ == '__main__':
+    print(DR_option.InputBox_use_TextEntry)
+    ...
+
 if DR_option.playing:
     from Difficult_Rocket.utils import new_thread
 

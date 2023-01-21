@@ -32,23 +32,15 @@ class CommandText:
         self.text = text
         self.error = False
         self.value_dict = {}
-        self.value_list = []
-        self.command_tree = {}
-        tree_list = text.split(' ')
 
-        self.tree_node = tree_list
-
-    # @staticmethod
-    # def parse_text(raw_text: str) -> str:
-    #     q_mark_iter = re.finditer('\\"', raw_text)
-    #     for q_mark in q_mark_iter:
-    #         ...
-
-    @staticmethod
-    def parse_command(raw_command: Union[str, "CommandText"]) -> Tuple[List[str], Union[CommandParseError, type(True)]]:
-        spilt_list = re.split(r'', raw_command)
-        done_list = [re.sub(r'\\"', '"', raw_text) for raw_text in spilt_list]
-        return done_list, True  # 完事了
+    def counter(self, start: Optional[int] = 0) -> int:
+        assert isinstance(start, int)
+        i = start
+        while True:
+            yield i
+            if self.error:
+                break
+            i += 1
 
     def find(self, text: str) -> Union[str, bool]:
         finding = re.match(text, self.text)
@@ -73,6 +65,9 @@ class CommandText:
             return False
         else:
             return False
+
+    def int_value(self, name: Optional[str]):
+        ...
 
     def value(self,
               name: str = None,

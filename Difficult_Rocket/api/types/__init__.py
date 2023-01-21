@@ -129,7 +129,7 @@ class Options:
 
     @staticmethod
     def init_option(options_class: 'Options'.__class__, init_value: Optional[dict] = None) -> 'Options':
-        options_class_instance = options_class(**init_value)
+        options_class_instance = options_class(**init_value if init_value is not None else {})
         return options_class_instance
 
 

@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 
-def get_part_data_from_xml(part_xml: Element) -> Optional[SR1PartData]:
+def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
     if part_xml.tag != 'Part':
         return None
     # print(f"tag: {part.tag} attrib: {part.attrib}")
@@ -59,11 +59,14 @@ def get_part_data_from_xml(part_xml: Element) -> Optional[SR1PartData]:
     return part_data
 
 
-@Options.init_option
-class SR1ShipRender_Option(Options):
+class _SR1ShipRender_Option(Options):
     # debug option
-    draw_delta_line: bool = True
-    draw_mouse_line: bool = True
+    draw_delta_line: bool = False
+    draw_mouse_line: bool = False
+    draw_mouse_delta_line: bool = False
+
+
+SR1ShipRender_Option = _SR1ShipRender_Option()
 
 
 class SR1ShipRender(BaseScreen):
@@ -76,6 +79,7 @@ class SR1ShipRender(BaseScreen):
         self.rendered = False
         self.scale = scale
         self.focus = True
+        self.need_draw = False
         self.dx = 0
         self.dy = 0
         self.debug_line = Line(main_window.width / 2, main_window.height / 2,
@@ -84,8 +88,11 @@ class SR1ShipRender(BaseScreen):
         self.debug_mouse_line = Line(main_window.width / 2, main_window.height / 2,
                                      main_window.width / 2, main_window.height / 2,
                                      width=3, color=(10, 200, 200, 255))
+        self.debug_mouse_delta_line = Line(main_window.width / 2, main_window.height / 2,
+                                           main_window.width / 2, main_window.height / 2,
+                                           width=2, color=(200, 200, 10, 255))
         self.debug_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
-                                 x=main_window.width / 2, y=main_window.height / 2,)
+                                 x=main_window.width / 2, y=main_window.height / 2)
         self.debug_mouse_label = Label('debug mouse_label NODATA', font_name=Fonts.微软等宽无线,
                                        x=main_window.width / 2, y=main_window.height / 2)
         self.textures: Union[SR1Textures, None] = None
@@ -127,7 +134,7 @@ class SR1ShipRender(BaseScreen):
                 continue  # 如果不是部件，则跳过
             # print(f"tag: {part.tag} attrib: {part.attrib}")
             part_render = True
-            part = get_part_data_from_xml(part_xml)
+            part = get_sr1_part(part_xml)
             if part.id in self.part_data:
                 print(f'hey! warning! id{part.id}')
             self.part_data[part.id] = part
@@ -154,6 +161,7 @@ class SR1ShipRender(BaseScreen):
             if not part_render:  # 如果不渲染(渲染有毛病)
                 self.parts_sprite[part.id].visible = False
             self.parts_sprite[part.id] = cache_sprite
+            self.need_draw = False
         self.rendered = True
 
     def update_parts(self) -> bool:
@@ -169,6 +177,8 @@ class SR1ShipRender(BaseScreen):
             self.parts_sprite[part_id].scale = self.scale * DR_option.gui_scale
 
     def on_draw(self):
+        if self.need_draw:
+            self.render_ship()
         self.part_batch.draw()
         if SR1ShipRender_Option.draw_delta_line:
             self.debug_line.draw()
@@ -176,16 +186,18 @@ class SR1ShipRender(BaseScreen):
         if SR1ShipRender_Option.draw_mouse_line:
             self.debug_mouse_line.draw()
             self.debug_mouse_label.draw()
+        if SR1ShipRender_Option.draw_mouse_delta_line:
+            self.debug_mouse_delta_line.draw()
 
     def on_resize(self, width: int, height: int):
         if not self.rendered:
             return
         self.debug_line.x = width / 2
         self.debug_line.y = height / 2
-        self.debug_line._update_vertices()
         self.debug_mouse_line.x = width / 2
         self.debug_mouse_line.y = height / 2
-        self.debug_mouse_line._update_vertices()
+        self.debug_mouse_delta_line.x = width / 2
+        self.debug_mouse_delta_line.y = height / 2
         self.update_parts()
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
@@ -194,19 +206,32 @@ class SR1ShipRender(BaseScreen):
         mouse_dx = x - (self.window_pointer.width / 2)
         mouse_dy = y - (self.window_pointer.height / 2)
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
-
-        if not (self.scale + scroll_y * 0.1 == 0.0):
-            self.scale += scroll_y * 0.1
-        self.dx -= (scroll_x * 0.1) * (mouse_dx + self.dx)
-        self.dy -= (scroll_y * 0.1) * (mouse_dy + self.dy)
+        if not self.scale * (0.5 ** scroll_y) >= 10:
+            self.scale = self.scale * (0.5 ** scroll_y)
+            self.dx += (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y))
+            self.dy += (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y))
+        else:
+            self.scale = 10
+        self.debug_mouse_delta_line.x2 = (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.width / 2)
+        self.debug_mouse_delta_line.y2 = (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
         self.update_parts()
+        # print(f'{self.scale=} {self.dx=} {self.dy=} {x=} {y=} {scroll_x=} {scroll_y=} {1 - (0.5 ** scroll_y)=}')
 
     def on_command(self, command: CommandText):
         if command.match('render'):
             # self.render_ship()
+            self.need_draw = True
             print('应该渲染飞船的')
+        elif command.match('sr1'):
+            if command.match('delta'):
+                SR1ShipRender_Option.draw_delta_line = not SR1ShipRender_Option.draw_mouse_delta_line
+            elif command.match('mouse'):
+                if command.match('delta'):
+                    SR1ShipRender_Option.draw_mouse_line = not SR1ShipRender_Option.draw_mouse_line
+                else:
+                    SR1ShipRender_Option.draw_mouse_delta_line = not SR1ShipRender_Option.draw_mouse_delta_line
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:
