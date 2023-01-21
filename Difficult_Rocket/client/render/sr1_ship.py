@@ -100,6 +100,9 @@ class SR1ShipRender(BaseScreen):
             self.load_textures()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        self.dx = 0
+        self.dy = 0
+        self.scale = 1.0
         parts = self.xml_root.find('Parts')
         for part_xml in parts:
             if part_xml.tag != 'Part':
@@ -115,7 +118,7 @@ class SR1ShipRender(BaseScreen):
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
             render_x = part.x * render_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
-            render_y = part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
+            render_y =  part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y,
@@ -176,3 +179,4 @@ class SR1ShipRender(BaseScreen):
             if self.load_xml(path):  # 加载成功一个就停下
                 break
         self.render_ship()
+        print(paths)

@@ -58,7 +58,7 @@ class Client:
         self.caption = tools.name_handler(self.config['window']['caption'],
                                           {'version': self.config['runtime']['version']})
         file_drop = True
-        if pyglet.compat_platform == 'darwin':
+        if pyglet.compat_platform == 'darwin' and not DR_option.pyglet_macosx_dev_test:
             file_drop = False
         self.window = ClientWindow(net_mode=self.net_mode,
                                    width=int(self.config['window']['width']),

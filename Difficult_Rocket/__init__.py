@@ -14,6 +14,7 @@ gitee:  @shenjackyuanjie
 import logging
 from typing import List, Dict, Union, Optional
 
+import pyglet
 from Difficult_Rocket.api.types import Options
 
 from libs.MCDR.version import Version
@@ -23,9 +24,10 @@ build_version = Version("1.0.0.0")  # 编译文件版本(与游戏本体无关)
 DR_rust_version = Version("0.0.0.1")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
-long_version: int = 8
+long_version: int = 9
 """
 long_version: 一个用于标记内部协议的整数
+9: 为 DR_option  添加 pyglet_macosx_dev_test
 8: 为 DR_runtime 添加 DR_rust_version
     为 DR_option 添加 DR_rust_available
     以后就有 DR_rust 了
@@ -42,7 +44,7 @@ long_version: 一个用于标记内部协议的整数
 
 class _DR_option(Options):
     """
-    DR 的整体配置存储类
+    DR 的一般配置/状态
     """
     name = 'DR Option'
     # runtime options
@@ -55,14 +57,17 @@ class _DR_option(Options):
     DR_rust_available:         bool = False
 
     # tests
-    playing:           bool = False
-    debugging:         bool = False
-    crash_report_test: bool = True
+    playing:                bool = False
+    debugging:              bool = False
+    crash_report_test:      bool = True
+    pyglet_macosx_dev_test: bool = True
 
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
     def init(self, **kwargs):
+        if not pyglet.compat_platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
+            self.pyglet_macosx_dev_test = False
         try:
             self.DR_rust_available = True
         except ImportError:
@@ -76,7 +81,7 @@ class _DR_option(Options):
 
 class _DR_runtime(Options):
     """
-    DR 的运行时配置
+    DR 的运行时配置/状态
     """
     name = 'DR Runtime'
     # game status
