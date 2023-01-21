@@ -61,9 +61,9 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
 
 class _SR1ShipRender_Option(Options):
     # debug option
-    draw_delta_line: bool = False
-    draw_mouse_line: bool = False
-    draw_mouse_delta_line: bool = False
+    debug_d_pos: bool = False
+    debug_mouse_pos: bool = False
+    debug_mouse_d_pos: bool = False
 
 
 SR1ShipRender_Option = _SR1ShipRender_Option()
@@ -85,26 +85,31 @@ class SR1ShipRender(BaseScreen):
         self.debug_line = Line(main_window.width / 2, main_window.height / 2,
                                main_window.width / 2, main_window.height / 2,
                                width=3, color=(200, 10, 200, 255))
+        self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
         self.debug_mouse_line = Line(main_window.width / 2, main_window.height / 2,
                                      main_window.width / 2, main_window.height / 2,
                                      width=3, color=(10, 200, 200, 255))
+        self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
         self.debug_mouse_delta_line = Line(main_window.width / 2, main_window.height / 2,
                                            main_window.width / 2, main_window.height / 2,
                                            width=2, color=(200, 200, 10, 255))
-        self.debug_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
-                                 x=main_window.width / 2, y=main_window.height / 2)
+        self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
+        self.debug_d_pos_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
+                                       x=main_window.width / 2, y=main_window.height / 2)
+        self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
         self.debug_mouse_label = Label('debug mouse_label NODATA', font_name=Fonts.微软等宽无线,
                                        x=main_window.width / 2, y=main_window.height / 2)
+        self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
         self.textures: Union[SR1Textures, None] = None
         self.xml_doc: ElementTree = parse('configs/dock1.xml')
         self.xml_root: ElementTree.Element = self.xml_doc.getroot()
         self.part_batch = Batch()
         self.part_group = Group()
         self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_option.std_font_size,
-                                 text='SR1 render!', font_name=Fonts.微软等宽无线,
-                                 width=main_window.width - 20, height=20,
-                                 anchor_x='left', anchor_y='top',
-                                 batch=self.part_batch)
+                                       text='SR1 render!', font_name=Fonts.微软等宽无线,
+                                       width=main_window.width - 20, height=20,
+                                       anchor_x='left', anchor_y='top',
+                                       batch=self.part_batch)
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
 
@@ -168,8 +173,8 @@ class SR1ShipRender(BaseScreen):
         if not self.rendered:
             return False
         self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2)
-        self.debug_label.text = f'x: {self.dx} y: {self.dy}'
-        self.debug_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2) + 10, 0
+        self.debug_d_pos_label.text = f'x: {self.dx} y: {self.dy}'
+        self.debug_d_pos_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2) + 10, 0
         for part_id in self.part_data:
             # x y scale
             self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
@@ -180,13 +185,14 @@ class SR1ShipRender(BaseScreen):
         if self.need_draw:
             self.render_ship()
         self.part_batch.draw()
-        if SR1ShipRender_Option.draw_delta_line:
+        self.debug_label.draw()
+        if SR1ShipRender_Option.debug_d_pos:
             self.debug_line.draw()
-            self.debug_label.draw()
-        if SR1ShipRender_Option.draw_mouse_line:
+            self.debug_d_pos_label.draw()
+        if SR1ShipRender_Option.debug_mouse_pos:
             self.debug_mouse_line.draw()
             self.debug_mouse_label.draw()
-        if SR1ShipRender_Option.draw_mouse_delta_line:
+        if SR1ShipRender_Option.debug_mouse_d_pos:
             self.debug_mouse_delta_line.draw()
 
     def on_resize(self, width: int, height: int):
@@ -226,12 +232,17 @@ class SR1ShipRender(BaseScreen):
             print('应该渲染飞船的')
         elif command.match('sr1'):
             if command.match('delta'):
-                SR1ShipRender_Option.draw_delta_line = not SR1ShipRender_Option.draw_mouse_delta_line
+                SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
+                self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
+                self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
             elif command.match('mouse'):
                 if command.match('delta'):
-                    SR1ShipRender_Option.draw_mouse_line = not SR1ShipRender_Option.draw_mouse_line
+                    SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
+                    self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
+                    self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
                 else:
-                    SR1ShipRender_Option.draw_mouse_delta_line = not SR1ShipRender_Option.draw_mouse_delta_line
+                    SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
+                    self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:
