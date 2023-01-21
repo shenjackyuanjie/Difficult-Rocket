@@ -20,7 +20,7 @@ from pyglet.graphics import Batch, Group
 # Difficult Rocket
 from Difficult_Rocket import DR_option
 from Difficult_Rocket.api.types import Fonts
-# from Difficult_Rocket.command.line import CommandText
+from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
 
@@ -158,6 +158,11 @@ class SR1ShipRender(BaseScreen):
         if not (self.scale + scroll_y * 0.1 == 0.0):
             self.scale += scroll_y * 0.1
         self.update_parts()
+
+    def on_command(self, command: CommandText):
+        if command.match('render'):
+            # self.render_ship()
+            print('应该渲染飞船的')
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:

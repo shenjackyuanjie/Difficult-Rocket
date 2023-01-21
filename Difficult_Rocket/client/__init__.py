@@ -57,6 +57,9 @@ class Client:
         self.net_mode = net_mode
         self.caption = tools.name_handler(self.config['window']['caption'],
                                           {'version': self.config['runtime']['version']})
+        file_drop = True
+        if pyglet.compat_platform == 'darwin':
+            file_drop = False
         self.window = ClientWindow(net_mode=self.net_mode,
                                    width=int(self.config['window']['width']),
                                    height=int(self.config['window']['height']),
@@ -64,7 +67,7 @@ class Client:
                                    caption=self.caption,
                                    resizable=tools.format_bool(self.config['window']['resizable']),
                                    visible=tools.format_bool(self.config['window']['visible']),
-                                   file_drops=True)
+                                   file_drops=file_drop)
         self.logger.info(tr.lang('client', 'setup.done'))
         end_time = time.time_ns()
         self.use_time = end_time - start_time
