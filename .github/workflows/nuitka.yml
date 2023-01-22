@@ -49,13 +49,12 @@ jobs:
           python-version: ${{ matrix.python-version }}  # 为了支持 win7 我还是得用 3.8
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
-          cache-dependency-path: '**/requirement*.txt'
+          cache-dependency-path: '**/requirement-dev.txt'
 
       # 安装依赖
       - name: Install env
         run: |
-          pip install -r requirement.txt
-          pip install nuitka ordered-set imageio
+          pip install -r requirement-dev.txt
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info

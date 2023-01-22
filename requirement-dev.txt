@@ -24,6 +24,7 @@ viztracer
 # for compile
 nuitka
 ordered-set
+imageio
 wheel
 setuptools
 setuptools-rust

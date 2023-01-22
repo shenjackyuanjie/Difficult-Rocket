@@ -22,6 +22,7 @@ objprint
 # for compile
 nuitka
 ordered-set
+imageio
 setuptools
 wheel
 setuptools-rust
