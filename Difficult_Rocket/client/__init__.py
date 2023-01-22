@@ -269,20 +269,20 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_command(self, command: line.CommandText):
         self.logger.info(tr.lang('window', 'command.text').format(command))
-        if command.match('stop'):
+        if command.re_match('stop'):
             # self.dispatch_event('on_exit')
             pyglet.app.platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command
-        elif command.match('fps'):
-            if command.match('log'):
+        elif command.re_match('fps'):
+            if command.re_match('log'):
                 self.logger.debug(self.fps_log.fps_list)
-            elif command.match('max'):
+            elif command.re_match('max'):
                 self.logger.info(self.fps_log.max_fps)
                 self.command.push_line(self.fps_log.max_fps, block_line=True)
-            elif command.match('min'):
+            elif command.re_match('min'):
                 self.logger.info(self.fps_log.min_fps)
                 self.command.push_line(self.fps_log.min_fps, block_line=True)
-        elif command.match('default'):
+        elif command.re_match('default'):
             self.set_size(int(self.main_config['window_default']['width']),
                           int(self.main_config['window_default']['height']))
         self.command_tree.parse(command.plain_command)

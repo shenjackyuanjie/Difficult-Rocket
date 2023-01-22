@@ -4,11 +4,13 @@
   - 也就意味着以后的更新日志是中文记录+`copilot`翻译的(当然，也有可能是`Easy Translate`翻译的)
 - Thanks `Github copilot` for translate (lazy yes!)
   - Means the update logs will lodge in Chinese and translated by `copilot`
+- 可惜啊，github copilot 收费了
+
 
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.6.5-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.6.5.0-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
@@ -19,9 +21,51 @@
 
 ### 抱歉，我撒谎了（
 
+0.6 还得来几个版本号
+
 ### Add
 
 - 现在将文件拖拽至屏幕内可以渲染默认船只/渲染拖拽上来的解析成功的第一艘船
+- 可以使用类似 SR1 的方式拖拽界面
+
+### 命令行
+
+- `stop`
+  - 关闭游戏
+- `fps`
+  - `log`
+    - 输出 fps 信息
+  - `min`
+    - 输出 最近 5s 的最小 fps
+  - `max`
+    - 输出 最近 5s 的最大 fps
+- `default`
+  - 将窗口大小恢复成默认
+- `render`
+  - 渲染 默认船只
+- `sr1`
+  - 下面的选项都是 DEBUG 用，不保证以后继续保留
+  - `delta`
+    - 渲染 SR1 渲染的偏移量
+    - `mouse`
+      - 渲染 SR1 渲染的鼠标偏移量
+      - `delta`
+        - 渲染 SR1 渲染的鼠标前进偏移量
+
+### 优化(代码层面)
+
+- 改掉了 `CommandText` 里的离谱代码
+- 优化了 `tools.load_file` 的逻辑（其实是几个版本之前的改动
+- `CommandText.match` -> `CommandText.re_match`
+- 感谢 @caffe 的 pyglet `macosx` 分支
+- 暂未实装
+  - `Translates` 的优化
+    - 以后多语言用起来会更方便
+  - `Tr` 的优化
+    - 跟 `Translates` 配套
+  - `Difficult_Rocket_rs`
+    - DR 的 Rust 优化
+    - 基于 `pyo3`
 
 ## 20221124 V 0.6.4
 

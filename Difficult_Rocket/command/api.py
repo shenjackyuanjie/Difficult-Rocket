@@ -49,17 +49,18 @@ class CommandText:
         else:
             return False
 
-    def match(self, text: str) -> bool:
+    def re_match(self, text: str) -> bool:
         finding = re.match(text, self.text)
         if finding:  # 如果找到了
             try:
                 next_find = self.text[finding.span()[1]]
                 # 这里try因为可能匹配到的是字符串末尾
+                # 20230122 我现在也不知道为啥这么写了
+                # 果然使用正则表达式就是让一个问题变成两个问题
             except IndexError:
-                next_find = ' '
-                # 直接过滤掉
-            if next_find == ' ':
                 self.text = self.text[finding.span()[1] + 1:]
+                return True
+            if next_find == ' ':
                 return True
             # 将匹配到的字符串，和最后一个匹配字符后面的字符删除(相当暴力的操作)
             return False

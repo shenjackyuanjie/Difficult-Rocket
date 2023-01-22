@@ -226,17 +226,17 @@ class SR1ShipRender(BaseScreen):
         # print(f'{self.scale=} {self.dx=} {self.dy=} {x=} {y=} {scroll_x=} {scroll_y=} {1 - (0.5 ** scroll_y)=}')
 
     def on_command(self, command: CommandText):
-        if command.match('render'):
+        if command.re_match('render'):
             # self.render_ship()
             self.need_draw = True
             print('应该渲染飞船的')
-        elif command.match('sr1'):
-            if command.match('delta'):
+        elif command.re_match('sr1'):
+            if command.re_match('delta'):
                 SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                 self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
                 self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
-            elif command.match('mouse'):
-                if command.match('delta'):
+            elif command.re_match('mouse'):
+                if command.re_match('delta'):
                     SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
