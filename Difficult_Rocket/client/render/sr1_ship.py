@@ -28,6 +28,9 @@ from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture, SR1PartD
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
+if DR_option.DR_rust_available:
+    from libs.Difficult_Rocket_rs import better_update_parts
+
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
     if part_xml.tag != 'Part':

@@ -70,12 +70,16 @@ class _DR_option(Options):
         if not sys.platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
-            from libs.Difficult_Rocket_rs.lib import test_call
+            from libs.Difficult_Rocket_rs import test_call
+            test_call(self)
             self.DR_rust_available = True
         except ImportError:
             traceback.print_exc()
             self.DR_rust_available = False
         self.flush_option()
+
+    def draw(self):
+        self.DR_rust_available = True
 
     @property
     def std_font_size(self) -> int:

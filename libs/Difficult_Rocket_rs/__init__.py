@@ -4,6 +4,4 @@
 #  All rights reserved
 #  -------------------------------
 
-def sum_as_string(a: int, b: int) -> int: ...
-
-def for_x_in_range(a: int, b: int) -> None: ...
+from .lib import *
