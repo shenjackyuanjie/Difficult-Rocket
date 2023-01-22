@@ -1,5 +1,7 @@
 # this requirement is for
 #   DR basic running from source
+#   DR build (by nuitka)
+#   DR contributing
 
 # for phy simulation
 pymunk
@@ -15,5 +17,13 @@ rtoml
 tomlkit
 defusedxml
 
-# for report error
+# for debug
 objprint
+viztracer
+
+# for compile
+nuitka
+ordered-set
+wheel
+setuptools
+setuptools-rust

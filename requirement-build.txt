@@ -1,5 +1,6 @@
 # this requirement is for
 #   DR basic running from source
+#   DR build (by nuitka)
 
 # for phy simulation
 pymunk
@@ -17,3 +18,10 @@ defusedxml
 
 # for report error
 objprint
+
+# for compile
+nuitka
+ordered-set
+setuptools
+wheel
+setuptools-rust
