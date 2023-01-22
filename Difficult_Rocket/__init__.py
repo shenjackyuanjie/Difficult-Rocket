@@ -13,6 +13,7 @@ gitee:  @shenjackyuanjie
 # import ctypes
 import sys
 import logging
+import traceback
 from typing import List, Dict, Union, Optional
 
 from Difficult_Rocket.api.types import Options
@@ -21,7 +22,7 @@ from libs.MCDR.version import Version
 
 game_version = Version("0.6.5.0")  # 游戏版本
 build_version = Version("1.0.1.0")  # 编译文件版本(与游戏本体无关)
-DR_rust_version = Version("0.0.0.1")  # DR 的 Rust 编写部分的版本
+DR_rust_version = Version("0.0.1.0")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
 long_version: int = 9
@@ -69,8 +70,10 @@ class _DR_option(Options):
         if not sys.platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
+            from libs.Difficult_Rocket_rs.lib import test_call
             self.DR_rust_available = True
         except ImportError:
+            traceback.print_exc()
             self.DR_rust_available = False
         self.flush_option()
 

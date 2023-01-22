@@ -22,6 +22,9 @@ def make_zip():
 
 
 def remove_dev_usage():
+    un_use_fonts = [
+        './'
+    ]
     ...
 
 
