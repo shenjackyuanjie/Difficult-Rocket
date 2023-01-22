@@ -23,6 +23,7 @@ concurrency:
 jobs:
   # Single deploy job since we're just deploying
   deploy:
+    if: ${{!startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[page skip]') == false }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
