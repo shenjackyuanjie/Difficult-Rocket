@@ -114,8 +114,8 @@ class Options:
 
     def format(self, text: str) -> str:
         cache_option = self.flush_option()
-        for option in cache_option:
-            text.replace(f'\{{option}\}')
+        for option, value in cache_option.items():
+            text.replace(f'{{{option}}}', value)
 
     def flush_option(self) -> Dict[str, Any]:
         """
