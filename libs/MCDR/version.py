@@ -197,3 +197,14 @@ class VersionRequirement:
 
 class VersionParsingError(ValueError):
     pass
+
+
+if __name__ == '__main__':
+    from objprint import op
+    test_list = ['1.1.1',
+                 '1.0',
+                 '1.11.1.11.1']
+
+    for a_test in test_list:
+        version_a = Version(a_test)
+        op(version_a)

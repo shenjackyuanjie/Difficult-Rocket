@@ -9,6 +9,7 @@
 - [discord](https://discord.gg/kWzw2JrG6M)
 - [kook](https://kook.top/sRPjFG)
 
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
 [![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.2.1-blue.svg)](https://pyglet.org)

@@ -25,12 +25,13 @@ from decimal import Decimal
 import rtoml
 import pyglet
 # from pyglet import gl
-from pyglet.gl import glClearColor
+# from pyglet.gl import glClearColor
 # from pyglet.libs.win32 import _user32
 from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
+from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket import DR_runtime, DR_option
@@ -41,6 +42,21 @@ from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
 from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
+
+
+class ClientOption(Options):
+    fps: int = 60
+    width: int = 1024
+    height: int = 768
+    file_drop: bool = True
+    fullscreen: bool = False
+    resizeable: bool = True
+    visible: bool = True
+    gui_scale: float = 1.0
+    caption: str = "Difficult Rocket {version}"
+
+    def load_file(self) -> None:
+        ...
 
 
 class Client:

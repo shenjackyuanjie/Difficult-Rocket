@@ -11,8 +11,9 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+import traceback
 from dataclasses import dataclass
-from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional
+from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING
 
 # from Difficult Rocket
 
@@ -67,10 +68,23 @@ class Options:
             setattr(self, option, value)
         if hasattr(self, 'init'):
             self.init(**kwargs)
+        if hasattr(self, 'load_file'):
+            try:
+                self.load_file()
+            except:
+                traceback.print_exc()
         self.flush_option()
 
-    def init(self, **kwargs) -> None:
-        ...
+    if TYPE_CHECKING:
+        def init(self, **kwargs) -> None:
+            """ 如果子类定义了这个函数，则会在 __init__ 之后调用这个函数 """
+
+        def load_file(self) -> bool:
+            """
+            如果子类定义了这个函数，则会在 __init__ 和 init 之后再调用这个函数
+
+            请注意，这个函数请尽量使用 try 包裹住可能出现错误的部分
+            否则会在控制台输出你的报错"""
 
     def option(self) -> Dict[str, Any]:
         """
@@ -97,6 +111,11 @@ class Options:
                 except AttributeError:
                     raise OptionNotFound(f'Option {option} is not found in {self.name}') from None
         return values
+
+    def format(self, text: str) -> str:
+        cache_option = self.flush_option()
+        for option in cache_option:
+            text.replace(f'\{{option}\}')
 
     def flush_option(self) -> Dict[str, Any]:
         """

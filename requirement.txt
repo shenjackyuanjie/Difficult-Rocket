@@ -2,18 +2,18 @@
 #   DR basic running from source
 
 # for phy simulation
-pymunk
+pymunk >= 6.4.0
 
 # for images
-pillow
+pillow >= 9.4.0
 
 # for sys info
-psutil
+psutil >= 5.9.4
 
 # for files
-rtoml
-tomlkit
-defusedxml
+rtoml >= 0.9.0
+tomlkit >= 0.11.6
+defusedxml >= 0.7.1
 
 # for report error
-objprint
+objprint >= 0.2.2

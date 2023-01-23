@@ -4,27 +4,27 @@
 #   DR contributing
 
 # for phy simulation
-pymunk
+pymunk >= 6.4.0
 
 # for images
-pillow
+pillow >= 9.4.0
 
 # for sys info
-psutil
+psutil >= 5.9.4
 
 # for files
-rtoml
-tomlkit
-defusedxml
+rtoml >= 0.9.0
+tomlkit >= 0.11.6
+defusedxml >= 0.7.1
 
 # for debug
-objprint
-viztracer
+objprint >= 0.2.2
+viztracer >= 0.15.6
 
 # for compile
-nuitka
-ordered-set
-imageio
-wheel
-setuptools
-setuptools-rust
+nuitka >= 1.3.8
+ordered-set >= 4.1.0
+imageio >= 2.25.0
+wheel >= 0.38.4
+setuptools >= 66.1.1
+setuptools-rust >= 1.5.2

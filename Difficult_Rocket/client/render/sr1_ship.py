@@ -260,3 +260,9 @@ class SR1ShipRender(BaseScreen):
                 break
         self.render_ship()
         print(paths)
+
+
+if __name__ == '__main__':
+    from objprint import op
+
+    op(SR1ShipRender_Option)
