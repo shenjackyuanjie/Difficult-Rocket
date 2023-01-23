@@ -16,7 +16,6 @@ pub mod types {
     use std::collections::HashMap;
     use pyo3::intern;
     use pyo3::prelude::*;
-    use pyo3::types::iter::PyDictIterator;
     use pyo3::types::PyDict;
 
     pub struct SR1PartData {
@@ -51,7 +50,8 @@ pub mod types {
     impl PartDatas {
         #[new]
         pub fn py_new(py_part_data: &PyDict) -> PyResult<Self>{
-            let mut
+            let mut datas: HashMap<usize, SR1PartData> = HashMap::with_capacity(py_part_data.len());
+            return Ok(PartDatas{part_structs: datas})
         }
     }
 
@@ -85,8 +85,9 @@ pub mod types {
 
     pub fn point_dict_from_part_datas(input: &PyDict) -> Result<HashMap<usize, Point>, PyErr> {
         let mut result: HashMap<usize, Point> = HashMap::with_capacity(input.len());
-        for key in &input.iter() {
-            key[]
+        for key in input.iter() {
+            println!("aaa");
+            // key[]
         }
         return Ok(result);
     }
