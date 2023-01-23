@@ -3,11 +3,8 @@
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-import os
 import sys
 import shutil
-import warnings
-import traceback
 from setuptools import setup
 from setuptools_rust import Binding, RustExtension
 
@@ -25,7 +22,7 @@ setup(
     rust_extensions=[RustExtension(target="Difficult_Rocket_rs.Difficult_Rocket_rs",
                                    # rust_version='2021',
                                    binding=Binding.PyO3)],
-    zip_safe=False
+    zip_safe=False,
 )
 
 lib_path = '../lib'
@@ -36,34 +33,3 @@ if 'clean' in sys.argv:
     shutil.rmtree(build_path, ignore_errors=True)
     shutil.rmtree(f'{package_path}.egg-info', ignore_errors=True)
     sys.exit(0)
-
-if not os.path.exists(lib_path):
-    os.mkdir(lib_path)
-
-builds = os.listdir(build_path)
-print(os.path.abspath('.'))
-
-try:
-    shutil.copy('src/__init__.py', os.path.join(lib_path, '__init__.py'))
-except shutil.SameFileError:
-    traceback.print_exc()
-
-for build_dir in builds:
-    if not os.path.exists(os.path.join(build_path, build_dir, package_path)):
-        warnings.warn(f'package not found at {build_path}/{build_dir}')
-        continue
-    for file in os.listdir(os.path.join(build_path, build_dir, package_path)):
-        # file_name = os.path.join(lib_path, file.replace(package_path, f'{package_path}.{DR_runtime.DR_Rust_version}'))
-        file_name = os.path.join(lib_path, file)
-        shutil.rmtree(file_name, ignore_errors=True)
-        try:
-            shutil.copy(os.path.join(build_path, build_dir, package_path, file), file_name)
-        except (shutil.SameFileError, PermissionError):
-            # print(os.path.exists(os.path))
-            print(os.listdir(lib_path))
-            traceback.print_exc()
-            continue
-            os.remove(file_name)
-            shutil.copy(os.path.join(build_path, build_dir, package_path, file), file_name)
-    # shutil.rmtree(os.path.join(build_path, build_dir))
-    # print(os.path.join(build_path, build_dir))

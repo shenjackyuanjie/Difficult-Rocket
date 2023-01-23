@@ -55,7 +55,7 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
     #       f'angle: {part_angle} angle_v: {part_angle_v} editor_angle: {part_editor_angle} '
     #       f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
     #       f'textures: {SR1PartTexture.get_textures_from_type(part_type)}')
-    part_data = SR1PartData(x=part_x, y=part_y, id=part_id, type=part_type,
+    part_data = SR1PartData(x=part_x, y=part_y, id=part_id, type_=part_type,
                             active=part_activate, angle=part_angle, angle_v=part_angle_v,
                             editor_angle=part_editor_angle, flip_x=part_flip_x,
                             flip_y=part_flip_y, explode=part_explode, textures=part_textures)
@@ -173,6 +173,8 @@ class SR1ShipRender(BaseScreen):
         self.rendered = True
 
     def update_parts(self) -> bool:
+        if DR_option.DR_rust_available:
+            return better_update_parts(self, SR1ShipRender_Option, self.window_pointer)
         if not self.rendered:
             return False
         self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2)

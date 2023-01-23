@@ -21,7 +21,7 @@ class SR1PartData:
     x: float
     y: float
     id: int
-    type: str
+    type_: str
     active: bool
     angle: float
     angle_v: float
@@ -29,7 +29,7 @@ class SR1PartData:
     flip_x: bool
     flip_y: bool
     explode: bool
-    textures: Optional[str]
+    textures: Optional[str] = None
     connections: Optional[List[int]] = None
 
 

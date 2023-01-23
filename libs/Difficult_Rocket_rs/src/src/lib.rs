@@ -1,4 +1,14 @@
-use pyo3::intern;
+/*
+ * -------------------------------
+ * Difficult Rocket
+ * Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
+ * All rights reserved
+ * -------------------------------
+ */
+
+mod sr1_render;
+mod types;
+
 use pyo3::prelude::*;
 
 /// Formats the sum of two numbers as string.
@@ -13,20 +23,6 @@ fn test_call(py_obj: &PyAny) -> PyResult<bool> {
     Ok(true)
 }
 
-#[pyfunction]
-#[allow(non_snake_case)]
-fn better_update_parts(render: &PyAny, option: &PyAny) -> PyResult<bool> {
-    if !render.getattr(intern!(render.py(), "rendered")).unwrap().is_true().unwrap() {
-        // Ok(false);
-        return Ok(false);
-        // println!("aaaaa");
-    }
-    if option.getattr("debug_d_pos").unwrap().is_true().unwrap() {
-        let line = render.getattr("debug_line").unwrap();
-        // line.
-    }
-    Ok(true)
-}
 
 #[pyfunction]
 fn for_x_in_range(a: usize, b: usize) -> PyResult<()> {
@@ -46,6 +42,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(for_x_in_range, m)?)?;
     m.add_function(wrap_pyfunction!(test_call, m)?)?;
-    m.add_function(wrap_pyfunction!(better_update_parts, m)?)?;
+    m.add_function(wrap_pyfunction!(sr1_render::better_update_parts, m)?)?;
+    m.add_class::<sr1_render::types::PartDatas>()?;
     Ok(())
 }
