@@ -13,7 +13,7 @@ if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
 $arg = @()
 # 输出配置
 $arg += @("--standalone")
-$arg += @("--output-dir=build/nuitka1")
+$arg += @("--output-dir=build/nuitka-win")
 $arg += @("--company-name=tool-shenjack-workshop")
 $arg += @("--product-name=Difficult-Rocket")
 $arg += @("--product-version=$env:DR_version")
@@ -34,7 +34,6 @@ $arg += @("--include-data-dir=./libs/Difficult_Rocket_rs=./libs/Difficult_Rocket
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
 # 编译配置
-$arg += @("--jobs=24")
 $arg += @("--show-memory")
 $arg += @("--show-progress")
 $arg += @("--assume-yes-for-download")

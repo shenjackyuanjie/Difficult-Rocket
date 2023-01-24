@@ -74,7 +74,7 @@ class _DR_option(Options):
             test_call(self)
             self.DR_rust_available = True
         except ImportError:
-            if __name__ == '__main__':
+            if not __name__ == '__main__':
                 traceback.print_exc()
             self.DR_rust_available = False
         self.flush_option()
