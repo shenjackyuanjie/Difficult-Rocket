@@ -74,7 +74,7 @@ jobs:
           python after_build.py
           python setup.py clean
           cd ..
-          rm src/
+          Remove-Item ./src/
           cd ..
           cd ..
 
