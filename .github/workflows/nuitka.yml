@@ -55,6 +55,12 @@ jobs:
       - name: Install env
         run: |
           pip install -r requirement-dev.txt
+      
+      - name: Install pyo3
+        uses: baptiste0928/cargo-install@v1
+        with:
+          crate: pyo3
+          locked: 
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
@@ -103,6 +109,7 @@ jobs:
           # 数据配置
           $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
           $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
+          $arg += @("--include-data-dir=./libs/fonts=./libs/Difficult_Rocket_rs")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
@@ -135,6 +142,7 @@ jobs:
           # 数据配置
           $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
           $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
+          $arg += @("--include-data-dir=./libs/fonts=./libs/Difficult_Rocket_rs")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
