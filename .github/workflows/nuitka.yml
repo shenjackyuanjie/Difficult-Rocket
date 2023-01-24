@@ -60,7 +60,6 @@ jobs:
         uses: baptiste0928/cargo-install@v1
         with:
           crate: pyo3
-          locked: 
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
