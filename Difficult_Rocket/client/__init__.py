@@ -307,7 +307,7 @@ class ClientWindow(Window):
         elif command.re_match('default'):
             self.set_size(int(self.main_config['window_default']['width']),
                           int(self.main_config['window_default']['height']))
-        self.command_tree.parse(command.plain_command)
+        # self.command_tree.parse(command.plain_command)
 
     @_call_screen_after
     def on_message(self, message: line.CommandLine.text):

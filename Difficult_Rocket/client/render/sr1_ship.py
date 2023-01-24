@@ -64,9 +64,9 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
 
 class _SR1ShipRender_Option(Options):
     # debug option
-    debug_d_pos: bool = False
-    debug_mouse_pos: bool = False
-    debug_mouse_d_pos: bool = False
+    debug_d_pos: bool = True
+    debug_mouse_pos: bool = True
+    debug_mouse_d_pos: bool = True
 
 
 SR1ShipRender_Option = _SR1ShipRender_Option()
@@ -181,17 +181,17 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
+        self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (
+                    self.window_pointer.height / 2)
+        self.debug_d_pos_label.text = f'x: {self.dx} y: {self.dy}'
+        self.debug_d_pos_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (
+                    self.window_pointer.height / 2) + 10, 0
         if DR_option.use_DR_rust:
             # print(f'{self.dx=} {self.dy=} {self.scale=}')
             # from objprint import op
             # op(random.choices(self.parts_sprite), indent=1)
             return better_update_parts(self, SR1ShipRender_Option, self.window_pointer,
                                        self.rust_parts, DR_option.gui_scale, 60)
-        self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (
-                    self.window_pointer.height / 2)
-        self.debug_d_pos_label.text = f'x: {self.dx} y: {self.dy}'
-        self.debug_d_pos_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (
-                    self.window_pointer.height / 2) + 10, 0
         for part_id in self.part_data:
             # x y scale
             self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
@@ -247,19 +247,23 @@ class SR1ShipRender(BaseScreen):
             # self.render_ship()
             self.need_draw = True
             print('应该渲染飞船的')
-        elif command.re_match('sr1'):
+        elif command.re_match('sr'):
+            print('sr ?')
             if command.re_match('delta'):
                 SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                 self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
                 self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
+                # print('sr1 delta')
             elif command.re_match('mouse'):
                 if command.re_match('delta'):
                     SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
+                    # print('sr1 mouse delta')
                 else:
                     SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                     self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
+                    # print('sr1 mouse')
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:

@@ -88,7 +88,6 @@ pub mod types {
         for key in input.iter() {
             result.insert(key.0.extract()?, part_data_to_SR1PartData(key.1)?);
         }
-        println!("it calls me success");
         return Ok(result)
     }
 
@@ -110,7 +109,6 @@ pub mod types {
     }
 
 }
-
 
 
 
@@ -137,15 +135,15 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
         // let index = keys.0.to_string();
         let sprite = part_sprites.get_item(keys.0)?;
         let new_x: f64 = keys.1.x * global_scale * render_scale as f64 * sr1_xml_scale as f64 + x_center as f64 + dx;
-        let new_y: f64 = keys.1.y * global_scale * render_scale as f64 * sr1_xml_scale as f64 + x_center as f64 + dy;
+        let new_y: f64 = keys.1.y * global_scale * render_scale as f64 * sr1_xml_scale as f64 + y_center as f64 + dy;
         let new_scale: f32 = render_scale * global_scale as f32;
         sprite.setattr(intern!(sprite.py(), "x"), new_x)?;
         sprite.setattr(intern!(sprite.py(), "y"), new_y)?;
         sprite.setattr(intern!(sprite.py(), "scale"), new_scale)?;
-        part_sprites.set_item(keys.0, sprite)?;
+        // part_sprites.set_item(keys.0, sprite)?;
         // println!("{}", keys.0);
     }
-    render.setattr(intern!(render.py(), "parts_sprite"), part_sprites)?;
-    println!("dx: {} dy: {} scale: {}", dx, dy, render_scale);
+    // render.setattr(intern!(render.py(), "parts_sprite"), part_sprites)?;
+    // println!("dx: {} dy: {} scale: {}", dx, dy, render_scale);
     Ok(true)
 }

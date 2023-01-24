@@ -23,7 +23,7 @@
 
 ### Add
 
-- `libs.Difficult_Rocket_rs` (`DR_rs`)
+- `libs.Difficult_Rocket_rs` (`DR_rs`) `0.1.0.0`
   - `get_version_str`
     - 返回 `DR_rs` 的版本号 可以用于检查我有没有忘记跑 `after_build.py`
     - 别问为啥不是返回一个 `Version` 对象 问就是懒得转换
