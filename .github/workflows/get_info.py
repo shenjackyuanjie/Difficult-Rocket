@@ -33,7 +33,6 @@ elif os.path.abspath(os.curdir) in sys.path and '-env' in sys.argv:
         print(f'$env:Build_version = "{DR_runtime.Build_version}"', file=env_file)
 
 elif os.path.abspath(os.curdir) in sys.path and '-github' in sys.argv:
-
     print(f'DR_version={DR_runtime.DR_version}')
     print(f'DR_language={DR_runtime.language}')
     print(f'DR_long_version={DR_runtime.DR_long_version}')
