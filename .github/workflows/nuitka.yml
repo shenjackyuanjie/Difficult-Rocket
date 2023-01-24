@@ -55,11 +55,6 @@ jobs:
       - name: Install env
         run: |
           pip install -r requirement-dev.txt
-      
-      - name: Install pyo3
-        uses: baptiste0928/cargo-install@v1
-        with:
-          crate: pyo3
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
