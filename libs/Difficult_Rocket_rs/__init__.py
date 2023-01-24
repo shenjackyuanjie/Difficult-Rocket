@@ -26,6 +26,8 @@ if TYPE_CHECKING:
     def better_update_parts(render: SR1ShipRender,
                             option: SR1ShipRender_Option,
                             window: BaseScreen,
-                            parts: PartDatas) -> bool: ...
+                            parts: PartDatas,
+                            global_scale: float,
+                            sr1_xml_scale: int) -> bool: ...
 
 

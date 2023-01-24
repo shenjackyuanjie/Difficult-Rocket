@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-import math
+import random
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional
@@ -28,7 +28,7 @@ from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture, SR1PartD
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
-if DR_option.DR_rust_available:
+if DR_option.use_DR_rust:
     from libs.Difficult_Rocket_rs import better_update_parts, PartDatas
 
 
@@ -115,7 +115,7 @@ class SR1ShipRender(BaseScreen):
                                  batch=self.part_batch)
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
-        if DR_option.DR_rust_available:
+        if DR_option.use_DR_rust:
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -172,7 +172,7 @@ class SR1ShipRender(BaseScreen):
                 self.parts_sprite[part.id].visible = False
             self.parts_sprite[part.id] = cache_sprite
             self.need_draw = False
-        if DR_option.DR_rust_available:
+        if DR_option.use_DR_rust:
             print(type(self.part_data))
             self.rust_parts = PartDatas(self.part_data)
             # print(self.rust_parts.get_rust_pointer())
@@ -181,8 +181,12 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
-        if DR_option.DR_rust_available:
-            return better_update_parts(self, SR1ShipRender_Option, self.window_pointer, self.rust_parts)
+        if DR_option.use_DR_rust:
+            # print(f'{self.dx=} {self.dy=} {self.scale=}')
+            # from objprint import op
+            # op(random.choices(self.parts_sprite), indent=1)
+            return better_update_parts(self, SR1ShipRender_Option, self.window_pointer,
+                                       self.rust_parts, DR_option.gui_scale, 60)
         self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (
                     self.window_pointer.height / 2)
         self.debug_d_pos_label.text = f'x: {self.dx} y: {self.dy}'

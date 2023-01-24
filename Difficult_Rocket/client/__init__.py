@@ -177,6 +177,7 @@ class ClientWindow(Window):
         self.input_box = InputBox(x=50, y=30, width=300,
                                   batch=self.label_batch, text='')  # 实例化
         self.input_box.push_handlers(self)
+        self.input_box.set_handler('on_commit', self.on_input)
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
@@ -281,6 +282,11 @@ class ClientWindow(Window):
     """
     command line event
     """
+
+    def on_input(self, message: str) -> None:
+        command_text = line.CommandText(message)
+        self.on_command(command_text)
+        self.input_box.value = ''
 
     @_call_screen_after
     def on_command(self, command: line.CommandText):

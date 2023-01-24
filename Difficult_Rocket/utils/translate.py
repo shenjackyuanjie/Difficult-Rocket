@@ -78,7 +78,7 @@ class Translates:
     def _raise_no_value(self, e: Exception, item: key_type):
         if self.config.raise_error:
             raise TranslateKeyNotFound(self.value, [x[1] for x in self.get_list]) from None
-        elif DR_option.report_translate_no_found:
+        elif DR_option.report_translate_not_found:
             frame = inspect.currentframe()
             if frame is not None:
                 frame = frame.f_back

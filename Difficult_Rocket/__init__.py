@@ -23,12 +23,14 @@ from libs.MCDR.version import Version
 
 game_version = Version("0.6.5.0")  # 游戏版本
 build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
-DR_rust_version = Version("0.0.5.2")  # DR 的 Rust 编写部分的版本
+DR_rust_version = Version("0.0.6.4")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
-long_version: int = 10
+long_version: int = 11
 """
 long_version: 一个用于标记内部协议的整数
+11: 为 DR_option  添加 use_DR_rust
+    修复了一些拼写错误
 10: 为 DR_runtime 添加 DR_Rust_get_version
 9 : 为 DR_option  添加 pyglet_macosx_dev_test
 8 : 为 DR_runtime 添加 DR_rust_version
@@ -51,13 +53,14 @@ class _DR_option(Options):
     """
     name = 'DR Option'
     # runtime options
-    InputBox_use_TextEntry:    bool = True
-    record_threads:            bool = True
-    use_cProfile:              bool = False
-    use_local_logging:         bool = False
-    report_translate_no_found: bool = True
-    use_muitprocess:           bool = False
-    DR_rust_available:         bool = False
+    InputBox_use_TextEntry:     bool = True
+    record_threads:             bool = True
+    report_translate_not_found: bool = True
+    use_multiprocess:           bool = False
+    DR_rust_available:          bool = False
+    use_DR_rust:                bool = True
+    use_cProfile:               bool = False
+    use_local_logging:          bool = False
 
     # tests
     playing:                bool = False
@@ -79,6 +82,7 @@ class _DR_option(Options):
             if not __name__ == '__main__':
                 traceback.print_exc()
             self.DR_rust_available = False
+        self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
         self.flush_option()
 
     def draw(self):
