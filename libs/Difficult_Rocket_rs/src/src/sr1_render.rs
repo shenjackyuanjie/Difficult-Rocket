@@ -10,14 +10,13 @@ use std::collections::HashMap;
 use pyo3::intern;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
-use crate::sr1_render::types::Point;
 
 #[allow(dead_code)]
 pub mod types {
     use std::collections::HashMap;
     use pyo3::intern;
     use pyo3::prelude::*;
-    use pyo3::types::PyDict;
+    use pyo3::types::{PyDict};
 
     pub struct SR1PartData {
         pub x: f64,
@@ -32,7 +31,7 @@ pub mod types {
         pub flip_y: bool,
         pub explode: bool,
         pub textures: String,
-        pub connections: Vec<usize>
+        // pub connections: Vec<usize>
     }
 
     pub struct Point {
@@ -52,6 +51,7 @@ pub mod types {
         #[new]
         pub fn py_new(py_part_data: &PyDict) -> PyResult<Self> {
             let datas: HashMap<usize, SR1PartData> = part_data_tp_SR1PartDatas(py_part_data)?;
+            // let datas: HashMap<usize, SR1PartData> = HashMap::new();
             return Ok(PartDatas { part_structs: datas })
         }
     }
@@ -77,7 +77,7 @@ pub mod types {
             flip_y: input.getattr(intern!(input.py(), "flip_y"))?.extract()?,
             explode: input.getattr(intern!(input.py(), "explode"))?.extract()?,
             textures: input.getattr(intern!(input.py(), "textures"))?.extract()?,
-            connections: input.getattr(intern!(input.py(), "connections"))?.extract()?,
+            // connections: input.getattr(intern!(input.py(), "connections"))?.extract()?,
         })
     }
 
@@ -87,6 +87,7 @@ pub mod types {
         for key in input.iter() {
             result.insert(key.0.extract()?, part_data_to_SR1PartData(key.1)?);
         }
+        println!("it calls me success");
         return Ok(result)
     }
 
@@ -114,7 +115,7 @@ pub mod types {
 
 #[pyfunction]
 #[allow(unused_variables)]
-pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny) -> PyResult<bool> {
+pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny, parts: &types::PartDatas) -> PyResult<bool> {
     if !render.getattr(intern!(render.py(), "rendered"))?.is_true()? {
         return Ok(false);
     }
@@ -125,7 +126,7 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny) -> Py
     let x_center: f32 = x_center / 2.0;
     let y_center: f32 = y_center / 2.0;
     let part_datas: &PyDict = render.getattr(intern!(render.py(), "part_data"))?.extract()?;
-    let parts: HashMap<usize, Point> = types::part_datas_to_points(part_datas)?;
+    let parts: HashMap<usize, types::Point> = types::part_datas_to_points(part_datas)?;
     if option.getattr("debug_d_pos")?.is_true()? {
         let line = render.getattr(intern!(render.py(), "debug_line"))?;
     }

@@ -17,6 +17,22 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202301 V 0.7.0
+
+### 啊哈！ 现在真就是 0.7 了
+
+### Add
+
+- `libs.Difficult_Rocket_rs` (`DR_rs`)
+  - `get_version_str`
+    - 返回 `DR_rs` 的版本号 可以用于检查我有没有忘记跑 `after_build.py`
+    - 别问为啥不是返回一个 `Version` 对象 问就是懒得转换
+  - `better_update_pats`
+    - 用于优化 `SR1ShipRender.update_parts` 的性能
+      - ( Python 原生的 for 循环真慢 )
+  - `PartDatas`
+    - 用于在 `PyObj` 里  暗 渡 陈 仓  装 `HashMap<uszie, SR1PartData>`
+
 ## 20230120 V 0.6.5.0
 
 ### 抱歉，我撒谎了（

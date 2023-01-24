@@ -13,6 +13,7 @@ gitee:  @shenjackyuanjie
 # import ctypes
 import sys
 import logging
+import warnings
 import traceback
 from typing import List, Dict, Union, Optional
 
@@ -21,25 +22,26 @@ from Difficult_Rocket.api.types import Options
 from libs.MCDR.version import Version
 
 game_version = Version("0.6.5.0")  # 游戏版本
-build_version = Version("1.0.1.0")  # 编译文件版本(与游戏本体无关)
-DR_rust_version = Version("0.0.1.0")  # DR 的 Rust 编写部分的版本
+build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
+DR_rust_version = Version("0.0.5.0")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
-long_version: int = 9
+long_version: int = 10
 """
 long_version: 一个用于标记内部协议的整数
-9: 为 DR_option  添加 pyglet_macosx_dev_test
-8: 为 DR_runtime 添加 DR_rust_version
-    为 DR_option 添加 DR_rust_available
+10: 为 DR_runtime 添加 DR_Rust_get_version
+9 : 为 DR_option  添加 pyglet_macosx_dev_test
+8 : 为 DR_runtime 添加 DR_rust_version
+    为 DR_option  添加 DR_rust_available
     以后就有 DR_rust 了
-7: 为 DR_option 添加 std_font_size
-6: 事实证明, 不如直接用int
-5: 添加 build_version 信息,用于标记编译文件版本,
-   游戏版本改为四位数，终于有一个可以让我随便刷的版本号位数了
-4: 把 translate 的字体常量位置改了一下,顺便调换顺序
-3: 就是试试改一下，正好 compiler 要用
-2: 哦，对 longlong 好耶！
-1: 我可算想起来还有这回事了 v0.6.4
+7 : 为 DR_option 添加 std_font_size
+6 : 事实证明, 不如直接用int
+5 : 添加 build_version 信息,用于标记编译文件版本,
+    游戏版本改为四位数，终于有一个可以让我随便刷的版本号位数了
+4 : 把 translate 的字体常量位置改了一下,顺便调换顺序
+3 : 就是试试改一下，正好 compiler 要用
+2 : 哦，对 longlong 好耶！
+1 : 我可算想起来还有这回事了 v0.6.4
 """
 
 
@@ -70,9 +72,9 @@ class _DR_option(Options):
         if not sys.platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
-            from libs.Difficult_Rocket_rs import test_call
+            from libs.Difficult_Rocket_rs import test_call, get_version_str
             test_call(self)
-            self.DR_rust_available = True
+            print(f'DR_rust available: {get_version_str()}')
         except ImportError:
             if not __name__ == '__main__':
                 traceback.print_exc()
@@ -96,6 +98,7 @@ class _DR_runtime(Options):
     DR_version: Version = game_version
     Build_version: Version = build_version
     DR_Rust_version: Version = DR_rust_version
+    DR_Rust_get_version: Optional[Version] = None
     DR_long_version: int = long_version
 
     # run status
@@ -110,6 +113,17 @@ class _DR_runtime(Options):
     # game options
     _language = 'zh-CN'
     default_language: str = 'zh-CN'
+
+    def init(self, **kwargs) -> None:
+        try:
+            from libs.Difficult_Rocket_rs import get_version_str
+            self.DR_Rust_get_version = Version(get_version_str())
+            if self.DR_Rust_get_version != self.DR_Rust_version:
+                relationship = 'larger' if self.DR_Rust_version > self.DR_Rust_get_version else 'smaller'
+                warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
+                              f'Builtin version {relationship} than true version')
+        except ImportError:
+            pass
 
     def __init__(self, **kwargs):
         self.__options = {'language': self.language}
@@ -134,11 +148,6 @@ _DR_runtime.add_option('language', _DR_runtime.language)
 
 DR_option = _DR_option()
 DR_runtime = _DR_runtime()
-
-if __name__ == '__main__':
-    print(DR_option.InputBox_use_TextEntry)
-    print(sys.platform)
-    ...
 
 if DR_option.playing:
     from Difficult_Rocket.utils import new_thread

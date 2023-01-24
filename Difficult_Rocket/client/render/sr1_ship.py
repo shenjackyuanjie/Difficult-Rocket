@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_option.DR_rust_available:
-    from libs.Difficult_Rocket_rs import better_update_parts
+    from libs.Difficult_Rocket_rs import better_update_parts, PartDatas
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -109,12 +109,14 @@ class SR1ShipRender(BaseScreen):
         self.part_batch = Batch()
         self.part_group = Group()
         self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_option.std_font_size,
-                                       text='SR1 render!', font_name=Fonts.微软等宽无线,
-                                       width=main_window.width - 20, height=20,
-                                       anchor_x='left', anchor_y='top',
-                                       batch=self.part_batch)
+                                 text='SR1 render!', font_name=Fonts.微软等宽无线,
+                                 width=main_window.width - 20, height=20,
+                                 anchor_x='left', anchor_y='top',
+                                 batch=self.part_batch)
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        if DR_option.DR_rust_available:
+            self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
         try:
@@ -170,20 +172,27 @@ class SR1ShipRender(BaseScreen):
                 self.parts_sprite[part.id].visible = False
             self.parts_sprite[part.id] = cache_sprite
             self.need_draw = False
+        if DR_option.DR_rust_available:
+            print(type(self.part_data))
+            self.rust_parts = PartDatas(self.part_data)
         self.rendered = True
 
     def update_parts(self) -> bool:
         if DR_option.DR_rust_available:
-            return better_update_parts(self, SR1ShipRender_Option, self.window_pointer)
+            return better_update_parts(self, SR1ShipRender_Option, self.window_pointer, self.rust_parts)
         if not self.rendered:
             return False
-        self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2)
+        self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (
+                    self.window_pointer.height / 2)
         self.debug_d_pos_label.text = f'x: {self.dx} y: {self.dy}'
-        self.debug_d_pos_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (self.window_pointer.height / 2) + 10, 0
+        self.debug_d_pos_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (
+                    self.window_pointer.height / 2) + 10, 0
         for part_id in self.part_data:
             # x y scale
-            self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
-            self.parts_sprite[part_id].y = self.part_data[part_id].y * DR_option.gui_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
+            self.parts_sprite[part_id].x = self.part_data[
+                                               part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
+            self.parts_sprite[part_id].y = self.part_data[
+                                               part_id].y * DR_option.gui_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
             self.parts_sprite[part_id].scale = self.scale * DR_option.gui_scale
 
     def on_draw(self):
@@ -223,8 +232,10 @@ class SR1ShipRender(BaseScreen):
             self.dy += (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y))
         else:
             self.scale = 10
-        self.debug_mouse_delta_line.x2 = (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.width / 2)
-        self.debug_mouse_delta_line.y2 = (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.height / 2)
+        self.debug_mouse_delta_line.x2 = (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y)) + (
+                    self.window_pointer.width / 2)
+        self.debug_mouse_delta_line.y2 = (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y)) + (
+                    self.window_pointer.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
         self.update_parts()
