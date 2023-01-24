@@ -30,7 +30,7 @@ $arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
 # 数据配置
 $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
-$arg += @("--include-data-dir=./libs/fonts=./libs/Difficult_Rocket_rs")
+$arg += @("--include-data-dir=./libs/Difficult_Rocket_rs=./libs/Difficult_Rocket_rs")
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
 # 编译配置
