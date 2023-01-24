@@ -9,7 +9,7 @@
 use std::collections::HashMap;
 use pyo3::intern;
 use pyo3::prelude::*;
-use pyo3::types::PyDict;
+use crate::sr1_render::types::SR1PartData;
 
 #[allow(dead_code)]
 pub mod types {
@@ -43,24 +43,24 @@ pub mod types {
 
     #[pyclass(name = "PartDatas")]
     pub struct PartDatas {
-        pub part_structs: HashMap<usize, SR1PartData>
+        pub part_structs: HashMap<usize, SR1PartData>,
+    }
+
+    impl PartDatas {
+        fn get_rust_data(&self) -> &HashMap<usize, SR1PartData> {
+            return &self.part_structs;
+        }
     }
 
     #[pymethods]
     impl PartDatas {
         #[new]
-        pub fn py_new(py_part_data: &PyDict) -> PyResult<Self> {
+        fn py_new(py_part_data: &PyDict) -> PyResult<Self> {
             let datas: HashMap<usize, SR1PartData> = part_data_tp_SR1PartDatas(py_part_data)?;
-            // let datas: HashMap<usize, SR1PartData> = HashMap::new();
             return Ok(PartDatas { part_structs: datas })
         }
     }
 
-    impl PartDatas{
-        pub fn get_rust_data(&self) -> &HashMap<usize, SR1PartData> {
-            return &self.part_structs;
-        }
-    }
 
     #[allow(non_snake_case)]
     pub fn part_data_to_SR1PartData(input: &PyAny) -> Result<SR1PartData, PyErr> {
@@ -125,10 +125,16 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny, parts
     let y_center: f32 = window.getattr(intern!(window.py(), "height"))?.extract()?;
     let x_center: f32 = x_center / 2.0;
     let y_center: f32 = y_center / 2.0;
-    let part_datas: &PyDict = render.getattr(intern!(render.py(), "part_data"))?.extract()?;
-    let parts: HashMap<usize, types::Point> = types::part_datas_to_points(part_datas)?;
+    let datas: &HashMap<usize, SR1PartData> = &parts.part_structs;
+
+    for keys in datas {
+
+        println!("{}", keys.0);
+    }
+
     if option.getattr("debug_d_pos")?.is_true()? {
         let line = render.getattr(intern!(render.py(), "debug_line"))?;
     }
+    // for part in parts.
     Ok(true)
 }

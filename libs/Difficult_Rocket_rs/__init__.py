@@ -21,6 +21,8 @@ if TYPE_CHECKING:
         """ 用于在 PyObj 里塞一个浓眉大眼的 HashMap<uszie, SR1PartData>"""
         def __new__(cls, py_part_data: Dict[int, SR1PartData]) -> "PartDatas": ...
 
+        def get_rust_pointer(self) -> int: ...
+
     def better_update_parts(render: SR1ShipRender,
                             option: SR1ShipRender_Option,
                             window: BaseScreen,
