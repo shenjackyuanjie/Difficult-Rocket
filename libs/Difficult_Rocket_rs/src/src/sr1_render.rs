@@ -118,12 +118,12 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny) -> Py
     if !render.getattr(intern!(render.py(), "rendered"))?.is_true()? {
         return Ok(false);
     }
-    let dx: usize = render.getattr(intern!(render.py(), "dx"))?.extract()?;
-    let dy: usize = render.getattr(intern!(render.py(), "dy"))?.extract()?;
-    let x_center: usize = window.getattr(intern!(window.py(), "width"))?.extract()?;
-    let y_center: usize = window.getattr(intern!(window.py(), "height"))?.extract()?;
-    let x_center: usize = x_center / 2;
-    let y_center: usize = y_center / 2;
+    let dx: f64 = render.getattr(intern!(render.py(), "dx"))?.extract()?;
+    let dy: f64 = render.getattr(intern!(render.py(), "dy"))?.extract()?;
+    let x_center: f32 = window.getattr(intern!(window.py(), "width"))?.extract()?;
+    let y_center: f32 = window.getattr(intern!(window.py(), "height"))?.extract()?;
+    let x_center: f32 = x_center / 2.0;
+    let y_center: f32 = y_center / 2.0;
     let part_datas: &PyDict = render.getattr(intern!(render.py(), "part_data"))?.extract()?;
     let parts: HashMap<usize, Point> = types::part_datas_to_points(part_datas)?;
     if option.getattr("debug_d_pos")?.is_true()? {

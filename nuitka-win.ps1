@@ -10,6 +10,13 @@ if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
 
 ./.github/workflows/env.ps1
 
+cd libs
+cd Difficult_Rocket_rs
+cd src
+python3.8 setup.py build
+python after_build.py
+cd ../../..
+
 $arg = @()
 # 输出配置
 $arg += @("--standalone")
@@ -30,7 +37,6 @@ $arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
 # 数据配置
 $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
-$arg += @("--include-data-dir=./libs/Difficult_Rocket_rs=./libs/Difficult_Rocket_rs")
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
 # 编译配置
