@@ -7,7 +7,6 @@
  */
 
 mod sr1_render;
-mod types;
 
 use pyo3::prelude::*;
 

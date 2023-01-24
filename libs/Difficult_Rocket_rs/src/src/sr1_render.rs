@@ -12,6 +12,7 @@ use pyo3::prelude::*;
 use pyo3::types::PyDict;
 use crate::sr1_render::types::Point;
 
+#[allow(dead_code)]
 pub mod types {
     use std::collections::HashMap;
     use pyo3::intern;
@@ -41,7 +42,7 @@ pub mod types {
         pub type_: String
     }
 
-    #[pyclass]
+    #[pyclass(name = "PartDatas")]
     pub struct PartDatas {
         pub part_structs: HashMap<usize, SR1PartData>
     }
@@ -49,14 +50,20 @@ pub mod types {
     #[pymethods]
     impl PartDatas {
         #[new]
-        pub fn py_new(py_part_data: &PyDict) -> PyResult<Self>{
-            let mut datas: HashMap<usize, SR1PartData> = HashMap::with_capacity(py_part_data.len());
-            return Ok(PartDatas{part_structs: datas})
+        pub fn py_new(py_part_data: &PyDict) -> PyResult<Self> {
+            let datas: HashMap<usize, SR1PartData> = part_data_tp_SR1PartDatas(py_part_data)?;
+            return Ok(PartDatas { part_structs: datas })
         }
     }
 
-    #[allow(dead_code)]
-    pub fn convert_py_any_sr1_part_data(input: &PyAny) -> Result<SR1PartData, PyErr> {
+    impl PartDatas{
+        pub fn get_rust_data(&self) -> &HashMap<usize, SR1PartData> {
+            return &self.part_structs;
+        }
+    }
+
+    #[allow(non_snake_case)]
+    pub fn part_data_to_SR1PartData(input: &PyAny) -> Result<SR1PartData, PyErr> {
         return Ok(SR1PartData{
             x: input.getattr(intern!(input.py(), "x"))?.extract()?,
             y: input.getattr(intern!(input.py(), "y"))?.extract()?,
@@ -74,7 +81,16 @@ pub mod types {
         })
     }
 
-    pub fn get_point_from_sr1_part_data(input: &PyAny) -> Result<Point, PyErr> {
+    #[allow(non_snake_case)]
+    pub fn part_data_tp_SR1PartDatas(input: &PyDict) -> Result<HashMap<usize, SR1PartData>, PyErr> {
+        let mut result: HashMap<usize, SR1PartData> = HashMap::with_capacity(input.len());
+        for key in input.iter() {
+            result.insert(key.0.extract()?, part_data_to_SR1PartData(key.1)?);
+        }
+        return Ok(result)
+    }
+
+    pub fn part_data_to_point(input: &PyAny) -> Result<Point, PyErr> {
         return Ok(Point{
             x: input.getattr(intern!(input.py(), "x"))?.extract()?,
             y: input.getattr(intern!(input.py(), "y"))?.extract()?,
@@ -83,11 +99,10 @@ pub mod types {
         })
     }
 
-    pub fn point_dict_from_part_datas(input: &PyDict) -> Result<HashMap<usize, Point>, PyErr> {
+    pub fn part_datas_to_points(input: &PyDict) -> Result<HashMap<usize, Point>, PyErr> {
         let mut result: HashMap<usize, Point> = HashMap::with_capacity(input.len());
         for key in input.iter() {
-            println!("aaa");
-            // key[]
+            result.insert(key.0.extract()?, part_data_to_point(key.1)?);
         }
         return Ok(result);
     }
@@ -98,7 +113,7 @@ pub mod types {
 
 
 #[pyfunction]
-#[allow(non_snake_case)]
+#[allow(unused_variables)]
 pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny) -> PyResult<bool> {
     if !render.getattr(intern!(render.py(), "rendered"))?.is_true()? {
         return Ok(false);
@@ -110,7 +125,7 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny) -> Py
     let x_center: usize = x_center / 2;
     let y_center: usize = y_center / 2;
     let part_datas: &PyDict = render.getattr(intern!(render.py(), "part_data"))?.extract()?;
-    let parts: HashMap<usize, Point> = types::point_dict_from_part_datas(part_datas)?;
+    let parts: HashMap<usize, Point> = types::part_datas_to_points(part_datas)?;
     if option.getattr("debug_d_pos")?.is_true()? {
         let line = render.getattr(intern!(render.py(), "debug_line"))?;
     }

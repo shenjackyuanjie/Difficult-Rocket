@@ -131,6 +131,16 @@ jobs:
           
           Rename-Item ./build/DR.dist Difficult-Rocket
 
+      - name: DR-rs build
+        shell: pwsh
+        run: |
+          cd libs/Difficult_Rocket_rs/src
+          python setup.py build
+          python after_build.py
+          python setup.py clean
+          cd ..
+          rm src
+
       - name: after build
         shell: pwsh
         run: python ./.github/workflows/after_compile.py
