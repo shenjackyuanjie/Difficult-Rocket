@@ -198,6 +198,7 @@ class SR1ShipRender(BaseScreen):
             self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
             self.parts_sprite[part_id].y = self.part_data[part_id].y * DR_option.gui_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
             self.parts_sprite[part_id].scale = self.scale * DR_option.gui_scale
+        self.need_update_parts = False
 
     def on_draw(self):
         if self.need_draw:
