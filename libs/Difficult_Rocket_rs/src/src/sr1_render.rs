@@ -148,7 +148,7 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
         // println!("{}", keys.0);
     }
     let run_time = start_time.elapsed();
-    println!("run took {} second or {} fps", run_time.as_secs_f64(), 1 as f64 / run_time.as_secs_f64());
+    // println!("run took {} second or {} fps", run_time.as_secs_f64(), 1 as f64 / run_time.as_secs_f64());
     // render.setattr(intern!(render.py(), "parts_sprite"), part_sprites)?;
     // println!("dx: {} dy: {} scale: {}", dx, dy, render_scale);
     Ok(true)
