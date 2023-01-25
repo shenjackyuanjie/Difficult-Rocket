@@ -29,7 +29,8 @@ $arg += @("--file-description=Difficult-Rocket!")
 $arg += @("--windows-icon-from-ico=textures/icon.png")
 $arg += @("--macos-app-icon=textures/icon.png")
 # 编译器配置
-$arg += @("--msvc=latest")
+# $arg += @("--msvc=latest")
+$atg += @("--mingw64")
 $arg += @("--clang")
 $arg += @("--lto=no")
 # 包配置
