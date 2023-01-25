@@ -33,6 +33,10 @@
   - `PartDatas`
     - 用于在 `PyObj` 里  暗 渡 陈 仓  装 `HashMap<uszie, SR1PartData>`
 
+### 命令
+
+- 有点尴尬，`sr1` 的命令不大好使，改成 `debug` 了
+
 ## 20230120 V 0.6.5.0
 
 ### 抱歉，我撒谎了（

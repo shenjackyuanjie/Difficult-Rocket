@@ -247,7 +247,7 @@ class SR1ShipRender(BaseScreen):
             # self.render_ship()
             self.need_draw = True
             print('应该渲染飞船的')
-        elif command.re_match('sr'):
+        elif command.re_match('debug'):
             print('sr ?')
             if command.re_match('delta'):
                 SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
