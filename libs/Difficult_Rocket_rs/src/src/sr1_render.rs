@@ -7,6 +7,7 @@
  */
 
 use std::collections::HashMap;
+use std::time;
 use pyo3::intern;
 use pyo3::prelude::*;
 // use pyo3::types::PyDict;
@@ -22,7 +23,7 @@ pub mod types {
     pub struct SR1PartData {
         pub x: f64,
         pub y: f64,
-        pub id: usize,
+        pub id: i64,
         pub type_: String,
         pub active: bool,
         pub angle: f64,
@@ -44,11 +45,11 @@ pub mod types {
 
     #[pyclass(name = "PartDatas")]
     pub struct PartDatas {
-        pub part_structs: HashMap<usize, SR1PartData>,
+        pub part_structs: HashMap<i64, SR1PartData>,
     }
 
     impl PartDatas {
-        fn get_rust_data(&self) -> &HashMap<usize, SR1PartData> {
+        fn get_rust_data(&self) -> &HashMap<i64, SR1PartData> {
             return &self.part_structs;
         }
     }
@@ -57,7 +58,7 @@ pub mod types {
     impl PartDatas {
         #[new]
         fn py_new(py_part_data: &PyDict) -> PyResult<Self> {
-            let datas: HashMap<usize, SR1PartData> = part_data_tp_SR1PartDatas(py_part_data)?;
+            let datas: HashMap<i64, SR1PartData> = part_data_tp_SR1PartDatas(py_part_data)?;
             return Ok(PartDatas { part_structs: datas })
         }
     }
@@ -83,8 +84,8 @@ pub mod types {
     }
 
     #[allow(non_snake_case)]
-    pub fn part_data_tp_SR1PartDatas(input: &PyDict) -> Result<HashMap<usize, SR1PartData>, PyErr> {
-        let mut result: HashMap<usize, SR1PartData> = HashMap::with_capacity(input.len());
+    pub fn part_data_tp_SR1PartDatas(input: &PyDict) -> Result<HashMap<i64, SR1PartData>, PyErr> {
+        let mut result: HashMap<i64, SR1PartData> = HashMap::with_capacity(input.len());
         for key in input.iter() {
             result.insert(key.0.extract()?, part_data_to_SR1PartData(key.1)?);
         }
@@ -100,8 +101,8 @@ pub mod types {
         })
     }
 
-    pub fn part_datas_to_points(input: &PyDict) -> Result<HashMap<usize, Point>, PyErr> {
-        let mut result: HashMap<usize, Point> = HashMap::with_capacity(input.len());
+    pub fn part_datas_to_points(input: &PyDict) -> Result<HashMap<i64, Point>, PyErr> {
+        let mut result: HashMap<i64, Point> = HashMap::with_capacity(input.len());
         for key in input.iter() {
             result.insert(key.0.extract()?, part_data_to_point(key.1)?);
         }
@@ -120,6 +121,7 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
     if !render.getattr(intern!(render.py(), "rendered"))?.is_true()? {
         return Ok(false);
     }
+    let start_time = time::Instant::now();
     let dx: f64 = render.getattr(intern!(render.py(), "dx"))?.extract()?;
     let dy: f64 = render.getattr(intern!(render.py(), "dy"))?.extract()?;
     let x_center: f32 = window.getattr(intern!(window.py(), "width"))?.extract()?;
@@ -127,9 +129,11 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
     let x_center: f32 = x_center / 2.0;
     let y_center: f32 = y_center / 2.0;
     let render_scale: f32 = render.getattr(intern!(render.py(), "scale"))?.extract()?;
-    let datas: &HashMap<usize, SR1PartData> = &parts.part_structs;
+    let datas: &HashMap<i64, SR1PartData> = &parts.part_structs;
     let part_sprites = render.getattr(intern!(render.py(), "parts_sprite"))?;
     // let part_sprites: &PyDict = part_sprites.downcast::<PyDict>()?;
+    let get_stuf_time = start_time.elapsed();
+    // println!("get stuf took {} second", get_stuf_time.as_secs_f64());
 
     for keys in datas {
         // let index = keys.0.to_string();
@@ -143,6 +147,8 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
         // part_sprites.set_item(keys.0, sprite)?;
         // println!("{}", keys.0);
     }
+    let run_time = start_time.elapsed();
+    println!("run took {} second or {} fps", run_time.as_secs_f64(), 1 as f64 / run_time.as_secs_f64());
     // render.setattr(intern!(render.py(), "parts_sprite"), part_sprites)?;
     // println!("dx: {} dy: {} scale: {}", dx, dy, render_scale);
     Ok(true)

@@ -64,9 +64,9 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
 
 class _SR1ShipRender_Option(Options):
     # debug option
-    debug_d_pos: bool = True
-    debug_mouse_pos: bool = True
-    debug_mouse_d_pos: bool = True
+    debug_d_pos: bool = False
+    debug_mouse_pos: bool = False
+    debug_mouse_d_pos: bool = False
 
 
 SR1ShipRender_Option = _SR1ShipRender_Option()
@@ -83,6 +83,7 @@ class SR1ShipRender(BaseScreen):
         self.scale = scale
         self.focus = True
         self.need_draw = False
+        self.need_update_parts = False
         self.dx = 0
         self.dy = 0
         self.debug_line = Line(main_window.width / 2, main_window.height / 2,
@@ -201,6 +202,9 @@ class SR1ShipRender(BaseScreen):
     def on_draw(self):
         if self.need_draw:
             self.render_ship()
+        if self.need_update_parts:
+            self.update_parts()
+            self.need_update_parts = False
         self.part_batch.draw()
         self.debug_label.draw()
         if SR1ShipRender_Option.debug_d_pos:
@@ -239,7 +243,8 @@ class SR1ShipRender(BaseScreen):
         self.debug_mouse_delta_line.y2 = (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
-        self.update_parts()
+        self.need_update_parts = True
+        # self.update_parts()
         # print(f'{self.scale=} {self.dx=} {self.dy=} {x=} {y=} {scroll_x=} {scroll_y=} {1 - (0.5 ** scroll_y)=}')
 
     def on_command(self, command: CommandText):
@@ -275,7 +280,8 @@ class SR1ShipRender(BaseScreen):
             return
         self.dx += dx
         self.dy += dy
-        self.update_parts()
+        self.need_update_parts = True
+        # self.update_parts()
 
     def on_file_drop(self, x: int, y: int, paths: List[str]):
         for path in paths:

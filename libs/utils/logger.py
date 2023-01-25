@@ -256,13 +256,15 @@ class Message_content(NamedTuple):
     log_time: float
     text: str
     level: int
+    logger_name: Optional[str] = 'root'
     marker: Optional[str] = None
     end: Optional[str] = '\n'
     flush: Optional[bool] = False
     frame: Optional[FrameType] = None
 
     def __str__(self):
-        return f"Message Content at {self.log_time}|in level {self.level}|with marker {self.marker}|ends as {self.end}|" \
+        return f"Message Content at {self.log_time}|by logger {self.logger_name}|in level {self.level}" \
+               f"|with marker {self.marker}|ends as {self.end}|" \
                f"by frame {self.frame}|{'and will flush' if self.flush else 'and will not flush'}|" \
                f"text are: {self.text}"
 
@@ -387,13 +389,12 @@ class StdFormatter(FormatterTemplate):
 
     def __init__(self, configs: FormatterConfig):
         super().__init__(configs=configs)
-        ...
 
     def format_time(self, input_time: Optional[float] = None) -> Dict[str, str]:
         millisecond = str((input_time - int(input_time)) * 1000)
         long_time = time.strftime(self.configs.formats['long_time'].replace('%%S', millisecond))
         short_time = time.strftime(self.configs.formats['short_time'].replace('%%S', millisecond))
-        return {'long_time': long_time, 'short_time': short_time}
+        return {'{long_time}': long_time, '{short_time}': short_time}
 
     def get_color_code(self, level: str, content: ColorCodeEnum) -> str:
         assert content in ColorCodeEnum
@@ -402,7 +403,7 @@ class StdFormatter(FormatterTemplate):
         return self.configs.color[content.name].replace('\\u001b', '\u001b')
 
     """
-    format 支持的内容:  嘿，帮我写一下说明呗
+    format 支持的内容:
     {long_time}: 长时间
     {short_time}: 短时间
     {logger_name}: logger 名称
@@ -418,7 +419,7 @@ class StdFormatter(FormatterTemplate):
             return self.format(message=message)
         times = self.format_time(input_time=message.log_time)
         need_colors = [x for x in re_find_formats.findall(self.configs.format)]
-        new_message = self.configs.format
+        new_config = self.configs.format
         for need_color in need_colors:
             if not hasattr(FormatCodeEnum, need_color[1:-1]):
                 warnings.warn(f'logger config wrong! get {need_color}')
@@ -428,13 +429,31 @@ class StdFormatter(FormatterTemplate):
                 color_code = self.configs.color[level_name_map[message.level]][need_color[1:-1]]
             elif need_color[1:-1] in self.configs.color:
                 color_code = self.configs.color[need_color[1:-1]]
-            new_message.replace(need_color, f'{color_code}{need_color}{color_reset_suffix}')
-
-
+            new_config.replace(need_color, f'{color_code}{need_color}{color_reset_suffix}')
 
     def format(self, message: Message_content) -> str:
+        """
+        将传入得 message 中的信息格式化之后输出为单一字符串
+        :param message:
+        :return: str
+        """
         times = self.format_time(input_time=message.log_time)
-        ...
+        level = level_name_map[message.level]
+        formatted_str = self.configs.format
+        for time_text, value in times.items():
+            formatted_str.replace(time_text, value)
+        formatted_str.replace("{marker}", message.marker)
+        formatted_str.replace("{message}", message.text)
+        formatted_str.replace("{level}", level)
+        file_name = '*'
+        code_line = '*'
+        if message.frame is not None:
+            file_name = message.frame.f_code.co_filename
+            code_line = message.frame.f_lineno
+        formatted_str.replace("{file_name}", file_name)
+        formatted_str.replace("{code_line}", code_line)
+
+        return formatted_str
 
 
 """
@@ -485,9 +504,7 @@ class StreamHandlerTemplate:
         return True
 
     def close(self) -> bool:
-        """
-        :return: stream 是否关闭成功
-        """
+        """:return: stream 是否关闭成功"""
         raise NotImplementedError("You Need to Implement the 'close' method")
 
     def setFormatter(self, fmt: FormatterTemplate) -> None:
@@ -628,7 +645,7 @@ class LogFileCache:
         """
         # 配置相关
         self._logfile_name = os.path.abspath(format_str(file_conf['file_name']))  # log 文件名称
-        self.level: logging_level_type = get_key_from_dict(file_conf, 'level', DEBUG)
+        self.level: logging_level_type = file_conf.get('level', DEBUG)
         self.file_conf = file_conf
         self.flush_time = file_conf['cache_time']  # 缓存刷新时长
         self.cache_entries_num = file_conf['cache_len']
@@ -682,9 +699,8 @@ class LogFileCache:
             with self.time_limit_lock:
                 if self.log_cache:
                     with open(file=self.logfile_name,
-                              encoding=get_key_from_dict(
-                                  self.file_conf, 'encoding', 'utf-8'),
-                              mode=get_key_from_dict(self.file_conf, 'mode', 'a')) as log_file:
+                              encoding=self.file_conf.get('encoding', 'utf-8'),
+                              mode=self.file_conf.get('mode', 'a')) as log_file:
                         log_file.writelines(self.log_cache.cache.copy())
                     self.log_cache.clear()
                     if thread:
@@ -728,12 +744,11 @@ class Logger:
         self.min_level = self.level
         self.colors = colors or logger_configs['Color']['main_color']
         self.formats = formats or logger_configs['Formatter'].copy()
-        self.streams = []  # type: List[StreamHandlerTemplate]
-        self.handler = []
+        self.streams: List[StreamHandlerTemplate] = []
+        self.handler: List[StdHandler] = []
         if file_conf:
             self.file_cache = file_conf
-            self.min_level = min(
-                *[file.level for file in file_conf], self.level)
+            self.min_level = min(min(file.level for file in file_conf), self.level)
         else:
             self.file_cache = []
         self.warn = self.warning
@@ -783,9 +798,8 @@ class Logger:
         if frame is None:
             if (frame := inspect.currentframe()) is not None:
                 frame = frame if frame.f_back is None else frame.f_back if frame.f_back.f_back is None else frame.f_back.f_back
-        message = Message_content(log_time=time.time(),
-                                  text=sep.join(i if type(i) is str else str(i) for i in values),
-                                  level=level, marker=marker, end=end, flush=flush, frame=frame)
+        message = Message_content(log_time=time.time(), text=sep.join(i if type(i) is str else str(i) for i in values),
+                                  level=level, logger_name=self.name, marker=marker, end=end, flush=flush, frame=frame)
 
         # 调用 steams
         for stream in self.streams:
@@ -807,23 +821,20 @@ class Logger:
         return print_text
 
     def format_text(self, level: int, text: str, frame: Optional[FrameType]) -> str:
-        level_with_color = f"[{get_key_from_dict(self.colors[get_name_by_level(level)], 'info')}{get_name_by_level(level)}{color_reset_suffix}]"
+        level_with_color = f"[{self.colors[get_name_by_level(level)].get('info')}{get_name_by_level(level)}{color_reset_suffix}]"
         level_with_color = f"{level_with_color}{' ' * (9 - len_without_color_maker(level_with_color))}"
         formats = self.formats.copy()
         if frame is not None:
-            formats[
-                'file_name'] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], 'file_name', self.colors['file_name'])}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
-            formats[
-                'code_line'] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], 'code_line', self.colors['code_line'])}{frame.f_lineno}{color_reset_suffix}"
-        formats[
-            'logger_name'] = f'{get_key_from_dict(self.colors[get_name_by_level(level)], "logger", self.colors["logger"])}{self.name}{color_reset_suffix}'
+            formats['file_name'] = f"{self.colors[get_name_by_level(level)].get('file_name', self.colors['file_name'])}{os.path.split(frame.f_code.co_filename)[-1]}{color_reset_suffix}"
+            formats['code_line'] = f"{self.colors[get_name_by_level(level)].get('code_line', self.colors['code_line'])}{frame.f_lineno}{color_reset_suffix}"
+        formats['logger_name'] = f'{self.colors[get_name_by_level(level)].get("logger", self.colors["logger"])}{self.name}{color_reset_suffix}'
         now_time = str(time.time())
         for key, value in formats.items():
             if isinstance(value, dict):
                 if 'strftime' in value:
                     value['strftime']: str
                     formats[
-                        key] = f"{get_key_from_dict(self.colors[get_name_by_level(level)], key, self.colors[key])}{time.strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
+                        key] = f"{self.colors[get_name_by_level(level)].get(key, self.colors[key])}{time.strftime(value['strftime'].replace('%%S', now_time[now_time.find('.') + 1:now_time.find('.') + 5]))}{color_reset_suffix}"
         print_text = self.formats['MESSAGE']['format'].format(level_with_color=level_with_color,
                                                               level=level_with_color, message=text,
                                                               **formats)
@@ -910,76 +921,13 @@ def basic_config() -> None:
     ...
 
 
-def trace(*values: object,
-          marker: Optional[str] = None,
-          sep: Optional[str] = ' ',
-          end: Optional[str] = '\n',
-          flush: Optional[bool] = False,
-          frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def fine(*values: object,
-         marker: Optional[str] = None,
-         sep: Optional[str] = ' ',
-         end: Optional[str] = '\n',
-         flush: Optional[bool] = False,
-         frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def debug(*values: object,
-          marker: Optional[str] = None,
-          sep: Optional[str] = ' ',
-          end: Optional[str] = '\n',
-          flush: Optional[bool] = False,
-          frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def info(*values: object,
-         marker: Optional[str] = None,
-         sep: Optional[str] = ' ',
-         end: Optional[str] = '\n',
-         flush: Optional[bool] = False,
-         frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def warning(*values: object,
-            marker: Optional[str] = None,
-            sep: Optional[str] = ' ',
-            end: Optional[str] = '\n',
-            flush: Optional[bool] = False,
-            frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def error(*values: object,
-          marker: Optional[str] = None,
-          sep: Optional[str] = ' ',
-          end: Optional[str] = '\n',
-          flush: Optional[bool] = False,
-          frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def fatal(*values: object,
-          marker: Optional[str] = None,
-          sep: Optional[str] = ' ',
-          end: Optional[str] = '\n',
-          flush: Optional[bool] = False,
-          frame: Optional[FrameType] = None) -> Optional[str]:
-    ...
-
-
-def get_key_from_dict(a_dict: Dict, key: Any, default: Any = None) -> Optional[Any]:
-    if default is None:
-        return a_dict[key]
-    try:
-        return a_dict[key]
-    except KeyError:
-        return default
+trace = root_logger.trace
+fine = root_logger.fine
+debug = root_logger.debug
+info = root_logger.info
+warning = root_logger.warning
+error = root_logger.error
+fatal = root_logger.fatal
 
 
 def format_str(text: str) -> str:
@@ -1024,8 +972,7 @@ def gen_file_conf(file_name: str,
 
 
 def gen_color_conf(color_name: Optional[str] = None, **colors) -> dict:
-    default_color = logger_configs['Color']['main_color' if color_name is None else color_name].copy(
-    )
+    default_color = logger_configs['Color']['main_color' if color_name is None else color_name].copy()
     default_color.update(colors)
     return default_color
 
