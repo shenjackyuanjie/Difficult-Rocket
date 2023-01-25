@@ -244,8 +244,13 @@ class SR1ShipRender(BaseScreen):
 
     def on_command(self, command: CommandText):
         if command.re_match('render'):
-            # self.render_ship()
-            self.need_draw = True
+            if command.re_match('reset'):
+                self.scale = 1
+                self.dx = 0
+                self.dy = 0
+            else:
+                # self.render_ship()
+                self.need_draw = True
             print('应该渲染飞船的')
         elif command.re_match('debug'):
             print('sr ?')
