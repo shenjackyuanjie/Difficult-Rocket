@@ -1,11 +1,13 @@
 import sys
+import warnings
 
 from ctypes import CFUNCTYPE, byref, c_void_p, c_int, c_ubyte, c_bool, c_uint32, c_uint64
 
 import pyglet.app
-from .controller import get_mapping, create_guid
-from .base import Device, AbsoluteAxis, RelativeAxis, Button
-from .base import Joystick, Controller, AppleRemote, ControllerManager
+
+from pyglet.input.controller import get_mapping, create_guid
+from pyglet.input.base import Device, AbsoluteAxis, RelativeAxis, Button
+from pyglet.input.base import Joystick, Controller, AppleRemote, ControllerManager
 
 from pyglet.libs.darwin.cocoapy import CFSTR, CFIndex, CFTypeID, known_cftypes
 from pyglet.libs.darwin.cocoapy import kCFRunLoopDefaultMode, CFAllocatorRef, cf
@@ -248,7 +250,7 @@ class HIDDevice:
         _device_lookup[deviceRef.value] = self
         self.deviceRef = deviceRef
         # Set attributes from device properties.
-        self.transport = self.get_property("Transport") or "unknown"
+        self.transport = self.get_property("Transport")
         self.vendorID = self.get_property("VendorID")
         self.vendorIDSource = self.get_property("VendorIDSource")
         self.productID = self.get_property("ProductID")
@@ -607,7 +609,8 @@ class PygletDevice(Device):
         control.value = hid_value.intvalue
 
     def _create_controls(self):
-        self._controls = {}
+        controls = []
+
         for element in self.device.elements:
             raw_name = element.name or '0x%x:%x' % (element.usagePage, element.usage)
             if element.type in (kIOHIDElementTypeInput_Misc, kIOHIDElementTypeInput_Axis):
@@ -623,8 +626,11 @@ class PygletDevice(Device):
                 continue
 
             control._cookie = element.cookie
-
-            self._controls[control._cookie] = control
+            control._usage = element.usage
+            controls.append(control)
+        
+        controls.sort(key=lambda c: c._usage)
+        self._controls = {control._cookie: control for control in controls}
 
     def _set_initial_control_values(self):
         # Must be called AFTER the device has been opened.
@@ -685,14 +691,17 @@ def get_apple_remote(display=None):
 
 
 def _create_controller(device, display):
-    if device.transport.upper() in ('USB', 'BLUETOOTH'):
+    if device.transport and device.transport.upper() in ('USB', 'BLUETOOTH'):
         mapping = get_mapping(device.get_guid())
-        if not mapping:
-            return
-        return Controller(PygletDevice(display, device, _hid_manager), mapping)
+        if mapping:
+            return Controller(PygletDevice(display, device, _hid_manager), mapping)
+        else:
+            warnings.warn(f"Warning: {device} (GUID: {device.get_guid()}) "
+                          f"has no controller mappings. Update the mappings in the Controller DB.")
 
 
 def get_controllers(display=None):
     return [controller for controller in
-            [_create_controller(device, display) for device in _hid_manager.devices]
+            [_create_controller(device, display) for device in _hid_manager.devices
+            if device.is_joystick() or device.is_gamepad() or device.is_multi_axis()]
             if controller is not None]

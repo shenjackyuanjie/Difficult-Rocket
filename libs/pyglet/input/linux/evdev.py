@@ -2,6 +2,7 @@ import os
 import time
 import fcntl
 import ctypes
+import warnings
 
 from ctypes import c_uint16 as _u16
 from ctypes import c_int16 as _s16
@@ -14,11 +15,11 @@ from typing import List
 
 import pyglet
 
-from pyglet.app.xlib import XlibSelectDevice
-from .base import Device, RelativeAxis, AbsoluteAxis, Button, Joystick, Controller
-from .base import DeviceOpenException, ControllerManager
 from .evdev_constants import *
-from .controller import get_mapping, Relation, create_guid
+from pyglet.app.xlib import XlibSelectDevice
+from pyglet.input.base import Device, RelativeAxis, AbsoluteAxis, Button, Joystick, Controller
+from pyglet.input.base import DeviceOpenException, ControllerManager
+from pyglet.input.controller import get_mapping, Relation, create_guid
 
 _IOC_NRBITS = 8
 _IOC_TYPEBITS = 8
@@ -637,6 +638,9 @@ def _create_controller(device):
 
     mapping = get_mapping(device.get_guid())
     if not mapping:
+        warnings.warn(f"Warning: {device} (GUID: {device.get_guid()}) "
+                      f"has no controller mappings. Update the mappings in the Controller DB.\n"
+                      f"Auto-detecting as defined by the 'Linux gamepad specification'")
         mapping = _detect_controller_mapping(device)
 
     if FF_RUMBLE in device.ff_types:
