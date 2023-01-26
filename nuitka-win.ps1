@@ -30,7 +30,7 @@ $arg += @("--windows-icon-from-ico=textures/icon.png")
 $arg += @("--macos-app-icon=textures/icon.png")
 # 编译器配置
 # $arg += @("--msvc=latest")
-$atg += @("--mingw64")
+# $atg += @("--mingw64")
 $arg += @("--clang")
 $arg += @("--lto=no")
 # 包配置
@@ -50,7 +50,7 @@ $end_time = Get-Uptime
 $out = $end_time.TotalMilliseconds - $start_time.TotalMilliseconds
 Write-Output $end_time.TotalSeconds $start_time.TotalSeconds $out s
 Write-Output $start_time $end_time
-Write-Output "--jobs=24 --clang --msvc=latest --lto=no and $args"
+Write-Output "--clang --lto=no and $args"
 # --include-data-dir=./libs/pyglet=./pyglet
 # --run
 # --disable-ccache

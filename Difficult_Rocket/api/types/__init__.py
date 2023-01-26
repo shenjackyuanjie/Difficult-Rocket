@@ -113,9 +113,15 @@ class Options:
         return values
 
     def format(self, text: str) -> str:
+        """
+        使用自己的选项给输入的字符串替换内容
+        :param text: 想替换的内容
+        :return: 替换之后的内容
+        """
         cache_option = self.flush_option()
         for option, value in cache_option.items():
-            text.replace(f'{{{option}}}', value)
+            text = text.replace(f'{{{option}}}', str(value))
+        return text
 
     def flush_option(self) -> Dict[str, Any]:
         """

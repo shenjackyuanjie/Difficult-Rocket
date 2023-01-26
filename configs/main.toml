@@ -12,7 +12,7 @@ width = 2336
 height = 1621
 visible = true
 gui_scale = 1
-caption = "Difficult Rocket {version}"
+caption = "Difficult Rocket v{DR_version} DR_rs v{DR_Rust_get_version}"
 resizable = true
 full_screen = false
 

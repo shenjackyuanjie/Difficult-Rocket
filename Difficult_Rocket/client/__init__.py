@@ -71,8 +71,7 @@ class Client:
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.net_mode = net_mode
-        self.caption = tools.name_handler(self.config['window']['caption'],
-                                          {'version': self.config['runtime']['version']})
+        self.caption = DR_runtime.format(self.config['window']['caption'])
         file_drop = True
         if pyglet.compat_platform == 'darwin' and not DR_option.pyglet_macosx_dev_test:
             file_drop = False
