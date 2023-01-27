@@ -43,10 +43,12 @@ class DRDEBUGScreen(BaseScreen):
 
     def update_label(self):
         now_FPS = get_frequency()
-        self.fps_label.text = f'FPS: {self.window_pointer.fps_log.fps: >5.1f}(' \
-                              f'{self.window_pointer.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n ' \
-                              f'{self.window_pointer.fps_log.max_fps: >7.1f} ' \
-                              f'{self.window_pointer.fps_log.min_fps:>5.1f}'
+        self.fps_label.text = (
+            f'FPS: {self.window_pointer.fps_log.fps: >5.1f}('
+            f'{self.window_pointer.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n '
+            f'{self.window_pointer.fps_log.max_fps: >7.1f} '
+            f'{self.window_pointer.fps_log.min_fps:>5.1f}'
+        )
 
     def on_resize(self, width, height):
         self.fps_label.y = height - 10

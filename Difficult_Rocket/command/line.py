@@ -65,7 +65,7 @@ class CommandLine(widgets.WidgetBase):
 
         # normal values
         self.length = length
-        self._command_list = ['' for line in range(length)]
+        self._command_list = ['' for _ in range(length)]
         self._command_text = command_text
         self._text_position = 0
         self._command_view = 0
@@ -249,7 +249,7 @@ class CommandLine(widgets.WidgetBase):
 
             # view move motion
             elif motion == key.MOTION_DOWN:
-                if not self.command_view == -1:
+                if self.command_view != -1:
                     self.command_view -= 1
                 else:
                     pass

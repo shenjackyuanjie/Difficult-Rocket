@@ -4,7 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-import random
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional
@@ -55,11 +54,10 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
     #       f'angle: {part_angle} angle_v: {part_angle_v} editor_angle: {part_editor_angle} '
     #       f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
     #       f'textures: {SR1PartTexture.get_textures_from_type(part_type)}')
-    part_data = SR1PartData(x=part_x, y=part_y, id=part_id, type_=part_type,
+    return SR1PartData(x=part_x, y=part_y, id=part_id, type_=part_type,
                             active=part_activate, angle=part_angle, angle_v=part_angle_v,
                             editor_angle=part_editor_angle, flip_x=part_flip_x,
                             flip_y=part_flip_y, explode=part_explode, textures=part_textures)
-    return part_data
 
 
 class _SR1ShipRender_Option(Options):
@@ -125,7 +123,7 @@ class SR1ShipRender(BaseScreen):
             self.xml_doc = cache_doc
             self.xml_root = self.xml_doc.getroot()
             return True
-        except:
+        except Exception:
             return False
 
     def load_textures(self):
@@ -234,7 +232,7 @@ class SR1ShipRender(BaseScreen):
         mouse_dx = x - (self.window_pointer.width / 2)
         mouse_dy = y - (self.window_pointer.height / 2)
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
-        if not self.scale * (0.5 ** scroll_y) >= 10:
+        if self.scale * (0.5**scroll_y) < 10:
             self.scale = self.scale * (0.5 ** scroll_y)
             self.dx += (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y))
             self.dy += (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y))

@@ -43,15 +43,10 @@ class CommandText:
             i += 1
 
     def find(self, text: str) -> Union[str, bool]:
-        finding = re.match(text, self.text)
-        if finding:
-            return finding.group()
-        else:
-            return False
+        return finding.group() if (finding := re.match(text, self.text)) else False
 
     def re_match(self, text: str) -> bool:
-        finding = re.match(text, self.text)
-        if finding:  # 如果找到了
+        if finding := re.match(text, self.text):
             try:
                 next_find = self.text[finding.span()[1]]
                 # 这里try因为可能匹配到的是字符串末尾
@@ -62,10 +57,8 @@ class CommandText:
                 return True
             if next_find == ' ':
                 return True
-            # 将匹配到的字符串，和最后一个匹配字符后面的字符删除(相当暴力的操作)
-            return False
-        else:
-            return False
+        # 将匹配到的字符串，和最后一个匹配字符后面的字符删除(相当暴力的操作)
+        return False
 
     def int_value(self, name: Optional[str]):
         ...

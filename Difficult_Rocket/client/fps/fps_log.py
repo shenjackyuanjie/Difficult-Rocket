@@ -35,11 +35,10 @@ class FpsLogger:
                     tick: Decimal):
         if pyglet_fps != 0:
             self.fps_list.append(pyglet_fps)
+        elif tick == 0:
+            self.fps_list.append(1)
         else:
-            if tick != 0:
-                self.fps_list.append(float(1 / tick))
-            else:
-                self.fps_list.append(1)
+            self.fps_list.append(float(1 / tick))
         if len(self.fps_list) > self.count:
             self.fps_list = self.fps_list[-self.count + 1:]  # 整个列表往前挪一位
         if len(self.get_fps_list) > self.count:

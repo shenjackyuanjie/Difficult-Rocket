@@ -205,10 +205,13 @@ class SingleTextStyle:
         输出字体样式的HTML字符
         :return: HTML 格式字符
         """
-        if not suffix:
-            return self.HTML_bold() + self.HTML_italic() + self.HTML_font()
-        else:
-            return font_HTML_end + (bold_HTML_end if self.bold else '') + (italic_HTML_end if self.italic else '')
+        return (
+            (font_HTML_end
+            + (bold_HTML_end if self.bold else '')
+            + (italic_HTML_end if self.italic else ''))
+            if suffix
+            else self.HTML_bold() + self.HTML_italic() + self.HTML_font()
+        )
 
 
 # [\u4e00-\u9fa5] 中文字符
@@ -267,11 +270,11 @@ italic_HTML_end = '</i>'
 def decode_text2HTML(text: str,
                      configs=None,
                      show_style: bool = False) -> str:
-    if text == '':
+    if not text:
         return ''
     if configs is None:
         configs = default_fonts_config
-    style_list = [SingleTextStyle(text=text[x]) for x in range(0, len(text))]
+    style_list = [SingleTextStyle(text=text[x]) for x in range(len(text))]
 
     # 根据输入的配置对每一个字符进行样式设定
     for config in configs:
@@ -312,9 +315,7 @@ def decode_text2HTML(text: str,
     style_list[0].prefix += style_list[0].HTML()  # 不管怎么说都要在最前面加一个字符标识
     for style_index in range(1, len(style_list)):
         if style_list[style_index].show:  # 如果这个字符显示
-            if not style_list[style_index - 1].show:  # 如果前面一个字符不显示(且这个字符显示)
-                style_list[style_index].prefix += style_list[style_index].HTML()  # 那么就直接给这个字符的前缀添加
-            else:  # 开始根据前面的情况处理每种单独的标签
+            if style_list[style_index - 1].show:  # 开始根据前面的情况处理每种单独的标签
                 if not style_list[style_index - 1].same_font(style_list[style_index]):
                     style_list[style_index - 1].suffix += style_list[style_index - 1].HTML_font(suffix=True)
                     style_list[style_index].prefix += style_list[style_index].HTML_font()
@@ -324,17 +325,17 @@ def decode_text2HTML(text: str,
                 if not style_list[style_index - 1].same_italic(style_list[style_index]):
                     style_list[style_index - 1].suffix += style_list[style_index - 1].HTML_italic(suffix=True)
                     style_list[style_index].prefix += style_list[style_index].HTML_italic()
-        else:  # 如果这个字符不显示
-            if style_list[style_index - 1].show:  # 如果前面一个字符显示(且这个字符不显示)
-                style_list[style_index - 1].suffix += style_list[style_index - 1].HTML(suffix=True)
-            # 如果前面一个字符也不显示那就直接 pass
+            else:  # 如果前面一个字符不显示(且这个字符显示)
+                style_list[style_index].prefix += style_list[style_index].HTML()  # 那么就直接给这个字符的前缀添加
+        elif style_list[style_index - 1].show:  # 如果前面一个字符显示(且这个字符不显示)
+            style_list[style_index - 1].suffix += style_list[style_index - 1].HTML(suffix=True)
     if style_list[-1].show:
         style_list[-1].suffix += style_list[-1].HTML(suffix=True)
 
-    # 输出最终的 HTML 文本
-    formatted_HTML_text = ''  # 初始化一下
-    for style in style_list:  # 每一个样式
-        if style.show:  # 如果这个字符显示
-            formatted_HTML_text += style.prefix + style.text + style.suffix  # 文本的后面附加一下
+    formatted_HTML_text = ''.join(
+        style.prefix + style.text + style.suffix
+        for style in style_list
+        if style.show
+    )
     del style_list  # 主动删掉 style_list 释放内存
     return formatted_HTML_text  # 返回，DONE！

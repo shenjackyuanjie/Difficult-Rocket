@@ -59,10 +59,10 @@ class Game:
         self.server = server.Server(net_mode='local')
 
     def python_version_check(self) -> None:  # best 3.8+ and write at 3.8.10
-        self.logger.info('{} {}'.format(tr['main']['version.now_on'], self.on_python_v))
+        self.logger.info(f"{tr['main']['version.now_on']} {self.on_python_v}")
         if self.on_python_v_info[0] == 2:
-            self.logger.critical('%s' % tr['main']['version.need3+'])
-            raise SystemError('%s' % tr['main']['version.need3+'])
+            self.logger.critical(f"{tr['main']['version.need3+']}")
+            raise SystemError(f"{tr['main']['version.need3+']}")
         elif self.on_python_v_info[1] < 8:
             warning = tools.name_handler(tr['main']['version.best3.8+'])
             self.logger.warning(warning)
@@ -75,7 +75,7 @@ class Game:
                 game_process = multiprocessing.Process(target=self.client.start(), name='pyglet app')
                 game_process.start()
                 game_process.join()
-            except:
+            except Exception:
                 return -1
             else:
                 return 1

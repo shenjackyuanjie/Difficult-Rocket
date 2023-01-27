@@ -10,6 +10,8 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
+
+import contextlib
 # import ctypes
 import sys
 import logging
@@ -72,14 +74,14 @@ class _DR_option(Options):
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
     def init(self, **kwargs):
-        if not sys.platform == 'darwin':  # MacOS 的测试只能在 Macos 上跑
+        if sys.platform != 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
             from libs.Difficult_Rocket_rs import test_call, get_version_str
             test_call(self)
             print(f'DR_rust available: {get_version_str()}')
         except ImportError:
-            if not __name__ == '__main__':
+            if __name__ != '__main__':
                 traceback.print_exc()
             self.DR_rust_available = False
         self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
@@ -119,15 +121,13 @@ class _DR_runtime(Options):
     default_language: str = 'zh-CN'
 
     def init(self, **kwargs) -> None:
-        try:
+        with contextlib.suppress(ImportError):
             from libs.Difficult_Rocket_rs import get_version_str
             self.DR_Rust_get_version = Version(get_version_str())
             if self.DR_Rust_get_version != self.DR_Rust_version:
                 relationship = 'larger' if self.DR_Rust_version > self.DR_Rust_get_version else 'smaller'
                 warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
-        except ImportError:
-            pass
 
     def __init__(self, **kwargs):
         self.__options = {'language': self.language}

@@ -76,9 +76,9 @@ class Client:
         self.process_pid = os.getpid()
         self.net_mode = net_mode
         self.caption = DR_runtime.format(self.config['window']['caption'])
-        file_drop = True
-        if pyglet.compat_platform == 'darwin' and not DR_option.pyglet_macosx_dev_test:
-            file_drop = False
+        file_drop = bool(
+            pyglet.compat_platform != 'darwin' or DR_option.pyglet_macosx_dev_test
+        )
         self.window = ClientWindow(net_mode=self.net_mode,
                                    width=int(self.config['window']['width']),
                                    height=int(self.config['window']['height']),
@@ -117,7 +117,7 @@ def _call_screen_after(func: Callable) -> Callable:
             if hasattr(a_screen, func.__name__):
                 try:
                     getattr(a_screen, func.__name__)(*args, **kwargs)
-                except:
+                except Exception:
                     traceback.print_exc()
         return result
 
@@ -132,7 +132,7 @@ def _call_screen_before(func: Callable) -> Callable:
             if hasattr(a_screen, func.__name__):
                 try:
                     getattr(a_screen, func.__name__)(*args, **kwargs)
-                except:
+                except Exception:
                     traceback.print_exc()
         result = func(self, *args, **kwargs)
         return result
@@ -354,13 +354,19 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_mouse_press(self, x, y, button, modifiers) -> None:
-        self.logger.debug(tr.lang('window', 'mouse.press').format([x, y], tr.lang('window', 'mouse.{}'.format(
-            mouse.buttons_string(button)))))
+        self.logger.debug(
+            tr.lang('window', 'mouse.press').format(
+                [x, y], tr.lang('window', f'mouse.{mouse.buttons_string(button)}')
+            )
+        )
 
     @_call_screen_after
     def on_mouse_release(self, x, y, button, modifiers) -> None:
-        self.logger.debug(tr.lang('window', 'mouse.release').format([x, y], tr.lang('window', 'mouse.{}'.format(
-            mouse.buttons_string(button)))))
+        self.logger.debug(
+            tr.lang('window', 'mouse.release').format(
+                [x, y], tr.lang('window', f'mouse.{mouse.buttons_string(button)}')
+            )
+        )
 
     @_call_screen_after
     def on_key_press(self, symbol, modifiers) -> None:

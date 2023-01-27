@@ -71,7 +71,7 @@ class Options:
         if hasattr(self, 'load_file'):
             try:
                 self.load_file()
-            except:
+            except Exception:
                 traceback.print_exc()
         self.flush_option()
 
@@ -138,7 +138,7 @@ class Options:
         max_len_value_t = 1
         option_list = []
         for key, value in options.items():
-            value_t = type(value) if not isinstance(value, Type) else value
+            value_t = value if isinstance(value, Type) else type(value)
             max_len_key = max(max_len_key, len(key))
             max_len_value = max(max_len_value, len(str(value)))
             max_len_value_t = max(max_len_value_t, len(str(value_t)))
@@ -154,8 +154,7 @@ class Options:
 
     @staticmethod
     def init_option(options_class: 'Options'.__class__, init_value: Optional[dict] = None) -> 'Options':
-        options_class_instance = options_class(**init_value if init_value is not None else {})
-        return options_class_instance
+        return options_class(**init_value if init_value is not None else {})
 
 
 class Fonts(Options):

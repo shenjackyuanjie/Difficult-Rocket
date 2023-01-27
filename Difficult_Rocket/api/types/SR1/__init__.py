@@ -118,9 +118,7 @@ class SR1PartTexture:
 
     @classmethod
     def get_textures_from_type(cls, name: str) -> Union[None, str]:
-        if name not in cls.part_type_sprite:
-            return None
-        return cls.part_type_sprite[name]
+        return None if name not in cls.part_type_sprite else cls.part_type_sprite[name]
 
 
 class SR1Rotation(Options):
@@ -145,15 +143,8 @@ def xml_bool(bool_like: Union[str, int, bool, None]) -> bool:
     if isinstance(bool_like, bool):
         return bool_like
     if isinstance(bool_like, int):
-        if bool_like == 0:
-            return False
-        else:
-            return True
-    if bool_like == '0':
-        return False
-    if bool_like.lower() == 'false':
-        return False
-    return True
+        return bool_like != 0
+    return False if bool_like == '0' else bool_like.lower() != 'false'
 
 #
 #
