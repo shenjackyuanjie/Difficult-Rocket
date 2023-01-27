@@ -1,12 +1,3 @@
-[tool.poetry]
-name = "difficult-rocket"
-version = "0.6.5.0"
-description = "A rocket game"
-authors = ["shenjackyuanjie <3695888@qq.com>"]
-license = "CC-BY-NA-SA 4.0"
-readme = "README.md"
-packages = [{include = "difficult_rocket"}]
-
 [tool.poetry.dependencies]
 python = ">=3.8"
 psutil = "^5.9.3"
@@ -21,30 +12,37 @@ Cython = "^0.29.32"
 defusedxml = "*"
 
 
+
+[tool.pdm.build]
+includes = ["difficult_rocket"]
 [build-system]
-requires = ["setuptools>=61",
-            "wheel",
-            "nuitka",
-            "imageio",
-            "setuptools-rust"]
-build-backend = "nuitka.distutils.Build"
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
 
 [project]
-name = 'Difficult_Rocket'
-dynamic = ['version']
+name = "difficult-rocket"
+version = "0.7.0.0"
+description = "A rocket game"
 authors = [
-    {name = 'shenjackyuanjie', email = '3695888@qq.com'}
+    {name = "shenjackyuanjie", email = "3695888@qq.com"},
+    {name = "shenjackyuanjie",email = "3695888@qq.com"},
 ]
-description = 'A rocket simlater'
-readme = 'README.md'
-requires-python = '>=3.8'
-license = {text = 'CC BY-NC-SA 4.0'}
 dependencies = [
-    'nuitka=1.3.x',
-    'psutil=5.9.x',
-    'defusedxml=0.7.x',
-    'rtoml=0.9.x',
-    'tomlkit=0.11.x',
-    'Pillow',
-    'pymunk'
+    "psutil<6.0.0,>=5.9.3",
+    "objprint<1.0.0,>=0.2.2",
+    "Pillow<10.0.0,>=9.2.0",
+    "tomlkit<1.0.0,>=0.11.6",
+    "rtoml<1.0.0,>=0.8.0",
+    "setuptools<66.0.0,>=65.5.0",
+    "viztracer<1.0.0,>=0.15.4",
+    "vizplugins<1.0.0,>=0.1.2",
+    "Cython<1.0.0,>=0.29.32",
+    "defusedxml",
+    "nuitka>=1.4",
+    "pymunk>=6.4.0",
 ]
+requires-python = ">=3.8"
+license = {text = "CC-BY-NA-SA 4.0"}
+readme = "README.md"
+
+[project.urls]

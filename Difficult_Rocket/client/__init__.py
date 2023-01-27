@@ -53,10 +53,14 @@ class ClientOption(Options):
     resizeable: bool = True
     visible: bool = True
     gui_scale: float = 1.0
-    caption: str = "Difficult Rocket {version}"
+    caption: str = "Difficult Rocket v{DR_version}|DR_rs v{DR_Rust_get_version}"
 
     def load_file(self) -> None:
-        ...
+        file = tools.load_file('./configs/main.toml')
+        self.fps = file['runtime']['fps']
+        self.width = file['window']['width']
+        self.height = file['window']['height']
+        self.visible =
 
 
 class Client:
