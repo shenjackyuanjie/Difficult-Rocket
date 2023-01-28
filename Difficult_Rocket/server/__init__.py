@@ -22,7 +22,7 @@ from Difficult_Rocket.utils.translate import tr
 # from Difficult_Rocket.utils.new_thread import new_thread
 
 
-# TODO 改变服务端启动逻辑 0.6.0会写完的（
+# TODO 改变服务端启动逻辑 0.6.0(划掉 0.8.0)会写完的（
 
 
 class Server:

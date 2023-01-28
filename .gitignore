@@ -4,6 +4,9 @@
 DR.code-workspace
 trytry/
 
+#pdm files
+__pypackages__
+
 # nuitka build
 build/
 .github/workflows/env.ps1

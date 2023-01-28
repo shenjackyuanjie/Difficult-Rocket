@@ -27,7 +27,6 @@ from typing import Optional, TextIO
 #  where the crash report from
 #  this can't be crash , or the game will really crash!
 
-# TODO 写完它
 import Difficult_Rocket
 
 Head_message = """# ----- Difficult Rocket Crash Report -----
@@ -61,7 +60,8 @@ def crash_info_handler(info: str = None) -> str:
     return format_info
 
 
-def markdown_line_handler(string: Optional[str or bool or int or float], code: bool = False, level: int = 1, end: str = '\n') -> str:
+def markdown_line_handler(string: Optional[str or bool or int or float], code: bool = False, level: int = 1,
+                          end: str = '\n') -> str:
     lvl = '- ' * level
     f_string = string
     if code:
@@ -81,7 +81,8 @@ def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
     crash_file.write(f'|:{"-" * (a_len + 3)}|:{"-" * (b_len + 3)}|:{"-" * (c_len + 3)}|\n')
     for a, b, c in tablet[0]:
         b, c = str(b), str(c)
-        crash_file.write(f'| `{a}`{" " * (a_len - len(a))} | `{b}`{" " * (b_len - len(b))} | `{c}`{" " * (c_len - len(c))} |\n')
+        crash_file.write(
+            f'| `{a}`{" " * (a_len - len(a))} | `{b}`{" " * (b_len - len(b))} | `{c}`{" " * (c_len - len(c))} |\n')
 
 
 def create_crash_report(info: str = None) -> None:
@@ -156,7 +157,7 @@ def _extracted_from_create_crash_report_10(cache_stream, crash_info):
 def _extracted_from__extracted_from_create_crash_report_10_19(arg0, cache_stream, arg2):
     result = arg0.option_with_len()
     write_markdown_tablet(crash_file=cache_stream, tablet=result)
-        # # DR 的游戏设置
+    # # DR 的游戏设置
     cache_stream.write(arg2)
     return result
 
