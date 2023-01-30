@@ -60,8 +60,9 @@ class ClientOption(Options):
         self.fps = file['runtime']['fps']
         self.width = file['window']['width']
         self.height = file['window']['height']
-        self.resizeable = file['window']['resizable']
         self.fullscreen = file['window']['full_screen']
+        self.resizeable = file['window']['resizable']
+        self.gui_scale = file['window']['gui_scale']
 
 
 class Client:

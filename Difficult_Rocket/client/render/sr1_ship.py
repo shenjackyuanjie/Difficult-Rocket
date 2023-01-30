@@ -4,6 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
+import time
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional
@@ -132,6 +133,7 @@ class SR1ShipRender(BaseScreen):
     def render_ship(self):
         if self.textures is None:
             self.load_textures()
+        start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.dx = 0
@@ -175,6 +177,8 @@ class SR1ShipRender(BaseScreen):
             print(type(self.part_data))
             self.rust_parts = PartDatas(self.part_data)
             # print(self.rust_parts.get_rust_pointer())
+        print(len(self.part_data))
+        print(time.perf_counter_ns() - start_time)
         self.rendered = True
 
     def update_parts(self) -> bool:

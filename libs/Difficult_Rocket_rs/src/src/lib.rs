@@ -32,5 +32,6 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(test_call, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_render::better_update_parts, m)?)?;
     m.add_class::<sr1_render::types::PartDatas>()?;
+    m.add_class::<render::camera::CameraRs>()?;
     Ok(())
 }
