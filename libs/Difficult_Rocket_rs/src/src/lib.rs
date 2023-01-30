@@ -7,12 +7,13 @@
  */
 
 mod sr1_render;
+mod render;
 
 use pyo3::prelude::*;
 
 #[pyfunction]
 fn get_version_str() -> String {
-    return String::from("0.1.2.0");
+    return String::from("0.1.3.0");
 }
 
 #[pyfunction]
