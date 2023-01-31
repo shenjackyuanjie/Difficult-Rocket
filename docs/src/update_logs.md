@@ -32,6 +32,8 @@
       - ( Python 原生的 for 循环真慢 )
   - `PartDatas`
     - 用于在 `PyObj` 里  暗 渡 陈 仓  装 `HashMap<uszie, SR1PartData>`
+  - `Camera_rs`
+    - 用于闲的没事在 rust 里写个 camera
 
 ### 命令
 
@@ -39,6 +41,10 @@
 - `render`
   - `reset`
     - 用于重置现在这艘船的渲染 (避免你玩着玩着把船玩道不知道什么地方去了)
+
+### 优化
+
+- 继续优化未实装的 `Translates`
 
 ## 20230120 V 0.6.5.0
 

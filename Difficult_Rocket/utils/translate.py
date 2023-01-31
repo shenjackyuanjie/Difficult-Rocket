@@ -29,8 +29,9 @@ class TranslateConfig:
     is_final: bool = False  # 是否为最终内容
     keep_get: bool = True  # 引用错误后是否继续引用
     always_copy: bool = False  # 是否一直新建 Translate (为 True 会降低性能)
+    source: Optional[Union["Tr", "Translates"]] = None  # 翻译来源 (用于默认翻译)
 
-    def set(self, item: str, value: bool) -> 'TranslateConfig':
+    def set(self, item: str, value: Union[bool, "Tr", "Translates"]) -> 'TranslateConfig':
         assert getattr(self, item, None) is not None, f'Config {item} is not in TranslateConfig'
         assert type(value) is bool
         setattr(self, item, value)
@@ -42,7 +43,8 @@ class TranslateConfig:
                                insert_crack=self.insert_crack,
                                is_final=self.is_final,
                                keep_get=self.keep_get,
-                               always_copy=self.always_copy)
+                               always_copy=self.always_copy,
+                               source=self.source)
 
     def copy(self) -> 'TranslateConfig':
         return self.__copy__()
@@ -90,9 +92,14 @@ class Translates:
             raise_info = f"{self.name} Cause a error when getting {item} {frame}"
             print(raise_info)
 
-    def __getitem__(self, item: key_type) -> "Translates":
+    def __getitem__(self, item: Union[key_type, List[key_type], Tuple[key_type]]) -> "Translates":
         try:
-            cache_value = self.value[item]
+            if isinstance(item, (str, int, Hashable)):
+                cache_value = self.value[item]
+            else:
+                cache_value = self.value
+                for a_item in item:
+                    cache_value = cache_value[a_item]
             if isinstance(cache_value, (int, str,)):
                 self.config.is_final = True
             self.get_list.append((True, item))
@@ -105,6 +112,12 @@ class Translates:
             self._raise_no_value(e, item)
             if not self.config.keep_get:
                 self.config.is_final = True
+
+    def __call__(self, *args, **kwargs):
+        if len(self.get_list) == 0:
+            return self
+        if any([x[0] for x in self.get_list]):
+            return
 
     def copy(self):
         return self.__copy__()
@@ -137,13 +150,25 @@ class Tr:
         :param config: 配置
         """
         self.language_name = language or DR_runtime.language
-        self.translates: Dict[str,] = tools.load_file(f'configs/lang/{self.language_name}.toml')
+        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
-        self.default_config = config or TranslateConfig()
-        self.translates_cache = Translates(value=self.translates, config=TranslateConfig().copy())
+        self.default_config = config.set('source', self) or TranslateConfig(source=self)
+        self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
+
+    def default(self, items: Union[str, List[str]]) -> Translates:
+        if isinstance(items, list):
+            cache_translate = self.default_translate
+            for item in items:
+                cache_translate = cache_translate[item]
+            return cache_translate
+        else:
+            return self.default_translate[items]
+
+    def lang(self, *items):
+        return self.__getattr__(items)
 
     def __getattr__(self, item) -> Translates:
-        ...
+        return self.translates_cache[item]
 
     def __getitem__(self, item: Union[str, int]):
         return self.__getattr__(item)
@@ -217,5 +242,6 @@ class Lang:
 
 if __name__ == '__main__':
     tr_ = Tr()
+
 else:
     tr = Lang()

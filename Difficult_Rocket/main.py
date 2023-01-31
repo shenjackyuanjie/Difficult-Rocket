@@ -23,6 +23,7 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin')
 
 from Difficult_Rocket import client, server, DR_option
+
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
 

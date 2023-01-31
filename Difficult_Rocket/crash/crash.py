@@ -93,7 +93,7 @@ def create_crash_report(info: str = None) -> None:
     filename = f'crash-{date_time}.md'
     cache_stream = io.StringIO()
     try:
-        _extracted_from_create_crash_report_10(cache_stream, crash_info)
+        write_cache(cache_stream, crash_info)
     finally:
         get_cache = cache_stream.getvalue()
         cache_stream.close()
@@ -101,8 +101,7 @@ def create_crash_report(info: str = None) -> None:
         crash_file.write(get_cache)
 
 
-# TODO Rename this here and in `create_crash_report`
-def _extracted_from_create_crash_report_10(cache_stream, crash_info):
+def write_cache(cache_stream, crash_info):
     # 开头信息
     cache_stream.write(Head_message.format(now_time=time.strftime('%Y/%m/%d %H:%M:%S', time.gmtime(time.time()))))
     # 崩溃信息
@@ -113,16 +112,8 @@ def _extracted_from_create_crash_report_10(cache_stream, crash_info):
     cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
     cache_stream.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
     cache_stream.write(markdown_line_handler(f'Running Dir: {Path(os.curdir).resolve()}', level=1))
-    option_with_len = (
-        _extracted_from__extracted_from_create_crash_report_10_19(
-            DR_runtime, cache_stream, DR_configs
-        )
-    )
-    option_with_len = (
-        _extracted_from__extracted_from_create_crash_report_10_19(
-            DR_option, cache_stream, Process_message
-        )
-    )
+    write_options(DR_runtime, cache_stream, DR_configs)
+    write_options(DR_option, cache_stream, Process_message)
     for process in all_process:
         process: multiprocessing.Process
         cache_stream.write(markdown_line_handler(f'{process.name}', code=True))
@@ -153,13 +144,11 @@ def _extracted_from_create_crash_report_10(cache_stream, crash_info):
     cache_stream.write(markdown_line_handler(f'version: {to_code(platform.version())}', level=1))
 
 
-# TODO Rename this here and in `create_crash_report`
-def _extracted_from__extracted_from_create_crash_report_10_19(arg0, cache_stream, arg2):
+def write_options(arg0, cache_stream, arg2):
     result = arg0.option_with_len()
     write_markdown_tablet(crash_file=cache_stream, tablet=result)
     # # DR 的游戏设置
     cache_stream.write(arg2)
-    return result
 
 
 if __name__ == '__main__':
