@@ -53,10 +53,14 @@ pub mod camera {
         }
 
         #[allow(unused_variables)]
-        pub fn start(&self) -> PyResult<()> {
-            let view = self.get_view()?;
+        pub fn begin(&self) -> PyResult<()> {
             Python::with_gil(|py| -> PyResult<()> {
-
+                let view = self.window.getattr(py, intern!(py, "view"))?;
+                let args = (-self.dx * self.zoom, -self.dy * self.zoom, 0);
+                let view_matrix = view.call_method1(py, intern!(py, "translate"), args)?;
+                let args = (self.zoom, self.zoom, 1);
+                let view_matrix = view_matrix.call_method1(py, intern!(py, "scale"), args)?;
+                self.window.setattr(py, intern!(py, "view"), view_matrix)?;
                 Ok(())
             })?;
             return Ok(())
@@ -64,7 +68,15 @@ pub mod camera {
 
         #[allow(unused_variables)]
         pub fn end(&self) -> PyResult<()> {
-            let view = self.get_view()?;
+            Python::with_gil(|py| -> PyResult<()> {
+                let view = self.window.getattr(py, intern!(py, "view"))?;
+                let args = (1.0 / self.zoom, 1.0 / self.zoom, 1);
+                let view_matrix = view.call_method1(py, intern!(py, "scale"), args)?;
+                let args = (self.dx * self.zoom, self.dy * self.zoom, 0);
+                let view_matrix = view_matrix.call_method1(py, intern!(py, "translate"), args)?;
+                self.window.setattr(py, intern!(py, "view"), view_matrix)?;
+                Ok(())
+            })?;
             return Ok(())
         }
 
@@ -72,11 +84,11 @@ pub mod camera {
         /// https://github.com/PyO3/pyo3/issues/1205#issuecomment-1164096251 for advice on `__enter__`
         pub fn __enter__(py_self: PyRef<Self>) -> PyResult<PyRef<Self>> {
             // println!("enter!");
-            py_self.start()?;
+            py_self.begin()?;
             Ok(py_self)
         }
 
-        pub fn __exit__(&mut self, _exc_type: PyObject, _exc_value: PyObject, _traceback: PyObject) -> PyResult<()>{
+        pub fn __exit__(&self, _exc_type: PyObject, _exc_value: PyObject, _traceback: PyObject) -> PyResult<()>{
             // println!("exit!");
             self.end()?;
             return Ok(())

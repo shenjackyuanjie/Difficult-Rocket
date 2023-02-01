@@ -21,6 +21,8 @@
 
 ### 啊哈！ 现在真就是 0.7 了
 
+毕竟加了一整个 `DR_rs`
+
 ### Add
 
 - `libs.Difficult_Rocket_rs` (`DR_rs`) `0.1.0.0`
