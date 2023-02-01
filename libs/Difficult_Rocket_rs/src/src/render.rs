@@ -29,7 +29,7 @@ pub mod camera {
     impl CameraRs {
         #[new]
         #[allow(unused_variables)]
-        #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0,min_zoom=1.0, max_zoom=1.0))]
+        #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0, min_zoom=1.0, max_zoom=1.0))]
         pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64,min_zoom: f64, max_zoom: f64) -> PyResult<Self> {
             return Ok(CameraRs {dx, dy, zoom, min_zoom, max_zoom,
                                 window: window.into()})
@@ -39,6 +39,17 @@ pub mod camera {
             Ok(Python::with_gil(|py| -> PyResult<PyObject> {
                 Ok(self.window.getattr(py, intern!(py, "view"))?)
             })?)
+        }
+
+        #[getter]
+        pub fn get_position(&self) -> (f64, f64) {
+            return (self.dx, self.dy)
+        }
+
+        #[setter]
+        pub fn set_position(&mut self, value: (f64, f64)) -> () {
+            self.dx = value.0;
+            self.dy = value.1;
         }
 
         #[getter]
@@ -52,28 +63,32 @@ pub mod camera {
             Ok(())
         }
 
-        #[allow(unused_variables)]
         pub fn begin(&self) -> PyResult<()> {
             Python::with_gil(|py| -> PyResult<()> {
                 let view = self.window.getattr(py, intern!(py, "view"))?;
-                let args = (-self.dx * self.zoom, -self.dy * self.zoom, 0);
+
+                let args = ((-self.dx * self.zoom, -self.dy * self.zoom, 0), );
                 let view_matrix = view.call_method1(py, intern!(py, "translate"), args)?;
-                let args = (self.zoom, self.zoom, 1);
+
+                let args = ((self.zoom, self.zoom, 1), );
                 let view_matrix = view_matrix.call_method1(py, intern!(py, "scale"), args)?;
+
                 self.window.setattr(py, intern!(py, "view"), view_matrix)?;
                 Ok(())
             })?;
             return Ok(())
         }
 
-        #[allow(unused_variables)]
         pub fn end(&self) -> PyResult<()> {
             Python::with_gil(|py| -> PyResult<()> {
                 let view = self.window.getattr(py, intern!(py, "view"))?;
-                let args = (1.0 / self.zoom, 1.0 / self.zoom, 1);
+
+                let args = ((1.0 / self.zoom, 1.0 / self.zoom, 1), );
                 let view_matrix = view.call_method1(py, intern!(py, "scale"), args)?;
-                let args = (self.dx * self.zoom, self.dy * self.zoom, 0);
+
+                let args = ((self.dx * self.zoom, self.dy * self.zoom, 0), );
                 let view_matrix = view_matrix.call_method1(py, intern!(py, "translate"), args)?;
+
                 self.window.setattr(py, intern!(py, "view"), view_matrix)?;
                 Ok(())
             })?;

@@ -116,19 +116,15 @@ pub mod types {
 #[pyfunction]
 #[allow(unused_variables)]
 pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
-                           parts: &types::PartDatas,
-                           global_scale: f64, sr1_xml_scale: i32) -> PyResult<bool> {
+                           parts: &types::PartDatas, sr1_xml_scale: i32) -> PyResult<bool> {
     if !render.getattr(intern!(render.py(), "rendered"))?.is_true()? {
         return Ok(false);
     }
     let start_time = time::Instant::now();
-    let dx: f64 = render.getattr(intern!(render.py(), "dx"))?.extract()?;
-    let dy: f64 = render.getattr(intern!(render.py(), "dy"))?.extract()?;
     let x_center: f32 = window.getattr(intern!(window.py(), "width"))?.extract()?;
     let y_center: f32 = window.getattr(intern!(window.py(), "height"))?.extract()?;
     let x_center: f32 = x_center / 2.0;
     let y_center: f32 = y_center / 2.0;
-    let render_scale: f32 = render.getattr(intern!(render.py(), "scale"))?.extract()?;
     let datas: &HashMap<i64, SR1PartData> = &parts.part_structs;
     let part_sprites = render.getattr(intern!(render.py(), "parts_sprite"))?;
     // let part_sprites: &PyDict = part_sprites.downcast::<PyDict>()?;
@@ -138,12 +134,10 @@ pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
     for keys in datas {
         // let index = keys.0.to_string();
         let sprite = part_sprites.get_item(keys.0)?;
-        let new_x: f64 = keys.1.x * global_scale * render_scale as f64 * sr1_xml_scale as f64 + x_center as f64 + dx;
-        let new_y: f64 = keys.1.y * global_scale * render_scale as f64 * sr1_xml_scale as f64 + y_center as f64 + dy;
-        let new_scale: f32 = render_scale * global_scale as f32;
+        let new_x: f64 = keys.1.x * sr1_xml_scale as f64 + x_center as f64;
+        let new_y: f64 = keys.1.y * sr1_xml_scale as f64 + y_center as f64;
         sprite.setattr(intern!(sprite.py(), "x"), new_x)?;
         sprite.setattr(intern!(sprite.py(), "y"), new_y)?;
-        sprite.setattr(intern!(sprite.py(), "scale"), new_scale)?;
         // part_sprites.set_item(keys.0, sprite)?;
         // println!("{}", keys.0);
     }

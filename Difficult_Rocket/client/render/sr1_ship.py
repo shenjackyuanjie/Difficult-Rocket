@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_option.use_DR_rust:
-    from libs.Difficult_Rocket_rs import better_update_parts, PartDatas
+    from libs.Difficult_Rocket_rs import better_update_parts, PartDatas, Camera_rs
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -116,6 +116,7 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
+            self.camera_rs = Camera_rs(main_window)
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -136,9 +137,9 @@ class SR1ShipRender(BaseScreen):
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        self.scale = 1.0
         self.dx = 0
         self.dy = 0
-        self.scale = 1.0
         parts = self.xml_root.find('Parts')
         for part_xml in parts:
             if part_xml.tag != 'Part':
@@ -153,8 +154,8 @@ class SR1ShipRender(BaseScreen):
             render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
-            render_x = part.x * render_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
-            render_y = part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
+            render_x = part.x * render_scale * self.scale * 60 + self.window_pointer.width / 2
+            render_y = part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y,
@@ -197,8 +198,8 @@ class SR1ShipRender(BaseScreen):
                                        self.rust_parts, DR_option.gui_scale, 60)
         for part_id in self.part_data:
             # x y scale
-            self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2 + self.dx
-            self.parts_sprite[part_id].y = self.part_data[part_id].y * DR_option.gui_scale * self.scale * 60 + self.window_pointer.height / 2 + self.dy
+            self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2
+            self.parts_sprite[part_id].y = self.part_data[part_id].y * DR_option.gui_scale * self.scale * 60 + self.window_pointer.height / 2
             self.parts_sprite[part_id].scale = self.scale * DR_option.gui_scale
         self.need_update_parts = False
 
@@ -208,7 +209,11 @@ class SR1ShipRender(BaseScreen):
         if self.need_update_parts:
             self.update_parts()
             self.need_update_parts = False
+        if DR_option.use_DR_rust:
+            self.camera_rs.begin()
         self.part_batch.draw()
+        if DR_option.use_DR_rust:
+            self.camera_rs.end()
         self.debug_label.draw()
         if SR1ShipRender_Option.debug_d_pos:
             self.debug_line.draw()
