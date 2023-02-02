@@ -25,8 +25,8 @@ pub mod camera {
         pub min_zoom: f64,
     }
 
-    #[pyclass(extends = CameraRs, name = "CenterCamera_rs")]
-    pub struct CenterCameraRs;
+    // #[pyclass(extends = CameraRs, name = "CenterCamera_rs")]
+    // pub struct CenterCameraRs;
 
     #[pymethods]
     impl CameraRs {
@@ -70,7 +70,12 @@ pub mod camera {
             Python::with_gil(|py| -> PyResult<()> {
                 let view = self.window.getattr(py, intern!(py, "view"))?;
 
-                let args = ((self.dx * self.zoom, self.dy * self.zoom, 0), );
+                let x: f64 = self.window.getattr(py, intern!(py, "width"))?.extract(py)?;
+                let y: f64 = self.window.getattr(py, intern!(py, "height"))?.extract(py)?;
+                let x: f64 = x / 2.0 / self.zoom + (self.dx / self.zoom);
+                let y: f64 = y / 2.0 / self.zoom + (self.dy / self.zoom);
+
+                let args = ((x * self.zoom, y * self.zoom, 0), );
                 let view_matrix = view.call_method1(py, intern!(py, "translate"), args)?;
 
                 let args = ((self.zoom, self.zoom, 1), );
@@ -86,10 +91,15 @@ pub mod camera {
             Python::with_gil(|py| -> PyResult<()> {
                 let view = self.window.getattr(py, intern!(py, "view"))?;
 
+                let x: f64 = self.window.getattr(py, intern!(py, "width"))?.extract(py)?;
+                let y: f64 = self.window.getattr(py, intern!(py, "height"))?.extract(py)?;
+                let x: f64 = x / 2.0 / self.zoom + (self.dx / self.zoom);
+                let y: f64 = y / 2.0 / self.zoom + (self.dy / self.zoom);
+
                 let args = ((1.0 / self.zoom, 1.0 / self.zoom, 1), );
                 let view_matrix = view.call_method1(py, intern!(py, "scale"), args)?;
 
-                let args = ((-self.dx * self.zoom, -self.dy * self.zoom, 0), );
+                let args = ((-x * self.zoom, -y * self.zoom, 0), );
                 let view_matrix = view_matrix.call_method1(py, intern!(py, "translate"), args)?;
 
                 self.window.setattr(py, intern!(py, "view"), view_matrix)?;

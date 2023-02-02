@@ -63,9 +63,9 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
 
 class _SR1ShipRender_Option(Options):
     # debug option
-    debug_d_pos: bool = False
-    debug_mouse_pos: bool = False
-    debug_mouse_d_pos: bool = False
+    debug_d_pos: bool = True
+    debug_mouse_pos: bool = True
+    debug_mouse_d_pos: bool = True
 
 
 SR1ShipRender_Option = _SR1ShipRender_Option()
@@ -111,8 +111,7 @@ class SR1ShipRender(BaseScreen):
         self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_option.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
-                                 anchor_x='left', anchor_y='top',
-                                 batch=self.part_batch)
+                                 anchor_x='left', anchor_y='top')
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
@@ -138,7 +137,7 @@ class SR1ShipRender(BaseScreen):
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
-        self.scale = 1.0
+        self.camera_rs.zoom = 1.0
         if DR_option.use_DR_rust:
             self.camera_rs.dx = 0
             self.camera_rs.dy = 0
@@ -187,10 +186,10 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
-        self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (self.window_pointer.width / 2), self.dy + (
+        self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
                     self.window_pointer.height / 2)
         self.debug_d_pos_label.text = f'x: {self.camera_rs.dx} y: {self.camera_rs.dy}'
-        self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.dy + (
+        self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
                     self.window_pointer.height / 2) + 10, 0
         # if DR_option.use_DR_rust:
         #     # print(f'{self.dx=} {self.dy=} {self.scale=}')
@@ -210,11 +209,8 @@ class SR1ShipRender(BaseScreen):
         if self.need_update_parts:
             self.update_parts()
             self.need_update_parts = False
-        if DR_option.use_DR_rust:
-            self.camera_rs.begin()
-        self.part_batch.draw()
-        if DR_option.use_DR_rust:
-            self.camera_rs.end()
+        with self.camera_rs:
+            self.part_batch.draw()
         self.debug_label.draw()
         if SR1ShipRender_Option.debug_d_pos:
             self.debug_line.draw()
@@ -259,7 +255,7 @@ class SR1ShipRender(BaseScreen):
     def on_command(self, command: CommandText):
         if command.re_match('render'):
             if command.re_match('reset'):
-                self.scale = 1
+                self.camera_rs.zoom = 1
                 self.camera_rs.dx = 0
                 self.camera_rs.dy = 0
             else:

@@ -60,5 +60,5 @@ if TYPE_CHECKING:
         def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
 
 
-    class CenterCamera_rs(Camera_rs):
-        """ 用于依旧闲的没事 用 rust 写一个中央对齐的 camera """
+    # class CenterCamera_rs(Camera_rs):
+    #     """ 用于依旧闲的没事 用 rust 写一个中央对齐的 camera """
