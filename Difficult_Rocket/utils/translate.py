@@ -83,9 +83,15 @@ class Translates:
         elif DR_option.report_translate_not_found:
             frame = inspect.currentframe()
             if frame is not None:
-                frame = frame.f_back
-                if frame.f_back.f_code is not self.__getattr__.__code__:
-                    frame = frame.f_back
+                frame = frame.f_back.f_back
+                code_list = [self.__getitem__.__code__, self.__getattr__.__code__,
+                             self.__copy__.__code__, self.copy.__code__,
+                             Tr.lang.__code__, Tr.__getitem__.__code__,
+                             Tr.__call__.__code__]  # 调用堆栈上的不需要的东西
+                while True:
+                    if frame.f_code not in code_list:  # 直到调用堆栈不是不需要的东西
+                        break
+                    frame = frame.f_back  # 继续向上寻找
                 frame = f'call at {frame.f_code.co_filename}:{frame.f_lineno}'
             else:
                 frame = 'but No Frame environment'
@@ -123,9 +129,11 @@ class Translates:
         return self.__copy__()
 
     def __copy__(self) -> 'Translates':
-        return Translates(value=self.value, config=self.config, get_list=self.get_lists)
+        return Translates(value=self.value, config=self.config, get_list=self.get_list)
 
     def __getattr__(self, item: key_type) -> "Translates":
+        if self.config.is_final and hasattr(self.value, item):
+            return getattr(self.value, item)
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
         return self.__getitem__(item)
 
@@ -149,10 +157,10 @@ class Tr:
         :param language: Tr 所使用的的语言
         :param config: 配置
         """
-        self.language_name = language or DR_runtime.language
+        self.language_name = language if language is not None else DR_runtime.language
         self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
-        self.default_config = config.set('source', self) or TranslateConfig(source=self)
+        self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
 
     def default(self, items: Union[str, List[str]]) -> Translates:
@@ -165,13 +173,16 @@ class Tr:
             return self.default_translate[items]
 
     def lang(self, *items):
-        return self.__getattr__(items)
+        cache = self.translates_cache.copy()
+        for item in items:
+            cache = cache[item]
+        return cache
 
-    def __getattr__(self, item) -> Translates:
-        return self.translates_cache[item]
+    def __getitem__(self, item: Union[str, int]) -> Translates:
+        return self.translates_cache.copy()[item]
 
-    def __getitem__(self, item: Union[str, int]):
-        return self.__getattr__(item)
+    def __call__(self, *args, **kwargs) -> Translates:
+        return self.translates_cache.copy()
 
 
 class Lang:
@@ -242,6 +253,6 @@ class Lang:
 
 if __name__ == '__main__':
     tr_ = Tr()
+    tr_().window.xxxx
 
-else:
-    tr = Lang()
+tr = Tr()

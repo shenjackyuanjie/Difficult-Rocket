@@ -28,9 +28,11 @@ build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
 DR_rust_version = Version("0.1.7.0")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
-long_version: int = 11
+long_version: int = 12
 """
 long_version: 一个用于标记内部协议的整数
+12: 去除 DR_runtime 的 global_logger
+    要 logging 自己拿去（
 11: 为 DR_option  添加 use_DR_rust
     修复了一些拼写错误
 10: 为 DR_runtime 添加 DR_Rust_get_version
@@ -114,7 +116,7 @@ class _DR_runtime(Options):
     server_setup_cause_ns: int = None
 
     # game runtimes
-    global_logger: logging.Logger
+    # global_logger: logging.Logger
 
     # game options
     _language = 'zh-CN'
