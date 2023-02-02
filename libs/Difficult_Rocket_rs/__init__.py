@@ -6,7 +6,7 @@
 
 from .lib import *
 
-from typing import TYPE_CHECKING, Dict
+from typing import TYPE_CHECKING, Dict, Tuple
 
 if TYPE_CHECKING:
     from Difficult_Rocket.client.screen import BaseScreen
@@ -29,7 +29,6 @@ if TYPE_CHECKING:
                             option: SR1ShipRender_Option,
                             window: BaseScreen,
                             parts: PartDatas,
-                            global_scale: float,
                             sr1_xml_scale: int) -> bool: ...
 
     class Camera_rs:
@@ -40,6 +39,18 @@ if TYPE_CHECKING:
                     min_zoom: float = 1.0,
                     max_zoom: float = 1.0): ...
 
+        @property
+        def dx(self) -> float: ...
+
+        @property
+        def dy(self) -> float: ...
+
+        @property
+        def zoom(self) -> float: ...
+
+        @property
+        def position(self) -> Tuple[float, float]: ...
+
         def begin(self) -> None: ...
 
         def end(self) -> None: ...
@@ -47,3 +58,7 @@ if TYPE_CHECKING:
         def __enter__(self, window) -> None: ...
 
         def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
+
+
+    class CenterCamera_rs(Camera_rs):
+        """ 用于依旧闲的没事 用 rust 写一个中央对齐的 camera """

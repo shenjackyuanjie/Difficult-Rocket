@@ -116,7 +116,8 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
-            self.camera_rs = Camera_rs(main_window)
+            self.camera_rs = Camera_rs(main_window,
+                                       min_zoom=(1/2) ** 4, max_zoom=1 << 5)
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -138,8 +139,9 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.scale = 1.0
-        self.dx = 0
-        self.dy = 0
+        if DR_option.use_DR_rust:
+            self.camera_rs.dx = 0
+            self.camera_rs.dy = 0
         parts = self.xml_root.find('Parts')
         for part_xml in parts:
             if part_xml.tag != 'Part':
@@ -151,11 +153,11 @@ class SR1ShipRender(BaseScreen):
                 print(f'hey! warning! id{part.id}')
             self.part_data[part.id] = part
             # 下面就是调用 pyglet 去渲染的部分
-            render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
+            # render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
-            render_x = part.x * render_scale * self.scale * 60 + self.window_pointer.width / 2
-            render_y = part.y * render_scale * self.scale * 60 + self.window_pointer.height / 2
+            render_x = part.x * 60 + self.window_pointer.width / 2
+            render_y = part.y * 60 + self.window_pointer.height / 2
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y,
@@ -185,22 +187,21 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
-        self.debug_line.x2, self.debug_line.y2 = self.dx + (self.window_pointer.width / 2), self.dy + (
+        self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (self.window_pointer.width / 2), self.dy + (
                     self.window_pointer.height / 2)
-        self.debug_d_pos_label.text = f'x: {self.dx} y: {self.dy}'
-        self.debug_d_pos_label.position = self.dx + (self.window_pointer.width / 2), self.dy + (
+        self.debug_d_pos_label.text = f'x: {self.camera_rs.dx} y: {self.camera_rs.dy}'
+        self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.dy + (
                     self.window_pointer.height / 2) + 10, 0
-        if DR_option.use_DR_rust:
-            # print(f'{self.dx=} {self.dy=} {self.scale=}')
-            # from objprint import op
-            # op(random.choices(self.parts_sprite), indent=1)
-            return better_update_parts(self, SR1ShipRender_Option, self.window_pointer,
-                                       self.rust_parts, DR_option.gui_scale, 60)
-        for part_id in self.part_data:
-            # x y scale
-            self.parts_sprite[part_id].x = self.part_data[part_id].x * DR_option.gui_scale * self.scale * 60 + self.window_pointer.width / 2
-            self.parts_sprite[part_id].y = self.part_data[part_id].y * DR_option.gui_scale * self.scale * 60 + self.window_pointer.height / 2
-            self.parts_sprite[part_id].scale = self.scale * DR_option.gui_scale
+        # if DR_option.use_DR_rust:
+        #     # print(f'{self.dx=} {self.dy=} {self.scale=}')
+        #     # from objprint import op
+        #     # op(random.choices(self.parts_sprite), indent=1)
+        #     return better_update_parts(self, SR1ShipRender_Option, self.window_pointer,
+        #                                self.rust_parts, 60)
+        # for part_id in self.part_data:
+        #     # x y scale
+        #     self.parts_sprite[part_id].x = self.part_data[part_id].x * 60 + self.window_pointer.width / 2
+        #     self.parts_sprite[part_id].y = self.part_data[part_id].y * 60 + self.window_pointer.height / 2
         self.need_update_parts = False
 
     def on_draw(self):
@@ -242,13 +243,13 @@ class SR1ShipRender(BaseScreen):
         mouse_dy = y - (self.window_pointer.height / 2)
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
         if self.scale * (0.5**scroll_y) < 10:
-            self.scale = self.scale * (0.5 ** scroll_y)
-            self.dx += (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y))
-            self.dy += (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y))
+            self.camera_rs.zoom = self.camera_rs.zoom * (0.5 ** scroll_y)
+            self.camera_rs.dx += (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y))
+            self.camera_rs.dy += (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y))
         else:
-            self.scale = 10
-        self.debug_mouse_delta_line.x2 = (mouse_dx - self.dx) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.width / 2)
-        self.debug_mouse_delta_line.y2 = (mouse_dy - self.dy) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.height / 2)
+            self.camera_rs.zoom = 10
+        self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.width / 2)
+        self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
         self.need_update_parts = True
@@ -259,8 +260,8 @@ class SR1ShipRender(BaseScreen):
         if command.re_match('render'):
             if command.re_match('reset'):
                 self.scale = 1
-                self.dx = 0
-                self.dy = 0
+                self.camera_rs.dx = 0
+                self.camera_rs.dy = 0
             else:
                 # self.render_ship()
                 self.need_draw = True
@@ -286,8 +287,8 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:
             return
-        self.dx += dx
-        self.dy += dy
+        self.camera_rs.dx += dx
+        self.camera_rs.dy += dy
         self.need_update_parts = True
         # self.update_parts()
 
