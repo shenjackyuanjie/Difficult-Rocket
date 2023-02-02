@@ -116,7 +116,7 @@ class SR1ShipRender(BaseScreen):
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
             self.camera_rs = Camera_rs(main_window,
-                                       min_zoom=(1/2) ** 4, max_zoom=1 << 5)
+                                       min_zoom=(1/2) ** 4, max_zoom=10)
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -238,7 +238,7 @@ class SR1ShipRender(BaseScreen):
         mouse_dx = x - (self.window_pointer.width / 2)
         mouse_dy = y - (self.window_pointer.height / 2)
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
-        if self.scale * (0.5**scroll_y) < 10:
+        if self.camera_rs.zoom * (0.5**scroll_y) < 10:
             self.camera_rs.zoom = self.camera_rs.zoom * (0.5 ** scroll_y)
             self.camera_rs.dx += (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y))
             self.camera_rs.dy += (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y))
