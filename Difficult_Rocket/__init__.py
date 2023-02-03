@@ -119,7 +119,7 @@ class _DR_runtime(Options):
     # global_logger: logging.Logger
 
     # game options
-    _language = 'zh-CN'
+    language: str = 'zh-CN'
     default_language: str = 'zh-CN'
 
     def init(self, **kwargs) -> None:
@@ -131,25 +131,6 @@ class _DR_runtime(Options):
                 warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
 
-    def __init__(self, **kwargs):
-        self.__options = {'language': self.language}
-        super().__init__(**kwargs)
-
-    @property
-    def language(self):
-        return self._language
-
-    @language.setter
-    def language(self, value: str):
-        if value == self._language:
-            return
-        assert isinstance(value, str), "DR language MUST be string"
-        self._language = value
-        from Difficult_Rocket.utils import translate
-        translate.tr._update_lang()
-
-
-_DR_runtime.add_option('language', _DR_runtime.language)
 
 
 DR_option = _DR_option()

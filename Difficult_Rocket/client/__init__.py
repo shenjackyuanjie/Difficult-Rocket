@@ -89,11 +89,11 @@ class Client:
                                    resizable=tools.format_bool(self.config['window']['resizable']),
                                    visible=tools.format_bool(self.config['window']['visible']),
                                    file_drops=file_drop)
-        self.logger.info(tr().client.setup.done)
+        self.logger.info(tr().client.setup.done())
         end_time = time.time_ns()
         self.use_time = end_time - start_time
-        self.logger.info(tr().client.setup.use_time.format(Decimal(self.use_time) / 1000000000))
-        self.logger.debug(tr().client.setup.use_time_ns.format(self.use_time))
+        self.logger.info(tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000))
+        self.logger.debug(tr().client.setup.use_time_ns().format(self.use_time))
 
     def start(self):
         DR_runtime.running = True
@@ -295,7 +295,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_command(self, command: line.CommandText):
-        self.logger.info(tr().window.command.text.format(command))
+        self.logger.info(tr().window.command.text().format(command))
         if command.re_match('stop'):
             # self.dispatch_event('on_exit')
             pyglet.app.platform_event_loop.stop()
@@ -316,7 +316,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_message(self, message: line.CommandLine.text):
-        self.logger.info(tr().window.message.text.format(message))
+        self.logger.info(tr().window.message.text().format(message))
 
     """
     keyboard and mouse input
@@ -400,16 +400,16 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion.format(motion_string)())
+        self.logger.debug(tr().window.text.motion().format(motion_string)())
 
     @_call_screen_after
     def on_text_motion_select(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion_select.format(motion_string)())
+        self.logger.debug(tr().window.text.motion_select().format(motion_string)())
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
-        self.logger.info(tr().window.game.stop_get().format(tr().game[source]))
+        self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
         self.fps_log.check_list = False
         DR_runtime.running = False

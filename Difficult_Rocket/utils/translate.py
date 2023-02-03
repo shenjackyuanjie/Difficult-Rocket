@@ -120,10 +120,7 @@ class Translates:
         return self
 
     def __call__(self, *args, **kwargs) -> Union[dict, list, int, str]:
-        if len(self.get_list) == 0:
-            return self.__str__()
-        if any([x[0] for x in self.get_list]):
-            return self.__str__()
+        return self.__str__()
 
     def copy(self):
         return self.__copy__()
@@ -165,6 +162,9 @@ class Tr:
         self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
 
+    def update_lang(self) -> bool:
+        if
+
     def default(self, items: Union[str, List[str]]) -> Translates:
         if isinstance(items, list):
             cache_translate = self.default_translate
@@ -186,75 +186,5 @@ class Tr:
     def __call__(self, *args, **kwargs) -> Translates:
         return self.translates_cache.copy()
 
-
-class Lang:
-    """
-    用于创建一个对应语言的翻译类
-    感谢Fallen的MCDR提供idea
-    https://github.com/Fallen-Breath/MCDReforged
-    可以用
-    lang['language'] = 'abc' 或
-    lang['lang'] = 'abc'
-    的方式直接更改并刷新翻译
-    用
-    lang.lang(xxx, xxx)来获取翻译过的值
-    """
-
-    def __init__(self) -> None:
-        self.translates = tools.load_file(f'configs/lang/{DR_runtime.language}.toml')
-        self.default_translates = tools.load_file('configs/lang/zh-CN.toml')
-        self.直接返回原始数据 = True
-
-    def __str__(self) -> str:
-        return DR_option.language
-
-    def __getitem__(self, item) -> Union[int, str, list, dict]:
-        try:
-            return self.translates[item]
-        except KeyError:
-            try:
-                return self.default_translates[item]
-            except KeyError:
-                raise TranslateKeyNotFound
-                # raise TranslateKeyNotFound(f'there\'s no key {item} in both {DR_option.language} and zh-CN')
-
-    def lang(self, *args) -> Union[int, str, list, dict, tuple]:
-        # frame = inspect.currentframe()
-        # # print("调用当前log的文件名:", frame.f_back.f_code.co_filename)
-        # objprint.objprint(frame.f_back.f_code,
-        #                   honor_existing=False,
-        #                   depth=2)
-        try:
-            result = self.translates
-            for option in args:
-                result = result[option]
-            return result
-        except KeyError:
-            try:
-                result = self.default_translates
-                for option in args:
-                    result = result[option]
-                return result
-            except KeyError as e:
-                if self.直接返回原始数据:
-                    return args
-                raise TranslateKeyNotFound from e
-                # raise TranslateKeyNotFound(f'there\'s no key {args} in both {DR_option.language} and zh-CN') from e
-
-    def 翻译(self, *args) -> Union[int, str, list, dict]:
-        return self.lang(args)
-
-    def _update_lang(self) -> str:
-        """
-        用于更新语言(内部调用)
-        :return: 设置完成后的语言
-        """
-        self.translates = tools.load_file(f'configs/lang/{DR_option.language}.toml')
-        return DR_option.language
-
-
-if __name__ == '__main__':
-    tr_ = Tr()
-    tr_().window.xxxx
 
 tr = Tr()
