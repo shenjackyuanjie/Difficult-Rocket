@@ -24,7 +24,7 @@ from Difficult_Rocket.exception.language import *
 @dataclass
 class TranslateConfig:
     raise_error: bool = False  # 引用错误时抛出错误
-    crack_normal: bool = False  # 出现错误引用后 将引用到的正确内容替换为引用路径
+    crack_normal: bool = True  # 出现错误引用后 将引用到的正确内容替换为引用路径
     insert_crack: bool = True  # 加入引用的错误内容
     is_final: bool = False  # 是否为最终内容
     keep_get: bool = True  # 引用错误后是否继续引用
@@ -112,18 +112,18 @@ class Translates:
             if self.config.always_copy:
                 return Translates(value=cache_value, config=self.config, get_list=self.get_list)
             self.value = cache_value
-            return self
         except (KeyError, TypeError, AttributeError) as e:
             self.get_list.append((False, item))
             self._raise_no_value(e, item)
             if not self.config.keep_get:
                 self.config.is_final = True
+        return self
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> Union[dict, list, int, str]:
         if len(self.get_list) == 0:
-            return self
+            return self.__str__()
         if any([x[0] for x in self.get_list]):
-            return
+            return self.__str__()
 
     def copy(self):
         return self.__copy__()
@@ -132,12 +132,14 @@ class Translates:
         return Translates(value=self.value, config=self.config, get_list=self.get_list)
 
     def __getattr__(self, item: key_type) -> "Translates":
-        if self.config.is_final and hasattr(self.value, item):
+        if (self.config.is_final or any(x[0] for x in self.get_list)) and hasattr(self.value, item):
             return getattr(self.value, item)
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
         return self.__getitem__(item)
 
     def __str__(self):
+        if not any(not x[0] for x in self.get_list):
+            return self.value
         if self.config.crack_normal:
             return f'{".".join(f"{gets[1]}({gets[0]})" for gets in self.get_list)}'
         elif self.config.insert_crack:
@@ -172,7 +174,7 @@ class Tr:
         else:
             return self.default_translate[items]
 
-    def lang(self, *items):
+    def lang(self, *items) -> Translates:
         cache = self.translates_cache.copy()
         for item in items:
             cache = cache[item]

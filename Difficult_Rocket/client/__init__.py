@@ -89,11 +89,11 @@ class Client:
                                    resizable=tools.format_bool(self.config['window']['resizable']),
                                    visible=tools.format_bool(self.config['window']['visible']),
                                    file_drops=file_drop)
-        self.logger.info(tr.lang('client', 'setup.done'))
+        self.logger.info(tr().client.setup.done)
         end_time = time.time_ns()
         self.use_time = end_time - start_time
-        self.logger.info(tr.lang('client', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
-        self.logger.debug(tr.lang('client', 'setup.use_time_ns').format(self.use_time))
+        self.logger.info(tr().client.setup.use_time.format(Decimal(self.use_time) / 1000000000))
+        self.logger.debug(tr().client.setup.use_time_ns.format(self.use_time))
 
     def start(self):
         DR_runtime.running = True
@@ -188,13 +188,13 @@ class ClientWindow(Window):
         # 设置刷新率
         pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
-        self.logger.info(tr.lang('window', 'setup.done'))
-        self.logger.info(tr.lang('window', 'os.pid_is').format(os.getpid(), os.getppid()))
+        self.logger.info(tr().window.setup.done())
+        self.logger.info(tr().window.os.pid_is().format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
         self.use_time = end_time - start_time
         DR_runtime.client_setup_cause_ns = self.use_time
-        self.logger.info(tr.lang('window', 'setup.use_time').format(Decimal(self.use_time) / 1000000000))
-        self.logger.debug(tr.lang('window', 'setup.use_time_ns').format(self.use_time))
+        self.logger.info(tr().window.setup.use_time().format(Decimal(self.use_time) / 1000000000))
+        self.logger.debug(tr().window.setup.use_time_ns().format(self.use_time))
         self.count = 0
 
     def setup(self):
@@ -295,7 +295,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_command(self, command: line.CommandText):
-        self.logger.info(tr.lang('window', 'command.text').format(command))
+        self.logger.info(tr().window.command.text.format(command))
         if command.re_match('stop'):
             # self.dispatch_event('on_exit')
             pyglet.app.platform_event_loop.stop()
@@ -316,7 +316,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_message(self, message: line.CommandLine.text):
-        self.logger.info(tr.lang('window', 'message.text').format(message))
+        self.logger.info(tr().window.message.text.format(message))
 
     """
     keyboard and mouse input
@@ -357,16 +357,16 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_mouse_press(self, x, y, button, modifiers) -> None:
         self.logger.debug(
-            tr.lang('window', 'mouse.press').format(
-                [x, y], tr.lang('window', f'mouse.{mouse.buttons_string(button)}')
+            tr().window.mouse.press().format(
+                [x, y], tr().window.mouse[mouse.buttons_string(button)]()
             )
         )
 
     @_call_screen_after
     def on_mouse_release(self, x, y, button, modifiers) -> None:
         self.logger.debug(
-            tr.lang('window', 'mouse.release').format(
-                [x, y], tr.lang('window', f'mouse.{mouse.buttons_string(button)}')
+            tr().window.mouse.release().format(
+                [x, y], tr().window.mouse[mouse.buttons_string(button)]()
             )
         )
 
@@ -377,12 +377,12 @@ class ClientWindow(Window):
                                                        key.MOD_SCROLLLOCK)):
             self.dispatch_event('on_close')
         self.logger.debug(
-            tr.lang('window', 'key.press').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+            tr().window.key.press().format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
     @_call_screen_after
     def on_key_release(self, symbol, modifiers) -> None:
         self.logger.debug(
-            tr.lang('window', 'key.release').format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+            tr().window.key.release().format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
     @_call_screen_after
     def on_file_drop(self, x, y, paths):
@@ -391,30 +391,30 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_text(self, text):
         if text == '\r':
-            self.logger.debug(tr.lang('window', 'text.new_line'))
+            self.logger.debug(tr().window.text.new_line())
         else:
-            self.logger.debug(tr.lang('window', 'text.input').format(text))
+            self.logger.debug(tr().window.text.input().format(text))
             if text == 't':
                 self.input_box.enabled = True
 
     @_call_screen_after
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr.lang('window', 'text.motion').format(motion_string))
+        self.logger.debug(tr().window.text.motion.format(motion_string)())
 
     @_call_screen_after
     def on_text_motion_select(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr.lang('window', 'text.motion_select').format(motion_string))
+        self.logger.debug(tr().window.text.motion_select.format(motion_string)())
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
-        self.logger.info(tr.lang('window', 'game.stop_get').format(tr.lang('window', f'game.{source}_stop')))
-        self.logger.info(tr.lang('window', 'game.stop'))
+        self.logger.info(tr().window.game.stop_get().format(tr().game[source]))
+        self.logger.info(tr().window.game.stop())
         self.fps_log.check_list = False
         DR_runtime.running = False
         if self.run_input:
             self.run_input = False
         self.save_info()
         super().on_close()
-        self.logger.info(tr.lang('window', 'game.end'))
+        self.logger.info(tr().window.game.end())

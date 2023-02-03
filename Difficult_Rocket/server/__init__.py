@@ -37,7 +37,7 @@ class Server:
         self.config = tools.load_file('configs/main.toml')
         # self.dev = Dev
         # self.net_mode = net_mode
-        self.logger.info(tr.lang('server', 'setup.done'))
+        self.logger.info(tr().server.setup.done())
 
     def run(self):
-        self.logger.info(tr.lang('server', 'os.pid_is').format(os.getpid(), os.getppid()))
+        self.logger.info(tr().server.os.pid_is().format(os.getpid(), os.getppid()))

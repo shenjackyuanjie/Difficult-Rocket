@@ -43,9 +43,6 @@ libs.local = "using local pyglet, version: {}"
 libs.outer = "using global pyglet, version: {}\n(may cause bug)"
 fonts.found = "found fonts in font lib: {}"
 fonts.load = "loading fonts: {}"
-game.input_stop = "console"
-game.command_stop = "in game commands"
-game.window_stop = "window"
 game.stop_get = "Received closing commands from {}, game closing"
 game.stop = "game closing, saving data……"
 game.end = "game closed"
@@ -55,4 +52,6 @@ setup.done = "Server loaded "
 os.pid_is = "Server PID: {} PPID: {}"
 
 [game]
-
+input = "console"
+command = "in game commands"
+window = "window"
