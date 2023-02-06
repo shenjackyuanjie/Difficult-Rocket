@@ -74,14 +74,18 @@ pub mod camera {
                 let y: f64 = self.window.getattr(py, intern!(py, "height"))?.extract(py)?;
                 let x: f64 = x / 2.0 / self.zoom + self.dx;
                 let y: f64 = y / 2.0 / self.zoom + self.dy;
+                // use to get center of the screen
 
                 let args = ((x * self.zoom, y * self.zoom, 0), );
                 let view_matrix = view.call_method1(py, intern!(py, "translate"), args)?;
+                // view_matrix = self.view.translate((x * zoom, y * zoom, 0))
 
                 let args = ((self.zoom, self.zoom, 1), );
                 let view_matrix = view_matrix.call_method1(py, intern!(py, "scale"), args)?;
+                // view_matrix = view_matrix.scale((zoom, zoom, 1))
 
                 self.window.setattr(py, intern!(py, "view"), view_matrix)?;
+                // self.view = view_matrix
                 Ok(())
             })?;
             return Ok(())

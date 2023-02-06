@@ -155,8 +155,8 @@ class SR1ShipRender(BaseScreen):
             # render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
-            render_x = part.x * 60 + self.window_pointer.width / 2
-            render_y = part.y * 60 + self.window_pointer.height / 2
+            render_x = part.x * 60
+            render_y = part.y * 60
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y,
