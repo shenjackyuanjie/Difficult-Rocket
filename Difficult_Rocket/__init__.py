@@ -132,7 +132,6 @@ class _DR_runtime(Options):
                               f'Builtin version {relationship} than true version')
 
 
-
 DR_option = _DR_option()
 DR_runtime = _DR_runtime()
 

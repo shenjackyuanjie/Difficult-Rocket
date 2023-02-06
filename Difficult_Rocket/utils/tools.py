@@ -42,7 +42,7 @@ file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: 
 def load_file(file_name: str,
               stack: Union[str, list, dict] = None,
               raise_error: bool = True,
-              encoding: str = 'utf-8') -> Union[dict, list, ElementTree.ElementTree]:
+              encoding: str = 'utf-8') -> Union[dict, ElementTree.ElementTree]:
     f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
     get_file = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
     try:

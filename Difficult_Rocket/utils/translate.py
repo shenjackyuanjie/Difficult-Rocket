@@ -162,8 +162,17 @@ class Tr:
         self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
 
+    def init_translate(self):
+        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{self.language_name}.toml')
+        self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
+        self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
+
     def update_lang(self) -> bool:
-        if
+        if DR_runtime.language != self.language_name:
+            self.language_name = DR_runtime.language
+            self.init_translate()
+            return True
+        return False
 
     def default(self, items: Union[str, List[str]]) -> Translates:
         if isinstance(items, list):

@@ -1,5 +1,4 @@
-﻿# -*- coding: utf-8 -*-
-"""
+﻿"""
 writen by shenjackyuanjie
 email: 3695888@qq.com
 """
@@ -23,7 +22,8 @@ error_format = {
     'error.happen':   '游戏出现了一个报错！正在处理'
 }
 
-if __name__ == '__main__':
+
+def main() -> None:
     start_time_ns = time.time_ns()
     start_time_perf_ns = time.perf_counter_ns()
     print(f'{__file__=}')
@@ -79,3 +79,7 @@ if __name__ == '__main__':
         crash.record_thread = False
         print(crash.all_thread)
         print(crash.all_process)
+
+
+if __name__ == '__main__':
+    main()
