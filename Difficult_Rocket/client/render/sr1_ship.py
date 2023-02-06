@@ -283,8 +283,8 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:
             return
-        self.camera_rs.dx += dx
-        self.camera_rs.dy += dy
+        self.camera_rs.dx += dx / self.camera_rs.zoom
+        self.camera_rs.dy += dy / self.camera_rs.zoom
         self.need_update_parts = True
         # self.update_parts()
 
