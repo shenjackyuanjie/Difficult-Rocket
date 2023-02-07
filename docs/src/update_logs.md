@@ -17,6 +17,13 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 2023 V 0.7.0.3
+
+### 命令
+
+- `get_buf`
+  - 用于截屏 并将文件保存至根目录下面的 `test.png`
+
 ## 20230207 V 0.7.0.2
 
 淦, 忘记步进版本号了(

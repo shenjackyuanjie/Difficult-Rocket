@@ -307,6 +307,21 @@ class SR1ShipRender(BaseScreen):
                     SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                     self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
                     # print('sr1 mouse')
+        elif command.re_match('get_buf'):
+            import pyglet
+
+            def screenshot(window):
+                from libs.pyglet.gl.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, glReadPixels
+                width = window.width
+                height = window.height
+                format_str = "RGBA"
+                buf = (GLubyte * (len(format_str) * width * height))()
+                glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf)
+                # print(buf)
+                return pyglet.image.ImageData(width, height, format_str, buf)
+
+            image_data = screenshot(self.window_pointer)
+            image_data.save('test.png')
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:
