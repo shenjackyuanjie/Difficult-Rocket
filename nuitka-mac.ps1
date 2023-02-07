@@ -30,8 +30,6 @@ $arg += @("--macos-app-icon=textures/icon.png")
 # 编译器配置
 $arg += @("--clang")
 $arg += @("--lto=no")
-# 包配置
-$arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
 # 数据配置
 $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
@@ -48,6 +46,8 @@ $out = $end_time.TotalMilliseconds - $start_time.TotalMilliseconds
 Write-Output $end_time.TotalSeconds $start_time.TotalSeconds $out s
 Write-Output $start_time $end_time
 Write-Output "--clang --lto=no and ($args)"
+
+Copy-Item .\libs\pyglet\ .\build\nuitka-mac\DR.dist -Recurse
 # --include-data-dir=./libs/pyglet=./pyglet
 # --run
 # --disable-ccache

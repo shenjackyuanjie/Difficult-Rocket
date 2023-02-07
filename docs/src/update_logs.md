@@ -10,14 +10,24 @@
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.7.0.0-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.7.0.1-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202301 V 0.7.0
+## 20230207 V 0.7.0.1
+
+### 刷个版本号 (确信)
+
+### 优化
+
+- 实装 `Translate`
+  - 现在多语言翻译更方便
+- 优化了 action 的构建方式 (应该能开箱即用了)
+
+## 202301 V 0.7.0.0
 
 ### 啊哈！ 现在真就是 0.7 了
 

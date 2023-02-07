@@ -28,15 +28,10 @@ $arg += @("--file-version=$env:Build_version")
 $arg += @("--file-description=Difficult-Rocket!")
 $arg += @("--windows-icon-from-ico=textures/icon.png")
 $arg += @("--macos-app-icon=textures/icon.png")
-#--linux-icon
 # 编译器配置
-# $arg += @("--msvc=latest")
-# $atg += @("--mingw64")
+$arg += @("--msvc=latest")
 $arg += @("--clang")
 $arg += @("--lto=no")
-# 包配置
-#$arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
-#$arg += @("--follow-import-to=libs.pyglet")
 # 数据配置
 $arg += @("--include-data-dir=./libs/pyglet=./libs/pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
@@ -53,7 +48,7 @@ $out = $end_time.TotalMilliseconds - $start_time.TotalMilliseconds
 Write-Output $end_time.TotalSeconds $start_time.TotalSeconds $out s
 Write-Output $start_time $end_time
 Write-Output "--clang --lto=no and $args"
-cp ./libs/pyglet ./build/nuitka-win/DR.dist
+Copy-Item .\libs\pyglet\ .\build\nuitka-win\DR.dist -Recurse
 # --include-data-dir=./libs/pyglet=./pyglet
 # --run
 # --disable-ccache
