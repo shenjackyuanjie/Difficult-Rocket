@@ -400,12 +400,12 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion().format(motion_string)())
+        self.logger.debug(tr().window.text.motion().format(motion_string))
 
     @_call_screen_after
     def on_text_motion_select(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion_select().format(motion_string)())
+        self.logger.debug(tr().window.text.motion_select().format(motion_string))
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
