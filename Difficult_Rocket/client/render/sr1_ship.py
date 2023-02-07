@@ -5,9 +5,10 @@
 #  -------------------------------
 
 import time
+import contextlib
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
-from typing import List, TYPE_CHECKING, Union, Dict, Optional
+from typing import List, TYPE_CHECKING, Union, Dict, Optional, Callable, Generator
 
 # third party package
 from defusedxml.ElementTree import parse
@@ -29,7 +30,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_option.use_DR_rust:
-    from libs.Difficult_Rocket_rs import better_update_parts, PartDatas, Camera_rs
+    from libs.Difficult_Rocket_rs import PartDatas, Camera_rs
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -56,16 +57,16 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
     #       f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
     #       f'textures: {SR1PartTexture.get_textures_from_type(part_type)}')
     return SR1PartData(x=part_x, y=part_y, id=part_id, type_=part_type,
-                            active=part_activate, angle=part_angle, angle_v=part_angle_v,
-                            editor_angle=part_editor_angle, flip_x=part_flip_x,
-                            flip_y=part_flip_y, explode=part_explode, textures=part_textures)
+                       active=part_activate, angle=part_angle, angle_v=part_angle_v,
+                       editor_angle=part_editor_angle, flip_x=part_flip_x,
+                       flip_y=part_flip_y, explode=part_explode, textures=part_textures)
 
 
 class _SR1ShipRender_Option(Options):
     # debug option
-    debug_d_pos: bool = True
-    debug_mouse_pos: bool = True
-    debug_mouse_d_pos: bool = True
+    debug_d_pos: bool = False
+    debug_mouse_pos: bool = False
+    debug_mouse_d_pos: bool = False
 
 
 SR1ShipRender_Option = _SR1ShipRender_Option()
@@ -82,6 +83,8 @@ class SR1ShipRender(BaseScreen):
         self.scale = scale
         self.focus = True
         self.need_draw = False
+        self.drawing = False
+        self.gen_draw: Optional[Callable] = None
         self.need_update_parts = False
         self.dx = 0
         self.dy = 0
@@ -116,7 +119,7 @@ class SR1ShipRender(BaseScreen):
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
             self.camera_rs = Camera_rs(main_window,
-                                       min_zoom=(1/2) ** 4, max_zoom=10)
+                                       min_zoom=(1 / 2) ** 6, max_zoom=10)
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -131,26 +134,10 @@ class SR1ShipRender(BaseScreen):
     def load_textures(self):
         self.textures = SR1Textures()
 
-    def render_ship(self):
-        if self.textures is None:
-            self.load_textures()
-        start_time = time.perf_counter_ns()
-        self.part_data: Dict[int, SR1PartData] = {}
-        self.parts_sprite: Dict[int, Sprite] = {}
-        self.camera_rs.zoom = 1.0
-        if DR_option.use_DR_rust:
-            self.camera_rs.dx = 0
-            self.camera_rs.dy = 0
-        parts = self.xml_root.find('Parts')
-        for part_xml in parts:
-            if part_xml.tag != 'Part':
-                continue  # 如果不是部件，则跳过
-            # print(f"tag: {part.tag} attrib: {part.attrib}")
-            part_render = True
-            part = get_sr1_part(part_xml)
-            if part.id in self.part_data:
-                print(f'hey! warning! id{part.id}')
-            self.part_data[part.id] = part
+    def gen_sprite(self, part_datas: Dict[int, SR1PartData], each_count: int = 100) -> Generator:
+        count = 0
+        self.drawing = True
+        for part_id, part in part_datas.items():
             # 下面就是调用 pyglet 去渲染的部分
             # render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
@@ -171,10 +158,41 @@ class SR1ShipRender(BaseScreen):
             cache_sprite.scale = self.scale * DR_option.gui_scale
             cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
             cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
-            if not part_render:  # 如果不渲染(渲染有毛病)
-                self.parts_sprite[part.id].visible = False
             self.parts_sprite[part.id] = cache_sprite
-            self.need_draw = False
+            # if not part_render:  # 如果不渲染(渲染有毛病)
+            #     self.parts_sprite[part.id].visible = False
+            count += 1
+            if count >= each_count:
+                count = 0
+                yield each_count
+        self.drawing = False
+        raise GeneratorExit
+
+    def render_ship(self):
+        if self.textures is None:
+            self.load_textures()
+        start_time = time.perf_counter_ns()
+        self.part_data: Dict[int, SR1PartData] = {}
+        self.parts_sprite: Dict[int, Sprite] = {}
+        self.camera_rs.zoom = 1.0
+        if DR_option.use_DR_rust:
+            self.camera_rs.dx = 0
+            self.camera_rs.dy = 0
+        parts = self.xml_root.find('Parts')
+        for part_xml in parts:
+            if part_xml.tag != 'Part':
+                continue  # 如果不是部件，则跳过
+            # print(f"tag: {part.tag} attrib: {part.attrib}")
+            part = get_sr1_part(part_xml)
+            if part.id in self.part_data:
+                print(f'hey! warning! id{part.id}')
+            self.part_data[part.id] = part
+        # 调用生成器 减少卡顿
+        with contextlib.suppress(GeneratorExit):
+            self.gen_draw = self.gen_sprite(self.part_data)
+            next(self.gen_draw)
+        self.need_draw = False
+
         if DR_option.use_DR_rust:
             print(type(self.part_data))
             self.rust_parts = PartDatas(self.part_data)
@@ -186,11 +204,12 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
-        self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
-                    self.window_pointer.height / 2)
+        self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (
+                    self.window_pointer.width / 2), self.camera_rs.dy + (
+                                                         self.window_pointer.height / 2)
         self.debug_d_pos_label.text = f'x: {self.camera_rs.dx} y: {self.camera_rs.dy}'
         self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
-                    self.window_pointer.height / 2) + 10, 0
+                self.window_pointer.height / 2) + 10, 0
         # if DR_option.use_DR_rust:
         #     # print(f'{self.dx=} {self.dy=} {self.scale=}')
         #     # from objprint import op
@@ -206,12 +225,20 @@ class SR1ShipRender(BaseScreen):
     def on_draw(self):
         if self.need_draw:
             self.render_ship()
+
+        if self.drawing:
+            with contextlib.suppress(GeneratorExit):
+                next(self.gen_draw)
+
         if self.need_update_parts:
             self.update_parts()
             self.need_update_parts = False
+
         with self.camera_rs:
             self.part_batch.draw()
+
         self.debug_label.draw()
+
         if SR1ShipRender_Option.debug_d_pos:
             self.debug_line.draw()
             self.debug_d_pos_label.draw()
@@ -238,14 +265,16 @@ class SR1ShipRender(BaseScreen):
         mouse_dx = x - (self.window_pointer.width / 2)
         mouse_dy = y - (self.window_pointer.height / 2)
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
-        if self.camera_rs.zoom * (0.5**scroll_y) < 10:
+        if self.camera_rs.zoom * (0.5 ** scroll_y) < 10:
             self.camera_rs.zoom = self.camera_rs.zoom * (0.5 ** scroll_y)
             self.camera_rs.dx += (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y))
             self.camera_rs.dy += (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y))
         else:
             self.camera_rs.zoom = 10
-        self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.width / 2)
-        self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (self.window_pointer.height / 2)
+        self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (
+                    self.window_pointer.width / 2)
+        self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (
+                    self.window_pointer.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
         self.need_update_parts = True
@@ -259,7 +288,6 @@ class SR1ShipRender(BaseScreen):
                 self.camera_rs.dx = 0
                 self.camera_rs.dy = 0
             else:
-                # self.render_ship()
                 self.need_draw = True
             print('应该渲染飞船的')
         elif command.re_match('debug'):
@@ -283,8 +311,8 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
         if not self.focus:
             return
-        self.camera_rs.dx += dx / self.camera_rs.zoom
-        self.camera_rs.dy += dy / self.camera_rs.zoom
+        self.camera_rs.dx += dx
+        self.camera_rs.dy += dy
         self.need_update_parts = True
         # self.update_parts()
 
