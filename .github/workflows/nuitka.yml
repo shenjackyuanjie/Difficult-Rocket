@@ -143,14 +143,14 @@ jobs:
       - name: after build
         shell: pwsh
         run: |
+          Copy-Item .\libs\pyglet\ .\build\DR.dist -Recurse
           Rename-Item ./build/DR.dist Difficult-Rocket
-          Copy-Item .\libs\pyglet\ .\build\nuitka-mac\DR.dist -Recurse
           python ./.github/workflows/after_compile.py
 
       # Uploads artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}.zip
+          name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}
           path: |
             build/main.zip
