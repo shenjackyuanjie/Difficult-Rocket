@@ -210,16 +210,6 @@ class SR1ShipRender(BaseScreen):
         self.debug_d_pos_label.text = f'x: {self.camera_rs.dx} y: {self.camera_rs.dy}'
         self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
                 self.window_pointer.height / 2) + 10, 0
-        # if DR_option.use_DR_rust:
-        #     # print(f'{self.dx=} {self.dy=} {self.scale=}')
-        #     # from objprint import op
-        #     # op(random.choices(self.parts_sprite), indent=1)
-        #     return better_update_parts(self, SR1ShipRender_Option, self.window_pointer,
-        #                                self.rust_parts, 60)
-        # for part_id in self.part_data:
-        #     # x y scale
-        #     self.parts_sprite[part_id].x = self.part_data[part_id].x * 60 + self.window_pointer.width / 2
-        #     self.parts_sprite[part_id].y = self.part_data[part_id].y * 60 + self.window_pointer.height / 2
         self.need_update_parts = False
 
     def on_draw(self):
@@ -308,13 +298,18 @@ class SR1ShipRender(BaseScreen):
                     self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
                     # print('sr1 mouse')
         elif command.re_match('get_buf'):
-            import pyglet
 
             def screenshot(window):
-                from libs.pyglet.gl.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, glReadPixels
+                from libs.pyglet.gl import GLubyte, GLint, GL_RGBA, GL_UNSIGNED_BYTE, \
+                    glReadPixels, glGetIntegerv
+                # from libs.pyglet.gl.gl_compat import GL_AUX_BUFFERS, GL_AUX0
+                import pyglet
                 width = window.width
                 height = window.height
                 format_str = "RGBA"
+                buffer_count = GLint(0)
+                # glGetIntegerv(GL_AUX_BUFFERS, buffer_count)
+                print(buffer_count)
                 buf = (GLubyte * (len(format_str) * width * height))()
                 glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf)
                 # print(buf)
