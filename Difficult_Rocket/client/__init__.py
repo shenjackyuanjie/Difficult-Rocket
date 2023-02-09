@@ -57,12 +57,13 @@ class ClientOption(Options):
 
     def load_file(self) -> None:
         file = tools.load_file('./configs/main.toml')
-        self.fps = file['runtime']['fps']
-        self.width = file['window']['width']
-        self.height = file['window']['height']
-        self.fullscreen = file['window']['full_screen']
-        self.resizeable = file['window']['resizable']
-        self.gui_scale = file['window']['gui_scale']
+        self.fps = int(file['runtime']['fps'])
+        self.width = int(file['window']['width'])
+        self.height = int(file['window']['height'])
+        self.fullscreen = tools.format_bool(file['window']['full_screen'])
+        self.resizeable = tools.format_bool(file['window']['resizable'])
+        self.gui_scale = float(file['window']['gui_scale'])
+        self.caption = DR_runtime.format(file['window']['caption'])
 
 
 class Client:
@@ -71,23 +72,18 @@ class Client:
         # logging
         self.logger = logging.getLogger('client')
         # config
-        self.config = tools.load_file('./configs/main.toml')
+        self.config = ClientOption()
         # value
         self.process_id = 'Client'
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.net_mode = net_mode
-        self.caption = DR_runtime.format(self.config['window']['caption'])
         file_drop = bool(
             pyglet.compat_platform != 'darwin' or DR_option.pyglet_macosx_dev_test
         )
-        self.window = ClientWindow(net_mode=self.net_mode,
-                                   width=int(self.config['window']['width']),
-                                   height=int(self.config['window']['height']),
-                                   fullscreen=tools.format_bool(self.config['window']['full_screen']),
-                                   caption=self.caption,
-                                   resizable=tools.format_bool(self.config['window']['resizable']),
-                                   visible=tools.format_bool(self.config['window']['visible']),
+        self.window = ClientWindow(net_mode=self.net_mode, width=self.config.width, height=self.config.height,
+                                   fullscreen=self.config.fullscreen, caption=self.config.caption,
+                                   resizable=self.config.resizeable, visible=self.config.visible,
                                    file_drops=file_drop)
         self.logger.info(tr().client.setup.done())
         end_time = time.time_ns()
@@ -209,10 +205,6 @@ class ClientWindow(Window):
         # 加载字体路径
         # 淦，还写了个递归来处理
         pyglet_load_fonts_folder(fonts_folder_path)
-
-    # @new_thread('window load_editor')
-    def load_editor(self):
-        pass
 
     def start_game(self) -> None:
         self.run_input = True
@@ -336,7 +328,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_mouse_motion(self, x, y, dx, dy) -> None:
-        pass
+        ...
 
     @_call_screen_after
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
@@ -352,7 +344,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers) -> None:
-        pass
+        ...
 
     @_call_screen_after
     def on_mouse_press(self, x, y, button, modifiers) -> None:
