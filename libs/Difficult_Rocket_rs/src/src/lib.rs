@@ -36,5 +36,6 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(simulator::simluation, m)?)?;
     m.add_class::<sr1_render::types::PartDatas>()?;
     m.add_class::<render::camera::CameraRs>()?;
+    m.add_class::<render::screen::PartFrame>()?;
     Ok(())
 }

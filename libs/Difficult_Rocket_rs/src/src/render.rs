@@ -127,3 +127,28 @@ pub mod camera {
         }
     }
 }
+
+pub mod screen {
+    use pyo3::prelude::*;
+
+    #[pyclass]
+    #[pyo3(name = "PartFrame_rs")]
+    pub struct PartFrame {
+        pub box_size: i32,
+        pub width: i64,
+        pub height: i64,
+        // pub frame_box: Vec<Vec<>>
+    }
+
+    #[pymethods]
+    impl PartFrame {
+        #[new]
+        pub fn py_new() -> PyResult<Self> {
+            Ok(PartFrame {
+                box_size: 111,
+                width: 111,
+                height: 111
+            })
+        }
+    }
+}
