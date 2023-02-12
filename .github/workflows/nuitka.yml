@@ -99,7 +99,7 @@ jobs:
           $arg += @("--clang")
           $arg += @("--lto=no")
           # 包配置
-          $arg += @("--nofollow-import-to=objprint,pillow,cffi,PIL,pyglet")
+          # $arg += @("--nofollow-import-to=objprint,pillow,cffi,PIL,pyglet")
           # 数据配置
           $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
           $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
@@ -129,7 +129,7 @@ jobs:
           $arg += @("--clang")
           $arg += @("--lto=no")
           # 包配置
-          $arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
+          # $arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
           # 数据配置
           $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
           $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
