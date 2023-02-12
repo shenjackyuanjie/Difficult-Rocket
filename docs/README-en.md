@@ -45,7 +45,6 @@
   - `psutil 5.9.4`
   - `objprint 0.2.2`
   - `rtoml 0.9.0`
-  - `pymunk 6.4.0`
   - `xmltodict 0.13.0`
   - `tomlkit 0.11.6`
   - `AMD R5 5600X`
@@ -59,7 +58,6 @@
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
 - `pillow`
-- `pymunk`
 - `defusedxml`
 - `objprint`
 - `psutil`

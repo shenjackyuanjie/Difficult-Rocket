@@ -12,7 +12,6 @@ gitee:  @shenjackyuanjie
 """
 
 import os
-# import pymunk
 import logging
 # import multiprocessing
 

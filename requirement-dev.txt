@@ -4,7 +4,8 @@
 #   DR contributing
 
 # for phy simulation
-pymunk >= 6.4.0
+# pymunk >= 6.4.0
+# no more needed  use Rapier instead
 
 # for images
 pillow >= 9.4.0

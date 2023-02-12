@@ -7,6 +7,7 @@
  */
 
 mod sr1_render;
+mod simulator;
 mod render;
 mod types;
 
