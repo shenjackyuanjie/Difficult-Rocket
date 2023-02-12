@@ -14,7 +14,7 @@ use pyo3::prelude::*;
 
 #[pyfunction]
 fn get_version_str() -> String {
-    return String::from("0.1.10.0");
+    return String::from("0.2.0.0");
 }
 
 #[pyfunction]

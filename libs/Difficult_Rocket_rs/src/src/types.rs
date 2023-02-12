@@ -70,12 +70,14 @@ pub mod sr1 {
 pub mod dr {
     pub enum ConnectType {
         Stick,
-        FixedPoint {dx: f64, angle: f64},
-        RotatePoint {dx: f64, angle: f64}
+        FixedPoint,
+        RotatePoint,
     }
 
     pub struct Connect {
         pub c_type: ConnectType,
+        pub d_pos: f64,
+        pub angel: f64,
 
     }
 

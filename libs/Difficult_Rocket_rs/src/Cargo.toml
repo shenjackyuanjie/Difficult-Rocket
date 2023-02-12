@@ -1,6 +1,6 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.1.10"
+version = "0.2.0"
 edition = "2021"
 license-file = '../../LICENSE'
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,6 +10,10 @@ license-file = '../../LICENSE'
 [lib]
 name = 'Difficult_Rocket_rs'
 crate-type = ["cdylib"]
+
+[dependencies.rapier2d]
+version = "0.17.1"
+features = ["simd-stable"]
 
 [dependencies.pyo3]
 version = "0.18.0"
