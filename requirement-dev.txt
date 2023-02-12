@@ -20,12 +20,12 @@ defusedxml >= 0.7.1
 # for debug
 objprint >= 0.2.2
 viztracer >= 0.15.6
-vizplugins
+vizplugins >= 0.1.3
 
 # for compile
-nuitka >= 1.3.8
+nuitka >= 1.4.5
 ordered-set >= 4.1.0
 imageio >= 2.25.0
 wheel >= 0.38.4
-setuptools >= 66.1.1
+setuptools >= 67.2.0
 setuptools-rust >= 1.5.2

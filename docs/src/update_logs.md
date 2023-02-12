@@ -24,6 +24,16 @@
 - `get_buf`
   - 用于截屏 并将文件保存至根目录下面的 `test.png`
 
+### 更新
+
+- 更改了 `ClientWindow` 启动参数的设置, 实装 ClientOption 的使用
+- 将 `SR1PartData` 的字段 `type_` 重命名为 `p_type`
+
+### `DR_Rs`
+
+- 移动了 `SR1PartData` 的位置
+  - 为 `SR1PartData` 添加了 `connections: Option<Vec<(usize, usize)>>` 的字段
+
 ## 20230207 V 0.7.0.2
 
 淦, 忘记步进版本号了(

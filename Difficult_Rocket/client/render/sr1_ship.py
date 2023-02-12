@@ -56,7 +56,7 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
     #       f'angle: {part_angle} angle_v: {part_angle_v} editor_angle: {part_editor_angle} '
     #       f'flip_x: {part_flip_x} flip_y: {part_flip_y} explode: {part_explode} '
     #       f'textures: {SR1PartTexture.get_textures_from_type(part_type)}')
-    return SR1PartData(x=part_x, y=part_y, id=part_id, type_=part_type,
+    return SR1PartData(x=part_x, y=part_y, id=part_id, p_type=part_type,
                        active=part_activate, angle=part_angle, angle_v=part_angle_v,
                        editor_angle=part_editor_angle, flip_x=part_flip_x,
                        flip_y=part_flip_y, explode=part_explode, textures=part_textures)
@@ -76,11 +76,9 @@ class SR1ShipRender(BaseScreen):
     """用于渲染 sr1 船的类"""
 
     def __init__(self,
-                 main_window: "ClientWindow",
-                 scale: float):
+                 main_window: "ClientWindow"):
         super().__init__(main_window)
         self.rendered = False
-        self.scale = scale
         self.focus = True
         self.need_draw = False
         self.drawing = False
@@ -155,7 +153,6 @@ class SR1ShipRender(BaseScreen):
                 cache_sprite.scale_x = -1  # 就是直接取反缩放，应该没问题····吧？（待会试试就知道了
             if part.flip_y:
                 cache_sprite.scale_y = -1
-            cache_sprite.scale = self.scale * DR_option.gui_scale
             cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
             cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
             self.parts_sprite[part.id] = cache_sprite
@@ -269,7 +266,6 @@ class SR1ShipRender(BaseScreen):
         self.debug_mouse_label.position = x, y + 10, 0
         self.need_update_parts = True
         # self.update_parts()
-        # print(f'{self.scale=} {self.dx=} {self.dy=} {x=} {y=} {scroll_x=} {scroll_y=} {1 - (0.5 ** scroll_y)=}')
 
     def on_command(self, command: CommandText):
         if command.re_match('render'):

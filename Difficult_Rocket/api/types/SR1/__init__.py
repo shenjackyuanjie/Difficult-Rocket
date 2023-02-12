@@ -21,7 +21,7 @@ class SR1PartData:
     x: float
     y: float
     id: int
-    type_: str
+    p_type: str
     active: bool
     angle: float
     angle_v: float

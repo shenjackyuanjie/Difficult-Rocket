@@ -198,7 +198,7 @@ class ClientWindow(Window):
         self.screen_list: List[BaseScreen]
         self.screen_list.append(DRDEBUGScreen(self))
         self.screen_list.append(DRScreen(self))
-        self.screen_list.append(SR1ShipRender(self, DR_option.gui_scale))
+        self.screen_list.append(SR1ShipRender(self))
 
     def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
