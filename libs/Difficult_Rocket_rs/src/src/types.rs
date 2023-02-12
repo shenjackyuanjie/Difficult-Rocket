@@ -68,6 +68,17 @@ pub mod sr1 {
 
 #[allow(dead_code)]
 pub mod dr {
+    pub enum ConnectType {
+        Stick,
+        FixedPoint {dx: f64, angle: f64},
+        RotatePoint {dx: f64, angle: f64}
+    }
+
+    pub struct Connect {
+        pub c_type: ConnectType,
+
+    }
+
     pub enum PartType {
         Pod,
         Separator,
@@ -88,12 +99,22 @@ pub mod dr {
     pub struct DRPartData {
         pub x: f64,
         pub y: f64,
+        pub dx: f64,
+        pub dy: f64,
         pub id: i64,
         pub p_type: PartType,
         pub active: bool,
         pub angle: f64, // 角度制
         pub angle_v: f64,
-        pub editor_angle: usize,
+        pub flip_x: bool,
+        pub flip_y: bool,
+        pub connections: Option<Vec<usize>>
+    }
+
+    impl DRPartData {
+        pub fn get_textures(&self) -> String {
+            "aaa".to_string()
+        }
     }
 }
 
