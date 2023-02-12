@@ -7,8 +7,11 @@
  */
 
 use rapier2d::prelude::*;
+use pyo3::prelude::*;
 
-fn main() {
+#[pyfunction]
+#[pyo3(name = "simluation")]
+pub fn simluation() -> PyResult<()> {
   let mut rigid_body_set = RigidBodySet::new();
   let mut collider_set = ColliderSet::new();
 
@@ -61,4 +64,5 @@ fn main() {
       ball_body.translation().y
     );
   }
+  Ok(())
 }
