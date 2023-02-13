@@ -119,7 +119,7 @@ name = "difficult_rocket_rs"
 version = "0.2.0"
 dependencies = [
  "pyo3",
- "rapier2d",
+ "rapier2d-f64",
 ]
 
 [[package]]
@@ -303,10 +303,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "parry2d"
+name = "parry2d-f64"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2342b33d77a0393879b1b85eac2a30cc4b36d10b30e111f55a5e9280cf5eb87"
+checksum = "70f96abf23f15f0bb4d998a96bcdc58915519a2de8828a809f1ea57b431c4d1f"
 dependencies = [
  "approx",
  "arrayvec",
@@ -408,10 +408,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "rapier2d"
+name = "rapier2d-f64"
 version = "0.17.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcd37fc7fad61534f35ce9cb198283cd7055c08cdc4a1565d0974a1fe74d5e59"
+checksum = "fed947265b7e68da6b33b9025abea0a4e4c79fdab464b85757b2cbfd6fe69b0a"
 dependencies = [
  "approx",
  "arrayvec",
@@ -422,7 +422,7 @@ dependencies = [
  "nalgebra",
  "num-derive",
  "num-traits",
- "parry2d",
+ "parry2d-f64",
  "rustc-hash",
  "simba",
  "vec_map",

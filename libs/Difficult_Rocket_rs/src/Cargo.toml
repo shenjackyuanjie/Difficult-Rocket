@@ -8,10 +8,10 @@ license-file = '../../LICENSE'
 [dependencies]
 
 [lib]
-name = 'Difficult_Rocket_rs'
+name = 'difficult_rocket_rs'
 crate-type = ["cdylib"]
 
-[dependencies.rapier2d]
+[dependencies.rapier2d-f64]
 version = "0.17.1"
 features = ["simd-stable"]
 

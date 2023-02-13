@@ -6,7 +6,7 @@
  * -------------------------------
  */
 
-use rapier2d::prelude::*;
+use rapier2d_f64::prelude::*;
 use pyo3::prelude::*;
 
 #[pyfunction]
