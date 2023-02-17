@@ -75,7 +75,7 @@
   - [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang
   - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译 lang
   - [@Billchyi](https://github.com/Billchyi) : 文档矫正
-  - [@msdn]()
+  - [@MSDNicrosoft]()
 
 ## 相关链接
 

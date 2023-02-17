@@ -368,6 +368,8 @@ class ClientWindow(Window):
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
             self.dispatch_event('on_close')
+        if symbol == key.SLASH:
+            self.input_box._set_focus(True)
         self.logger.debug(
             tr().window.key.press().format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
 
