@@ -1011,7 +1011,7 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
 
         Once set, the user will not be able to resize the window smaller
         than the given dimensions.  There is no way to remove the
-        minimum size constraint on a window (but you could set it to 0,0).
+        minimum size constraint on a window (but you could set it to 1, 1).
 
         The behaviour is undefined if the minimum size is set larger than
         the current size of the window.

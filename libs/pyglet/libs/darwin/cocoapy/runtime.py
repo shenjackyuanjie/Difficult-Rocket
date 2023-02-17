@@ -409,7 +409,6 @@ objc.sel_isEqual.argtypes = [c_void_p, c_void_p]
 objc.sel_registerName.restype = c_void_p
 objc.sel_registerName.argtypes = [c_char_p]
 
-
 ######################################################################
 # Constants
 OBJC_ASSOCIATION_ASSIGN = 0  # Weak reference to the associated object.
@@ -480,6 +479,8 @@ def should_use_fpret(restype):
 # change these values.  restype should be a ctypes type
 # and argtypes should be a list of ctypes types for
 # the arguments of the message only.
+# Note: kwarg 'argtypes' required if using args, or will fail on ARM64.
+
 def send_message(receiver, selName, *args, **kwargs):
     if isinstance(receiver, str):
         receiver = get_class(receiver)
@@ -624,11 +625,11 @@ def cfunctype_for_encoding(encoding):
         return cfunctype_table[encoding]
 
     # Otherwise, create a new CFUNCTYPE for the encoding.
-    typecodes = {b'c':             c_char, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
-                 b'C':             c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
-                 b'f':             c_float, b'd': c_double, b'B': c_bool, b'v': None, b'*': c_char_p,
-                 b'@':             c_void_p, b'#': c_void_p, b':': c_void_p, NSPointEncoding: NSPoint,
-                 NSSizeEncoding:   NSSize, NSRectEncoding: NSRect, NSRangeEncoding: NSRange,
+    typecodes = {b'c': c_char, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
+                 b'C': c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
+                 b'f': c_float, b'd': c_double, b'B': c_bool, b'v': None, b'*': c_char_p,
+                 b'@': c_void_p, b'#': c_void_p, b':': c_void_p, NSPointEncoding: NSPoint,
+                 NSSizeEncoding: NSSize, NSRectEncoding: NSRect, NSRangeEncoding: NSRange,
                  PyObjectEncoding: py_object}
     argtypes = []
     for code in parse_type_encoding(encoding):
@@ -704,12 +705,12 @@ class ObjCMethod:
     # Note, need to map 'c' to c_byte rather than c_char, because otherwise
     # ctypes converts the value into a one-character string which is generally
     # not what we want at all, especially when the 'c' represents a bool var.
-    typecodes = {b'c':             c_byte, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
-                 b'C':             c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
-                 b'f':             c_float, b'd': c_double, b'B': c_bool, b'v': None, b'Vv': None, b'*': c_char_p,
-                 b'@':             c_void_p, b'#': c_void_p, b':': c_void_p, b'^v': c_void_p, b'?': c_void_p,
-                 NSPointEncoding:  NSPoint, NSSizeEncoding: NSSize, NSRectEncoding: NSRect,
-                 NSRangeEncoding:  NSRange,
+    typecodes = {b'c': c_byte, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
+                 b'C': c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
+                 b'f': c_float, b'd': c_double, b'B': c_bool, b'v': None, b'Vv': None, b'*': c_char_p,
+                 b'@': c_void_p, b'#': c_void_p, b':': c_void_p, b'^v': c_void_p, b'?': c_void_p,
+                 NSPointEncoding: NSPoint, NSSizeEncoding: NSSize, NSRectEncoding: NSRect,
+                 NSRangeEncoding: NSRange,
                  PyObjectEncoding: py_object}
 
     cfunctype_table = {}
@@ -717,7 +718,6 @@ class ObjCMethod:
     def __init__(self, method):
         """Initialize with an Objective-C Method pointer.  We then determine
         the return type and argument type information of the method."""
-        self.cache = True
         self.selector = c_void_p(objc.method_getName(method))
         self.name = objc.sel_getName(self.selector)
         self.pyname = self.name.replace(b':', b'_')
@@ -734,7 +734,7 @@ class ObjCMethod:
         try:
             self.argtypes = [self.ctype_for_encoding(t) for t in self.argument_types]
         except:
-            # print(f'no argtypes encoding for {self.name} ({self.argument_types})')
+            # print('no argtypes encoding for %s (%s)' % (self.name, self.argument_types))
             self.argtypes = None
         # Get types for the return type.
         try:
@@ -745,7 +745,7 @@ class ObjCMethod:
             else:
                 self.restype = self.ctype_for_encoding(self.return_type)
         except:
-            # print(f'no restype encoding for {self.name} ({self.return_type})')
+            # print('no restype encoding for %s (%s)' % (self.name, self.return_type))
             self.restype = None
         self.func = None
 
@@ -803,7 +803,7 @@ class ObjCMethod:
             result = f(objc_id, self.selector, *args)
             # Convert result to python type if it is a instance or class pointer.
             if self.restype == ObjCInstance:
-                result = ObjCInstance(result, self.cache)
+                result = ObjCInstance(result)
             elif self.restype == ObjCClass:
                 result = ObjCClass(result)
             return result
@@ -825,13 +825,6 @@ class ObjCBoundMethod:
         """Initialize with a method and ObjCInstance or ObjCClass object."""
         self.method = method
         self.objc_id = objc_id
-
-    def no_cached_return(self):
-        """Disables the return type from being registered in DeallocationObserver.
-        Some return types do not get observed and will cause a memory leak.
-        Ex: NDate return types can be __NSTaggedDate
-        """
-        self.method.cache = False
 
     def __repr__(self):
         return '<ObjCBoundMethod %s (%s)>' % (self.method.name, self.objc_id)
@@ -967,8 +960,49 @@ class ObjCClass:
 
 ######################################################################
 
+
+class _AutoreleasepoolManager:
+    def __init__(self):
+        self.current = 0  # Current Pool ID. 0 is Global and not removed.
+        self.pools = [None]  # List of NSAutoreleasePools.
+
+    @property
+    def count(self):
+        """Number of total pools. Not including global."""
+        return len(self.pools) - 1
+
+    def create(self, pool):
+        self.pools.append(pool)
+        self.current = self.pools.index(pool)
+
+    def delete(self, pool):
+        self.pools.remove(pool)
+        self.current = len(self.pools) - 1
+
+
+_arp_manager = _AutoreleasepoolManager()
+
+_dealloc_argtype = [c_void_p]  # Just to prevent list creation every call.
+
+def _set_dealloc_observer(objc_ptr):
+    # Create a DeallocationObserver and associate it with this object.
+    # When the Objective-C object is deallocated, the observer will remove
+    # the ObjCInstance corresponding to the object from the cached objects
+    # dictionary, effectively destroying the ObjCInstance.
+    observer = send_message('DeallocationObserver', 'alloc')
+    observer = send_message(observer,  'initWithObject:', objc_ptr, argtypes=_dealloc_argtype)
+    objc.objc_setAssociatedObject(objc_ptr, observer, observer, OBJC_ASSOCIATION_RETAIN)
+
+    # The observer is retained by the object we associate it to.  We release
+    # the observer now so that it will be deallocated when the associated
+    # object is deallocated.
+    send_message(observer, 'release')
+
+
 class ObjCInstance:
     """Python wrapper for an Objective-C instance."""
+    pool = 0  # What pool id this belongs in.
+    retained = False  # If instance is kept even if pool is wiped.
 
     _cached_objects = {}
 
@@ -1004,17 +1038,16 @@ class ObjCInstance:
         if cache:
             cls._cached_objects[object_ptr.value] = objc_instance
 
-            # Create a DeallocationObserver and associate it with this object.
-            # When the Objective-C object is deallocated, the observer will remove
-            # the ObjCInstance corresponding to the object from the cached objects
-            # dictionary, effectively destroying the ObjCInstance.
-            observer = send_message(send_message('DeallocationObserver', 'alloc'), 'initWithObject:', objc_instance)
-            objc.objc_setAssociatedObject(objc_instance, observer, observer, OBJC_ASSOCIATION_RETAIN)
-
-            # The observer is retained by the object we associate it to.  We release
-            # the observer now so that it will be deallocated when the associated
-            # object is deallocated.
-            send_message(observer, 'release')
+            # Creation of NSAutoreleasePool instance does not technically mean it was allocated and initialized, but
+            # it's standard practice, so this should not be an issue.
+            if objc_instance.objc_class.name == b"NSAutoreleasePool":
+                _arp_manager.create(objc_instance)
+                objc_instance.pool = _arp_manager.current
+                _set_dealloc_observer(object_ptr)
+            elif _arp_manager.current:
+                objc_instance.pool = _arp_manager.current
+            else:
+                _set_dealloc_observer(object_ptr)
 
         return objc_instance
 
@@ -1048,11 +1081,15 @@ class ObjCInstance:
         # Otherwise raise an exception.
         raise AttributeError('ObjCInstance %s has no attribute %s' % (self.objc_class.name, name))
 
+
 def get_cached_instances():
     """For debug purposes, return a list of instance names.
     Useful for debugging if an object is leaking."""
     return [obj.objc_class.name for obj in ObjCInstance._cached_objects.values()]
+
+
 ######################################################################
+
 
 def convert_method_arguments(encoding, args):
     """Used by ObjCSubclass to convert Objective-C method arguments to
@@ -1183,8 +1220,9 @@ class ObjCSubclass:
 
         def decorator(f):
             def objc_method(objc_self, objc_cmd, *args):
-                py_self = ObjCInstance(objc_self)
+                py_self = ObjCInstance(objc_self, True)
                 py_self.objc_cmd = objc_cmd
+                py_self.retained = True
                 args = convert_method_arguments(encoding, args)
                 result = f(py_self, *args)
                 if isinstance(result, ObjCClass):
@@ -1246,17 +1284,15 @@ class DeallocationObserver_Implementation:
     DeallocationObserver.register()
 
     @DeallocationObserver.rawmethod('@@')
-    def initWithObject_(self, cmd, anObject):
+    def initWithObject_(self, cmd, objc_ptr):
         self = send_super(self, 'init')
         self = self.value
-        set_instance_variable(self, 'observed_object', anObject, c_void_p)
+        set_instance_variable(self, 'observed_object', objc_ptr, c_void_p)
         return self
 
     @DeallocationObserver.rawmethod('v')
     def dealloc(self, cmd):
-        anObject = get_instance_variable(self, 'observed_object', c_void_p)
-        ObjCInstance._cached_objects.pop(anObject, None)
-        send_super(self, 'dealloc')
+        _obj_observer_dealloc(self, 'dealloc')
 
     @DeallocationObserver.rawmethod('v')
     def finalize(self, cmd):
@@ -1264,6 +1300,40 @@ class DeallocationObserver_Implementation:
         # (which would have to be explicitly started with
         # objc_startCollectorThread(), so probably not too much reason
         # to have this here, but I guess it can't hurt.)
-        anObject = get_instance_variable(self, 'observed_object', c_void_p)
-        ObjCInstance._cached_objects.pop(anObject, None)
-        send_super(self, 'finalize')
+        _obj_observer_dealloc(self, 'finalize')
+
+
+def _obj_observer_dealloc(objc_obs, selector_name):
+    """Removes any cached ObjCInstances in Python to prevent memory leaks.
+    Manually break association as it's not implicitly mentioned that dealloc would break an association,
+    although we do not use the object after.
+    """
+    objc_ptr = get_instance_variable(objc_obs, 'observed_object', c_void_p)
+    if objc_ptr:
+        objc.objc_setAssociatedObject(objc_ptr, objc_obs, None, OBJC_ASSOCIATION_ASSIGN)
+        objc_i = ObjCInstance._cached_objects.pop(objc_ptr, None)
+        if objc_i:
+            _clear_arp_objects(objc_i)
+
+    send_super(objc_obs, selector_name)
+
+
+def _clear_arp_objects(objc_i: ObjCInstance):
+    """Cleanup any ObjCInstance's created during an AutoreleasePool creation.
+    See discussion and investigation thanks to mrJean with leaks regarding pools:
+        https://github.com/mrJean1/PyCocoa/issues/6
+    It was determined that objects in an AutoreleasePool are not guaranteed to call a dealloc, creating memory leaks.
+    The DeallocObserver relies on this to free memory in the ObjCInstance._cached_objects.
+        Solution is as follows:
+    1) Do not observe any ObjCInstance's with DeallocObserver when non-global autorelease pool is in scope.
+    2) Some objects such as ObjCSubclass's must be retained.
+    3) When a pool is drained and dealloc'd, clear all ObjCInstances in that pool that are not retained.
+    """
+    if objc_i.objc_class.name == b"NSAutoreleasePool":
+        pool_id = objc_i.pool
+        for cobjc_ptr in list(ObjCInstance._cached_objects.keys()):
+            cobjc_i = ObjCInstance._cached_objects[cobjc_ptr]
+            if cobjc_i.retained is False and cobjc_i.pool == pool_id:
+                del ObjCInstance._cached_objects[cobjc_ptr]
+
+        _arp_manager.delete(objc_i)
