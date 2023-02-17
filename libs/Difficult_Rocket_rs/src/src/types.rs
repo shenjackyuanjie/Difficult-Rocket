@@ -66,14 +66,127 @@ pub mod sr1 {
     }
 }
 
+#[allow(unused)]
+pub mod math {
+
+    #[derive(Clone, Copy)]
+    pub struct Point2D {
+        pub x: f64,
+        pub y: f64
+    }
+
+    impl Point2D {
+        pub fn new(x: f64, y: f64) -> Self {
+            Point2D{x, y}
+        }
+
+        pub fn new_00() -> Self { Point2D { x: 0.0, y :0.0 } }
+
+        #[inline]
+        pub fn distance(&self, other: &Point2D) -> f64 {
+            let dx = (other.x - self.x).powf(2.0);
+            let dy = (other.y - self.y).powf(2.0);
+            (dx + dy).powf(0.5)
+        }
+
+        #[inline]
+        pub fn get_op(&self) -> f64 {
+            self.distance(&Point2D::new(0.0, 0.0))
+        }
+    }
+
+    #[derive(Clone, Copy)]
+    pub struct CircularArc {
+        pub r: f64,
+        // 半径
+        pub pos: Point2D,
+        // 圆心位置
+        pub start_angle: f64,
+        // 圆弧开始位置 角度值
+        pub end_angle: f64,
+        // 圆弧结束位置 角度值
+    }
+
+    #[derive(Clone, Copy)]
+    pub struct OneTimeLine {
+        pub k: f64,
+        pub b: f64,
+        // y = kx + b
+        // kx + b - y = 0
+        pub start: Point2D,
+        // start point
+        pub end: Point2D,
+        // end point
+    }
+
+    #[derive(Clone, Copy)]
+    pub enum Edge {
+        OneTimeLine{data: OneTimeLine},
+        CircularArc{data: CircularArc},
+    }
+
+    impl OneTimeLine {
+        #[inline]
+        pub fn pos_new(x1: f64, y1: f64, x2: f64, y2: f64) -> Self {
+            let k = (x2 - x1) / (y2 - y1);
+            let b = y1 - (x1 * k);
+            let start = Point2D::new(x1, y1);
+            let end = Point2D::new(x2, y2);
+            OneTimeLine { k, b, start, end }
+        }
+
+        #[inline]
+        pub fn point_new(a: &Point2D, b: &Point2D) -> Self {
+            OneTimeLine::pos_new(a.x, a.y, b.x, b.y)
+        }
+
+        pub fn point1_k_b_new(point: &Point2D, k: Option<f64>, b: Option<f64>) -> Self {
+            let mut k_: f64;
+            let mut b_: f64;
+            match (k, b) {
+                (Some(k), None) => {
+                    k_ = k;
+                    b_ = point.y - (k * point.x)
+                },
+                (None, Some(b)) => {
+                    b_ = b;
+                    k_ = (point.y - b) / point.x;
+                },
+                (Some(k), Some(b)) => {
+                    k_ = k;
+                    b_ = b;
+                },
+                _ => {
+                    k_ = point.y / point.x;
+                    b_ = 0.0;
+                }
+            }
+            OneTimeLine{
+                k: k_,
+                b: b_,
+                start: *point,
+                end: Point2D::new(0.0, b_)
+            }
+        }
+
+        pub fn point_d() -> f64 {
+            1.0
+        }
+    }
+}
+
 #[allow(dead_code)]
 pub mod dr {
+    use super::math;
+
+    #[derive(Clone, Copy)]
     pub enum ConnectType {
         Stick,
         FixedPoint,
         RotatePoint,
     }
 
+    #[derive(Clone, Copy)]
     pub struct Connect {
         pub c_type: ConnectType,
         pub d_pos: f64,
@@ -81,6 +194,16 @@ pub mod dr {
 
     }
 
+    #[derive(Clone)]
+    pub struct Shape {
+        pub x: f64,
+        pub y: f64,
+        pub angle: f64,
+        // 旋转角度 角度值
+        pub bounds: Vec<math::Edge>
+    }
+
+    #[derive(Clone, Copy)]
     pub enum PartType {
         Pod,
         Separator,
@@ -119,4 +242,3 @@ pub mod dr {
         }
     }
 }
-

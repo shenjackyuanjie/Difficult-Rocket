@@ -64,13 +64,17 @@
 
 ## thanks to
 
-- [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
-- `tomlkit` / `rtoml` toml parser
-- `xmltodict`: translate data between xml and dict
-- `pyperclip`: paste board!
-- [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some translates
-- [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
-- [@Billchyi](https://github.com/Billchyi) : check mistake in docs
+- Open Source Projects
+  - [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
+  - `tomlkit` / `rtoml` toml parser
+  - `xmltodict`: translate data between xml and dict
+  - `pyperclip`: paste board!
+  - `rapier2d`: Phy simulate engine
+
+- Main contributors
+  - [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some translates
+  - [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
+  - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
 
 ## Other links
 

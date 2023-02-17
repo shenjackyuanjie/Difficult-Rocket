@@ -11,6 +11,9 @@ license-file = '../../LICENSE'
 name = 'difficult_rocket_rs'
 crate-type = ["cdylib"]
 
+[profile.dev.package.rapier2d-f64]
+opt-level = 3
+
 [dependencies.rapier2d-f64]
 version = "0.17.1"
 features = ["simd-stable"]

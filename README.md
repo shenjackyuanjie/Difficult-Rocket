@@ -64,13 +64,18 @@
 
 ## 感谢
 
-- [pyglet](https://github.com/pyglet/pyglet) : GUI 和画面渲染
-- `tomlkit` / `rtoml` : toml 解析器
-- `xmltodict`: xml 与 dict 转换器
-- `pyperclip`: 剪贴板!
-- [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang
-- [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译 lang
-- [@Billchyi](https://github.com/Billchyi) : 文档矫正
+- 开源项目
+  - [pyglet](https://github.com/pyglet/pyglet) : GUI 和画面渲染
+  - `tomlkit` / `rtoml` : toml 解析器
+  - `xmltodict`: xml 与 dict 转换器
+  - `pyperclip`: 剪贴板!
+  - `rapier2d`: 物理模拟引擎
+
+- 主要贡献者
+  - [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang
+  - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译 lang
+  - [@Billchyi](https://github.com/Billchyi) : 文档矫正
+  - [@msdn]()
 
 ## 相关链接
 
