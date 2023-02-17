@@ -21,6 +21,6 @@ if ($do -or "311" -in $args) {
     python3.11 setup.py build
 }
 
-python3.8 after_build.py
+python3 after_build.py
 
 Set-Location ..\..\..\
