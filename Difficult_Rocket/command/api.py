@@ -17,7 +17,7 @@ import re
 from typing import Union, Optional, Type, Tuple, List
 
 # DR
-from Difficult_Rocket.exception.command import *
+# from Difficult_Rocket.exception.command import *
 
 search_re = re.compile(r'(?<!\\)"')
 

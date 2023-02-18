@@ -215,7 +215,7 @@ class ClientWindow(Window):
     def read_input(self):
         self.logger.debug('read_input start')
         while self.run_input:
-            get = input()
+            get = input(">")
             if get in ('', ' ', '\n', '\r'):
                 continue
             if get == 'stop':
@@ -287,6 +287,7 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_command(self, command: line.CommandText):
+        print(command.re_match('/'))
         self.logger.info(tr().window.command.text().format(command))
         if command.re_match('stop'):
             # self.dispatch_event('on_exit')

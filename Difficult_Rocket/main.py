@@ -73,7 +73,7 @@ class Game:
         self.server.run()
         if DR_option.use_multiprocess:
             try:
-                game_process = multiprocessing.Process(target=self.client.start(), name='pyglet app')
+                game_process = multiprocessing.Process(target=self.client.start, name='pyglet app')
                 game_process.start()
                 game_process.join()
             except Exception:
