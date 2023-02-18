@@ -31,7 +31,6 @@ pub mod camera {
     #[pymethods]
     impl CameraRs {
         #[new]
-        #[allow(unused_variables)]
         #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0, min_zoom=1.0, max_zoom=1.0))]
         pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64,min_zoom: f64, max_zoom: f64) -> PyResult<Self> {
             return Ok(CameraRs {dx, dy, zoom, min_zoom, max_zoom,

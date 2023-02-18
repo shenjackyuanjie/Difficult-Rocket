@@ -31,11 +31,11 @@ from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
+from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket import DR_runtime, DR_option
-from Difficult_Rocket.utils import tools, translate
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
