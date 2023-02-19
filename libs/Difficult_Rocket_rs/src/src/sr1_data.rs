@@ -44,6 +44,12 @@ pub mod part_list {
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Vertex {
+        pub x: f64,
+        pub y: f64
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct PartType {
         pub id: String,
         pub name: String,
@@ -67,7 +73,9 @@ pub mod part_list {
         pub sandbox_only: Option<bool>,
         pub drag: Option<f64>,
         pub hidden: Option<bool>,
-        pub buoyancy: Option<f64>
+        pub buoyancy: Option<f64>,
+        #[serde(rename = "@Shape")]
+        pub shapes: Option<Vec<Vertex>>
     }
 
     #[inline]
@@ -87,12 +95,10 @@ pub mod part_list {
 
     #[pyfunction]
     #[pyo3(name = "part_list_read_test", signature = (file_name = "./configs/PartList.xml".to_string()))]
-    pub fn read_part_list_py(file_name: Option<String>) -> PyResult<()> {
+    pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
         let file_name = file_name.unwrap_or("./configs/PartList.xml".to_string());
-        let parts = read_part_list(file_name);
-        if let Some(parts) = parts {
-            println!("{:?}", parts);
-        }
+        // let parts = read_part_list(file_name);
+        read_part_list(file_name);
         Ok(())
     }
 

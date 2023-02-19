@@ -10,14 +10,14 @@
 ## Readme First!
 ##### most badge can be clicked and jump
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.7.0.2-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.7.1.0-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 2023 V 0.7.0.3
+## 20230219 V 0.7.1.0
 
 ### 命令
 
@@ -28,6 +28,8 @@
 
 - 更改了 `ClientWindow` 启动参数的设置, 实装 ClientOption 的使用
 - 将 `SR1PartData` 的字段 `type_` 重命名为 `p_type`
+- 现在鼠标滚动更顺滑了
+
 
 ### `DR_Rs`
 

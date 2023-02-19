@@ -14,6 +14,7 @@ from typing import List, TYPE_CHECKING, Union, Dict, Optional, Callable, Generat
 from defusedxml.ElementTree import parse
 
 # pyglet
+from pyglet.math import Vec4
 from pyglet.text import Label
 from pyglet.shapes import Line
 from pyglet.sprite import Sprite
@@ -82,7 +83,7 @@ class SR1ShipRender(BaseScreen):
         self.focus = True
         self.need_draw = False
         self.drawing = False
-        self.gen_draw: Optional[Callable] = None
+        self.gen_draw: Optional[Generator] = None
         self.need_update_parts = False
         self.dx = 0
         self.dy = 0
@@ -117,7 +118,7 @@ class SR1ShipRender(BaseScreen):
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
             self.camera_rs = Camera_rs(main_window,
-                                       min_zoom=(1 / 2) ** 6, max_zoom=10)
+                                       min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -253,13 +254,50 @@ class SR1ShipRender(BaseScreen):
             return
         mouse_dx = x - (self.window_pointer.width / 2)
         mouse_dy = y - (self.window_pointer.height / 2)
-        self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
-        if self.camera_rs.zoom * (0.5 ** scroll_y) < 10:
-            self.camera_rs.zoom = self.camera_rs.zoom * (0.5 ** scroll_y)
-            self.camera_rs.dx += (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y))
-            self.camera_rs.dy += (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y))
+        # 鼠标缩放位置相对于屏幕中心的位置
+        mouse_dx_d = mouse_dx - self.camera_rs.dx
+        mouse_dy_d = mouse_dy - self.camera_rs.dy
+        # 鼠标相对偏移量的偏移量
+        if scroll_y > 0:
+            zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
+        elif scroll_y == 0:
+            zoom_d = 1
         else:
-            self.camera_rs.zoom = 10
+            zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
+        print(f"1: {self.camera_rs.zoom=} {self.camera_rs.dx} {self.camera_rs.dy} {scroll_y=}")
+        # 缩放的变换量
+        print(f'{self.camera_rs.zoom * zoom_d=}')
+        if self.camera_rs.zoom == 10:
+            if scroll_y >= 0:
+                self.camera_rs.dx += mouse_dx_d * 0.5
+                self.camera_rs.dy += mouse_dy_d * 0.5
+            else:
+                self.camera_rs.zoom *= zoom_d
+                self.camera_rs.dx += mouse_dx_d
+                self.camera_rs.dy += mouse_dy_d
+        else:
+            mouse_dx_d *= (1 - zoom_d)
+            mouse_dy_d *= (1 - zoom_d)
+            self.camera_rs.zoom *= zoom_d
+            if self.camera_rs.zoom * zoom_d >= 10:
+                zoom_d = 10 / self.camera_rs.zoom
+                self.camera_rs.zoom = 10
+            self.camera_rs.dx += mouse_dx_d
+            self.camera_rs.dy += mouse_dy_d
+        # if self.camera_rs.zoom / (0.5 ** (scroll_y * 0.5)) <= 10:
+        #     self.camera_rs.zoom = self.camera_rs.zoom / zoom_d
+        #     self.camera_rs.dx -= (mouse_dx - self.camera_rs.dx) * (1 - zoom_d)
+        #     self.camera_rs.dy -= (mouse_dy - self.camera_rs.dy) * (1 - zoom_d)
+        # elif self.camera_rs.zoom == 10:
+        #     self.camera_rs.dx -= mouse_dx * (0.1 ** scroll_y)
+        #     self.camera_rs.dy -= mouse_dy * (0.1 ** scroll_y)
+        # else:
+        #     self.camera_rs.zoom = 10
+        #     self.camera_rs.dx -= (mouse_dx - self.camera_rs.dx) * zoom_d
+        #     self.camera_rs.dy -= (mouse_dy - self.camera_rs.dy) * zoom_d
+
+        print(f"{self.camera_rs.zoom=} {self.camera_rs.dx} {self.camera_rs.dy} {scroll_y=}")
+        self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
         self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (
                     self.window_pointer.width / 2)
         self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (
@@ -275,6 +313,7 @@ class SR1ShipRender(BaseScreen):
                 self.camera_rs.zoom = 1
                 self.camera_rs.dx = 0
                 self.camera_rs.dy = 0
+                self.window_pointer.view = Vec4()
             else:
                 self.need_draw = True
             print('应该渲染飞船的')
@@ -299,7 +338,7 @@ class SR1ShipRender(BaseScreen):
 
             def screenshot(window):
                 from libs.pyglet.gl import GLubyte, GLint, GL_RGBA, GL_UNSIGNED_BYTE, \
-                    glReadPixels, glGetIntegerv
+                    glReadPixels
                 # from libs.pyglet.gl.gl_compat import GL_AUX_BUFFERS, GL_AUX0
                 import pyglet
                 width = window.width
