@@ -264,9 +264,7 @@ class SR1ShipRender(BaseScreen):
             zoom_d = 1
         else:
             zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
-        print(f"1: {self.camera_rs.zoom=} {self.camera_rs.dx} {self.camera_rs.dy} {scroll_y=}")
         # 缩放的变换量
-        print(f'{self.camera_rs.zoom * zoom_d=}')
         if self.camera_rs.zoom == 10:
             if scroll_y >= 0:
                 self.camera_rs.dx += mouse_dx_d * 0.5
@@ -284,19 +282,7 @@ class SR1ShipRender(BaseScreen):
                 self.camera_rs.zoom = 10
             self.camera_rs.dx += mouse_dx_d
             self.camera_rs.dy += mouse_dy_d
-        # if self.camera_rs.zoom / (0.5 ** (scroll_y * 0.5)) <= 10:
-        #     self.camera_rs.zoom = self.camera_rs.zoom / zoom_d
-        #     self.camera_rs.dx -= (mouse_dx - self.camera_rs.dx) * (1 - zoom_d)
-        #     self.camera_rs.dy -= (mouse_dy - self.camera_rs.dy) * (1 - zoom_d)
-        # elif self.camera_rs.zoom == 10:
-        #     self.camera_rs.dx -= mouse_dx * (0.1 ** scroll_y)
-        #     self.camera_rs.dy -= mouse_dy * (0.1 ** scroll_y)
-        # else:
-        #     self.camera_rs.zoom = 10
-        #     self.camera_rs.dx -= (mouse_dx - self.camera_rs.dx) * zoom_d
-        #     self.camera_rs.dy -= (mouse_dy - self.camera_rs.dy) * zoom_d
 
-        print(f"{self.camera_rs.zoom=} {self.camera_rs.dx} {self.camera_rs.dy} {scroll_y=}")
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
         self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (
                     self.window_pointer.width / 2)
