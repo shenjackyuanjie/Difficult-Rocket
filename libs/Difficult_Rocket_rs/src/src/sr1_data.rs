@@ -7,24 +7,26 @@
  */
 
 pub mod part_list {
+    use std::fs;
+
     use pyo3::prelude::*;
     use serde::{Serialize, Deserialize};
-    use serde_xml_rs::{to_string, from_reader};
+    use serde_xml_rs::{from_str};
 
-    #[derive(Serialize, Deserialize, Clone)]
+    #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct PartList {
         #[serde(rename = "PartType")]
         part_types: Vec<PartType>
     }
 
     #[allow(non_camel_case_types)]
-    #[derive(Serialize, Deserialize, Copy, Clone)]
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub enum PartTypes {
         pod,
         detacher,
         wheel,
         fuselage,
-        r#struct,
+        strut,
         tank,
         engine,
         parachute,
@@ -36,36 +38,62 @@ pub mod part_list {
         lander
     }
 
-    #[derive(Serialize, Deserialize, Copy, Clone)]
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub enum Category {
         Satellite
     }
 
-    #[derive(Serialize, Deserialize, Clone)]
+    #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct PartType {
-        id: String,
-        name: String,
-        description: String,
-        sprite: String,
-        r#type: PartTypes,
-        mass: f64,
-        width: u32,
-        height: u32,
-        friction: Option<f64>,
-        category: Option<Category>,
+        pub id: String,
+        pub name: String,
+        pub description: String,
+        pub sprite: String,
+        pub r#type: PartTypes,
+        pub mass: f64,
+        pub width: u32,
+        pub height: u32,
+        pub friction: Option<f64>,
+        pub category: Option<Category>,
         #[serde(rename = "ignoreEditorIntersections")]
-        ignore_editor_intersections: Option<bool>,
+        pub ignore_editor_intersections: Option<bool>,
         #[serde(rename = "disableEditorRotation")]
-        disable_editor_rotation: Option<bool>,
+        pub disable_editor_rotation: Option<bool>,
         #[serde(rename = "canExplode")]
-        can_explode: Option<bool>,
+        pub can_explode: Option<bool>,
         #[serde(rename = "coverHeight")]
-        cover_height: Option<u32>,
+        pub cover_height: Option<u32>,
         #[serde(rename = "sandboxOnly")]
-        sandbox_only: Option<bool>,
-        drag: Option<f64>,
-        hidden: Option<bool>,
-        buoyancy: Option<f64>
+        pub sandbox_only: Option<bool>,
+        pub drag: Option<f64>,
+        pub hidden: Option<bool>,
+        pub buoyancy: Option<f64>
+    }
+
+    #[inline]
+    pub fn read_part_list(file_name: String) -> Option<PartList> {
+        let part_list_file = fs::read_to_string(file_name.to_string());
+        match part_list_file {
+            Ok(part_list_file) => {
+                let part_list: PartList = from_str(part_list_file.as_str()).unwrap();
+                Some(part_list)
+            },
+            Err(_) => {
+                println!("Error while reading File {}", file_name);
+                None
+            }
+        }
+    }
+
+    #[pyfunction]
+    #[pyo3(name = "part_list_read_test", signature = (file_name = "./configs/PartList.xml".to_string()))]
+    pub fn read_part_list_py(file_name: Option<String>) -> PyResult<()> {
+        let file_name = file_name.unwrap_or("./configs/PartList.xml".to_string());
+        let parts = read_part_list(file_name);
+        if let Some(parts) = parts {
+            println!("{:?}", parts);
+        }
+        Ok(())
     }
 
 }

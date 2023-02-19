@@ -6,7 +6,7 @@
 
 from .lib import *
 
-from typing import TYPE_CHECKING, Dict, Tuple
+from typing import TYPE_CHECKING, Dict, Tuple, Optional
 
 if TYPE_CHECKING:
     from Difficult_Rocket.client.screen import BaseScreen
@@ -21,6 +21,8 @@ if TYPE_CHECKING:
 
     def simluation() -> None: ...
     """ 用来测试 rust 的物理模拟能不能用 """
+
+    def part_list_read_test(file_name: Optional[str] = "./configs/PartList.xml") -> None: ...
 
     class PartDatas:
         """ 用于在 PyObj 里塞一个浓眉大眼的 HashMap<uszie, SR1PartData>"""

@@ -24,7 +24,7 @@ from libs.MCDR.version import Version
 
 game_version = Version("0.7.0.3")  # 游戏版本
 build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
-DR_rust_version = Version("0.2.3.0")  # DR 的 Rust 编写部分的版本
+DR_rust_version = Version("0.2.5.0")  # DR 的 Rust 编写部分的版本
 __version__ = game_version
 
 long_version: int = 12
@@ -78,7 +78,8 @@ class _DR_option(Options):
         if sys.platform != 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
-            from libs.Difficult_Rocket_rs import test_call, get_version_str
+            from libs.Difficult_Rocket_rs import test_call, get_version_str, part_list_read_test
+            part_list_read_test("./configs/PartList.xml")
             test_call(self)
             print(f'DR_rust available: {get_version_str()}')
         except ImportError:

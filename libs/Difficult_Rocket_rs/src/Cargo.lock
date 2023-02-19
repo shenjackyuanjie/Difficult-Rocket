@@ -116,7 +116,7 @@ dependencies = [
 
 [[package]]
 name = "difficult_rocket_rs"
-version = "0.2.2"
+version = "0.2.5"
 dependencies = [
  "pyo3",
  "rapier2d-f64",

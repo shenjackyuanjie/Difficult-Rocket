@@ -1,6 +1,6 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.2.2"
+version = "0.2.5"
 edition = "2021"
 license-file = '../../LICENSE'
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -14,8 +14,8 @@ crate-type = ["cdylib"]
 [profile.dev.package.rapier2d-f64]
 opt-level = 3
 
-[profile.release]
-codegen-units = 1
+#[profile.release]
+#codegen-units = 1
 
 #[dependencies.quick-xml]
 #version = "0.27.1"

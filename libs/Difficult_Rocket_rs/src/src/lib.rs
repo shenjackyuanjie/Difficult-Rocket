@@ -16,7 +16,7 @@ use pyo3::prelude::*;
 
 #[pyfunction]
 fn get_version_str() -> String {
-    return String::from("0.2.2.0");
+    return String::from("0.2.5.0");
 }
 
 #[pyfunction]
@@ -35,6 +35,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(test_call, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_render::better_update_parts, m)?)?;
     m.add_function(wrap_pyfunction!(simulator::simluation, m)?)?;
+    m.add_function(wrap_pyfunction!(sr1_data::part_list::read_part_list_py, m)?)?;
     m.add_class::<sr1_render::types::PartDatas>()?;
     m.add_class::<render::camera::CameraRs>()?;
     m.add_class::<render::screen::PartFrame>()?;
