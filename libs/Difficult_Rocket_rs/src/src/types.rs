@@ -206,6 +206,10 @@ pub mod math {
             }
         }
 
+        pub fn rotate(&self, angle: f64) -> Self {
+            OneTimeLine::point_new(&self.start.rotate_angle(angle), &self.end.rotate_angle(angle))
+        }
+
         pub fn point_d() -> f64 {
             1.0
         }

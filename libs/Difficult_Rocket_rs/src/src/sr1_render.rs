@@ -55,9 +55,7 @@ pub mod types {
             Ok(ok) => {
                 ok.extract()?
             }
-            _ => {
-                None
-            }
+            _ => None
         };
 
         return Ok(SR1PartData{

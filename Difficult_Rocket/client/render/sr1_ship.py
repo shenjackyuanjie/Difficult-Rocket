@@ -278,7 +278,6 @@ class SR1ShipRender(BaseScreen):
             mouse_dy_d *= (1 - zoom_d)
             self.camera_rs.zoom *= zoom_d
             if self.camera_rs.zoom * zoom_d >= 10:
-                zoom_d = 10 / self.camera_rs.zoom
                 self.camera_rs.zoom = 10
             self.camera_rs.dx += mouse_dx_d
             self.camera_rs.dy += mouse_dy_d
