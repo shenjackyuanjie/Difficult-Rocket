@@ -185,9 +185,11 @@ class SR1ShipRender(BaseScreen):
                 print(f'hey! warning! id{part.id}')
             self.part_data[part.id] = part
         # 调用生成器 减少卡顿
-        with contextlib.suppress(GeneratorExit):
+        try:
             self.gen_draw = self.gen_sprite(self.part_data)
             next(self.gen_draw)
+        except GeneratorExit:
+            self.drawing = False
         self.need_draw = False
 
         if DR_option.use_DR_rust:

@@ -20,6 +20,10 @@ if TYPE_CHECKING:
     def get_version_str() -> str: ...
 
     def simluation() -> None: ...
+    """ 用来测试 rust 的物理模拟能不能用 """
+
+    def xml_read_test() -> None: ...
+    """ 用来测试 rust 的 xml 读取"""
 
     class PartDatas:
         """ 用于在 PyObj 里塞一个浓眉大眼的 HashMap<uszie, SR1PartData>"""

@@ -6,47 +6,39 @@
  * -------------------------------
  */
 
-#[allow(dead_code)]
-pub mod sr1 {
-    use std::collections::HashMap;
 
+pub mod sr1 {
     pub fn map_ptype_textures(ptype: String) -> String {
-        let mut value_map: HashMap<&str, &str> = HashMap::with_capacity(27 * 2);
-        value_map.insert("pod-1", "Pod");
-        value_map.insert("detacher-1", "DetacherVertical");
-        value_map.insert("detacher-2", "DetacherRadial");
-        value_map.insert("wheel-1", "Wheel");
-        value_map.insert("wheel-2", "Wheel");
-        value_map.insert("fuselage-1", "Fuselage");
-        value_map.insert("strut-1", "Beam");
-        value_map.insert("fueltank-0", "TankTiny");
-        value_map.insert("fueltank-1", "TankSmall");
-        value_map.insert("fueltank-2", "TankMedium");
-        value_map.insert("fueltank-3", "TankLarge");
-        value_map.insert("fueltank-4", "Puffy750");
-        value_map.insert("fueltank-5", "SideTank");
-        value_map.insert("engine-0", "EngineTiny");
-        value_map.insert("engine-1", "EngineSmall");
-        value_map.insert("engine-2", "EngineMedium");
-        value_map.insert("engine-3", "EngineLarge");
-        value_map.insert("engine-4", "SolidRocketBooster");
-        value_map.insert("ion-0", "EngineIon");
-        value_map.insert("parachute-1", "ParachuteCanister");
-        value_map.insert("nosecone-1", "NoseCone");
-        value_map.insert("rcs-1", "RcsBlock");
-        value_map.insert("solar-1", "SolarPanelBase");
-        value_map.insert("battery-0", "Battery");
-        value_map.insert("dock-1", "DockingConnector");
-        value_map.insert("port-1", "DockingPort");
-        value_map.insert("lander-1", "LanderLegPreview");
-        let result = value_map.get(ptype.as_str());
-        match result {
-            None => "Pod".to_string(),
-            Some(i) => {
-                let i = *i;
-                i.to_string()
-            }
-        }
+        match ptype.as_str() {
+            "pod-1" => "Pod",
+            "detacher-1" => "DetacherVertical",
+            "detacher-2" => "DetacherRadial",
+            "wheel-1" => "Wheel",
+            "wheel-2" => "Wheel",
+            "fuselage-1" => "Fuselage",
+            "strut-1" => "Beam",
+            "fueltank-0" => "TankTiny",
+            "fueltank-1" => "TankSmall",
+            "fueltank-2" => "TankMedium",
+            "fueltank-3" => "TankLarge",
+            "fueltank-4" => "Puffy750",
+            "fueltank-5" => "SideTank",
+            "engine-0" => "EngineTiny",
+            "engine-1" => "EngineSmall",
+            "engine-2" => "EngineMedium",
+            "engine-3" => "EngineLarge",
+            "engine-4" => "SolidRocketBooster",
+            "ion-0" => "EngineIon",
+            "parachute-1" => "ParachuteCanister",
+            "nosecone-1" => "NoseCone",
+            "rcs-1" => "RcsBlock",
+            "solar-1" => "SolarPanelBase",
+            "battery-0" => "Battery",
+            "dock-1" => "DockingConnector",
+            "port-1" => "DockingPort",
+            "lander-1" => "LanderLegPreview",
+            _ => "Pod",
+        }.to_string()
     }
 
     pub struct SR1PartData {
@@ -62,7 +54,7 @@ pub mod sr1 {
         pub flip_y: bool,
         pub explode: bool,
         pub textures: String,
-        pub connections: Option<Vec<(usize, usize)>>
+        pub connections: Option<Vec<((usize, usize), (isize, isize))>>
     }
 }
 
@@ -80,6 +72,7 @@ pub mod math {
             Point2D{x, y}
         }
 
+        #[inline]
         pub fn new_00() -> Self { Point2D { x: 0.0, y :0.0 } }
 
         #[inline]
@@ -90,8 +83,18 @@ pub mod math {
         }
 
         #[inline]
-        pub fn get_op(&self) -> f64 {
+        pub fn distance_00(&self) -> f64 {
             self.distance(&Point2D::new(0.0, 0.0))
+        }
+
+        #[inline]
+        pub fn rotate_angle(&self, angle: f64) -> Self {
+            let radius = angle.to_radians();
+            let sin = radius.sin();
+            let cos = radius.cos();
+            let x = self.x * cos - self.y * sin;
+            let y = self.x * sin + self.y * cos;
+            Point2D{ x, y }
         }
     }
 
@@ -124,6 +127,39 @@ pub mod math {
         OneTimeLine{data: OneTimeLine},
         CircularArc{data: CircularArc},
     }
+
+    #[derive(Clone)]
+    pub struct Shape {
+        pub pos: Point2D,
+        pub angle: f64,
+        // 旋转角度 角度值
+        pub bounds: Vec<Edge>
+    }
+
+    impl Shape {
+        pub fn new(x: Option<f64>, y: Option<f64>, angle: Option<f64>, bounds: Vec<Edge>) -> Self {
+            let x = x.unwrap_or(0.0);
+            let y = y.unwrap_or(0.0);
+            let angle = angle.unwrap_or(0.0);
+            Shape { pos: Point2D::new(x, y), angle, bounds }
+        }
+
+        pub fn new_width_height(width: f64, height: f64, angle: Option<f64>) -> Self {
+            let d_width = width / 2.0;
+            let d_height = height / 2.0;
+            let mut edges: Vec<Edge> = vec![
+                Edge::OneTimeLine{data: OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height)},
+                Edge::OneTimeLine{data: OneTimeLine::pos_new(d_width, -d_height, d_width, d_height)},
+                Edge::OneTimeLine{data: OneTimeLine::pos_new(d_width, d_height, -d_width, d_height)},
+                Edge::OneTimeLine{data: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)}
+            ];
+            if let Some(angle) = angle {
+
+            }
+            Shape { pos: Point2D::new_00(), angle: 0.0, bounds: edges}
+        }
+    }
+
 
     impl OneTimeLine {
         #[inline]
@@ -194,14 +230,6 @@ pub mod dr {
 
     }
 
-    #[derive(Clone)]
-    pub struct Shape {
-        pub x: f64,
-        pub y: f64,
-        pub angle: f64,
-        // 旋转角度 角度值
-        pub bounds: Vec<math::Edge>
-    }
 
     #[derive(Clone, Copy)]
     pub enum PartType {

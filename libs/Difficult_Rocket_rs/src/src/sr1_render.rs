@@ -52,6 +52,15 @@ pub mod types {
 
     #[allow(non_snake_case)]
     pub fn part_data_to_SR1PartData(input: &PyAny) -> PyResult<SR1PartData> {
+        let connections = match input.getattr(intern!(input.py(), "connections")) {
+            Ok(ok) => {
+                ok.extract()?
+            }
+            _ => {
+                None
+            }
+        };
+
         return Ok(SR1PartData{
             x: input.getattr(intern!(input.py(), "x"))?.extract()?,
             y: input.getattr(intern!(input.py(), "y"))?.extract()?,
@@ -65,7 +74,7 @@ pub mod types {
             flip_y: input.getattr(intern!(input.py(), "flip_y"))?.extract()?,
             explode: input.getattr(intern!(input.py(), "explode"))?.extract()?,
             textures: input.getattr(intern!(input.py(), "textures"))?.extract()?,
-            connections: None
+            connections
             // connections: input.getattr(intern!(input.py(), "connections"))?.extract()?,
         })
     }
