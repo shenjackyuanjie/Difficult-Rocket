@@ -10,7 +10,6 @@ use std::collections::HashMap;
 use std::time;
 use pyo3::intern;
 use pyo3::prelude::*;
-// use pyo3::types::PyDict;
 use crate::types::sr1::SR1PartData;
 
 #[allow(dead_code)]

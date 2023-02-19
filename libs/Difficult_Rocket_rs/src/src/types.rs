@@ -8,6 +8,7 @@
 
 
 pub mod sr1 {
+
     pub fn map_ptype_textures(ptype: String) -> String {
         match ptype.as_str() {
             "pod-1" => "Pod",
@@ -213,7 +214,6 @@ pub mod math {
 
 #[allow(dead_code)]
 pub mod dr {
-    use super::math;
 
     #[derive(Clone, Copy)]
     pub enum ConnectType {
