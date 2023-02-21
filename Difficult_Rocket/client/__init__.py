@@ -18,7 +18,7 @@ import logging
 import functools
 import traceback
 
-from typing import List, Callable, Union
+from typing import List, Callable
 from decimal import Decimal
 
 # third function

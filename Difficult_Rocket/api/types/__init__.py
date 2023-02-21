@@ -26,9 +26,6 @@ __all__ = ['get_type_hints_',
            'OptionNameNotDefined']
 
 
-
-
-
 def get_type_hints_(cls: Type):
     try:
         return get_type_hints(cls)

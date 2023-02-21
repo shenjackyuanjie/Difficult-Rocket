@@ -41,7 +41,7 @@ jobs:
       - name: setup、build mdbook
         shell: pwsh
         run: |
-          mdbook build ./docs/
+          mdbook build ./docs/html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
