@@ -41,13 +41,13 @@ jobs:
       - name: setup、build mdbook
         shell: pwsh
         run: |
-          mdbook build ./docs/html
+          mdbook build ./docs/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: './docs/book'
+          path: './docs/book/html'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
