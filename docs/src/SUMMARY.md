@@ -1,7 +1,7 @@
 # Summary
 
-- [README](./README.md)
-- [README-en](./README-en.md)
+- [README](../../README.md)
+- [README-en](../README-en.md)
 
 - [update logs](./update_logs.md)
 - [contributors](./contributors.md)
