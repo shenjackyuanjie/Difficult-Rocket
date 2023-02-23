@@ -27,11 +27,11 @@
 
 > Lighter than Vanilla SR
 
-## [Plan feature list](/docs/src/plan_features.md)
+## [Plan feature list](src/plan_features/README.md)
 
 - [microsoft TODO](https://to-do.microsoft.com/sharing?InvitationToken=Q6SN1kdtitK8cwFktFl71gSnsRMNmrH7CC7kHY_Tq6ReMRwHgInP4_q5ie2IwrHx8)
 
-## [Update logs](/docs/src/update_logs.md)
+## [Update logs](src/update_logs.md)
 
 ## Environment (been tested / developed on)
 

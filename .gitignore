@@ -154,8 +154,8 @@ dmypy.json
 .pyre/
 
 # github
-.gitignore
-.gitattributes
+# .gitignore
+# .gitattributes
 
 # some other thing
 other things/

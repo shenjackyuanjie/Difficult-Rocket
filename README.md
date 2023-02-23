@@ -1,6 +1,6 @@
 # Difficult Rocket
 
-中文 | [English](/docs/README-en.md)
+中文 | [English](./docs/README-en.md)
 
 - [GitHub](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
@@ -27,11 +27,11 @@
 
 > 相对于原版SR比较“轻量化”
 
-## [计划特性列表](/docs/plan_features)
+## [计划特性列表](docs/src/plan_features/README.md)
 
 - [microsoft TODO](https://to-do.microsoft.com/sharing?InvitationToken=Q6SN1kdtitK8cwFktFl71gSnsRMNmrH7CC7kHY_Tq6ReMRwHgInP4_q5ie2IwrHx8)
 
-## [更新日志](/docs/update_logs.md)
+## [更新日志](docs/src/update_logs.md)
 
 ## 环境需求 (测试过的 / 开发平台)
 
