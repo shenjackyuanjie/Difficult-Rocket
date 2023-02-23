@@ -415,6 +415,7 @@ objc.sel_isEqual.argtypes = [c_void_p, c_void_p]
 objc.sel_registerName.restype = c_void_p
 objc.sel_registerName.argtypes = [c_char_p]
 
+
 ######################################################################
 # void *objc_autoreleasePoolPush(void)
 objc.objc_autoreleasePoolPush.restype = c_void_p
@@ -644,8 +645,8 @@ def parse_type_encoding(encoding):
 def cfunctype_for_encoding(encoding):
     # Check if we've already created a CFUNCTYPE for this encoding.
     # If so, then return the cached CFUNCTYPE.
-    #if encoding in cfunctype_table:
-    #    return cfunctype_table[encoding]
+    if encoding in cfunctype_table:
+        return cfunctype_table[encoding]
 
     # Otherwise, create a new CFUNCTYPE for the encoding.
     typecodes = {b'c': c_char, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
@@ -668,7 +669,7 @@ def cfunctype_for_encoding(encoding):
     # Cache the new CFUNCTYPE in the cfunctype_table.
     # We do this mainly because it prevents the CFUNCTYPE
     # from being garbage-collected while we need it.
-    #cfunctype_table[encoding] = cfunctype
+    cfunctype_table[encoding] = cfunctype
     return cfunctype
 
 
@@ -728,12 +729,12 @@ class ObjCMethod:
     # Note, need to map 'c' to c_byte rather than c_char, because otherwise
     # ctypes converts the value into a one-character string which is generally
     # not what we want at all, especially when the 'c' represents a bool var.
-    typecodes = {b'c': c_byte, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
-                 b'C': c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
-                 b'f': c_float, b'd': c_double, b'B': c_bool, b'v': None, b'Vv': None, b'*': c_char_p,
-                 b'@': c_void_p, b'#': c_void_p, b':': c_void_p, b'^v': c_void_p, b'?': c_void_p,
-                 NSPointEncoding: NSPoint, NSSizeEncoding: NSSize, NSRectEncoding: NSRect,
-                 NSRangeEncoding: NSRange,
+    typecodes = {b'c':             c_byte, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
+                 b'C':             c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
+                 b'f':             c_float, b'd': c_double, b'B': c_bool, b'v': None, b'Vv': None, b'*': c_char_p,
+                 b'@':             c_void_p, b'#': c_void_p, b':': c_void_p, b'^v': c_void_p, b'?': c_void_p,
+                 NSPointEncoding:  NSPoint, NSSizeEncoding: NSSize, NSRectEncoding: NSRect,
+                 NSRangeEncoding:  NSRange,
                  PyObjectEncoding: py_object}
 
     cfunctype_table = {}
