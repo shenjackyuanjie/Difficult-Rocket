@@ -42,7 +42,7 @@ def main() -> None:
     print(hi)  # hi！
 
     from Difficult_Rocket.exception import TestError
-    from Difficult_Rocket.crash import crash
+    from Difficult_Rocket import crash
     from Difficult_Rocket import DR_option
     try:
         from libs import pyglet  # 导入pyglet

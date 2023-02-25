@@ -12,9 +12,9 @@ from pyglet.clock import get_frequency
 
 # Difficult Rocket function
 from Difficult_Rocket.api.types import Fonts
-from Difficult_Rocket.utils import translate
+# from Difficult_Rocket.utils import translate
 from Difficult_Rocket.api.screen import BaseScreen
-from Difficult_Rocket.command.tree import CommandTree
+# from Difficult_Rocket.command.tree import CommandTree
 
 if typing.TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow

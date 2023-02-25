@@ -97,8 +97,11 @@ pub mod part_list {
     #[pyo3(name = "part_list_read_test", signature = (file_name = "./configs/PartList.xml".to_string()))]
     pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
         let file_name = file_name.unwrap_or("./configs/PartList.xml".to_string());
-        // let parts = read_part_list(file_name);
-        read_part_list(file_name);
+        let _parts = read_part_list(file_name);
+        if let Some(parts) = _parts {
+            println!("{:?}", parts)
+        }
+        // read_part_list(file_name);
         Ok(())
     }
 

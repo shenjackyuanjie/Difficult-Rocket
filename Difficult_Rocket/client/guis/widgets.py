@@ -14,7 +14,7 @@ gitee:  @shenjackyuanjie
 from typing import Optional, Union, Tuple
 
 # from libs import pyglet
-from pyglet import font
+# from pyglet import font
 from pyglet.text import Label, HTMLLabel
 # from pyglet.window import key
 from pyglet.gui import widgets
@@ -23,14 +23,14 @@ from pyglet.shapes import Rectangle
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
 from pyglet.text.caret import Caret
-from pyglet.text.document import FormattedDocument, UnformattedDocument
+from pyglet.text.document import UnformattedDocument
 from pyglet.text.layout import IncrementalTextLayout
 
 # from libs import pyperclip
 # from libs.pyperclip import paste
 
 from Difficult_Rocket.api.types import FontData, Fonts
-from Difficult_Rocket.client.guis.format import html
+# from Difficult_Rocket.client.guis.format import html
 from Difficult_Rocket import DR_option
 
 __all__ = ['InputBox']

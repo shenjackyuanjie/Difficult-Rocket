@@ -13,7 +13,7 @@ gitee:  @shenjackyuanjie
 
 import statistics
 
-from typing import Union
+from typing import Union, List
 from decimal import Decimal
 
 
@@ -25,8 +25,8 @@ class FpsLogger:
         self.count = count
         self._fps = stable_fps
         self.middle_fps = stable_fps
-        self.fps_list = [stable_fps]  # type: list[Union[int, float]]
-        self.get_fps_list = [stable_fps]  # type: list[Union[int, float]]
+        self.fps_list: List[Union[int, float]] = [stable_fps]
+        self.get_fps_list: List[Union[int, float]] = [stable_fps]
         self._max_fps = stable_fps
         self._min_fps = stable_fps
 

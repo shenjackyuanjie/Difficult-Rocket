@@ -7,6 +7,9 @@ trytry/
 #pdm files
 __pypackages__
 
+# ruff
+.ruff_cache
+
 # nuitka build
 build/
 .github/workflows/env.ps1

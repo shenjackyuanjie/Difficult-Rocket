@@ -8,7 +8,7 @@ import time
 import contextlib
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
-from typing import List, TYPE_CHECKING, Union, Dict, Optional, Callable, Generator
+from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
 
 # third party package
 from defusedxml.ElementTree import parse
