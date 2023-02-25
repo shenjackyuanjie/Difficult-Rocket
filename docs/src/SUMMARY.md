@@ -3,6 +3,8 @@
 - [README](../../README.md)
 - [README-en](../README-en.md)
 
+- [Semver++](./version.md)
+
 - [update logs](./update_logs.md)
 - [contributors](./contributors.md)
 

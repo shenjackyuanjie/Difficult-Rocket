@@ -44,11 +44,26 @@ pub mod part_list {
         None
     }
 
-    #[derive(Debug, Serialize, Deserialize, Clone)]
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub enum Location {
+        Top,
+        Bottom,
+        Left,
+        Right,
+
+        TopCenter,
+        BottomCenter,
+        LeftCenter,
+        RightCenter,
+
+        TopSide,
+        BottomSide,
+        LeftSide,
+        RightSide
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Vertex {
-        // pub vec:
-        // #[serde(rename = "$value")]
-        // pub vecs: Option<Vec<Vertexs>>
         pub x: f64,
         pub y: f64
     }
@@ -56,7 +71,28 @@ pub mod part_list {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Shape {
         #[serde(rename = "Vertex")]
-        pub vertex: Vec<Vertex>
+        pub vertex: Vec<Vertex>,
+        pub sensor: Option<bool>
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct AttachPoint {
+        pub location: Option<Location>,
+        pub x: Option<f64>,
+        pub y: Option<f64>,
+        #[serde(rename = "breakAngle")]
+        pub break_angle: Option<i32>,
+        #[serde(rename = "breakForce")]
+        pub break_force: Option<f64>,
+        #[serde(rename = "fuelLine")]
+        pub fuel_line: Option<bool>,
+        pub group: Option<i32>,
+        pub order: Option<i32>,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct AttachPoints {
+
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]

@@ -9,6 +9,9 @@
 
 ## Readme First!
 ##### most badge can be clicked and jump
+
+[关于版本号的说明](version.md)
+
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 ![Generic badge](https://img.shields.io/badge/Version-0.7.1.1-yellow.svg)
 

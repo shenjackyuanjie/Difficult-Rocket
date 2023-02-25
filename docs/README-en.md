@@ -15,6 +15,8 @@
 
 ## Version
 
+[About Versions](src/version.md)
+
 [![Generic badge](https://img.shields.io/badge/Release-0.7.1.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Pre_Release-0.7.1.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Devloping-0.7.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
