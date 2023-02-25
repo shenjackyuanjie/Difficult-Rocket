@@ -25,11 +25,11 @@ features = ["serialize"]
 version = "1.0.152"
 features = ["derive"]
 
-#[dependencies.xml-rs]
-#version = "0.8.4"
-#
-#[dependencies.serde-xml-rs]
-#version = "0.6.0"
+[dependencies.xml-rs]
+version = "0.8.4"
+
+[dependencies.serde-xml-rs]
+version = "0.6.0"
 
 [dependencies.rapier2d-f64]
 version = "0.17.1"

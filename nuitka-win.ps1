@@ -14,7 +14,7 @@ cd libs
 cd Difficult_Rocket_rs
 cd src
 python3.8 setup.py build
-python after_build.py
+python post_build.py
 cd ../../..
 
 $arg = @()

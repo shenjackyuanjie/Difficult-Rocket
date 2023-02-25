@@ -71,7 +71,7 @@ jobs:
         run: |
           cd libs/Difficult_Rocket_rs/src
           python setup.py build
-          python after_build.py
+          python post_build.py
           python setup.py clean
           cd ..
           # Remove-Item ./src -Recurse
@@ -145,7 +145,7 @@ jobs:
         run: |
           Copy-Item .\libs\pyglet\ .\build\DR.dist -Recurse
           Rename-Item ./build/DR.dist Difficult-Rocket
-          python ./.github/workflows/after_compile.py
+          python ./.github/workflows/post_compile.py
 
       # Uploads artifact
       - name: Upload Artifact
