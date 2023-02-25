@@ -68,7 +68,7 @@ class _DR_option(Options):
     # tests
     playing:                bool = False
     debugging:              bool = False
-    crash_report_test:      bool = True
+    crash_report_test:      bool = False
     pyglet_macosx_dev_test: bool = True
 
     # window option

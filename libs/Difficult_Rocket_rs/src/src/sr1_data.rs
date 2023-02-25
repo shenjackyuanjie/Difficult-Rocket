@@ -40,13 +40,23 @@ pub mod part_list {
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub enum Category {
-        Satellite
+        Satellite,
+        None
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Vertex {
+        // pub vec:
+        // #[serde(rename = "$value")]
+        // pub vecs: Option<Vec<Vertexs>>
         pub x: f64,
         pub y: f64
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Shape {
+        #[serde(rename = "Vertex")]
+        pub vertex: Vec<Vertex>
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -74,8 +84,8 @@ pub mod part_list {
         pub drag: Option<f64>,
         pub hidden: Option<bool>,
         pub buoyancy: Option<f64>,
-        #[serde(rename = "@Shape")]
-        pub shapes: Option<Vec<Vertex>>
+        #[serde(rename = "Shape")]
+        pub shapes: Option<Vec<Shape>>
     }
 
     #[inline]
