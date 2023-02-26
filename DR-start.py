@@ -20,7 +20,31 @@ errors = {
     'error.happen':   '游戏出现了一个报错！正在处理'
 }
 
+def print_path() -> None:
+    print(f'{__file__=}')
+    print(f'{sys.path=}')
+    print(f'{sys.path[0]=}')
+    print(f'{sys.argv[0]=}')
+    print(f'{os.getcwd()=}')
+    print(f'{os.path.abspath(__file__)=}')
+    print(f'{os.path.realpath(__file__)=}')
+    print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
+    # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
+
+
+def modify_path() -> None:
+    file_path = os.path.split(os.path.realpath(__file__))[0]
+    os.chdir(file_path)  # 将运行路径切换到文件位置 防止bug
+    sys.path.append(f'{file_path}/Difficult_Rocket')  # 添加local path
+    sys.path.append(f'{file_path}/libs')  # 添加 libs path
+
+
 if __name__ == '__main__':
+    print(hi)  # hi！
     # 记录启动信息
     start_time_ns = time.time_ns()
     start_time_perf_ns = time.perf_counter_ns()
+    print_path()
+    modify_path()
+    
+

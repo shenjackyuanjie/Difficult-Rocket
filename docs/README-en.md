@@ -70,11 +70,13 @@
   - `xmltodict`: translate data between xml and dict
   - `pyperclip`: paste board!
   - `rapier2d`: Phy simulate engine
+  - `pyo3`: Rust Python Binding
 
 - Main contributors
-  - [@Rayawa](https://github.com/Rayawa) : check mistake in docs & some translates
-  - [@rouxiao-you](https://github.com/ruoxiao-you) : translate chinese to English
-  - [@Billchyi](https://github.com/Billchyi) : check mistake in docs
+  - [@Rayawa](https://github.com/Rayawa) : Check mistake in docs & some translates
+  - [@rouxiao-you](https://github.com/ruoxiao-you) : Translate chinese to English
+  - [@Billchyi](https://github.com/Billchyi) : Check mistake in docs
+  - [@MSDNicrosoft](https://github.com/MSDNicrosoft) : Optimize code
 
 ## Other links
 

@@ -70,12 +70,13 @@
   - `xmltodict`: xml 与 dict 转换器
   - `pyperclip`: 剪贴板!
   - `rapier2d`: 物理模拟引擎
+  - `pyo3`: Rust Python 扩展
 
 - 主要贡献者
   - [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang
   - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译 lang
   - [@Billchyi](https://github.com/Billchyi) : 文档矫正
-  - [@MSDNicrosoft]()
+  - [@MSDNicrosoft](https://github.com/MSDNicrosoft) : 优化代码
 
 ## 相关链接
 

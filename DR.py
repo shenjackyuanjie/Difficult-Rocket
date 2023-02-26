@@ -23,10 +23,9 @@ error_format = {
 }
 
 
-def main() -> None:
-    start_time_ns = time.time_ns()
-    start_time_perf_ns = time.perf_counter_ns()
+def print_path() -> None:
     print(f'{__file__=}')
+    print(f'{sys.path=}')
     print(f'{sys.path[0]=}')
     print(f'{sys.argv[0]=}')
     print(f'{os.getcwd()=}')
@@ -34,12 +33,17 @@ def main() -> None:
     print(f'{os.path.realpath(__file__)=}')
     print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
+
+
+def main() -> None:
+    print(hi)  # hi！
+    start_time_ns = time.time_ns()
+    start_time_perf_ns = time.perf_counter_ns()
+    print_path()
     file_path = os.path.split(os.path.realpath(__file__))[0]
     os.chdir(file_path)  # 将运行路径切换到文件位置 防止bug
     sys.path.append(f'{file_path}/Difficult_Rocket')  # 添加local path
     sys.path.append(f'{file_path}/libs')  # 添加 libs path
-    print(sys.path)  # 输出路径
-    print(hi)  # hi！
 
     from Difficult_Rocket.exception import TestError
     from Difficult_Rocket import crash

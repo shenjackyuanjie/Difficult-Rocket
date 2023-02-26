@@ -8,7 +8,9 @@
 
 
 pub mod sr1 {
+    use super::math::{Shape, Point2D};
 
+    #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
         match ptype.as_str() {
             "pod-1" => "Pod",
@@ -42,6 +44,7 @@ pub mod sr1 {
         }.to_string()
     }
 
+    #[derive(Clone)]
     pub struct SR1PartData {
         pub x: f64,
         pub y: f64,
@@ -57,6 +60,62 @@ pub mod sr1 {
         pub textures: String,
         pub connections: Option<Vec<((usize, usize), (isize, isize))>>
     }
+
+    #[allow(non_camel_case_types)]
+    #[derive(Copy, Clone)]
+    pub enum PartTypes {
+        pod,
+        detacher,
+        wheel,
+        fuselage,
+        strut,
+        tank,
+        engine,
+        parachute,
+        nosecone,
+        rcs,
+        solar,
+        dockconnector,
+        dockport,
+        lander,
+    }
+
+    #[derive(Copy, Clone)]
+    pub struct Damage {
+        disconnect: i32,
+        // 断裂受力大小
+        explode: i32,
+        // 爆炸受力大小
+        explosion_power: i32,
+        // 爆炸力量
+        explosion_size: i32,
+        // 爆炸大小
+    }
+
+    #[derive(Clone)]
+    pub struct SR1PartType {
+        pub id: String,
+        pub name: String,
+        pub description: String,
+        pub sprite: String,
+        pub r#type: PartTypes,
+        pub mass: f64,
+        pub width: u32,
+        pub height: u32,
+        pub friction: f64,
+        pub category: String,
+        pub ignore_editor_intersections: bool,
+        pub disable_editor_rotation: bool,
+        pub can_explode: bool,
+        pub cover_height: u32,
+        pub sandbox_only: bool,
+        pub drag: f64,
+        pub hidden: bool,
+        pub buoyancy: f64,
+        pub damage: Damage,
+        pub shape: Shape,
+    }
+
 }
 
 #[allow(unused)]
@@ -113,8 +172,8 @@ pub mod math {
 
     #[derive(Clone, Copy)]
     pub struct OneTimeLine {
-        pub k: f64,
-        pub b: f64,
+        // pub k: f64,
+        // pub b: f64,
         // y = kx + b
         // kx + b - y = 0
         pub start: Point2D,
@@ -125,8 +184,8 @@ pub mod math {
 
     #[derive(Clone, Copy)]
     pub enum Edge {
-        OneTimeLine{data: OneTimeLine},
-        CircularArc{data: CircularArc},
+        OneTimeLine(OneTimeLine),
+        CircularArc(CircularArc),
     }
 
     #[derive(Clone)]
@@ -149,10 +208,10 @@ pub mod math {
             let d_width = width / 2.0;
             let d_height = height / 2.0;
             let mut edges: Vec<Edge> = vec![
-                Edge::OneTimeLine{data: OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height)},
-                Edge::OneTimeLine{data: OneTimeLine::pos_new(d_width, -d_height, d_width, d_height)},
-                Edge::OneTimeLine{data: OneTimeLine::pos_new(d_width, d_height, -d_width, d_height)},
-                Edge::OneTimeLine{data: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)}
+                Edge::OneTimeLine{0: OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height)},
+                Edge::OneTimeLine{0: OneTimeLine::pos_new(d_width, -d_height, d_width, d_height)},
+                Edge::OneTimeLine{0: OneTimeLine::pos_new(d_width, d_height, -d_width, d_height)},
+                Edge::OneTimeLine{0: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)}
             ];
             if let Some(angle) = angle {
 
@@ -165,11 +224,11 @@ pub mod math {
     impl OneTimeLine {
         #[inline]
         pub fn pos_new(x1: f64, y1: f64, x2: f64, y2: f64) -> Self {
-            let k = (x2 - x1) / (y2 - y1);
-            let b = y1 - (x1 * k);
+            // let k = (x2 - x1) / (y2 - y1);
+            // let b = y1 - (x1 * k);
             let start = Point2D::new(x1, y1);
             let end = Point2D::new(x2, y2);
-            OneTimeLine { k, b, start, end }
+            OneTimeLine { start, end }
         }
 
         #[inline]
@@ -199,8 +258,6 @@ pub mod math {
                 }
             }
             OneTimeLine{
-                k: k_,
-                b: b_,
                 start: *point,
                 end: Point2D::new(0.0, b_)
             }

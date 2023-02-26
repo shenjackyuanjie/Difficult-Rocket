@@ -1,7 +1,7 @@
 $start_time = Get-Uptime
 Write-Output $start_time
 
-python3.9 .github/workflows/get_info.py -env
+python3 .github/workflows/get_info.py -env
 
 if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
 {

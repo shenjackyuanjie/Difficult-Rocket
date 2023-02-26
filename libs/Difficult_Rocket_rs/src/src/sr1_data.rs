@@ -19,7 +19,7 @@ pub mod part_list {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct PartList {
         #[serde(rename = "PartType")]
-        part_types: Vec<PartType>
+        part_types: Vec<PartType>,
     }
 
     #[allow(non_camel_case_types)]
@@ -38,13 +38,7 @@ pub mod part_list {
         solar,
         dockconnector,
         dockport,
-        lander
-    }
-
-    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
-    pub enum Category {
-        Satellite,
-        None
+        lander,
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -62,14 +56,12 @@ pub mod part_list {
         TopSide,
         BottomSide,
         LeftSide,
-        RightSide
+        RightSide,
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Vertex {
-        #[serde(rename = "@x")]
         pub x: Option<f64>,
-        #[serde(rename = "@y")]
         pub y: Option<f64>,
     }
 
@@ -78,54 +70,93 @@ pub mod part_list {
         #[serde(rename = "Vertex")]
         pub vertex: Vec<Vertex>,
         #[serde(rename = "sensor")]
-        pub sensor: Option<bool>
+        pub sensor: Option<bool>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct AttachPoint {
         pub location: Option<Location>,
-        #[serde(rename = "@x")]
         pub x: Option<f64>,
-        #[serde(rename = "@y")]
         pub y: Option<f64>,
-        #[serde(rename = "@breakAngle")]
+        #[serde(rename = "flipX")]
+        pub flip_x: Option<bool>,
+        #[serde(rename = "flipY")]
+        pub flip_y: Option<bool>,
+        #[serde(rename = "breakAngle")]
         pub break_angle: Option<i32>,
-        #[serde(rename = "@breakForce")]
+        #[serde(rename = "breakForce")]
         pub break_force: Option<f64>,
-        #[serde(rename = "@fuelLine")]
+        #[serde(rename = "fuelLine")]
         pub fuel_line: Option<bool>,
-        #[serde(rename = "@group")]
         pub group: Option<i32>,
-        #[serde(rename = "@order")]
         pub order: Option<i32>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct AttachPoints {
         #[serde(rename = "AttachPoint")]
-        pub points: Vec<AttachPoint>
+        pub points: Vec<AttachPoint>,
     }
 
-    #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub enum PartAttr {
-        Damage,
-        Tank,
-        Engine,
-        Rcs,
-        Solar,
-        Lander
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub struct Damage {
+        disconnect: u32,
+        explode: u32,
+        #[serde(rename = "explosionPower")]
+        explosion_power: u32,
+        #[serde(rename = "explosionSize")]
+        explosion_size: u32,
     }
 
-    // #[derive(Debug, Serialize, Deserialize, Clone)]
-    // pub struct PartAttr {
-    //     // 单独类型节点
-    //     // pub part_attr: Option<Vec<PartAttr>>,
-    // }
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub struct Tank {
+        fuel: f64,
+        #[serde(rename = "dryMass")]
+        dry_mass: f64,
+    }
 
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub struct Engine {
+        power: f64,
+        consumption: f64,
+        size: f64,
+        turn: f64,
+        #[serde(rename = "fuelType")]
+        fuel_type: Option<i32>,
+        #[serde(rename = "throttleExponential")]
+        throttle_exponential: Option<bool>,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub struct Rcs {
+        power: f64,
+        consumption: f64,
+        size: f64,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub struct Solar {
+        #[serde(rename = "chargeRate")]
+        charge_rate: f64,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    pub struct Lander {
+        #[serde(rename = "maxAngle")]
+        max_angle: i32,
+        #[serde(rename = "minLength")]
+        min_length: f64,
+        #[serde(rename = "maxLength")]
+        max_length: f64,
+        #[serde(rename = "angleSpeed")]
+        angle_speed: Option<i32>,
+        #[serde(rename = "lengthSpeed")]
+        length_speed: Option<f64>,
+        width: f64,
+    }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct PartType {
-        // https://docs.rs/quick-xml/latest/quick_xml/de/index.html
         // 基本属性
         pub id: String,
         pub name: String,
@@ -137,16 +168,16 @@ pub mod part_list {
         pub height: u32,
         // 可选属性
         pub friction: Option<f64>,
-        pub category: Option<Category>,
-        #[serde(rename = "@ignoreEditorIntersections")]
+        pub category: Option<String>,
+        #[serde(rename = "ignoreEditorIntersections")]
         pub ignore_editor_intersections: Option<bool>,
-        #[serde(rename = "@disableEditorRotation")]
+        #[serde(rename = "disableEditorRotation")]
         pub disable_editor_rotation: Option<bool>,
-        #[serde(rename = "@canExplode")]
+        #[serde(rename = "canExplode")]
         pub can_explode: Option<bool>,
-        #[serde(rename = "@coverHeight")]
+        #[serde(rename = "coverHeight")]
         pub cover_height: Option<u32>,
-        #[serde(rename = "@sandboxOnly")]
+        #[serde(rename = "sandboxOnly")]
         pub sandbox_only: Option<bool>,
         pub drag: Option<f64>,
         pub hidden: Option<bool>,
@@ -156,9 +187,27 @@ pub mod part_list {
         pub shape: Option<Vec<Shape>>,
         #[serde(rename = "AttachPoints")]
         pub attach_points: Option<AttachPoints>,
+        #[serde(rename = "Damage")]
+        pub damage: Option<Damage>,
         // 特殊属性子节点
+        #[serde(rename = "Tank")]
+        pub tank: Option<Tank>,
+        #[serde(rename = "Engine")]
+        pub engine: Option<Engine>,
+        #[serde(rename = "Tank")]
+        pub rcs: Option<Rcs>,
+        #[serde(rename = "Solar")]
+        pub solar: Option<Solar>,
+        #[serde(rename = "Lander")]
+        pub lander: Option<Lander>,
+    }
 
-
+    impl PartList {
+        pub fn list_print(&self) -> () {
+            for part_data in self.part_types.iter() {
+                println!("{:?}\n", part_data);
+            }
+        }
     }
 
     #[inline]
@@ -169,7 +218,7 @@ pub mod part_list {
             Ok(part_list_file) => {
                 let part_list: PartList = from_str(part_list_file.as_str()).unwrap();
                 Some(part_list)
-            },
+            }
             Err(_) => {
                 println!("Error while reading File {}", file_name);
                 None
@@ -183,10 +232,10 @@ pub mod part_list {
         let file_name = file_name.unwrap_or("./configs/PartList.xml".to_string());
         let _parts = read_part_list(file_name);
         if let Some(parts) = _parts {
-            println!("{:?}", parts)
+            // println!("{:?}", parts)
+            parts.list_print()
         }
         // read_part_list(file_name);
         Ok(())
     }
-
 }

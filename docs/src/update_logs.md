@@ -20,6 +20,24 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202303 V 0.7.1.2
+
+### `DR_rs` V 0.2.5.2
+
+- `0.2.5.0` -> `0.2.5.2`
+
+- `sr1_data.rs`
+  - 现在可以完整解析 SR1 的 `PartList.xml` 了
+  - 解析后会生成一个 `PartList` 对象
+    - Now can parse `PartList.xml` completely
+    - Will generate a `PartList` object after parsing
+
+
+### 重命名
+
+- `.github/workflows/after_compile.py` -> `.github/workflows/post_compile.py`
+- `libs/Difficult_Rocket_rs/src/after_build.py` -> `libs/Difficult_Rocket_rs/src/post_build.py`
+
 ## 20230219 V 0.7.1.1
 
 ### 删除了多余的 print
