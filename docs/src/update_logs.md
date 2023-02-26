@@ -5,22 +5,62 @@
 - Thanks `Github copilot` for translate (lazy yes!)
   - Means the update logs will lodge in Chinese and translated by `copilot`
 - 可惜啊，github copilot 收费了
+  - 欸嘿，我现在有 Github 学生包啦
+    - Nice, I have Github student pack now
 
+## Readme First
 
-## Readme First!
-##### most badge can be clicked and jump
+### most badge can be clicked and jump
 
-[关于版本号的说明](version.md)
+[关于版本号的说明/about version](version.md)
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.7.1.1-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.7.1.2-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202303 V 0.7.1.2
+## 20230326 0.7.1.2 + 0.2.5.3
+
+### 新发布
+
+- `version.md` 记录了 `1.0.0.0` 的 `Semver++`
+  - `version.md` records the `Semver++` of `1.0.0.0`
+- Github copilot 翻译了一部分的更新日志
+  - Github copilot translated part of the update logs
+
+### `DR_rs` V 0.2.5.3
+
+- `0.2.5.2` -> `0.2.5.3`
+
+- `sr1_data.rs` `types.rs`
+  - 公开了一些忘记加 `pub` 的结构体字段
+  - 修改了一些结构体的命名
+    - `PartType` -> `RawPartType`
+    - `PartList` -> `RawPartList`
+  - 移除了 `types.rs` 中多余的 `PartTypes` 方法
+  - 为 `Damage` 实现了 `to_damage` 方法
+  - 为 `RawPartType` 实现了 `to_sr_part_type` 方法
+    - 写的真够费劲的 (甚至还没写完)
+  - 添加 `SR1PartTypeData` 特征
+    - 用于进行 `RawPartType` 和 `SR1PartType` 的互相转换
+  - 为 `sr1_data.rs` 的各类数据结构做了向 `types.rs` 的转换
+    - 简直折磨人
+
+    - public some forgotten `pub` fields
+    - modify some struct name
+      - `PartType` -> `RawPartType`
+      - `PartList` -> `RawPartList`
+    - remove redundant `PartTypes` method in `types.rs`
+    - implement `to_damage` method for `Damage`
+    - implement `to_sr_part_type` method for `RawPartType`
+      - write so hard (not finished yet)
+    - add trait `SR1PartTypeData`
+      - used to convert `RawPartType` and `SR1PartType` to each other
+    - add convert from `sr1_data.rs` to `types.rs`
+      - torture
 
 ### `DR_rs` V 0.2.5.2
 
@@ -33,6 +73,11 @@
     - Will generate a `PartList` object after parsing
 - `types.rs`
   - 完善 `PartTypes` 使其匹配原始 `PartList.xml` 的数据内容
+
+### 修复
+
+- 现在编辑器缩放体验会更好 (?)(可能)
+  - Now the editor zoom experience will be better (?) (maybe)
 
 ### 更改
 
@@ -51,7 +96,6 @@
     - Remove unused `from .delivery import Delivery`
 - 删除了不少的未使用 import
   - Remove unused import
-- 
 
 ### 重命名
 

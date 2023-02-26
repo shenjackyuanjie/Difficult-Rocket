@@ -10,21 +10,21 @@ pub mod part_list {
     use std::fs;
 
     use pyo3::prelude::*;
-
     use serde::{Serialize, Deserialize};
-
     // use quick_xml::de::from_str;
     use serde_xml_rs::{from_str};
 
+    use crate::types::sr1::{SR1PartTypeData, SR1PartType, SR1PartAttr};
+
     #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub struct PartList {
+    pub struct RawPartList {
         #[serde(rename = "PartType")]
-        part_types: Vec<PartType>,
+        pub part_types: Vec<RawPartType>,
     }
 
     #[allow(non_camel_case_types)]
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
-    pub enum PartTypes {
+    pub enum SR1PartTypeEnum {
         pod,
         detacher,
         wheel,
@@ -100,69 +100,86 @@ pub mod part_list {
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Damage {
-        disconnect: u32,
-        explode: u32,
+        pub disconnect: i32,
+        pub explode: i32,
         #[serde(rename = "explosionPower")]
-        explosion_power: u32,
+        pub explosion_power: Option<u32>,
         #[serde(rename = "explosionSize")]
-        explosion_size: u32,
+        pub explosion_size: Option<u32>,
+    }
+
+    impl Damage {
+        pub fn to_damage(&self) -> crate::types::sr1::Damage {
+            crate::types::sr1::Damage {
+                disconnect: self.disconnect,
+                explode: self.explode,
+                explosion_power: self.explosion_power.unwrap_or(100),
+                explosion_size: self.explosion_size.unwrap_or(100),
+            }
+        }
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Tank {
-        fuel: f64,
+        pub fuel: f64,
         #[serde(rename = "dryMass")]
-        dry_mass: f64,
+        pub dry_mass: f64,
+        #[serde(rename = "fuelType")]
+        pub fuel_type: Option<i32>,
+        // 0 -> 普通燃料
+        // 1 -> Rcs
+        // 2 -> 电量
+        // 3 -> 固推
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Engine {
-        power: f64,
-        consumption: f64,
-        size: f64,
-        turn: f64,
+        pub power: f64,
+        pub consumption: f64,
+        pub size: f64,
+        pub turn: f64,
         #[serde(rename = "fuelType")]
-        fuel_type: Option<i32>,
+        pub fuel_type: Option<i32>,
         #[serde(rename = "throttleExponential")]
-        throttle_exponential: Option<bool>,
+        pub throttle_exponential: Option<bool>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Rcs {
-        power: f64,
-        consumption: f64,
-        size: f64,
+        pub power: f64,
+        pub consumption: f64,
+        pub size: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Solar {
         #[serde(rename = "chargeRate")]
-        charge_rate: f64,
+        pub charge_rate: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Lander {
         #[serde(rename = "maxAngle")]
-        max_angle: i32,
+        pub max_angle: f64,
         #[serde(rename = "minLength")]
-        min_length: f64,
+        pub min_length: f64,
         #[serde(rename = "maxLength")]
-        max_length: f64,
+        pub max_length: f64,
         #[serde(rename = "angleSpeed")]
-        angle_speed: Option<i32>,
+        pub angle_speed: Option<f64>,
         #[serde(rename = "lengthSpeed")]
-        length_speed: Option<f64>,
-        width: f64,
+        pub length_speed: Option<f64>,
+        pub width: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub struct PartType {
+    pub struct RawPartType {
         // 基本属性
         pub id: String,
         pub name: String,
         pub description: String,
         pub sprite: String,
-        pub r#type: PartTypes,
+        pub r#type: SR1PartTypeEnum,
         pub mass: f64,
         pub width: u32,
         pub height: u32,
@@ -202,7 +219,71 @@ pub mod part_list {
         pub lander: Option<Lander>,
     }
 
-    impl PartList {
+    impl SR1PartTypeData for RawPartType {
+        fn to_sr_part_type(&self) -> SR1PartType {
+            let part_attr: Option<SR1PartAttr> = match self.r#type {
+                SR1PartTypeEnum::tank => {
+                    let tank = self.tank.unwrap();
+                    Some(SR1PartAttr::Tank {fuel: tank.fuel, dry_mass: tank.dry_mass,
+                        fuel_type: tank.fuel_type.unwrap_or(0)})
+                },
+                SR1PartTypeEnum::engine => {
+                    let engine = self.engine.unwrap();
+                    Some(SR1PartAttr::Engine {power: engine.power,
+                        consumption: engine.consumption, size: engine.size,
+                        turn: engine.turn, fuel_type: engine.fuel_type.unwrap_or(0),
+                        throttle_exponential: engine.throttle_exponential.unwrap_or(false)})
+                },
+                SR1PartTypeEnum::rcs => {
+                    let rcs = self.rcs.unwrap();
+                    Some(SR1PartAttr::Rcs {power: rcs.power, consumption: rcs.consumption,
+                        size: rcs.size})
+                },
+                SR1PartTypeEnum::solar => {
+                    let solar = self.solar.unwrap();
+                    Some(SR1PartAttr::Solar {charge_rate: solar.charge_rate})
+                },
+                SR1PartTypeEnum::lander => {
+                    let lander = self.lander.unwrap();
+                    Some(SR1PartAttr::Lander {max_angle: lander.max_angle, min_length: lander.min_length,
+                        max_length: lander.max_length, angle_speed: lander.angle_speed.unwrap_or(0.0),
+                        length_speed: lander.length_speed.unwrap_or(0.0), width: lander.width})
+                },
+                _ => None
+            };
+            let damage = self.damage.unwrap_or(Damage {disconnect: 0, explode: 0,
+            explosion_power: Some(0u32), explosion_size: Some(0u32) });
+            SR1PartType {
+                id: self.id.clone(),
+                name: self.name.clone(),
+                description: self.description.clone(),
+                sprite: self.sprite.clone(),
+                p_type: self.r#type,
+                mass: self.mass,
+                width: self.width,
+                height: self.height,
+                friction: self.friction.unwrap_or(0.0),
+                category: self.category.clone().unwrap_or("".to_string()),
+                ignore_editor_intersections: self.ignore_editor_intersections.unwrap_or(false),
+                disable_editor_rotation: self.disable_editor_rotation.unwrap_or(false),
+                can_explode: self.can_explode.unwrap_or(false),
+                cover_height: self.cover_height.unwrap_or(0),
+                sandbox_only: self.sandbox_only.unwrap_or(false),
+                drag: self.drag.unwrap_or(0.0),
+                hidden: self.hidden.unwrap_or(false),
+                buoyancy: self.buoyancy.unwrap_or(0.0),
+                // shape: self.shape.clone().unwrap_or(vec![]),
+                shape: None,
+                damage: damage.to_damage(),
+                attr: part_attr,
+            }
+        }
+        fn to_raw_part_type(&self) -> RawPartType {
+            self.clone()
+        }
+    }
+
+    impl RawPartList {
         pub fn list_print(&self) -> () {
             for part_data in self.part_types.iter() {
                 println!("{:?}\n", part_data);
@@ -211,12 +292,12 @@ pub mod part_list {
     }
 
     #[inline]
-    pub fn read_part_list(file_name: String) -> Option<PartList> {
+    pub fn read_part_list(file_name: String) -> Option<RawPartList> {
         let part_list_file = fs::read_to_string(file_name.to_string());
 
         match part_list_file {
             Ok(part_list_file) => {
-                let part_list: PartList = from_str(part_list_file.as_str()).unwrap();
+                let part_list: RawPartList = from_str(part_list_file.as_str()).unwrap();
                 Some(part_list)
             }
             Err(_) => {

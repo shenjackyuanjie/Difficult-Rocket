@@ -258,21 +258,16 @@ class SR1ShipRender(BaseScreen):
         mouse_dx_d = mouse_dx - self.camera_rs.dx
         mouse_dy_d = mouse_dy - self.camera_rs.dy
         # 鼠标相对偏移量的偏移量
-        if scroll_y > 0:
-            zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
-        elif scroll_y == 0:
+        if scroll_y == 0:
             zoom_d = 1
         else:
             zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
         # 缩放的变换量
         if self.camera_rs.zoom == 10:
-            if scroll_y >= 0:
-                self.camera_rs.dx += mouse_dx_d * 0.5
-                self.camera_rs.dy += mouse_dy_d * 0.5
-            else:
+            if scroll_y < 0:
                 self.camera_rs.zoom *= zoom_d
-                self.camera_rs.dx += mouse_dx_d
-                self.camera_rs.dy += mouse_dy_d
+            self.camera_rs.dx += mouse_dx_d * 0.5
+            self.camera_rs.dy += mouse_dy_d * 0.5
         else:
             mouse_dx_d *= (1 - zoom_d)
             mouse_dy_d *= (1 - zoom_d)

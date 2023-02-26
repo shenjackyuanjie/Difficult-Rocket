@@ -9,6 +9,8 @@
 
 pub mod sr1 {
     use super::math::{Shape, Point2D};
+    use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum, Location};
+    use crate::sr1_data::part_list::Damage as RawDamage;
 
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -61,59 +63,186 @@ pub mod sr1 {
         pub connections: Option<Vec<((usize, usize), (isize, isize))>>
     }
 
-    #[allow(non_camel_case_types)]
-    #[derive(Copy, Clone)]
-    pub enum PartTypes {
-        pod,
-        detacher,
-        wheel,
-        fuselage,
-        strut,
-        tank,
-        engine,
-        parachute,
-        nosecone,
-        rcs,
-        solar,
-        dockconnector,
-        dockport,
-        lander,
+    #[derive(Clone)]
+    pub enum SR1PartAttr {
+        Tank {
+            fuel: f64,
+            dry_mass: f64,
+            fuel_type: i32,
+        },
+        Engine {
+            power: f64,
+            consumption: f64,
+            size: f64,
+            turn: f64,
+            fuel_type: i32,
+            // 0 -> 普通燃料
+            // 1 -> Rcs
+            // 2 -> 电量
+            // 3 -> 固推
+            throttle_exponential: bool,
+        },
+        Rcs {
+            power: f64,
+            consumption: f64,
+            size: f64,
+        },
+        Solar { charge_rate: f64, },
+        Lander {
+            max_angle: f64,
+            min_length: f64,
+            max_length: f64,
+            angle_speed: f64,
+            length_speed: f64,
+            width: f64,
+        }
     }
 
     #[derive(Copy, Clone)]
     pub struct Damage {
-        disconnect: i32,
+        pub disconnect: i32,
         // 断裂受力大小
-        explode: i32,
+        pub explode: i32,
         // 爆炸受力大小
-        explosion_power: i32,
+        pub explosion_power: u32,
         // 爆炸力量
-        explosion_size: i32,
+        pub explosion_size: u32,
         // 爆炸大小
+    }
+
+    impl Damage {
+        pub fn to_raw_damage(&self) -> RawDamage {
+            RawDamage {
+                disconnect: self.disconnect,
+                explode: self.explode,
+                explosion_power: Some(self.explosion_power),
+                explosion_size: Some(self.explosion_size)
+            }
+        }
     }
 
     #[derive(Clone)]
     pub struct SR1PartType {
         pub id: String,
+        // 部件 ID
         pub name: String,
+        // 部件名称
         pub description: String,
+        // 部件描述
         pub sprite: String,
-        pub r#type: PartTypes,
+        // 部件材质
+        pub p_type: SR1PartTypeEnum,
+        // 部件类型
         pub mass: f64,
+        // 部件质量
         pub width: u32,
+        // 部件宽度
         pub height: u32,
+        // 部件高度
         pub friction: f64,
+        // 摩擦力
         pub category: String,
+        // 部件类别 (原版仅有 "Satellite" 可自定义)
         pub ignore_editor_intersections: bool,
+        // 是否忽略编辑器碰撞
         pub disable_editor_rotation: bool,
+        // 是否禁用编辑器旋转
         pub can_explode: bool,
+        // 是否可爆炸
         pub cover_height: u32,
+        // 覆盖高度 (原版仅在固态推进器使用)
         pub sandbox_only: bool,
+        // 是否只在沙盒模式显示
         pub drag: f64,
+        // 阻力
         pub hidden: bool,
+        // 是否隐藏
         pub buoyancy: f64,
+        // 浮力
+        // 综合属性
         pub damage: Damage,
-        pub shape: Shape,
+        // 部件受损相关属性
+        pub shape: Option<Shape>,
+        // 部件碰撞箱
+        pub attr: Option<SR1PartAttr>
+        // 部件特殊属性
+    }
+
+    #[derive(Clone)]
+    pub struct SR1PartList {
+        pub types: Vec<SR1PartType>,
+        pub name: String,
+    }
+
+    pub trait SR1PartTypeData {
+        fn to_sr_part_type(&self) -> SR1PartType;
+        fn to_raw_part_type(&self) -> RawPartType;
+    }
+
+    impl SR1PartList {
+        #[inline]
+        pub fn new(name: String, types: Vec<SR1PartType>) -> Self {
+            SR1PartList { name, types }
+        }
+
+        pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
+            let mut types: Vec<SR1PartType> = Vec::new();
+            let name = match name {
+                Some(name) => name,
+                None => "NewPartList".to_string()
+            };
+            for part_type in part_types {
+                types.insert(0, part_type);
+            }
+            SR1PartList::new(name, types)
+        }
+
+        // pub fn part_type_new(part_type: RawPartType) -> Self {
+        //     let mut types: Vec<SR1PartType> = Vec::new();
+        // }
+
+        pub fn insert_part(&mut self, part: SR1PartType) -> () {
+            self.types.insert(0, part);
+        }
+    }
+
+    impl SR1PartTypeData for SR1PartType {
+        fn to_sr_part_type(&self) -> SR1PartType {
+            self.clone()
+        }
+
+        fn to_raw_part_type(&self) -> RawPartType {
+            // let shape = crate::sr1_data::part_list::Shape;
+            RawPartType {
+                id: self.id.clone(),
+                name: self.name.clone(),
+                description: self.description.clone(),
+                sprite: self.sprite.clone(),
+                r#type: self.p_type.clone(),
+                mass: self.mass,
+                width: self.width,
+                height: self.height,
+                friction: Some(self.friction),
+                category: Some(self.category.clone()),
+                ignore_editor_intersections: Some(self.ignore_editor_intersections),
+                disable_editor_rotation: Some(self.disable_editor_rotation),
+                can_explode: Some(self.can_explode),
+                cover_height: Some(self.cover_height),
+                sandbox_only: Some(self.sandbox_only),
+                drag: Some(self.drag),
+                hidden: Some(self.hidden),
+                buoyancy: Some(self.buoyancy),
+                damage: Some(self.damage.to_raw_damage()),
+                tank: None,
+                engine: None,
+                rcs: None,
+                solar: None,
+                // shape: Some(self.shape.clone()),
+                shape: None,
+                attach_points: None,
+                lander: None,
+            }
+        }
     }
 
 }
@@ -214,7 +343,19 @@ pub mod math {
                 Edge::OneTimeLine{0: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)}
             ];
             if let Some(angle) = angle {
-
+                edges = edges.iter().map(|edge| {
+                    match edge {
+                        Edge::OneTimeLine(line) => {
+                            let start = line.start.rotate_angle(angle);
+                            let end = line.end.rotate_angle(angle);
+                            Edge::OneTimeLine(OneTimeLine::point_new(&start, &end))
+                        },
+                        Edge::CircularArc(arc) => {
+                            let pos = arc.pos.rotate_angle(angle);
+                            Edge::CircularArc(CircularArc{ r: arc.r, pos, start_angle: arc.start_angle, end_angle: arc.end_angle })
+                        }
+                    }
+                }).collect();
             }
             Shape { pos: Point2D::new_00(), angle: 0.0, bounds: edges}
         }
