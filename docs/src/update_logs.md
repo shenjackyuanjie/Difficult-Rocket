@@ -31,12 +31,33 @@
   - 解析后会生成一个 `PartList` 对象
     - Now can parse `PartList.xml` completely
     - Will generate a `PartList` object after parsing
+- `types.rs`
+  - 完善 `PartTypes` 使其匹配原始 `PartList.xml` 的数据内容
 
+### 更改
+
+- `Difficult_Rocket.client.fps.fps_log`
+  - class `FpsLogger`
+    - 现在使用类型注释，而不是注释类型
+      - Now use type annotation instead of comment type
+- `pyglet`
+  - 现在使用我维护的 [local](https://github.com/shenjackyuanjie/pyglet/tree/local) 分支
+    - Now use my maintained [local](https://github.com/shenjackyuanjie/pyglet/tree/local) branch
+
+### 删除
+
+- `Difficult_Rocket.api.__init__.`
+  - 移除了没用的 `from .delivery import Delivery`
+    - Remove unused `from .delivery import Delivery`
+- 删除了不少的未使用 import
+  - Remove unused import
+- 
 
 ### 重命名
 
 - `.github/workflows/after_compile.py` -> `.github/workflows/post_compile.py`
 - `libs/Difficult_Rocket_rs/src/after_build.py` -> `libs/Difficult_Rocket_rs/src/post_build.py`
+- `Difficult_Rocket.crash.crash` -> `Difficult_Rocket.crash`
 
 ## 20230219 V 0.7.1.1
 
