@@ -25,11 +25,13 @@ from libs.MCDR.version import Version
 game_version = Version("0.7.1.2")  # 游戏版本
 build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
 DR_rust_version = Version("0.2.5.3")  # DR 的 Rust 编写部分的版本
+Api_version = Version("0.0.0.1")  # API 版本
 __version__ = game_version
 
-long_version: int = 12
+long_version: int = 13
 """
 long_version: 一个用于标记内部协议的整数
+13: 为 DR_runtime 添加 API_version
 12: 去除 DR_runtime 的 global_logger
     要 logging 自己拿去（
 11: 为 DR_option  添加 use_DR_rust
@@ -107,6 +109,7 @@ class _DR_runtime(Options):
     Build_version: Version = build_version
     DR_Rust_version: Version = DR_rust_version
     DR_Rust_get_version: Optional[Version] = None
+    API_version: Version = Api_version
     DR_long_version: int = long_version
 
     # run status

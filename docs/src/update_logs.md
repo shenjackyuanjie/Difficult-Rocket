@@ -22,7 +22,42 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 20230326 0.7.1.2 + 0.2.5.3
+## 20230326 DR `0.7.1.3` + DR_rs `0.2.5.3` + API `0.0.0.1` + 13
+
+### 内部协议 13
+
+```python
+game_version = Version("0.7.1.2")  # 游戏版本
+build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
+DR_rust_version = Version("0.2.5.3")  # DR 的 Rust 编写部分的版本
+Api_version = Version("0.0.0.1")  # API 版本
+long_version: int = 13
+"""
+long_version: 一个用于标记内部协议的整数
+13: 为 DR_runtime 添加 API_version
+12: 去除 DR_runtime 的 global_logger
+    要 logging 自己拿去（
+11: 为 DR_option  添加 use_DR_rust
+    修复了一些拼写错误
+10: 为 DR_runtime 添加 DR_Rust_get_version
+9 : 为 DR_option  添加 pyglet_macosx_dev_test
+8 : 为 DR_runtime 添加 DR_rust_version
+    为 DR_option  添加 DR_rust_available
+    以后就有 DR_rust 了
+7 : 为 DR_option 添加 std_font_size
+6 : 事实证明, 不如直接用int
+5 : 添加 build_version 信息,用于标记编译文件版本,
+    游戏版本改为四位数，终于有一个可以让我随便刷的版本号位数了
+4 : 把 translate 的字体常量位置改了一下,顺便调换顺序
+3 : 就是试试改一下，正好 compiler 要用
+2 : 哦，对 longlong 好耶！
+1 : 我可算想起来还有这回事了 v0.6.4
+"""
+```
+
+没别的内容了
+
+## 20230326 DR 0.7.1.2 + DR_rs 0.2.5.3
 
 ### 新发布
 
