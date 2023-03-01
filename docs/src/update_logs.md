@@ -24,6 +24,11 @@
 
 ## 20230301 DR `0.7.1.4` + DR_rs `0.2.5.4/5`
 
+### 修复了上个版本没有步进版本号的毛病
+
+- 修复了上个版本没有步进版本号的毛病
+  - Fix the problem that the version number of the previous version was not incremented
+
 ### DR_rs V 0.2.5.5
 
 - 完成了 `SR1PartType` 和 `RawPartType` 的数据转换方法
