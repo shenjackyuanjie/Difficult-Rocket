@@ -367,6 +367,7 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
     # Instance variables accessible only via properties
     _width = None
     _height = None
+    _dpi = 96
     _caption = None
     _resizable = False
     _style = WINDOW_STYLE_DEFAULT
@@ -384,6 +385,9 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
     # Used to restore window size and position after fullscreen
     _windowed_size = None
     _windowed_location = None
+    
+    # Used to tell if window is currently being resized.
+    _window_resizing = False
 
     _minimum_size = None
     _maximum_size = None
@@ -947,7 +951,20 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
         if width < 1 or height < 1:
             raise ValueError('width and height must be positive integers')
 
-        self._minimum_size = width, height
+    def on_scale(self, scale, dpi):
+        """A default scale event handler.
+
+        This default handler is called if the screen or system's DPI changes
+        during runtime.
+        """
+        pass
+
+    def on_close(self):
+        """Default on_close handler."""
+        self.has_exit = True
+        from pyglet import app
+        if app.event_loop.is_running:
+            self.close()
 
     def set_maximum_size(self, width: int, height: int) -> None:
         """Set the maximum size of the window.
@@ -1260,8 +1277,24 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
         self.set_size(self.width, new_height)
 
     @property
-    def size(self):
-        """The size of the window. Read-Write.
+    def scale(self):
+        """The scale of the window factoring in DPI.  Read only.
+
+        :type: float
+        """
+        return self._dpi / 96
+
+    @property
+    def dpi(self):
+        """DPI values of the Window.  Read only.
+
+        :type: list
+        """
+        return self._dpi
+
+    @property
+    def projection(self):
+        """The OpenGL window projection. Read-write.
 
         :type: tuple
         """
@@ -1432,24 +1465,7 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
 
         self._width, self._height = width, height
 
-    def get_pixel_ratio(self):
-        """Return the framebuffer/window size ratio.
-
-        Some platforms and/or window systems support subpixel scaling,
-        making the framebuffer size larger than the window size.
-        Retina screens on OS X and Gnome on Linux are some examples.
-
-        On a Retina systems the returned ratio would usually be 2.0 as a
-        window of size 500 x 500 would have a framebuffer of 1000 x 1000.
-        Fractional values between 1.0 and 2.0, as well as values above
-        2.0 may also be encountered.
-
-        :rtype: float
-        :return: The framebuffer/window size ratio
-        """
-        return self.get_framebuffer_size()[0] / self.width
-
-    def get_size(self) -> Tuple[int, int]:
+    def get_size(self):
         """Return the current size of the window.
 
         This does not include the windows' border or title bar.
@@ -1458,21 +1474,6 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
         :return: The width and height of the window, in pixels.
         """
         return self._width, self._height
-
-    def get_framebuffer_size(self):
-        """Return the size in actual pixels of the Window framebuffer.
-
-        When using HiDPI screens, the size of the Window's framebuffer
-        can be higher than that of the Window size requested. If you
-        are performing operations that require knowing the actual number
-        of pixels in the window, this method should be used instead of
-        :py:func:`Window.get_size()`. For example, setting the Window
-        projection or setting the glViewport size.
-
-        :rtype: (int, int)
-        :return: The width and height of the Window's framebuffer, in pixels.
-        """
-        return self.get_size()
 
     def set_location(self, x, y):
         """Set the position of the window.
@@ -1487,6 +1488,19 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
 
         """
         raise NotImplementedError('abstract')
+
+    def get_framebuffer_size(self):
+        """Return the size in actual pixels of the Window framebuffer.
+        When using HiDPI screens, the size of the Window's framebuffer
+        can be higher than that of the Window size requested. If you
+        are performing operations that require knowing the actual number
+        of pixels in the window, this method should be used instead of
+        :py:func:`Window.get_size()`. For example, setting the Window
+        projection or setting the glViewport size.
+        :rtype: (int, int)
+        :return: The width and height of the Window's framebuffer, in pixels.
+        """
+        return self.get_size()
 
     def get_location(self):
         """Return the current position of the window.
@@ -2012,6 +2026,20 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
 
             :event:
             """
+            
+        def on_resize_stop(self, width, height):
+            """The window is done being resized.
+
+            Called when the window is done resizing.
+
+            :Parameters:
+                `width` : int
+                    The new width of the window, in pixels.
+                `height` : int
+                    The new height of the window, in pixels.
+
+            :event:
+            """
 
         def on_show(self):
             """The window was shown.
@@ -2128,6 +2156,8 @@ BaseWindow.register_event_type('on_mouse_leave')
 BaseWindow.register_event_type('on_close')
 BaseWindow.register_event_type('on_expose')
 BaseWindow.register_event_type('on_resize')
+BaseWindow.register_event_type('on_resize_stop')
+BaseWindow.register_event_type('on_scale')
 BaseWindow.register_event_type('on_move')
 BaseWindow.register_event_type('on_activate')
 BaseWindow.register_event_type('on_deactivate')

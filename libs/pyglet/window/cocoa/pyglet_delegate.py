@@ -3,12 +3,13 @@ from pyglet.libs.darwin.cocoapy import NSApplicationDidHideNotification
 from pyglet.libs.darwin.cocoapy import NSApplicationDidUnhideNotification
 from pyglet.libs.darwin.cocoapy import send_super, get_selector
 from pyglet.libs.darwin.cocoapy import PyObjectEncoding
-from pyglet.libs.darwin.cocoapy import quartz
+from pyglet.libs.darwin.cocoapy import quartz, appkit
 from .systemcursor import SystemCursor
 
 NSNotificationCenter = ObjCClass('NSNotificationCenter')
 NSApplication = ObjCClass('NSApplication')
 
+NSBackingPropertyOldScaleFactorKey = c_void_p.in_dll(appkit, 'NSBackingPropertyOldScaleFactorKey')
 
 class PygletDelegate_Implementation:
     PygletDelegate = ObjCSubclass('NSObject', 'PygletDelegate')
@@ -127,6 +128,15 @@ class PygletDelegate_Implementation:
         if menuitem.action() == get_selector('terminate:'):
             return not self._window._keyboard_exclusive
         return True
+
+    @PygletDelegate.method('v@')
+    def windowDidChangeBackingProperties_(self, notification):
+        user_info = notification.userInfo()
+        old_scale = user_info.objectForKey_(NSBackingPropertyOldScaleFactorKey)
+
+        new_scale = self._window._nswindow.backingScaleFactor()
+        if old_scale.doubleValue() != new_scale:
+            self._window.dispatch_event("on_scale", new_scale, self._window._get_dpi_desc())
 
 
 PygletDelegate = ObjCClass('PygletDelegate')

@@ -1,6 +1,8 @@
 import platform
 from ctypes import c_uint32, c_int, byref
 
+import pyglet
+
 from pyglet.gl.base import Config, CanvasConfig, Context
 
 from pyglet.gl import ContextException
@@ -260,7 +262,7 @@ class CocoaContext(Context):
         # The NSView instance should be attached to a nondeferred window before calling
         # setView, otherwise you get an "invalid drawable" message.
         self._nscontext.setView_(canvas.nsview)
-        self._nscontext.view().setWantsBestResolutionOpenGLSurface_(1)
+
         self.set_current()
 
     def detach(self):
