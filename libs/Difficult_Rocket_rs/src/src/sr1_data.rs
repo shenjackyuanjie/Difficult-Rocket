@@ -14,7 +14,7 @@ pub mod part_list {
     // use quick_xml::de::from_str;
     use serde_xml_rs::{from_str};
 
-    use crate::types::sr1::{SR1PartTypeData, SR1PartType, SR1PartAttr};
+    use crate::types::sr1::{SR1PartTypeData, SR1PartType, SR1PartAttr, SR1PartList};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct RawPartList {
@@ -99,8 +99,8 @@ pub mod part_list {
     }
 
     impl AttachPoints {
-        pub fn new(attachs: Vec<AttachPoint>) -> Self {
-            AttachPoints { points: attachs }
+        pub fn new(attaches: Vec<AttachPoint>) -> Self {
+            AttachPoints { points: attaches }
         }
 
         pub fn insert(&mut self, attach: AttachPoint) {
@@ -267,7 +267,7 @@ pub mod part_list {
             };
             let damage = self.damage.unwrap_or(Damage {disconnect: 0, explode: 0,
             explosion_power: Some(0u32), explosion_size: Some(0u32) });
-            let attach_points = if let Some(attach_points) = &self.attach_points {
+            let attach_points: Option<Vec<AttachPoint>> = if let Some(attach_points) = &self.attach_points {
                 Some(attach_points.unzip()) } else { None };
             SR1PartType {
                 id: self.id.clone(),
@@ -305,6 +305,14 @@ pub mod part_list {
                 println!("{:?}\n", part_data);
             }
         }
+
+        pub fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
+            let mut part_list = Vec::new();
+            for part_data in self.part_types.iter() {
+                part_list.push(part_data.to_sr_part_type());
+            }
+            SR1PartList { types: part_list, name: name.unwrap_or("".to_string()) }
+        }
     }
 
     #[inline]
@@ -330,7 +338,8 @@ pub mod part_list {
         let _parts = read_part_list(file_name);
         if let Some(parts) = _parts {
             // println!("{:?}", parts)
-            parts.list_print()
+            parts.list_print();
+            let part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
         }
         // read_part_list(file_name);
         Ok(())
