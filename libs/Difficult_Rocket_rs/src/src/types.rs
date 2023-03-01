@@ -47,7 +47,7 @@ pub mod sr1 {
         }.to_string()
     }
 
-    #[derive(Clone)]
+    #[derive(Debug, Clone)]
     pub struct SR1PartData {
         pub x: f64,
         pub y: f64,
@@ -64,7 +64,7 @@ pub mod sr1 {
         pub connections: Option<Vec<((usize, usize), (isize, isize))>>
     }
 
-    #[derive(Copy, Clone)]
+    #[derive(Debug, Copy, Clone)]
     pub enum SR1PartAttr {
         Tank {
             fuel: f64,
@@ -99,7 +99,7 @@ pub mod sr1 {
         }
     }
 
-    #[derive(Copy, Clone)]
+    #[derive(Debug, Copy, Clone)]
     pub struct Damage {
         pub disconnect: i32,
         // 断裂受力大小
@@ -122,7 +122,7 @@ pub mod sr1 {
         }
     }
 
-    #[derive(Clone)]
+    #[derive(Debug, Clone)]
     pub struct SR1PartType {
         pub id: String,
         // 部件 ID
@@ -283,7 +283,7 @@ pub mod sr1 {
                 rcs,
                 solar,
                 shape: self.shape.clone(),
-                attach_points: None,
+                attach_points: attach_point,
                 lander,
             }
         }
