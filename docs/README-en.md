@@ -21,6 +21,8 @@
 [![Generic badge](https://img.shields.io/badge/Pre_Release-0.7.1.4-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Devloping-0.7.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
+[![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
+
 ## 中文README请移步 [这里](../README.md)
 
 > Difficult-rocket is a Simple Rocket liked game build with Python (in short: rocket simulator)
