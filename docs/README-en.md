@@ -31,7 +31,7 @@
 
 ## [Plan feature list](src/plan_features/README.md)
 
-- [microsoft TODO](https://to-do.microsoft.com/sharing?InvitationToken=Q6SN1kdtitK8cwFktFl71gSnsRMNmrH7CC7kHY_Tq6ReMRwHgInP4_q5ie2IwrHx8)
+[YouTrack](https://difficult-rocket.youtrack.cloud/projects/8dafd498-59c0-4ce7-9900-d9292e9ed1f0)
 
 ## [Update logs](src/update_logs.md)
 
