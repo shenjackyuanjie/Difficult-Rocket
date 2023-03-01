@@ -400,9 +400,6 @@ quartz.CGDisplayCopyDisplayMode.argtypes = [CGDirectDisplayID]
 quartz.CGDisplayModeGetRefreshRate.restype = c_double
 quartz.CGDisplayModeGetRefreshRate.argtypes = [c_void_p]
 
-quartz.CGDisplayScreenSize.restype = CGSize
-quartz.CGDisplayScreenSize.argtypes = [CGDirectDisplayID]
-
 quartz.CGDisplayModeRetain.restype = c_void_p
 quartz.CGDisplayModeRetain.argtypes = [c_void_p]
 
