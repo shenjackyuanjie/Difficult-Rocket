@@ -98,6 +98,20 @@ pub mod part_list {
         pub points: Vec<AttachPoint>,
     }
 
+    impl AttachPoints {
+        pub fn new(attachs: Vec<AttachPoint>) -> Self {
+            AttachPoints { points: attachs }
+        }
+
+        pub fn insert(&mut self, attach: AttachPoint) {
+            self.points.push(attach);
+        }
+
+        pub fn unzip(&self) -> Vec<AttachPoint> {
+            self.points.clone()
+        }
+    }
+
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Damage {
         pub disconnect: i32,
@@ -253,6 +267,8 @@ pub mod part_list {
             };
             let damage = self.damage.unwrap_or(Damage {disconnect: 0, explode: 0,
             explosion_power: Some(0u32), explosion_size: Some(0u32) });
+            let attach_points = if let Some(attach_points) = &self.attach_points {
+                Some(attach_points.unzip()) } else { None };
             SR1PartType {
                 id: self.id.clone(),
                 name: self.name.clone(),
@@ -272,9 +288,9 @@ pub mod part_list {
                 drag: self.drag.unwrap_or(0.0),
                 hidden: self.hidden.unwrap_or(false),
                 buoyancy: self.buoyancy.unwrap_or(0.0),
-                // shape: self.shape.clone().unwrap_or(vec![]),
                 shape: None,
                 damage: damage.to_damage(),
+                attach_points,
                 attr: part_attr,
             }
         }

@@ -8,9 +8,10 @@
 
 
 pub mod sr1 {
-    use super::math::{Shape, Point2D};
-    use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum, Location};
+    // use super::math::{Shape, Point2D};
+    use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
     use crate::sr1_data::part_list::Damage as RawDamage;
+    use crate::sr1_data::part_list::{Tank, Engine, Solar, Rcs, Lander, AttachPoint, AttachPoints, Shape as RawShape};
 
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -63,7 +64,7 @@ pub mod sr1 {
         pub connections: Option<Vec<((usize, usize), (isize, isize))>>
     }
 
-    #[derive(Clone)]
+    #[derive(Copy, Clone)]
     pub enum SR1PartAttr {
         Tank {
             fuel: f64,
@@ -87,7 +88,7 @@ pub mod sr1 {
             consumption: f64,
             size: f64,
         },
-        Solar { charge_rate: f64, },
+        Solar { charge_rate: f64 },
         Lander {
             max_angle: f64,
             min_length: f64,
@@ -162,16 +163,28 @@ pub mod sr1 {
         // 综合属性
         pub damage: Damage,
         // 部件受损相关属性
-        pub shape: Option<Shape>,
+        pub shape: Option<Vec<RawShape>>,
         // 部件碰撞箱
+        pub attach_points: Option<Vec<AttachPoint>>,
+        // 部件连接点
         pub attr: Option<SR1PartAttr>
         // 部件特殊属性
     }
 
-    #[derive(Clone)]
+    #[derive(Debug, Clone)]
     pub struct SR1PartList {
         pub types: Vec<SR1PartType>,
         pub name: String,
+    }
+
+    impl SR1PartList {
+        pub fn to_raw_part_list(&self) -> RawPartList {
+            let mut types: Vec<RawPartType> = Vec::new();
+            for part_type in &self.types {
+                types.insert(0, part_type.to_raw_part_type());
+            }
+            RawPartList{part_types: types}
+        }
     }
 
     pub trait SR1PartTypeData {
@@ -197,10 +210,6 @@ pub mod sr1 {
             SR1PartList::new(name, types)
         }
 
-        // pub fn part_type_new(part_type: RawPartType) -> Self {
-        //     let mut types: Vec<SR1PartType> = Vec::new();
-        // }
-
         pub fn insert_part(&mut self, part: SR1PartType) -> () {
             self.types.insert(0, part);
         }
@@ -212,7 +221,43 @@ pub mod sr1 {
         }
 
         fn to_raw_part_type(&self) -> RawPartType {
-            // let shape = crate::sr1_data::part_list::Shape;
+            let tank: Option<Tank> = match &self.attr {
+                Some(attr) => {
+                    match attr {
+                        SR1PartAttr::Tank {fuel, dry_mass, fuel_type} => {
+                            Some(Tank {fuel: *fuel, dry_mass: *dry_mass, fuel_type: Some(*fuel_type)})
+                        } _ => None } } _ => None };
+            let engine: Option<Engine> = match &self.attr {
+                Some(attr) => {
+                    match attr {
+                        SR1PartAttr::Engine {power, consumption, size, turn, fuel_type, throttle_exponential } => {
+                            Some(Engine {power: *power, consumption: *consumption, throttle_exponential: Some(*throttle_exponential),
+                                         size: *size, turn: *turn, fuel_type: Some(*fuel_type)})
+                        } _ => None } } _ => None };
+            let rcs: Option<Rcs> = match &self.attr {
+                Some(attr) => {
+                    match attr {
+                        SR1PartAttr::Rcs {power, consumption, size } => {
+                            Some(Rcs {power: *power, consumption: *consumption, size: *size })
+                        } _ => None } } _ => None };
+            let solar: Option<Solar> = match &self.attr {
+                Some(attr) => {
+                    match attr {
+                        SR1PartAttr::Solar {charge_rate } => {
+                            Some(Solar {charge_rate: *charge_rate })
+                        } _ => None } } _ => None };
+            let lander: Option<Lander> = match &self.attr {
+                Some(attr) => {
+                    match attr {
+                        SR1PartAttr::Lander {max_angle, min_length, max_length, angle_speed, length_speed, width } => {
+                            Some(Lander {max_angle: *max_angle, min_length: *min_length, max_length: *max_length,
+                                         angle_speed: Some(*angle_speed), length_speed: Some(*length_speed), width: *width })
+                        } _ => None } } _ => None };
+            let attach_point: Option<AttachPoints> = match &self.attach_points {
+                Some(attach_points) => {
+                    if attach_points.len() > 0 {
+                        Some(AttachPoints::new(attach_points.clone()))
+                    } else { None } } _ => None };
             RawPartType {
                 id: self.id.clone(),
                 name: self.name.clone(),
@@ -233,14 +278,13 @@ pub mod sr1 {
                 hidden: Some(self.hidden),
                 buoyancy: Some(self.buoyancy),
                 damage: Some(self.damage.to_raw_damage()),
-                tank: None,
-                engine: None,
-                rcs: None,
-                solar: None,
-                // shape: Some(self.shape.clone()),
-                shape: None,
+                tank,
+                engine,
+                rcs,
+                solar,
+                shape: self.shape.clone(),
                 attach_points: None,
-                lander: None,
+                lander,
             }
         }
     }
@@ -250,6 +294,14 @@ pub mod sr1 {
 #[allow(unused)]
 pub mod math {
 
+    pub trait Rotatable {
+        // 懒了，直接实现一个协议得了
+        #[inline]
+        fn rotate(&self, angle: f64) -> Self;
+        #[inline]
+        fn rotate_radius(&self, radius: f64) -> Self;
+    }
+
     #[derive(Clone, Copy)]
     pub struct Point2D {
         pub x: f64,
@@ -258,11 +310,11 @@ pub mod math {
 
     impl Point2D {
         pub fn new(x: f64, y: f64) -> Self {
-            Point2D{x, y}
+            Point2D { x, y }
         }
 
         #[inline]
-        pub fn new_00() -> Self { Point2D { x: 0.0, y :0.0 } }
+        pub fn new_00() -> Self { Point2D { x: 0.0, y: 0.0 } }
 
         #[inline]
         pub fn distance(&self, other: &Point2D) -> f64 {
@@ -275,10 +327,16 @@ pub mod math {
         pub fn distance_00(&self) -> f64 {
             self.distance(&Point2D::new(0.0, 0.0))
         }
+    }
+
+    impl Rotatable for Point2D {
+        #[inline]
+        fn rotate(&self, angle: f64) -> Self {
+            self.rotate_radius(angle.to_radians())
+        }
 
         #[inline]
-        pub fn rotate_angle(&self, angle: f64) -> Self {
-            let radius = angle.to_radians();
+        fn rotate_radius(&self, radius: f64) -> Self {
             let sin = radius.sin();
             let cos = radius.cos();
             let x = self.x * cos - self.y * sin;
@@ -286,6 +344,7 @@ pub mod math {
             Point2D{ x, y }
         }
     }
+
 
     #[derive(Clone, Copy)]
     pub struct CircularArc {
@@ -310,6 +369,16 @@ pub mod math {
         pub end: Point2D,
         // end point
     }
+    
+    impl Rotatable for OneTimeLine {
+        fn rotate(&self, angle: f64) -> Self {
+            self.rotate_radius(angle.to_radians())
+        }
+
+        fn rotate_radius(&self, radius: f64) -> Self {
+            OneTimeLine::point_new(&self.start.rotate_radius(radius), &self.end.rotate_radius(radius))
+        }
+    }
 
     #[derive(Clone, Copy)]
     pub enum Edge {
@@ -322,7 +391,7 @@ pub mod math {
         pub pos: Point2D,
         pub angle: f64,
         // 旋转角度 角度值
-        pub bounds: Vec<Edge>
+        pub bounds: Vec<Edge>,
     }
 
     impl Shape {
@@ -346,12 +415,12 @@ pub mod math {
                 edges = edges.iter().map(|edge| {
                     match edge {
                         Edge::OneTimeLine(line) => {
-                            let start = line.start.rotate_angle(angle);
-                            let end = line.end.rotate_angle(angle);
+                            let start = line.start.rotate(angle);
+                            let end = line.end.rotate(angle);
                             Edge::OneTimeLine(OneTimeLine::point_new(&start, &end))
                         },
                         Edge::CircularArc(arc) => {
-                            let pos = arc.pos.rotate_angle(angle);
+                            let pos = arc.pos.rotate(angle);
                             Edge::CircularArc(CircularArc{ r: arc.r, pos, start_angle: arc.start_angle, end_angle: arc.end_angle })
                         }
                     }
@@ -402,10 +471,6 @@ pub mod math {
                 start: *point,
                 end: Point2D::new(0.0, b_)
             }
-        }
-
-        pub fn rotate(&self, angle: f64) -> Self {
-            OneTimeLine::point_new(&self.start.rotate_angle(angle), &self.end.rotate_angle(angle))
         }
 
         pub fn point_d() -> f64 {
