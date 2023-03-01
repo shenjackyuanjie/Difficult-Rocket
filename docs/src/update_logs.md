@@ -22,6 +22,19 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 20230301 DR `0.7.1.4` + DR_rs `0.2.5.4/5`
+
+### DR_rs V 0.2.5.5
+
+- 完成了 `SR1PartType` 和 `RawPartType` 的数据转换方法
+  - 修复了 `Rcs` 字段 实际上检测的是 `Tank` 的问题
+  - Complete the data conversion method of `SR1PartType` and `RawPartType`
+    - Fix the problem that the actual detection of `Rcs` field is `Tank`
+
+### DR_rs V 0.2.5.4
+
+- 完善了 `SR1PartType` 和 `RawPartType` 的转换
+
 ## 20230326 DR `0.7.1.3` + DR_rs `0.2.5.3` + API `0.0.0.1` + 13
 
 ### 内部协议 13

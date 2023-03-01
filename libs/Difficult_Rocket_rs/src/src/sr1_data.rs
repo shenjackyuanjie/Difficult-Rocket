@@ -225,7 +225,7 @@ pub mod part_list {
         pub tank: Option<Tank>,
         #[serde(rename = "Engine")]
         pub engine: Option<Engine>,
-        #[serde(rename = "Tank")]
+        #[serde(rename = "Rcs")]
         pub rcs: Option<Rcs>,
         #[serde(rename = "Solar")]
         pub solar: Option<Solar>,
@@ -309,6 +309,7 @@ pub mod part_list {
         pub fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
             let mut part_list = Vec::new();
             for part_data in self.part_types.iter() {
+                println!("{}", part_data.id.to_string());
                 part_list.push(part_data.to_sr_part_type());
             }
             SR1PartList { types: part_list, name: name.unwrap_or("".to_string()) }
