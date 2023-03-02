@@ -32,6 +32,7 @@ $arg += @("--windows-icon-from-ico=textures/icon.png")
 $arg += @("--msvc=latest")
 $arg += @("--clang")
 $arg += @("--lto=no")
+$arg += @("--nofollow-import-to=libs.Difficult_Rocket_rs")
 # 数据配置
 $arg += @("--include-data-dir=./libs/pyglet=./libs/pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")

@@ -340,9 +340,18 @@ pub mod part_list {
         if let Some(parts) = _parts {
             // println!("{:?}", parts)
             parts.list_print();
-            let part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
+            let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
         }
         // read_part_list(file_name);
         Ok(())
     }
+}
+
+#[allow(unused)]
+pub mod ship {
+
+    use pyo3::prelude::*;
+    use serde::{Serialize, Deserialize};
+    // use quick_xml::de::from_str;
+    use serde_xml_rs::{from_str};
 }

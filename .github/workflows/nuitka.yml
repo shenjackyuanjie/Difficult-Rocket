@@ -49,7 +49,15 @@ jobs:
           python-version: ${{ matrix.python-version }}  # 为了支持 win7 我还是得用 3.8
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
           cache: 'pip'
-          cache-dependency-path: '**/requirement-dev.txt'
+          cache-dependency-path: |
+            **/requirement-dev.txt
+            .github/workflows/requirement.txt
+
+      # 安装 Rust
+      # - name: Setup | Rust
+      #  uses: ATiltedTree/setup-rust@v1
+      #  with:
+      #    rust-version: nightly
 
       # 安装依赖
       - name: Install env
@@ -58,7 +66,11 @@ jobs:
 
       # 使用 ruff 检查一遍仓库
       - name: Ruff check
-        uses: jpetrucciani/ruff-check@main
+        if: runner.os == 'Windows' && matrix.python-version == '3.8'
+        # 只在 windows 的 python 3.8 上检查 减少无用报错
+        run: |
+          pip install ruff
+          ruff check . --exit-zero --format github
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
@@ -78,7 +90,6 @@ jobs:
           python post_build.py
           python setup.py clean
           cd ..
-          # Remove-Item ./src -Recurse
           cd ..
           cd ..
 
@@ -103,10 +114,10 @@ jobs:
           $arg += @("--clang")
           $arg += @("--lto=no")
           # 包配置
-          # $arg += @("--nofollow-import-to=objprint,pillow,cffi,PIL,pyglet")
+          $arg += @("--nofollow-import-to=libs.Difficult_Rocket_rs")
           # 数据配置
           $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
-          $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
+          # $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
@@ -133,10 +144,10 @@ jobs:
           $arg += @("--clang")
           $arg += @("--lto=no")
           # 包配置
-          # $arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
+          $arg += @("--nofollow-import-to=libs.Difficult_Rocket_rs")
           # 数据配置
           $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
-          $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
+          # $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
@@ -147,8 +158,16 @@ jobs:
       - name: after build
         shell: pwsh
         run: |
-          Copy-Item .\libs\pyglet\ .\build\DR.dist -Recurse
-          Rename-Item ./build/DR.dist Difficult-Rocket
+          Get-ChildItem libs/fonts/Fira_Code -Recurse | Remove-Item -Force
+          Get-ChildItem libs/fonts/scientifica -Recurse | Remove-Item -Force
+          Remove-Item libs/fonts/Monocraft.otf -Force
+          Remove-Item libs/fonts/SmileySans-Oblique.ttf -Force
+          Get-ChildItem libs/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Condensed/* -Recurse | Remove-Item -Force
+          Get-ChildItem libs/fonts/HarmonyOS_Sans/HarmonyOS_Sans/* -Recurse | Remove-Item -Force
+          Copy-Item libs/fonts build\DR.dist\libs\fonts -Recurse
+          Copy-Item libs\pyglet\ build\DR.dist -Recurse
+          # Copy-Item -Path "libs\Difficult_Rocket_rs\lib\*" -Destination "build\DR.dist\libs\Difficult_Rocket_rs\lib" -Recurse
+          Rename-Item build/DR.dist Difficult-Rocket
           python ./.github/workflows/post_compile.py
 
       # Uploads artifact

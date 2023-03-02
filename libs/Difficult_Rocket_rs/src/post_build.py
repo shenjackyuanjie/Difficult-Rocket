@@ -38,7 +38,4 @@ for build_dir in builds:
             print(os.listdir(lib_path))
             traceback.print_exc()
             continue
-            # os.remove(file_name)
-            # shutil.copy(os.path.join(build_path, build_dir, package_path, file), file_name)
-    # shutil.rmtree(os.path.join(build_path, build_dir))
-    # print(os.path.join(build_path, build_dir))
+        print(os.path.abspath(file_name))

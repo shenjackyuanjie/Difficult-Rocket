@@ -16,6 +16,8 @@ args = ['-env', '-github-dev']
 
 # print(sys.argv)
 
+
+
 if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并输出
     print(sys.version)
     from Difficult_Rocket.utils import tools

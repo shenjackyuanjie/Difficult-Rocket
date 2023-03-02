@@ -23,7 +23,7 @@ from Difficult_Rocket.api.types import Options
 from libs.MCDR.version import Version
 
 game_version = Version("0.7.1.4")  # 游戏版本
-build_version = Version("1.2.0.0")  # 编译文件版本(与游戏本体无关)
+build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)
 DR_rust_version = Version("0.2.5.5")  # DR 的 Rust 编写部分的版本
 Api_version = Version("0.0.0.1")  # API 版本
 __version__ = game_version
@@ -80,8 +80,7 @@ class _DR_option(Options):
         if sys.platform != 'darwin':  # MacOS 的测试只能在 Macos 上跑
             self.pyglet_macosx_dev_test = False
         try:
-            from libs.Difficult_Rocket_rs import test_call, get_version_str, part_list_read_test
-            part_list_read_test("./configs/PartList.xml")
+            from libs.Difficult_Rocket_rs import test_call, get_version_str
             test_call(self)
             print(f'DR_rust available: {get_version_str()}')
         except ImportError:
@@ -90,6 +89,11 @@ class _DR_option(Options):
             self.DR_rust_available = False
         self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
         self.flush_option()
+
+    def test_rust(self):
+        if self.DR_rust_available:
+            from libs.Difficult_Rocket_rs import part_list_read_test
+            part_list_read_test("./configs/PartList.xml")
 
     def draw(self):
         self.DR_rust_available = True
