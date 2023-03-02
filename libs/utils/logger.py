@@ -21,7 +21,7 @@ import threading
 from types import FrameType
 from dataclasses import dataclass
 from logging import NOTSET, DEBUG
-from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, Any, List
+from typing import NamedTuple, Optional, Type, Union, Dict, Iterable, List
 
 Version = '1.1.0'
 

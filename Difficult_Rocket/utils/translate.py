@@ -14,7 +14,7 @@ gitee:  @shenjackyuanjie
 import inspect
 
 from dataclasses import dataclass
-from typing import Union, Tuple, Any, Type, List, Dict, Hashable, Optional
+from typing import Union, Tuple, Any, List, Dict, Hashable, Optional
 
 from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools

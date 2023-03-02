@@ -4,7 +4,9 @@
 #  All rights reserved
 #  -------------------------------
 
-from Difficult_Rocket.exception.threading import *
+from Difficult_Rocket.exception.threading import (
+    LockTimeOutError
+)
 
 __all__ = [
     "LockTimeOutError"

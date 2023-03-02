@@ -11,7 +11,14 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket.exception.unsupport import *
+from Difficult_Rocket.exception.unsupport import (
+    NoMoreJson5,
+    Nope418ImATeapot,
+    ThinkError,
+    BrainError,
+    BigBrainError,
+    GrammarError
+)
 
 __all__ = [
     'NoMoreJson5',

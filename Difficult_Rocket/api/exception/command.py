@@ -11,7 +11,15 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket.exception.command import *
+from Difficult_Rocket.exception.command import (
+    CommandError,
+    CommandParseError,
+    CommandQMarkPosError,
+    CommandQMarkConflict,
+    CommandQMarkMissing,
+    CommandQMarkPreMissing,
+    CommandQMarkSufMissing
+)
 
 __all__ = [
     "CommandError",

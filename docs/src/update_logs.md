@@ -22,6 +22,33 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 20230302 DR `0.7.1.5` + Build `1.2.0.0`
+
+### Build V 1.2.0.0
+
+- 现在打包之前会移除无用文件
+  - Now useless files will be removed before packaging
+
+### typing
+
+- 移除了以下文件的 `from x import *`
+  - Remove `from x import *` in the following files
+    - `Difficult_Rocket.api.exception.command`
+    - `Difficult_Rocket.api.exception.logger`
+    - `Difficult_Rocket.api.exception.threading`
+    - `Difficult_Rocket.api.exception.unsupport`
+- 移除了以下文件的多余引用
+  - Remove unnecessary imports in the following files
+    - `Difficult_Rocket.client.__init__`
+    - `Difficult_Rocket.exception.language`
+    - `Difficult_Rocket.utils.translate`
+    - `libs.utils.logger`
+
+### 移除
+
+- 移除了 `pyproject.toml` 中 `tool.ruff` 的不必要规则忽略
+  - Remove unnecessary rule ignore in `tool.ruff` of `pyproject.toml`
+
 ## 20230301 DR `0.7.1.4` + DR_rs `0.2.5.4/5`
 
 ### 修复了上个版本没有步进版本号的毛病

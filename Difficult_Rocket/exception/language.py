@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-from Difficult_Rocket.exception import BaseError, BaseRuntimeError
+from Difficult_Rocket.exception import BaseError
 
 __all__ = ['LanguageNotFound',
            'TranslateError',

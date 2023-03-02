@@ -48,11 +48,9 @@ src = [
 
 exclude = [
     'libs/pyglet',
-    'libs/pyperclicp',
+    'libs/pyperclip',
     'libs/MCDR/serializer.py'
 ]
 
 format = "grouped"
 
-[tool.ruff.per-file-ignores]
-"Difficult_Rocket/api/exception/*.py" = [ "F405", "F403" ]
