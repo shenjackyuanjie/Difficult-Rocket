@@ -41,6 +41,9 @@ def remove_un_use():
             pass
         except PermissionError:
             pass
+        except IsADirectoryError:
+            # 如果是目录
+            shutil.rmtree(file)
     os.chdir('../../')
 
 
