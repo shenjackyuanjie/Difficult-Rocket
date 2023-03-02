@@ -56,6 +56,10 @@ jobs:
         run: |
           pip install -r requirement-dev.txt
 
+      # 使用 ruff 检查一遍仓库
+      - name: Ruff check
+        uses: jpetrucciani/ruff-check@main
+
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
         id: DR_info

@@ -21,7 +21,7 @@ defusedxml >= 0.7.1
 objprint >= 0.2.2
 
 # for compile
-nuitka >= 1.4.5
+nuitka >= 1.4.8
 ordered-set >= 4.1.0
 imageio >= 2.25.0
 wheel >= 0.38.4
