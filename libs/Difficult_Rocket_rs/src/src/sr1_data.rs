@@ -342,7 +342,6 @@ pub mod part_list {
             parts.list_print();
             let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
         }
-        // read_part_list(file_name);
         Ok(())
     }
 }
@@ -354,4 +353,140 @@ pub mod ship {
     use serde::{Serialize, Deserialize};
     // use quick_xml::de::from_str;
     use serde_xml_rs::{from_str};
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Ship {
+        #[serde(rename = "Parts")]
+        pub parts: Parts,
+        #[serde(rename = "Connections")]
+        pub connects: Connections,
+        pub version: i32,
+        #[serde(rename = "liftedOff")]
+        pub lift_off: i8,
+        #[serde(rename = "touchingGround")]
+        pub touch_ground: i8
+    }
+    // <Ship version="1" liftedOff="0" touchingGround="0">
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Parts {
+        #[serde(rename = "Part")]
+        pub parts: Vec<Part>
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Connections {
+        #[serde(rename = "Connection")]
+        pub connects: Vec<Connection>
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Part {
+        #[serde(rename = "Tank")]
+        pub tank: Option<Tank>,
+        #[serde(rename = "Engine")]
+        pub engine: Option<Engine>,
+        #[serde(rename = "Pod")]
+        pub pod: Option<Pod>,
+
+        pub id: i64,
+        pub x: f64,
+        pub y: f64,
+        #[serde(rename = "editorAngle")]
+        pub editor_angle: i32,
+        pub angle: f64,
+        #[serde(rename = "angleV")]
+        pub angle_v: f64,
+        #[serde(rename = "flippedX")]
+        pub flip_x: Option<i8>,
+        #[serde(rename = "flippedY")]
+        pub flip_y: Option<i8>,
+        #[serde(rename = "chuteX")]
+        pub chute_x: Option<f64>,
+        #[serde(rename = "chuteY")]
+        pub chute_y: Option<f64>,
+        #[serde(rename = "partType")]
+        pub part_type: String,
+        pub extension: Option<f64>,
+        pub exploded: Option<i8>,
+        #[serde(rename = "chuteAngle")]
+        pub chute_angle: Option<f64>,
+        #[serde(rename = "chuteHeight")]
+        pub chute_height: Option<f64>,
+        pub deployed: Option<i8>,
+        pub rope: Option<i8>,
+        pub inflate: Option<i8>,
+        pub inflation: Option<i8>,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Engine {
+        pub fuel: i64
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Pod {
+        #[serde(rename = "Staging")]
+        pub stages: Vec<Staging>,
+        pub name: String,
+        pub throttle: i8
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Tank {
+        pub fuel: i64
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Staging {
+        #[serde(rename = "currentStage")]
+        pub current_stage: u32,
+        #[serde(rename = "Activate")]
+        pub steps: Vec<Activate>,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Activate {
+        #[serde(rename = "Id")]
+        pub id: i64,
+        pub moved: i8 // 1 or 0
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct DisconnectedParts {
+        pub parts: Vec<DisconnectedPart>
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct DisconnectedPart {
+        #[serde(rename = "Parts")]
+        pub parts: Vec<Parts>,
+        #[serde(rename = "Connections")]
+        pub connects: Vec<Connections>,
+    }
+    ///   <DisconnectedParts>
+    ///     <DisconnectedPart>
+    ///       <Parts>
+    ///         <Part partType="battery-0" id="1199757" x="-95.500000" y="73.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+    ///           <Tank fuel="250.000000"/>
+    ///         </Part>
+    ///         <Part partType="lander-1" id="1199758" x="-96.750000" y="73.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+    ///         <Part partType="lander-1" id="1199759" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+    ///         <Part partType="lander-1" id="1199760" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+    ///         <Part partType="lander-1" id="1199761" x="-96.750000" y="73.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+    ///         <Part partType="lander-1" id="1199762" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+    ///         <Part partType="lander-1" id="1199763" x="-96.750000" y="73.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+    ///         <Part partType="lander-1" id="1199764" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Connection {
+        #[serde(rename = "parentAttachPoint")]
+        pub parent_attach_point: i64,
+        #[serde(rename = "childAttachPoint")]
+        pub child_attach_point: i64,
+        #[serde(rename = "parentPart")]
+        pub parent_part: i64,
+        #[serde(rename = "childPart")]
+        pub child_part: i64,
+    }
 }
