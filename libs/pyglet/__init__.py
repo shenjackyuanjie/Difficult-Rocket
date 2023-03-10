@@ -9,7 +9,7 @@ import sys
 from typing import TYPE_CHECKING
 
 #: The release version
-version = '2.0.4'
+version = '2.0.5'
 __version__ = version
 
 MIN_PYTHON_VERSION = 3, 8
@@ -125,6 +125,7 @@ options = {
     'xlib_fullscreen_override_redirect': False,
     'search_local_libs': True,
     'win32_gdi_font': False,
+    'scale_with_dpi': False,
     'headless': False,
     'headless_device': 0,
     'win32_disable_shaping': False,
@@ -155,6 +156,7 @@ _option_types = {
     'vsync': bool,
     'xsync': bool,
     'xlib_fullscreen_override_redirect': bool,
+    'scale_with_dpi': bool,
     'search_local_libs': bool,
     'win32_gdi_font': bool,
     'headless': bool,
