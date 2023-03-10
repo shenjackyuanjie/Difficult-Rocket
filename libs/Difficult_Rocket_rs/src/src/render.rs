@@ -25,8 +25,18 @@ pub mod camera {
         pub min_zoom: f64,
     }
 
-    // #[pyclass(extends = CameraRs, name = "CenterCamera_rs")]
-    // pub struct CenterCameraRs;
+    #[pyclass(extends = CameraRs, name = "CenterCamera_rs")]
+    pub struct CenterCameraRs;
+
+    #[pymethods]
+    impl CenterCameraRs {
+        #[new]
+        #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0, min_zoom=1.0, max_zoom=1.0))]
+        pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64,min_zoom: f64, max_zoom: f64) -> PyResult<Self> {
+            return Ok(CameraRs {dx, dy, zoom, min_zoom, max_zoom,
+                                window: window.into()})
+        }
+    }
 
     #[pymethods]
     impl CameraRs {
