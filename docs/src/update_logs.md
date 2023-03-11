@@ -5,7 +5,7 @@
 - Thanks `Github copilot` for translate (lazy yes!)
   - Means the update logs will lodge in Chinese and translated by `copilot`
 - 可惜啊，github copilot 收费了
-  - 欸嘿，我现在有 Github 学生包啦
+  - 欸嘿，我现在有 Github 学生包{{footnote: 甚至用的我的课表}}啦
     - Nice, I have Github student pack now
 
 ## Readme First
@@ -24,7 +24,26 @@
 
 ## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6`
 
-WORKING ON 
+### 文档
+
+- 现在可以访问 dr.shenjack.top
+- 或者 hws.shenjack.top:81/dr
+- 或者 shenjack.top:81/dr
+- 来访问 DR 的文档页面
+  - Now you can visit dr.shenjack.top
+  - Or hws.shenjack.top:81/dr
+  - Or shenjack.top:81/dr
+  - To visit the DR document page
+
+### Workflow
+
+- 新增了 `dsm.py`
+  - 用于将文档部署到服务器
+  - 同时保证不会丢下一大堆连接不管
+    - Add `dsm.py`
+      - Used to deploy documents to the server
+      - At the same time, ensure that there will be no connection left
+
 
 ### DR_rs V 0.2.5.6
 
@@ -223,7 +242,6 @@ long_version: 一个用于标记内部协议的整数
 - 将 `SR1PartData` 的字段 `type_` 重命名为 `p_type`
 - 现在鼠标滚动更顺滑了
 
-
 ### `DR_Rs`
 
 - 移动了 `SR1PartData` 的位置
@@ -367,20 +385,15 @@ long_version: 一个用于标记内部协议的整数
 - 更新了 `command/` 里的一大堆东西
 - 退钱！开摆！
 
-
-
 ## 202202xx V 0.6.2
 
 ### Add
 
-[然后就很快被替换成MCDR的了]: <> (- 添加模块 `semver` 和协议 &#40;`LICENSE.txt`&#41;)
-[Add soon been replace by MCDR]: <> (  - Add modules `semver` Add LICENSE &#40;`LICENSE.txt`&#41;)
 - 添加了 `libs.MCDR` 文件夹 (`new_thread`没有包含在内)
   - Add `libs.MCDR` folder (`new_thread` not included)
 - 添加对 mod 的支持(还在写啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊)
 - 计划写个设计文档
   - Plan to write a design document
-
 
 ## ~~202111 202112xx 20220119~~ 20220207 V 0.6.1
 
@@ -405,7 +418,7 @@ long_version: 一个用于标记内部协议的整数
   - move `api/translate` to root directory
 - 现在命令会慢慢消失，而不是立即消失
   - Now the command will disappear slowly, not immediately
-- 重写了一遍` client.load_fonts()`
+- 重写了一遍`client.load_fonts()`
   - rewrite `client.load_fonts()`
 - 重写了 `tools.load_file()` 的错误处理和 `.config` 文件的解析方式
   - 现在 `.config` 文件解析后会直接返回一个 `ConfigParser` 对象
@@ -453,10 +466,9 @@ long_version: 一个用于标记内部协议的整数
 - 增加内置模块 `toml` 和对应的 `LICENSE.txt`
   - Added built-in module `toml` and corresponding `LICENSE.txt`
 
-
 ## 20211025 V 0.6.0
 
-#### Command Line Update!
+#### Command Line Update
 
 ### Change
 
@@ -518,14 +530,13 @@ long_version: 一个用于标记内部协议的整数
   - `/default`
     - switch window size to default size
 
-
 ## 20210928 V 0.5.2
 
 ### Change
 
 - now bin folder use the name `Difficult_Rocket`
 - now test files no longer have `_test_` prefix
-- now will always use local `pyglet` 
+- now will always use local `pyglet`
   - may change later
 - fitting `pypy3.10` (well······ not success (because OpenGL, blame it))
 - now `crash-report` have more information
@@ -568,7 +579,6 @@ long_version: 一个用于标记内部协议的整数
   - `tr[xxx]` can also use but won't solve error when item not found
   - so best use `tr.lang(xx, xx)`
 
-
 ## 20210902 V 0.5.1
 
 ### Change
@@ -584,7 +594,6 @@ long_version: 一个用于标记内部协议的整数
 - auto crash report in `bin/crash/create_crash_report`
 - `bin/api/Exp.py` some Exception
 - `bin/api/translate` to create a `translate` class that can reload language
-
 
 ## 20210823 V 0.5.0
 
@@ -604,7 +613,6 @@ long_version: 一个用于标记内部协议的整数
 ### Delete
 
 - `name_hanlder` in `configs.py`
-
 
 ## 20210811 V 0.4.6
 
@@ -628,10 +636,9 @@ long_version: 一个用于标记内部协议的整数
 ### Delete
 
 - all game window render has been deleted
-    - will be rewritten in 0.5.0
+  - will be rewritten in 0.5.0
 - delete some useless code
 - delete some useless file
-
 
 ## 20210723 V 0.4.5
 
@@ -649,7 +656,6 @@ long_version: 一个用于标记内部协议的整数
 - `README.md` and `README-cn.md` some label style change
 - Pre-installed `pyglet` upgrade from `1.5.16` -> `1.5.18`
 - Pre-installed `json5` upgrade from `0.9.5` -> `0.9.6`
-
 
 ## 20210708 V 0.4.4
 
@@ -673,7 +679,6 @@ long_version: 一个用于标记内部协议的整数
 - `test_logging_conf.py`
 - `test_speed_of_sprite.py`
 
-
 ## 2021/06/26 V 0.4.3
 
 ### DEBUG
@@ -690,7 +695,6 @@ long_version: 一个用于标记内部协议的整数
 - add performance_test folder
 - add some performances test
 
-
 ## 2021/05/24 V 0.4.2
 
 ### DEBUG
@@ -706,7 +710,6 @@ long_version: 一个用于标记内部协议的整数
 ### Need Do
 
 - debug name_format
-
 
 ## 2021/04/17 V 0.4.1
 
@@ -729,7 +732,6 @@ PS:
 - plan to change config file format to .config (plan to)
 - reformat all files (including libs)
 
-
 ## 2021/04/09 V 0.2.3/4
 
 ### Add
@@ -747,14 +749,13 @@ PS:
 - `{date}` can be successful use in `tools.name_handler()` (if you define the format of date)
 - log file's filename incorrect (should be `xxxx-xx-xx xx-xx-xx DR.log` but be `{date} DR.log`)
 
-
 ## 2021/03/27 V 0.2.2/1
 
 ### Add
 
 - add local libs
-    - `pyglet 1.5.15`
-    - `json5  0.9.5`
+  - `pyglet 1.5.15`
+  - `json5  0.9.5`
 
 PS: now I'm not sure witch lib will be import first
 

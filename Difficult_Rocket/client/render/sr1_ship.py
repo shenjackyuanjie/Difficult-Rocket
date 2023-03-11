@@ -127,7 +127,8 @@ class SR1ShipRender(BaseScreen):
             self.xml_doc = cache_doc
             self.xml_root = self.xml_doc.getroot()
             return True
-        except Exception:
+        except Exception as e:
+            print(e)
             return False
 
     def load_textures(self):

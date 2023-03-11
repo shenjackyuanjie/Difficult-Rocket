@@ -37,15 +37,54 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
 
-      - name: install mdbook
+      - name: 安装 mdbook
         uses: extractions/setup-mdbook@v1
 
-      - name: setup python 3.11
+      # - name: 安装 mdbook 扩展
+      #   shell: pwsh
+      #   run: |
+      #     # mdbook mdbook-i18n mdbook-footnote mdbook-pagetoc mdbook-cmdrun
+      #     Write-Host "GITHUB_PATH is: $env:GITHUB_PATH"
+      #     $mdbookPath = "$env:GITHUB_PATH\mdbook.exe"
+      #     Write-Host "mdbook path is: $mdbookPath"
+      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-i18n.exe" -OutFile $env:GITHUB_PATH\mdbook-i18n.exe
+      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-cmdrun.exe" -OutFile $env:GITHUB_PATH\mdbook-cmdrun.exe
+      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-pagetoc.exe" -OutFile $env:GITHUB_PATH\mdbook-pagetoc.exe
+      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-footnote.exe" -OutFile $env:GITHUB_PATH\mdbook-footnote.exe
+
+      - name: Install mdBook
+        shell: pwsh
+        run: |
+          # 设置变量
+          $urls = @(
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-i18n',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-cmdrun',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-pagetoc',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-footnote',
+            'https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar'
+          )
+          $temp = 'mdbook'
+          # 创建目录
+          if (!(Test-Path -Path $temp -PathType Container)) {
+            New-Item -Path $temp -ItemType Directory -Force
+          }
+          # 下载文件
+          foreach ($url in $urls) {
+            Invoke-WebRequest -Uri $url -OutFile "$temp/$($url.Split('/')[-1])"
+          }
+          # Invoke-WebRequest -Uri $url1 -OutFile 'mdbook/mdbook-i18n'
+          # Invoke-WebRequest -Uri $url2 -OutFile 'mdbook/mdbook-cmdrun'
+          # Invoke-WebRequest -Uri $url3 -OutFile 'mdbook/mdbook-pagetoc'
+          # Invoke-WebRequest -Uri $url4 -OutFile 'mdbook/mdbook-footnote'
+          # 将目录路径添加到 $PATH 中
+          echo "$temp" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: 安装 python 3.11
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
 
-      - name: install dsm api
+      - name: 安装 dsm api
         shell: pwsh
         run: |
           pip install synology-api>=0.5.1
@@ -54,8 +93,8 @@ jobs:
         shell: pwsh
         run: |
           mdbook build ./docs/
-          cd docs
-          Copy-Item book/README-en.html book/html/README-en.html
+          Copy-Item docs/book/README-en.html docs/book/html/README-en.html
+          Get-ChildItem -Recurse -Path .\docs\book\* | ?{$_.PsIsContainer -eq $false} | Get-FileHash -Algorithm MD5 >> .\docs\md5.txt
 
       - name: 上传到 github pages
         uses: actions/upload-pages-artifact@v1
@@ -70,7 +109,6 @@ jobs:
       - name: 上传到 DSM
         env:
           DSM_TOKEN: ${{ secrets.DSM_TOKEN }}
-          DSM_USERNAME: ${{ secrets.DSM_USERNAME }}
         shell: pwsh
         run: |
-          python .github/workflows/dsm.py
+          python .github/workflows/dsm.py -X utf8

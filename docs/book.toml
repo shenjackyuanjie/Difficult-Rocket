@@ -11,43 +11,45 @@ create-missing = false
 use-default-preprocessors = true  # use the default preprocessors
 extra-watch-dirs = []             # directories to watch for triggering builds
 
+# 默认 404 文件
 [output.html]
 input-404 = "404.md"
+additional-css = ["theme/pagetoc.css"]
+additional-js  = ["theme/pagetoc.js"]
 
-# Required: Your repository URL used in the link.
+# Git 相关配置
 git-repository-url = "https://github.com/shenjackyuanjie/Difficult-Rocket"
-
-# Your git branch. Defaults to `main`
 git-branch = "main"
 
-# The text to use in the footer.
-# The link text is marked by `[]`
+# 右上角的 "在 Github 内打开" 按钮
 open-on-text = "Found a bug? [Edit this page on GitHub.]"
 
-[output.linkcheck]
-# Should we check links on the internet? Enabling this option adds a
-# non-negligible performance impact
-follow-web-links = false
-warning-policy = "ignore"
-exclude = [ "requirement-dev.txt" ]
-
-# Are we allowed to link to files outside of the book's root directory? This
-# may help prevent linking to sensitive files (e.g. "../../../../etc/shadow")
-traverse-parent-directories = true
-
+# 最大搜索数量
 [output.html.search]
 limit-results = 15
 
+# 允许打印
 [output.html.print]
 enable = true    # include support for printable output
 page-break = true # insert page-break after each chapter
 
-# [output.pdf]
-
-# [output.copy-resources]
-# optional = true
-# command = 'python output.py'
-
 [rust]
 edition = "2021"   # the default edition for code blocks
 
+### 扩展部分
+
+# 检查文档内链接
+[output.linkcheck]
+follow-web-links = false
+warning-policy = "ignore"
+exclude = [ "requirement-dev.txt" ]
+traverse-parent-directories = true
+
+# 支持脚注 ( {{footnote: Or is it?}} )
+[preprocessor.footnote]
+
+# 添加右侧目录
+[preprocessor.pagetoc]
+
+# 从本地运行一些东西拿到 markdown 里来
+[preprocessor.cmdrun]
