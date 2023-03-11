@@ -32,9 +32,46 @@ pub mod camera {
     impl CenterCameraRs {
         #[new]
         #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0, min_zoom=1.0, max_zoom=1.0))]
-        pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64,min_zoom: f64, max_zoom: f64) -> PyResult<Self> {
-            return Ok(CameraRs {dx, dy, zoom, min_zoom, max_zoom,
-                                window: window.into()})
+        pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64,min_zoom: f64, max_zoom: f64) -> PyResult<(Self, CameraRs)> {
+            return Ok((CenterCameraRs {}, CameraRs {dx, dy, zoom, min_zoom, max_zoom,
+                                window: window.into()}))
+        }
+
+        // pub fn __enter__(py_self: PyRef<Self>) -> PyResult<PyRef<Self>> {
+        //     // println!("enter!");
+        //     CenterCameraRs::begin()?;
+        //     Ok(py_self)
+        // }
+
+        pub fn begin(self_: PyRef<'_, Self>) -> PyResult<()> {
+            println!("begin!");
+            let super_: &CameraRs = self_.as_ref();
+            // 获取父类
+            Python::with_gil(|py| -> PyResult<()> {
+                let view = super_.window.getattr(py, intern!(py, "view"))?;
+                // 获取存储的 view
+                let x: f64 = super_.window.getattr(py, intern!(py, "width"))?.extract(py)?;
+                let y: f64 = super_.window.getattr(py, intern!(py, "height"))?.extract(py)?;
+                let x: f64 = x / 2.0 / super_.zoom + (super_.dx / super_.zoom);
+                let y: f64 = y / 2.0 / super_.zoom + (super_.dy / super_.zoom);
+                // 计算中心点
+
+                // view.call_method1(py, "translate", (x, y))?;
+                // view.call_method1(py, "scale", (super_.zoom, super_.zoom))?;
+
+                let args = ((x * super_.zoom, y * super_.zoom, 0), );
+                let view_matrix = view.call_method1(py, intern!(py, "translate"), args)?;
+                // view_matrix = self.view.translate((x * zoom, y * zoom, 0))
+
+                let args = ((super_.zoom, super_.zoom, 1), );
+                let view_matrix = view_matrix.call_method1(py, intern!(py, "scale"), args)?;
+                // view_matrix = view_matrix.scale((zoom, zoom, 1))
+
+                super_.window.setattr(py, intern!(py, "view"), view_matrix)?;
+                // self.view = view_matrix
+                Ok(())
+            })?;
+            Ok(())
         }
     }
 

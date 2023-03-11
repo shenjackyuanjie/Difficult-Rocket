@@ -22,18 +22,35 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 20230302 DR `0.7.1.5` + Build `1.2.1.0`
+## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6`
 
 WORKING ON 
+
+### DR_rs V 0.2.5.6
+
+- 重新把 `CenterCamera_rs` 放回去了
+  - (事实证明是我确实没好好看文档)
+- 导出了 `CenterCamera_rs`
+  - Replaced `CenterCamera_rs` back
+    - (It turns out that I didn't read the document carefully)
+  - Exported `CenterCamera_rs`
 
 ### Build V 1.2.1.0
 
 - Actions 崩溃了 等等吧
+- 恢复了, 摆烂了, 就现在这样挺好的
+  - Actions crashed, wait a minute
+  - Recovered, it's good now
 
 ### Build V 1.2.0.0
 
 - 现在打包之前会移除无用文件
   - Now useless files will be removed before packaging
+
+### 重命名
+
+- `Difficult_Rocket.client.render.sr1_ship`
+  - `Camera_rs` -> `CenterCamera_rs`
 
 ### typing
 

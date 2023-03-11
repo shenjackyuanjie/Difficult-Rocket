@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_option.use_DR_rust:
-    from libs.Difficult_Rocket_rs import PartDatas, Camera_rs
+    from libs.Difficult_Rocket_rs import PartDatas, CenterCamera_rs
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -117,8 +117,8 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         if DR_option.use_DR_rust:
-            self.camera_rs = Camera_rs(main_window,
-                                       min_zoom=(1 / 2) ** 10, max_zoom=10)
+            self.camera_rs = CenterCamera_rs(main_window,
+                                             min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
 
     def load_xml(self, file_path: str) -> bool:
@@ -205,7 +205,7 @@ class SR1ShipRender(BaseScreen):
         if not self.rendered:
             return False
         self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (
-                    self.window_pointer.width / 2), self.camera_rs.dy + (
+                self.window_pointer.width / 2), self.camera_rs.dy + (
                                                          self.window_pointer.height / 2)
         self.debug_d_pos_label.text = f'x: {self.camera_rs.dx} y: {self.camera_rs.dy}'
         self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
@@ -279,9 +279,9 @@ class SR1ShipRender(BaseScreen):
 
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
         self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (
-                    self.window_pointer.width / 2)
+                self.window_pointer.width / 2)
         self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (
-                    self.window_pointer.height / 2)
+                self.window_pointer.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
         self.need_update_parts = True
