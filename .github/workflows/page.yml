@@ -27,7 +27,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -38,16 +40,37 @@ jobs:
       - name: install mdbook
         uses: extractions/setup-mdbook@v1
 
-      - name: setup、build mdbook
+      - name: setup python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: install dsm api
+        shell: pwsh
+        run: |
+          pip install synology-api>=0.5.1
+
+      - name: build mdbook
         shell: pwsh
         run: |
           mdbook build ./docs/
+          cd docs
+          Copy-Item book/README-en.html book/html/README-en.html
 
-      - name: Upload artifact
+      - name: 上传到 github pages
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
           path: './docs/book/html'
-      - name: Deploy to GitHub Pages
+
+      - name: 部署到 github pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+      - name: 上传到 DSM
+        env:
+          DSM_TOKEN: ${{ secrets.DSM_TOKEN }}
+          DSM_USERNAME: ${{ secrets.DSM_USERNAME }}
+        shell: pwsh
+        run: |
+          python .github/workflows/dsm.py
