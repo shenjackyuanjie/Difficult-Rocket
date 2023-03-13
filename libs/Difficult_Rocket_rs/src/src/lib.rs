@@ -6,10 +6,10 @@
  * -------------------------------
  */
 
-mod sr1_render;
+mod render;
 mod simulator;
 mod sr1_data;
-mod render;
+mod sr1_render;
 mod types;
 
 use pyo3::prelude::*;
