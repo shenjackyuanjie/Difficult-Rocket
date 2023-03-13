@@ -6,18 +6,18 @@
  * -------------------------------
  */
 
-use std::collections::HashMap;
-use std::time;
+use crate::types::sr1::SR1PartData;
 use pyo3::intern;
 use pyo3::prelude::*;
-use crate::types::sr1::SR1PartData;
+use std::collections::HashMap;
+use std::time;
 
 #[allow(dead_code)]
 pub mod types {
-    use std::collections::HashMap;
     use pyo3::intern;
     use pyo3::prelude::*;
-    use pyo3::types::{PyDict};
+    use pyo3::types::PyDict;
+    use std::collections::HashMap;
 
     use crate::types::sr1::SR1PartData;
 
@@ -25,7 +25,7 @@ pub mod types {
         pub x: f64,
         pub y: f64,
         pub id: usize,
-        pub type_: String
+        pub type_: String,
     }
 
     #[pyclass(name = "PartDatas")]
@@ -44,21 +44,20 @@ pub mod types {
         #[new]
         fn py_new(py_part_data: &PyDict) -> PyResult<Self> {
             let datas: HashMap<i64, SR1PartData> = part_data_tp_SR1PartDatas(py_part_data)?;
-            return Ok(PartDatas { part_structs: datas })
+            return Ok(PartDatas {
+                part_structs: datas,
+            });
         }
     }
-
 
     #[allow(non_snake_case)]
     pub fn part_data_to_SR1PartData(input: &PyAny) -> PyResult<SR1PartData> {
         let connections = match input.getattr(intern!(input.py(), "connections")) {
-            Ok(ok) => {
-                ok.extract()?
-            }
-            _ => None
+            Ok(ok) => ok.extract()?,
+            _ => None,
         };
 
-        return Ok(SR1PartData{
+        return Ok(SR1PartData {
             x: input.getattr(intern!(input.py(), "x"))?.extract()?,
             y: input.getattr(intern!(input.py(), "y"))?.extract()?,
             id: input.getattr(intern!(input.py(), "id"))?.extract()?,
@@ -66,14 +65,15 @@ pub mod types {
             active: input.getattr(intern!(input.py(), "active"))?.extract()?,
             angle: input.getattr(intern!(input.py(), "angle"))?.extract()?,
             angle_v: input.getattr(intern!(input.py(), "angle_v"))?.extract()?,
-            editor_angle: input.getattr(intern!(input.py(), "editor_angle"))?.extract()?,
+            editor_angle: input
+                .getattr(intern!(input.py(), "editor_angle"))?
+                .extract()?,
             flip_x: input.getattr(intern!(input.py(), "flip_x"))?.extract()?,
             flip_y: input.getattr(intern!(input.py(), "flip_y"))?.extract()?,
             explode: input.getattr(intern!(input.py(), "explode"))?.extract()?,
             textures: input.getattr(intern!(input.py(), "textures"))?.extract()?,
-            connections
-            // connections: input.getattr(intern!(input.py(), "connections"))?.extract()?,
-        })
+            connections, // connections: input.getattr(intern!(input.py(), "connections"))?.extract()?,
+        });
     }
 
     #[allow(non_snake_case)]
@@ -82,18 +82,23 @@ pub mod types {
         for key in input.iter() {
             result.insert(key.0.extract()?, part_data_to_SR1PartData(key.1)?);
         }
-        return Ok(result)
+        return Ok(result);
     }
-
 }
-
-
 
 #[pyfunction]
 #[allow(unused_variables)]
-pub fn better_update_parts(render: &PyAny, option: &PyAny, window: &PyAny,
-                           parts: &types::PartDatas, sr1_xml_scale: i32) -> PyResult<bool> {
-    if !render.getattr(intern!(render.py(), "rendered"))?.is_true()? {
+pub fn better_update_parts(
+    render: &PyAny,
+    option: &PyAny,
+    window: &PyAny,
+    parts: &types::PartDatas,
+    sr1_xml_scale: i32,
+) -> PyResult<bool> {
+    if !render
+        .getattr(intern!(render.py(), "rendered"))?
+        .is_true()?
+    {
         return Ok(false);
     }
     let start_time = time::Instant::now();

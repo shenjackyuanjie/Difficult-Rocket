@@ -10,11 +10,11 @@ pub mod part_list {
     use std::fs;
 
     use pyo3::prelude::*;
-    use serde::{Serialize, Deserialize};
+    use serde::{Deserialize, Serialize};
     // use quick_xml::de::from_str;
-    use serde_xml_rs::{from_str};
+    use serde_xml_rs::from_str;
 
-    use crate::types::sr1::{SR1PartTypeData, SR1PartType, SR1PartAttr, SR1PartList};
+    use crate::types::sr1::{SR1PartAttr, SR1PartList, SR1PartType, SR1PartTypeData};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct RawPartList {
@@ -238,37 +238,62 @@ pub mod part_list {
             let part_attr: Option<SR1PartAttr> = match self.r#type {
                 SR1PartTypeEnum::tank => {
                     let tank = self.tank.unwrap();
-                    Some(SR1PartAttr::Tank {fuel: tank.fuel, dry_mass: tank.dry_mass,
-                        fuel_type: tank.fuel_type.unwrap_or(0)})
-                },
+                    Some(SR1PartAttr::Tank {
+                        fuel: tank.fuel,
+                        dry_mass: tank.dry_mass,
+                        fuel_type: tank.fuel_type.unwrap_or(0),
+                    })
+                }
                 SR1PartTypeEnum::engine => {
                     let engine = self.engine.unwrap();
-                    Some(SR1PartAttr::Engine {power: engine.power,
-                        consumption: engine.consumption, size: engine.size,
-                        turn: engine.turn, fuel_type: engine.fuel_type.unwrap_or(0),
-                        throttle_exponential: engine.throttle_exponential.unwrap_or(false)})
-                },
+                    Some(SR1PartAttr::Engine {
+                        power: engine.power,
+                        consumption: engine.consumption,
+                        size: engine.size,
+                        turn: engine.turn,
+                        fuel_type: engine.fuel_type.unwrap_or(0),
+                        throttle_exponential: engine.throttle_exponential.unwrap_or(false),
+                    })
+                }
                 SR1PartTypeEnum::rcs => {
                     let rcs = self.rcs.unwrap();
-                    Some(SR1PartAttr::Rcs {power: rcs.power, consumption: rcs.consumption,
-                        size: rcs.size})
-                },
+                    Some(SR1PartAttr::Rcs {
+                        power: rcs.power,
+                        consumption: rcs.consumption,
+                        size: rcs.size,
+                    })
+                }
                 SR1PartTypeEnum::solar => {
                     let solar = self.solar.unwrap();
-                    Some(SR1PartAttr::Solar {charge_rate: solar.charge_rate})
-                },
+                    Some(SR1PartAttr::Solar {
+                        charge_rate: solar.charge_rate,
+                    })
+                }
                 SR1PartTypeEnum::lander => {
                     let lander = self.lander.unwrap();
-                    Some(SR1PartAttr::Lander {max_angle: lander.max_angle, min_length: lander.min_length,
-                        max_length: lander.max_length, angle_speed: lander.angle_speed.unwrap_or(0.0),
-                        length_speed: lander.length_speed.unwrap_or(0.0), width: lander.width})
-                },
-                _ => None
+                    Some(SR1PartAttr::Lander {
+                        max_angle: lander.max_angle,
+                        min_length: lander.min_length,
+                        max_length: lander.max_length,
+                        angle_speed: lander.angle_speed.unwrap_or(0.0),
+                        length_speed: lander.length_speed.unwrap_or(0.0),
+                        width: lander.width,
+                    })
+                }
+                _ => None,
             };
-            let damage = self.damage.unwrap_or(Damage {disconnect: 0, explode: 0,
-            explosion_power: Some(0u32), explosion_size: Some(0u32) });
-            let attach_points: Option<Vec<AttachPoint>> = if let Some(attach_points) = &self.attach_points {
-                Some(attach_points.unzip()) } else { None };
+            let damage = self.damage.unwrap_or(Damage {
+                disconnect: 0,
+                explode: 0,
+                explosion_power: Some(0u32),
+                explosion_size: Some(0u32),
+            });
+            let attach_points: Option<Vec<AttachPoint>> =
+                if let Some(attach_points) = &self.attach_points {
+                    Some(attach_points.unzip())
+                } else {
+                    None
+                };
             SR1PartType {
                 id: self.id.clone(),
                 name: self.name.clone(),
@@ -312,7 +337,10 @@ pub mod part_list {
                 println!("{}", part_data.id.to_string());
                 part_list.push(part_data.to_sr_part_type());
             }
-            SR1PartList { types: part_list, name: name.unwrap_or("".to_string()) }
+            SR1PartList {
+                types: part_list,
+                name: name.unwrap_or("".to_string()),
+            }
         }
     }
 
@@ -350,9 +378,9 @@ pub mod part_list {
 pub mod ship {
 
     use pyo3::prelude::*;
-    use serde::{Serialize, Deserialize};
+    use serde::{Deserialize, Serialize};
     // use quick_xml::de::from_str;
-    use serde_xml_rs::{from_str};
+    use serde_xml_rs::from_str;
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Ship {
@@ -364,20 +392,20 @@ pub mod ship {
         #[serde(rename = "liftedOff")]
         pub lift_off: i8,
         #[serde(rename = "touchingGround")]
-        pub touch_ground: i8
+        pub touch_ground: i8,
     }
     // <Ship version="1" liftedOff="0" touchingGround="0">
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Parts {
         #[serde(rename = "Part")]
-        pub parts: Vec<Part>
+        pub parts: Vec<Part>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Connections {
         #[serde(rename = "Connection")]
-        pub connects: Vec<Connection>
+        pub connects: Vec<Connection>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -421,7 +449,7 @@ pub mod ship {
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Engine {
-        pub fuel: i64
+        pub fuel: i64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -429,12 +457,12 @@ pub mod ship {
         #[serde(rename = "Staging")]
         pub stages: Vec<Staging>,
         pub name: String,
-        pub throttle: i8
+        pub throttle: i8,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Tank {
-        pub fuel: i64
+        pub fuel: i64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -449,12 +477,12 @@ pub mod ship {
     pub struct Activate {
         #[serde(rename = "Id")]
         pub id: i64,
-        pub moved: i8 // 1 or 0
+        pub moved: i8, // 1 or 0
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct DisconnectedParts {
-        pub parts: Vec<DisconnectedPart>
+        pub parts: Vec<DisconnectedPart>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]

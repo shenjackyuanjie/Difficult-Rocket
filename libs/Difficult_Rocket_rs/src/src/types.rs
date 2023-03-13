@@ -6,12 +6,13 @@
  * -------------------------------
  */
 
-
 pub mod sr1 {
     // use super::math::{Shape, Point2D};
-    use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
     use crate::sr1_data::part_list::Damage as RawDamage;
-    use crate::sr1_data::part_list::{Tank, Engine, Solar, Rcs, Lander, AttachPoint, AttachPoints, Shape as RawShape};
+    use crate::sr1_data::part_list::{
+        AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank,
+    };
+    use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
 
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -44,7 +45,8 @@ pub mod sr1 {
             "port-1" => "DockingPort",
             "lander-1" => "LanderLegPreview",
             _ => "Pod",
-        }.to_string()
+        }
+        .to_string()
     }
 
     #[derive(Debug, Clone)]
@@ -61,7 +63,7 @@ pub mod sr1 {
         pub flip_y: bool,
         pub explode: bool,
         pub textures: String,
-        pub connections: Option<Vec<((usize, usize), (isize, isize))>>
+        pub connections: Option<Vec<((usize, usize), (isize, isize))>>,
     }
 
     #[derive(Debug, Copy, Clone)]
@@ -88,7 +90,9 @@ pub mod sr1 {
             consumption: f64,
             size: f64,
         },
-        Solar { charge_rate: f64 },
+        Solar {
+            charge_rate: f64,
+        },
         Lander {
             max_angle: f64,
             min_length: f64,
@@ -96,7 +100,7 @@ pub mod sr1 {
             angle_speed: f64,
             length_speed: f64,
             width: f64,
-        }
+        },
     }
 
     #[derive(Debug, Copy, Clone)]
@@ -117,7 +121,7 @@ pub mod sr1 {
                 disconnect: self.disconnect,
                 explode: self.explode,
                 explosion_power: Some(self.explosion_power),
-                explosion_size: Some(self.explosion_size)
+                explosion_size: Some(self.explosion_size),
             }
         }
     }
@@ -167,8 +171,7 @@ pub mod sr1 {
         // 部件碰撞箱
         pub attach_points: Option<Vec<AttachPoint>>,
         // 部件连接点
-        pub attr: Option<SR1PartAttr>
-        // 部件特殊属性
+        pub attr: Option<SR1PartAttr>, // 部件特殊属性
     }
 
     #[derive(Debug, Clone)]
@@ -183,7 +186,7 @@ pub mod sr1 {
             for part_type in &self.types {
                 types.insert(0, part_type.to_raw_part_type());
             }
-            RawPartList{part_types: types}
+            RawPartList { part_types: types }
         }
     }
 
@@ -202,7 +205,7 @@ pub mod sr1 {
             let mut types: Vec<SR1PartType> = Vec::new();
             let name = match name {
                 Some(name) => name,
-                None => "NewPartList".to_string()
+                None => "NewPartList".to_string(),
             };
             for part_type in part_types {
                 types.insert(0, part_type);
@@ -222,42 +225,96 @@ pub mod sr1 {
 
         fn to_raw_part_type(&self) -> RawPartType {
             let tank: Option<Tank> = match &self.attr {
-                Some(attr) => {
-                    match attr {
-                        SR1PartAttr::Tank {fuel, dry_mass, fuel_type} => {
-                            Some(Tank {fuel: *fuel, dry_mass: *dry_mass, fuel_type: Some(*fuel_type)})
-                        } _ => None } } _ => None };
+                Some(attr) => match attr {
+                    SR1PartAttr::Tank {
+                        fuel,
+                        dry_mass,
+                        fuel_type,
+                    } => Some(Tank {
+                        fuel: *fuel,
+                        dry_mass: *dry_mass,
+                        fuel_type: Some(*fuel_type),
+                    }),
+                    _ => None,
+                },
+                _ => None,
+            };
             let engine: Option<Engine> = match &self.attr {
-                Some(attr) => {
-                    match attr {
-                        SR1PartAttr::Engine {power, consumption, size, turn, fuel_type, throttle_exponential } => {
-                            Some(Engine {power: *power, consumption: *consumption, throttle_exponential: Some(*throttle_exponential),
-                                         size: *size, turn: *turn, fuel_type: Some(*fuel_type)})
-                        } _ => None } } _ => None };
+                Some(attr) => match attr {
+                    SR1PartAttr::Engine {
+                        power,
+                        consumption,
+                        size,
+                        turn,
+                        fuel_type,
+                        throttle_exponential,
+                    } => Some(Engine {
+                        power: *power,
+                        consumption: *consumption,
+                        throttle_exponential: Some(*throttle_exponential),
+                        size: *size,
+                        turn: *turn,
+                        fuel_type: Some(*fuel_type),
+                    }),
+                    _ => None,
+                },
+                _ => None,
+            };
             let rcs: Option<Rcs> = match &self.attr {
-                Some(attr) => {
-                    match attr {
-                        SR1PartAttr::Rcs {power, consumption, size } => {
-                            Some(Rcs {power: *power, consumption: *consumption, size: *size })
-                        } _ => None } } _ => None };
+                Some(attr) => match attr {
+                    SR1PartAttr::Rcs {
+                        power,
+                        consumption,
+                        size,
+                    } => Some(Rcs {
+                        power: *power,
+                        consumption: *consumption,
+                        size: *size,
+                    }),
+                    _ => None,
+                },
+                _ => None,
+            };
             let solar: Option<Solar> = match &self.attr {
-                Some(attr) => {
-                    match attr {
-                        SR1PartAttr::Solar {charge_rate } => {
-                            Some(Solar {charge_rate: *charge_rate })
-                        } _ => None } } _ => None };
+                Some(attr) => match attr {
+                    SR1PartAttr::Solar { charge_rate } => Some(Solar {
+                        charge_rate: *charge_rate,
+                    }),
+                    _ => None,
+                },
+                _ => None,
+            };
             let lander: Option<Lander> = match &self.attr {
-                Some(attr) => {
-                    match attr {
-                        SR1PartAttr::Lander {max_angle, min_length, max_length, angle_speed, length_speed, width } => {
-                            Some(Lander {max_angle: *max_angle, min_length: *min_length, max_length: *max_length,
-                                         angle_speed: Some(*angle_speed), length_speed: Some(*length_speed), width: *width })
-                        } _ => None } } _ => None };
+                Some(attr) => match attr {
+                    SR1PartAttr::Lander {
+                        max_angle,
+                        min_length,
+                        max_length,
+                        angle_speed,
+                        length_speed,
+                        width,
+                    } => Some(Lander {
+                        max_angle: *max_angle,
+                        min_length: *min_length,
+                        max_length: *max_length,
+                        angle_speed: Some(*angle_speed),
+                        length_speed: Some(*length_speed),
+                        width: *width,
+                    }),
+                    _ => None,
+                },
+                _ => None,
+            };
             let attach_point: Option<AttachPoints> = match &self.attach_points {
                 Some(attach_points) => {
                     if attach_points.len() > 0 {
                         Some(AttachPoints::new(attach_points.clone()))
-                    } else { None } } _ => None };
+                    } else {
+                        None
+                    }
+                }
+                _ => None,
+            };
             RawPartType {
                 id: self.id.clone(),
                 name: self.name.clone(),
@@ -288,7 +345,6 @@ pub mod sr1 {
             }
         }
     }
-
 }
 
 #[allow(unused)]
@@ -305,7 +361,7 @@ pub mod math {
     #[derive(Clone, Copy)]
     pub struct Point2D {
         pub x: f64,
-        pub y: f64
+        pub y: f64,
     }
 
     impl Point2D {
@@ -314,7 +370,9 @@ pub mod math {
         }
 
         #[inline]
-        pub fn new_00() -> Self { Point2D { x: 0.0, y: 0.0 } }
+        pub fn new_00() -> Self {
+            Point2D { x: 0.0, y: 0.0 }
+        }
 
         #[inline]
         pub fn distance(&self, other: &Point2D) -> f64 {
@@ -341,10 +399,9 @@ pub mod math {
             let cos = radius.cos();
             let x = self.x * cos - self.y * sin;
             let y = self.x * sin + self.y * cos;
-            Point2D{ x, y }
+            Point2D { x, y }
         }
     }
-
 
     #[derive(Clone, Copy)]
     pub struct CircularArc {
@@ -369,14 +426,17 @@ pub mod math {
         pub end: Point2D,
         // end point
     }
-    
+
     impl Rotatable for OneTimeLine {
         fn rotate(&self, angle: f64) -> Self {
             self.rotate_radius(angle.to_radians())
         }
 
         fn rotate_radius(&self, radius: f64) -> Self {
-            OneTimeLine::point_new(&self.start.rotate_radius(radius), &self.end.rotate_radius(radius))
+            OneTimeLine::point_new(
+                &self.start.rotate_radius(radius),
+                &self.end.rotate_radius(radius),
+            )
         }
     }
 
@@ -399,37 +459,58 @@ pub mod math {
             let x = x.unwrap_or(0.0);
             let y = y.unwrap_or(0.0);
             let angle = angle.unwrap_or(0.0);
-            Shape { pos: Point2D::new(x, y), angle, bounds }
+            Shape {
+                pos: Point2D::new(x, y),
+                angle,
+                bounds,
+            }
         }
 
         pub fn new_width_height(width: f64, height: f64, angle: Option<f64>) -> Self {
             let d_width = width / 2.0;
             let d_height = height / 2.0;
             let mut edges: Vec<Edge> = vec![
-                Edge::OneTimeLine{0: OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height)},
-                Edge::OneTimeLine{0: OneTimeLine::pos_new(d_width, -d_height, d_width, d_height)},
-                Edge::OneTimeLine{0: OneTimeLine::pos_new(d_width, d_height, -d_width, d_height)},
-                Edge::OneTimeLine{0: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)}
+                Edge::OneTimeLine {
+                    0: OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height),
+                },
+                Edge::OneTimeLine {
+                    0: OneTimeLine::pos_new(d_width, -d_height, d_width, d_height),
+                },
+                Edge::OneTimeLine {
+                    0: OneTimeLine::pos_new(d_width, d_height, -d_width, d_height),
+                },
+                Edge::OneTimeLine {
+                    0: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height),
+                },
             ];
             if let Some(angle) = angle {
-                edges = edges.iter().map(|edge| {
-                    match edge {
+                edges = edges
+                    .iter()
+                    .map(|edge| match edge {
                         Edge::OneTimeLine(line) => {
                             let start = line.start.rotate(angle);
                             let end = line.end.rotate(angle);
                             Edge::OneTimeLine(OneTimeLine::point_new(&start, &end))
-                        },
+                        }
                         Edge::CircularArc(arc) => {
                             let pos = arc.pos.rotate(angle);
-                            Edge::CircularArc(CircularArc{ r: arc.r, pos, start_angle: arc.start_angle, end_angle: arc.end_angle })
+                            Edge::CircularArc(CircularArc {
+                                r: arc.r,
+                                pos,
+                                start_angle: arc.start_angle,
+                                end_angle: arc.end_angle,
+                            })
                         }
-                    }
-                }).collect();
+                    })
+                    .collect();
             }
-            Shape { pos: Point2D::new_00(), angle: 0.0, bounds: edges}
+            Shape {
+                pos: Point2D::new_00(),
+                angle: 0.0,
+                bounds: edges,
+            }
         }
     }
-
 
     impl OneTimeLine {
         #[inline]
@@ -453,23 +534,23 @@ pub mod math {
                 (Some(k), None) => {
                     k_ = k;
                     b_ = point.y - (k * point.x)
-                },
+                }
                 (None, Some(b)) => {
                     b_ = b;
                     k_ = (point.y - b) / point.x;
-                },
+                }
                 (Some(k), Some(b)) => {
                     k_ = k;
                     b_ = b;
-                },
+                }
                 _ => {
                     k_ = point.y / point.x;
                     b_ = 0.0;
                 }
             }
-            OneTimeLine{
+            OneTimeLine {
                 start: *point,
-                end: Point2D::new(0.0, b_)
+                end: Point2D::new(0.0, b_),
             }
         }
 
@@ -494,9 +575,7 @@ pub mod dr {
         pub c_type: ConnectType,
         pub d_pos: f64,
         pub angel: f64,
-
     }
-
 
     #[derive(Clone, Copy)]
     pub enum PartType {
@@ -513,7 +592,7 @@ pub mod dr {
         Battery,
         Dock,
         Port,
-        Lander
+        Lander,
     }
 
     pub struct DRPartData {
@@ -528,7 +607,7 @@ pub mod dr {
         pub angle_v: f64,
         pub flip_x: bool,
         pub flip_y: bool,
-        pub connections: Option<Vec<usize>>
+        pub connections: Option<Vec<usize>>,
     }
 
     impl DRPartData {
