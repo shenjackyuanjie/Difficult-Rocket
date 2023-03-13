@@ -176,7 +176,7 @@ pub mod camera {
 
 pub mod screen {
     use pyo3::prelude::*;
-    use crate::types::sr1::SR1PartData;
+    // use crate::types::sr1::SR1PartData;
 
     #[pyclass]
     #[pyo3(name = "PartFrame_rs")]
@@ -184,7 +184,7 @@ pub mod screen {
         pub box_size: i32,
         pub width: i64,
         pub height: i64,
-        pub frame_box: Vec<Vec<SR1PartData>>
+        // pub frame_box: Vec<Vec<SR1PartData>>
     }
 
     #[pymethods]
