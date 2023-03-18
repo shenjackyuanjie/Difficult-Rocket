@@ -1,3 +1,5 @@
+/* src: https://github.com/JorelAli/mdBook-pagetoc */
+
 @media only screen and (max-width:1439px) {
     .sidetoc {
         display: none;
@@ -11,47 +13,35 @@
     .sidetoc {
         margin-left: auto;
         margin-right: auto;
-        left: calc(100% + (var(--content-max-width))/4 - 140px);
+        /* left: calc(90% + (var(--content-min-width))/4 - 110px); */
+        left: 101%;
         position: absolute;
+        font-size: var(--pagetoc-fontsize);
     }
     .pagetoc {
         position: fixed;
-        width: 200px;
-        height: calc(100vh - var(--menu-bar-height) - 0.67em * 4);
-        overflow: auto;
+        width: var(--pagetoc-width);
     }
     .pagetoc a {
         border-left: 1px solid var(--sidebar-bg);
-        color: var(--fg) !important;
+        /* color: var(--fg); */
+        /* color: var(--sidebar-fg); */
+        color: var(--links);
         display: block;
         padding-bottom: 5px;
         padding-top: 5px;
         padding-left: 10px;
         text-align: left;
         text-decoration: none;
+        font-weight: normal;
+        background: var(--sidebar-bg);
     }
     .pagetoc a:hover,
     .pagetoc a.active {
         background: var(--sidebar-bg);
-        color: var(--sidebar-fg) !important;
-    }
-    .pagetoc .active {
-        background: var(--sidebar-bg);
-        color: var(--sidebar-fg);
-    }
-    .pagetoc .pagetoc-H2 {
-        padding-left: 20px;
-    }
-    .pagetoc .pagetoc-H3 {
-        padding-left: 40px;
-    }
-    .pagetoc .pagetoc-H4 {
-        padding-left: 60px;
-    }
-    .pagetoc .pagetoc-H5 {
-        display: none;
-    }
-    .pagetoc .pagetoc-H6 {
-        display: none;
+        /* color: var(--sidebar-fg); */
+        color: var(--sidebar-active);
+        font-weight: bold;
+        font-size: var(--pagetoc-fontsize);
     }
 }

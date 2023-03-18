@@ -40,44 +40,44 @@ jobs:
       - name: 安装 mdbook
         uses: extractions/setup-mdbook@v1
 
-      # - name: 安装 mdbook 扩展
-      #   shell: pwsh
-      #   run: |
-      #     # mdbook mdbook-i18n mdbook-footnote mdbook-pagetoc mdbook-cmdrun
-      #     Write-Host "GITHUB_PATH is: $env:GITHUB_PATH"
-      #     $mdbookPath = "$env:GITHUB_PATH\mdbook.exe"
-      #     Write-Host "mdbook path is: $mdbookPath"
-      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-i18n.exe" -OutFile $env:GITHUB_PATH\mdbook-i18n.exe
-      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-cmdrun.exe" -OutFile $env:GITHUB_PATH\mdbook-cmdrun.exe
-      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-pagetoc.exe" -OutFile $env:GITHUB_PATH\mdbook-pagetoc.exe
-      #     Invoke-WebRequest -Uri "http://shenjack.top:81/mdbook/mdbook-footnote.exe" -OutFile $env:GITHUB_PATH\mdbook-footnote.exe
-
       - name: Install mdBook
         shell: pwsh
         run: |
           # 设置变量
           $urls = @(
             'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-i18n',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-theme',
             'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-cmdrun',
             'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-pagetoc',
             'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-footnote',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-external-links',
             'https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar'
           )
-          $temp = 'mdbook'
-          # 创建目录
-          if (!(Test-Path -Path $temp -PathType Container)) {
-            New-Item -Path $temp -ItemType Directory -Force
-          }
+          # $temp = 'mdbook'
+          # # 创建目录
+          # if (!(Test-Path -Path $temp -PathType Container)) {
+          #   New-Item -Path $temp -ItemType Directory -Force
+          # }
           # 下载文件
           foreach ($url in $urls) {
-            Invoke-WebRequest -Uri $url -OutFile "$temp/$($url.Split('/')[-1])"
+            Invoke-WebRequest -Uri $url -OutFile "$($url.Split('/')[-1])"
           }
-          # Invoke-WebRequest -Uri $url1 -OutFile 'mdbook/mdbook-i18n'
-          # Invoke-WebRequest -Uri $url2 -OutFile 'mdbook/mdbook-cmdrun'
-          # Invoke-WebRequest -Uri $url3 -OutFile 'mdbook/mdbook-pagetoc'
-          # Invoke-WebRequest -Uri $url4 -OutFile 'mdbook/mdbook-footnote'
           # 将目录路径添加到 $PATH 中
-          echo "$temp" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          # $temp >> $env:GITHUB_PATH
+          $PWD >> $env:GITHUB_PATH
+          echo "$PATH"
+          ls "$temp"
+          ls $PWD
+
+      # - name: Setup mdbook-theme latest
+      #   run: |
+      #     curl -s https://api.github.com/repos/zjp-CN/mdbook-theme/releases/latest \
+      #          | grep browser_download_url \
+      #          | grep mdbook-theme_linux \
+      #          | cut -d '"' -f 4 \
+      #          | wget -qi -
+      #     tar -xvzf mdbook-theme_linux.tar.gz
+      #     echo $PWD >> $GITHUB_PATH
 
       - name: 安装 python 3.11
         uses: actions/setup-python@v2
@@ -92,7 +92,10 @@ jobs:
       - name: build mdbook
         shell: pwsh
         run: |
-          mdbook build ./docs/
+          # cp docs/theme .
+          cd docs
+          mdbook build
+          cd ..
           Copy-Item docs/book/README-en.html docs/book/html/README-en.html
           Get-ChildItem -Recurse -Path .\docs\book\* | ?{$_.PsIsContainer -eq $false} | Get-FileHash -Algorithm MD5 >> .\docs\md5.txt
 

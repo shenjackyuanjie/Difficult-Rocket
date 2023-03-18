@@ -14,8 +14,8 @@ extra-watch-dirs = []             # directories to watch for triggering builds
 # 默认 404 文件
 [output.html]
 input-404 = "404.md"
-additional-css = ["theme/pagetoc.css"]
-additional-js  = ["theme/pagetoc.js"]
+additional-css = ["./theme/pagetoc.css"]
+additional-js  = ["./theme/pagetoc.js"]
 
 # Git 相关配置
 git-repository-url = "https://github.com/shenjackyuanjie/Difficult-Rocket"
@@ -23,6 +23,11 @@ git-branch = "main"
 
 # 右上角的 "在 Github 内打开" 按钮
 open-on-text = "Found a bug? [Edit this page on GitHub.]"
+
+# 目录折叠
+[output.html.fold]
+enable = true
+level = 0
 
 # 最大搜索数量
 [output.html.search]
@@ -49,7 +54,13 @@ traverse-parent-directories = true
 [preprocessor.footnote]
 
 # 添加右侧目录
-[preprocessor.pagetoc]
+[preprocessor.theme]
+pagetoc        = true
+pagetoc-width            = "13%"
+sidebar-width            = "300px"
 
 # 从本地运行一些东西拿到 markdown 里来
 [preprocessor.cmdrun]
+
+# 在新页面中打开链接
+[preprocessor.external-links]
