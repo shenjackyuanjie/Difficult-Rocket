@@ -45,28 +45,20 @@ jobs:
         run: |
           # 设置变量
           $urls = @(
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-i18n',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-theme',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-cmdrun',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-i18n',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-theme',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-cmdrun',
             'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-pagetoc',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-footnote',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.2/mdbook-external-links',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-footnote',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-external-links',
             'https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar'
           )
-          # $temp = 'mdbook'
-          # # 创建目录
-          # if (!(Test-Path -Path $temp -PathType Container)) {
-          #   New-Item -Path $temp -ItemType Directory -Force
-          # }
           # 下载文件
           foreach ($url in $urls) {
             Invoke-WebRequest -Uri $url -OutFile "$($url.Split('/')[-1])"
           }
           # 将目录路径添加到 $PATH 中
-          # $temp >> $env:GITHUB_PATH
           $PWD >> $env:GITHUB_PATH
-          echo "$PATH"
-          ls "$temp"
           ls $PWD
 
       # - name: Setup mdbook-theme latest
