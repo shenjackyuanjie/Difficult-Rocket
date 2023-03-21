@@ -34,6 +34,7 @@ $arg += @("--clang")
 $arg += @("--lto=no")
 # 包配置
 $arg += @("--nofollow-import-to=objprint,pillow")
+$arg += @("--follow-import-to=pyglet")
 # 数据配置
 # $arg += @("--include-data-dir=./libs/pyglet=./libs/pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
