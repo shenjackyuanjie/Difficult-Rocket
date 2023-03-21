@@ -125,13 +125,13 @@ options = {
     'xlib_fullscreen_override_redirect': False,
     'search_local_libs': True,
     'win32_gdi_font': False,
-    'scale_with_dpi': False,
     'headless': False,
     'headless_device': 0,
     'win32_disable_shaping': False,
     'dw_legacy_naming': False,
     'win32_disable_xinput': False,
     'com_mta': False,
+    'osx_alt_loop': False
 }
 
 _option_types = {
@@ -156,7 +156,6 @@ _option_types = {
     'vsync': bool,
     'xsync': bool,
     'xlib_fullscreen_override_redirect': bool,
-    'scale_with_dpi': bool,
     'search_local_libs': bool,
     'win32_gdi_font': bool,
     'headless': bool,
@@ -164,7 +163,8 @@ _option_types = {
     'win32_disable_shaping': bool,
     'dw_legacy_naming': bool,
     'win32_disable_xinput': bool,
-    'com_mta': bool
+    'com_mta': bool,
+    'osx_alt_loop': bool,
 }
 
 
@@ -333,7 +333,6 @@ class _ModuleProxy:
 # Lazily load all modules, except if performing
 # type checking or code inspection.
 if TYPE_CHECKING:
-    from . import animation
     from . import app
     from . import canvas
     from . import clock
@@ -354,7 +353,6 @@ if TYPE_CHECKING:
     from . import text
     from . import window
 else:
-    animation = _ModuleProxy('animation')
     app = _ModuleProxy('app')
     canvas = _ModuleProxy('canvas')
     clock = _ModuleProxy('clock')

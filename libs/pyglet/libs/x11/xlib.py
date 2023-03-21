@@ -2613,13 +2613,6 @@ struct_anon_94._fields_ = [
     ('supported_values', POINTER(c_char_p)),
 ]
 
-class XrmValue(Structure):
-    _fields_ = (
-        ('size', c_uint),
-        ('addr', c_char_p)
-    )
-
-
 XIMValuesList = struct_anon_94 	# /usr/include/X11/Xlib.h:1395
 # /usr/include/X11/Xlib.h:1405
 XLoadQueryFont = _lib.XLoadQueryFont
@@ -2685,18 +2678,6 @@ XOpenDisplay.argtypes = [c_char_p]
 XrmInitialize = _lib.XrmInitialize
 XrmInitialize.restype = None
 XrmInitialize.argtypes = []
-
-XrmGetStringDatabase = _lib.XrmGetStringDatabase
-XrmGetStringDatabase.restype = c_void_p
-XrmGetStringDatabase.argtypes = [c_char_p]
-
-XrmDestroyDatabase = _lib.XrmDestroyDatabase
-XrmDestroyDatabase.restype = None
-XrmDestroyDatabase.argtypes = [c_void_p]
-
-XrmGetResource = _lib.XrmGetResource
-XrmGetResource.restype = c_bool
-XrmGetResource.argtypes = [c_void_p, c_char_p, c_char_p, POINTER(c_char_p), POINTER(XrmValue)]
 
 # /usr/include/X11/Xlib.h:1502
 XFetchBytes = _lib.XFetchBytes

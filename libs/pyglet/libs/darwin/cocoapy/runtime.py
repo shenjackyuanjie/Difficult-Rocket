@@ -28,7 +28,7 @@
 # LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import ctypes
+
 import sys
 import platform
 import struct
@@ -415,15 +415,6 @@ objc.sel_isEqual.argtypes = [c_void_p, c_void_p]
 objc.sel_registerName.restype = c_void_p
 objc.sel_registerName.argtypes = [c_char_p]
 
-######################################################################
-# void *objc_autoreleasePoolPush(void)
-objc.objc_autoreleasePoolPush.restype = c_void_p
-objc.objc_autoreleasePoolPush.argtypes = []
-
-# void objc_autoreleasePoolPop(void *pool)
-objc.objc_autoreleasePoolPop.restype = None
-objc.objc_autoreleasePoolPop.argtypes = [c_void_p]
-
 
 ######################################################################
 # void *objc_autoreleasePoolPush(void)
@@ -433,14 +424,6 @@ objc.objc_autoreleasePoolPush.argtypes = []
 # void objc_autoreleasePoolPop(void *pool)
 objc.objc_autoreleasePoolPop.restype = None
 objc.objc_autoreleasePoolPop.argtypes = [c_void_p]
-
-# id objc_autoreleaseReturnValue(id value)
-objc.objc_autoreleaseReturnValue.restype = c_void_p
-objc.objc_autoreleaseReturnValue.argtypes = [c_void_p]
-
-# id objc_autoreleaseReturnValue(id value)
-objc.objc_autorelease.restype = c_void_p
-objc.objc_autorelease.argtypes = [c_void_p]
 
 ######################################################################
 # Constants
@@ -567,7 +550,7 @@ def send_super(receiver, selName, *args, superclass_name=None, **kwargs):
     if argtypes:
         objc.objc_msgSendSuper.argtypes = [OBJC_SUPER_PTR, c_void_p] + argtypes
     else:
-        objc.objc_msgSendSuper.argtypes = [OBJC_SUPER_PTR, c_void_p]
+        objc.objc_msgSendSuper.argtypes = None
     result = objc.objc_msgSendSuper(byref(super_struct), selector, *args)
     if restype == c_void_p:
         result = c_void_p(result)
@@ -738,12 +721,12 @@ class ObjCMethod:
     # Note, need to map 'c' to c_byte rather than c_char, because otherwise
     # ctypes converts the value into a one-character string which is generally
     # not what we want at all, especially when the 'c' represents a bool var.
-    typecodes = {b'c':             c_byte, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
-                 b'C':             c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
-                 b'f':             c_float, b'd': c_double, b'B': c_bool, b'v': None, b'Vv': None, b'*': c_char_p,
-                 b'@':             c_void_p, b'#': c_void_p, b':': c_void_p, b'^v': c_void_p, b'?': c_void_p,
-                 NSPointEncoding:  NSPoint, NSSizeEncoding: NSSize, NSRectEncoding: NSRect,
-                 NSRangeEncoding:  NSRange,
+    typecodes = {b'c': c_byte, b'i': c_int, b's': c_short, b'l': c_long, b'q': c_longlong,
+                 b'C': c_ubyte, b'I': c_uint, b'S': c_ushort, b'L': c_ulong, b'Q': c_ulonglong,
+                 b'f': c_float, b'd': c_double, b'B': c_bool, b'v': None, b'Vv': None, b'*': c_char_p,
+                 b'@': c_void_p, b'#': c_void_p, b':': c_void_p, b'^v': c_void_p, b'?': c_void_p,
+                 NSPointEncoding: NSPoint, NSSizeEncoding: NSSize, NSRectEncoding: NSRect,
+                 NSRangeEncoding: NSRange,
                  PyObjectEncoding: py_object}
 
     cfunctype_table = {}
@@ -761,7 +744,6 @@ class ObjCMethod:
 
         self.nargs = objc.method_getNumberOfArguments(method)
         self.imp = c_void_p(objc.method_getImplementation(method))
-
         self.argument_types = []
         for i in range(self.nargs):
             buffer = c_buffer(512)
@@ -772,7 +754,7 @@ class ObjCMethod:
         try:
             self.argtypes = [self.ctype_for_encoding(t) for t in self.argument_types]
         except:
-            # print('no argtypes encoding for %s (%s)' % (self.name, self.argument_types))
+            # print(f'no argtypes encoding for {self.name} ({self.argument_types})')
             self.argtypes = None
         # Get types for the return type.
 
@@ -784,7 +766,7 @@ class ObjCMethod:
             else:
                 self.restype = self.ctype_for_encoding(self.return_type)
         except:
-            # print('no restype encoding for %s (%s)' % (self.name, self.return_type))
+            # print(f'no restype encoding for {self.name} ({self.return_type})')
             self.restype = None
 
         self.func = None
@@ -820,7 +802,6 @@ class ObjCMethod:
             self.prototype = CFUNCTYPE(c_void_p, *self.argtypes)
         else:
             self.prototype = CFUNCTYPE(self.restype, *self.argtypes)
-
         return self.prototype
 
     def __repr__(self):
@@ -845,8 +826,7 @@ class ObjCMethod:
         f = self.get_callable()
         try:
             result = f(objc_id, self.selector, *args)
-            # if result != None:
-            #     print("result1", self, result, self.restype)
+
             # Convert result to python type if it is a instance or class pointer.
             if self.restype == ObjCInstance:
                 result = ObjCInstance(result)
@@ -910,8 +890,8 @@ class ObjCClass:
 
         # Check if we've already created a Python object for this class
         # and if so, return it rather than making a new one.
-        #if name in cls._registered_classes:
-        #    return cls._registered_classes[name]
+        if name in cls._registered_classes:
+            return cls._registered_classes[name]
 
         # Otherwise create a new Python object and then initialize it.
         objc_class = super(ObjCClass, cls).__new__(cls)
@@ -922,11 +902,11 @@ class ObjCClass:
         objc_class._as_parameter_ = ptr  # for ctypes argument passing
 
         # Store the new class in dictionary of registered classes.
-        #cls._registered_classes[name] = objc_class
+        cls._registered_classes[name] = objc_class
 
         # Not sure this is necessary...
-        #objc_class.cache_instance_methods()
-        #objc_class.cache_class_methods()
+        objc_class.cache_instance_methods()
+        objc_class.cache_class_methods()
 
         return objc_class
 
@@ -971,7 +951,7 @@ class ObjCClass:
             method = c_void_p(objc.class_getInstanceMethod(self.ptr, selector))
             if method.value:
                 objc_method = ObjCMethod(method)
-                #self.instance_methods[name] = objc_method
+                self.instance_methods[name] = objc_method
                 return objc_method
         return None
 
@@ -988,7 +968,7 @@ class ObjCClass:
             method = c_void_p(objc.class_getClassMethod(self.ptr, selector))
             if method.value:
                 objc_method = ObjCMethod(method)
-                #self.class_methods[name] = objc_method
+                self.class_methods[name] = objc_method
                 return objc_method
         return None
 
@@ -1133,9 +1113,6 @@ def get_cached_instances():
     """For debug purposes, return a list of instance names.
     Useful for debugging if an object is leaking."""
     return [obj.objc_class.name for obj in ObjCInstance._cached_objects.values()]
-
-
-######################################################################
 
 
 def convert_method_arguments(encoding, args):

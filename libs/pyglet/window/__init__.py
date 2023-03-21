@@ -98,7 +98,7 @@ import pyglet.window.mouse
 from pyglet import gl
 from pyglet.math import Mat4
 from pyglet.event import EventDispatcher
-from pyglet.window import key
+from pyglet.window import key, event
 from pyglet.util import with_metaclass
 from pyglet.graphics import shader
 
@@ -367,7 +367,6 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
     # Instance variables accessible only via properties
     _width = None
     _height = None
-    _dpi = 96
     _caption = None
     _resizable = False
     _style = WINDOW_STYLE_DEFAULT
@@ -385,9 +384,6 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
     # Used to restore window size and position after fullscreen
     _windowed_size = None
     _windowed_location = None
-    
-    # Used to tell if window is currently being resized.
-    _window_resizing = False
 
     _minimum_size = None
     _maximum_size = None
@@ -929,13 +925,29 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
             height = self.screen.height
         return width, height
 
-    def on_scale(self, scale, dpi):
-        """A default scale event handler.
+    def set_minimum_size(self, width: int, height: int) -> None:
+        """Set the minimum size of the window.
 
-        This default handler is called if the screen or system's DPI changes
-        during runtime.
+        Once set, the user will not be able to resize the window smaller
+        than the given dimensions.  There is no way to remove the
+        minimum size constraint on a window (but you could set it to 0,0).
+
+        The behaviour is undefined if the minimum size is set larger than
+        the current size of the window.
+
+        The window size does not include the border or title bar.
+
+        :Parameters:
+            `width` : int
+                Minimum width of the window, in pixels.
+            `height` : int
+                Minimum height of the window, in pixels.
+
         """
-        pass
+        if width < 1 or height < 1:
+            raise ValueError('width and height must be positive integers')
+
+        self._minimum_size = width, height
 
     def set_maximum_size(self, width: int, height: int) -> None:
         """Set the maximum size of the window.
@@ -1248,29 +1260,13 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
         self.set_size(self.width, new_height)
 
     @property
-    def scale(self):
-        """The scale of the window factoring in DPI.  Read only.
-
-        :type: float
-        """
-        return self._dpi / 96
-
-    @property
-    def dpi(self):
-        """DPI values of the Window.  Read only.
-
-        :type: list
-        """
-        return self._dpi
-
-    @property
     def size(self):
         """The size of the window. Read-Write.
 
         :type: tuple
         """
         return self.get_size()
-    
+
     @size.setter
     def size(self, new_size):
         self.set_size(*new_size)
@@ -1351,30 +1347,6 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
         pr = self.get_pixel_ratio()
         x, y, w, h = values
         pyglet.gl.glViewport(int(x * pr), int(y * pr), int(w * pr), int(h * pr))
-
-    def set_minimum_size(self, width: int, height: int) -> None:
-        """Set the minimum size of the window.
-
-        Once set, the user will not be able to resize the window smaller
-        than the given dimensions.  There is no way to remove the
-        minimum size constraint on a window (but you could set it to 1, 1).
-
-        The behaviour is undefined if the minimum size is set larger than
-        the current size of the window.
-
-        The window size does not include the border or title bar.
-
-        :Parameters:
-            `width` : int
-                Minimum width of the window, in pixels.
-            `height` : int
-                Minimum height of the window, in pixels.
-
-        """
-        if width < 1 or height < 1:
-            raise ValueError('width and height must be positive integers')
-
-        self._minimum_size = width, height
 
     # If documenting, show the event methods.  Otherwise, leave them out
     # as they are not really methods.
@@ -1692,20 +1664,6 @@ class BaseWindow(with_metaclass(_WindowMetaclass, EventDispatcher)):
 
             :event:
             """
-            
-        def on_resize_stop(self, width, height):
-            """The window is done being resized.
-
-            Called when the window is done resizing.
-
-            :Parameters:
-                `width` : int
-                    The new width of the window, in pixels.
-                `height` : int
-                    The new height of the window, in pixels.
-
-            :event:
-            """
 
         def on_show(self):
             """The window was shown.
@@ -1822,8 +1780,6 @@ BaseWindow.register_event_type('on_mouse_leave')
 BaseWindow.register_event_type('on_close')
 BaseWindow.register_event_type('on_expose')
 BaseWindow.register_event_type('on_resize')
-BaseWindow.register_event_type('on_resize_stop')
-BaseWindow.register_event_type('on_scale')
 BaseWindow.register_event_type('on_move')
 BaseWindow.register_event_type('on_activate')
 BaseWindow.register_event_type('on_deactivate')

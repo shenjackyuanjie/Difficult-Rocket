@@ -97,17 +97,19 @@ import re
 import weakref
 
 from ctypes import *
-from io import open
+from io import open, BytesIO
 
 import pyglet
 
+from pyglet.gl import *
+from pyglet.gl import gl_info
 from pyglet.util import asbytes
-from pyglet.animation import Animation
 
+from .codecs import ImageEncodeException, ImageDecodeException
 from .codecs import registry as _codec_registry
 from .codecs import add_default_codecs as _add_default_codecs
-from .codecs import ImageEncodeException, ImageDecodeException
 
+from .animation import Animation, AnimationFrame
 from .buffer import *
 from . import atlas
 
@@ -457,7 +459,7 @@ class AbstractImageSequence:
 
         .. versionadded:: 1.1
         """
-        return Animation.from_sequence(self, period, loop)
+        return Animation.from_image_sequence(self, period, loop)
 
     def __getitem__(self, slice):
         """Retrieve a (list of) image.
@@ -1423,6 +1425,12 @@ class Texture(AbstractImage):
 
         order = self.tex_coords_order
         self.tex_coords_order = (order[bl], order[br], order[tr], order[tl])
+
+    @property
+    def uv(self):
+        """Tuple containing the left, bottom, right, top 2D texture coordinates."""
+        tex_coords = self.tex_coords
+        return tex_coords[0], tex_coords[1], tex_coords[3], tex_coords[7]
 
     def __repr__(self):
         return "{}(id={}, size={}x{})".format(self.__class__.__name__, self.id, self.width, self.height)

@@ -4,7 +4,6 @@ from pyglet.gl import *
 from pyglet.image import *
 from pyglet.image.codecs import *
 from pyglet.image.codecs import gif
-from pyglet.animation import AnimationFrame
 
 import pyglet.lib
 import pyglet.window

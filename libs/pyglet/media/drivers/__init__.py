@@ -15,18 +15,20 @@ for driver_name in pyglet.options['audio']:
             _audio_driver = pulse.create_audio_driver()
             break
         elif driver_name == 'xaudio2':
-            from pyglet.libs.win32.constants import WINDOWS_8_OR_GREATER
+            if pyglet.compat_platform in ('win32', 'cygwin'):
+                from pyglet.libs.win32.constants import WINDOWS_8_OR_GREATER
 
-            if WINDOWS_8_OR_GREATER:
-                from . import xaudio2
+                if WINDOWS_8_OR_GREATER:
+                    from . import xaudio2
 
-                _audio_driver = xaudio2.create_audio_driver()
-                break
+                    _audio_driver = xaudio2.create_audio_driver()
+                    break
         elif driver_name == 'directsound':
-            from . import directsound
+            if pyglet.compat_platform in ('win32', 'cygwin'):
+                from . import directsound
 
-            _audio_driver = directsound.create_audio_driver()
-            break
+                _audio_driver = directsound.create_audio_driver()
+                break
         elif driver_name == 'openal':
             from . import openal
 
@@ -60,48 +62,6 @@ def get_audio_driver():
         AbstractAudioDriver : The concrete implementation of the preferred
                               audio driver for this platform.
     """
-    global _audio_driver
-
-    if _audio_driver:
-        return _audio_driver
-
-    _audio_driver = None
-
-    for driver_name in pyglet.options['audio']:
-        try:
-            if driver_name == 'pulse':
-                from . import pulse
-                _audio_driver = pulse.create_audio_driver()
-                break
-            elif driver_name == 'xaudio2':
-                if pyglet.compat_platform in ('win32', 'cygwin'):
-                    from pyglet.libs.win32.constants import WINDOWS_8_OR_GREATER
-                    if WINDOWS_8_OR_GREATER:
-                        from . import xaudio2
-                        _audio_driver = xaudio2.create_audio_driver()
-                        break
-            elif driver_name == 'directsound':
-                if pyglet.compat_platform in ('win32', 'cygwin'):
-                    from . import directsound
-                    _audio_driver = directsound.create_audio_driver()
-                    break
-            elif driver_name == 'openal':
-                from . import openal
-                _audio_driver = openal.create_audio_driver()
-                break
-            elif driver_name == 'silent':
-                from . import silent
-                _audio_driver = silent.create_audio_driver()
-                break
-        except Exception:
-            if _debug:
-                print(f'Error importing driver {driver_name}:')
-                import traceback
-                traceback.print_exc()
-    else:
-        from . import silent
-        _audio_driver = silent.create_audio_driver()
-
     return _audio_driver
 
 

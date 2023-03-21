@@ -11,55 +11,15 @@ IS64 = struct.calcsize("P") == 8
 
 _debug_win32 = pyglet.options['debug_win32']
 
-if _debug_win32:
-    import traceback
-    _GetLastError = windll.kernel32.GetLastError
-    _SetLastError = windll.kernel32.SetLastError
-    _FormatMessageA = windll.kernel32.FormatMessageA
+DebugLibrary = lambda lib: ctypes.WinDLL(lib, use_last_error=True if _debug_win32 else False)
 
-    _log_win32 = open('debug_win32.log', 'w')
-    
-    def format_error(err):
-        msg = create_string_buffer(256)
-        _FormatMessageA(constants.FORMAT_MESSAGE_FROM_SYSTEM,
-                        c_void_p(),
-                        err,
-                        0,
-                        msg,
-                        len(msg),
-                        c_void_p())
-        return msg.value
-    
-    class DebugLibrary:
-        def __init__(self, lib):
-            self.lib = lib
-
-        def __getattr__(self, name):
-            fn = getattr(self.lib, name)
-
-            def f(*args):
-                _SetLastError(0)
-                result = fn(*args)
-                err = _GetLastError()
-                if err != 0:
-                    for entry in traceback.format_list(traceback.extract_stack()[:-1]):
-                        _log_win32.write(entry)
-                    print(format_error(err), file=_log_win32)
-                return result
-
-            return f
-else:
-    DebugLibrary = lambda lib: lib
-
-
-_gdi32 = DebugLibrary(windll.gdi32)
-_kernel32 = DebugLibrary(windll.kernel32)
-_user32 = DebugLibrary(windll.user32)
-_dwmapi = DebugLibrary(windll.dwmapi)
-_shell32 = DebugLibrary(windll.shell32)
-_ole32 = DebugLibrary(windll.ole32)
-_oleaut32 = DebugLibrary(windll.oleaut32)
-_shcore = DebugLibrary(windll.shcore)
+_gdi32 = DebugLibrary('gdi32')
+_kernel32 = DebugLibrary('kernel32')
+_user32 = DebugLibrary('user32')
+_dwmapi = DebugLibrary('dwmapi')
+_shell32 = DebugLibrary('shell32')
+_ole32 = DebugLibrary('ole32')
+_oleaut32 = DebugLibrary('oleaut32')
 
 # _gdi32
 _gdi32.AddFontMemResourceEx.restype = HANDLE
@@ -221,9 +181,7 @@ _user32.SetFocus.argtypes = [HWND]
 _user32.SetForegroundWindow.restype = BOOL
 _user32.SetForegroundWindow.argtypes = [HWND]
 _user32.SetTimer.restype = UINT_PTR
-_user32.SetTimer.argtypes = [HWND, UINT_PTR, UINT, POINTER(TIMERPROC)]
-_user32.KillTimer.restype = UINT_PTR
-_user32.KillTimer.argtypes = [HWND, UINT_PTR]
+_user32.SetTimer.argtypes = [HWND, UINT_PTR, UINT, TIMERPROC]
 _user32.SetWindowLongW.restype = LONG
 _user32.SetWindowLongW.argtypes = [HWND, c_int, LONG]
 _user32.SetWindowPos.restype = BOOL
@@ -249,20 +207,11 @@ _user32.GetRawInputData.restype = UINT
 _user32.GetRawInputData.argtypes = [HRAWINPUT, UINT, LPVOID, PUINT, UINT]
 _user32.ChangeWindowMessageFilterEx.restype = BOOL
 _user32.ChangeWindowMessageFilterEx.argtypes = [HWND, UINT, DWORD, c_void_p]
-_user32.SetProcessDPIAware.restype = BOOL
-_user32.SetProcessDPIAware.argtypes = []
-_user32.MonitorFromWindow.restype = HMONITOR
-_user32.MonitorFromWindow.argtypes = [HWND, DWORD]
+_user32.RegisterDeviceNotificationW.restype = HANDLE
+_user32.RegisterDeviceNotificationW.argtypes = [HANDLE, LPVOID, DWORD]
+_user32.UnregisterDeviceNotification.restype = BOOL
+_user32.UnregisterDeviceNotification.argtypes = [HANDLE]
 
-if constants.WINDOWS_10_CREATORS_UPDATE_OR_GREATER:
-    _user32.SetProcessDpiAwarenessContext.restype = BOOL
-    _user32.SetProcessDpiAwarenessContext.argtypes = [DPI_AWARENESS_CONTEXT]
-
-if constants.WINDOWS_10_ANNIVERSARY_UPDATE_OR_GREATER:
-    _user32.EnableNonClientDpiScaling.restype = BOOL
-    _user32.EnableNonClientDpiScaling.argtypes = [HWND]
-    _user32.GetDpiForWindow.restype = UINT
-    _user32.GetDpiForWindow.argtypes = [HWND]
 
 # dwmapi
 _dwmapi.DwmIsCompositionEnabled.restype = c_int
