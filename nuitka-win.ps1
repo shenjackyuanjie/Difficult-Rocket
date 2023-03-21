@@ -20,7 +20,7 @@ Set-Location ../../..
 $arg = @()
 # 输出配置
 $arg += @("--standalone")
-$arg += @("--output-dir=build/nuitka-win")
+$arg += @("--output-dir=build/nuitka-win1")
 $arg += @("--company-name=tool-shenjack-workshop")
 $arg += @("--product-name=Difficult-Rocket")
 $arg += @("--product-version=$env:DR_version")
@@ -33,9 +33,9 @@ $arg += @("--msvc=latest")
 $arg += @("--clang")
 $arg += @("--lto=no")
 # 包配置
-$arg += @("--nofollow-import-to=objprint,pillow,PIL,pyglet")
+$arg += @("--nofollow-import-to=objprint,pillow")
 # 数据配置
-$arg += @("--include-data-dir=./libs/pyglet=./libs/pyglet")
+# $arg += @("--include-data-dir=./libs/pyglet=./libs/pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
@@ -50,7 +50,7 @@ $out = $end_time.TotalMilliseconds - $start_time.TotalMilliseconds
 Write-Output $end_time.TotalSeconds $start_time.TotalSeconds $out s
 Write-Output $start_time $end_time
 Write-Output "--clang --msvc=latest --lto=no and $args"
-Copy-Item .\libs\pyglet\ .\build\nuitka-win\DR.dist -Recurse
+# Copy-Item .\libs\pyglet\ .\build\nuitka-win\DR.dist -Recurse
 # --include-data-dir=./libs/pyglet=./pyglet
 # --run
 # --disable-ccache
