@@ -179,7 +179,7 @@ class ClientWindow(Window):
         self.input_box = InputBox(x=50, y=30, width=300,
                                   batch=self.label_batch, text='')  # 实例化
         self.input_box.push_handlers(self)
-        self.input_box.set_handler('on_commit', self.on_input)
+        self.input_box.push_handler('on_commit', self.on_input)
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
