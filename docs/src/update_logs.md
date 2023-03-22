@@ -24,7 +24,7 @@
 
 <!-- cmdrun seq 1 10 -->
 
-## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6`
+## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6` + DR_api `0.0.1.0`
 
 ### 文档
 
@@ -46,6 +46,13 @@
     - Add `dsm.py`
       - Used to deploy documents to the server
       - At the same time, ensure that there will be no connection left
+
+### DR_api V 0.0.1.0
+
+- 修改了 `BaseScreen` 的定义
+  - 跟随 pyglet master 的修改
+    - Modify the definition of `BaseScreen`
+      - Follow the modification of pyglet master
 
 ### DR_rs V 0.2.5.6
 
