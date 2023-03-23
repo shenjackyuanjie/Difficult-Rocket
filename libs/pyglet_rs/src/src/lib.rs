@@ -1,14 +1,19 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+/*
+ * -------------------------------
+ * Difficult Rocket
+ * Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
+ * All rights reserved
+ * -------------------------------
+ */
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+mod sprite;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+use pyo3::prelude::*;
+
+
+#[pymoudule]
+#[pyo3(name = "pyglet_rs")]
+fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+    m.add_class::<sprite::Sprite>()?;
+    Ok(())
 }
