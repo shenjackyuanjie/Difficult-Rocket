@@ -11,7 +11,7 @@ use pyo3::prelude::*;
 
 /// Instance of an on-screen image
 /// See the module documentation for usage.
-#[pyclass(name = "Sprite", subclass)]
+#[pyclass(name = "Sprite_rs", subclass)]
 #[pyo3(text_signature = "(img, x=0.0, y=0.0, z=0.0, \
                           batch=None, group=None, \
                           subpixel=False, program=None)")]
@@ -75,7 +75,7 @@ impl Sprite {
         x: f64,
         y: f64,
         z: f64,
-        batch: &PyAny,
+        batch_: &PyAny,
         group: &PyAny,
         subpixel: bool,
         program_: &PyAny,
@@ -85,6 +85,7 @@ impl Sprite {
             .getattr("Animation")
             .unwrap();
         let texture;
+        let batch;
         let mut next_dt = 0.0;
         let mut animation = None;
         let mut program = program_;
@@ -137,6 +138,18 @@ impl Sprite {
                 program = get_default_shader.call0().unwrap();
             }
         }
+        // 383
+        if !batch_.is_none() {
+            batch = PyModule::import(py_, "pyglet.graphics")
+                .unwrap()
+                .getattr("get_default_batch")
+                .unwrap()
+                .call0()
+                .unwrap();
+        } else {
+            batch = batch_;
+        }
+
         Sprite {
             subpixel,
             batch: batch.into(),
