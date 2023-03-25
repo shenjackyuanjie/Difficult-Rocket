@@ -6,6 +6,7 @@
  * -------------------------------
  */
 
+mod math;
 mod sprite;
 
 use pyo3::prelude::*;

@@ -22,3 +22,21 @@ pyglet_rs.patch_sprite()
 import pyglet
 ...
 ```
+
+## how to build
+
+```powershell
+cd src
+./build.ps1
+```
+
+## roadmap
+
+- [ ] `pyglet.sprite.Sprite` patch (doing)
+
+- [ ] `pyglet.math.Vec2` patch
+- [ ] `pyglet.math.Vec3` patch
+- [ ] `pyglet.math.Vec4` patch
+- [ ] `pyglet.math.Mat3(tuple)` patch
+- [ ] `pyglet.math.Mat4(tuple)` patch
+
