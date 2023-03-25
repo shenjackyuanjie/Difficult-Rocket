@@ -7,6 +7,8 @@ This is a folder about pyglet_rs.
 pyglet_rs is a python library that patches pyglet to use rust to make it faster!
 
 ## requirements
+- python 3.8+
+- pyglet 2.0+
 - pyo3 `0.18.1`
 - no more
 
