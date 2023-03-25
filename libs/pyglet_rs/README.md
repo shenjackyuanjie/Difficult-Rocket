@@ -40,9 +40,9 @@ cd src
 
 - [ ] `pyglet.sprite.Sprite` patch (doing)
 
-- [ ] `pyglet.math.Vec2` patch
-- [ ] `pyglet.math.Vec3` patch
-- [ ] `pyglet.math.Vec4` patch
-- [ ] `pyglet.math.Mat3(tuple)` patch
-- [ ] `pyglet.math.Mat4(tuple)` patch
+- [ ] `pyglet.math.Vec2` patch (doing)
+- [ ] `pyglet.math.Vec3` patch (doing)
+- [ ] `pyglet.math.Vec4` patch (doing)
+- [ ] `pyglet.math.Mat3(tuple)` patch (doing)
+- [ ] `pyglet.math.Mat4(tuple)` patch (doing)
 
