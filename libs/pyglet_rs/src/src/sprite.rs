@@ -6,6 +6,7 @@
  * -------------------------------
  */
 
+use pyo3::intern;
 use pyo3::prelude::*;
 
 /// Instance of an on-screen image
@@ -16,6 +17,7 @@ use pyo3::prelude::*;
                           subpixel=False, program=None)")]
 pub struct Sprite {
     // render
+    pub subpixel: bool,
     pub batch: Py<PyAny>,
     pub group_class: Py<PyAny>,
     // view
@@ -29,6 +31,9 @@ pub struct Sprite {
     pub vertex_list: Option<Vec<()>>,
     // frame
     pub frame_index: u32,
+    pub next_dt: f64,
+    #[pyo3(get)]
+    pub program: Option<Py<PyAny>>,
     pub animation: Option<Py<PyAny>>,
     pub texture: Option<Py<PyAny>>,
     pub paused: bool,
@@ -38,20 +43,104 @@ pub struct Sprite {
 
 #[pymethods]
 impl Sprite {
+    /// python code:
+    /// 366:
+    /// if isinstance(img, image.Animation):
+    ///     self._animation = img
+    ///     self._texture = img.frames[0].image.get_texture()
+    ///     self._next_dt = img.frames[0].duration
+    ///     if self._next_dt:
+    ///         clock.schedule_once(self._animate, self._next_dt)
+    /// else:
+    ///     self._texture = img.get_texture()
+    /// 375:
+    /// if not program:
+    ///     if isinstance(img, image.TextureArrayRegion):
+    ///         self._program = get_default_array_shader()
+    ///     else:
+    ///         self._program = get_default_shader()
+    /// else:
+    ///     self._program = program
+    /// 383:
+    /// self._batch = batch or graphics.get_default_batch()
+    /// self._user_group = group
+    /// self._group = self.group_class(self._texture, blend_src, blend_dest, self.program, group)
+    /// self._subpixel = subpixel
+    /// 387:
+    /// self._create_vertex_list()
     #[new]
-    fn new(py_: Python, img: &PyAny, x: f64, y: f64, z: f64, batch: &PyAny, group: &PyAny) -> Self {
-        // let img_class = PyModule::from_code(py_, "pyglet.image.Animation", "", "")?.getattr();
-        let animation_class =
-            PyModule::import(py_, "pyglet.image.Animation").unwrap().getattr("Animation").unwrap();
-        let mut texture: Option<Py<PyAny>> = None;
-        let mut animation: Option<Py<PyAny>> = None;
+    fn new(
+        py_: Python,
+        img: &PyAny,
+        x: f64,
+        y: f64,
+        z: f64,
+        batch: &PyAny,
+        group: &PyAny,
+        subpixel: bool,
+        program_: &PyAny,
+    ) -> Self {
+        let animation_class = PyModule::import(py_, "pyglet.image.Animation")
+            .unwrap()
+            .getattr("Animation")
+            .unwrap();
+        let texture;
+        let mut next_dt = 0.0;
+        let mut animation = None;
+        let mut program = program_;
+        // 366
         if img.is_instance(animation_class).unwrap() {
             animation = Some(img.into());
+            texture = img
+                .getattr(intern!(img.py(), "frames"))
+                .unwrap()
+                .get_item(0)
+                .unwrap()
+                .getattr(intern!(img.py(), "image"))
+                .unwrap()
+                .call_method0(intern!(img.py(), "get_texture"))
+                .unwrap();
+            let _next_dt = img
+                .getattr(intern!(img.py(), "frames"))
+                .unwrap()
+                .get_item(0)
+                .unwrap()
+                .getattr(intern!(img.py(), "duration"));
+            next_dt = match _next_dt {
+                Ok(v) => v.extract().unwrap(),
+                Err(_) => 0.0,
+            }
+        // 372
         } else {
-            texture = Some(img.into());
+            texture = img.call_method0(intern!(img.py(), "get_texture")).unwrap();
+        }
+        // 375
+        if !program.is_true().unwrap() {
+            let texture_array_region_class =
+                PyModule::import(py_, "pyglet.image.TextureArrayRegion")
+                    .unwrap()
+                    .getattr("TextureArrayRegion")
+                    .unwrap();
+            if img.is_instance(texture_array_region_class).unwrap() {
+                // self._program = get_default_array_shader()
+                let get_default_array_shader = PyModule::import(py_, "pyglet.sprite")
+                    .unwrap()
+                    .getattr("get_default_array_shader")
+                    .unwrap();
+                program = get_default_array_shader.call0().unwrap();
+            } else {
+                // self._program = get_default_shader()
+                let get_default_shader = PyModule::import(py_, "pyglet.sprite")
+                    .unwrap()
+                    .getattr("get_default_shader")
+                    .unwrap();
+                program = get_default_shader.call0().unwrap();
+            }
         }
         Sprite {
+            subpixel,
             batch: batch.into(),
+            group_class: group.into(),
             x,
             y,
             z,
@@ -61,11 +150,12 @@ impl Sprite {
             visible: true,
             vertex_list: None,
             frame_index: 0,
-            animation,
-            texture,
+            next_dt,
+            program: Some(program.into()),
+            animation: animation,
+            texture: Some(texture.into()),
             paused: false,
             rgba: (255, 255, 255, 255),
-            group_class: group.into(),
         }
     }
 }

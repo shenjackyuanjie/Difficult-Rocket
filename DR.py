@@ -52,7 +52,6 @@ def main() -> None:
         from libs.pyglet_rs import Sprite, get_version_str
         print('pyglet_rs import success')
         print('pyglet_rs available:', get_version_str())
-        
 
     except ImportError as e:
         print('pyglet_rs import error')
