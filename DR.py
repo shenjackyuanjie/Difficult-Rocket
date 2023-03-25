@@ -49,6 +49,16 @@ def main() -> None:
     from Difficult_Rocket import crash
     from Difficult_Rocket import DR_option
     try:
+        from libs.pyglet_rs import Sprite, get_version_str
+        print('pyglet_rs import success')
+        print('pyglet_rs available:', get_version_str())
+        
+
+    except ImportError as e:
+        print('pyglet_rs import error')
+        traceback.print_exc()
+        print(f"{e=}")
+    try:
         from libs import pyglet  # 导入pyglet
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
