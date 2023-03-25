@@ -10,8 +10,7 @@ mod sprite;
 
 use pyo3::prelude::*;
 
-
-#[pymoudule]
+#[pymodule]
 #[pyo3(name = "pyglet_rs")]
 fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<sprite::Sprite>()?;
