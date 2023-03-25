@@ -19,6 +19,7 @@ pub struct Sprite {
     // render
     pub subpixel: bool,
     pub batch: Py<PyAny>,
+    pub user_group: Option<Py<PyAny>>,
     pub group_class: Py<PyAny>,
     // view
     pub x: f64,
@@ -80,16 +81,20 @@ impl Sprite {
         subpixel: bool,
         program_: &PyAny,
     ) -> Self {
-        let animation_class = PyModule::import(py_, "pyglet.image.Animation")
-            .unwrap()
-            .getattr("Animation")
-            .unwrap();
         let texture;
         let batch;
         let mut next_dt = 0.0;
         let mut animation = None;
         let mut program = program_;
+        let sprite_group_class = PyModule::import(py_, "pyglet.sprite")
+            .unwrap()
+            .getattr("SpriteGroup")
+            .unwrap();
         // 366
+        let animation_class = PyModule::import(py_, "pyglet.image.Animation")
+            .unwrap()
+            .getattr("Animation")
+            .unwrap();
         if img.is_instance(animation_class).unwrap() {
             animation = Some(img.into());
             texture = img
@@ -153,6 +158,7 @@ impl Sprite {
         Sprite {
             subpixel,
             batch: batch.into(),
+            user_group: Some(group.into()),
             group_class: group.into(),
             x,
             y,
