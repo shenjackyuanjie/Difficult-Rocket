@@ -8,6 +8,7 @@
 
 mod math;
 mod sprite;
+mod pymath;
 
 use pyo3::prelude::*;
 

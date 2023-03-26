@@ -9,6 +9,7 @@
 pub mod macros {}
 
 pub mod vector {
+    use std::ops::{Add, Div, Mul, Sub};
 
     #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
     pub struct Vector2 {
@@ -33,10 +34,6 @@ pub mod vector {
 
     pub trait VectorTrait {
         fn len(&self) -> i8; // use short int to save memory (even if its not going to save a lot)
-        fn add(&self, other: &Self) -> Self;
-        fn sub(&self, other: &Self) -> Self;
-        fn mul(&self, other: &Self) -> Self;
-        fn truediv(&self, other: &Self) -> Self;
         fn floordiv(&self, other: &Self) -> Self;
         fn abs(&self) -> f64;
         fn neg(&self) -> Self;
@@ -44,27 +41,42 @@ pub mod vector {
         fn radd(&self, other: &Self) -> Self;
     }
 
+    impl Add for Vector2 {
+        type Output = Self;
+
+        fn add(self, rhs: Self) -> Self::Output {
+            Self::new(self.x + other.x, self.y + other.y)
+        }
+    }
+
+    impl Sub for Vector2 {
+        type Output = Self;
+
+        fn sub(self, rhs: Self) -> Self::Output {
+            Self::new(self.x - other.x, self.y - other.y)
+        }
+    }
+
+    impl Mul for Vector2 {
+        type Output = Self;
+
+        fn mul(self, rhs: Self) -> Self::Output {
+            Self::new(self.x * other.x, self.y * other.y)
+        }
+    }
+
+    impl Div for Vector2 {
+        type Output = Self;
+
+        fn div(self, rhs: Self) -> Self::Output {
+            Self::new(self.x / other.x, self.y / other.y)
+        }
+    }
+
     impl VectorTrait for Vector2 {
         fn len(&self) -> i8 {
             return 2;
         }
-
-        fn add(&self, other: &Self) -> Self {
-            Self::new(self.x + other.x, self.y + other.y)
-        }
-
-        fn sub(&self, other: &Self) -> Self {
-            Self::new(self.x - other.x, self.y - other.y)
-        }
-
-        fn mul(&self, other: &Self) -> Self {
-            Self::new(self.x * other.x, self.y * other.y)
-        }
-
-        fn truediv(&self, other: &Self) -> Self {
-            Self::new(self.x / other.x, self.y / other.y)
-        }
-
         fn floordiv(&self, other: &Self) -> Self {
             // 手动模拟python的//运算符
             Self::new((self.x / other.x).floor(), (self.y / other.y).floor())
@@ -96,25 +108,41 @@ pub mod vector {
         }
     }
 
+    impl Add for Vector3 {
+        type Output = Self;
+
+        fn add(self, rhs: Self) -> Self::Output {
+            Self::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
+        }
+    }
+
+    impl Sub for Vector3 {
+        type Output = Self;
+
+        fn sub(self, rhs: Self) -> Self::Output {
+            Self::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
+        }
+    }
+
+    impl Mul for Vector3 {
+        type Output = Self;
+
+        fn mul(self, rhs: Self) -> Self::Output {
+            Self::new(self.x * rhs.x, self.y * rhs.y, self.z * rhs.z)
+        }
+    }
+
+    impl Div for Vector3 {
+        type Output = Self;
+
+        fn div(self, rhs: Self) -> Self::Output {
+            Self::new(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z)
+        }
+    }
+
     impl VectorTrait for Vector3 {
         fn len(&self) -> i8 {
             return 3;
-        }
-
-        fn add(&self, other: &Self) -> Self {
-            Self::new(self.x + other.x, self.y + other.y, self.z + other.z)
-        }
-
-        fn sub(&self, other: &Self) -> Self {
-            Self::new(self.x - other.x, self.y - other.y, self.z - other.z)
-        }
-
-        fn mul(&self, other: &Self) -> Self {
-            Self::new(self.x * other.x, self.y * other.y, self.z * other.z)
-        }
-
-        fn truediv(&self, other: &Self) -> Self {
-            Self::new(self.x / other.x, self.y / other.y, self.z / other.z)
         }
 
         fn floordiv(&self, other: &Self) -> Self {
@@ -156,42 +184,6 @@ pub mod vector {
     impl VectorTrait for Vector4 {
         fn len(&self) -> i8 {
             return 4;
-        }
-
-        fn add(&self, other: &Self) -> Self {
-            Self::new(
-                self.x + other.x,
-                self.y + other.y,
-                self.z + other.z,
-                self.w + other.w,
-            )
-        }
-
-        fn sub(&self, other: &Self) -> Self {
-            Self::new(
-                self.x - other.x,
-                self.y - other.y,
-                self.z - other.z,
-                self.w - other.w,
-            )
-        }
-
-        fn mul(&self, other: &Self) -> Self {
-            Self::new(
-                self.x * other.x,
-                self.y * other.y,
-                self.z * other.z,
-                self.w * other.w,
-            )
-        }
-
-        fn truediv(&self, other: &Self) -> Self {
-            Self::new(
-                self.x / other.x,
-                self.y / other.y,
-                self.z / other.z,
-                self.w / other.w,
-            )
         }
 
         fn floordiv(&self, other: &Self) -> Self {
@@ -242,6 +234,38 @@ pub mod vector {
         }
     }
 
+    impl Add for Vector4 {
+        type Output = Self;
+
+        fn add(self, rhs: Self) -> Self::Output {
+            Self::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z, self.w + rhs.w)
+        }
+    }
+
+    impl Sub for Vector4 {
+        type Output = Self;
+
+        fn sub(self, rhs: Self) -> Self::Output {
+            Self::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z, self.w - rhs.w)
+        }
+    }
+
+    impl Mul for Vector4 {
+        type Output = Self;
+
+        fn mul(self, rhs: Self) -> Self::Output {
+            Self::new(self.x * rhs.x, self.y * rhs.y, self.z * rhs.z, self.w * rhs.w)
+        }
+    }
+
+    impl Div for Vector4 {
+        type Output = Self;
+
+        fn div(self, rhs: Self) -> Self::Output {
+            Self::new(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z, self.w / rhs.w)
+        }
+    }
+
     impl Vector2 {
         pub fn new(x: f64, y: f64) -> Self {
             Self { x, y }
@@ -277,61 +301,5 @@ pub mod matrix {
         pub line2: Vector4,
         pub line3: Vector4,
         pub line4: Vector4,
-    }
-}
-
-pub mod python_class {
-    use pyo3::prelude::*;
-
-    use super::matrix::{Matrix3, Matrix4};
-    use super::vector::{Vector2, Vector3, Vector4};
-
-    #[pyclass(name = "Vector2")]
-    pub struct PyVector2 {
-        pub data: Vector2,
-    }
-
-    #[pyclass(name = "Vector3")]
-    pub struct PyVector3 {
-        pub data: Vector3,
-    }
-
-    #[pyclass(name = "Vector4")]
-    pub struct PyVector4 {
-        pub data: Vector4,
-    }
-
-    #[pyclass(name = "Matrix3")]
-    pub struct PyMatrix3 {
-        pub data: Matrix3,
-    }
-
-    #[pyclass(name = "Matrix4")]
-    pub struct PyMatrix4 {
-        pub data: Matrix4,
-    }
-
-    pub trait PyCalc {
-        fn __add__(&self, other: &Self) -> Self;
-        fn __sub__(&self, other: &Self) -> Self;
-        fn __mul__(&self, other: &Self) -> Self;
-        fn __truediv__(&self, other: &Self) -> Self;
-        fn __floordiv__(&self, other: &Self) -> Self;
-        fn __abs__(&self) -> f64;
-        fn __neg__(&self) -> Self;
-        fn __round__(&self, ndigits: Option<i64>) -> Self;
-        fn __radd__(&self, other: &PyAny) -> Self;
-        fn __eq__(&self, other: &Self) -> bool;
-        fn __ne__(&self, other: &Self) -> bool;
-    }
-
-    #[pymethods]
-    impl PyVector2 {
-        #[new]
-        fn py_new(x: f64, y: f64) -> Self {
-            return PyVector2 {
-                data: Vector2::new(x, y),
-            };
-        }
     }
 }
