@@ -6,25 +6,23 @@
  * -------------------------------
  */
 
-pub mod macros {}
-
 pub mod vector {
     use std::ops::{Add, Div, Mul, Sub};
 
-    #[derive(Debug, Clone, Copy, PartialOrd)]
+    #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
     pub struct Vector2 {
         pub x: f64,
         pub y: f64,
     }
 
-    #[derive(Debug, Clone, Copy, PartialOrd)]
+    #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
     pub struct Vector3 {
         pub x: f64,
         pub y: f64,
         pub z: f64,
     }
 
-    #[derive(Debug, Clone, Copy, PartialOrd)]
+    #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
     pub struct Vector4 {
         pub x: f64,
         pub y: f64,
@@ -73,12 +71,6 @@ pub mod vector {
         }
     }
 
-    impl PartialEq for Vector2 {
-        fn eq(&self, other: &Self) -> bool {
-            self.x == other.x && self.y == other.y
-        }
-    }
-
     impl Add for Vector3 {
         type Output = Self;
 
@@ -108,12 +100,6 @@ pub mod vector {
 
         fn div(self, rhs: Self) -> Self::Output {
             Self::new(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z)
-        }
-    }
-
-    impl PartialEq for Vector3 {
-        fn eq(&self, other: &Self) -> bool {
-            self.x == other.x && self.y == other.y && self.z == other.z
         }
     }
 
@@ -166,12 +152,6 @@ pub mod vector {
                 self.z / rhs.z,
                 self.w / rhs.w,
             )
-        }
-    }
-
-    impl PartialEq for Vector4 {
-        fn eq(&self, other: &Self) -> bool {
-            self.x == other.x && self.y == other.y && self.z == other.z && self.w == other.w
         }
     }
 
