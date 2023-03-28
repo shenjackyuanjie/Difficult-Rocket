@@ -7,6 +7,7 @@
  */
 
 pub mod python_class {
+    use pyo3::class::basic::CompareOp;
     use pyo3::prelude::*;
 
     use crate::math::matrix::{Matrix3, Matrix4};
@@ -95,8 +96,15 @@ pub mod python_class {
             };
         }
 
-        fn __eq__(&self, other: &Self) -> bool {
-            return self.data == other.data;
+        fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+            match op {
+                CompareOp::Lt => Ok(self.data < other.data),
+                CompareOp::Le => Ok(self.data <= other.data),
+                CompareOp::Eq => Ok(self.data == other.data),
+                CompareOp::Ne => Ok(self.data != other.data),
+                CompareOp::Gt => Ok(self.data > other.data),
+                CompareOp::Ge => Ok(self.data >= other.data),
+            }
         }
 
         fn __repr__(&self) -> String {
@@ -165,8 +173,15 @@ pub mod python_class {
             };
         }
 
-        fn __eq__(&self, other: &Self) -> bool {
-            return self.data == other.data;
+        fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+            match op {
+                CompareOp::Lt => Ok(self.data < other.data),
+                CompareOp::Le => Ok(self.data <= other.data),
+                CompareOp::Eq => Ok(self.data == other.data),
+                CompareOp::Ne => Ok(self.data != other.data),
+                CompareOp::Gt => Ok(self.data > other.data),
+                CompareOp::Ge => Ok(self.data >= other.data),
+            }
         }
 
         fn __repr__(&self) -> String {
@@ -248,8 +263,15 @@ pub mod python_class {
             };
         }
 
-        fn __eq__(&self, other: &Self) -> bool {
-            return self.data == other.data;
+        fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+            match op {
+                CompareOp::Lt => Ok(self.data < other.data),
+                CompareOp::Le => Ok(self.data <= other.data),
+                CompareOp::Eq => Ok(self.data == other.data),
+                CompareOp::Ne => Ok(self.data != other.data),
+                CompareOp::Gt => Ok(self.data > other.data),
+                CompareOp::Ge => Ok(self.data >= other.data),
+            }
         }
 
         fn __repr__(&self) -> String {
