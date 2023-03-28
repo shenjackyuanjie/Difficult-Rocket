@@ -73,6 +73,90 @@ pub mod vector {
         }
     }
 
+    impl Add for Vector3 {
+        type Output = Self;
+
+        fn add(self, rhs: Self) -> Self::Output {
+            Self::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
+        }
+    }
+
+    impl Sub for Vector3 {
+        type Output = Self;
+
+        fn sub(self, rhs: Self) -> Self::Output {
+            Self::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
+        }
+    }
+
+    impl Mul for Vector3 {
+        type Output = Self;
+
+        fn mul(self, rhs: Self) -> Self::Output {
+            Self::new(self.x * rhs.x, self.y * rhs.y, self.z * rhs.z)
+        }
+    }
+
+    impl Div for Vector3 {
+        type Output = Self;
+
+        fn div(self, rhs: Self) -> Self::Output {
+            Self::new(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z)
+        }
+    }
+
+    impl Add for Vector4 {
+        type Output = Self;
+
+        fn add(self, rhs: Self) -> Self::Output {
+            Self::new(
+                self.x + rhs.x,
+                self.y + rhs.y,
+                self.z + rhs.z,
+                self.w + rhs.w,
+            )
+        }
+    }
+
+    impl Sub for Vector4 {
+        type Output = Self;
+
+        fn sub(self, rhs: Self) -> Self::Output {
+            Self::new(
+                self.x - rhs.x,
+                self.y - rhs.y,
+                self.z - rhs.z,
+                self.w - rhs.w,
+            )
+        }
+    }
+
+    impl Mul for Vector4 {
+        type Output = Self;
+
+        fn mul(self, rhs: Self) -> Self::Output {
+            Self::new(
+                self.x * rhs.x,
+                self.y * rhs.y,
+                self.z * rhs.z,
+                self.w * rhs.w,
+            )
+        }
+    }
+
+    impl Div for Vector4 {
+        type Output = Self;
+
+        fn div(self, rhs: Self) -> Self::Output {
+            Self::new(
+                self.x / rhs.x,
+                self.y / rhs.y,
+                self.z / rhs.z,
+                self.w / rhs.w,
+            )
+        }
+    }
+
     impl VectorTrait for Vector2 {
         fn len(&self) -> i8 {
             return 2;
@@ -105,38 +189,6 @@ pub mod vector {
 
         fn radd(&self, other: &Self) -> Self {
             Self::new(self.x + other.x, self.y + other.y)
-        }
-    }
-
-    impl Add for Vector3 {
-        type Output = Self;
-
-        fn add(self, rhs: Self) -> Self::Output {
-            Self::new(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
-        }
-    }
-
-    impl Sub for Vector3 {
-        type Output = Self;
-
-        fn sub(self, rhs: Self) -> Self::Output {
-            Self::new(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
-        }
-    }
-
-    impl Mul for Vector3 {
-        type Output = Self;
-
-        fn mul(self, rhs: Self) -> Self::Output {
-            Self::new(self.x * rhs.x, self.y * rhs.y, self.z * rhs.z)
-        }
-    }
-
-    impl Div for Vector3 {
-        type Output = Self;
-
-        fn div(self, rhs: Self) -> Self::Output {
-            Self::new(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z)
         }
     }
 
@@ -230,58 +282,6 @@ pub mod vector {
                 self.y + other.y,
                 self.z + other.z,
                 self.w + other.w,
-            )
-        }
-    }
-
-    impl Add for Vector4 {
-        type Output = Self;
-
-        fn add(self, rhs: Self) -> Self::Output {
-            Self::new(
-                self.x + rhs.x,
-                self.y + rhs.y,
-                self.z + rhs.z,
-                self.w + rhs.w,
-            )
-        }
-    }
-
-    impl Sub for Vector4 {
-        type Output = Self;
-
-        fn sub(self, rhs: Self) -> Self::Output {
-            Self::new(
-                self.x - rhs.x,
-                self.y - rhs.y,
-                self.z - rhs.z,
-                self.w - rhs.w,
-            )
-        }
-    }
-
-    impl Mul for Vector4 {
-        type Output = Self;
-
-        fn mul(self, rhs: Self) -> Self::Output {
-            Self::new(
-                self.x * rhs.x,
-                self.y * rhs.y,
-                self.z * rhs.z,
-                self.w * rhs.w,
-            )
-        }
-    }
-
-    impl Div for Vector4 {
-        type Output = Self;
-
-        fn div(self, rhs: Self) -> Self::Output {
-            Self::new(
-                self.x / rhs.x,
-                self.y / rhs.y,
-                self.z / rhs.z,
-                self.w / rhs.w,
             )
         }
     }
