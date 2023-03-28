@@ -4,9 +4,22 @@
 #  All rights reserved
 #  -------------------------------
 
+"""
+from .lib import (get_version_str)
+
+from .lib import (Sprite_rs,
+                  Vector2_rs, Vector3_rs, Vector4_rs,
+                  Matrix3_rs, Matrix4_rs)
+"""
 from .lib import *
 
 from typing import TYPE_CHECKING
+
+__version__ = get_version_str()
+__all__ = ['patch_sprite', 'patch_vector', 'patch_matrix', 'patch_all',
+           'Sprite_rs',
+           'Vector2_rs', 'Vector3_rs', 'Vector4_rs',
+           'Matrix3_rs', 'Matrix4_rs']
 
 if TYPE_CHECKING:
     from pyglet.event import EventDispatcher
