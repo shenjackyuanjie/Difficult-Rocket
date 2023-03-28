@@ -98,6 +98,28 @@ pub mod python_class {
         fn __repr__(&self) -> String {
             return format!("Vector2_rs({}, {})", self.data.x, self.data.y);
         }
+
+        // gettter and setter
+
+        #[getter]
+        fn get_x(&self) -> f64 {
+            return self.data.x;
+        }
+
+        #[getter]
+        fn get_y(&self) -> f64 {
+            return self.data.y;
+        }
+
+        #[setter]
+        fn set_x(&mut self, x: f64) {
+            self.data.x = x;
+        }
+
+        #[setter]
+        fn set_y(&mut self, y: f64) {
+            self.data.y = y;
+        }
     }
 
     #[pymethods]
@@ -144,6 +166,38 @@ pub mod python_class {
                 "Vector3_rs({}, {}, {})",
                 self.data.x, self.data.y, self.data.z
             );
+        }
+
+        // getter and setter
+
+        #[getter]
+        fn get_x(&self) -> f64 {
+            return self.data.x;
+        }
+
+        #[getter]
+        fn get_y(&self) -> f64 {
+            return self.data.y;
+        }
+
+        #[getter]
+        fn get_z(&self) -> f64 {
+            return self.data.z;
+        }
+
+        #[setter]
+        fn set_x(&mut self, x: f64) {
+            self.data.x = x;
+        }
+
+        #[setter]
+        fn set_y(&mut self, y: f64) {
+            self.data.y = y;
+        }
+
+        #[setter]
+        fn set_z(&mut self, z: f64) {
+            self.data.z = z;
         }
     }
 

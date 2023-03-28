@@ -38,11 +38,21 @@ cd src
 
 ## roadmap
 
-- [ ] `pyglet.sprite.Sprite` patch (doing)
+- [ ] `pyglet.sprite.Sprite` patch
 
 - [ ] `pyglet.math.Vec2` patch (doing)
+  - [ ] main Calculate protocol
+  - [ ] other protocols
 - [ ] `pyglet.math.Vec3` patch (doing)
+  - [ ] main Calculate protocol
+  - [ ] other protocols
 - [ ] `pyglet.math.Vec4` patch (doing)
+  - [ ] main Calculate protocol
+  - [ ] other protocols
 - [ ] `pyglet.math.Mat3(tuple)` patch (doing)
+  - [ ] main Calculate protocol
+  - [ ] other protocols
 - [ ] `pyglet.math.Mat4(tuple)` patch (doing)
+  - [ ] main Calculate protocol
+  - [ ] other protocols
 
