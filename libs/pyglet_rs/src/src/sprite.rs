@@ -8,6 +8,7 @@
 
 use pyo3::intern;
 use pyo3::prelude::*;
+use pyo3::types::PyDict;
 
 /// Instance of an on-screen image
 /// See the module documentation for usage.
@@ -41,6 +42,7 @@ pub struct Sprite {
     pub texture: Option<Py<PyAny>>,
     pub paused: bool,
     // other
+    pub rotation: f64,
     pub rgba: (u8, u8, u8, u8),
 }
 
@@ -78,7 +80,7 @@ impl Sprite {
         x: f64,
         y: f64,
         z: f64,
-        blend_src: u32, // default 770 (GL_SRC_ALPHA)
+        blend_src: u32,  // default 770 (GL_SRC_ALPHA)
         blend_dest: u32, // default 771 (GL_ONE_MINUS_SRC_ALPHA)
         batch_: &PyAny,
         group: &PyAny,
@@ -181,7 +183,42 @@ impl Sprite {
             animation: animation,
             texture: Some(texture.into()),
             paused: false,
+            rotation: 0.0,
             rgba: (255, 255, 255, 255),
         }
     }
+
+    /// python code:
+    /// 390:
+    /// def _create_vertex_list(self):
+    ///     texture = self._texture
+    ///     self._vertex_list = self.program.vertex_list(
+    ///         1, GL_POINTS, self._batch, self._group,
+    ///         position=('f', (self._x, self._y, self._z)),
+    ///         size=('f', (texture.width, texture.height, 1, 1)),
+    ///         color=('Bn', self._rgba),
+    ///         texture_uv=('f', texture.uv),
+    ///         rotation=('f', (self._rotation,)))
+
+    // pub fn _create_vertex_list(&mut self) -> PyResult<()> {
+    //     let texture = self.texture.as_ref()?;
+    //     Python::with_gil(|py| -> PyResult<()> {
+    //         let args = PyDict::new(py);
+    //         args.set_item("position", (self.x, self.y, self.z))?;
+    //         args.set_item(
+    //             "size",
+    //             (
+    //                 texture.getattr(py, "width")?,
+    //                 texture.getattr(py, "height")?,
+    //                 1,
+    //                 1,
+    //             ),
+    //         )?;
+    //         args.set_item("color", ("Bn", self.rgba))?;
+    //         args.set_item("texture_uv", texture.getattr(py, "uv")?)?;
+    //         args.set_item("rotation", (self.rotation,))?;
+    //         Ok(())
+    //     })?;
+    //     Ok(())
+    // }
 }
