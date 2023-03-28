@@ -63,10 +63,7 @@ pub mod python_class {
                 data: Vector2::new(x, y),
             };
         }
-    }
 
-    #[pymethods]
-    impl PyVector2 {
         fn __add__(&self, other: &Self) -> Self {
             return Self {
                 data: self.data + other.data,

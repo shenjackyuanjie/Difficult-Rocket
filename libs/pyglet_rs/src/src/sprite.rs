@@ -13,12 +13,14 @@ use pyo3::prelude::*;
 /// See the module documentation for usage.
 #[pyclass(name = "Sprite_rs", subclass)]
 #[pyo3(text_signature = "(img, x=0.0, y=0.0, z=0.0, \
+                          blend_src=770, blend_dest=771, \
                           batch=None, group=None, \
                           subpixel=False, program=None)")]
 pub struct Sprite {
     // render
     pub subpixel: bool,
     pub batch: Py<PyAny>,
+    pub group: Option<Py<PyAny>>,
     pub user_group: Option<Py<PyAny>>,
     pub group_class: Py<PyAny>,
     // view
@@ -76,6 +78,8 @@ impl Sprite {
         x: f64,
         y: f64,
         z: f64,
+        blend_src: u32, // default 770 (GL_SRC_ALPHA)
+        blend_dest: u32, // default 771 (GL_ONE_MINUS_SRC_ALPHA)
         batch_: &PyAny,
         group: &PyAny,
         subpixel: bool,
@@ -154,10 +158,13 @@ impl Sprite {
         } else {
             batch = batch_;
         }
+        // 385
+        let group = sprite_group_class.call1((texture, blend_src, blend_dest, program, group));
 
         Sprite {
             subpixel,
             batch: batch.into(),
+            group: Some(group.into()),
             user_group: Some(group.into()),
             group_class: group.into(),
             x,
