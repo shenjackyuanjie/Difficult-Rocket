@@ -11,9 +11,9 @@ pyglet_rs is a python library that patches pyglet to use rust to make it faster!
 **This Folder may be move to an individual repo. here is just a temp location**
 
 ## requirements
-- python `3.8+`
-- pyglet `2.0+`
-- pyo3 `0.18.1`
+- `python 3.8+`
+- `pyglet 2.0+`
+- `rustc 1.68.1+`
 - no more
 
 ## status
