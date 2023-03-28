@@ -12,27 +12,27 @@ pub mod python_class {
     use crate::math::matrix::{Matrix3, Matrix4};
     use crate::math::vector::{Vector2, Vector3, Vector4, VectorTrait};
 
-    #[pyclass(name = "Vector2")]
+    #[pyclass(name = "Vector2_rs")]
     pub struct PyVector2 {
         pub data: Vector2,
     }
 
-    #[pyclass(name = "Vector3")]
+    #[pyclass(name = "Vector3_rs")]
     pub struct PyVector3 {
         pub data: Vector3,
     }
 
-    #[pyclass(name = "Vector4")]
+    #[pyclass(name = "Vector4_rs")]
     pub struct PyVector4 {
         pub data: Vector4,
     }
 
-    #[pyclass(name = "Matrix3")]
+    #[pyclass(name = "Matrix3_rs")]
     pub struct PyMatrix3 {
         pub data: Matrix3,
     }
 
-    #[pyclass(name = "Matrix4")]
+    #[pyclass(name = "Matrix4_rs")]
     pub struct PyMatrix4 {
         pub data: Matrix4,
     }

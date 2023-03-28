@@ -8,7 +8,7 @@
 
 use pyo3::intern;
 use pyo3::prelude::*;
-use pyo3::types::PyDict;
+// use pyo3::types::PyDict;
 
 /// Instance of an on-screen image
 /// See the module documentation for usage.

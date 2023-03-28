@@ -22,5 +22,7 @@ fn get_version_str() -> String {
 fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_version_str, m)?)?;
     m.add_class::<sprite::Sprite>()?;
+    // vector
+    m.add_class::<pymath::python_class::PyVector2>()?;
     Ok(())
 }
