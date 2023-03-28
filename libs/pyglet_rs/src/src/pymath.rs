@@ -10,7 +10,7 @@ pub mod python_class {
     use pyo3::prelude::*;
 
     use crate::math::matrix::{Matrix3, Matrix4};
-    use crate::math::vector::{Vector2, Vector3, Vector4};
+    use crate::math::vector::{Vector2, Vector3, Vector4, VectorTrait};
 
     #[pyclass(name = "Vector2")]
     pub struct PyVector2 {
@@ -50,6 +50,7 @@ pub mod python_class {
         fn __radd__(&self, other: &PyAny) -> Self;
         fn __eq__(&self, other: &Self) -> bool;
         fn __ne__(&self, other: &Self) -> bool;
+        // fn rotate
     }
 
     /// 这是一个用来自动给 impl xxx for xxx 的块去掉 trait 部分的宏
@@ -67,6 +68,30 @@ pub mod python_class {
         fn __add__(&self, other: &Self) -> Self {
             return Self {
                 data: self.data + other.data,
+            };
+        }
+
+        fn __sub__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data - other.data,
+            };
+        }
+
+        fn __mul__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data * other.data,
+            };
+        }
+
+        fn __truediv__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data / other.data,
+            };
+        }
+
+        fn __floordiv__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data.floordiv(&other.data),
             };
         }
     }

@@ -161,7 +161,9 @@ impl Sprite {
             batch = batch_;
         }
         // 385
-        let group = sprite_group_class.call1((texture, blend_src, blend_dest, program, group));
+        let group = sprite_group_class
+            .call1((texture, blend_src, blend_dest, program, group))
+            .unwrap();
 
         Sprite {
             subpixel,
@@ -188,17 +190,17 @@ impl Sprite {
         }
     }
 
-    /// python code:
-    /// 390:
-    /// def _create_vertex_list(self):
-    ///     texture = self._texture
-    ///     self._vertex_list = self.program.vertex_list(
-    ///         1, GL_POINTS, self._batch, self._group,
-    ///         position=('f', (self._x, self._y, self._z)),
-    ///         size=('f', (texture.width, texture.height, 1, 1)),
-    ///         color=('Bn', self._rgba),
-    ///         texture_uv=('f', texture.uv),
-    ///         rotation=('f', (self._rotation,)))
+    // python code:
+    // 390:
+    // def _create_vertex_list(self):
+    //     texture = self._texture
+    //     self._vertex_list = self.program.vertex_list(
+    //         1, GL_POINTS, self._batch, self._group,
+    //         position=('f', (self._x, self._y, self._z)),
+    //         size=('f', (texture.width, texture.height, 1, 1)),
+    //         color=('Bn', self._rgba),
+    //         texture_uv=('f', texture.uv),
+    //         rotation=('f', (self._rotation,)))
 
     // pub fn _create_vertex_list(&mut self) -> PyResult<()> {
     //     let texture = self.texture.as_ref()?;
