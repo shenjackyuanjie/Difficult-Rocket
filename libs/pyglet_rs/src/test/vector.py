@@ -48,6 +48,8 @@ class TestVector(unittest.TestCase):
         print(f"{vec3=} {vec3_1=}")
         print(f"{vec4=} {vec4_1=}")
 
+        self.assertEqual(vec2 + vec2_1, Vector2_rs(vec2.x + vec2_1.x, vec2.y + vec2_1.y))
+
         print(f"{vec2 + vec2_1=}")
         print(f"{vec3 + vec3_1=}")
         print(f"{vec4 + vec4_1=}")

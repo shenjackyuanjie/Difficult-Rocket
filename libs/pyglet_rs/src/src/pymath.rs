@@ -95,11 +95,15 @@ pub mod python_class {
             };
         }
 
+        fn __eq__(&self, other: &Self) -> bool {
+            return self.data == other.data;
+        }
+
         fn __repr__(&self) -> String {
             return format!("Vector2_rs({}, {})", self.data.x, self.data.y);
         }
 
-        // gettter and setter
+        // getter and setter
 
         #[getter]
         fn get_x(&self) -> f64 {
@@ -159,6 +163,10 @@ pub mod python_class {
             return Self {
                 data: self.data.floordiv(&other.data),
             };
+        }
+
+        fn __eq__(&self, other: &Self) -> bool {
+            return self.data == other.data;
         }
 
         fn __repr__(&self) -> String {
@@ -240,11 +248,57 @@ pub mod python_class {
             };
         }
 
+        fn __eq__(&self, other: &Self) -> bool {
+            return self.data == other.data;
+        }
+
         fn __repr__(&self) -> String {
             return format!(
                 "Vector4_rs({}, {}, {}, {})",
                 self.data.x, self.data.y, self.data.z, self.data.w
             );
+        }
+
+        // getter and setter
+
+        #[getter]
+        fn get_x(&self) -> f64 {
+            return self.data.x;
+        }
+
+        #[getter]
+        fn get_y(&self) -> f64 {
+            return self.data.y;
+        }
+
+        #[getter]
+        fn get_z(&self) -> f64 {
+            return self.data.z;
+        }
+
+        #[getter]
+        fn get_w(&self) -> f64 {
+            return self.data.w;
+        }
+
+        #[setter]
+        fn set_x(&mut self, x: f64) {
+            self.data.x = x;
+        }
+
+        #[setter]
+        fn set_y(&mut self, y: f64) {
+            self.data.y = y;
+        }
+
+        #[setter]
+        fn set_z(&mut self, z: f64) {
+            self.data.z = z;
+        }
+
+        #[setter]
+        fn set_w(&mut self, w: f64) {
+            self.data.w = w;
         }
     }
 }
