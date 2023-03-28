@@ -51,7 +51,8 @@ def main() -> None:
     try:
         from libs.pyglet_rs import get_version_str
         print('pyglet_rs available:', get_version_str())
-
+        print('trying to patch pyglet_rs')
+        from libs.pyglet_rs import patch_vector
     except ImportError as e:
         print('pyglet_rs import error')
         traceback.print_exc()

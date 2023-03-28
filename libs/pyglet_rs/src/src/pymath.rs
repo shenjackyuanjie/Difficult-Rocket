@@ -94,5 +94,103 @@ pub mod python_class {
                 data: self.data.floordiv(&other.data),
             };
         }
+
+        fn __repr__(&self) -> String {
+            return format!("Vector2_rs({}, {})", self.data.x, self.data.y);
+        }
+    }
+
+    #[pymethods]
+    impl PyVector3 {
+        #[new]
+        fn py_new(x: f64, y: f64, z: f64) -> Self {
+            return Self {
+                data: Vector3::new(x, y, z),
+            };
+        }
+
+        fn __add__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data + other.data,
+            };
+        }
+
+        fn __sub__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data - other.data,
+            };
+        }
+
+        fn __mul__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data * other.data,
+            };
+        }
+
+        fn __truediv__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data / other.data,
+            };
+        }
+
+        fn __floordiv__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data.floordiv(&other.data),
+            };
+        }
+
+        fn __repr__(&self) -> String {
+            return format!(
+                "Vector3_rs({}, {}, {})",
+                self.data.x, self.data.y, self.data.z
+            );
+        }
+    }
+
+    #[pymethods]
+    impl PyVector4 {
+        #[new]
+        fn py_new(x: f64, y: f64, z: f64, w: f64) -> Self {
+            return Self {
+                data: Vector4::new(x, y, z, w),
+            };
+        }
+
+        fn __add__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data + other.data,
+            };
+        }
+
+        fn __sub__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data - other.data,
+            };
+        }
+
+        fn __mul__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data * other.data,
+            };
+        }
+
+        fn __truediv__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data / other.data,
+            };
+        }
+
+        fn __floordiv__(&self, other: &Self) -> Self {
+            return Self {
+                data: self.data.floordiv(&other.data),
+            };
+        }
+
+        fn __repr__(&self) -> String {
+            return format!(
+                "Vector4_rs({}, {}, {}, {})",
+                self.data.x, self.data.y, self.data.z, self.data.w
+            );
+        }
     }
 }

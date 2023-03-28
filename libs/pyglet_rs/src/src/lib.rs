@@ -24,5 +24,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<sprite::Sprite>()?;
     // vector
     m.add_class::<pymath::python_class::PyVector2>()?;
+    m.add_class::<pymath::python_class::PyVector3>()?;
+    m.add_class::<pymath::python_class::PyVector4>()?;
     Ok(())
 }
