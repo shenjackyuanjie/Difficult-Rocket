@@ -6,7 +6,6 @@
  * -------------------------------
  */
 
-
 pub mod python_class {
     use pyo3::prelude::*;
 
