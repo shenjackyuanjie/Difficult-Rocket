@@ -78,7 +78,7 @@ pub mod python_class {
         }
 
         fn __radd__(&self, other: &PyAny) -> Self {
-            return if other.is_instance_of::<PyVector2>() {
+            return if other.is_instance_of::<PyVector2>().unwrap() {
                 Self {
                     data: self.data + other.extract::<PyVector2>().unwrap().data,
                 }
@@ -88,10 +88,10 @@ pub mod python_class {
                     self.clone()
                 } else {
                     Self {
-                        data: self.data + other.extract::<f64>().unwrap(),
+                        data: self.data + Vector2::from_same(other.extract::<f64>().unwrap()),
                     }
                 }
-            }
+            };
         }
 
         fn __sub__(&self, other: &Self) -> Self {

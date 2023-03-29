@@ -39,6 +39,9 @@ pub mod vector {
         fn round(&self, ndigits: Option<i64>) -> Self;
         fn clamp(&self, min: f64, max: f64) -> Self;
         fn distance(&self, other: &Self) -> f64;
+        fn normalize(&self) -> Self;
+        // from
+        fn from_same(len: f64) -> Self;
     }
 
     impl Add for Vector2 {
@@ -196,7 +199,20 @@ pub mod vector {
         }
 
         fn distance(&self, other: &Self) -> f64 {
-            (self - other).abs()
+            (*self - *other).abs()
+        }
+
+        fn normalize(&self) -> Self {
+            let d = self.abs();
+            return if d != 0.0 {
+                Self::new(self.x / d, self.y / d)
+            } else {
+                self.clone()
+            };
+        }
+
+        fn from_same(len: f64) -> Self {
+            Self::new(len, len)
         }
     }
 
@@ -241,11 +257,28 @@ pub mod vector {
         }
 
         fn clamp(&self, min: f64, max: f64) -> Self {
-            Self::new(self.x.clamp(min, max), self.y.clamp(min, max), self.z.clamp(min, max))
+            Self::new(
+                self.x.clamp(min, max),
+                self.y.clamp(min, max),
+                self.z.clamp(min, max),
+            )
         }
 
         fn distance(&self, other: &Self) -> f64 {
-            (self - other).abs()
+            (*self - *other).abs()
+        }
+
+        fn normalize(&self) -> Self {
+            let d = self.abs();
+            return if d != 0.0 {
+                Self::new(self.x / d, self.y / d, self.z / d)
+            } else {
+                self.clone()
+            };
+        }
+
+        fn from_same(len: f64) -> Self {
+            Self::new(len, len, len)
         }
     }
 
@@ -297,11 +330,29 @@ pub mod vector {
         }
 
         fn clamp(&self, min: f64, max: f64) -> Self {
-            Self::new(self.x.clamp(min, max), self.y.clamp(min, max), self.z.clamp(min, max), self.w.clamp(min, max))
+            Self::new(
+                self.x.clamp(min, max),
+                self.y.clamp(min, max),
+                self.z.clamp(min, max),
+                self.w.clamp(min, max),
+            )
         }
 
         fn distance(&self, other: &Self) -> f64 {
-            (self - other).abs()
+            (*self - *other).abs()
+        }
+
+        fn normalize(&self) -> Self {
+            let d = self.abs();
+            return if d != 0.0 {
+                Self::new(self.x / d, self.y / d, self.z / d, self.w / d)
+            } else {
+                self.clone()
+            };
+        }
+
+        fn from_same(len: f64) -> Self {
+            Self::new(len, len, len, len)
         }
     }
 
