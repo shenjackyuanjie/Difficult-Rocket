@@ -54,8 +54,6 @@ pub mod python_class {
         fn __neg__(&self) -> Self;
         fn __round__(&self, ndigits: Option<i64>) -> Self;
         fn __radd__(&self, other: &PyAny) -> Self;
-        fn __eq__(&self, other: &Self) -> bool;
-        fn __ne__(&self, other: &Self) -> bool;
         // fn rotate
     }
 
