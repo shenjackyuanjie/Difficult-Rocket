@@ -13,26 +13,31 @@ pub mod python_class {
     use crate::math::matrix::{Matrix3, Matrix4};
     use crate::math::vector::{Vector2, Vector3, Vector4, VectorTrait};
 
+    #[derive(Clone)]
     #[pyclass(name = "Vector2_rs")]
     pub struct PyVector2 {
         pub data: Vector2,
     }
 
+    #[derive(Clone)]
     #[pyclass(name = "Vector3_rs")]
     pub struct PyVector3 {
         pub data: Vector3,
     }
 
+    #[derive(Clone)]
     #[pyclass(name = "Vector4_rs")]
     pub struct PyVector4 {
         pub data: Vector4,
     }
 
+    #[derive(Clone)]
     #[pyclass(name = "Matrix3_rs")]
     pub struct PyMatrix3 {
         pub data: Matrix3,
     }
 
+    #[derive(Clone)]
     #[pyclass(name = "Matrix4_rs")]
     pub struct PyMatrix4 {
         pub data: Matrix4,
@@ -70,6 +75,23 @@ pub mod python_class {
             return Self {
                 data: self.data + other.data,
             };
+        }
+
+        fn __radd__(&self, other: &PyAny) -> Self {
+            return if other.is_instance_of::<PyVector2>() {
+                Self {
+                    data: self.data + other.extract::<PyVector2>().unwrap().data,
+                }
+            } else {
+                // if other == 0
+                if other.is_none() {
+                    self.clone()
+                } else {
+                    Self {
+                        data: self.data + other.extract::<f64>().unwrap(),
+                    }
+                }
+            }
         }
 
         fn __sub__(&self, other: &Self) -> Self {

@@ -35,8 +35,10 @@ pub mod vector {
         fn floordiv(&self, other: &Self) -> Self;
         fn abs(&self) -> f64;
         fn neg(&self) -> Self;
+        fn dot(&self, other: &Self) -> f64;
         fn round(&self, ndigits: Option<i64>) -> Self;
-        fn radd(&self, other: &Self) -> Self;
+        fn clamp(&self, min: f64, max: f64) -> Self;
+        fn distance(&self, other: &Self) -> f64;
     }
 
     impl Add for Vector2 {
@@ -172,6 +174,10 @@ pub mod vector {
             Self::new(-self.x, -self.y)
         }
 
+        fn dot(&self, other: &Self) -> f64 {
+            self.x * other.x + self.y * other.y
+        }
+
         fn round(&self, ndigits: Option<i64>) -> Self {
             match ndigits {
                 Some(ndigits) => {
@@ -185,8 +191,12 @@ pub mod vector {
             }
         }
 
-        fn radd(&self, other: &Self) -> Self {
-            Self::new(self.x + other.x, self.y + other.y)
+        fn clamp(&self, min: f64, max: f64) -> Self {
+            Self::new(self.x.clamp(min, max), self.y.clamp(min, max))
+        }
+
+        fn distance(&self, other: &Self) -> f64 {
+            (self - other).abs()
         }
     }
 
@@ -212,6 +222,10 @@ pub mod vector {
             Self::new(-self.x, -self.y, -self.z)
         }
 
+        fn dot(&self, other: &Self) -> f64 {
+            self.x * other.x + self.y * other.y + self.z * other.z
+        }
+
         fn round(&self, ndigits: Option<i64>) -> Self {
             match ndigits {
                 Some(ndigits) => {
@@ -226,8 +240,12 @@ pub mod vector {
             }
         }
 
-        fn radd(&self, other: &Self) -> Self {
-            Self::new(self.x + other.x, self.y + other.y, self.z + other.z)
+        fn clamp(&self, min: f64, max: f64) -> Self {
+            Self::new(self.x.clamp(min, max), self.y.clamp(min, max), self.z.clamp(min, max))
+        }
+
+        fn distance(&self, other: &Self) -> f64 {
+            (self - other).abs()
         }
     }
 
@@ -254,6 +272,10 @@ pub mod vector {
             Self::new(-self.x, -self.y, -self.z, -self.w)
         }
 
+        fn dot(&self, other: &Self) -> f64 {
+            self.x * other.x + self.y * other.y + self.z * other.z + self.w * other.w
+        }
+
         fn round(&self, ndigits: Option<i64>) -> Self {
             match ndigits {
                 Some(ndigits) => {
@@ -274,13 +296,12 @@ pub mod vector {
             }
         }
 
-        fn radd(&self, other: &Self) -> Self {
-            Self::new(
-                self.x + other.x,
-                self.y + other.y,
-                self.z + other.z,
-                self.w + other.w,
-            )
+        fn clamp(&self, min: f64, max: f64) -> Self {
+            Self::new(self.x.clamp(min, max), self.y.clamp(min, max), self.z.clamp(min, max), self.w.clamp(min, max))
+        }
+
+        fn distance(&self, other: &Self) -> f64 {
+            (self - other).abs()
         }
     }
 
