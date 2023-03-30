@@ -9,6 +9,7 @@
 pub mod python_class {
     use pyo3::class::basic::CompareOp;
     use pyo3::prelude::*;
+    use pyo3::types::PySlice;
 
     use crate::math::matrix::{Matrix3, Matrix4};
     use crate::math::vector::{Vector2, Vector3, Vector4, VectorTrait};
@@ -130,6 +131,13 @@ pub mod python_class {
         fn __repr__(&self) -> String {
             return format!("Vector2_rs({}, {})", self.data.x, self.data.y);
         }
+
+        // fn __getitem__(&self, item: &PyAny) -> PyResult<&PyAny> {
+        //     if item.is_instance_of::<PySlice>().unwrap() {
+        //         let item = item.extract::<PySlice>().unwrap();
+        //         let indices = item.indices().unwrap();
+        //     }
+        // }
 
         // getter and setter
 
