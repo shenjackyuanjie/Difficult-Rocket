@@ -8,6 +8,8 @@ if ("38" -notin $args -and "39" -notin $args -and "310" -notin $args -and "311" 
     $do = 1
 }
 
+cargo fmt
+
 if ($do -or "38" -in $args) {
     python3.8 setup.py build
 }

@@ -14,7 +14,8 @@ pub mod part_list {
     // use quick_xml::de::from_str;
     use serde_xml_rs::from_str;
 
-    use crate::types::sr1::{SR1PartAttr, SR1PartList, SR1PartType, SR1PartTypeData};
+    use crate::types::sr1::{SR1PartAttr, SR1PartList, SR1PartType};
+    use crate::types::sr1::{SR1PartListTrait, SR1PartTypeData};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct RawPartList {
@@ -325,6 +326,10 @@ pub mod part_list {
     }
 
     impl RawPartList {
+        pub fn new(parts: Vec<RawPart>) -> Self {
+            RawPartList { part_types: parts }
+        }
+
         pub fn list_print(&self) -> () {
             for part_data in self.part_types.iter() {
                 println!("{:?}\n", part_data);
@@ -339,8 +344,22 @@ pub mod part_list {
             }
             SR1PartList {
                 types: part_list,
-                name: name.unwrap_or("".to_string()),
+                name: name.unwrap_or("NewPartList".to_string()),
             }
+        }
+    }
+
+    impl SR1PartListTrait for RawPartList {
+        fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
+            let mut types: Vec<SR1PartType> = Vec::new();
+            for part_data in self.part_types.iter() {
+                types.push(part_data.to_sr_part_type());
+            }
+            SR1PartList::part_types_new(types, name)
+        }
+
+        fn to_raw_part_list(&self) -> RawPartList {
+            return self.clone();
         }
     }
 

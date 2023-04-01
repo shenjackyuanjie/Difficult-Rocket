@@ -195,6 +195,11 @@ pub mod sr1 {
         fn to_raw_part_type(&self) -> RawPartType;
     }
 
+    pub trait SR1PartListTrait {
+        fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList;
+        fn to_raw_part_list(&self) -> RawPartList;
+    }
+
     impl SR1PartList {
         #[inline]
         pub fn new(name: String, types: Vec<SR1PartType>) -> Self {
@@ -202,19 +207,31 @@ pub mod sr1 {
         }
 
         pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
-            let mut types: Vec<SR1PartType> = Vec::new();
-            let name = match name {
-                Some(name) => name,
-                None => "NewPartList".to_string(),
-            };
-            for part_type in part_types {
-                types.insert(0, part_type);
-            }
-            SR1PartList::new(name, types)
+            SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
         }
 
         pub fn insert_part(&mut self, part: SR1PartType) -> () {
             self.types.insert(0, part);
+        }
+    }
+
+    impl SR1PartListTrait for SR1PartList {
+        fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
+            return if let Some(name) = name {
+                let mut dupe = self.clone();
+                dupe.name = name;
+                dupe
+            } else {
+                self.clone()
+            };
+        }
+
+        fn to_raw_part_list(&self) -> RawPartList {
+            let mut types: Vec<RawPartType> = Vec::new();
+            for part_type in self.types {
+                types.insert(0, part_type.to_raw_part_type());
+            }
+            RawPartList::new(types)
         }
     }
 
@@ -344,6 +361,14 @@ pub mod sr1 {
                 lander,
             }
         }
+    }
+
+    pub struct SR1Ship {
+        pub name: String,
+        pub description: String,
+        pub connections: Vec<String>,
+        pub lift_off: bool,
+        pub touch_ground: bool,
     }
 }
 
