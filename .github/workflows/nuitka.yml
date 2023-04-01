@@ -119,7 +119,7 @@ jobs:
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
-          # $arg += @("--show-progress")
+          $arg += @("--disable-ccache")
           $arg += @("--assume-yes-for-download")
           python -m nuitka $arg DR.py
 
@@ -148,7 +148,7 @@ jobs:
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
-          # $arg += @("--show-progress")
+          $arg += @("--disable-ccache")
           $arg += @("--assume-yes-for-download")
           python -m nuitka $arg DR.py
 
