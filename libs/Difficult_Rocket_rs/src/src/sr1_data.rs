@@ -326,7 +326,7 @@ pub mod part_list {
     }
 
     impl RawPartList {
-        pub fn new(parts: Vec<RawPart>) -> Self {
+        pub fn new(parts: Vec<RawPartType>) -> Self {
             RawPartList { part_types: parts }
         }
 

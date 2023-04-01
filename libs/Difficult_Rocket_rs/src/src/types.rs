@@ -228,7 +228,7 @@ pub mod sr1 {
 
         fn to_raw_part_list(&self) -> RawPartList {
             let mut types: Vec<RawPartType> = Vec::new();
-            for part_type in self.types {
+            for part_type in self.types.iter() {
                 types.insert(0, part_type.to_raw_part_type());
             }
             RawPartList::new(types)
