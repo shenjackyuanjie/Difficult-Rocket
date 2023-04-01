@@ -53,11 +53,10 @@ jobs:
             **/requirement-dev.txt
             .github/workflows/requirement.txt
 
-      # 安装 Rust
-      # - name: Setup | Rust
-      #  uses: ATiltedTree/setup-rust@v1
-      #  with:
-      #    rust-version: nightly
+      # 安装 pyglet
+      - name: Install pyglet
+        run: |
+          pip install git+https://github.com/shenjackyuanjie/pyglet.git
 
       # 安装依赖
       - name: Install env
@@ -114,10 +113,9 @@ jobs:
           $arg += @("--clang")
           $arg += @("--lto=no")
           # 包配置
-          $arg += @("--nofollow-import-to=libs.Difficult_Rocket_rs")
+          $arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi")
+          $arg += @("--follow-import-to=pyglet")
           # 数据配置
-          $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
-          # $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
@@ -144,10 +142,9 @@ jobs:
           $arg += @("--clang")
           $arg += @("--lto=no")
           # 包配置
-          $arg += @("--nofollow-import-to=libs.Difficult_Rocket_rs")
+          $arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi")
+          $arg += @("--follow-import-to=pyglet")
           # 数据配置
-          $arg += @("--include-data-dir=./libs/pyglet=./pyglet")
-          # $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
           $arg += @("--include-data-dir=./textures=./textures")
           $arg += @("--include-data-dir=./configs=./configs")
           # 编译配置
@@ -164,8 +161,10 @@ jobs:
           Remove-Item libs/fonts/SmileySans-Oblique.ttf -Force
           Get-ChildItem libs/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Condensed/* -Recurse | Remove-Item -Force
           Get-ChildItem libs/fonts/HarmonyOS_Sans/HarmonyOS_Sans/* -Recurse | Remove-Item -Force
+          
           Copy-Item libs/fonts build\DR.dist\libs\fonts -Recurse
-          Copy-Item libs\pyglet\ build\DR.dist -Recurse
+          # Copy-Item libs\pyglet\ build\DR.dist -Recurse
+          
           # Copy-Item -Path "libs\Difficult_Rocket_rs\lib\*" -Destination "build\DR.dist\libs\Difficult_Rocket_rs\lib" -Recurse
           Rename-Item build/DR.dist Difficult-Rocket
           python ./.github/workflows/post_compile.py
