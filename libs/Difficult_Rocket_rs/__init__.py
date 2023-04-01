@@ -15,20 +15,29 @@ if TYPE_CHECKING:
 
     from pyglet.window import Window
 
+
     def test_call(py_obj) -> bool: ...
+
 
     def get_version_str() -> str: ...
 
+
     def simluation() -> None: ...
+
+
     """ 用来测试 rust 的物理模拟能不能用 """
+
 
     def part_list_read_test(file_name: Optional[str] = "./configs/PartList.xml") -> None: ...
 
+
     class PartDatas:
         """ 用于在 PyObj 里塞一个浓眉大眼的 HashMap<uszie, SR1PartData>"""
+
         def __new__(cls, py_part_data: Dict[int, SR1PartData]) -> "PartDatas": ...
 
         def get_rust_pointer(self) -> int: ...
+
 
     def better_update_parts(render: SR1ShipRender,
                             option: SR1ShipRender_Option,
@@ -36,8 +45,10 @@ if TYPE_CHECKING:
                             parts: PartDatas,
                             sr1_xml_scale: int) -> bool: ...
 
+
     class Camera_rs:
         """ 用于闲的没事 用 rust 写一个 camera """
+
         def __new__(cls, window: Window,
                     zoom: float = 1.0,
                     dx: float = 1.0, dy: float = 1.0,
@@ -56,6 +67,15 @@ if TYPE_CHECKING:
         @property
         def position(self) -> Tuple[float, float]: ...
 
+        @dx.setter
+        def dx(self, value: float) -> None: ...
+
+        @dy.setter
+        def dy(self, value: float) -> None: ...
+
+        @zoom.setter
+        def zoom(self, value: float) -> None: ...
+
         def begin(self) -> None: ...
 
         def end(self) -> None: ...
@@ -67,6 +87,7 @@ if TYPE_CHECKING:
 
     class CenterCamera_rs(Camera_rs):
         """ 用于依旧闲的没事 用 rust 写一个中央对齐的 camera """
+
 
     class PartFrame_rs:
         ...

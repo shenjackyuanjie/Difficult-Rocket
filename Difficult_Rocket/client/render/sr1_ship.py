@@ -13,6 +13,7 @@ from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
 # third party package
 from defusedxml.ElementTree import parse
 
+import pyglet.graphics
 # pyglet
 from pyglet.math import Vec4
 from pyglet.text import Label
@@ -202,6 +203,9 @@ class SR1ShipRender(BaseScreen):
         print(time.perf_counter_ns() - start_time)
         self.rendered = True
 
+    def get_ship_size(self) -> (int, int):
+        ...
+
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
@@ -320,17 +324,14 @@ class SR1ShipRender(BaseScreen):
             def screenshot(window):
                 from libs.pyglet.gl import GLubyte, GLint, GL_RGBA, GL_UNSIGNED_BYTE, \
                     glReadPixels
-                # from libs.pyglet.gl.gl_compat import GL_AUX_BUFFERS, GL_AUX0
                 import pyglet
+
                 width = window.width
                 height = window.height
                 format_str = "RGBA"
-                buffer_count = GLint(0)
-                # glGetIntegerv(GL_AUX_BUFFERS, buffer_count)
-                print(buffer_count)
+
                 buf = (GLubyte * (len(format_str) * width * height))()
                 glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf)
-                # print(buf)
                 return pyglet.image.ImageData(width, height, format_str, buf)
 
             image_data = screenshot(self.window_pointer)
