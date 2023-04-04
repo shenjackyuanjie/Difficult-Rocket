@@ -31,21 +31,6 @@ if TYPE_CHECKING:
     def part_list_read_test(file_name: Optional[str] = "./configs/PartList.xml") -> None: ...
 
 
-    class PartDatas:
-        """ 用于在 PyObj 里塞一个浓眉大眼的 HashMap<uszie, SR1PartData>"""
-
-        def __new__(cls, py_part_data: Dict[int, SR1PartData]) -> "PartDatas": ...
-
-        def get_rust_pointer(self) -> int: ...
-
-
-    def better_update_parts(render: SR1ShipRender,
-                            option: SR1ShipRender_Option,
-                            window: BaseScreen,
-                            parts: PartDatas,
-                            sr1_xml_scale: int) -> bool: ...
-
-
     class Camera_rs:
         """ 用于闲的没事 用 rust 写一个 camera """
 

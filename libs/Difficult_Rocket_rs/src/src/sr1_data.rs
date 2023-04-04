@@ -14,7 +14,7 @@ pub mod part_list {
     // use quick_xml::de::from_str;
     use serde_xml_rs::from_str;
 
-    use crate::types::sr1::{SR1PartAttr, SR1PartList, SR1PartType};
+    use crate::types::sr1::{SR1PartList, SR1PartType, SR1PartTypeAttr};
     use crate::types::sr1::{SR1PartListTrait, SR1PartTypeData};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -236,10 +236,10 @@ pub mod part_list {
 
     impl SR1PartTypeData for RawPartType {
         fn to_sr_part_type(&self) -> SR1PartType {
-            let part_attr: Option<SR1PartAttr> = match self.r#type {
+            let part_attr: Option<SR1PartTypeAttr> = match self.r#type {
                 SR1PartTypeEnum::tank => {
                     let tank = self.tank.unwrap();
-                    Some(SR1PartAttr::Tank {
+                    Some(SR1PartTypeAttr::Tank {
                         fuel: tank.fuel,
                         dry_mass: tank.dry_mass,
                         fuel_type: tank.fuel_type.unwrap_or(0),
@@ -247,7 +247,7 @@ pub mod part_list {
                 }
                 SR1PartTypeEnum::engine => {
                     let engine = self.engine.unwrap();
-                    Some(SR1PartAttr::Engine {
+                    Some(SR1PartTypeAttr::Engine {
                         power: engine.power,
                         consumption: engine.consumption,
                         size: engine.size,
@@ -258,7 +258,7 @@ pub mod part_list {
                 }
                 SR1PartTypeEnum::rcs => {
                     let rcs = self.rcs.unwrap();
-                    Some(SR1PartAttr::Rcs {
+                    Some(SR1PartTypeAttr::Rcs {
                         power: rcs.power,
                         consumption: rcs.consumption,
                         size: rcs.size,
@@ -266,13 +266,13 @@ pub mod part_list {
                 }
                 SR1PartTypeEnum::solar => {
                     let solar = self.solar.unwrap();
-                    Some(SR1PartAttr::Solar {
+                    Some(SR1PartTypeAttr::Solar {
                         charge_rate: solar.charge_rate,
                     })
                 }
                 SR1PartTypeEnum::lander => {
                     let lander = self.lander.unwrap();
-                    Some(SR1PartAttr::Lander {
+                    Some(SR1PartTypeAttr::Lander {
                         max_angle: lander.max_angle,
                         min_length: lander.min_length,
                         max_length: lander.max_length,
@@ -335,18 +335,6 @@ pub mod part_list {
                 println!("{:?}\n", part_data);
             }
         }
-
-        pub fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
-            let mut part_list = Vec::new();
-            for part_data in self.part_types.iter() {
-                println!("{}", part_data.id.to_string());
-                part_list.push(part_data.to_sr_part_type());
-            }
-            SR1PartList {
-                types: part_list,
-                name: name.unwrap_or("NewPartList".to_string()),
-            }
-        }
     }
 
     impl SR1PartListTrait for RawPartList {
@@ -402,7 +390,7 @@ pub mod ship {
     use serde_xml_rs::from_str;
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub struct Ship {
+    pub struct RawShip {
         #[serde(rename = "Parts")]
         pub parts: Parts,
         #[serde(rename = "Connections")]
@@ -476,12 +464,12 @@ pub mod ship {
         #[serde(rename = "Staging")]
         pub stages: Vec<Staging>,
         pub name: String,
-        pub throttle: i8,
+        pub throttle: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Tank {
-        pub fuel: i64,
+        pub fuel: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -536,4 +524,8 @@ pub mod ship {
         #[serde(rename = "childPart")]
         pub child_part: i64,
     }
+
+    // pub fn read_ship_from_file(file_name: String) -> Result<RawShip, String> {
+
+    // }
 }

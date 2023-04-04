@@ -51,23 +51,36 @@ pub mod sr1 {
 
     #[derive(Debug, Clone)]
     pub struct SR1PartData {
+        // 单独的属性
+        pub attr: Option<SR1PartDataAttr>,
+        // 基本状态属性
         pub x: f64,
         pub y: f64,
         pub id: i64,
-        pub p_type: String,
-        pub active: bool,
         pub angle: f64, // 弧度制
         pub angle_v: f64,
-        pub editor_angle: usize,
+        // 状态属性
+        pub part_type: String,
+        pub active: bool,
+        pub editor_angle: i32,
         pub flip_x: bool,
         pub flip_y: bool,
+        // 降落伞属性
+        pub chute_x: f64,
+        pub chute_y: f64,
+        pub chute_angle: f64,
+        pub chute_height: f64,
+        pub inflate: bool,
+        pub inflation: bool,
+        pub deployed: bool,
+        // 太阳能板属性
+        pub extension: f64,
+
         pub explode: bool,
-        pub textures: String,
-        pub connections: Option<Vec<((usize, usize), (isize, isize))>>,
     }
 
     #[derive(Debug, Copy, Clone)]
-    pub enum SR1PartAttr {
+    pub enum SR1PartTypeAttr {
         Tank {
             fuel: f64,
             dry_mass: f64,
@@ -100,6 +113,22 @@ pub mod sr1 {
             angle_speed: f64,
             length_speed: f64,
             width: f64,
+        },
+    }
+
+    #[derive(Debug, Clone)]
+    pub enum SR1PartDataAttr {
+        Tank {
+            fuel: f64,
+        },
+        Engine {
+            fuel: f64,
+        },
+        Pod {
+            name: String,
+            throttle: f64,
+            current_stage: u32,
+            steps: Vec<(i64, bool)>,
         },
     }
 
@@ -171,7 +200,7 @@ pub mod sr1 {
         // 部件碰撞箱
         pub attach_points: Option<Vec<AttachPoint>>,
         // 部件连接点
-        pub attr: Option<SR1PartAttr>, // 部件特殊属性
+        pub attr: Option<SR1PartTypeAttr>, // 部件特殊属性
     }
 
     #[derive(Debug, Clone)]
@@ -243,7 +272,7 @@ pub mod sr1 {
         fn to_raw_part_type(&self) -> RawPartType {
             let tank: Option<Tank> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartAttr::Tank {
+                    SR1PartTypeAttr::Tank {
                         fuel,
                         dry_mass,
                         fuel_type,
@@ -258,7 +287,7 @@ pub mod sr1 {
             };
             let engine: Option<Engine> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartAttr::Engine {
+                    SR1PartTypeAttr::Engine {
                         power,
                         consumption,
                         size,
@@ -279,7 +308,7 @@ pub mod sr1 {
             };
             let rcs: Option<Rcs> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartAttr::Rcs {
+                    SR1PartTypeAttr::Rcs {
                         power,
                         consumption,
                         size,
@@ -294,7 +323,7 @@ pub mod sr1 {
             };
             let solar: Option<Solar> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartAttr::Solar { charge_rate } => Some(Solar {
+                    SR1PartTypeAttr::Solar { charge_rate } => Some(Solar {
                         charge_rate: *charge_rate,
                     }),
                     _ => None,
@@ -303,7 +332,7 @@ pub mod sr1 {
             };
             let lander: Option<Lander> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartAttr::Lander {
+                    SR1PartTypeAttr::Lander {
                         max_angle,
                         min_length,
                         max_length,
@@ -366,6 +395,7 @@ pub mod sr1 {
     pub struct SR1Ship {
         pub name: String,
         pub description: String,
+        pub parts: Vec<SR1PartData>,
         pub connections: Vec<String>,
         pub lift_off: bool,
         pub touch_ground: bool,

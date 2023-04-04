@@ -5,6 +5,7 @@
 #  -------------------------------
 
 import time
+import logging
 import contextlib
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
@@ -13,7 +14,6 @@ from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
 # third party package
 from defusedxml.ElementTree import parse
 
-import pyglet.graphics
 # pyglet
 from pyglet.math import Vec4
 from pyglet.text import Label
@@ -23,6 +23,7 @@ from pyglet.graphics import Batch, Group
 
 # Difficult Rocket
 from Difficult_Rocket import DR_option
+from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
@@ -32,7 +33,10 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_option.use_DR_rust:
-    from libs.Difficult_Rocket_rs import PartDatas, CenterCamera_rs
+    from libs.Difficult_Rocket_rs import CenterCamera_rs, SR1PartData
+
+
+logger = logging.getLogger('client')
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -121,6 +125,7 @@ class SR1ShipRender(BaseScreen):
             self.camera_rs = CenterCamera_rs(main_window,
                                              min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
+            self.part_list_rs =
 
     def load_xml(self, file_path: str) -> bool:
         try:
@@ -182,7 +187,6 @@ class SR1ShipRender(BaseScreen):
         for part_xml in parts:
             if part_xml.tag != 'Part':
                 continue  # 如果不是部件，则跳过
-            # print(f"tag: {part.tag} attrib: {part.attrib}")
             part = get_sr1_part(part_xml)
             if part.id in self.part_data:
                 print(f'hey! warning! id{part.id}')
@@ -194,11 +198,6 @@ class SR1ShipRender(BaseScreen):
         except GeneratorExit:
             self.drawing = False
         self.need_draw = False
-
-        if DR_option.use_DR_rust:
-            print(type(self.part_data))
-            self.rust_parts = PartDatas(self.part_data)
-            # print(self.rust_parts.get_rust_pointer())
         print(len(self.part_data))
         print(time.perf_counter_ns() - start_time)
         self.rendered = True
@@ -322,7 +321,7 @@ class SR1ShipRender(BaseScreen):
         elif command.re_match('get_buf'):
 
             def screenshot(window):
-                from libs.pyglet.gl import GLubyte, GLint, GL_RGBA, GL_UNSIGNED_BYTE, \
+                from libs.pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, \
                     glReadPixels
                 import pyglet
 
