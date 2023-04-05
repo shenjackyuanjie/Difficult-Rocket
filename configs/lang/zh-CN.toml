@@ -1,4 +1,6 @@
 language = "简体中文"
+language_set_to = "语言已经设置为：简体中文"
+language_available = "可用语言列表: {}"
 
 [main]
 version.now_on = "困难火箭的运行Python环境为"
@@ -19,6 +21,8 @@ game_start.at = "游戏主线程开始于："
 setup.start = "客户端加载开始"
 setup.use_time = "客户端载入花费: {} 秒"
 setup.use_time_ns = "客户端载入花费: {} 纳秒"
+config.save.start = "正在保存配置文件"
+config.save.done = "配置文件保存完成"
 
 [window]
 setup.start = "游戏窗口加载开始"

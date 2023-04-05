@@ -1,4 +1,6 @@
 language = "English"
+language_set_to = "Language set to: English"
+language_available = "Available languages list: {}"
 
 [main]
 version.now_on = "Difficult Rocket is running on Python Vision"
@@ -19,6 +21,8 @@ game_start.at = "The main thread of the game starts with : "
 setup.start = "Client start loading"
 setup.use_time = "Client loading has used: {} second"
 setup.use_time_ns = "Client loading has used: {} nano second"
+config.save.start = "Saving config……"
+config.save.done = "Config saved"
 
 [window]
 setup.start = "Window start loading"

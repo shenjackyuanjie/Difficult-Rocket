@@ -50,6 +50,7 @@ class Game:
             logging.config.dictConfig(log_config)
             self.logger = logging.getLogger('main')
             self.logger.info(tr().main.logger.mkdir())
+        self.logger.info(tr().language_set_to())
         self.logger.info(tr().main.logger.created())
         # version check
         self.python_version_check()

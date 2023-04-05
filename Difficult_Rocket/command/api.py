@@ -14,7 +14,7 @@ gitee:  @shenjackyuanjie
 # system function
 import re
 
-from typing import Union, Optional, Type, Tuple, List
+from typing import Union, Optional
 
 # DR
 # from Difficult_Rocket.exception.command import *
@@ -31,6 +31,7 @@ class CommandText:
         self.plain_command = text
         self.text = text
         self.error = False
+        self.value_list = []
         self.value_dict = {}
 
     def counter(self, start: Optional[int] = 0) -> int:

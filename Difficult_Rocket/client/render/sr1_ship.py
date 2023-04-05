@@ -363,7 +363,6 @@ class SR1ShipRender(BaseScreen):
             if self.load_xml(path):  # 加载成功一个就停下
                 break
         self.render_ship()
-        print(paths)
 
 
 if __name__ == '__main__':

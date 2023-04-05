@@ -22,6 +22,50 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 20230405 DR `0.7.2.0`
+
+### Translate
+
+- 添加
+  - `language_set_to`: 设置到对应语言时输出
+    - Display when setting to the corresponding language
+  - `language_available`: 可用的语言列表
+    - List of available languages
+  - `client`
+    - `config.save.start`
+    - `config.save.done`
+- `Difficult_Rocket.utils.translate`
+  - `Tr`
+    - 添加了 `_language`(`@property`) 字段
+    - 用于存储和修改语言
+      - Added the `_language`(`@property`) field
+      - Used to store and modify languages
+    - `init_translate`
+      - 添加了 `lang` 参数
+      - 用于设置语言
+        - Added the `lang` parameter
+        - Used to set the language
+
+### Exception
+
+- `language`
+  - `TranslateFileNotFound` -> `TranslateFileError`
+
+### Command
+
+- `lang <language>`
+  - 添加了 `lang` 命令
+  - 直接调用时，会显示可用的语言列表
+  - 用法：`lang <language>`
+    - Added the `lang` command
+    - When called directly, the available language list will be displayed
+    - Usage: `lang <language>`
+
+### Changes
+
+- 现在很多输出信息的地方会使用 i18n
+  - Now many places that output information will use i18n
+
 ## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6`~`0.2.6.0` + DR_api `0.0.1.0`
 
 ### 文档

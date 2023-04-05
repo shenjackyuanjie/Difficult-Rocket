@@ -11,6 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+import os
 import inspect
 
 from dataclasses import dataclass
@@ -18,7 +19,8 @@ from typing import Union, Tuple, Any, List, Dict, Hashable, Optional
 
 from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils import tools
-from Difficult_Rocket.exception.language import *
+from Difficult_Rocket.exception.language import (LanguageNotFound,
+                                                 TranslateKeyNotFound)
 
 
 @dataclass
@@ -162,10 +164,35 @@ class Tr:
         self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
 
-    def init_translate(self):
-        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{self.language_name}.toml')
+    @property
+    def _language(self) -> str:
+        return self.language_name
+
+    @_language.setter
+    def _language(self, value: str):
+        self.init_translate(value)
+
+    def init_translate(self, lang: Optional[str] = None) -> bool:
+        """
+        初始化语言文件
+        :param lang: 要初始化的语言
+        :return:
+        """
+        # 首先判定是否存在对应的语言文件
+        if lang == self.language_name:
+            return False
+        if lang == ' ' or lang == '':
+            raise LanguageNotFound('Can not be empty')
+        lang = lang or self.language_name
+        if not os.path.exists(f'./configs/lang/{lang}.toml'):
+            print(f"lang: {os.path.exists(f'./configs/lang/{lang}.toml')} language = {lang} {self.language_name=}")
+            raise LanguageNotFound(lang)
+        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{lang}.toml')
         self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
+        self.language_name = lang
+        DR_runtime.language = self.language_name
+        return True
 
     def update_lang(self) -> bool:
         if DR_runtime.language != self.language_name:

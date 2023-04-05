@@ -40,6 +40,7 @@ from Difficult_Rocket import DR_runtime, DR_option
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
+from Difficult_Rocket.exception.language import LanguageNotFound
 from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
 from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
@@ -229,12 +230,13 @@ class ClientWindow(Window):
 
     @new_thread('window save_info')
     def save_info(self):
-        self.logger.info('save_info start')
+        self.logger.info(tr().client.save_info.start())
         config_file = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
+        config_file['runtime']['language'] = DR_runtime.language
         rtoml.dump(config_file, open('./configs/main.toml', 'w'))
-        self.logger.info('save_info end')
+        self.logger.info(tr().client.save_info.done())
 
     """
     draws and some event
@@ -306,6 +308,15 @@ class ClientWindow(Window):
         elif command.re_match('default'):
             self.set_size(int(self.main_config['window_default']['width']),
                           int(self.main_config['window_default']['height']))
+        elif command.re_match('lang'):
+            try:
+                lang = command.text[5:]
+                tr._language = lang
+                self.logger.info(tr().language_set_to())
+            except LanguageNotFound:
+                self.logger.info(tr().language_available().format(os.listdir('./configs/lang')))
+            self.save_info()
+
         # self.command_tree.parse(command.plain_command)
 
     @_call_screen_after

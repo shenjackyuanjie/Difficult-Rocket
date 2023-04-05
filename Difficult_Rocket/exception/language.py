@@ -9,7 +9,7 @@ from Difficult_Rocket.exception import BaseError
 __all__ = ['LanguageNotFound',
            'TranslateError',
            'TranslateKeyNotFound',
-           'TranslateFileNotFound']
+           'TranslateFileError']
 
 
 class LanguageNotFound(BaseError):
@@ -30,8 +30,8 @@ class TranslateKeyNotFound(TranslateError):
         return f"{self.__class__.__name__}: Can't get item {'. '.join(self.item_names)} from: {self.value}"
 
 
-class TranslateFileNotFound(TranslateError):
-    """翻译文件缺失"""
+class TranslateFileError(TranslateError):
+    """翻译文件错误"""
 
 
 
