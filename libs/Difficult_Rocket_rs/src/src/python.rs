@@ -26,10 +26,12 @@ pub mod data {
         #[new]
         fn new(file_path: String, list_name: String) -> Self {
             let raw_part_list: RawPartList = RawPartList::from_file(file_path).unwrap();
-            Self {
-                part_list: raw_part_list.to_sr_part_list(Some(list_name.to_string())),
-            }
+            let part_list = raw_part_list.to_sr_part_list(Some(list_name));
+            Self { part_list }
         }
 
+        // fn get_weight(&self, part_type: String) -> PyRe<f64> {
+        //     self.part_list.get_weight()
+        // }
     }
 }

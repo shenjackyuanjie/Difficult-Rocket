@@ -207,6 +207,7 @@ pub mod sr1 {
     #[derive(Debug, Clone)]
     pub struct SR1PartList {
         pub types: Vec<SR1PartType>,
+        pub cache: Option<HashMap<String, SR1PartType>>,
         pub name: String,
     }
 
@@ -233,7 +234,11 @@ pub mod sr1 {
     impl SR1PartList {
         #[inline]
         pub fn new(name: String, types: Vec<SR1PartType>) -> Self {
-            SR1PartList { name, types }
+            SR1PartList {
+                name,
+                cache: None,
+                types,
+            }
         }
 
         pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {

@@ -6,7 +6,6 @@
 
 import time
 import logging
-import contextlib
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
@@ -113,6 +112,7 @@ class SR1ShipRender(BaseScreen):
                                        x=main_window.width / 2, y=main_window.height / 2)
         self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
         self.textures: Union[SR1Textures, None] = None
+        self.xml_name = 'configs/dock1.xml'
         self.xml_doc: ElementTree = parse('configs/dock1.xml')
         self.xml_root: ElementTree.Element = self.xml_doc.getroot()
         self.part_batch = Batch()
@@ -130,13 +130,19 @@ class SR1ShipRender(BaseScreen):
             self.camera_rs = CenterCamera_rs(main_window,
                                              min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
-            # self.part_list_rs =
+            self.part_list_rs = SR1PartList_rs('configs/PartList.xml', 'default_part_list')
 
     def load_xml(self, file_path: str) -> bool:
         try:
+            start_time = time.time_ns()
+            logger.info(tr().client.sr1_render.xml.loading().format(file_path))
             cache_doc = parse(file_path)
             self.xml_doc = cache_doc
             self.xml_root = self.xml_doc.getroot()
+            self.xml_name = file_path
+            logger.info(tr().client.sr1_render.xml.load_done())
+            logger.info(tr().client.sr1_render.xml.load_time().format(
+                (time.time_ns() - start_time) / 1000000000))
             return True
         except Exception as e:
             print(e)
@@ -181,6 +187,7 @@ class SR1ShipRender(BaseScreen):
     def render_ship(self):
         if self.textures is None:
             self.load_textures()
+        logger.info(tr().client.sr1_render.ship.load().format(self.xml_name))
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
@@ -228,8 +235,11 @@ class SR1ShipRender(BaseScreen):
             self.render_ship()
 
         if self.drawing:
-            with contextlib.suppress(GeneratorExit):
+            try:
                 next(self.gen_draw)
+            except GeneratorExit:
+                self.drawing = False
+                logger.info(tr().client.sr1_render.ship.render.done())
 
         if self.need_update_parts:
             self.update_parts()

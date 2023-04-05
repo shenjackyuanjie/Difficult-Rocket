@@ -16,12 +16,12 @@ logger.logfile_datefmt = "Log file date format : "
 game_start.at = "The main thread of the game starts with : "
 
 [client]
-setup.done = "Client loaded"
+setup.start = "Client start loading"
 setup.use_time = "Client loading has used: {} second"
 setup.use_time_ns = "Client loading has used: {} nano second"
 
 [window]
-setup.done = "Window loaded"
+setup.start = "Window start loading"
 setup.use_time = "Window loading has used: {} second"
 setup.use_time_ns = "Window loading has used: {} nano second"
 os.pid_is = "Window's PID: {} PPID: {}"
@@ -48,7 +48,8 @@ game.stop = "game closing, saving data……"
 game.end = "game closed"
 
 [server]
-setup.done = "Server loaded "
+setup.start = "Server start loading"
+setup.use_time = "Server loading has used: {} second"
 os.pid_is = "Server PID: {} PPID: {}"
 
 [game]
@@ -57,12 +58,12 @@ command = "in game commands"
 window = "window"
 
 [client.sr1_render]
-setup.done = "SR1 Renderer loaded"
+setup.start = "SR1 Renderer start loading"
 setup.use_time = "SR1 Renderer loading has used: {} second"
 xml.loading = "Loading XML file: {}"
 xml.load_done = "XML file loaded"
 xml.load_time = "XML file loading has used: {} second"
 ship.load = "Loading ship: {}"
 ship.load_time = "Ship loading has used: {} second"
-ship.info = "Ship info:\n- Parts: {}\n- Weight: {}\n- File size: {}"
-
+ship.info = "Ship info:\n- Parts: {}\n- Weight: {}"
+ship.render.done = "Ship render done"
