@@ -15,7 +15,7 @@
 [关于版本号的说明/about version](version.md)
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.7.1.2-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.7.2.0-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
@@ -68,6 +68,8 @@
 
 - 现在很多输出信息的地方会使用 i18n
   - Now many places that output information will use i18n
+- 现在会在渲染飞船的时候在控制台输出飞船的部件数、总质量、解析时间
+  - Now it will output the number of ship parts, total mass, and parsing time when rendering the ship in the console
 
 ## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6`~`0.2.6.0` + DR_api `0.0.1.0`
 
