@@ -137,6 +137,10 @@ class _DR_runtime(Options):
                 relationship = 'larger' if self.DR_Rust_version > self.DR_Rust_get_version else 'smaller'
                 warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
+        with contextlib.suppress(FileNotFoundError):
+            with open('./configs/main.toml', 'r', encoding='utf-8') as f:
+                import rtoml
+                self.language = rtoml.load(f)['runtime']['language']
 
 
 DR_option = _DR_option()
