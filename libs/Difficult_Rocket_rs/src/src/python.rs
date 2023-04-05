@@ -9,10 +9,36 @@
 pub mod data {
     use pyo3::prelude::*;
     use serde_xml_rs::from_str;
+    use std::collections::HashMap;
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::sr1_data::ship::RawShip;
-    use crate::types::sr1::{SR1PartList, SR1PartListTrait, SR1Ship};
+    use crate::types::sr1::{SR1PartList, SR1PartListTrait, SR1PartType, SR1Ship};
+
+    #[pyclass]
+    #[pyo3(name = "SR1PartType_rs")]
+    pub struct PySR1PartType {
+        pub data: SR1PartType,
+    }
+
+    #[pymethods]
+    impl PySR1PartType {
+        #[getter]
+        fn get_name(&self) -> String {
+            self.data.name.clone()
+        }
+
+        #[getter]
+        fn get_mass(&self) -> f64 {
+            self.data.mass
+        }
+    }
+
+    impl PySR1PartType {
+        pub fn new(data: SR1PartType) -> Self {
+            Self { data }
+        }
+    }
 
     #[pyclass]
     #[pyo3(name = "SR1PartList_rs")]
@@ -30,8 +56,25 @@ pub mod data {
             Self { part_list }
         }
 
-        // fn get_weight(&self, part_type: String) -> PyRe<f64> {
-        //     self.part_list.get_weight()
-        // }
+        fn as_dict(&self) -> HashMap<String, PySR1PartType> {
+            let mut dict = HashMap::new();
+            for part_type in self.part_list.types.iter() {
+                dict.insert(
+                    part_type.name.clone(),
+                    PySR1PartType::new(part_type.clone()),
+                );
+            }
+            dict
+        }
+
+        fn get_part_type(&mut self, name: String) -> Option<PySR1PartType> {
+            let cache = self.part_list.get_hash_map();
+            let part_type = cache.get(&name);
+            if let Some(part_type) = part_type {
+                Some(PySR1PartType::new(part_type.clone()))
+            } else {
+                None
+            }
+        }
     }
 }

@@ -210,10 +210,14 @@ class SR1ShipRender(BaseScreen):
         except GeneratorExit:
             self.drawing = False
         self.need_draw = False
+        full_mass = 0
+        if DR_option.use_DR_rust:
+            for part in self.part_data:
+                full_mass += self.part_list_rs.get_part_type(self.part_data[part].p_type).mass * 500
         logger.info(tr().client.sr1_render.ship.load_time().format(
             (time.perf_counter_ns() - start_time) / 1000000000))
         logger.info(tr().client.sr1_render.ship.info().format(
-            len(self.part_data), len(self.part_data) * 10))
+            len(self.part_data), f'{full_mass}kg' if DR_option.use_DR_rust else tr().game.require_DR_rs()))
         self.rendered = True
 
     def get_ship_size(self) -> (int, int):
@@ -284,7 +288,7 @@ class SR1ShipRender(BaseScreen):
         else:
             zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
         # 缩放的变换量
-        if not self.camera_rs.zoom == 10 and scroll_y > 0:
+        if not self.camera_rs.zoom == 10 or scroll_y > 0:
             if self.camera_rs.zoom * zoom_d >= 10:
                 zoom_d = 10 / self.camera_rs.zoom
                 self.camera_rs.zoom = 10

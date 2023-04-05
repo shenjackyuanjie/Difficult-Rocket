@@ -60,6 +60,7 @@ os.pid_is = "Server PID: {} PPID: {}"
 input = "console"
 command = "in game commands"
 window = "window"
+require_DR_rs = "require DR_rs module"
 
 [client.sr1_render]
 setup.start = "SR1 Renderer start loading"

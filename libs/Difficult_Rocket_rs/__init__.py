@@ -9,9 +9,6 @@ from .lib import *
 from typing import TYPE_CHECKING, Dict, Tuple, Optional
 
 if TYPE_CHECKING:
-    from Difficult_Rocket.client.screen import BaseScreen
-    from Difficult_Rocket.api.types.SR1 import SR1PartData
-    from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender, SR1ShipRender_Option
 
     from pyglet.window import Window
 
@@ -76,3 +73,22 @@ if TYPE_CHECKING:
 
     class PartFrame_rs:
         ...
+
+
+    class SR1PartType_rs:
+        """ 用于从 rust 中读取 SR1PartType
+        不能从 Python 端创建"""
+        @property
+        def name(self) -> str: ...
+        @property
+        def mass(self) -> float: ...
+
+
+    class SR1PartList_rs:
+        """ 用于从 rust 中读取 SR1PartList """
+        def __init__(self, file_name: Optional[str] = "./configs/PartList.xml",
+                     list_name: Optional[str] = 'NewPartList'): ...
+
+        def as_dict(self) -> Dict[str, SR1PartType_rs]: ...
+
+        def get_part_type(self, name: str) -> SR1PartType_rs: ...

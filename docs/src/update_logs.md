@@ -45,6 +45,9 @@
       - 用于设置语言
         - Added the `lang` parameter
         - Used to set the language
+- `game.require_DR_rs`
+  - 用于标记需要 `DR_rs` 才能运行的部分
+    - Used to mark the parts that need `DR_rs` to run
 
 ### Exception
 

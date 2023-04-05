@@ -212,11 +212,15 @@ pub mod sr1 {
     }
 
     impl SR1PartList {
-        pub fn get_hash_map(&self) -> HashMap<String, SR1PartType> {
+        pub fn get_hash_map(&mut self) -> HashMap<String, SR1PartType> {
+            if let Some(map) = &self.cache {
+                return map.clone();
+            }
             let mut map = HashMap::new();
             for part in self.types.iter() {
                 map.insert(part.id.clone(), part.clone());
             }
+            self.cache = Some(map.clone());
             map
         }
     }

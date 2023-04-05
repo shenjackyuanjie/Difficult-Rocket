@@ -40,5 +40,6 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<render::camera::CenterCameraRs>()?;
     m.add_class::<render::screen::PartFrame>()?;
     m.add_class::<python::data::PySR1PartList>()?;
+    m.add_class::<python::data::PySR1PartType>()?;
     Ok(())
 }
