@@ -22,9 +22,7 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-<!-- cmdrun seq 1 10 -->
-
-## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6` + DR_api `0.0.1.0`
+## 20230302 DR `0.7.1.5` + Build `1.2.1.0` + DR_rs `0.2.5.6`~`0.2.6.0` + DR_api `0.0.1.0`
 
 ### 文档
 
@@ -36,6 +34,25 @@
   - Or hws.shenjack.top:81/dr
   - Or shenjack.top:81/dr
   - To visit the DR document page
+
+### Translate
+
+- 添加
+  - `client.sr1_render`
+    - `setup.done`
+    - `setup.use_time`
+    - `xml.loading`
+    - `xml.load_done`
+    - `xml.load_time`
+    - `ship.load`
+    - `ship.load_time`
+    - `ship.info`
+    - `ship.render.done`
+  - `server.use_time`
+- 修改
+  - `client.setup.done` -> `client.setup.start`
+  - `window.setup.done` -> `window.setup.start`
+  - `server.setup.done` -> `server.setup.start`
 
 ### Workflow
 
@@ -53,6 +70,27 @@
   - 跟随 pyglet master 的修改
     - Modify the definition of `BaseScreen`
       - Follow the modification of pyglet master
+
+### DR_rs V 0.2.6.0
+
+- 实装了之前的修改 步进版本号
+- 
+
+### DR_rs V 0.2.5.7
+
+- 整个项目 `cargo fmt` 了一遍
+  - `cargo fmt` the whole project
+- `types::sr1::SR1PartData`
+  - 修改了部分字段的定义
+  - 补全了缺失的字段
+    - Modified the definition of some fields
+    - Complete the missing fields
+- `types::sr1::SR1PartAttr` -> `types::sr1::SR1PartTypeAttr`
+- +`types::sr1::SR1PartDataAttr`
+  - 用于存储 实际部件 的属性
+    - Used to store the attributes of the actual parts
+- 还有一大堆修改，只不过都没实装
+  - There are a lot of modifications, but they are not implemented
 
 ### DR_rs V 0.2.5.6
 
