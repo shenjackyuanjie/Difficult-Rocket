@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_option.use_DR_rust:
-    from libs.Difficult_Rocket_rs import CenterCamera_rs, SR1PartData
+    from libs.Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs
 
 
 logger = logging.getLogger('client')
@@ -84,6 +84,7 @@ class SR1ShipRender(BaseScreen):
     def __init__(self,
                  main_window: "ClientWindow"):
         super().__init__(main_window)
+        load_start_time = time.time_ns()
         self.rendered = False
         self.focus = True
         self.need_draw = False
@@ -121,11 +122,15 @@ class SR1ShipRender(BaseScreen):
                                  anchor_x='left', anchor_y='top')
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        load_end_time = time.time_ns()
+        logger.info(tr().client.sr1_render.setup.done())
+        logger.info(tr().client.sr1_render.setup.use_time().format(
+            (load_end_time - load_start_time) / 1000000000))
         if DR_option.use_DR_rust:
             self.camera_rs = CenterCamera_rs(main_window,
                                              min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
-            self.part_list_rs =
+            # self.part_list_rs =
 
     def load_xml(self, file_path: str) -> bool:
         try:

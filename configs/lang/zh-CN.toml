@@ -55,3 +55,13 @@ os.pid_is = "服务端 PID: {} PPID: {}"
 input = "控制台"
 command = "游戏内命令行"
 window = "窗口"
+
+[client.sr1_render]
+setup.done = "SR1 渲染器载入完成"
+setup.use_time = "SR1 渲染器载入消耗时间: {} 秒"
+xml.loading = "正在加载XML文件: {}"
+xml.load_done = "XML 文件加载完成"
+xml.load_time = "XML 文件加载消耗时间: {} 秒"
+ship.load = "正在加载飞船: {}"
+ship.load_time = "飞船加载消耗时间: {} 秒"
+ship.info = "飞船信息:\n- 部件数量: {}\n- 部件重量: {}\n- 文件大小: {}"

@@ -326,10 +326,19 @@ pub mod part_list {
     }
 
     impl RawPartList {
+        #[inline]
         pub fn new(parts: Vec<RawPartType>) -> Self {
             RawPartList { part_types: parts }
         }
 
+        #[inline]
+        pub fn from_file(file_name: String) -> Option<RawPartList> {
+            let part_list_file = fs::read_to_string(file_name).unwrap();
+            let part_list: RawPartList = from_str(part_list_file.as_str()).unwrap();
+            Some(part_list)
+        }
+
+        #[inline]
         pub fn list_print(&self) -> () {
             for part_data in self.part_types.iter() {
                 println!("{:?}\n", part_data);
@@ -351,27 +360,11 @@ pub mod part_list {
         }
     }
 
-    #[inline]
-    pub fn read_part_list(file_name: String) -> Option<RawPartList> {
-        let part_list_file = fs::read_to_string(file_name.to_string());
-
-        match part_list_file {
-            Ok(part_list_file) => {
-                let part_list: RawPartList = from_str(part_list_file.as_str()).unwrap();
-                Some(part_list)
-            }
-            Err(_) => {
-                println!("Error while reading File {}", file_name);
-                None
-            }
-        }
-    }
-
     #[pyfunction]
     #[pyo3(name = "part_list_read_test", signature = (file_name = "./configs/PartList.xml".to_string()))]
     pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
         let file_name = file_name.unwrap_or("./configs/PartList.xml".to_string());
-        let _parts = read_part_list(file_name);
+        let _parts = RawPartList::from_file(file_name);
         if let Some(parts) = _parts {
             // println!("{:?}", parts)
             parts.list_print();

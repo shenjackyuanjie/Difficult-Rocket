@@ -6,17 +6,18 @@
  * -------------------------------
  */
 
+mod logger;
+mod python;
+mod render;
 mod simulator;
 mod sr1_data;
-mod render;
-mod logger;
 mod types;
 
 use pyo3::prelude::*;
 
 #[pyfunction]
 fn get_version_str() -> String {
-    return "0.2.5.6".to_string();
+    return "0.2.5.7".to_string();
 }
 
 #[pyfunction]
@@ -38,5 +39,6 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<render::camera::CameraRs>()?;
     m.add_class::<render::camera::CenterCameraRs>()?;
     m.add_class::<render::screen::PartFrame>()?;
+    m.add_class::<python::data::PySR1PartList>()?;
     Ok(())
 }

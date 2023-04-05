@@ -7,6 +7,7 @@
  */
 
 pub mod sr1 {
+    use std::collections::HashMap;
     // use super::math::{Shape, Point2D};
     use crate::sr1_data::part_list::Damage as RawDamage;
     use crate::sr1_data::part_list::{
@@ -210,12 +211,12 @@ pub mod sr1 {
     }
 
     impl SR1PartList {
-        pub fn to_raw_part_list(&self) -> RawPartList {
-            let mut types: Vec<RawPartType> = Vec::new();
-            for part_type in &self.types {
-                types.insert(0, part_type.to_raw_part_type());
+        pub fn get_hash_map(&self) -> HashMap<String, SR1PartType> {
+            let mut map = HashMap::new();
+            for part in self.types.iter() {
+                map.insert(part.id.clone(), part.clone());
             }
-            RawPartList { part_types: types }
+            map
         }
     }
 

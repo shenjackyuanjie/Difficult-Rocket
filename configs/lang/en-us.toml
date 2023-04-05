@@ -55,3 +55,14 @@ os.pid_is = "Server PID: {} PPID: {}"
 input = "console"
 command = "in game commands"
 window = "window"
+
+[client.sr1_render]
+setup.done = "SR1 Renderer loaded"
+setup.use_time = "SR1 Renderer loading has used: {} second"
+xml.loading = "Loading XML file: {}"
+xml.load_done = "XML file loaded"
+xml.load_time = "XML file loading has used: {} second"
+ship.load = "Loading ship: {}"
+ship.load_time = "Ship loading has used: {} second"
+ship.info = "Ship info:\n- Parts: {}\n- Weight: {}\n- File size: {}"
+
