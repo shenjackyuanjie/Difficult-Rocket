@@ -1,6 +1,5 @@
 [runtime]
 fps = 60
-version = "0.6.5.0"
 language = "zh-CN"
 date_fmt = "%Y-%m-%d %H-%M-%S"
 write_py_v = "3.8.10"
