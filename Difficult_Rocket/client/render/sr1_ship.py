@@ -284,17 +284,14 @@ class SR1ShipRender(BaseScreen):
         else:
             zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
         # 缩放的变换量
-        if self.camera_rs.zoom == 10:
-            if scroll_y < 0:
+        if not self.camera_rs.zoom == 10 and scroll_y > 0:
+            if self.camera_rs.zoom * zoom_d >= 10:
+                zoom_d = 10 / self.camera_rs.zoom
+                self.camera_rs.zoom = 10
+            else:
                 self.camera_rs.zoom *= zoom_d
-            self.camera_rs.dx += mouse_dx_d * 0.5
-            self.camera_rs.dy += mouse_dy_d * 0.5
-        else:
             mouse_dx_d *= (1 - zoom_d)
             mouse_dy_d *= (1 - zoom_d)
-            self.camera_rs.zoom *= zoom_d
-            if self.camera_rs.zoom * zoom_d >= 10:
-                self.camera_rs.zoom = 10
             self.camera_rs.dx += mouse_dx_d
             self.camera_rs.dy += mouse_dy_d
 
