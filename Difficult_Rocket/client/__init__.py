@@ -72,6 +72,7 @@ class Client:
         start_time = time.time_ns()
         # logging
         self.logger = logging.getLogger('client')
+        self.logger.info(tr().client.setup.start())
         # config
         self.config = ClientOption()
         # value
@@ -86,7 +87,6 @@ class Client:
                                    fullscreen=self.config.fullscreen, caption=self.config.caption,
                                    resizable=self.config.resizeable, visible=self.config.visible,
                                    file_drops=file_drop)
-        self.logger.info(tr().client.setup.done())
         end_time = time.time_ns()
         self.use_time = end_time - start_time
         self.logger.info(tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000))
@@ -153,6 +153,7 @@ class ClientWindow(Window):
         super().__init__(*args, **kwargs)
         # logging
         self.logger = logging.getLogger('client')
+        self.logger.info(tr().window.setup.start())
         # value
         self.net_mode = net_mode
         self.run_input = False
@@ -185,7 +186,6 @@ class ClientWindow(Window):
         # 设置刷新率
         pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
-        self.logger.info(tr().window.setup.done())
         self.logger.info(tr().window.os.pid_is().format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
         self.use_time = end_time - start_time

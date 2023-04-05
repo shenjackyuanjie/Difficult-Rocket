@@ -12,6 +12,7 @@ gitee:  @shenjackyuanjie
 """
 
 import os
+import time
 import logging
 # import multiprocessing
 
@@ -26,8 +27,10 @@ from Difficult_Rocket.utils.translate import tr
 
 class Server:
     def __init__(self, net_mode='local'):
+        start_time = time.time()
         # logging
         self.logger = logging.getLogger('server')
+        self.logger.info(tr().server.setup.start())
         # value
         self.process_id = os.getpid()
         # os.set
@@ -36,7 +39,7 @@ class Server:
         self.config = tools.load_file('configs/main.toml')
         # self.dev = Dev
         # self.net_mode = net_mode
-        self.logger.info(tr().server.setup.done())
+        self.logger.info(tr().server.setup.use_time().format(time.time() - start_time))
 
     def run(self):
         self.logger.info(tr().server.os.pid_is().format(os.getpid(), os.getppid()))

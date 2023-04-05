@@ -84,6 +84,7 @@ class SR1ShipRender(BaseScreen):
     def __init__(self,
                  main_window: "ClientWindow"):
         super().__init__(main_window)
+        logger.info(tr().client.sr1_render.setup.start())
         load_start_time = time.time_ns()
         self.rendered = False
         self.focus = True
@@ -123,7 +124,6 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         load_end_time = time.time_ns()
-        logger.info(tr().client.sr1_render.setup.done())
         logger.info(tr().client.sr1_render.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
         if DR_option.use_DR_rust:
@@ -203,8 +203,10 @@ class SR1ShipRender(BaseScreen):
         except GeneratorExit:
             self.drawing = False
         self.need_draw = False
-        print(len(self.part_data))
-        print(time.perf_counter_ns() - start_time)
+        logger.info(tr().client.sr1_render.ship.load_time().format(
+            (time.perf_counter_ns() - start_time) / 1000000000))
+        logger.info(tr().client.sr1_render.ship.info().format(
+            len(self.part_data), len(self.part_data) * 10))
         self.rendered = True
 
     def get_ship_size(self) -> (int, int):

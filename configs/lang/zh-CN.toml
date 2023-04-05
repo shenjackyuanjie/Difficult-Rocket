@@ -16,13 +16,13 @@ logger.logfile_datefmt = "日志文件日期格式："
 game_start.at = "游戏主线程开始于："
 
 [client]
-setup.done = "客户端载入完成"
+setup.start = "客户端加载开始"
 setup.use_time = "客户端载入花费: {} 秒"
 setup.use_time_ns = "客户端载入花费: {} 纳秒"
 
 [window]
-setup.done = "游戏窗口载入完成"
-setup.use_time = "游戏窗口载入消耗时间: {} 秒"
+setup.start = "游戏窗口加载开始"
+setup.use_time = "游戏窗口加载消耗时间: {} 秒"
 setup.use_time_ns = "游戏窗口载入消耗时间: {} 纳秒"
 os.pid_is = "游戏窗口 PID: {} PPID: {}"
 button.been_press = "按钮被按下，目前状态为："
@@ -48,7 +48,8 @@ game.stop = "游戏正在关闭,保存数据中···"
 game.end = "游戏已经关闭"
 
 [server]
-setup.done = "服务端载入完成"
+setup.start = "服务端开始加载"
+setup.use_time = "服务端加载消耗时间: {} 秒"
 os.pid_is = "服务端 PID: {} PPID: {}"
 
 [game]
@@ -57,11 +58,13 @@ command = "游戏内命令行"
 window = "窗口"
 
 [client.sr1_render]
-setup.done = "SR1 渲染器载入完成"
+setup.start = "SR1 渲染器开始载入"
 setup.use_time = "SR1 渲染器载入消耗时间: {} 秒"
 xml.loading = "正在加载XML文件: {}"
 xml.load_done = "XML 文件加载完成"
 xml.load_time = "XML 文件加载消耗时间: {} 秒"
 ship.load = "正在加载飞船: {}"
 ship.load_time = "飞船加载消耗时间: {} 秒"
-ship.info = "飞船信息:\n- 部件数量: {}\n- 部件重量: {}\n- 文件大小: {}"
+#ship.info = "飞船信息:\n- 部件数量: {}\n- 部件重量: {}\n- 文件大小: {}"
+ship.info = "飞船信息:\n- 部件数量: {}\n- 部件重量: {}"
+ship.render.done = "飞船渲染完成"
