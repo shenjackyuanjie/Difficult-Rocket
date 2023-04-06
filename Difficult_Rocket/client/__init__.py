@@ -230,13 +230,13 @@ class ClientWindow(Window):
 
     @new_thread('window save_info')
     def save_info(self):
-        self.logger.info(tr().client.save_info.start())
+        self.logger.info(tr().client.config.save.start())
         config_file = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
         config_file['runtime']['language'] = DR_runtime.language
         rtoml.dump(config_file, open('./configs/main.toml', 'w'))
-        self.logger.info(tr().client.save_info.done())
+        self.logger.info(tr().client.config.save.done())
 
     """
     draws and some event

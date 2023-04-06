@@ -78,3 +78,24 @@ pub mod data {
         }
     }
 }
+
+pub mod translate {
+    use pyo3::prelude::*;
+
+    #[pyclass]
+    pub struct TranslateConfig {
+        pub raise_error: bool,
+        pub replace_normal: bool,
+        pub add_error: bool,
+        pub is_result: bool,
+        pub keep_get: bool,
+        pub language: String,
+    }
+
+    #[pyclass]
+    pub struct Translate {
+        pub data: PyObject,
+        pub get_list: Vec<(String, bool)>,
+        pub config: Config,
+    }
+}

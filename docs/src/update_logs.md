@@ -22,6 +22,14 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202304 DR `0.7.2.1`
+
+### Changes
+
+- `Difficult_Rocket.utils.translate`
+  - 将所有内置字段前面加上了 `_`
+    - Added `_` to all built-in fields
+
 ## 20230405 DR `0.7.2.0`
 
 ### Translate

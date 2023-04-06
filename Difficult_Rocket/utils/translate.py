@@ -66,22 +66,22 @@ class Translates:
         :param config: 配置
         :param get_list: 获取列表
         """
-        self.value: Union[Dict[str, Any], list, tuple] = value
-        self.config = config or TranslateConfig()
-        self.get_list = get_list or []
+        self._value: Union[Dict[str, Any], list, tuple] = value
+        self._config = config or TranslateConfig()
+        self._get_list = get_list or []
 
     def set_conf_(self, option: Union[str, TranslateConfig],
                   value: Optional[Union[bool, List[str]]] = None) -> 'Translates':
         assert isinstance(option, (TranslateConfig, str))
         if isinstance(option, TranslateConfig):
-            self.config = option
+            self._config = option
             return self
-        self.config.set(option, value)
+        self._config.set(option, value)
         return self
 
     def _raise_no_value(self, e: Exception, item: key_type):
-        if self.config.raise_error:
-            raise TranslateKeyNotFound(self.value, [x[1] for x in self.get_list]) from None
+        if self._config.raise_error:
+            raise TranslateKeyNotFound(self._value, [x[1] for x in self._get_list]) from None
         elif DR_option.report_translate_not_found:
             frame = inspect.currentframe()
             if frame is not None:
@@ -103,22 +103,22 @@ class Translates:
     def __getitem__(self, item: Union[key_type, List[key_type], Tuple[key_type]]) -> "Translates":
         try:
             if isinstance(item, (str, int, Hashable)):
-                cache_value = self.value[item]
+                cache_value = self._value[item]
             else:
-                cache_value = self.value
+                cache_value = self._value
                 for a_item in item:
                     cache_value = cache_value[a_item]
             if isinstance(cache_value, (int, str,)):
-                self.config.is_final = True
-            self.get_list.append((True, item))
-            if self.config.always_copy:
-                return Translates(value=cache_value, config=self.config, get_list=self.get_list)
-            self.value = cache_value
+                self._config.is_final = True
+            self._get_list.append((True, item))
+            if self._config.always_copy:
+                return Translates(value=cache_value, config=self._config, get_list=self._get_list)
+            self._value = cache_value
         except (KeyError, TypeError, AttributeError) as e:
-            self.get_list.append((False, item))
+            self._get_list.append((False, item))
             self._raise_no_value(e, item)
-            if not self.config.keep_get:
-                self.config.is_final = True
+            if not self._config.keep_get:
+                self._config.is_final = True
         return self
 
     def __call__(self, *args, **kwargs) -> Union[dict, list, int, str]:
@@ -128,22 +128,22 @@ class Translates:
         return self.__copy__()
 
     def __copy__(self) -> 'Translates':
-        return Translates(value=self.value, config=self.config, get_list=self.get_list)
+        return Translates(value=self._value, config=self._config, get_list=self._get_list)
 
     def __getattr__(self, item: key_type) -> "Translates":
-        if (self.config.is_final or any(x[0] for x in self.get_list)) and hasattr(self.value, item):
-            return getattr(self.value, item)
+        if (self._config.is_final or any(x[0] for x in self._get_list)) and hasattr(self._value, item):
+            return getattr(self._value, item)
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
         return self.__getitem__(item)
 
     def __str__(self):
-        if not any(not x[0] for x in self.get_list):
-            return self.value
-        if self.config.crack_normal:
-            return f'{".".join(f"{gets[1]}({gets[0]})" for gets in self.get_list)}'
-        elif self.config.insert_crack:
-            return f'{self.value}.{".".join(gets[1] for gets in self.get_list if not gets[0])}'
-        return self.value
+        if not any(not x[0] for x in self._get_list):
+            return self._value
+        if self._config.crack_normal:
+            return f'{".".join(f"{gets[1]}({gets[0]})" for gets in self._get_list)}'
+        elif self._config.insert_crack:
+            return f'{self._value}.{".".join(gets[1] for gets in self._get_list if not gets[0])}'
+        return self._value
 
 
 class Tr:
