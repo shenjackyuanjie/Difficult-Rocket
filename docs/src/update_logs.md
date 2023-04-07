@@ -22,7 +22,23 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202304 DR `0.7.2.1`
+## 202304 DR `0.7.2.2` + DR_rs `0.2.7.0`
+
+### DR_rs V 0.2.7.0
+
+- `python::translate::Translate`
+  - 正在尝试用 Rust 重写一遍 `Difficult_Rocket.utils.translate`
+    - Trying to rewrite `Difficult_Rocket.utils.translate` in Rust
+
+### Changes
+
+- `DR.py`
+  - 向输出环境信息的地方加入 运行目录 信息
+    - Add running directory information to the place where the output environment information
+      - `os.curdir`
+      - `os.path.abspath(os.curdir)`
+
+## 20230405 DR `0.7.2.1`
 
 ### Changes
 
@@ -218,6 +234,9 @@
 ### 内部协议 13
 
 ```python
+from collections import namedtuple
+Version = namedtuple("Version", ["version"])  # 版本号 (用于通过 Pycharm 的检查)
+
 game_version = Version("0.7.1.2")  # 游戏版本
 build_version = Version("1.1.0.0")  # 编译文件版本(与游戏本体无关)
 DR_rust_version = Version("0.2.5.3")  # DR 的 Rust 编写部分的版本
@@ -783,7 +802,7 @@ long_version: 一个用于标记内部协议的整数
 - `test_logging_conf.py`
 - `test_speed_of_sprite.py`
 
-## 2021/06/26 V 0.4.3
+## 20210626 V 0.4.3
 
 ### DEBUG
 
@@ -799,7 +818,7 @@ long_version: 一个用于标记内部协议的整数
 - add performance_test folder
 - add some performances test
 
-## 2021/05/24 V 0.4.2
+## 20210524 V 0.4.2
 
 ### DEBUG
 
@@ -815,7 +834,7 @@ long_version: 一个用于标记内部协议的整数
 
 - debug name_format
 
-## 2021/04/17 V 0.4.1
+## 20210417 V 0.4.1
 
 PS:
 
@@ -836,7 +855,7 @@ PS:
 - plan to change config file format to .config (plan to)
 - reformat all files (including libs)
 
-## 2021/04/09 V 0.2.3/4
+## 20210409 V 0.2.3/4
 
 ### Add
 
@@ -853,7 +872,7 @@ PS:
 - `{date}` can be successful use in `tools.name_handler()` (if you define the format of date)
 - log file's filename incorrect (should be `xxxx-xx-xx xx-xx-xx DR.log` but be `{date} DR.log`)
 
-## 2021/03/27 V 0.2.2/1
+## 20210327 V 0.2.2/1
 
 ### Add
 

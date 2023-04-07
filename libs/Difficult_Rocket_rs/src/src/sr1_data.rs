@@ -100,14 +100,17 @@ pub mod part_list {
     }
 
     impl AttachPoints {
+        #[inline]
         pub fn new(attaches: Vec<AttachPoint>) -> Self {
             AttachPoints { points: attaches }
         }
 
+        #[inline]
         pub fn insert(&mut self, attach: AttachPoint) {
             self.points.push(attach);
         }
 
+        #[inline]
         pub fn unzip(&self) -> Vec<AttachPoint> {
             self.points.clone()
         }
@@ -124,6 +127,7 @@ pub mod part_list {
     }
 
     impl Damage {
+        #[inline]
         pub fn to_damage(&self) -> crate::types::sr1::Damage {
             crate::types::sr1::Damage {
                 disconnect: self.disconnect,
@@ -235,6 +239,7 @@ pub mod part_list {
     }
 
     impl SR1PartTypeData for RawPartType {
+        #[inline]
         fn to_sr_part_type(&self) -> SR1PartType {
             let part_attr: Option<SR1PartTypeAttr> = match self.r#type {
                 SR1PartTypeEnum::tank => {
@@ -347,6 +352,7 @@ pub mod part_list {
     }
 
     impl SR1PartListTrait for RawPartList {
+        #[inline]
         fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
             let mut types: Vec<SR1PartType> = Vec::new();
             for part_data in self.part_types.iter() {
@@ -360,6 +366,7 @@ pub mod part_list {
         }
     }
 
+    #[inline]
     #[pyfunction]
     #[pyo3(name = "part_list_read_test", signature = (file_name = "./configs/PartList.xml".to_string()))]
     pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
@@ -376,11 +383,14 @@ pub mod part_list {
 
 #[allow(unused)]
 pub mod ship {
+    use std::fs;
 
     use pyo3::prelude::*;
     use serde::{Deserialize, Serialize};
     // use quick_xml::de::from_str;
-    use serde_xml_rs::from_str;
+    use serde_xml_rs::{expect, from_str};
+
+    use crate::types::sr1::{SR1Ship, SR1ShipTrait};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct RawShip {
@@ -518,7 +528,24 @@ pub mod ship {
         pub child_part: i64,
     }
 
-    // pub fn read_ship_from_file(file_name: String) -> Result<RawShip, String> {
+    impl SR1ShipTrait for RawShip {
+        #[inline]
+        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
+            todo!()
+        }
 
-    // }
+        #[inline]
+        fn to_raw_ship(&self) -> RawShip {
+            self.clone()
+        }
+    }
+
+    impl RawShip {
+        #[inline]
+        pub fn from_file(path: String) -> Option<RawShip> {
+            let ship_file = fs::read_to_string(path).unwrap();
+            let ship: RawShip = from_str(&ship_file).unwrap();
+            Some(ship)
+        }
+    }
 }

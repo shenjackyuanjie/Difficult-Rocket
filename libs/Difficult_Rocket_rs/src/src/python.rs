@@ -7,13 +7,14 @@
  */
 
 pub mod data {
-    use pyo3::prelude::*;
-    use serde_xml_rs::from_str;
     use std::collections::HashMap;
+
+    use pyo3::prelude::*;
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::sr1_data::ship::RawShip;
-    use crate::types::sr1::{SR1PartList, SR1PartListTrait, SR1PartType, SR1Ship};
+    use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
+    use crate::types::sr1::{SR1PartListTrait, SR1ShipTrait};
 
     #[pyclass]
     #[pyo3(name = "SR1PartType_rs")]
@@ -77,10 +78,32 @@ pub mod data {
             }
         }
     }
+
+    #[pyclass]
+    #[pyo3(name = "SR1Ship_rs")]
+    #[pyo3(
+        text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')"
+    )]
+    pub struct PySR1Ship {
+        pub ship: SR1Ship,
+        pub part_list: SR1PartList,
+    }
+
+    #[pymethods]
+    impl PySR1Ship {
+        #[new]
+        fn new(file_path: String, part_list: String, ship_name: String) -> Self {
+            let raw_ship: RawShip = RawShip::from_file(file_path).unwrap();
+            let ship = raw_ship.to_sr_ship(Some(ship_name));
+            let part_list = SR1PartList::from_file(part_list).unwrap();
+            Self { ship, part_list }
+        }
+    }
 }
 
 pub mod translate {
     use pyo3::prelude::*;
+    use pyo3::types::PyDict;
 
     #[pyclass]
     pub struct TranslateConfig {
@@ -94,8 +117,8 @@ pub mod translate {
 
     #[pyclass]
     pub struct Translate {
-        pub data: PyObject,
+        pub data: Py<PyDict>,
         pub get_list: Vec<(String, bool)>,
-        pub config: Config,
+        pub config: TranslateConfig,
     }
 }

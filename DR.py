@@ -28,7 +28,9 @@ def print_path() -> None:
     print(f'{sys.path=}')
     print(f'{sys.path[0]=}')
     print(f'{sys.argv[0]=}')
+    print(f'{os.curdir=}')
     print(f'{os.getcwd()=}')
+    print(f'{os.path.abspath(os.curdir)=}')
     print(f'{os.path.abspath(__file__)=}')
     print(f'{os.path.realpath(__file__)=}')
     print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
@@ -49,10 +51,10 @@ def main() -> None:
     from Difficult_Rocket import crash
     from Difficult_Rocket import DR_option
     try:
-        from libs.pyglet_rs import get_version_str
+        from libs.pyglet_rs import get_version_str, patch_vector
         print('pyglet_rs available:', get_version_str())
         print('trying to patch pyglet_rs')
-        from libs.pyglet_rs import patch_vector
+        patch_vector()
     except ImportError as e:
         print('pyglet_rs import error')
         traceback.print_exc()

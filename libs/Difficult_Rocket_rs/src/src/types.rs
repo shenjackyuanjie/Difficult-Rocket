@@ -8,12 +8,13 @@
 
 pub mod sr1 {
     use std::collections::HashMap;
-    // use super::math::{Shape, Point2D};
+
     use crate::sr1_data::part_list::Damage as RawDamage;
     use crate::sr1_data::part_list::{
         AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank,
     };
     use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
+    use crate::sr1_data::ship::RawShip;
 
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -212,6 +213,14 @@ pub mod sr1 {
     }
 
     impl SR1PartList {
+        pub fn from_file(file_name: String) -> Option<SR1PartList> {
+            if let Some(raw_list) = RawPartList::from_file(file_name) {
+                return Some(raw_list.to_sr_part_list(None));
+            }
+            None
+        }
+
+        #[inline]
         pub fn get_hash_map(&mut self) -> HashMap<String, SR1PartType> {
             if let Some(map) = &self.cache {
                 return map.clone();
@@ -233,6 +242,11 @@ pub mod sr1 {
     pub trait SR1PartListTrait {
         fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList;
         fn to_raw_part_list(&self) -> RawPartList;
+    }
+
+    pub trait SR1ShipTrait {
+        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship;
+        fn to_raw_ship(&self) -> RawShip;
     }
 
     impl SR1PartList {
@@ -402,6 +416,7 @@ pub mod sr1 {
         }
     }
 
+    #[derive(Debug, Clone)]
     pub struct SR1Ship {
         pub name: String,
         pub description: String,
@@ -409,6 +424,24 @@ pub mod sr1 {
         pub connections: Vec<String>,
         pub lift_off: bool,
         pub touch_ground: bool,
+    }
+
+    impl SR1ShipTrait for SR1Ship {
+        #[inline]
+        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
+            if let Some(name) = name {
+                let mut dupe = self.clone();
+                dupe.name = name;
+                dupe
+            } else {
+                self.clone()
+            }
+        }
+
+        #[inline]
+        fn to_raw_ship(&self) -> RawShip {
+            todo!() // 1145行的内容
+        }
     }
 }
 
