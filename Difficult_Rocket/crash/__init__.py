@@ -19,7 +19,7 @@ import traceback
 import threading
 import multiprocessing
 from pathlib import Path
-from typing import Optional, TextIO
+from typing import Optional, Union, TextIO
 
 # import psutil
 # for more system info
@@ -52,7 +52,7 @@ all_thread = [threading.main_thread()]
 all_process = [multiprocessing.current_process()]
 
 
-def crash_info_handler(info: str = None) -> str:
+def crash_info_handler(info: Optional[str] = None) -> str:
     if not info:
         info = traceback.format_exc().replace('<', '< ')
     format_info = f"<pre>\n{info}</pre>\n"
@@ -60,7 +60,7 @@ def crash_info_handler(info: str = None) -> str:
     return format_info
 
 
-def markdown_line_handler(string: Optional[str or bool or int or float], code: bool = False, level: int = 1,
+def markdown_line_handler(string: Optional[Union[str, bool, int, float]], code: bool = False, level: int = 1,
                           end: str = '\n') -> str:
     lvl = '- ' * level
     f_string = string
@@ -85,7 +85,7 @@ def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
             f'| `{a}`{" " * (a_len - len(a))} | `{b}`{" " * (b_len - len(b))} | `{c}`{" " * (c_len - len(c))} |\n')
 
 
-def create_crash_report(info: str = None) -> None:
+def create_crash_report(info: Optional[str] = None) -> None:
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
         os.mkdir('./crash_report')
@@ -94,6 +94,7 @@ def create_crash_report(info: str = None) -> None:
     cache_stream = io.StringIO()
     try:
         write_cache(cache_stream, crash_info)
+        write_info_to_cache(cache_stream)
     finally:
         get_cache = cache_stream.getvalue()
         cache_stream.close()
@@ -106,6 +107,9 @@ def write_cache(cache_stream, crash_info):
     cache_stream.write(Head_message.format(now_time=time.strftime('%Y/%m/%d %H:%M:%S', time.gmtime(time.time()))))
     # 崩溃信息
     cache_stream.write(crash_info)
+
+
+def write_info_to_cache(cache_stream):
     # 运行状态信息
     from Difficult_Rocket import DR_option, DR_runtime
     cache_stream.write(Run_message)

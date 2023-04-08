@@ -3,6 +3,11 @@ language_set_to = "Language set to: English"
 language_available = "Available languages list: {}"
 
 [main]
+env.version.python = "Python version: {}"
+env.version.DR = "Difficult_Rocket version: {}"
+env.version.DR_rs = "Difficult_Rocket_rs version: {}"
+env.version.pyglet = "pyglet version: {}"
+env.version.pyglet_rs = "pyglet_rs version: {}"
 version.now_on = "Difficult Rocket is running on Python Vision"
 version.need3p = "Difficult Rocket depends on Python vision 3.0+"
 version.best38p = "Difficult Rocket is writen in Python {write_py_v}, and now is running on Python {py_v} may cause BUG"

@@ -11,11 +11,11 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import contextlib
 # import ctypes
 import sys
 import warnings
 import traceback
+import contextlib
 from typing import Optional
 
 from Difficult_Rocket.api.types import Options
@@ -70,7 +70,7 @@ class _DR_option(Options):
     # tests
     playing:                bool = False
     debugging:              bool = False
-    crash_report_test:      bool = False
+    crash_report_test:      bool = True
     pyglet_macosx_dev_test: bool = True
 
     # window option

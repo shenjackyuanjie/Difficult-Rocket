@@ -92,8 +92,8 @@ class Client:
         self.use_time = end_time - start_time
         if DR_option.use_DR_rust:
             from libs.Difficult_Rocket_rs import read_ship_test, part_list_read_test
-            part_list_read_test()
-            read_ship_test()
+            # part_list_read_test()
+            # read_ship_test()
 
         self.logger.info(tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr().client.setup.use_time_ns().format(self.use_time))

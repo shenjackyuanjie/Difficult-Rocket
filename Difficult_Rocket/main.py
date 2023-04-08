@@ -18,12 +18,15 @@ import logging
 import logging.config
 import multiprocessing
 
+from io import StringIO
+
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
 from Difficult_Rocket import client, server, DR_option
 
+from Difficult_Rocket.crash import write_info_to_cache
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
 
@@ -53,8 +56,15 @@ class Game:
         self.logger.info(tr().language_set_to())
         self.logger.info(tr().main.logger.created())
         # version check
+        self.log_env()
         self.python_version_check()
         self.setup()
+        
+    def log_env(self) -> None:
+        cache_steam = StringIO()
+        write_info_to_cache(cache_steam)
+        text = cache_steam.getvalue()
+        self.logger.info(text)
 
     def setup(self) -> None:
         self.client = client.Client(net_mode='local')
