@@ -47,6 +47,11 @@
     - Add running directory information to the place where the output environment information
       - `os.curdir`
       - `os.path.abspath(os.curdir)`
+- `configs/dock1.xml`
+  - 添加了 `DisconnectedParts` 部分
+  - 用于测试 xml 读取和渲染
+    - Added the `DisconnectedParts` part
+    - Used for testing xml reading and rendering
 
 ## 20230405 DR `0.7.2.1`
 
