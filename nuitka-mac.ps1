@@ -10,12 +10,12 @@ if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
 
 ./.github/workflows/env.ps1
 
-cd libs
-cd Difficult_Rocket_rs
-cd src
+Set-Location libs
+Set-Location Difficult_Rocket_rs
+Set-Location src
 python3.9 setup.py build
-python3.9 post_build.py
-cd ../../..
+python3 post_build.py
+Set-Location ../../..
 
 $arg = @()
 # 输出配置
@@ -30,15 +30,16 @@ $arg += @("--macos-app-icon=textures/icon.png")
 # 编译器配置
 $arg += @("--clang")
 $arg += @("--lto=no")
+# 包配置
+$arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi")
+$arg += @("--follow-import-to=pyglet")
 # 数据配置
-$arg += @("--include-data-dir=./libs/pyglet=./pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
 # 编译配置
 $arg += @("--show-memory")
 $arg += @("--show-progress")
-#$arg += @("--assume-yes-for-download")
 python3.9 -m nuitka $arg $args DR.py
 
 $end_time = Get-Uptime
