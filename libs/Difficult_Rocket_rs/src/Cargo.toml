@@ -14,6 +14,8 @@ crate-type = ["cdylib"]
 opt-level = 3
 
 [profile.release]
+strip = true
+opt-level = "s"
 codegen-units = 1
 
 #[dependencies.quick-xml]
