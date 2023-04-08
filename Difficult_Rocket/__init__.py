@@ -24,7 +24,7 @@ from libs.MCDR.version import Version
 
 game_version = Version("0.7.2.1")  # 游戏版本
 build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)
-DR_rust_version = Version("0.2.6.0")  # DR 的 Rust 编写部分的版本
+DR_rust_version = Version("0.2.6.1")  # DR 的 Rust 编写部分的版本
 Api_version = Version("0.0.1.0")  # API 版本
 __version__ = game_version
 

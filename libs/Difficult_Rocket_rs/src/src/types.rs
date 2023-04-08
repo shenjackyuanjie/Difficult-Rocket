@@ -14,7 +14,12 @@ pub mod sr1 {
         AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank,
     };
     use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
-    use crate::sr1_data::ship::RawShip;
+    use crate::sr1_data::ship::{
+        Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
+        DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData,
+        Parts as RawParts, Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep,
+        Tank as RawTank,
+    };
 
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -51,34 +56,20 @@ pub mod sr1 {
         .to_string()
     }
 
-    #[derive(Debug, Clone)]
-    pub struct SR1PartData {
-        // 单独的属性
-        pub attr: Option<SR1PartDataAttr>,
-        // 基本状态属性
-        pub x: f64,
-        pub y: f64,
-        pub id: i64,
-        pub angle: f64, // 弧度制
-        pub angle_v: f64,
-        // 状态属性
-        pub part_type: String,
-        pub active: bool,
-        pub editor_angle: i32,
-        pub flip_x: bool,
-        pub flip_y: bool,
-        // 降落伞属性
-        pub chute_x: f64,
-        pub chute_y: f64,
-        pub chute_angle: f64,
-        pub chute_height: f64,
-        pub inflate: bool,
-        pub inflation: bool,
-        pub deployed: bool,
-        // 太阳能板属性
-        pub extension: f64,
+    #[inline]
+    pub fn i8_to_bool(i: i8) -> bool {
+        match i {
+            0 => false,
+            _ => true,
+        }
+    }
 
-        pub explode: bool,
+    #[inline]
+    pub fn bool_to_i8(b: bool) -> i8 {
+        match b {
+            false => 0,
+            true => 1,
+        }
     }
 
     #[derive(Debug, Copy, Clone)]
@@ -115,22 +106,6 @@ pub mod sr1 {
             angle_speed: f64,
             length_speed: f64,
             width: f64,
-        },
-    }
-
-    #[derive(Debug, Clone)]
-    pub enum SR1PartDataAttr {
-        Tank {
-            fuel: f64,
-        },
-        Engine {
-            fuel: f64,
-        },
-        Pod {
-            name: String,
-            throttle: f64,
-            current_stage: u32,
-            steps: Vec<(i64, bool)>,
         },
     }
 
@@ -213,6 +188,7 @@ pub mod sr1 {
     }
 
     impl SR1PartList {
+        #[inline]
         pub fn from_file(file_name: String) -> Option<SR1PartList> {
             if let Some(raw_list) = RawPartList::from_file(file_name) {
                 return Some(raw_list.to_sr_part_list(None));
@@ -237,6 +213,11 @@ pub mod sr1 {
     pub trait SR1PartTypeData {
         fn to_sr_part_type(&self) -> SR1PartType;
         fn to_raw_part_type(&self) -> RawPartType;
+    }
+
+    pub trait SR1PartDataTrait {
+        fn to_sr_part_data(&self) -> SR1PartData;
+        fn to_raw_part_data(&self) -> RawPartData;
     }
 
     pub trait SR1PartListTrait {
@@ -417,13 +398,178 @@ pub mod sr1 {
     }
 
     #[derive(Debug, Clone)]
+    pub struct SR1PartData {
+        // 单独的属性
+        pub attr: Option<SR1PartDataAttr>,
+        // 基本状态属性
+        pub x: f64,
+        pub y: f64,
+        pub id: i64,
+        pub angle: f64, // 弧度制
+        pub angle_v: f64,
+        // 状态属性
+        pub part_type: String,
+        pub active: bool,
+        pub editor_angle: i32,
+        pub flip_x: bool,
+        pub flip_y: bool,
+
+        pub explode: bool,
+    }
+
+    impl SR1PartDataTrait for SR1PartData {
+        #[inline]
+        fn to_sr_part_data(&self) -> SR1PartData {
+            self.clone()
+        }
+
+        #[inline]
+        fn to_raw_part_data(&self) -> RawPartData {
+            let tank = match &self.attr {
+                Some(attr) => match attr {
+                    SR1PartDataAttr::Tank { fuel } => Some(RawTank { fuel: *fuel }),
+                    _ => None,
+                },
+                _ => None,
+            };
+            let engine = match &self.attr {
+                Some(attr) => match attr {
+                    SR1PartDataAttr::Engine { fuel } => Some(RawEngine { fuel: *fuel }),
+                    _ => None,
+                },
+                _ => None,
+            };
+            let pod = match &self.attr {
+                Some(attr) => match attr {
+                    SR1PartDataAttr::Pod {
+                        name,
+                        throttle,
+                        current_stage,
+                        steps,
+                    } => Some({
+                        let mut actives = Vec::new();
+                        for step in steps {
+                            let mut steps_ = Vec::new();
+                            for active in step {
+                                steps_.push(RawActivate {
+                                    id: active.0,
+                                    moved: bool_to_i8(active.1),
+                                });
+                            }
+                            actives.push(RawStep { activates: steps_ });
+                        }
+                        let stages = RawStaging {
+                            current_stage: *current_stage,
+                            steps: actives,
+                        };
+                        RawPod {
+                            name: name.clone(),
+                            throttle: *throttle,
+                            stages,
+                        }
+                    }),
+                    _ => None,
+                },
+                _ => None,
+            };
+            let (chute_x, chute_y, chute_angle, chute_height, inflate, inflation, deployed, rope) =
+                match &self.attr {
+                    Some(attr) => match attr {
+                        SR1PartDataAttr::Parachute {
+                            chute_x,
+                            chute_y,
+                            chute_angle,
+                            chute_height,
+                            inflate,
+                            inflation,
+                            deployed,
+                            rope,
+                        } => (
+                            Some(*chute_x),
+                            Some(*chute_y),
+                            Some(*chute_angle),
+                            Some(*chute_height),
+                            Some(bool_to_i8(*inflate)),
+                            Some(bool_to_i8(*inflation)),
+                            Some(bool_to_i8(*deployed)),
+                            Some(bool_to_i8(*rope)),
+                        ),
+                        _ => (None, None, None, None, None, None, None, None),
+                    },
+                    _ => (None, None, None, None, None, None, None, None),
+                };
+            let extension = match &self.attr {
+                Some(attr) => match attr {
+                    SR1PartDataAttr::Solar { extension } => Some(*extension),
+                    _ => None,
+                },
+                _ => None,
+            };
+            RawPartData {
+                tank,
+                engine,
+                pod,
+                part_type: self.part_type.clone(),
+                id: self.id,
+                x: self.x,
+                y: self.y,
+                editor_angle: self.editor_angle,
+                angle: self.angle,
+                angle_v: self.angle_v,
+                flip_x: Some(bool_to_i8(self.flip_x)),
+                flip_y: Some(bool_to_i8(self.flip_y)),
+                chute_x,
+                chute_y,
+                chute_height,
+                extension,
+                inflate,
+                inflation,
+                exploded: Some(bool_to_i8(self.explode)),
+                rope,
+                chute_angle,
+                deployed,
+            }
+        }
+    }
+
+    #[derive(Debug, Clone)]
+    pub enum SR1PartDataAttr {
+        Tank {
+            fuel: f64,
+        },
+        Engine {
+            fuel: f64,
+        },
+        Pod {
+            name: String,
+            throttle: f64,
+            current_stage: u32,
+            steps: Vec<Vec<(i64, bool)>>,
+        },
+        Solar {
+            extension: f64,
+        },
+        Parachute {
+            chute_x: f64,
+            chute_y: f64,
+            chute_angle: f64,
+            chute_height: f64,
+            inflate: bool,
+            inflation: bool,
+            deployed: bool,
+            rope: bool,
+        },
+    }
+
+    #[derive(Debug, Clone)]
     pub struct SR1Ship {
         pub name: String,
         pub description: String,
         pub parts: Vec<SR1PartData>,
-        pub connections: Vec<String>,
+        pub connections: Vec<Connection>,
         pub lift_off: bool,
         pub touch_ground: bool,
+        pub disconnected: Vec<(Vec<SR1PartData>, Vec<Connection>)>,
     }
 
     impl SR1ShipTrait for SR1Ship {
@@ -440,7 +586,30 @@ pub mod sr1 {
 
         #[inline]
         fn to_raw_ship(&self) -> RawShip {
-            todo!() // 1145行的内容
+            todo!();
+            // let mut parts = Vec::new();
+            // for part in &self.parts {
+            //     parts.push(part.to_raw_part_data());
+            // }
+            // let connections = Connections {
+            //     connects: self.connections.clone(),
+            // };
+            // let mut disconnected = Vec::new();
+            // for (parts, connections) in &self.disconnected {
+            //     let mut parts = Vec::new();
+            //     for part in parts {
+            //         parts.push(part.to_raw_part_data());
+            //     }
+            //     disconnected.push((parts, connections.clone()));
+            // }
+            // RawShip {
+            //     parts: RawParts { parts },
+            //     connects: connections,
+            //     version: 1,
+            //     lift_off: bool_to_i8(self.lift_off),
+            //     touch_ground: bool_to_i8(self.touch_ground),
+            //     disconnected,
+            // }
         }
     }
 }

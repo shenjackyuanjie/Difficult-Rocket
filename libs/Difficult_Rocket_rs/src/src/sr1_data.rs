@@ -388,11 +388,13 @@ pub mod ship {
     use pyo3::prelude::*;
     use serde::{Deserialize, Serialize};
     // use quick_xml::de::from_str;
-    use serde_xml_rs::{expect, from_str};
+    use serde_xml_rs::from_str;
 
-    use crate::types::sr1::{SR1Ship, SR1ShipTrait};
+    use crate::types::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
+    use crate::types::sr1::{SR1PartDataTrait, SR1ShipTrait};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
+    #[serde(rename = "Ship")]
     pub struct RawShip {
         #[serde(rename = "Parts")]
         pub parts: Parts,
@@ -403,8 +405,9 @@ pub mod ship {
         pub lift_off: i8,
         #[serde(rename = "touchingGround")]
         pub touch_ground: i8,
+        #[serde(rename = "DisconnectedParts")]
+        pub disconnected: Option<Vec<DisconnectedParts>>,
     }
-    // <Ship version="1" liftedOff="0" touchingGround="0">
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Parts {
@@ -427,6 +430,8 @@ pub mod ship {
         #[serde(rename = "Pod")]
         pub pod: Option<Pod>,
 
+        #[serde(rename = "partType")]
+        pub part_type: String,
         pub id: i64,
         pub x: f64,
         pub y: f64,
@@ -439,35 +444,27 @@ pub mod ship {
         pub flip_x: Option<i8>,
         #[serde(rename = "flippedY")]
         pub flip_y: Option<i8>,
+        // 降落伞
         #[serde(rename = "chuteX")]
         pub chute_x: Option<f64>,
         #[serde(rename = "chuteY")]
         pub chute_y: Option<f64>,
-        #[serde(rename = "partType")]
-        pub part_type: String,
-        pub extension: Option<f64>,
-        pub exploded: Option<i8>,
         #[serde(rename = "chuteAngle")]
         pub chute_angle: Option<f64>,
         #[serde(rename = "chuteHeight")]
         pub chute_height: Option<f64>,
-        pub deployed: Option<i8>,
-        pub rope: Option<i8>,
+        pub extension: Option<f64>,
         pub inflate: Option<i8>,
         pub inflation: Option<i8>,
+        pub exploded: Option<i8>,
+        pub rope: Option<i8>,
+        // ?
+        pub deployed: Option<i8>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Engine {
-        pub fuel: i64,
-    }
-
-    #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub struct Pod {
-        #[serde(rename = "Staging")]
-        pub stages: Vec<Staging>,
-        pub name: String,
-        pub throttle: f64,
+        pub fuel: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -476,14 +473,29 @@ pub mod ship {
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
-    pub struct Staging {
-        #[serde(rename = "currentStage")]
-        pub current_stage: u32,
-        #[serde(rename = "Activate")]
-        pub steps: Vec<Activate>,
+    pub struct Pod {
+        #[serde(rename = "Staging")]
+        pub stages: Staging,
+        pub name: String,
+        pub throttle: f64,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Staging {
+        #[serde(rename = "currentStage")]
+        pub current_stage: u32,
+        #[serde(rename = "Step")]
+        pub steps: Vec<Step>,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    pub struct Step {
+        #[serde(rename = "Activate")]
+        pub activates: Vec<Activate>,
+    }
+
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    #[serde(rename = "Activate")]
     pub struct Activate {
         #[serde(rename = "Id")]
         pub id: i64,
@@ -498,9 +510,9 @@ pub mod ship {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct DisconnectedPart {
         #[serde(rename = "Parts")]
-        pub parts: Vec<Parts>,
+        pub parts: Vec<Part>,
         #[serde(rename = "Connections")]
-        pub connects: Vec<Connections>,
+        pub connects: Vec<Connection>,
     }
     ///   <DisconnectedParts>
     ///     <DisconnectedPart>
@@ -531,6 +543,15 @@ pub mod ship {
     impl SR1ShipTrait for RawShip {
         #[inline]
         fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
+            let connects: Vec<(i64, i64, i64, i64)> =
+                Vec::from_iter(self.connects.connects.iter().map(|connect| {
+                    (
+                        connect.parent_attach_point,
+                        connect.child_attach_point,
+                        connect.parent_part,
+                        connect.child_part,
+                    )
+                }));
             todo!()
         }
 
@@ -547,5 +568,15 @@ pub mod ship {
             let ship: RawShip = from_str(&ship_file).unwrap();
             Some(ship)
         }
+    }
+
+    #[pyfunction]
+    #[pyo3(name = "read_ship_test")]
+    #[pyo3(signature = (path = "./configs/dock1.xml".to_string()))]
+    pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
+        let file = fs::read_to_string(path).unwrap();
+        let raw_ship: RawShip = from_str(&file).unwrap();
+        println!("{:?}", raw_ship);
+        Ok(true)
     }
 }

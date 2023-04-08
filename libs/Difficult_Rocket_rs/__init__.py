@@ -27,6 +27,7 @@ if TYPE_CHECKING:
 
     def part_list_read_test(file_name: Optional[str] = "./configs/PartList.xml") -> None: ...
 
+    def read_ship_test(path: Optional[str] = "./configs/dock1.xml") -> None: ...
 
     class Camera_rs:
         """ 用于闲的没事 用 rust 写一个 camera """
