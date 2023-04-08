@@ -10,15 +10,11 @@ pub mod sr1 {
     use std::collections::HashMap;
 
     use crate::sr1_data::part_list::Damage as RawDamage;
-    use crate::sr1_data::part_list::{
-        AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank,
-    };
+    use crate::sr1_data::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
     use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
     use crate::sr1_data::ship::{
-        Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
-        DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData,
-        Parts as RawParts, Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep,
-        Tank as RawTank,
+        Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart, DisconnectedParts as RawDisconnectedParts,
+        Engine as RawEngine, Part as RawPartData, Parts as RawParts, Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
     };
 
     #[inline]
@@ -232,21 +228,13 @@ pub mod sr1 {
 
     impl SR1PartList {
         #[inline]
-        pub fn new(name: String, types: Vec<SR1PartType>) -> Self {
-            SR1PartList {
-                name,
-                cache: None,
-                types,
-            }
-        }
+        pub fn new(name: String, types: Vec<SR1PartType>) -> Self { SR1PartList { name, cache: None, types } }
 
         pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
             SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
         }
 
-        pub fn insert_part(&mut self, part: SR1PartType) -> () {
-            self.types.insert(0, part);
-        }
+        pub fn insert_part(&mut self, part: SR1PartType) -> () { self.types.insert(0, part); }
     }
 
     impl SR1PartListTrait for SR1PartList {
@@ -270,18 +258,12 @@ pub mod sr1 {
     }
 
     impl SR1PartTypeData for SR1PartType {
-        fn to_sr_part_type(&self) -> SR1PartType {
-            self.clone()
-        }
+        fn to_sr_part_type(&self) -> SR1PartType { self.clone() }
 
         fn to_raw_part_type(&self) -> RawPartType {
             let tank: Option<Tank> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartTypeAttr::Tank {
-                        fuel,
-                        dry_mass,
-                        fuel_type,
-                    } => Some(Tank {
+                    SR1PartTypeAttr::Tank { fuel, dry_mass, fuel_type } => Some(Tank {
                         fuel: *fuel,
                         dry_mass: *dry_mass,
                         fuel_type: Some(*fuel_type),
@@ -313,11 +295,7 @@ pub mod sr1 {
             };
             let rcs: Option<Rcs> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartTypeAttr::Rcs {
-                        power,
-                        consumption,
-                        size,
-                    } => Some(Rcs {
+                    SR1PartTypeAttr::Rcs { power, consumption, size } => Some(Rcs {
                         power: *power,
                         consumption: *consumption,
                         size: *size,
@@ -328,9 +306,7 @@ pub mod sr1 {
             };
             let solar: Option<Solar> = match &self.attr {
                 Some(attr) => match attr {
-                    SR1PartTypeAttr::Solar { charge_rate } => Some(Solar {
-                        charge_rate: *charge_rate,
-                    }),
+                    SR1PartTypeAttr::Solar { charge_rate } => Some(Solar { charge_rate: *charge_rate }),
                     _ => None,
                 },
                 _ => None,
@@ -419,9 +395,7 @@ pub mod sr1 {
 
     impl SR1PartDataTrait for SR1PartData {
         #[inline]
-        fn to_sr_part_data(&self) -> SR1PartData {
-            self.clone()
-        }
+        fn to_sr_part_data(&self) -> SR1PartData { self.clone() }
 
         #[inline]
         fn to_raw_part_data(&self) -> RawPartData {
@@ -472,32 +446,31 @@ pub mod sr1 {
                 },
                 _ => None,
             };
-            let (chute_x, chute_y, chute_angle, chute_height, inflate, inflation, deployed, rope) =
-                match &self.attr {
-                    Some(attr) => match attr {
-                        SR1PartDataAttr::Parachute {
-                            chute_x,
-                            chute_y,
-                            chute_angle,
-                            chute_height,
-                            inflate,
-                            inflation,
-                            deployed,
-                            rope,
-                        } => (
-                            Some(*chute_x),
-                            Some(*chute_y),
-                            Some(*chute_angle),
-                            Some(*chute_height),
-                            Some(bool_to_i8(*inflate)),
-                            Some(bool_to_i8(*inflation)),
-                            Some(bool_to_i8(*deployed)),
-                            Some(bool_to_i8(*rope)),
-                        ),
-                        _ => (None, None, None, None, None, None, None, None),
-                    },
+            let (chute_x, chute_y, chute_angle, chute_height, inflate, inflation, deployed, rope) = match &self.attr {
+                Some(attr) => match attr {
+                    SR1PartDataAttr::Parachute {
+                        chute_x,
+                        chute_y,
+                        chute_angle,
+                        chute_height,
+                        inflate,
+                        inflation,
+                        deployed,
+                        rope,
+                    } => (
+                        Some(*chute_x),
+                        Some(*chute_y),
+                        Some(*chute_angle),
+                        Some(*chute_height),
+                        Some(bool_to_i8(*inflate)),
+                        Some(bool_to_i8(*inflation)),
+                        Some(bool_to_i8(*deployed)),
+                        Some(bool_to_i8(*rope)),
+                    ),
                     _ => (None, None, None, None, None, None, None, None),
-                };
+                },
+                _ => (None, None, None, None, None, None, None, None),
+            };
             let extension = match &self.attr {
                 Some(attr) => match attr {
                     SR1PartDataAttr::Solar { extension } => Some(*extension),
@@ -608,9 +581,7 @@ pub mod sr1 {
                             },
                         });
                     }
-                    Some(RawDisconnectedParts {
-                        parts: disconnected_vec,
-                    })
+                    Some(RawDisconnectedParts { parts: disconnected_vec })
                 }
                 _ => None,
             };
@@ -644,14 +615,10 @@ pub mod math {
     }
 
     impl Point2D {
-        pub fn new(x: f64, y: f64) -> Self {
-            Point2D { x, y }
-        }
+        pub fn new(x: f64, y: f64) -> Self { Point2D { x, y } }
 
         #[inline]
-        pub fn new_00() -> Self {
-            Point2D { x: 0.0, y: 0.0 }
-        }
+        pub fn new_00() -> Self { Point2D { x: 0.0, y: 0.0 } }
 
         #[inline]
         pub fn distance(&self, other: &Point2D) -> f64 {
@@ -661,16 +628,12 @@ pub mod math {
         }
 
         #[inline]
-        pub fn distance_00(&self) -> f64 {
-            self.distance(&Point2D::new(0.0, 0.0))
-        }
+        pub fn distance_00(&self) -> f64 { self.distance(&Point2D::new(0.0, 0.0)) }
     }
 
     impl Rotatable for Point2D {
         #[inline]
-        fn rotate(&self, angle: f64) -> Self {
-            self.rotate_radius(angle.to_radians())
-        }
+        fn rotate(&self, angle: f64) -> Self { self.rotate_radius(angle.to_radians()) }
 
         #[inline]
         fn rotate_radius(&self, radius: f64) -> Self {
@@ -707,16 +670,9 @@ pub mod math {
     }
 
     impl Rotatable for OneTimeLine {
-        fn rotate(&self, angle: f64) -> Self {
-            self.rotate_radius(angle.to_radians())
-        }
+        fn rotate(&self, angle: f64) -> Self { self.rotate_radius(angle.to_radians()) }
 
-        fn rotate_radius(&self, radius: f64) -> Self {
-            OneTimeLine::point_new(
-                &self.start.rotate_radius(radius),
-                &self.end.rotate_radius(radius),
-            )
-        }
+        fn rotate_radius(&self, radius: f64) -> Self { OneTimeLine::point_new(&self.start.rotate_radius(radius), &self.end.rotate_radius(radius)) }
     }
 
     #[derive(Clone, Copy)]
@@ -802,9 +758,7 @@ pub mod math {
         }
 
         #[inline]
-        pub fn point_new(a: &Point2D, b: &Point2D) -> Self {
-            OneTimeLine::pos_new(a.x, a.y, b.x, b.y)
-        }
+        pub fn point_new(a: &Point2D, b: &Point2D) -> Self { OneTimeLine::pos_new(a.x, a.y, b.x, b.y) }
 
         pub fn point1_k_b_new(point: &Point2D, k: Option<f64>, b: Option<f64>) -> Self {
             let mut k_: f64;
@@ -833,9 +787,7 @@ pub mod math {
             }
         }
 
-        pub fn point_d() -> f64 {
-            1.0
-        }
+        pub fn point_d() -> f64 { 1.0 }
     }
 }
 
@@ -890,8 +842,6 @@ pub mod dr {
     }
 
     impl DRPartData {
-        pub fn get_textures(&self) -> String {
-            "aaa".to_string()
-        }
+        pub fn get_textures(&self) -> String { "aaa".to_string() }
     }
 }

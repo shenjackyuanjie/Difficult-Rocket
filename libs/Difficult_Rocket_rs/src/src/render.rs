@@ -32,14 +32,7 @@ pub mod camera {
     impl CenterCameraRs {
         #[new]
         #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0, min_zoom=1.0, max_zoom=1.0))]
-        pub fn py_new(
-            window: &PyAny,
-            zoom: f64,
-            dx: f64,
-            dy: f64,
-            min_zoom: f64,
-            max_zoom: f64,
-        ) -> PyResult<(Self, CameraRs)> {
+        pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64, min_zoom: f64, max_zoom: f64) -> PyResult<(Self, CameraRs)> {
             return Ok((
                 CenterCameraRs {},
                 CameraRs {
@@ -66,14 +59,8 @@ pub mod camera {
             Python::with_gil(|py| -> PyResult<()> {
                 let view = super_.window.getattr(py, intern!(py, "view"))?;
                 // 获取存储的 view
-                let x: f64 = super_
-                    .window
-                    .getattr(py, intern!(py, "width"))?
-                    .extract(py)?;
-                let y: f64 = super_
-                    .window
-                    .getattr(py, intern!(py, "height"))?
-                    .extract(py)?;
+                let x: f64 = super_.window.getattr(py, intern!(py, "width"))?.extract(py)?;
+                let y: f64 = super_.window.getattr(py, intern!(py, "height"))?.extract(py)?;
                 let x: f64 = x / 2.0 / super_.zoom + (super_.dx / super_.zoom);
                 let y: f64 = y / 2.0 / super_.zoom + (super_.dy / super_.zoom);
                 // 计算中心点
@@ -89,9 +76,7 @@ pub mod camera {
                 let view_matrix = view_matrix.call_method1(py, intern!(py, "scale"), args)?;
                 // view_matrix = view_matrix.scale((zoom, zoom, 1))
 
-                super_
-                    .window
-                    .setattr(py, intern!(py, "view"), view_matrix)?;
+                super_.window.setattr(py, intern!(py, "view"), view_matrix)?;
                 // self.view = view_matrix
                 Ok(())
             })?;
@@ -103,14 +88,7 @@ pub mod camera {
     impl CameraRs {
         #[new]
         #[pyo3(signature = (window, zoom=1.0, dx=1.0, dy=1.0, min_zoom=1.0, max_zoom=1.0))]
-        pub fn py_new(
-            window: &PyAny,
-            zoom: f64,
-            dx: f64,
-            dy: f64,
-            min_zoom: f64,
-            max_zoom: f64,
-        ) -> PyResult<Self> {
+        pub fn py_new(window: &PyAny, zoom: f64, dx: f64, dy: f64, min_zoom: f64, max_zoom: f64) -> PyResult<Self> {
             return Ok(CameraRs {
                 dx,
                 dy,
@@ -128,9 +106,7 @@ pub mod camera {
         }
 
         #[getter]
-        pub fn get_position(&self) -> (f64, f64) {
-            return (self.dx, self.dy);
-        }
+        pub fn get_position(&self) -> (f64, f64) { return (self.dx, self.dy); }
 
         #[setter]
         pub fn set_position(&mut self, value: (f64, f64)) -> () {
@@ -139,9 +115,7 @@ pub mod camera {
         }
 
         #[getter]
-        pub fn get_zoom(&self) -> PyResult<f64> {
-            Ok(self.zoom)
-        }
+        pub fn get_zoom(&self) -> PyResult<f64> { Ok(self.zoom) }
 
         #[setter]
         pub fn set_zoom(&mut self, value: f64) -> PyResult<()> {
@@ -154,10 +128,7 @@ pub mod camera {
                 let view = self.window.getattr(py, intern!(py, "view"))?;
 
                 let x: f64 = self.window.getattr(py, intern!(py, "width"))?.extract(py)?;
-                let y: f64 = self
-                    .window
-                    .getattr(py, intern!(py, "height"))?
-                    .extract(py)?;
+                let y: f64 = self.window.getattr(py, intern!(py, "height"))?.extract(py)?;
                 let x: f64 = x / 2.0 / self.zoom + (self.dx / self.zoom);
                 let y: f64 = y / 2.0 / self.zoom + (self.dy / self.zoom);
                 // use to get center of the screen
@@ -182,10 +153,7 @@ pub mod camera {
                 let view = self.window.getattr(py, intern!(py, "view"))?;
 
                 let x: f64 = self.window.getattr(py, intern!(py, "width"))?.extract(py)?;
-                let y: f64 = self
-                    .window
-                    .getattr(py, intern!(py, "height"))?
-                    .extract(py)?;
+                let y: f64 = self.window.getattr(py, intern!(py, "height"))?.extract(py)?;
                 let x: f64 = x / 2.0 / self.zoom + (self.dx / self.zoom);
                 let y: f64 = y / 2.0 / self.zoom + (self.dy / self.zoom);
 
@@ -209,12 +177,7 @@ pub mod camera {
             Ok(py_self)
         }
 
-        pub fn __exit__(
-            &self,
-            _exc_type: PyObject,
-            _exc_value: PyObject,
-            _traceback: PyObject,
-        ) -> PyResult<()> {
+        pub fn __exit__(&self, _exc_type: PyObject, _exc_value: PyObject, _traceback: PyObject) -> PyResult<()> {
             // println!("exit!");
             self.end()?;
             return Ok(());

@@ -101,19 +101,13 @@ pub mod part_list {
 
     impl AttachPoints {
         #[inline]
-        pub fn new(attaches: Vec<AttachPoint>) -> Self {
-            AttachPoints { points: attaches }
-        }
+        pub fn new(attaches: Vec<AttachPoint>) -> Self { AttachPoints { points: attaches } }
 
         #[inline]
-        pub fn insert(&mut self, attach: AttachPoint) {
-            self.points.push(attach);
-        }
+        pub fn insert(&mut self, attach: AttachPoint) { self.points.push(attach); }
 
         #[inline]
-        pub fn unzip(&self) -> Vec<AttachPoint> {
-            self.points.clone()
-        }
+        pub fn unzip(&self) -> Vec<AttachPoint> { self.points.clone() }
     }
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -294,12 +288,11 @@ pub mod part_list {
                 explosion_power: Some(0u32),
                 explosion_size: Some(0u32),
             });
-            let attach_points: Option<Vec<AttachPoint>> =
-                if let Some(attach_points) = &self.attach_points {
-                    Some(attach_points.unzip())
-                } else {
-                    None
-                };
+            let attach_points: Option<Vec<AttachPoint>> = if let Some(attach_points) = &self.attach_points {
+                Some(attach_points.unzip())
+            } else {
+                None
+            };
             SR1PartType {
                 id: self.id.clone(),
                 name: self.name.clone(),
@@ -325,16 +318,12 @@ pub mod part_list {
                 attr: part_attr,
             }
         }
-        fn to_raw_part_type(&self) -> RawPartType {
-            self.clone()
-        }
+        fn to_raw_part_type(&self) -> RawPartType { self.clone() }
     }
 
     impl RawPartList {
         #[inline]
-        pub fn new(parts: Vec<RawPartType>) -> Self {
-            RawPartList { part_types: parts }
-        }
+        pub fn new(parts: Vec<RawPartType>) -> Self { RawPartList { part_types: parts } }
 
         #[inline]
         pub fn from_file(file_name: String) -> Option<RawPartList> {
@@ -361,9 +350,7 @@ pub mod part_list {
             SR1PartList::part_types_new(types, name)
         }
 
-        fn to_raw_part_list(&self) -> RawPartList {
-            return self.clone();
-        }
+        fn to_raw_part_list(&self) -> RawPartList { return self.clone(); }
     }
 
     #[inline]
@@ -544,14 +531,10 @@ pub mod ship {
 
     impl SR1ShipTrait for RawShip {
         #[inline]
-        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
-            todo!()
-        }
+        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship { todo!() }
 
         #[inline]
-        fn to_raw_ship(&self) -> RawShip {
-            self.clone()
-        }
+        fn to_raw_ship(&self) -> RawShip { self.clone() }
     }
 
     impl RawShip {

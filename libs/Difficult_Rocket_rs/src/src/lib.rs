@@ -16,9 +16,7 @@ mod types;
 use pyo3::prelude::*;
 
 #[pyfunction]
-fn get_version_str() -> String {
-    return "0.2.6.1".to_string();
-}
+fn get_version_str() -> String { return "0.2.6.1".to_string(); }
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {

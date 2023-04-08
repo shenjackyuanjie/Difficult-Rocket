@@ -25,20 +25,14 @@ pub mod data {
     #[pymethods]
     impl PySR1PartType {
         #[getter]
-        fn get_name(&self) -> String {
-            self.data.name.clone()
-        }
+        fn get_name(&self) -> String { self.data.name.clone() }
 
         #[getter]
-        fn get_mass(&self) -> f64 {
-            self.data.mass
-        }
+        fn get_mass(&self) -> f64 { self.data.mass }
     }
 
     impl PySR1PartType {
-        pub fn new(data: SR1PartType) -> Self {
-            Self { data }
-        }
+        pub fn new(data: SR1PartType) -> Self { Self { data } }
     }
 
     #[pyclass]
@@ -60,10 +54,7 @@ pub mod data {
         fn as_dict(&self) -> HashMap<String, PySR1PartType> {
             let mut dict = HashMap::new();
             for part_type in self.part_list.types.iter() {
-                dict.insert(
-                    part_type.name.clone(),
-                    PySR1PartType::new(part_type.clone()),
-                );
+                dict.insert(part_type.name.clone(), PySR1PartType::new(part_type.clone()));
             }
             dict
         }
@@ -81,9 +72,7 @@ pub mod data {
 
     #[pyclass]
     #[pyo3(name = "SR1Ship_rs")]
-    #[pyo3(
-        text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')"
-    )]
+    #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
     pub struct PySR1Ship {
         pub ship: SR1Ship,
         pub part_list: SR1PartList,
