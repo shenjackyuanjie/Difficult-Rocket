@@ -15,7 +15,8 @@ fn_single_line = true
 
 # 自动对齐最大长度
 enum_discrim_align_threshold = 5
-
+# 字段初始化使用简写
+use_field_init_shorthand = true
 # 是否使用彩色输出
 color = "Always"
 

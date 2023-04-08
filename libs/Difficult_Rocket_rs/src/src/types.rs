@@ -602,9 +602,7 @@ pub mod math {
 
     pub trait Rotatable {
         // 懒了，直接实现一个协议得了
-        #[inline]
         fn rotate(&self, angle: f64) -> Self;
-        #[inline]
         fn rotate_radius(&self, radius: f64) -> Self;
     }
 
@@ -705,18 +703,10 @@ pub mod math {
             let d_width = width / 2.0;
             let d_height = height / 2.0;
             let mut edges: Vec<Edge> = vec![
-                Edge::OneTimeLine {
-                    0: OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height),
-                },
-                Edge::OneTimeLine {
-                    0: OneTimeLine::pos_new(d_width, -d_height, d_width, d_height),
-                },
-                Edge::OneTimeLine {
-                    0: OneTimeLine::pos_new(d_width, d_height, -d_width, d_height),
-                },
-                Edge::OneTimeLine {
-                    0: OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height),
-                },
+                Edge::OneTimeLine(OneTimeLine::pos_new(-d_width, -d_height, d_width, -d_height)),
+                Edge::OneTimeLine(OneTimeLine::pos_new(d_width, -d_height, d_width, d_height)),
+                Edge::OneTimeLine(OneTimeLine::pos_new(d_width, d_height, -d_width, d_height)),
+                Edge::OneTimeLine(OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)),
             ];
             if let Some(angle) = angle {
                 edges = edges
