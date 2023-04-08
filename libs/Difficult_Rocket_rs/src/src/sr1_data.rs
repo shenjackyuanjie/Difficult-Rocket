@@ -383,6 +383,7 @@ pub mod part_list {
 
 #[allow(unused)]
 pub mod ship {
+    use std::error::Error;
     use std::fs;
 
     use pyo3::prelude::*;
@@ -406,7 +407,7 @@ pub mod ship {
         #[serde(rename = "touchingGround")]
         pub touch_ground: i8,
         #[serde(rename = "DisconnectedParts")]
-        pub disconnected: Option<Vec<DisconnectedParts>>,
+        pub disconnected: Option<DisconnectedParts>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -418,7 +419,7 @@ pub mod ship {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Connections {
         #[serde(rename = "Connection")]
-        pub connects: Vec<Connection>,
+        pub connects: Option<Vec<Connection>>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -504,15 +505,16 @@ pub mod ship {
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct DisconnectedParts {
+        #[serde(rename = "DisconnectedPart")]
         pub parts: Vec<DisconnectedPart>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct DisconnectedPart {
         #[serde(rename = "Parts")]
-        pub parts: Vec<Part>,
+        pub parts: Parts,
         #[serde(rename = "Connections")]
-        pub connects: Vec<Connection>,
+        pub connects: Connections,
     }
     ///   <DisconnectedParts>
     ///     <DisconnectedPart>
@@ -543,15 +545,6 @@ pub mod ship {
     impl SR1ShipTrait for RawShip {
         #[inline]
         fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
-            let connects: Vec<(i64, i64, i64, i64)> =
-                Vec::from_iter(self.connects.connects.iter().map(|connect| {
-                    (
-                        connect.parent_attach_point,
-                        connect.child_attach_point,
-                        connect.parent_part,
-                        connect.child_part,
-                    )
-                }));
             todo!()
         }
 
@@ -575,8 +568,16 @@ pub mod ship {
     #[pyo3(signature = (path = "./configs/dock1.xml".to_string()))]
     pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
         let file = fs::read_to_string(path).unwrap();
-        let raw_ship: RawShip = from_str(&file).unwrap();
-        println!("{:?}", raw_ship);
+        let raw_ship = from_str::<RawShip>(&file);
+        match raw_ship {
+            Ok(ship) => {
+                println!("{:?}", ship);
+            }
+            Err(e) => {
+                println!("{:?}", e);
+                // println!("{:?}", e.provide());
+            }
+        }
         Ok(true)
     }
 }

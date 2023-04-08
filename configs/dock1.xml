@@ -1,4 +1,14 @@
 <Ship version="1" liftedOff="0" touchingGround="0">
+    <DisconnectedParts>
+        <DisconnectedPart>
+            <Parts>
+                <Part partType="fueltank-2" id="180" x="-43.000000" y="-55.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+                    <Tank fuel="3000.000000"/>
+                </Part>
+            </Parts>
+            <Connections/>
+        </DisconnectedPart>
+    </DisconnectedParts>
     <Parts>
         <Part partType="pod-1" id="1" x="0.000000" y="3.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
             <Pod throttle="0.000000" name="">

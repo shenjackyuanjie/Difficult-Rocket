@@ -250,7 +250,11 @@ class SR1ShipRender(BaseScreen):
             self.need_update_parts = False
 
         with self.camera_rs:
+            from pyglet.gl import glEnable, glDisable, glDepthFunc, GL_DEPTH_TEST, GL_LEQUAL
+            glEnable(GL_DEPTH_TEST)
+            glDepthFunc(GL_LEQUAL)
             self.part_batch.draw()
+            glDisable(GL_DEPTH_TEST)
 
         self.debug_label.draw()
 
@@ -288,7 +292,7 @@ class SR1ShipRender(BaseScreen):
         else:
             zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
         # 缩放的变换量
-        if not self.camera_rs.zoom == 10 or scroll_y > 0:
+        if not (self.camera_rs.zoom == 10 and scroll_y > 0):
             if self.camera_rs.zoom * zoom_d >= 10:
                 zoom_d = 10 / self.camera_rs.zoom
                 self.camera_rs.zoom = 10

@@ -569,7 +569,7 @@ pub mod sr1 {
         pub connections: Vec<Connection>,
         pub lift_off: bool,
         pub touch_ground: bool,
-        pub disconnected: Vec<(Vec<SR1PartData>, Vec<Connection>)>,
+        pub disconnected: Option<Vec<(Vec<SR1PartData>, Vec<Connection>)>>,
     }
 
     impl SR1ShipTrait for SR1Ship {
@@ -586,30 +586,42 @@ pub mod sr1 {
 
         #[inline]
         fn to_raw_ship(&self) -> RawShip {
-            todo!();
-            // let mut parts = Vec::new();
-            // for part in &self.parts {
-            //     parts.push(part.to_raw_part_data());
-            // }
-            // let connections = Connections {
-            //     connects: self.connections.clone(),
-            // };
-            // let mut disconnected = Vec::new();
-            // for (parts, connections) in &self.disconnected {
-            //     let mut parts = Vec::new();
-            //     for part in parts {
-            //         parts.push(part.to_raw_part_data());
-            //     }
-            //     disconnected.push((parts, connections.clone()));
-            // }
-            // RawShip {
-            //     parts: RawParts { parts },
-            //     connects: connections,
-            //     version: 1,
-            //     lift_off: bool_to_i8(self.lift_off),
-            //     touch_ground: bool_to_i8(self.touch_ground),
-            //     disconnected,
-            // }
+            let mut parts = Vec::new();
+            for part in &self.parts {
+                parts.push(part.to_raw_part_data());
+            }
+            let connections = Connections {
+                connects: Some(self.connections.clone()),
+            };
+            let disconnected = match &self.disconnected {
+                Some(disconnected) => {
+                    let mut disconnected_vec: Vec<RawDisconnectedPart> = Vec::new();
+                    for (parts, connections) in disconnected {
+                        let mut raw_parts = Vec::new();
+                        for part in parts {
+                            raw_parts.push(part.to_raw_part_data());
+                        }
+                        disconnected_vec.push(RawDisconnectedPart {
+                            parts: RawParts { parts: raw_parts },
+                            connects: Connections {
+                                connects: Some(connections.clone()),
+                            },
+                        });
+                    }
+                    Some(RawDisconnectedParts {
+                        parts: disconnected_vec,
+                    })
+                }
+                _ => None,
+            };
+            RawShip {
+                parts: RawParts { parts },
+                connects: connections,
+                version: 1,
+                lift_off: bool_to_i8(self.lift_off),
+                touch_ground: bool_to_i8(self.touch_ground),
+                disconnected,
+            }
         }
     }
 }
