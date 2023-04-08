@@ -22,13 +22,23 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202304 DR `0.7.2.2` + DR_rs `0.2.7.0`
+## 202304 DR `0.7.2.2` + DR_rs `0.2.7.1`
 
-### DR_rs V 0.2.7.0
+### DR_rs V 0.2.6.1
 
 - `python::translate::Translate`
   - 正在尝试用 Rust 重写一遍 `Difficult_Rocket.utils.translate`
     - Trying to rewrite `Difficult_Rocket.utils.translate` in Rust
+- `types::sr1::SR1PartData`
+  - 正在实现 `SR1PartDataTrait`
+  - 用于转换 `RawPartData` 和 `SR1PartData`
+  - 写的真折磨人
+    - Implementing `SR1PartDataTrait`
+    - Used to convert `RawPartData` and `SR1PartData`
+    - It's really torture to write
+- `SR1PartDataTrait`
+  - `to_sr_part_data`
+  - `to_raw_part_data`
 
 ### Changes
 
