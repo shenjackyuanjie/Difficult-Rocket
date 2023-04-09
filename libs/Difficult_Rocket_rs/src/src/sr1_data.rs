@@ -378,7 +378,9 @@ pub mod ship {
     // use quick_xml::de::from_str;
     use serde_xml_rs::from_str;
 
-    use crate::types::sr1::{i8_to_bool, SR1PartDataTrait, SR1ShipTrait};
+    use super::part_list::SR1PartTypeEnum;
+
+    use crate::types::sr1::{i8_to_bool, SR1PartDataTrait, SR1PartTypeAttr, SR1ShipTrait};
     use crate::types::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -419,7 +421,7 @@ pub mod ship {
         pub pod: Option<Pod>,
 
         #[serde(rename = "partType")]
-        pub part_type: String,
+        pub part_type: SR1PartTypeEnum,
         pub id: i64,
         pub x: f64,
         pub y: f64,
@@ -531,6 +533,9 @@ pub mod ship {
 
     impl SR1PartDataTrait for Part {
         fn to_sr_part_data(&self) -> SR1PartData {
+            // let attr = match self.part_type {
+            //
+            // };
             todo!()
         }
 

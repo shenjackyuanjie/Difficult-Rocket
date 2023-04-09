@@ -373,26 +373,6 @@ pub mod sr1 {
         }
     }
 
-    #[derive(Debug, Clone)]
-    pub struct SR1PartData {
-        // 单独的属性
-        pub attr: Option<SR1PartDataAttr>,
-        // 基本状态属性
-        pub x: f64,
-        pub y: f64,
-        pub id: i64,
-        pub angle: f64, // 弧度制
-        pub angle_v: f64,
-        // 状态属性
-        pub part_type: String,
-        pub active: bool,
-        pub editor_angle: i32,
-        pub flip_x: bool,
-        pub flip_y: bool,
-
-        pub explode: bool,
-    }
-
     impl SR1PartDataTrait for SR1PartData {
         #[inline]
         fn to_sr_part_data(&self) -> SR1PartData { self.clone() }
@@ -482,7 +462,7 @@ pub mod sr1 {
                 tank,
                 engine,
                 pod,
-                part_type: self.part_type.clone(),
+                part_type: self.part_type,
                 id: self.id,
                 x: self.x,
                 y: self.y,
@@ -503,6 +483,26 @@ pub mod sr1 {
                 deployed,
             }
         }
+    }
+
+    #[derive(Debug, Clone)]
+    pub struct SR1PartData {
+        // 单独的属性
+        pub attr: Option<SR1PartDataAttr>,
+        // 基本状态属性
+        pub x: f64,
+        pub y: f64,
+        pub id: i64,
+        pub angle: f64, // 弧度制
+        pub angle_v: f64,
+        // 状态属性
+        pub part_type: SR1PartTypeEnum,
+        pub active: bool,
+        pub editor_angle: i32,
+        pub flip_x: bool,
+        pub flip_y: bool,
+
+        pub explode: bool,
     }
 
     #[derive(Debug, Clone)]
