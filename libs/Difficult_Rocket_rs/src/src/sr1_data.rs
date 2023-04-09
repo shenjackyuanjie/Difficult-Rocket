@@ -529,6 +529,16 @@ pub mod ship {
         pub child_part: i64,
     }
 
+    impl SR1PartDataTrait for Part {
+        fn to_sr_part_data(&self) -> SR1PartData {
+            todo!()
+        }
+
+        fn to_raw_part_data(&self) -> Part {
+            self.clone()
+        }
+    }
+
     impl SR1ShipTrait for RawShip {
         #[inline]
         fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
@@ -536,26 +546,33 @@ pub mod ship {
             for part in &self.parts.parts {
                 parts.push(part.to_sr_part_data());
             }
-            let disconnected = match self.disconnected {
+            let disconnected = match &self.disconnected {
                 Some(disconnect) => {
                     // let mut disconnect_parts = Vec::new();
-                    let mut parts = Vec::new();
+
+                    let mut disconnect_parts = Vec::new();
                     for disconnected_part in &disconnect.parts {
-                        let parts = Vec::new();
-                        for part in disconnected_part.parts.parts {
-                            parts.push(part.to_sr_part_data());
+
+                        let mut parts_vec = Vec::new();
+                        for part in &disconnected_part.parts.parts {
+
+                            parts_vec.push(part.to_sr_part_data());
                         }
-                        parts.push((parts, disconnected_part.connects.connects.clone()));
+                        disconnect_parts.push((parts_vec, disconnected_part.connects.connects.clone()));
                     }
-                    parts
+                    Some(disconnect_parts)
                 }
                 _ => None,
+            };
+            let connections = match &self.connects.connects {
+                Some(connections) => connections.clone(),
+                _ => Vec::new(),
             };
             SR1Ship {
                 name: name.unwrap_or("NewShip".to_string()),
                 description: "".to_string(),
                 parts,
-                connections: self.connects.connects.unwrap_or(Vec::new()),
+                connections,
                 lift_off: i8_to_bool(self.lift_off),
                 touch_ground: i8_to_bool(self.touch_ground),
                 disconnected,

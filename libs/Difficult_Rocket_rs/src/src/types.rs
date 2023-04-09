@@ -577,7 +577,7 @@ pub mod sr1 {
                         disconnected_vec.push(RawDisconnectedPart {
                             parts: RawParts { parts: raw_parts },
                             connects: Connections {
-                                connects: Some(connections.clone()),
+                                connects: connections.clone(),
                             },
                         });
                     }
