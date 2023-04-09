@@ -465,6 +465,7 @@ pub mod sr1 {
                 exploded: Some(bool_to_i8(self.explode)),
                 rope,
                 chute_angle,
+                activated: Some(bool_to_i8(self.active)),
                 deployed,
             }
         }
@@ -482,10 +483,10 @@ pub mod sr1 {
         pub angle_v: f64,
         // 状态属性
         pub part_type: SR1PartTypeEnum,
-        pub active: bool,
         pub editor_angle: i32,
         pub flip_x: bool,
         pub flip_y: bool,
+        pub active: bool,
 
         pub explode: bool,
     }

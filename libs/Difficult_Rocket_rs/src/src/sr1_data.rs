@@ -449,6 +449,7 @@ pub mod ship {
         pub exploded: Option<i8>,
         pub rope: Option<i8>,
         // ?
+        pub activated: Option<i8>,
         pub deployed: Option<i8>,
     }
 
@@ -505,19 +506,6 @@ pub mod ship {
         #[serde(rename = "Connections")]
         pub connects: Connections,
     }
-    ///   <DisconnectedParts>
-    ///     <DisconnectedPart>
-    ///       <Parts>
-    ///         <Part partType="battery-0" id="1199757" x="-95.500000" y="73.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
-    ///           <Tank fuel="250.000000"/>
-    ///         </Part>
-    ///         <Part partType="lander-1" id="1199758" x="-96.750000" y="73.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
-    ///         <Part partType="lander-1" id="1199759" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
-    ///         <Part partType="lander-1" id="1199760" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
-    ///         <Part partType="lander-1" id="1199761" x="-96.750000" y="73.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
-    ///         <Part partType="lander-1" id="1199762" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
-    ///         <Part partType="lander-1" id="1199763" x="-96.750000" y="73.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
-    ///         <Part partType="lander-1" id="1199764" x="-96.750000" y="74.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Connection {
@@ -553,9 +541,39 @@ pub mod ship {
                     deployed: i8_to_bool(self.deployed.unwrap_or(0_i8)),
                     rope: i8_to_bool(self.rope.unwrap_or(0_i8)),
                 },
+                SR1PartTypeEnum::pod => {
+                    let pod = self.pod.as_ref().unwrap(); // 一定是有的，别问我为什么
+                    let mut steps = Vec::new();
+                    for step in &pod.stages.steps {
+                        let mut activates = Vec::new();
+                        for active in &step.activates {
+                            activates.push((active.id, i8_to_bool(active.moved)))
+                        }
+                        steps.push(activates)
+                    }
+                    SR1PartDataAttr::Pod {
+                        name: pod.name.clone(),
+                        throttle: pod.throttle,
+                        current_stage: pod.stages.current_stage,
+                        steps,
+                    }
+                }
                 _ => SR1PartDataAttr::None,
             };
-            todo!()
+            SR1PartData {
+                attr,
+                x: self.x,
+                y: self.y,
+                id: self.id,
+                angle: self.angle,
+                angle_v: self.angle_v,
+                flip_x: i8_to_bool(self.flip_x.unwrap_or(0_i8)),
+                flip_y: i8_to_bool(self.flip_y.unwrap_or(0_i8)),
+                editor_angle: self.editor_angle,
+                part_type: self.part_type,
+                active: i8_to_bool(self.activated.unwrap_or(0_i8)),
+                explode: i8_to_bool(self.exploded.unwrap_or(0_i8)),
+            }
         }
 
         fn to_raw_part_data(&self) -> Part { self.clone() }
