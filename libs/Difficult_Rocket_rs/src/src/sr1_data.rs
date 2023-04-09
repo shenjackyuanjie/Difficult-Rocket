@@ -533,15 +533,32 @@ pub mod ship {
 
     impl SR1PartDataTrait for Part {
         fn to_sr_part_data(&self) -> SR1PartData {
-            // let attr = match self.part_type {
-            //
-            // };
+            let attr = match self.part_type {
+                SR1PartTypeEnum::tank => SR1PartDataAttr::Tank {
+                    fuel: if let Some(tank) = &self.tank { tank.fuel } else { 0_f64 },
+                },
+                SR1PartTypeEnum::engine => SR1PartDataAttr::Engine {
+                    fuel: if let Some(engine) = &self.engine { engine.fuel } else { 0_f64 },
+                },
+                SR1PartTypeEnum::solar => SR1PartDataAttr::Solar {
+                    extension: self.extension.unwrap_or(0_f64),
+                },
+                SR1PartTypeEnum::parachute => SR1PartDataAttr::Parachute {
+                    chute_x: self.chute_x.unwrap_or(0_f64),
+                    chute_y: self.chute_y.unwrap_or(0_f64),
+                    chute_angle: self.chute_angle.unwrap_or(0_f64),
+                    chute_height: self.chute_height.unwrap_or(0_f64),
+                    inflate: i8_to_bool(self.inflate.unwrap_or(0_i8)),
+                    inflation: i8_to_bool(self.inflation.unwrap_or(0_i8)),
+                    deployed: i8_to_bool(self.deployed.unwrap_or(0_i8)),
+                    rope: i8_to_bool(self.rope.unwrap_or(0_i8)),
+                },
+                _ => SR1PartDataAttr::None,
+            };
             todo!()
         }
 
-        fn to_raw_part_data(&self) -> Part {
-            self.clone()
-        }
+        fn to_raw_part_data(&self) -> Part { self.clone() }
     }
 
     impl SR1ShipTrait for RawShip {
@@ -557,10 +574,8 @@ pub mod ship {
 
                     let mut disconnect_parts = Vec::new();
                     for disconnected_part in &disconnect.parts {
-
                         let mut parts_vec = Vec::new();
                         for part in &disconnected_part.parts.parts {
-
                             parts_vec.push(part.to_sr_part_data());
                         }
                         disconnect_parts.push((parts_vec, disconnected_part.connects.connects.clone()));

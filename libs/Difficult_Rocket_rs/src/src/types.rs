@@ -380,82 +380,67 @@ pub mod sr1 {
         #[inline]
         fn to_raw_part_data(&self) -> RawPartData {
             let tank = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartDataAttr::Tank { fuel } => Some(RawTank { fuel: *fuel }),
-                    _ => None,
-                },
+                SR1PartDataAttr::Tank { fuel } => Some(RawTank { fuel: *fuel }),
                 _ => None,
             };
             let engine = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartDataAttr::Engine { fuel } => Some(RawEngine { fuel: *fuel }),
-                    _ => None,
-                },
+                SR1PartDataAttr::Engine { fuel } => Some(RawEngine { fuel: *fuel }),
                 _ => None,
             };
             let pod = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartDataAttr::Pod {
-                        name,
-                        throttle,
-                        current_stage,
-                        steps,
-                    } => Some({
-                        let mut actives = Vec::new();
-                        for step in steps {
-                            let mut steps_ = Vec::new();
-                            for active in step {
-                                steps_.push(RawActivate {
-                                    id: active.0,
-                                    moved: bool_to_i8(active.1),
-                                });
-                            }
-                            actives.push(RawStep { activates: steps_ });
+                SR1PartDataAttr::Pod {
+                    name,
+                    throttle,
+                    current_stage,
+                    steps,
+                } => Some({
+                    let mut actives = Vec::new();
+                    for step in steps {
+                        let mut steps_ = Vec::new();
+                        for active in step {
+                            steps_.push(RawActivate {
+                                id: active.0,
+                                moved: bool_to_i8(active.1),
+                            });
                         }
-                        let stages = RawStaging {
-                            current_stage: *current_stage,
-                            steps: actives,
-                        };
-                        RawPod {
-                            name: name.clone(),
-                            throttle: *throttle,
-                            stages,
-                        }
-                    }),
-                    _ => None,
-                },
+                        actives.push(RawStep { activates: steps_ });
+                    }
+                    let stages = RawStaging {
+                        current_stage: *current_stage,
+                        steps: actives,
+                    };
+                    RawPod {
+                        name: name.clone(),
+                        throttle: *throttle,
+                        stages,
+                    }
+                }),
                 _ => None,
             };
             let (chute_x, chute_y, chute_angle, chute_height, inflate, inflation, deployed, rope) = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartDataAttr::Parachute {
-                        chute_x,
-                        chute_y,
-                        chute_angle,
-                        chute_height,
-                        inflate,
-                        inflation,
-                        deployed,
-                        rope,
-                    } => (
-                        Some(*chute_x),
-                        Some(*chute_y),
-                        Some(*chute_angle),
-                        Some(*chute_height),
-                        Some(bool_to_i8(*inflate)),
-                        Some(bool_to_i8(*inflation)),
-                        Some(bool_to_i8(*deployed)),
-                        Some(bool_to_i8(*rope)),
-                    ),
-                    _ => (None, None, None, None, None, None, None, None),
-                },
+                SR1PartDataAttr::Parachute {
+                    chute_x,
+                    chute_y,
+                    chute_angle,
+                    chute_height,
+                    inflate,
+                    inflation,
+                    deployed,
+                    rope,
+                } => (
+                    Some(*chute_x),
+                    Some(*chute_y),
+                    Some(*chute_angle),
+                    Some(*chute_height),
+                    Some(bool_to_i8(*inflate)),
+                    Some(bool_to_i8(*inflation)),
+                    Some(bool_to_i8(*deployed)),
+                    Some(bool_to_i8(*rope)),
+                ),
                 _ => (None, None, None, None, None, None, None, None),
             };
             let extension = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartDataAttr::Solar { extension } => Some(*extension),
-                    _ => None,
-                },
+                SR1PartDataAttr::Solar { extension } => Some(*extension),
                 _ => None,
             };
             RawPartData {
@@ -488,7 +473,7 @@ pub mod sr1 {
     #[derive(Debug, Clone)]
     pub struct SR1PartData {
         // 单独的属性
-        pub attr: Option<SR1PartDataAttr>,
+        pub attr: SR1PartDataAttr,
         // 基本状态属性
         pub x: f64,
         pub y: f64,
@@ -532,6 +517,7 @@ pub mod sr1 {
             deployed: bool,
             rope: bool,
         },
+        None,
     }
 
     #[derive(Debug, Clone)]

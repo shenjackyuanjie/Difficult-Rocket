@@ -33,9 +33,14 @@
   - 正在实现 `SR1PartDataTrait`
   - 用于转换 `RawPartData` 和 `SR1PartData`
   - 写的真折磨人
+  - 移除了 字段 `attr` 的 `Option<T>`
     - Implementing `SR1PartDataTrait`
     - Used to convert `RawPartData` and `SR1PartData`
     - It's really torture to write
+    - Removed the `Option<T>` of the field `attr`
+- `types::sr1::SR1PartDataAttr`
+  - 添加 `None` 选项
+    - Add `None` option
 - `SR1PartDataTrait`
   - `to_sr_part_data`
   - `to_raw_part_data`
