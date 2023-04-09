@@ -378,8 +378,8 @@ pub mod ship {
     // use quick_xml::de::from_str;
     use serde_xml_rs::from_str;
 
+    use crate::types::sr1::{i8_to_bool, SR1PartDataTrait, SR1ShipTrait};
     use crate::types::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
-    use crate::types::sr1::{SR1PartDataTrait, SR1ShipTrait};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     #[serde(rename = "Ship")]
@@ -531,7 +531,36 @@ pub mod ship {
 
     impl SR1ShipTrait for RawShip {
         #[inline]
-        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship { todo!() }
+        fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
+            let mut parts = Vec::new();
+            for part in &self.parts.parts {
+                parts.push(part.to_sr_part_data());
+            }
+            let disconnected = match self.disconnected {
+                Some(disconnect) => {
+                    // let mut disconnect_parts = Vec::new();
+                    let mut parts = Vec::new();
+                    for disconnected_part in &disconnect.parts {
+                        let parts = Vec::new();
+                        for part in disconnected_part.parts.parts {
+                            parts.push(part.to_sr_part_data());
+                        }
+                        parts.push((parts, disconnected_part.connects.connects.clone()));
+                    }
+                    parts
+                }
+                _ => None,
+            };
+            SR1Ship {
+                name: name.unwrap_or("NewShip".to_string()),
+                description: "".to_string(),
+                parts,
+                connections: self.connects.connects.unwrap_or(Vec::new()),
+                lift_off: i8_to_bool(self.lift_off),
+                touch_ground: i8_to_bool(self.touch_ground),
+                disconnected,
+            }
+        }
 
         #[inline]
         fn to_raw_ship(&self) -> RawShip { self.clone() }

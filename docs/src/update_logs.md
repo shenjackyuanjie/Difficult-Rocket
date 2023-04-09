@@ -52,6 +52,31 @@
   - 用于测试 xml 读取和渲染
     - Added the `DisconnectedParts` part
     - Used for testing xml reading and rendering
+- `Difficult_Rocket.crash`
+  - 拆分了 `write_cache` 函数 -> `write_cache` 和 `write_info_to_cache`
+  - 拆分出的函数用于写入日志信息
+  - 完善了 typing
+    - Split the `write_cache` function -> `write_cache` and `write_info_to_cache`
+    - The split function is used to write log information
+    - Improved typing
+- 现在 日志 中会输出系统信息
+  - (实际上就是用的 `crash` 的)
+    - Now the system information will be output in the log
+    - (Actually it's used by `crash`)
+
+### Translate
+
+- 添加
+  - `main.env.version`
+    - `python`
+    - `DR`
+    - `DR_rs`
+    - `pyglet`
+    - `pyglet_rs`
+    - 均未使用
+      - All not used
+- 修改了中文语言的翻译，在中英混杂的中间加入空格
+  - Modified the Chinese translation, and added a space in the middle of Chinese and English
 
 ## 20230405 DR `0.7.2.1`
 

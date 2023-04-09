@@ -542,7 +542,7 @@ pub mod sr1 {
         pub connections: Vec<Connection>,
         pub lift_off: bool,
         pub touch_ground: bool,
-        pub disconnected: Option<Vec<(Vec<SR1PartData>, Vec<Connection>)>>,
+        pub disconnected: Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
     }
 
     impl SR1ShipTrait for SR1Ship {
