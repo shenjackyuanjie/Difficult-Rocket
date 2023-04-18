@@ -121,7 +121,7 @@ def _call_screen_after(func: Callable) -> Callable:
         for a_screen in self.screen_list:
             if hasattr(a_screen, func.__name__):
                 try:
-                    getattr(a_screen, func.__name__)(*args, **kwargs)
+                    getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
                 except Exception:
                     traceback.print_exc()
         return result
@@ -136,7 +136,7 @@ def _call_screen_before(func: Callable) -> Callable:
         for a_screen in self.screen_list:
             if hasattr(a_screen, func.__name__):
                 try:
-                    getattr(a_screen, func.__name__)(*args, **kwargs)
+                    getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
                 except Exception:
                     traceback.print_exc()
         result = func(self, *args, **kwargs)
@@ -203,6 +203,7 @@ class ClientWindow(Window):
     def setup(self):
         self.load_fonts()
         self.screen_list: List[BaseScreen]
+        # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list.append(DRDEBUGScreen(self))
         self.screen_list.append(DRScreen(self))
         self.screen_list.append(SR1ShipRender(self))

@@ -234,7 +234,7 @@ class SR1ShipRender(BaseScreen):
                 self.window_pointer.height / 2) + 10, 0
         self.need_update_parts = False
 
-    def on_draw(self):
+    def on_draw(self, window: "ClientWindow"):
         if self.need_draw:
             self.render_ship()
 
@@ -267,7 +267,7 @@ class SR1ShipRender(BaseScreen):
         if SR1ShipRender_Option.debug_mouse_d_pos:
             self.debug_mouse_delta_line.draw()
 
-    def on_resize(self, width: int, height: int):
+    def on_resize(self, width: int, height: int, window: "ClientWindow"):
         if not self.rendered:
             return
         self.debug_line.x = width / 2
@@ -278,11 +278,11 @@ class SR1ShipRender(BaseScreen):
         self.debug_mouse_delta_line.y = height / 2
         self.update_parts()
 
-    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
+    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: "ClientWindow"):
         if not self.rendered:
             return
-        mouse_dx = x - (self.window_pointer.width / 2)
-        mouse_dy = y - (self.window_pointer.height / 2)
+        mouse_dx = x - (window.width / 2)
+        mouse_dy = y - (window.height / 2)
         # 鼠标缩放位置相对于屏幕中心的位置
         mouse_dx_d = mouse_dx - self.camera_rs.dx
         mouse_dy_d = mouse_dy - self.camera_rs.dy
@@ -305,15 +305,15 @@ class SR1ShipRender(BaseScreen):
 
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
         self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (
-                self.window_pointer.width / 2)
+                window.width / 2)
         self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (
-                self.window_pointer.height / 2)
+                window.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
         self.need_update_parts = True
         # self.update_parts()
 
-    def on_command(self, command: CommandText):
+    def on_command(self, command: CommandText, window: "ClientWindow"):
         if command.re_match('render'):
             if command.re_match('reset'):
                 self.camera_rs.zoom = 1
@@ -358,7 +358,7 @@ class SR1ShipRender(BaseScreen):
             image_data = screenshot(self.window_pointer)
             image_data.save('test.png')
 
-    def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int):
+    def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if not self.focus:
             return
         self.camera_rs.dx += dx
@@ -366,7 +366,7 @@ class SR1ShipRender(BaseScreen):
         self.need_update_parts = True
         # self.update_parts()
 
-    def on_file_drop(self, x: int, y: int, paths: List[str]):
+    def on_file_drop(self, x: int, y: int, paths: List[str], window: "ClientWindow"):
         for path in paths:
             if self.load_xml(path):  # 加载成功一个就停下
                 break

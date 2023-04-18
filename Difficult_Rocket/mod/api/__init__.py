@@ -10,3 +10,9 @@ mail:   3695888@qq.com
 github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
+
+from Difficult_Rocket.api.screen import BaseScreen
+
+__all__ = ['BaseScreen']
+
+

@@ -22,7 +22,7 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202304 DR `0.7.2.2` + DR_rs `0.2.7.1`
+## 202304 DR `0.7.2.2` + DR_rs `0.2.7.1` + DR_api `0.0.2.0` + 14
 
 ### DR_rs V 0.2.6.1
 
@@ -44,6 +44,11 @@
 - `SR1PartDataTrait`
   - `to_sr_part_data`
   - `to_raw_part_data`
+
+### DR_api V `0.0.2.0`
+
+- 用于适应 `api.screen` 的变化
+  - Used to adapt to the changes in `api.screen`
 
 ### Changes
 
@@ -68,6 +73,15 @@
   - (实际上就是用的 `crash` 的)
     - Now the system information will be output in the log
     - (Actually it's used by `crash`)
+
+### breaking changes
+
+- `api.screen`
+  - `BaseScreen`
+    - 为每一个函数添加了 `window: "ClientWindow"` 参数
+    - 用于传递父窗口信息
+      - For each function, add `window: "ClientWindow"` parameter
+      - Used to pass parent window information
 
 ### Translate
 
