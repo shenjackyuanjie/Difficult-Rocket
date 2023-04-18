@@ -116,9 +116,11 @@ def pyglet_load_fonts_folder(folder) -> None:
 
 def _call_screen_after(func: Callable) -> Callable:
     @functools.wraps(func)
-    def warped(self, *args, **kwargs):
+    def warped(self: "ClientWindow", *args, **kwargs):
         result = func(self, *args, **kwargs)
         for a_screen in self.screen_list:
+            a_screen.window_pointer = self
+            # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
                 try:
                     getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
@@ -132,8 +134,10 @@ def _call_screen_after(func: Callable) -> Callable:
 
 def _call_screen_before(func: Callable) -> Callable:
     @functools.wraps(func)
-    def warped(self, *args, **kwargs):
+    def warped(self: "ClientWindow", *args, **kwargs):
         for a_screen in self.screen_list:
+            a_screen.window_pointer = self
+            # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
                 try:
                     getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
@@ -177,7 +181,7 @@ class ClientWindow(Window):
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
-        self.screen_list = []
+        self.screen_list: List[BaseScreen] = []
         # setup
         self.setup()
         # 命令显示
@@ -202,7 +206,6 @@ class ClientWindow(Window):
 
     def setup(self):
         self.load_fonts()
-        self.screen_list: List[BaseScreen]
         # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list.append(DRDEBUGScreen(self))
         self.screen_list.append(DRScreen(self))
