@@ -4,8 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
-
-import typing
+from typing import List, TYPE_CHECKING
+from os import PathLike
 
 # from pyglet.window import Window
 from pyglet.event import EventDispatcher
@@ -13,7 +13,7 @@ from pyglet.event import EventDispatcher
 # Difficult Rocket function
 from Difficult_Rocket.command.api import CommandText
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 
@@ -27,7 +27,7 @@ class BaseScreen(EventDispatcher):
         self.focus = False
         self.window_pointer = main_window
 
-    if typing.TYPE_CHECKING:
+    if TYPE_CHECKING:
         def on_command(self, command: CommandText, window: "ClientWindow"):
             """
             命令输入事件
@@ -135,7 +135,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_file_drop(self, x, y, paths, window: "ClientWindow"):
+        def on_file_drop(self, x: int, y: int, paths: List[PathLike] , window: "ClientWindow"):
             """File(s) were dropped into the window, will return the position of the cursor and
             a list of paths to the files that were dropped.
 
@@ -153,7 +153,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_key_press(self, symbol, modifiers, window: "ClientWindow"):
+        def on_key_press(self, symbol: int, modifiers: int, window: "ClientWindow"):
             """A key on the keyboard was pressed (and held down).
 
             Since pyglet 1.1 the default handler dispatches the :py:meth:`~pyglet.window.Window.on_close`
@@ -168,7 +168,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_key_release(self, symbol, modifiers, window: "ClientWindow"):
+        def on_key_release(self, symbol: int, modifiers: int, window: "ClientWindow"):
             """A key on the keyboard was released.
 
             :Parameters:
@@ -180,7 +180,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_motion(self, x, y, dx, dy, window: "ClientWindow"):
+        def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: "ClientWindow"):
             """The mouse was moved with no buttons held down.
 
             :Parameters:
@@ -196,7 +196,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers, window: "ClientWindow"):
+        def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
             """The mouse was moved with one or more mouse buttons pressed.
 
             This event will continue to be fired even if the mouse leaves
@@ -220,7 +220,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_press(self, x, y, button, modifiers, window: "ClientWindow"):
+        def on_mouse_press(self, x: int, y: int, button: int, modifiers: int, window: "ClientWindow"):
             """A mouse button was pressed (and held down).
 
             :Parameters:
@@ -237,7 +237,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_release(self, x, y, button, modifiers, window: "ClientWindow"):
+        def on_mouse_release(self, x: int, y: int, button: int, modifiers: int, window: "ClientWindow"):
             """A mouse button was released.
 
             :Parameters:
@@ -254,7 +254,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_scroll(self, x, y, scroll_x, scroll_y, window: "ClientWindow"):
+        def on_mouse_scroll(self, x: int, y: int, scroll_x: float, scroll_y: float, window: "ClientWindow"):
             """The mouse wheel was scrolled.
 
             Note that most mice have only a vertical scroll wheel, so
@@ -275,7 +275,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_enter(self, x, y, window: "ClientWindow"):
+        def on_mouse_enter(self, x: int, y: int, window: "ClientWindow"):
             """The mouse was moved into the window.
 
             This event will not be triggered if the mouse is currently being
@@ -290,7 +290,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_mouse_leave(self, x, y, window: "ClientWindow"):
+        def on_mouse_leave(self, x: int, y: int, window: "ClientWindow"):
             """The mouse was moved outside of the window.
 
             This event will not be triggered if the mouse is currently being
@@ -306,7 +306,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_move(self, x, y, window: "ClientWindow"):
+        def on_move(self, x: int, y: int, window: "ClientWindow"):
             """The window was moved.
 
             :Parameters:
@@ -340,7 +340,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_resize(self, width, height, window: "ClientWindow"):
+        def on_resize(self, width: int, height: int, window: "ClientWindow"):
             """The window was resized.
 
             The window will have the GL context when this event is dispatched;
@@ -364,7 +364,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_text(self, text, window: "ClientWindow"):
+        def on_text(self, text: str, window: "ClientWindow"):
             """The user input some text.
 
             Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press` and before
@@ -383,7 +383,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_text_motion(self, motion, window: "ClientWindow"):
+        def on_text_motion(self, motion: int, window: "ClientWindow"):
             """The user moved the text input cursor.
 
             Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press` and before
@@ -419,7 +419,7 @@ class BaseScreen(EventDispatcher):
             :event:
             """
 
-        def on_text_motion_select(self, motion, window: "ClientWindow"):
+        def on_text_motion_select(self, motion: int, window: "ClientWindow"):
             """The user moved the text input cursor while extending the
             selection.
 

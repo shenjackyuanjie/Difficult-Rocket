@@ -73,6 +73,10 @@
   - (实际上就是用的 `crash` 的)
     - Now the system information will be output in the log
     - (Actually it's used by `crash`)
+- `api.screen`
+  - `BaseScreen`
+    - 为 `pyglet` 提供的函数添加类型提示
+      - Add type hints for functions provided by `pyglet`
 
 ### breaking changes
 
