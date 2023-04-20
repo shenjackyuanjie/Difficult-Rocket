@@ -95,7 +95,9 @@ pub mod translate {
     use pyo3::types::PyDict;
 
     #[pyclass]
-    pub struct TranslateConfig {
+    #[pyo3(name = "TranslateConfig_rs")]
+    #[pyo3(text_signature = "(language, raise_error = False, replace_normal = False, add_error = False, is_result = False, keep_get = False)")]
+    pub struct PyTranslateConfig {
         pub raise_error: bool,
         pub replace_normal: bool,
         pub add_error: bool,
@@ -104,10 +106,39 @@ pub mod translate {
         pub language: String,
     }
 
+    #[pymethods]
+    impl PyTranslateConfig {
+        #[new]
+        fn new(py_: Python, lanuguage: Option<String>, raise_error: bool, replace_normal: bool) -> Self {
+            let dr_runtime = PyModule::import(py_, "Difficult_Rocket").unwrap().get_item("DR_runtime").unwrap();
+            let default_language = dr_runtime.get_item("language").unwrap().extract::<String>().unwrap();
+            Self {
+                raise_error,
+                replace_normal,
+                add_error: false,
+                is_result: false,
+                keep_get: false,
+                language: lanuguage.unwrap_or(default_language),
+            }
+        }
+    }
+
     #[pyclass]
-    pub struct Translate {
-        pub data: Py<PyDict>,
+    pub struct PyTranslate {
+        pub data: Py<PyAny>,
         pub get_list: Vec<(String, bool)>,
-        pub config: TranslateConfig,
+        pub config: PyTranslateConfig,
+    }
+
+    #[pymethods]
+    impl PyTranslate {
+        #[new]
+        fn py_new(py_: Python, data: &PyAny) -> Self {
+            Self {
+                data: data.into_py(py_),
+                get_list: Vec::new(),
+                config: PyTranslateConfig::new(py_),
+            }
+        }
     }
 }
