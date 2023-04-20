@@ -5,6 +5,7 @@
 #  -------------------------------
 
 import time
+import random
 import logging
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
@@ -19,6 +20,7 @@ from pyglet.text import Label
 from pyglet.shapes import Line
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
+from pyglet.image import load as load_image
 
 # Difficult Rocket
 from Difficult_Rocket import DR_option
@@ -163,7 +165,7 @@ class SR1ShipRender(BaseScreen):
             render_y = part.y * 60
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
-                                  x=render_x, y=render_y,
+                                  x=render_x, y=render_y, z=random.random(),
                                   batch=self.part_batch, group=self.part_group)
             # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系（OK
             # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑

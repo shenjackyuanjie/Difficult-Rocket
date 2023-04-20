@@ -9,6 +9,7 @@
 use pyo3::prelude::*;
 use rapier2d_f64::prelude::*;
 
+
 #[pyfunction]
 #[pyo3(name = "simluation")]
 pub fn simluation() -> PyResult<()> {
@@ -59,7 +60,8 @@ pub fn simluation() -> PyResult<()> {
         );
 
         let ball_body = &rigid_body_set[ball_body_handle];
-        println!("Ball altitude: {}", ball_body.translation());
+        println!("Ball altitude: {} {}", ball_body.translation().x, ball_body.translation().y);
     }
     Ok(())
 }
+

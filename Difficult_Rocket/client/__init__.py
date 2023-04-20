@@ -168,7 +168,6 @@ class ClientWindow(Window):
         self.net_mode = net_mode
         self.run_input = False
         # configs
-        self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.main_config = tools.load_file('./configs/main.toml')
         self.game_config = tools.load_file('./configs/game.config')
         # FPS
@@ -205,6 +204,7 @@ class ClientWindow(Window):
         self.count = 0
 
     def setup(self):
+        self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.load_fonts()
         # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list.append(DRDEBUGScreen(self))
@@ -218,6 +218,7 @@ class ClientWindow(Window):
         pyglet_load_fonts_folder(fonts_folder_path)
 
     def start_game(self) -> None:
+        self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.run_input = True
         self.read_input()
         pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
@@ -329,7 +330,7 @@ class ClientWindow(Window):
         # self.command_tree.parse(command.plain_command)
 
     @_call_screen_after
-    def on_message(self, message: line.CommandLine.text):
+    def on_message(self, message: line.CommandText):
         self.logger.info(tr().window.message.text().format(message))
 
     """

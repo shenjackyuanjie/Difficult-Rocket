@@ -33,9 +33,19 @@ class BaseScreen(EventDispatcher):
             命令输入事件
             """
 
+        def on_message(self, message: CommandText, window: "ClientWindow"):
+            """
+            消息输入事件
+            """
+
         def draw_update(self, tick: float, window: "ClientWindow"):
             """
             画面更新
+            """
+
+        def draw_batch(self, window: "ClientWindow"):
+            """
+            画面绘制
             """
 
         """
