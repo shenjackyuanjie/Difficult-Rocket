@@ -17,7 +17,9 @@ pub fn simluation() -> PyResult<()> {
 
     /* Create the ground. */
     let collider = ColliderBuilder::cuboid(100.0, 0.1).build();
+    let ball = ColliderBuilder::ball(10).build();
     collider_set.insert(collider);
+    collider_set.insert(ball);
 
     /* Create the bouncing ball. */
     let rigid_body = RigidBodyBuilder::dynamic().translation(vector![0.0, 10.0]).build();
@@ -57,7 +59,7 @@ pub fn simluation() -> PyResult<()> {
         );
 
         let ball_body = &rigid_body_set[ball_body_handle];
-        println!("Ball altitude: {}", ball_body.translation().y);
+        println!("Ball altitude: {}", ball_body.translation());
     }
     Ok(())
 }
