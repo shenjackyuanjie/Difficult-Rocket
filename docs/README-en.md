@@ -10,7 +10,7 @@
 <a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.4-blue.svg)](https://pyglet.org)
+[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.5-blue.svg)](https://pyglet.org)
 [![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_|_3.11_-blue.svg)](https://Python.org)
 
 ## Version
@@ -40,29 +40,59 @@
 ## Environment (been tested / developed on)
 
 - `Develop platform 1 - Windows 10 x64 22H2`
-  - `Python 3.8.10`
-  - `pillow 9.3.0`
-  - `pyperclip 1.8.2`
-  - `pyglet 2.0`
-  - `psutil 5.9.4`
-  - `objprint 0.2.2`
-  - `rtoml 0.9.0`
-  - `xmltodict 0.13.0`
-  - `tomlkit 0.11.6`
+  - pillow `9.5.0`
+  - psutil `5.9.5`
+  - rtoml `0.9.0`
+  - tomlkit `0.11.7`
+  - defusedxml `0.7.1`
+  - objprint `0.2.2`
+  - viztracer `0.15.6`
+  - vizplugins `0.1.3`
+  - nuitka `1.5.6`
+  - ordered-set `4.1.0`
+  - imageio `2.27.0`
+  - wheel `0.40.0`
+  - setuptools `67.6.1`
+  - setuptools-rust `1.5.2`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 
 ## Required python modules
 
-- `rtoml`
-- `tomlkit`
-- `pyglet` (pre-installed V2.0.4 path:`./libs/pyglet`)
+- `pyglet` (pre-installed V2.0.5 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
-- `pillow`
-- `defusedxml`
-- `objprint`
-- `psutil`
+
+```text
+# this requirement is for
+#   DR basic running from source
+#   DR build (by nuitka)
+#   DR contributing
+
+# for images
+pillow >= 9.5.0
+
+# for sys info
+psutil >= 5.9.5
+
+# for files
+rtoml >= 0.9.0
+tomlkit >= 0.11.7
+defusedxml >= 0.7.1
+
+# for debug
+objprint >= 0.2.2
+viztracer >= 0.15.6
+vizplugins >= 0.1.3
+
+# for compile
+nuitka >= 1.5.6
+ordered-set >= 4.1.0
+imageio >= 2.27.0
+wheel >= 0.40.0
+setuptools >= 67.6.1
+setuptools-rust >= 1.5.2
+```
 
 ## thanks to
 

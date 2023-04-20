@@ -68,8 +68,6 @@ MOD_info = MODInfo(
     write_loader_version=semver_loader_version
 )
 
-# print(MOD_info.serialize())
-
 """
 一些重置用函数
 """

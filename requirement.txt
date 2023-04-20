@@ -1,19 +1,15 @@
 # this requirement is for
 #   DR basic running from source
 
-# for phy simulation
-# pymunk >= 6.4.0
-# no more needed  use Rapier instead
-
 # for images
-pillow >= 9.4.0
+pillow >= 9.5.0
 
 # for sys info
-psutil >= 5.9.4
+psutil >= 5.9.5
 
 # for files
 rtoml >= 0.9.0
-tomlkit >= 0.11.6
+tomlkit >= 0.11.7
 defusedxml >= 0.7.1
 
 # for report error
