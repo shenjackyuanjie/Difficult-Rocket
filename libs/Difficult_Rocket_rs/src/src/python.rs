@@ -109,7 +109,7 @@ pub mod translate {
     #[pymethods]
     impl PyTranslateConfig {
         #[new]
-        fn new(py_: Python, lanuguage: Option<String>, raise_error: bool, replace_normal: bool) -> Self {
+        fn new(py_: Python, raise_error: bool, replace_normal: bool, language: Option<String>) -> Self {
             let dr_runtime = PyModule::import(py_, "Difficult_Rocket").unwrap().get_item("DR_runtime").unwrap();
             let default_language = dr_runtime.get_item("language").unwrap().extract::<String>().unwrap();
             Self {
@@ -118,7 +118,7 @@ pub mod translate {
                 add_error: false,
                 is_result: false,
                 keep_get: false,
-                language: lanuguage.unwrap_or(default_language),
+                language: language.unwrap_or(default_language),
             }
         }
     }
@@ -134,10 +134,11 @@ pub mod translate {
     impl PyTranslate {
         #[new]
         fn py_new(py_: Python, data: &PyAny) -> Self {
+            let _ = data.is_instance_of::<PyDict>();
             Self {
                 data: data.into_py(py_),
                 get_list: Vec::new(),
-                config: PyTranslateConfig::new(py_),
+                config: PyTranslateConfig::new(py_, false, false, None),
             }
         }
     }

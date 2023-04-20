@@ -17,7 +17,7 @@ pub fn simluation() -> PyResult<()> {
 
     /* Create the ground. */
     let collider = ColliderBuilder::cuboid(100.0, 0.1).build();
-    let ball = ColliderBuilder::ball(10).build();
+    let ball = ColliderBuilder::ball(10.0).build();
     collider_set.insert(collider);
     collider_set.insert(ball);
 
