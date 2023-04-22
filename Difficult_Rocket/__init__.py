@@ -160,19 +160,19 @@ class _DR_runtime(Options):
         sys.path.append(self.mod_path)
         for mod_path in paths:
             try:
-                if mod_path.is_dir:  # 文件夹格式的 mod
-                    if not (mod_path / '__init__.py').exists():  # 不符合格式要求
-                        continue
+                if mod_path.is_dir:  # 处理文件夹 mod
                     if importlib.util.find_spec(mod_path.name) is not None:
                         module = importlib.import_module(mod_path.name)
-                        info: Options = module.INFO
                         mods.append(mod_path.name)
-                        print(f'find mod in {mod_path} ID: {info.mod_id} name: {info.name} version: {info.version}')
-                        print(f'import mod {mod_path}')
                     else:
                         print(f'can not import mod {mod_path} because importlib can not find spec')
-                else:
-                    ...
+                elif mod_path.suffix in ('.pyz', '.zip'):  # 处理压缩包 mod
+                    if importlib.util.find_spec(mod_path.name) is not None:
+                        module = importlib.import_module(mod_path.name)
+                        mods.append(mod_path.name)
+                elif mod_path.suffix == '.py':  # 处理单文件 mod
+                    module = importlib.import_module(mod_path.stem)
+                    mods.append(mod_path.stem)
             except ImportError:
                 print(f'ImportError when loading mod {mod_path}')
                 traceback.print_exc()

@@ -32,7 +32,6 @@
   - 已删除
   - Removed
 
-
 ### Changes
 
 - `main.toml`
