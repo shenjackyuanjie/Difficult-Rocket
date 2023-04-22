@@ -109,13 +109,15 @@ class _DR_runtime(Options):
     DR 的运行时配置/状态
     """
     name = 'DR Runtime'
-    # game status
-    DR_version: Version = game_version
-    Build_version: Version = build_version
-    DR_Rust_version: Version = DR_rust_version
-    DR_Rust_get_version: Optional[Version] = None
-    API_version: Version = Api_version
-    DR_long_version: int = long_version
+    # game version status
+    DR_version: Version = game_version  # DR SDK 版本
+    Build_version: Version = build_version  # DR 构建 版本
+
+    DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
+    DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
+
+    API_version: Version = Api_version  # DR SDK API 版本
+    DR_long_version: int = long_version  # DR SDK 内部协议版本 （不要问我为什么不用 Version，我也在考虑）
 
     # run status
     running:               bool = False

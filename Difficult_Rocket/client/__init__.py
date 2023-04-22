@@ -37,13 +37,14 @@ from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line, tree
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket import DR_runtime, DR_option
+from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.utils.new_thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
-from Difficult_Rocket.exception.language import LanguageNotFound
 from Difficult_Rocket.exception.command import CommandError
+from Difficult_Rocket.exception.language import LanguageNotFound
 from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
-from Difficult_Rocket.client.screen import BaseScreen, DRScreen, DRDEBUGScreen
+from Difficult_Rocket.client.screen import DRScreen, DRDEBUGScreen
 
 
 class ClientOption(Options):
@@ -247,6 +248,13 @@ class ClientWindow(Window):
         config_file['runtime']['language'] = DR_runtime.language
         rtoml.dump(config_file, open('./configs/main.toml', 'w'))
         self.logger.info(tr().client.config.save.done())
+
+    """
+    client api
+    """
+
+    def add_sub_screen(self, sub_screen: BaseScreen.__class__):
+        self.screen_list.append(sub_screen(self))
 
     """
     draws and some event

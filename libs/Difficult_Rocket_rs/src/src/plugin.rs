@@ -5,3 +5,21 @@
  * All rights reserved
  * -------------------------------
  */
+
+// TODO libloading
+
+/// https://docs.rs/libloading/latest/libloading/
+/// 插件加载
+///
+
+pub mod plugin_trait {
+    pub struct ModInfo {
+        pub name: String,
+        pub version: String
+    }
+
+    pub trait ModInfoTrait {
+        fn info() -> ModInfo;
+    }
+
+}
