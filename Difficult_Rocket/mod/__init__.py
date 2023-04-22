@@ -39,7 +39,7 @@ ForceRequire = bool
 
 
 # TODO 完善中
-class MODInfo(Serializable):
+class MODInfo(Options):
     """
     加载mod时候的参数
     """
