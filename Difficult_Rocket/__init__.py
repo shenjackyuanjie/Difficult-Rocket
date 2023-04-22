@@ -137,6 +137,7 @@ class _DR_runtime(Options):
     # global_logger: logging.Logger
 
     # game options
+    mod_path: str = './mods'
     language: str = 'zh-CN'
     default_language: str = 'zh-CN'
 
@@ -154,7 +155,9 @@ class _DR_runtime(Options):
         with contextlib.suppress(FileNotFoundError):
             with open('./configs/main.toml', 'r', encoding='utf-8') as f:
                 import rtoml
-                self.language = rtoml.load(f)['runtime']['language']
+                config_file = rtoml.load(f)
+                self.language = config_file['runtime']['language']
+                self.mod_path = config_file['game']['mods']['path']
                 return True
         return False
 
@@ -162,6 +165,12 @@ class _DR_runtime(Options):
         mod_list = self.find_mods()
 
     def find_mods(self) -> List[str]:
+        objects = os.listdir(self.mod_path)
+        for obj in objects:
+            if os.path.isdir(os.path.join(self.mod_path, obj)):
+                ...
+            else:
+                ...
         ...
 
 
