@@ -72,8 +72,8 @@ class _DR_option(Options):
     DR_rust_available:          bool = False
     use_cProfile:               bool = False
     use_local_logging:          bool = False
-
     use_DR_rust:                bool = True
+
     # tests
     playing:                bool = False
     debugging:              bool = False
