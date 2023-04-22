@@ -11,7 +11,7 @@ from typing import Tuple, List
 from MCDR.version import Version
 
 # from DR
-from Difficult_Rocket.api.mod import MODInfo
+from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket import DR_runtime, Options
 
 """

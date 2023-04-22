@@ -122,7 +122,7 @@ class Translates:
         return self
 
     def __call__(self, *args, **kwargs) -> str:
-        return self.__str__()
+        return str(self)
 
     def copy(self):
         return self.__copy__()

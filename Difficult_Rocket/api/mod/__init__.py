@@ -26,7 +26,7 @@ ForceRequire = bool
 
 
 # TODO 完善中
-class MODInfo(Options):
+class ModInfo(Options):
     """
     加载mod时候的参数
     """
