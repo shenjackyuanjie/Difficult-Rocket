@@ -113,7 +113,7 @@ class _DR_runtime(Options):
     API_version: Version = Api_version  # DR SDK API 版本
     DR_long_version: int = long_version  # DR SDK 内部协议版本 （不要问我为什么不用 Version，我也在考虑）
 
-    DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表
+    DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表 (name, version)
 
     DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
     DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
@@ -177,6 +177,7 @@ class _DR_runtime(Options):
             except ImportError:
                 print(f'ImportError when loading mod {mod_path}')
                 traceback.print_exc()
+        self.DR_Mod_List = [(mod, Version('0.0.0-unknown')) for mod in mods]
         return mods
 
 

@@ -49,7 +49,10 @@
     - Add `mod_path: str` field
     - Add `DR_Mod_List: List[Tuple[str, Version]]` field
     - Add `load_mods() -> None` method
-    - Add `find_mods -> List[str]` method 
+    - Add `find_mods -> List[str]` method
+- 现在游戏崩溃时会自动在 stdio 中输出崩溃日志 内容跟 crash report 中的基本相同
+  - Now when the game crashes, it will automatically output the crash log in stdio
+    - The content of the crash log is basically the same as the crash report
 
 ### Mod Loader
 

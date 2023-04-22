@@ -8,6 +8,8 @@ import time
 import cProfile
 import traceback
 
+from io import StringIO
+
 # TODO 默认位置配置文件
 # TODO 可自定义工作路径
 
@@ -89,6 +91,10 @@ def main() -> None:
             print(error_format['error.unknown'])
         print(error)
         crash.create_crash_report(error)
+        cache_steam = StringIO()
+        crash.write_info_to_cache(cache_steam)
+        text = cache_steam.getvalue()
+        print(text)
     else:
         crash.record_thread = False
         print(crash.all_thread)

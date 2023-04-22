@@ -102,6 +102,9 @@ class Version:
             version_str += '+' + str(self.build)
         return version_str
 
+    def __repr__(self):
+        return 'Version({})'.format(self.__str__())
+
     def __getitem__(self, index):
         if index < len(self.component):
             return self.component[index]
