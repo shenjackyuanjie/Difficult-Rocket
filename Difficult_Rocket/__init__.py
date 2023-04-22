@@ -73,7 +73,7 @@ class _DR_option(Options):
     use_cProfile:               bool = False
     use_local_logging:          bool = False
     use_DR_rust:                bool = True
-
+    
     # tests
     playing:                bool = False
     debugging:              bool = False
@@ -122,16 +122,16 @@ class _DR_runtime(Options):
     API_version: Version = Api_version  # DR SDK API 版本
     DR_long_version: int = long_version  # DR SDK 内部协议版本 （不要问我为什么不用 Version，我也在考虑）
 
-    DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
-    DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
-
     DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表
 
+    DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
+    DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
+    
     # run status
     running:               bool = False
-    start_time_ns:         int = None
-    client_setup_cause_ns: int = None
-    server_setup_cause_ns: int = None
+    start_time_ns:         Optional[int] = None
+    client_setup_cause_ns: Optional[int] = None
+    server_setup_cause_ns: Optional[int] = None
 
     # game runtimes
     # global_logger: logging.Logger
