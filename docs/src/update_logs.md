@@ -22,7 +22,7 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202304 DR `0.7.2.2` + DR_rs `0.2.7.1` + DR_api `0.0.2.0` + 14
+## 20230422 DR `0.7.2.2` + DR_rs `0.2.6.1` + DR_api `0.0.2.0` + 14
 
 ### DR_rs V 0.2.6.1
 
