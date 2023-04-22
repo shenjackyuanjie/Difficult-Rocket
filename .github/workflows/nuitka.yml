@@ -5,9 +5,7 @@ name: Build
 on:
   # 触发条件
   push:
-    branches: ["main"]
   pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 # 主任务
