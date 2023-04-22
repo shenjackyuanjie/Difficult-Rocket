@@ -18,7 +18,7 @@ from Difficult_Rocket.api.types import Options
 
 from libs.MCDR.version import Version
 
-game_version = Version("0.7.2.1")  # 游戏版本
+game_version = Version("0.7.2.2")  # 游戏版本
 build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)
 Api_version = Version("0.0.2.0")  # API 版本
 __version__ = game_version
