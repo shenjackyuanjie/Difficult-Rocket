@@ -2,5 +2,8 @@
   "rust-analyzer.linkedProjects": [
     "libs/Difficult_Rocket_rs/src/Cargo.toml",
     "libs/pyglet_rs/src/Cargo.toml",
+  ],
+  "python.analysis.extraPaths": [
+    "./libs"
   ]
 }
