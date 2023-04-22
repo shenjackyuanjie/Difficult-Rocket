@@ -121,7 +121,7 @@ class Translates:
                 self._config.is_final = True
         return self
 
-    def __call__(self, *args, **kwargs) -> Union[dict, list, int, str]:
+    def __call__(self, *args, **kwargs) -> str:
         return self.__str__()
 
     def copy(self):

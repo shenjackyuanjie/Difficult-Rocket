@@ -31,6 +31,7 @@ class MODInfo(Options):
     加载mod时候的参数
     """
     """基本信息"""
+    mod_id: str  # mod id
     name: str  # mod 名称
     version: Version  # mod 版本
 

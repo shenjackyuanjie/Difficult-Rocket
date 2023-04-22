@@ -5,17 +5,10 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-import inspect
-# system function
 import os
 import time
 import logging
+import inspect
 import functools
 import traceback
 
@@ -59,7 +52,7 @@ class ClientOption(Options):
     caption: str = "Difficult Rocket v{DR_version}|DR_rs v{DR_Rust_get_version}"
 
     def load_file(self) -> None:
-        file = tools.load_file('./configs/main.toml')
+        file: dict = tools.load_file('./configs/main.toml')
         self.fps = int(file['runtime']['fps'])
         self.width = int(file['window']['width'])
         self.height = int(file['window']['height'])
@@ -82,13 +75,10 @@ class Client:
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.net_mode = net_mode
-        file_drop = bool(
-            pyglet.compat_platform != 'darwin' or DR_option.pyglet_macosx_dev_test
-        )
         self.window = ClientWindow(net_mode=self.net_mode, width=self.config.width, height=self.config.height,
                                    fullscreen=self.config.fullscreen, caption=self.config.caption,
                                    resizable=self.config.resizeable, visible=self.config.visible,
-                                   file_drops=file_drop)
+                                   file_drops=True)
         end_time = time.time_ns()
         self.use_time = end_time - start_time
         if DR_option.use_DR_rust:
@@ -206,6 +196,8 @@ class ClientWindow(Window):
 
     def setup(self):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
+        self.logger.info(f"=== finding mods from {DR_runtime.mod_path} ===")
+        self.logger.info(f'find mods: {DR_runtime.find_mods()}')
         self.load_fonts()
         # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list.append(DRDEBUGScreen(self))
@@ -242,7 +234,7 @@ class ClientWindow(Window):
     @new_thread('window save_info')
     def save_info(self):
         self.logger.info(tr().client.config.save.start())
-        config_file = tools.load_file('./configs/main.toml')
+        config_file: dict = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
         config_file['runtime']['language'] = DR_runtime.language
@@ -253,7 +245,7 @@ class ClientWindow(Window):
     client api
     """
 
-    def add_sub_screen(self, sub_screen: BaseScreen.__class__):
+    def add_sub_screen(self, sub_screen: type(BaseScreen)):
         self.screen_list.append(sub_screen(self))
 
     """

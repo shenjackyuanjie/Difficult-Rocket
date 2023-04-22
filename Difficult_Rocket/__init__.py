@@ -4,20 +4,14 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-
-# import ctypes
 import os
 import sys
 import warnings
 import importlib
 import traceback
 import contextlib
+import importlib.util
+from pathlib import Path
 from typing import Optional, List, Tuple
 
 from Difficult_Rocket.api.types import Options
@@ -78,14 +72,11 @@ class _DR_option(Options):
     playing:                bool = False
     debugging:              bool = False
     crash_report_test:      bool = True
-    pyglet_macosx_dev_test: bool = True
 
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
     def init(self, **kwargs):
-        if sys.platform != 'darwin':  # MacOS 的测试只能在 Macos 上跑
-            self.pyglet_macosx_dev_test = False
         try:
             from libs.Difficult_Rocket_rs import test_call, get_version_str
             test_call(self)
@@ -149,7 +140,6 @@ class _DR_runtime(Options):
                 relationship = 'larger' if self.DR_Rust_version > self.DR_Rust_get_version else 'smaller'
                 warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
-        self.find_mods()
 
     def load_file(self) -> bool:
         with contextlib.suppress(FileNotFoundError):
@@ -165,13 +155,28 @@ class _DR_runtime(Options):
         mod_list = self.find_mods()
 
     def find_mods(self) -> List[str]:
-        objects = os.listdir(self.mod_path)
-        for obj in objects:
-            if os.path.isdir(os.path.join(self.mod_path, obj)):
-                ...
-            else:
-                ...
-        ...
+        mods = []
+        paths = Path(self.mod_path).iterdir()
+        sys.path.append(self.mod_path)
+        for mod_path in paths:
+            try:
+                if mod_path.is_dir:  # 文件夹格式的 mod
+                    if not (mod_path / '__init__.py').exists():  # 不符合格式要求
+                        continue
+                    if importlib.util.find_spec(mod_path.name) is not None:
+                        module = importlib.import_module(mod_path.name)
+                        info: Options = module.INFO
+                        mods.append(mod_path.name)
+                        print(f'find mod in {mod_path} ID: {info.mod_id} name: {info.name} version: {info.version}')
+                        print(f'import mod {mod_path}')
+                    else:
+                        print(f'can not import mod {mod_path} because importlib can not find spec')
+                else:
+                    ...
+            except ImportError:
+                print(f'ImportError when loading mod {mod_path}')
+                traceback.print_exc()
+        return mods
 
 
 DR_option = _DR_option()

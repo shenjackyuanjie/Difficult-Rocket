@@ -15,11 +15,10 @@
 pub mod plugin_trait {
     pub struct ModInfo {
         pub name: String,
-        pub version: String
+        pub version: String,
     }
 
     pub trait ModInfoTrait {
         fn info() -> ModInfo;
     }
-
 }

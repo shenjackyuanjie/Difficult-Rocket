@@ -9,7 +9,6 @@
 use pyo3::prelude::*;
 use rapier2d_f64::prelude::*;
 
-
 #[pyfunction]
 #[pyo3(name = "simluation")]
 pub fn simluation() -> PyResult<()> {
@@ -64,4 +63,3 @@ pub fn simluation() -> PyResult<()> {
     }
     Ok(())
 }
-
