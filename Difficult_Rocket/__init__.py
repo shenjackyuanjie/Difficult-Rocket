@@ -160,7 +160,7 @@ class _DR_runtime(Options):
         sys.path.append(self.mod_path)
         for mod_path in paths:
             try:
-                if mod_path.is_dir:  # 处理文件夹 mod
+                if mod_path.is_dir() and mod_path.name != '__pycache__':  # 处理文件夹 mod
                     if importlib.util.find_spec(mod_path.name) is not None:
                         module = importlib.import_module(mod_path.name)
                         mods.append(mod_path.name)
@@ -171,6 +171,7 @@ class _DR_runtime(Options):
                         module = importlib.import_module(mod_path.name)
                         mods.append(mod_path.name)
                 elif mod_path.suffix == '.py':  # 处理单文件 mod
+                    print(f'importing mod {mod_path=} {mod_path.stem}')
                     module = importlib.import_module(mod_path.stem)
                     mods.append(mod_path.stem)
             except ImportError:

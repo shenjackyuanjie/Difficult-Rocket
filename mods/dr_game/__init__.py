@@ -5,7 +5,7 @@
 #  -------------------------------
 
 from MCDR.version import Version
-from Difficult_Rocket.mod import ModInfo
+from Difficult_Rocket.api.mod import ModInfo
 
 INFO = ModInfo(
     mod_id="Difficult_Rocket_mod",
