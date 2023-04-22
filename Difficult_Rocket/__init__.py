@@ -4,19 +4,15 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-
-# import ctypes
+import os
 import sys
 import warnings
+import importlib
 import traceback
 import contextlib
-from typing import Optional
+import importlib.util
+from pathlib import Path
+from typing import Optional, List, Tuple
 
 from Difficult_Rocket.api.types import Options
 
@@ -24,9 +20,13 @@ from libs.MCDR.version import Version
 
 game_version = Version("0.7.2.2")  # 游戏版本
 build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)
-DR_rust_version = Version("0.2.6.1")  # DR 的 Rust 编写部分的版本
 Api_version = Version("0.0.2.0")  # API 版本
 __version__ = game_version
+
+# TODO 解耦 DR SDK 与 DR_mod 和 DR_rs
+DR_rust_version = Version("0.2.6.1")  # DR 的 Rust 编写部分的版本
+# 后面会移除的 DR_rs 相关信息
+# DR_rs和 DR_mod 的部分正在和 DR SDK 解耦
 
 long_version: int = 14
 """
@@ -64,22 +64,19 @@ class _DR_option(Options):
     report_translate_not_found: bool = True
     use_multiprocess:           bool = False
     DR_rust_available:          bool = False
-    use_DR_rust:                bool = True
     use_cProfile:               bool = False
     use_local_logging:          bool = False
-
+    use_DR_rust:                bool = True
+    
     # tests
     playing:                bool = False
     debugging:              bool = False
     crash_report_test:      bool = True
-    pyglet_macosx_dev_test: bool = True
 
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
     def init(self, **kwargs):
-        if sys.platform != 'darwin':  # MacOS 的测试只能在 Macos 上跑
-            self.pyglet_macosx_dev_test = False
         try:
             from libs.Difficult_Rocket_rs import test_call, get_version_str
             test_call(self)
@@ -113,22 +110,25 @@ class _DR_runtime(Options):
     DR_version: Version = game_version  # DR SDK 版本
     Build_version: Version = build_version  # DR 构建 版本
 
-    DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
-    DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
-
     API_version: Version = Api_version  # DR SDK API 版本
     DR_long_version: int = long_version  # DR SDK 内部协议版本 （不要问我为什么不用 Version，我也在考虑）
 
+    DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表 (name, version)
+
+    DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
+    DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
+    
     # run status
     running:               bool = False
-    start_time_ns:         int = None
-    client_setup_cause_ns: int = None
-    server_setup_cause_ns: int = None
+    start_time_ns:         Optional[int] = None
+    client_setup_cause_ns: Optional[int] = None
+    server_setup_cause_ns: Optional[int] = None
 
     # game runtimes
     # global_logger: logging.Logger
 
     # game options
+    mod_path: str = './mods'
     language: str = 'zh-CN'
     default_language: str = 'zh-CN'
 
@@ -140,10 +140,45 @@ class _DR_runtime(Options):
                 relationship = 'larger' if self.DR_Rust_version > self.DR_Rust_get_version else 'smaller'
                 warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
+
+    def load_file(self) -> bool:
         with contextlib.suppress(FileNotFoundError):
             with open('./configs/main.toml', 'r', encoding='utf-8') as f:
                 import rtoml
-                self.language = rtoml.load(f)['runtime']['language']
+                config_file = rtoml.load(f)
+                self.language = config_file['runtime']['language']
+                self.mod_path = config_file['game']['mods']['path']
+                return True
+        return False
+
+    def load_mods(self) -> None:
+        mod_list = self.find_mods()
+
+    def find_mods(self) -> List[str]:
+        mods = []
+        paths = Path(self.mod_path).iterdir()
+        sys.path.append(self.mod_path)
+        for mod_path in paths:
+            try:
+                if mod_path.is_dir() and mod_path.name != '__pycache__':  # 处理文件夹 mod
+                    if importlib.util.find_spec(mod_path.name) is not None:
+                        module = importlib.import_module(mod_path.name)
+                        mods.append(mod_path.name)
+                    else:
+                        print(f'can not import mod {mod_path} because importlib can not find spec')
+                elif mod_path.suffix in ('.pyz', '.zip'):  # 处理压缩包 mod
+                    if importlib.util.find_spec(mod_path.name) is not None:
+                        module = importlib.import_module(mod_path.name)
+                        mods.append(mod_path.name)
+                elif mod_path.suffix == '.py':  # 处理单文件 mod
+                    print(f'importing mod {mod_path=} {mod_path.stem}')
+                    module = importlib.import_module(mod_path.stem)
+                    mods.append(mod_path.stem)
+            except ImportError:
+                print(f'ImportError when loading mod {mod_path}')
+                traceback.print_exc()
+        self.DR_Mod_List = [(mod, Version('0.0.0-unknown')) for mod in mods]
+        return mods
 
 
 DR_option = _DR_option()

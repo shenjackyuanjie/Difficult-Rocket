@@ -22,6 +22,42 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
+## 202305 DR `0.8.0.0` + DR_api `0.1.0.0`
+
+> 啊哈！ mod 加载来啦！
+
+### Remove
+
+- `game.config`
+  - 已删除
+  - Removed
+
+### Changes
+
+- `main.toml`
+  - `game.mods.path`
+    - 存储 mod 的路径
+      - Store the path of the mod
+- `Difficult_Rocket.mod.MODInfo` -> `Difficult_Rocket.api.mod.ModInfo`
+  - 用于存储 mod 的信息
+    - Used to store information about the mod
+- `Difficult_Rocket.DR_runtime`
+  - 添加 `mod_path: str` 字段
+  - 添加 `DR_Mod_List: List[Tuple[str, Version]]` 字段
+  - 添加 `load_mods() -> None` 方法
+  - 添加 `find_mods -> List[str]` 方法
+    - Add `mod_path: str` field
+    - Add `DR_Mod_List: List[Tuple[str, Version]]` field
+    - Add `load_mods() -> None` method
+    - Add `find_mods -> List[str]` method
+- 现在游戏崩溃时会自动在 stdio 中输出崩溃日志 内容跟 crash report 中的基本相同
+  - Now when the game crashes, it will automatically output the crash log in stdio
+    - The content of the crash log is basically the same as the crash report
+
+### Mod Loader
+
+- `ModInfo`
+
 ## 20230422 DR `0.7.2.2` + DR_rs `0.2.6.1` + DR_api `0.0.2.0` + 14
 
 ### DR_rs V 0.2.6.1
@@ -555,8 +591,6 @@ long_version: 一个用于标记内部协议的整数
 - 更新了 `nuitka.yml`
 - 尝试加载 `icon`
 - 更新了主项目
-
-## 20220627
 
 ## 20220511 V 0.6.3
 
