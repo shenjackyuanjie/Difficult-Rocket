@@ -36,7 +36,6 @@ from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.exception.language import LanguageNotFound
-from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
 from Difficult_Rocket.client.screen import DRScreen, DRDEBUGScreen
 
 
@@ -202,7 +201,6 @@ class ClientWindow(Window):
         # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list.append(DRDEBUGScreen(self))
         self.screen_list.append(DRScreen(self))
-        self.screen_list.append(SR1ShipRender(self))
 
     def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
