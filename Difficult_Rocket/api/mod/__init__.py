@@ -11,6 +11,7 @@ from typing import Tuple, List, Optional
 from MCDR.version import Version
 
 # from DR
+from Difficult_Rocket.main import Game
 from Difficult_Rocket import DR_runtime, Options
 
 
@@ -53,10 +54,22 @@ class ModInfo(Options):
     config: Options = Options()  # mod 配置存储
     old_mod: Optional["ModInfo"] = None  # 旧的mod实例
 
-    def on_load(self):
+    def on_load(self, game: Game):
         """ 加载时调用 """
         print(f'Mod {self.mod_id} loaded')
 
-    def on_unload(self):
+    def on_server_start(self, game: Game):
+        """ 服务器启动时调用 """
+        print(f'Mod {self.mod_id} server start')
+
+    def on_server_stop(self, game: Game):
+        """ 服务器停止时调用 """
+        print(f'Mod {self.mod_id} server stop')
+
+    def on_client_start(self, game: Game):
+        """ 客户端启动时调用 """
+        print(f'Mod {self.mod_id} client start')
+
+    def on_unload(self, game: Game):
         """ 卸载时调用 """
         print(f'Mod {self.mod_id} unloaded')
