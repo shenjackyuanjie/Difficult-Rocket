@@ -20,7 +20,6 @@ from pyglet.text import Label
 from pyglet.shapes import Line
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
-from pyglet.image import load as load_image
 
 # Difficult Rocket
 from Difficult_Rocket import DR_option

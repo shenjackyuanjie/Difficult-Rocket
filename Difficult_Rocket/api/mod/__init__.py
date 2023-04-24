@@ -5,7 +5,7 @@
 #  -------------------------------
 
 # system function
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 # from libs
 from MCDR.version import Version
@@ -25,7 +25,6 @@ RequireVersion = Tuple[Version, Version]
 ForceRequire = bool
 
 
-# TODO 完善中
 class ModInfo(Options):
     """
     加载mod时候的参数
@@ -52,8 +51,12 @@ class ModInfo(Options):
 
     """mod 配置"""
     config: Options = Options()  # mod 配置存储
+    old_mod: Optional["ModInfo"] = None  # 旧的mod实例
 
+    def on_load(self):
+        """ 加载时调用 """
+        print(f'Mod {self.mod_id} loaded')
 
-"""
-一些重置用函数
-"""
+    def on_unload(self):
+        """ 卸载时调用 """
+        print(f'Mod {self.mod_id} unloaded')
