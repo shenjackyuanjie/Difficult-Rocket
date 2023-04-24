@@ -110,7 +110,7 @@ class Game:
     def setup(self) -> None:
         self.client = client.Client(net_mode='local')
         self.server = server.Server(net_mode='local')
-        # self.load_mods()
+        self.load_mods()
 
     def python_version_check(self) -> None:  # best 3.8+ and write at 3.8.10
         self.logger.info(f"{tr().main.version.now_on()} {self.on_python_v}")
