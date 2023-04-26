@@ -55,7 +55,7 @@ class ModInfo(Options):
     config: Options = Options()  # mod 配置存储
     old_mod: Optional["ModInfo"] = None  # 旧的mod实例
 
-    def on_load(self, game: Game):
+    def on_load(self, game: Game, old_self: Optional["ModInfo"] = None):
         """ 加载时调用 """
         print(f'Mod {self.mod_id} loaded')
 
