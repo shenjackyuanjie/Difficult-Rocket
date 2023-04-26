@@ -4,6 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
+from typing import Optional
+
 from .sr1_ship import SR1ShipRender
 
 from MCDR.version import Version
@@ -28,8 +30,9 @@ class DR_mod(ModInfo):
     # DR_Api_version =   # DR Api版本
     # 同理 不管 API 版本   这东西要是不兼容了才是大问题
 
-    def on_load(self, game: Game):
-        ...
+    def on_load(self, game: Game, old_self: Optional["DR_mod"] = None):
+        if old_self:
+            ...
 
     def on_client_start(self, game: Game, client: ClientWindow):
         print('DR_mod: on_client_start')

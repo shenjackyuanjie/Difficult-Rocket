@@ -81,6 +81,7 @@ class Options:
 
             请注意，这个函数请尽量使用 try 包裹住可能出现错误的部分
             否则会在控制台输出你的报错"""
+            return True
 
     def option(self) -> Dict[str, Any]:
         """
@@ -149,7 +150,7 @@ class Options:
         return cls.options
 
     @staticmethod
-    def init_option(options_class: 'Options'.__class__, init_value: Optional[dict] = None) -> 'Options':
+    def init_option(options_class: Type['Options'], init_value: Optional[dict] = None) -> 'Options':
         return options_class(**init_value if init_value is not None else {})
 
 
