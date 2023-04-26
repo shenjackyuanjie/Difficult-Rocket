@@ -7,13 +7,14 @@
 from .sr1_ship import SR1ShipRender
 
 from MCDR.version import Version
-from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.main import Game
+from Difficult_Rocket.api.mod import ModInfo
+from Difficult_Rocket.client import ClientWindow
 
 
 class DR_mod(ModInfo):
 
-    mod_id = "Difficult_Rocket_mod"
+    mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
     version = Version("0.7.2.2")
 
@@ -29,6 +30,10 @@ class DR_mod(ModInfo):
 
     def on_load(self, game: Game):
         ...
+
+    def on_client_start(self, game: Game, client: ClientWindow):
+        print('DR_mod: on_client_start')
+        client.add_sub_screen("SR1_ship", SR1ShipRender)
 
 
 mod_class = DR_mod

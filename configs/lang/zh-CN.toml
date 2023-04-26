@@ -29,6 +29,7 @@ mod.load.info = "mod id: {} 版本号: {}"
 mod.load.faild.info = "Mod 加载失败: {} 错误信息: {}"
 mod.load.faild.no_mod_class = "没有找到 Mod 类"
 mod.load.done = "所有 Mod 加载完成"
+mod.event.error = "Mod 事件 {} 发生错误 {} Mod: {}"
 
 [client]
 setup.start = "客户端加载开始"

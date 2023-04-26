@@ -13,6 +13,7 @@ from MCDR.version import Version
 # from DR
 from Difficult_Rocket.main import Game
 from Difficult_Rocket import DR_runtime, Options
+from Difficult_Rocket.client import ClientWindow
 
 
 """
@@ -66,7 +67,7 @@ class ModInfo(Options):
         """ 服务器停止时调用 """
         print(f'Mod {self.mod_id} server stop')
 
-    def on_client_start(self, game: Game):
+    def on_client_start(self, game: Game, client: ClientWindow):
         """ 客户端启动时调用 """
         print(f'Mod {self.mod_id} client start')
 

@@ -12,7 +12,7 @@ import inspect
 import functools
 import traceback
 
-from typing import List, Callable
+from typing import Callable, Dict
 from decimal import Decimal
 
 # third function
@@ -25,6 +25,7 @@ from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
+# from Difficult_Rocket.main import Game
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line, tree
@@ -62,7 +63,7 @@ class ClientOption(Options):
 
 
 class Client:
-    def __init__(self, net_mode='local'):
+    def __init__(self, game: "Game", net_mode='local'):
         start_time = time.time_ns()
         # logging
         self.logger = logging.getLogger('client')
@@ -74,7 +75,9 @@ class Client:
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.net_mode = net_mode
-        self.window = ClientWindow(net_mode=self.net_mode, width=self.config.width, height=self.config.height,
+        self.game = game
+        self.window = ClientWindow(game=game, net_mode=self.net_mode,
+                                   width=self.config.width, height=self.config.height,
                                    fullscreen=self.config.fullscreen, caption=self.config.caption,
                                    resizable=self.config.resizeable, visible=self.config.visible,
                                    file_drops=True)
@@ -108,7 +111,7 @@ def _call_screen_after(func: Callable) -> Callable:
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
         result = func(self, *args, **kwargs)
-        for a_screen in self.screen_list:
+        for title, a_screen in self.screen_list.items():
             a_screen.window_pointer = self
             # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
@@ -125,7 +128,7 @@ def _call_screen_after(func: Callable) -> Callable:
 def _call_screen_before(func: Callable) -> Callable:
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
-        for a_screen in self.screen_list:
+        for title, a_screen in self.screen_list.items():
             a_screen.window_pointer = self
             # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
@@ -142,7 +145,7 @@ def _call_screen_before(func: Callable) -> Callable:
 
 class ClientWindow(Window):
 
-    def __init__(self, net_mode='local', *args, **kwargs):
+    def __init__(self, game: "Game", net_mode='local', *args, **kwargs):
         """
 
         @param net_mode:
@@ -155,6 +158,7 @@ class ClientWindow(Window):
         self.logger = logging.getLogger('client')
         self.logger.info(tr().window.setup.start())
         # value
+        self.game = game
         self.net_mode = net_mode
         self.run_input = False
         # configs
@@ -170,7 +174,7 @@ class ClientWindow(Window):
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
-        self.screen_list: List[BaseScreen] = []
+        self.screen_list: Dict[str, BaseScreen] = {}
         # setup
         self.setup()
         # 命令显示
@@ -199,8 +203,9 @@ class ClientWindow(Window):
         self.logger.info(f'find mods: {DR_runtime.find_mods()}')
         self.load_fonts()
         # TODO 读取配置文件，加载不同的屏幕，解耦
-        self.screen_list.append(DRDEBUGScreen(self))
-        self.screen_list.append(DRScreen(self))
+        self.screen_list['DR_debug'] = DRDEBUGScreen(self)
+        self.screen_list['DR_main'] = DRScreen(self)
+        self.game.dispatch_event('on_client_start', game=self.game, client=self)
 
     def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
@@ -243,8 +248,8 @@ class ClientWindow(Window):
     client api
     """
 
-    def add_sub_screen(self, sub_screen: type(BaseScreen)):
-        self.screen_list.append(sub_screen(self))
+    def add_sub_screen(self, title: str, sub_screen: type(BaseScreen)):
+        self.screen_list[title] = sub_screen(self)
 
     """
     draws and some event
