@@ -24,7 +24,7 @@ Api_version = Version("0.0.2.0")  # API 版本
 __version__ = game_version
 
 # TODO 解耦 DR SDK 与 DR_mod 和 DR_rs
-DR_rust_version = Version("0.2.6.1")  # DR 的 Rust 编写部分的版本
+DR_rust_version = Version("0.2.6.2")  # DR 的 Rust 编写部分的版本
 # 后面会移除的 DR_rs 相关信息
 # DR_rs和 DR_mod 的部分正在和 DR SDK 解耦
 
@@ -71,7 +71,7 @@ class _DR_option(Options):
     # tests
     playing:                bool = False
     debugging:              bool = False
-    crash_report_test:      bool = True
+    crash_report_test:      bool = False
 
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x

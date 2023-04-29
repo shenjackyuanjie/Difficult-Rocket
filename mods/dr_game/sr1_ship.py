@@ -21,6 +21,8 @@ from pyglet.shapes import Line
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 
+from . import DR_mod_runtime
+
 # Difficult Rocket
 from Difficult_Rocket import DR_option
 from Difficult_Rocket.utils.translate import tr
@@ -32,7 +34,7 @@ from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture, SR1PartD
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
-if DR_option.use_DR_rust:
+if DR_mod_runtime.use_DR_rust:
     from libs.Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs
 
 
@@ -127,7 +129,7 @@ class SR1ShipRender(BaseScreen):
         load_end_time = time.time_ns()
         logger.info(tr().client.sr1_render.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
-        if DR_option.use_DR_rust:
+        if DR_mod_runtime.use_DR_rust:
             self.camera_rs = CenterCamera_rs(main_window,
                                              min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
@@ -193,7 +195,7 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.camera_rs.zoom = 1.0
-        if DR_option.use_DR_rust:
+        if DR_mod_runtime.use_DR_rust:
             self.camera_rs.dx = 0
             self.camera_rs.dy = 0
         parts = self.xml_root.find('Parts')
@@ -212,13 +214,13 @@ class SR1ShipRender(BaseScreen):
             self.drawing = False
         self.need_draw = False
         full_mass = 0
-        if DR_option.use_DR_rust:
+        if DR_mod_runtime.use_DR_rust:
             for part in self.part_data:
                 full_mass += self.part_list_rs.get_part_type(self.part_data[part].p_type).mass * 500
         logger.info(tr().client.sr1_render.ship.load_time().format(
             (time.perf_counter_ns() - start_time) / 1000000000))
         logger.info(tr().client.sr1_render.ship.info().format(
-            len(self.part_data), f'{full_mass}kg' if DR_option.use_DR_rust else tr().game.require_DR_rs()))
+            len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else tr().game.require_DR_rs()))
         self.rendered = True
 
     def get_ship_size(self) -> (int, int):

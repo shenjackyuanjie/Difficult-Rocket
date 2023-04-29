@@ -94,6 +94,12 @@ pub mod translate {
     use pyo3::prelude::*;
     use pyo3::types::PyDict;
 
+    #[derive(Clone)]
+    pub enum BoolString {
+        Bool(bool),
+        String(String),
+    }
+
     #[pyclass]
     #[pyo3(name = "TranslateConfig_rs")]
     #[pyo3(text_signature = "(language, raise_error = False, replace_normal = False, add_error = False, is_result = False, keep_get = False)")]
@@ -121,6 +127,13 @@ pub mod translate {
                 language: language.unwrap_or(default_language),
             }
         }
+
+        // fn set(&self, py_: Python, item: String, value: BoolString) -> &Self {
+        //     match item.as_str() {
+        //         "raise_error" => self,
+        //         _ => self,
+        //     }
+        // }
     }
 
     #[pyclass]
