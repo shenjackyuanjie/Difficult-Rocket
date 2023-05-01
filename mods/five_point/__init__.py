@@ -3,7 +3,7 @@ from typing import Optional
 
 from .main import FivePointRender
 
-from MCDR.version import Version
+from libs.MCDR.version import Version
 
 from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.main import Game
