@@ -11,6 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-# 单独导入的(或者就这一个有用的)
+from typing import TYPE_CHECKING
 
-# lazy之后之前全部导入的(太多了写不动__all__了
+if TYPE_CHECKING:
+    from Difficult_Rocket.api import delivery, screen, mod, exception

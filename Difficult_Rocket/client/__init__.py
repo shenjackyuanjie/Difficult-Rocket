@@ -161,6 +161,7 @@ class ClientWindow(Window):
         self.game = game
         self.net_mode = net_mode
         self.run_input = False
+        self.command_list: List[str] = []
         # configs
         self.main_config = tools.load_file('./configs/main.toml')
         self.game_config = tools.load_file('./configs/game.config')
@@ -228,10 +229,11 @@ class ClientWindow(Window):
                 continue
             if get == 'stop':
                 self.run_input = False
-            try:
-                self.on_command(line.CommandText(get))
-            except CommandError:
-                self.logger.error(traceback.format_exc())
+            self.command_list.append(get)
+            # try:
+                # self.on_command(line.CommandText(get))
+            # except CommandError:
+                # self.logger.error(traceback.format_exc())
         self.logger.debug('read_input end')
 
     @new_thread('window save_info')
@@ -263,6 +265,9 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_draw(self, *dt):
+        if self.command_list:
+            for command in self.command_list:
+                self.on_command(line.CommandText(command))
         # self.logger.debug('on_draw call dt: {}'.format(dt))
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()

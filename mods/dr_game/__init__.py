@@ -10,7 +10,7 @@ import traceback
 from typing import Optional
 
 
-from MCDR.version import Version
+from libs.MCDR.version import Version
 from Difficult_Rocket.main import Game
 from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.api.types import Options

@@ -4,7 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-import os
 import sys
 import warnings
 import importlib
