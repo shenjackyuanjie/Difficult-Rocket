@@ -6,7 +6,7 @@
 - [Semver++](./version.md)
 
 - [update logs](./update_logs.md)
-- [contributors](./contributors.md)
+- [Contributing](./contributing.md)
 
 - [rua! 奇怪的东西~](./rua!.md)
 - [nuitka](./nuitka/readme.md)

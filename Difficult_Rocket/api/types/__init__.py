@@ -58,6 +58,8 @@ class Options:
         如果存在 init 方法 会在设置完 kwargs 之后运行子类的 init 方法
         :param kwargs:
         """
+        if TYPE_CHECKING:
+            self.options: Dict[str, Union[Callable, object]] = {}
         self.flush_option()
         for option, value in kwargs.items():
             if option not in self.cached_options:
