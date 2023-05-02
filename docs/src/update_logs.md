@@ -162,6 +162,13 @@
 - 修改了中文语言的翻译，在中英混杂的中间加入空格
   - Modified the Chinese translation, and added a space in the middle of Chinese and English
 
+### Fix
+
+- `mods` 路径不存在时 游戏会崩溃的 bug
+  - Bug that the game will crash when the `mods` path does not exist
+- 游戏崩溃 / 从控制台退出时 `WerFault.exe` 会跳出来卡住程序的 bug
+  - Bug that `WerFault.exe` will pop up and block the program when the game crashes / exits from the console
+
 ## 20230405 DR `0.7.2.1`
 
 ### Changes
