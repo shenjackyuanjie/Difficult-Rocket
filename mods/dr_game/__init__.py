@@ -16,7 +16,7 @@ from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.client import ClientWindow
 
-DR_rust_version = Version("0.2.6.2")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.2.7.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
 
 class _DR_mod_runtime(Options):
@@ -50,7 +50,7 @@ class DR_mod(ModInfo):
 
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
-    version = Version("0.7.2.2")
+    version = Version("0.1.0.0")
 
     writer = "shenjackyuanjie"
     link = "shenjack.top"
