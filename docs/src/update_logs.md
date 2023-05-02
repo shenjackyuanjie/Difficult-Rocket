@@ -22,17 +22,22 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202305 DR `0.8.0.0` + DR_api `0.1.0.0`
+## 202305 DR `0.8.0.0` + DR_api `0.1.0.0` + 15
 
 > 啊哈！ mod 加载来啦！
 
 > 啊啊啊啊啊 大重构 api
+
+
 
 ### Remove
 
 - `game.config`
   - 已删除
   - Removed
+- `DR_option` & `DR_runtime`
+  - 完全移除 `DR_rust` 部分
+    - Completely removed the `DR_rust` part
 
 ### Changes
 
