@@ -75,26 +75,6 @@ class _DR_option(Options):
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
 
-    # def init(self, **kwargs):
-    #     try:
-    #         from libs.Difficult_Rocket_rs import test_call, get_version_str
-    #         test_call(self)
-    #         print(f'DR_rust available: {get_version_str()}')
-    #     except ImportError:
-    #         if __name__ != '__main__':
-    #             traceback.print_exc()
-    #         self.DR_rust_available = False
-    #     self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
-    #     self.flush_option()
-    #
-    # def test_rust(self):
-    #     if self.DR_rust_available:
-    #         from libs.Difficult_Rocket_rs import part_list_read_test
-    #         part_list_read_test("./configs/PartList.xml")
-    #
-    # def draw(self):
-    #     self.DR_rust_available = True
-
     @property
     def std_font_size(self) -> int:
         return round(12 * self.gui_scale)
@@ -152,7 +132,11 @@ class _DR_runtime(Options):
 
     def find_mods(self) -> List[str]:
         mods = []
-        paths = Path(self.mod_path).iterdir()
+        mod_path = Path(self.mod_path)
+        if not mod_path.exists():
+            mod_path.mkdir()
+            return []
+        paths = mod_path.iterdir()
         sys.path.append(self.mod_path)
         for mod_path in paths:
             try:

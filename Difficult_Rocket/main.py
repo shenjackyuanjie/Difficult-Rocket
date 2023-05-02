@@ -78,7 +78,7 @@ class Game:
         if not mod_path.exists():
             self.logger.info(tr().main.mod.find.faild.no_mod_folder())
             return
-        paths = Path(DR_runtime.mod_path).iterdir()
+        paths = mod_path.iterdir()
         sys.path.append(DR_runtime.mod_path)
         for mod_path in paths:
             try:
