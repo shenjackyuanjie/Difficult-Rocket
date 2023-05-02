@@ -99,6 +99,7 @@ def main() -> None:
         crash.record_thread = False
         print(crash.all_thread)
         print(crash.all_process)
+    print("Difficult_Rocket 已关闭")
 
 
 if __name__ == '__main__':

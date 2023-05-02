@@ -54,6 +54,16 @@
   - Now when the game crashes, it will automatically output the crash log in stdio
     - The content of the crash log is basically the same as the crash report
 
+### Docs
+
+- `howto/translate.md`
+  - 修改为新的 tr 调用方式
+    - Modified to the new tr call method
+- `SUMMARY.md`
+  - add `howto/translate.md`
+  - add `howto/game/readme.md`
+  - `contributors` -> `Contributing`
+
 ### Mod Loader
 
 - `ModInfo`
