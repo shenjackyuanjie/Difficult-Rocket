@@ -24,7 +24,9 @@
 - [开发文档](./howto/readme.md)
   - [client](./howto/client.md)
   - [mod 加载器](./howto/mod/loader.md)
+  - [游戏设计机制](./howto/game/readme.md)
   - [命名规范](./howto/game/命名.md)
+  - [Translate](./howto/translate.md)
 
 - [NOOOOOOOOOO](./no/readme.md)
   - [Andy Zhang](./no/zhang_anzhi/readme.md)
