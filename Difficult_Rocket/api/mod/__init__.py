@@ -5,15 +5,20 @@
 #  -------------------------------
 
 # system function
-from typing import Tuple, List, Optional
+from typing import Tuple, List, Optional, TypeVar, TYPE_CHECKING
 
 # from libs
 from libs.MCDR.version import Version
 
 # from DR
-from Difficult_Rocket.main import Game
-from Difficult_Rocket import DR_runtime, Options
-from Difficult_Rocket.client import ClientWindow
+if TYPE_CHECKING:
+    from Difficult_Rocket.main import Game
+    from Difficult_Rocket.client import ClientWindow
+else:
+    Game = TypeVar("Game")
+    ClientWindow = TypeVar("ClientWindow")
+from Difficult_Rocket import DR_runtime
+from ..types import Options
 
 
 """

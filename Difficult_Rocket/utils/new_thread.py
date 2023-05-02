@@ -7,8 +7,7 @@
 import functools
 import inspect
 import threading
-from Difficult_Rocket import crash, DR_option
-from typing import Optional, Callable
+from typing import Optional, Callable, Union, List
 
 """
 This part of code come from MCDReforged(https://github.com/Fallen-Breath/MCDReforged)
@@ -16,6 +15,15 @@ Very thanks to Fallen_Breath and other coder who helped MCDR worked better
 GNU Lesser General Public License v3.0（GNU LGPL v3)
 (have some changes)
 """
+
+__all__ = [
+    'new_thread',
+    'FunctionThread'
+]
+
+
+record_thread = False
+record_destination: List[Callable[['FunctionThread'], None]] = []
 
 
 def copy_signature(target: Callable, origin: Callable) -> Callable:
@@ -28,10 +36,13 @@ def copy_signature(target: Callable, origin: Callable) -> Callable:
 
 
 class FunctionThread(threading.Thread):
+    """
+    A Thread subclass which is used in decorator :func:`new_thread` to wrap a synchronized function call
+    """
     __NONE = object()
 
-    def __init__(self, target, name, args, kwargs):
-        super().__init__(target=target, args=args, kwargs=kwargs, name=name)
+    def __init__(self, target, name, args, kwargs, daemon):
+        super().__init__(target=target, args=args, kwargs=kwargs, name=name, daemon=daemon)
         self.__return_value = self.__NONE
         self.__error = None
 
@@ -40,12 +51,33 @@ class FunctionThread(threading.Thread):
                 self.__return_value = target(*args_, **kwargs_)
             except Exception as e:
                 self.__error = e
-                print(e)
                 raise e from None
 
         self._target = wrapped_target
 
     def get_return_value(self, block: bool = False, timeout: Optional[float] = None):
+        """
+        Get the return value of the original function
+
+        If an exception has occurred during the original function call, the exception will be risen again here
+
+        Examples::
+
+            >>> import time
+            >>> @new_thread
+            ... def do_something(text: str):
+            ... 	time.sleep(1)
+            ... 	return text
+
+            >>> do_something('task').get_return_value(block=True)
+            'task'
+
+        :param block: If it should join the thread before getting the return value to make sure the function invocation finishes
+        :param timeout: The maximum timeout for the thread join
+        :raise RuntimeError: If the thread is still alive when getting return value. Might be caused by ``block=False``
+            while the thread is still running, or thread join operation times out
+        :return: The return value of the original function
+        """
         if block:
             self.join(timeout)
         if self.__return_value is self.__NONE:
@@ -54,30 +86,57 @@ class FunctionThread(threading.Thread):
             raise self.__error
         return self.__return_value
 
-    def join(self, timeout: Optional[float] = None) -> None:
-        super().join(timeout)
 
-    def start(self) -> None:
-        super().start()
-
-
-def new_thread(thread_name: Optional[str or Callable] = None,
+def new_thread(arg: Optional[Union[str, Callable]] = None,
                daemon: bool = False,
                log_thread: bool = True):
     """
-    Use a new thread to execute the decorated function
-    The function return value will be set to the thread instance that executes this function
-    The name of the thread can be specified in parameter
+    This is a one line solution to make your function executes in parallels.
+    When decorated with this decorator, functions will be executed in a new daemon thread
+
+    This decorator only changes the return value of the function to the created ``Thread`` object.
+    Beside the return value, it reserves all signatures of the decorated function,
+    so you can safely use the decorated function as if there's no decorating at all
+
+    It's also a simple compatible upgrade method for old MCDR 0.x plugins
+
+    The return value of the decorated function is changed to the ``Thread`` object that executes this function
+
+    The decorated function has 1 extra field:
+
+    * ``original`` field: The original undecorated function
+
+    Examples::
+
+        >>> import time
+
+        >>> @new_thread('My Plugin Thread')
+        ... def do_something(text: str):
+        ... 	time.sleep(1)
+        ... 	print(threading.current_thread().name)
+        >>> callable(do_something.original)
+        True
+        >>> t = do_something('foo')
+        >>> isinstance(t, FunctionThread)
+        True
+        >>> t.join()
+        My Plugin Thread
+
+    :param arg: A :class:`str`, the name of the thread. It's recommend to specify the thread name, so when you
+        log something by ``server.logger``, a meaningful thread name will be displayed
+        instead of a plain and meaningless ``Thread-3``
+    :param daemon: If the thread should be a daemon thread
+    :param log_thread: If the thread should be logged to callback defined in record_destination
     """
 
     def wrapper(func):
         @functools.wraps(func)  # to preserve the origin function information
         def wrap(*args, **kwargs):
-            thread = FunctionThread(target=func, args=args, kwargs=kwargs, name=thread_name)
-            thread.daemon = daemon
+            thread = FunctionThread(target=func, args=args, kwargs=kwargs, name=thread_name, daemon=daemon)
+            if record_thread:
+                for destination in record_destination:
+                    destination(thread)
             thread.start()
-            if log_thread and DR_option.record_threads:
-                crash.all_thread.append(thread)
             return thread
 
         # bring the signature of the func to the wrap function
@@ -86,10 +145,11 @@ def new_thread(thread_name: Optional[str or Callable] = None,
         wrap.original = func  # access this field to get the original function
         return wrap
 
-    # Directly use @on_new_thread without ending brackets case
-    if isinstance(thread_name, Callable):
-        this_is_a_function = thread_name
+    # Directly use @new_thread without ending brackets case, e.g. @new_thread
+    if isinstance(arg, Callable):
         thread_name = None
-        return wrapper(this_is_a_function)
-    # Use @on_new_thread with ending brackets case
-    return wrapper
+        return wrapper(arg)
+    # Use @new_thread with ending brackets case, e.g. @new_thread('A'), @new_thread()
+    else:
+        thread_name = arg
+        return wrapper

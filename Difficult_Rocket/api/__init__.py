@@ -11,6 +11,7 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from Difficult_Rocket.api import screen, mod, exception
+
+# from Difficult_Rocket.api import screen, mod, exception
 
 __all__ = ['screen', 'mod', 'exception']

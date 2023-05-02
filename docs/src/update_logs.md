@@ -26,6 +26,8 @@
 
 > 啊哈！ mod 加载来啦！
 
+> 啊啊啊啊啊 大重构 api
+
 ### Remove
 
 - `game.config`
@@ -53,6 +55,14 @@
 - 现在游戏崩溃时会自动在 stdio 中输出崩溃日志 内容跟 crash report 中的基本相同
   - Now when the game crashes, it will automatically output the crash log in stdio
     - The content of the crash log is basically the same as the crash report
+- `utils.new_thread`
+  - 跟随 MCDR 的更新
+  - 将记录线程的方式改成 函数回调
+    - Follow the update of MCDR
+    - Change the way to record threads to function callbacks
+- `Difficult_Rocket.api`
+  - 大重构,移除定义,改为引用
+    - Big refactoring, remove definition, change to reference
 
 ### Docs
 
