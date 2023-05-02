@@ -60,6 +60,14 @@ class ModInfo(Options):
         print(f'Mod {self.mod_id} loaded')
         return True
 
+    def on_client_start(self, game: Game, client: ClientWindow):
+        """ 客户端启动时调用 """
+        print(f'Mod {self.mod_id} client start')
+
+    def on_client_stop(self, game: Game, client: ClientWindow, source: str = 'window'):
+        """ 客户端停止时调用 """
+        print(f'Mod {self.mod_id} client stop')
+
     def on_server_start(self, game: Game):
         """ 服务器启动时调用 """
         print(f'Mod {self.mod_id} server start')
@@ -67,10 +75,6 @@ class ModInfo(Options):
     def on_server_stop(self, game: Game):
         """ 服务器停止时调用 """
         print(f'Mod {self.mod_id} server stop')
-
-    def on_client_start(self, game: Game, client: ClientWindow):
-        """ 客户端启动时调用 """
-        print(f'Mod {self.mod_id} client start')
 
     def on_unload(self, game: Game):
         """ 卸载时调用 """

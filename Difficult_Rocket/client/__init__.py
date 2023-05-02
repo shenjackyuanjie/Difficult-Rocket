@@ -271,7 +271,6 @@ class ClientWindow(Window):
             for command in self.command_list:
                 self.on_command(line.CommandText(command))
                 self.command_list.pop(0)
-        # self.logger.debug('on_draw call dt: {}'.format(dt))
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
         self.draw_update(float(self.SPF))
@@ -438,6 +437,7 @@ class ClientWindow(Window):
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
+        self.game.dispatch_event('on_close', game=self.game, client=self, source=source)
         self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
         self.fps_log.check_list = False

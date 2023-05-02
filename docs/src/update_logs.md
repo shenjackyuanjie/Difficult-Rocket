@@ -39,6 +39,10 @@
   - `on_client_start(game: Game, client: ClientWindow) -> None`
     - `game`: Game 对象 用于存储 DR SDK 的信息
     - `client`: ClientWindow 对象 用于传递客户端状态
+  - `on_client_stop(game: Game, client: ClientWindow, source: str = 'window')`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `client`: ClientWindow 对象 用于传递客户端状态
+    - `source`: 关闭调用的来源
 
 ### DR_rs `0.2.7.0`
 
