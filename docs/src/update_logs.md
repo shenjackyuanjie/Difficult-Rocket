@@ -35,7 +35,7 @@
 - `game.config`
   - 已删除
   - Removed
-- `DR_option` & `DR_runtime`
+- `DR_option` & `DR_runtime`(`long_version` `15`)
   - 完全移除 `DR_rust` 部分
     - Completely removed the `DR_rust` part
 

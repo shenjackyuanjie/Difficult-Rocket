@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_mod_runtime.use_DR_rust:
-    from libs.Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs
+    from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs
 
 
 logger = logging.getLogger('client')

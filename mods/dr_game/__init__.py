@@ -28,7 +28,7 @@ class _DR_mod_runtime(Options):
 
     def init(self, **kwargs) -> None:
         try:
-            from libs.Difficult_Rocket_rs import get_version_str
+            from .Difficult_Rocket_rs import get_version_str
             self.DR_rust_get_version = Version(get_version_str())
             self.DR_rust_available = True
             if self.DR_rust_get_version != self.DR_rust_version:
@@ -36,7 +36,12 @@ class _DR_mod_runtime(Options):
                 warnings.warn(f'DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
             self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
-        except ImportError as e:
+        except Exception as e:
+            try:
+                from .Difficult_Rocket_rs import get_version_str
+                print(type(get_version_str))
+            except:
+                ...
             traceback.print_exc()
             self.DR_rust_available = False
             self.use_DR_rust = False
