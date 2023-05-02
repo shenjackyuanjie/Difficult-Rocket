@@ -3,9 +3,7 @@
 ## 范例
 
 ```python
-from Difficult_Rocket.utils.translate import Tr
+from Difficult_Rocket.utils.translate import tr
 
-Tr.lang
-
-print(Tr.window.setup.done)
+print(tr().window.setup.done())
 ```
