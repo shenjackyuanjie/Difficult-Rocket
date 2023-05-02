@@ -22,13 +22,15 @@ import multiprocessing
 
 from io import StringIO
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
 from Difficult_Rocket import client, server, DR_option, DR_runtime
-
+if TYPE_CHECKING:
+    from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.crash import write_info_to_cache
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
@@ -105,7 +107,7 @@ class Game:
                     self.logger.warning(tr().main.mod.load.faild.info().format(mod, tr().main.mod.load.faild.no_mod_class()))
                     del mod_module  # 释放内存
                     continue
-                mod_class = mod_module.mod_class
+                mod_class: type(ModInfo) = mod_module.mod_class
                 mod_class = mod_class()
                 module.append(mod_class)
                 self.logger.info(tr().main.mod.load.info().format(mod_class.mod_id, mod_class.version))

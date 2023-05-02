@@ -26,7 +26,7 @@ class _DR_mod_runtime(Options):
     DR_rust_version: Version = DR_rust_version
     DR_rust_get_version: Optional[Version] = None
 
-    def init(self, **kwargs) -> None:
+    def init(self) -> None:
         try:
             from .Difficult_Rocket_rs import get_version_str
             self.DR_rust_get_version = Version(get_version_str())
@@ -36,12 +36,7 @@ class _DR_mod_runtime(Options):
                 warnings.warn(f'DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n'
                               f'Builtin version {relationship} than true version')
             self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
-        except Exception as e:
-            try:
-                from .Difficult_Rocket_rs import get_version_str
-                print(type(get_version_str))
-            except:
-                ...
+        except Exception:
             traceback.print_exc()
             self.DR_rust_available = False
             self.use_DR_rust = False
@@ -69,11 +64,15 @@ class DR_mod(ModInfo):
     # DR_Api_version =   # DR Api版本
     # 同理 不管 API 版本   这东西要是不兼容了才是大问题
 
-    def on_load(self, game: Game, old_self: Optional["DR_mod"] = None):
+    def on_load(self, game: Game, old_self: Optional["DR_mod"] = None) -> bool:
+        if not DR_mod_runtime.DR_rust_available:
+            return False
         if old_self:
             game.client.window.add_sub_screen("SR1_ship", old_self.screen)
         else:
             self.config.flush_option()
+        print("DR_mod: on_load")
+        return True
 
     def on_client_start(self, game: Game, client: ClientWindow):
         from .sr1_ship import SR1ShipRender

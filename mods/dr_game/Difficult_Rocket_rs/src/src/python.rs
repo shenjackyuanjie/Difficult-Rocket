@@ -13,8 +13,8 @@ pub mod data {
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::sr1_data::ship::RawShip;
+    use crate::types::sr1::{SR1PartData, SR1PartListTrait};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
-    use crate::types::sr1::{SR1PartListTrait, SR1ShipTrait};
 
     #[pyclass]
     #[pyo3(name = "SR1PartType_rs")]
@@ -71,6 +71,12 @@ pub mod data {
     }
 
     #[pyclass]
+    #[pyo3(name = "SR1PartData_rs")]
+    pub struct PySR1PartData {
+        pub data: SR1PartData,
+    }
+
+    #[pyclass]
     #[pyo3(name = "SR1Ship_rs")]
     #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
     pub struct PySR1Ship {
@@ -82,11 +88,29 @@ pub mod data {
     impl PySR1Ship {
         #[new]
         fn new(file_path: String, part_list: String, ship_name: String) -> Self {
-            let raw_ship: RawShip = RawShip::from_file(file_path).unwrap();
-            let ship = raw_ship.to_sr_ship(Some(ship_name));
+            let ship = SR1Ship::from_file(file_path, Some(ship_name)).unwrap();
             let part_list = SR1PartList::from_file(part_list).unwrap();
             Self { ship, part_list }
         }
+
+        fn get_img_pos(&self) -> (i64, i64, i64, i64) {
+            let mut img_pos = (0, 0, 0, 0);
+            // -x, -y, +x, +y
+            // 左下角，右上角
+            for part in self.ship.types.iter() {
+                // let part_box = part
+                todo!("get_img_pos")
+            }
+            img_pos
+        }
+
+        fn get_name(&self) -> String { self.ship.name.clone() }
+
+        fn get_description(&self) -> String { self.ship.description.clone() }
+
+        fn get_lift_off(&self) -> bool { self.ship.lift_off }
+
+        fn get_touch_ground(&self) -> bool { self.ship.touch_ground }
     }
 }
 

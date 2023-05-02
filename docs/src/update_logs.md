@@ -22,13 +22,27 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202305 DR `0.8.0.0` + DR_api `0.1.0.0` + 15
+## 202305 DR `0.8.0.0` + DR_api `0.1.0.0` + DR_rs `0.2.7.0` + 15
 
 > 啊哈！ mod 加载来啦！
 
 > 啊啊啊啊啊 大重构 api
 
+### DR_rs `0.2.7.0`
 
+- `__init__.py`
+  - 添加了 `SR1Ship_rs` 的 typing
+    - `name`
+    - `description`
+    - `lift_off`
+    - `touch_ground`
+    - `img_pos() -> Tuple[int, int, int, int]`
+- 导出了 `SR1Ship_rs`
+  - Exported `SR1Ship_rs`
+- `types::SR1PartData`
+  - `get_box(&self, part_type: &SR1PartType) -> (f64, f64, f64, f64)`
+- `types::SR1Ship`
+  - `from_file`
 
 ### Remove
 
@@ -82,6 +96,13 @@
 ### Mod Loader
 
 - `ModInfo`
+  - `on_load(game: Game, old_self: Optional[ModInfo]) -> bool`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `old_self`: 旧的 ModInfo 对象, 可以用于从上次加载中恢复信息
+    - 返回值: 是否加载成功
+      - `game`: Game object used to store information about the DR SDK
+      - `old_self`: Old ModInfo object, can be used to restore information from the last load
+      - Return value: Whether the load is successful
 
 ## 20230422 DR `0.7.2.2` + DR_rs `0.2.6.1` + DR_api `0.0.2.0` + 14
 

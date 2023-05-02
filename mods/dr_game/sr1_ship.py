@@ -19,6 +19,7 @@ from pyglet.math import Vec4
 from pyglet.text import Label
 from pyglet.shapes import Line
 from pyglet.sprite import Sprite
+from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
 
 from . import DR_mod_runtime
@@ -360,6 +361,12 @@ class SR1ShipRender(BaseScreen):
 
             image_data = screenshot(self.window_pointer)
             image_data.save('test.png')
+        elif command.re_match('gen_img'):
+            if not self.rendered:
+                return
+            # ship_size = self.ship.size
+            base_textures = Texture.create(100, 100)
+            ...
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if not self.focus:

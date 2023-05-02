@@ -17,14 +17,9 @@ if TYPE_CHECKING:
 else:
     Game = TypeVar("Game")
     ClientWindow = TypeVar("ClientWindow")
+
 from Difficult_Rocket import DR_runtime
 from ..types import Options
-
-
-"""
-加载mod时会更改的参数
-这里的只是范例,实际加载时会根据mod配置修改
-"""
 
 RequireVersion = Tuple[Version, Version]
 # 第一个是最低兼容版本,第二个是最高兼容版本
@@ -60,9 +55,10 @@ class ModInfo(Options):
     config: Options = Options()  # mod 配置存储
     old_mod: Optional["ModInfo"] = None  # 旧的mod实例
 
-    def on_load(self, game: Game, old_self: Optional["ModInfo"] = None):
+    def on_load(self, game: Game, old_self: Optional["ModInfo"] = None) -> bool:
         """ 加载时调用 """
         print(f'Mod {self.mod_id} loaded')
+        return True
 
     def on_server_start(self, game: Game):
         """ 服务器启动时调用 """
