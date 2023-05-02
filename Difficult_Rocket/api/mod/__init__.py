@@ -8,7 +8,7 @@
 from typing import Tuple, List, Optional
 
 # from libs
-from MCDR.version import Version
+from libs.MCDR.version import Version
 
 # from DR
 from Difficult_Rocket.main import Game

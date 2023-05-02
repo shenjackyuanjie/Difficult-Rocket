@@ -11,9 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from Difficult_Rocket.api import screen, mod, exception
+from Difficult_Rocket.api import screen, mod, exception
 
 __all__ = ['screen', 'mod', 'exception']
