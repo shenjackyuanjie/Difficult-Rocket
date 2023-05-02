@@ -5,15 +5,14 @@
 #  -------------------------------
 
 import math
-from typing import Dict, Union, List, Optional
+from typing import Dict, Union, Optional
 from dataclasses import dataclass
 
 # pyglet
-# import pyglet
 from pyglet.image import load, AbstractImage
 
 # Difficult Rocket
-from Difficult_Rocket.api.types import Options
+from Difficult_Rocket.utils.options import Options
 
 
 @dataclass
@@ -30,7 +29,6 @@ class SR1PartData:
     flip_y: bool
     explode: bool
     textures: Optional[str] = None
-    connections: Optional[List[int]] = None
 
 
 class SR1Textures(Options):
@@ -145,23 +143,3 @@ def xml_bool(bool_like: Union[str, int, bool, None]) -> bool:
     if isinstance(bool_like, int):
         return bool_like != 0
     return False if bool_like == '0' else bool_like.lower() != 'false'
-
-#
-#
-# from xml.etree.ElementTree import Element, ElementTree
-# from defusedxml.ElementTree import parse
-#
-# part_list = parse("../../../../textures/PartList.xml")
-# part_list_root: Element = part_list.getroot()
-# print(part_list_root.tag, part_list_root.attrib)
-#
-# part_types = part_list_root.find('PartTypes')
-#
-# for x in list(part_list_root):
-#     print(f'tag: {x.tag} attr: {x.attrib}')
-#
-# for part_type in list(part_list_root):
-#     part_type: Element
-#     print(f'\'{part_type.attrib.get("id")}\': \'{part_type.attrib.get("sprite")}\'')
-#
-#

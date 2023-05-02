@@ -7,6 +7,7 @@ import sys
 import time
 import cProfile
 import traceback
+import threading
 
 from io import StringIO
 
@@ -39,7 +40,7 @@ def print_path() -> None:
     # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
 
 
-def main() -> None:
+def main() -> int:
     print(hi)  # hi！
     start_time_ns = time.time_ns()
     start_time_perf_ns = time.perf_counter_ns()
@@ -57,7 +58,7 @@ def main() -> None:
         print('pyglet_rs available:', get_version_str())
         print('trying to patch pyglet_rs')
         patch_vector()
-    except ImportError as e:
+    except ImportError:
         print('pyglet_rs import error')
         traceback.print_exc()
     try:
@@ -82,7 +83,8 @@ def main() -> None:
         if DR_option.crash_report_test:
             raise TestError('debugging')  # debug 嘛，试试crash
     except Exception as exp:  # 出毛病了
-        print(error_format['error.happen'])  #
+        # 解析错误信息
+        print(error_format['error.happen'])
         error = traceback.format_exc()
         name = type(exp).__name__
         if name in error_format:
@@ -90,6 +92,7 @@ def main() -> None:
         else:
             print(error_format['error.unknown'])
         print(error)
+        # 输出 crash 信息
         crash.create_crash_report(error)
         cache_steam = StringIO()
         crash.write_info_to_cache(cache_steam)
@@ -99,8 +102,20 @@ def main() -> None:
         crash.record_thread = False
         print(crash.all_thread)
         print(crash.all_process)
+    # join all thread
+    for thread in threading.enumerate():
+        print(thread)
+        if thread.name == 'MainThread' or thread == threading.main_thread() or thread == threading.current_thread():
+            continue
+        if thread.daemon:
+            continue
+        thread.join()
+    # stop pyglet
+    import pyglet
+    pyglet.app.exit()
     print("Difficult_Rocket 已关闭")
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

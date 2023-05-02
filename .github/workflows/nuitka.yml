@@ -5,9 +5,7 @@ name: Build
 on:
   # 触发条件
   push:
-    branches: ["main"]
   pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 # 主任务
@@ -79,18 +77,6 @@ jobs:
           $infos = python .github/workflows/get_info.py -github
           Write-Output $infos >> $env:GITHUB_ENV
           python .github/workflows/get_info.py
-
-      # 这堆构建脚本全都是我自己写的
-      - name: DR-rs build
-        shell: pwsh
-        run: |
-          cd libs/Difficult_Rocket_rs/src
-          python setup.py build
-          python post_build.py
-          python setup.py clean
-          cd ..
-          cd ..
-          cd ..
 
       # 还是得我自己写脚本
       - name: Build on Windows
@@ -165,7 +151,6 @@ jobs:
           Copy-Item libs/fonts build\DR.dist\libs\fonts -Recurse
           # Copy-Item libs\pyglet\ build\DR.dist -Recurse
           
-          # Copy-Item -Path "libs\Difficult_Rocket_rs\lib\*" -Destination "build\DR.dist\libs\Difficult_Rocket_rs\lib" -Recurse
           Rename-Item build/DR.dist Difficult-Rocket
           python ./.github/workflows/post_compile.py
 

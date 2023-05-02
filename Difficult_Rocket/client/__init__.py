@@ -5,21 +5,15 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-import inspect
-# system function
 import os
+import sys
 import time
 import logging
+import inspect
 import functools
 import traceback
 
-from typing import List, Callable
+from typing import Callable, Dict, List, TYPE_CHECKING
 from decimal import Decimal
 
 # third function
@@ -32,6 +26,8 @@ from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
+if TYPE_CHECKING:
+    from Difficult_Rocket.main import Game
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line, tree
@@ -43,7 +39,6 @@ from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.command import CommandError
 from Difficult_Rocket.exception.language import LanguageNotFound
-from Difficult_Rocket.client.render.sr1_ship import SR1ShipRender
 from Difficult_Rocket.client.screen import DRScreen, DRDEBUGScreen
 
 
@@ -59,7 +54,7 @@ class ClientOption(Options):
     caption: str = "Difficult Rocket v{DR_version}|DR_rs v{DR_Rust_get_version}"
 
     def load_file(self) -> None:
-        file = tools.load_file('./configs/main.toml')
+        file: dict = tools.load_file('./configs/main.toml')
         self.fps = int(file['runtime']['fps'])
         self.width = int(file['window']['width'])
         self.height = int(file['window']['height'])
@@ -70,7 +65,7 @@ class ClientOption(Options):
 
 
 class Client:
-    def __init__(self, net_mode='local'):
+    def __init__(self, game: "Game", net_mode='local'):
         start_time = time.time_ns()
         # logging
         self.logger = logging.getLogger('client')
@@ -82,20 +77,14 @@ class Client:
         self.process_name = 'Client process'
         self.process_pid = os.getpid()
         self.net_mode = net_mode
-        file_drop = bool(
-            pyglet.compat_platform != 'darwin' or DR_option.pyglet_macosx_dev_test
-        )
-        self.window = ClientWindow(net_mode=self.net_mode, width=self.config.width, height=self.config.height,
+        self.game = game
+        self.window = ClientWindow(game=game, net_mode=self.net_mode,
+                                   width=self.config.width, height=self.config.height,
                                    fullscreen=self.config.fullscreen, caption=self.config.caption,
                                    resizable=self.config.resizeable, visible=self.config.visible,
-                                   file_drops=file_drop)
+                                   file_drops=True)
         end_time = time.time_ns()
         self.use_time = end_time - start_time
-        if DR_option.use_DR_rust:
-            from libs.Difficult_Rocket_rs import read_ship_test, part_list_read_test
-            # part_list_read_test()
-            # read_ship_test()
-
         self.logger.info(tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr().client.setup.use_time_ns().format(self.use_time))
 
@@ -119,7 +108,7 @@ def _call_screen_after(func: Callable) -> Callable:
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
         result = func(self, *args, **kwargs)
-        for a_screen in self.screen_list:
+        for title, a_screen in self.screen_list.items():
             a_screen.window_pointer = self
             # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
@@ -136,7 +125,7 @@ def _call_screen_after(func: Callable) -> Callable:
 def _call_screen_before(func: Callable) -> Callable:
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
-        for a_screen in self.screen_list:
+        for title, a_screen in self.screen_list.items():
             a_screen.window_pointer = self
             # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
@@ -153,7 +142,7 @@ def _call_screen_before(func: Callable) -> Callable:
 
 class ClientWindow(Window):
 
-    def __init__(self, net_mode='local', *args, **kwargs):
+    def __init__(self, game: "Game", net_mode='local', *args, **kwargs):
         """
 
         @param net_mode:
@@ -166,8 +155,10 @@ class ClientWindow(Window):
         self.logger = logging.getLogger('client')
         self.logger.info(tr().window.setup.start())
         # value
+        self.game = game
         self.net_mode = net_mode
         self.run_input = False
+        self.command_list: List[str] = []
         # configs
         self.main_config = tools.load_file('./configs/main.toml')
         self.game_config = tools.load_file('./configs/game.config')
@@ -181,7 +172,7 @@ class ClientWindow(Window):
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
-        self.screen_list: List[BaseScreen] = []
+        self.screen_list: Dict[str, BaseScreen] = {}
         # setup
         self.setup()
         # 命令显示
@@ -194,7 +185,7 @@ class ClientWindow(Window):
         self.set_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
-        pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
+        # pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
         self.logger.info(tr().window.os.pid_is().format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
@@ -208,9 +199,9 @@ class ClientWindow(Window):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.load_fonts()
         # TODO 读取配置文件，加载不同的屏幕，解耦
-        self.screen_list.append(DRDEBUGScreen(self))
-        self.screen_list.append(DRScreen(self))
-        self.screen_list.append(SR1ShipRender(self))
+        self.screen_list['DR_debug'] = DRDEBUGScreen(self)
+        self.screen_list['DR_main'] = DRScreen(self)
+        self.game.dispatch_event('on_client_start', game=self.game, client=self)
 
     def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
@@ -222,27 +213,35 @@ class ClientWindow(Window):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.run_input = True
         self.read_input()
-        pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
+        try:
+            pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
+        except KeyboardInterrupt:
+            print("==========client stop. KeyboardInterrupt info==========")
+            traceback.print_exc()
+            print("==========client stop. KeyboardInterrupt info end==========")
+            self.dispatch_event("on_close")
+            sys.exit(0)
 
     @new_thread('window read_input', daemon=True)
     def read_input(self):
         self.logger.debug('read_input start')
         while self.run_input:
-            get = input(">")
+            try:
+                get = input(">")
+            except (EOFError, KeyboardInterrupt):
+                self.run_input = False
+                break
             if get in ('', ' ', '\n', '\r'):
                 continue
             if get == 'stop':
                 self.run_input = False
-            try:
-                self.on_command(line.CommandText(get))
-            except CommandError:
-                self.logger.error(traceback.format_exc())
+            self.command_list.append(get)
         self.logger.debug('read_input end')
 
     @new_thread('window save_info')
     def save_info(self):
         self.logger.info(tr().client.config.save.start())
-        config_file = tools.load_file('./configs/main.toml')
+        config_file: dict = tools.load_file('./configs/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
         config_file['runtime']['language'] = DR_runtime.language
@@ -253,8 +252,8 @@ class ClientWindow(Window):
     client api
     """
 
-    def add_sub_screen(self, sub_screen: BaseScreen.__class__):
-        self.screen_list.append(sub_screen(self))
+    def add_sub_screen(self, title: str, sub_screen: type(BaseScreen)):
+        self.screen_list[title] = sub_screen(self)
 
     """
     draws and some event
@@ -268,9 +267,13 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_draw(self, *dt):
-        # self.logger.debug('on_draw call dt: {}'.format(dt))
+        if self.command_list:
+            for command in self.command_list:
+                self.on_command(line.CommandText(command))
+                self.command_list.pop(0)
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
+        self.draw_update(float(self.SPF))
         self.draw_batch()
 
     @_call_screen_after
@@ -434,6 +437,7 @@ class ClientWindow(Window):
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
+        self.game.dispatch_event('on_close', game=self.game, client=self, source=source)
         self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
         self.fps_log.check_list = False

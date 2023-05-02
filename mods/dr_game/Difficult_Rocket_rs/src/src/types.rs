@@ -8,7 +8,9 @@
 
 pub mod sr1 {
     use std::collections::HashMap;
+    use std::fs;
 
+    use super::math::{Edge, Shape};
     use crate::sr1_data::part_list::Damage as RawDamage;
     use crate::sr1_data::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
     use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
@@ -179,31 +181,49 @@ pub mod sr1 {
     #[derive(Debug, Clone)]
     pub struct SR1PartList {
         pub types: Vec<SR1PartType>,
-        pub cache: Option<HashMap<String, SR1PartType>>,
+        pub cache: HashMap<String, SR1PartType>,
         pub name: String,
     }
 
     impl SR1PartList {
         #[inline]
+        pub fn new(name: String, types: Vec<SR1PartType>) -> SR1PartList {
+            let mut map = HashMap::new();
+            for part in types.iter() {
+                map.insert(part.id.clone(), part.clone());
+            }
+            SR1PartList {
+                types,
+                cache: map,
+                name,
+            }
+        }
+
+        #[inline]
         pub fn from_file(file_name: String) -> Option<SR1PartList> {
             if let Some(raw_list) = RawPartList::from_file(file_name) {
-                return Some(raw_list.to_sr_part_list(None));
+                let sr_list = raw_list.to_sr_part_list(None);
+                let mut map = HashMap::new();
+                for part in sr_list.types.iter() {
+                    map.insert(part.id.clone(), part.clone());
+                }
             }
             None
         }
 
         #[inline]
-        pub fn get_hash_map(&mut self) -> HashMap<String, SR1PartType> {
-            if let Some(map) = &self.cache {
-                return map.clone();
+        pub fn get_part_type(self, type_name: String) -> Option<SR1PartType> {
+            if let Some(part) = self.cache.get(&type_name) {
+                return Some(part.clone());
             }
-            let mut map = HashMap::new();
-            for part in self.types.iter() {
-                map.insert(part.id.clone(), part.clone());
-            }
-            self.cache = Some(map.clone());
-            map
+            None
         }
+
+        pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
+            SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
+        }
+
+        pub fn insert_part(&mut self, part: SR1PartType) -> () { self.types.insert(0, part); }
     }
 
     pub trait SR1PartTypeData {
@@ -224,17 +244,6 @@ pub mod sr1 {
     pub trait SR1ShipTrait {
         fn to_sr_ship(&self, name: Option<String>) -> SR1Ship;
         fn to_raw_ship(&self) -> RawShip;
-    }
-
-    impl SR1PartList {
-        #[inline]
-        pub fn new(name: String, types: Vec<SR1PartType>) -> Self { SR1PartList { name, cache: None, types } }
-
-        pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
-            SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
-        }
-
-        pub fn insert_part(&mut self, part: SR1PartType) -> () { self.types.insert(0, part); }
     }
 
     impl SR1PartListTrait for SR1PartList {
@@ -491,6 +500,32 @@ pub mod sr1 {
         pub explode: bool,
     }
 
+    impl SR1PartData {
+        pub fn get_box(&self, part_type: &SR1PartType) -> (f64, f64, f64, f64) {
+            let width = part_type.width;
+            let height = part_type.height;
+            let radius = self.angle;
+            let mut shape = Shape::new_width_height(width as f64, height as f64, Some(radius));
+            shape.move_xy(Some(self.x), Some(self.y));
+            let mut pos_box = (0_f64, 0_f64, 0_f64, 0_f64);
+            match shape.bounds[0] {
+                Edge::OneTimeLine(line) => {
+                    pos_box.0 = line.start.x;
+                    pos_box.1 = line.start.y;
+                }
+                _ => {}
+            }
+            match shape.bounds[2] {
+                Edge::OneTimeLine(line) => {
+                    pos_box.2 = line.start.x;
+                    pos_box.3 = line.start.y;
+                }
+                _ => {}
+            }
+            pos_box
+        }
+    }
+
     #[derive(Debug, Clone)]
     pub enum SR1PartDataAttr {
         Tank {
@@ -530,6 +565,18 @@ pub mod sr1 {
         pub lift_off: bool,
         pub touch_ground: bool,
         pub disconnected: Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
+    }
+
+    impl SR1Ship {
+        pub fn from_file(file_name: String, ship_name: Option<String>) -> Option<Self> {
+            // 首先验证文件是否存在 不存在则返回None
+            if !std::path::Path::new(&file_name).exists() {
+                return None;
+            }
+            // 解析为 RawShip
+            let ship: RawShip = RawShip::from_file(file_name).unwrap();
+            Some(ship.to_sr_ship(ship_name))
+        }
     }
 
     impl SR1ShipTrait for SR1Ship {
@@ -581,6 +628,14 @@ pub mod sr1 {
                 disconnected,
             }
         }
+    }
+
+    pub fn get_max_box(parts: &Vec<SR1PartData>, part_list: &SR1PartList) -> (f64, f64, f64, f64) {
+        let mut max_box = (0_f64, 0_f64, 0_f64, 0_f64);
+        for part in parts.iter() {
+            let part_type = part_list.get_part_type(part.part_type);
+        }
+        todo!("get_max_box")
     }
 }
 
@@ -686,7 +741,7 @@ pub mod math {
             }
         }
 
-        pub fn new_width_height(width: f64, height: f64, angle: Option<f64>) -> Self {
+        pub fn new_width_height(width: f64, height: f64, radius: Option<f64>) -> Self {
             let d_width = width / 2.0;
             let d_height = height / 2.0;
             let mut edges: Vec<Edge> = vec![
@@ -695,17 +750,17 @@ pub mod math {
                 Edge::OneTimeLine(OneTimeLine::pos_new(d_width, d_height, -d_width, d_height)),
                 Edge::OneTimeLine(OneTimeLine::pos_new(-d_width, d_height, -d_width, -d_height)),
             ];
-            if let Some(angle) = angle {
+            if let Some(radius) = radius {
                 edges = edges
                     .iter()
                     .map(|edge| match edge {
                         Edge::OneTimeLine(line) => {
-                            let start = line.start.rotate(angle);
-                            let end = line.end.rotate(angle);
+                            let start = line.start.rotate_radius(radius);
+                            let end = line.end.rotate_radius(radius);
                             Edge::OneTimeLine(OneTimeLine::point_new(&start, &end))
                         }
                         Edge::CircularArc(arc) => {
-                            let pos = arc.pos.rotate(angle);
+                            let pos = arc.pos.rotate_radius(radius);
                             Edge::CircularArc(CircularArc {
                                 r: arc.r,
                                 pos,
@@ -720,6 +775,25 @@ pub mod math {
                 pos: Point2D::new_00(),
                 angle: 0.0,
                 bounds: edges,
+            }
+        }
+
+        pub fn move_xy(&mut self, x: Option<f64>, y: Option<f64>) {
+            let x = x.unwrap_or(0.0);
+            let y = y.unwrap_or(0.0);
+            for edge in self.bounds.iter() {
+                match edge {
+                    Edge::OneTimeLine(mut line) => {
+                        line.start.x += x;
+                        line.start.y += y;
+                        line.end.x += x;
+                        line.end.y += y;
+                    }
+                    Edge::CircularArc(mut arc) => {
+                        arc.pos.x += x;
+                        arc.pos.y += y;
+                    }
+                }
             }
         }
     }

@@ -17,7 +17,7 @@ mod types;
 use pyo3::prelude::*;
 
 #[pyfunction]
-fn get_version_str() -> String { "0.2.6.1".to_string() }
+fn get_version_str() -> String { "0.2.7.0".to_string() }
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {
@@ -39,6 +39,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<render::camera::CameraRs>()?;
     m.add_class::<render::camera::CenterCameraRs>()?;
     m.add_class::<render::screen::PartFrame>()?;
+    m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;
     m.add_class::<python::data::PySR1PartType>()?;
     Ok(())

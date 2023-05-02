@@ -1,4 +1,4 @@
-Set-Location .\libs\Difficult_Rocket_rs\src
+Set-Location .\mods\dr_game\Difficult_Rocket_rs\src
 
 Write-Output $args[0]
 
@@ -23,6 +23,6 @@ if ($do -or "311" -in $args) {
     python3.11 setup.py build
 }
 
-python3 post_build.py
+python3.8 post_build.py
 
-Set-Location ..\..\..\
+Set-Location ..\..\..\..\
