@@ -197,8 +197,6 @@ class ClientWindow(Window):
 
     def setup(self):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
-        self.logger.info(f"=== finding mods from {DR_runtime.mod_path} ===")
-        self.logger.info(f'find mods: {DR_runtime.find_mods()}')
         self.load_fonts()
         # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list['DR_debug'] = DRDEBUGScreen(self)

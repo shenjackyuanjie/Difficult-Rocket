@@ -28,6 +28,18 @@
 
 > 啊啊啊啊啊 大重构 api
 
+### DR_api `0.1.0.0`
+
+- 大概是一个可用的版本了
+- `ModInfo`
+  - `on_load(game: Game, old_self: Optional[ModInfo]) -> bool`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `old_self`: 旧的 ModInfo 对象, 可以用于从上次加载中恢复信息
+    - 返回值: 是否加载成功
+  - `on_client_start(game: Game, client: ClientWindow) -> None`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `client`: ClientWindow 对象 用于传递客户端状态
+
 ### DR_rs `0.2.7.0`
 
 - `__init__.py`
@@ -52,6 +64,8 @@
 - `DR_option` & `DR_runtime`(`long_version` `15`)
   - 完全移除 `DR_rust` 部分
     - Completely removed the `DR_rust` part
+- 现在 `client` 不会在 `setup()` 中调用 `DR_runtime` 的 `find_mods()` 方法
+  - Now `client` will not call the `find_mods()` method of `DR_runtime` in `setup()`
 
 ### Changes
 

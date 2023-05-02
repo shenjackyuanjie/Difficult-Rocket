@@ -80,6 +80,7 @@ class Game:
         if not mod_path.exists():
             self.logger.info(tr().main.mod.find.faild.no_mod_folder())
             return
+        # 寻找有效 mod
         paths = mod_path.iterdir()
         sys.path.append(DR_runtime.mod_path)
         for mod_path in paths:
@@ -98,6 +99,7 @@ class Game:
             except ImportError as e:
                 self.logger.warning(tr().main.mod.find.faild().format(mod_path, e))
         self.logger.info(tr().main.mod.find.done())
+        # 加载有效 mod
         module = []
         for mod in mods:
             try:
@@ -118,6 +120,8 @@ class Game:
         mod_list = []
         for mod in module:
             mod_list.append((mod.mod_id, mod.version))
+        # 调用 on_load
+        self.dispatch_event('on_load', game=self)
         DR_runtime.DR_Mod_List = mod_list
 
     def dispatch_event(self, event_name: str, *args, **kwargs) -> None:
