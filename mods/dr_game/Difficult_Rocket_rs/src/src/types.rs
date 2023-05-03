@@ -192,11 +192,7 @@ pub mod sr1 {
             for part in types.iter() {
                 map.insert(part.id.clone(), part.clone());
             }
-            SR1PartList {
-                types,
-                cache: map,
-                name,
-            }
+            SR1PartList { types, cache: map, name }
         }
 
         #[inline]
@@ -632,9 +628,9 @@ pub mod sr1 {
 
     pub fn get_max_box(parts: &Vec<SR1PartData>, part_list: &SR1PartList) -> (f64, f64, f64, f64) {
         let mut max_box = (0_f64, 0_f64, 0_f64, 0_f64);
-        for part in parts.iter() {
-            let part_type = part_list.get_part_type(part.part_type);
-        }
+        // for part in parts.iter() {
+        //     let part_type = part_list.get_part_type(part.id);
+        // }
         todo!("get_max_box")
     }
 }

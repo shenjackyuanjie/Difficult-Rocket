@@ -13,7 +13,7 @@ pub mod data {
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::sr1_data::ship::RawShip;
-    use crate::types::sr1::{SR1PartData, SR1PartListTrait};
+    use crate::types::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
 
     #[pyclass]
@@ -52,16 +52,11 @@ pub mod data {
         }
 
         fn as_dict(&self) -> HashMap<String, PySR1PartType> {
-            let mut dict = HashMap::new();
-            for part_type in self.part_list.types.iter() {
-                dict.insert(part_type.name.clone(), PySR1PartType::new(part_type.clone()));
-            }
-            dict
+            self.part_list.cache.iter().map(|(k, v)| (k.clone(), PySR1PartType::new(v.clone()))).collect()
         }
 
         fn get_part_type(&mut self, name: String) -> Option<PySR1PartType> {
-            let cache = self.part_list.get_hash_map();
-            let part_type = cache.get(&name);
+            let part_type = self.part_list.cache.get(&name);
             if let Some(part_type) = part_type {
                 Some(PySR1PartType::new(part_type.clone()))
             } else {
@@ -97,10 +92,8 @@ pub mod data {
             let mut img_pos = (0, 0, 0, 0);
             // -x, -y, +x, +y
             // 左下角，右上角
-            for part in self.ship.types.iter() {
-                // let part_box = part
-                todo!("get_img_pos")
-            }
+            let mut max_box = get_max_box(&self.ship.parts, &self.part_list);
+            todo!();
             img_pos
         }
 
