@@ -6,13 +6,14 @@
 #  -------------------------------
 
 import os
+import sys
 import time
 import logging
 import inspect
 import functools
 import traceback
 
-from typing import Callable, Dict
+from typing import Callable, Dict, List, TYPE_CHECKING
 from decimal import Decimal
 
 # third function
@@ -25,7 +26,8 @@ from pyglet.window import Window
 from pyglet.window import key, mouse
 
 # Difficult_Rocket function
-# from Difficult_Rocket.main import Game
+if TYPE_CHECKING:
+    from Difficult_Rocket.main import Game
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line, tree
@@ -83,11 +85,6 @@ class Client:
                                    file_drops=True)
         end_time = time.time_ns()
         self.use_time = end_time - start_time
-        if DR_option.use_DR_rust:
-            from libs.Difficult_Rocket_rs import read_ship_test, part_list_read_test
-            # part_list_read_test()
-            # read_ship_test()
-
         self.logger.info(tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000))
         self.logger.debug(tr().client.setup.use_time_ns().format(self.use_time))
 
@@ -161,6 +158,7 @@ class ClientWindow(Window):
         self.game = game
         self.net_mode = net_mode
         self.run_input = False
+        self.command_list: List[str] = []
         # configs
         self.main_config = tools.load_file('./configs/main.toml')
         self.game_config = tools.load_file('./configs/game.config')
@@ -187,7 +185,7 @@ class ClientWindow(Window):
         self.set_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
-        pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
+        # pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
         self.logger.info(tr().window.os.pid_is().format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
@@ -199,8 +197,6 @@ class ClientWindow(Window):
 
     def setup(self):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
-        self.logger.info(f"=== finding mods from {DR_runtime.mod_path} ===")
-        self.logger.info(f'find mods: {DR_runtime.find_mods()}')
         self.load_fonts()
         # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list['DR_debug'] = DRDEBUGScreen(self)
@@ -217,21 +213,29 @@ class ClientWindow(Window):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.run_input = True
         self.read_input()
-        pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
+        try:
+            pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
+        except KeyboardInterrupt:
+            print("==========client stop. KeyboardInterrupt info==========")
+            traceback.print_exc()
+            print("==========client stop. KeyboardInterrupt info end==========")
+            self.dispatch_event("on_close")
+            sys.exit(0)
 
     @new_thread('window read_input', daemon=True)
     def read_input(self):
         self.logger.debug('read_input start')
         while self.run_input:
-            get = input(">")
+            try:
+                get = input(">")
+            except (EOFError, KeyboardInterrupt):
+                self.run_input = False
+                break
             if get in ('', ' ', '\n', '\r'):
                 continue
             if get == 'stop':
                 self.run_input = False
-            try:
-                self.on_command(line.CommandText(get))
-            except CommandError:
-                self.logger.error(traceback.format_exc())
+            self.command_list.append(get)
         self.logger.debug('read_input end')
 
     @new_thread('window save_info')
@@ -263,9 +267,13 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_draw(self, *dt):
-        # self.logger.debug('on_draw call dt: {}'.format(dt))
+        if self.command_list:
+            for command in self.command_list:
+                self.on_command(line.CommandText(command))
+                self.command_list.pop(0)
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
+        self.draw_update(float(self.SPF))
         self.draw_batch()
 
     @_call_screen_after
@@ -429,6 +437,7 @@ class ClientWindow(Window):
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
+        self.game.dispatch_event('on_close', game=self.game, client=self, source=source)
         self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
         self.fps_log.check_list = False

@@ -22,15 +22,54 @@
 - [![Readme-gitee](https://img.shields.io/badge/Readme-中文(点我!)-blue.svg?style=flat-square)](../../README.md)
 - Using [SemVer 2.0.0](https://semver.org/) to manage version
 
-## 202305 DR `0.8.0.0` + DR_api `0.1.0.0`
+## 202305 DR `0.8.0.0` + DR_api `0.1.0.0` + DR_rs `0.2.7.0` + 15
 
 > 啊哈！ mod 加载来啦！
+
+> 啊啊啊啊啊 大重构 api
+
+### DR_api `0.1.0.0`
+
+- 大概是一个可用的版本了
+- `ModInfo`
+  - `on_load(game: Game, old_self: Optional[ModInfo]) -> bool`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `old_self`: 旧的 ModInfo 对象, 可以用于从上次加载中恢复信息
+    - 返回值: 是否加载成功
+  - `on_client_start(game: Game, client: ClientWindow) -> None`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `client`: ClientWindow 对象 用于传递客户端状态
+  - `on_client_stop(game: Game, client: ClientWindow, source: str = 'window')`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `client`: ClientWindow 对象 用于传递客户端状态
+    - `source`: 关闭调用的来源
+
+### DR_rs `0.2.7.0`
+
+- `__init__.py`
+  - 添加了 `SR1Ship_rs` 的 typing
+    - `name`
+    - `description`
+    - `lift_off`
+    - `touch_ground`
+    - `img_pos() -> Tuple[int, int, int, int]`
+- 导出了 `SR1Ship_rs`
+  - Exported `SR1Ship_rs`
+- `types::SR1PartData`
+  - `get_box(&self, part_type: &SR1PartType) -> (f64, f64, f64, f64)`
+- `types::SR1Ship`
+  - `from_file`
 
 ### Remove
 
 - `game.config`
   - 已删除
   - Removed
+- `DR_option` & `DR_runtime`(`long_version` `15`)
+  - 完全移除 `DR_rust` 部分
+    - Completely removed the `DR_rust` part
+- 现在 `client` 不会在 `setup()` 中调用 `DR_runtime` 的 `find_mods()` 方法
+  - Now `client` will not call the `find_mods()` method of `DR_runtime` in `setup()`
 
 ### Changes
 
@@ -53,10 +92,35 @@
 - 现在游戏崩溃时会自动在 stdio 中输出崩溃日志 内容跟 crash report 中的基本相同
   - Now when the game crashes, it will automatically output the crash log in stdio
     - The content of the crash log is basically the same as the crash report
+- `utils.new_thread`
+  - 跟随 MCDR 的更新
+  - 将记录线程的方式改成 函数回调
+    - Follow the update of MCDR
+    - Change the way to record threads to function callbacks
+- `Difficult_Rocket.api`
+  - 大重构,移除定义,改为引用
+    - Big refactoring, remove definition, change to reference
+
+### Docs
+
+- `howto/translate.md`
+  - 修改为新的 tr 调用方式
+    - Modified to the new tr call method
+- `SUMMARY.md`
+  - add `howto/translate.md`
+  - add `howto/game/readme.md`
+  - `contributors` -> `Contributing`
 
 ### Mod Loader
 
 - `ModInfo`
+  - `on_load(game: Game, old_self: Optional[ModInfo]) -> bool`
+    - `game`: Game 对象 用于存储 DR SDK 的信息
+    - `old_self`: 旧的 ModInfo 对象, 可以用于从上次加载中恢复信息
+    - 返回值: 是否加载成功
+      - `game`: Game object used to store information about the DR SDK
+      - `old_self`: Old ModInfo object, can be used to restore information from the last load
+      - Return value: Whether the load is successful
 
 ## 20230422 DR `0.7.2.2` + DR_rs `0.2.6.1` + DR_api `0.0.2.0` + 14
 
@@ -136,6 +200,13 @@
       - All not used
 - 修改了中文语言的翻译，在中英混杂的中间加入空格
   - Modified the Chinese translation, and added a space in the middle of Chinese and English
+
+### Fix
+
+- `mods` 路径不存在时 游戏会崩溃的 bug
+  - Bug that the game will crash when the `mods` path does not exist
+- 游戏崩溃 / 从控制台退出时 `WerFault.exe` 会跳出来卡住程序的 bug
+  - Bug that `WerFault.exe` will pop up and block the program when the game crashes / exits from the console
 
 ## 20230405 DR `0.7.2.1`
 

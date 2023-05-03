@@ -4,7 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-import os
 import sys
 import warnings
 import importlib
@@ -15,22 +14,19 @@ from pathlib import Path
 from typing import Optional, List, Tuple
 
 from Difficult_Rocket.api.types import Options
+from Difficult_Rocket.utils.new_thread import new_thread
 
 from libs.MCDR.version import Version
 
 game_version = Version("0.7.2.2")  # 游戏版本
 build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)
-Api_version = Version("0.0.2.0")  # API 版本
+Api_version = Version("0.1.0.0")  # API 版本
 __version__ = game_version
 
-# TODO 解耦 DR SDK 与 DR_mod 和 DR_rs
-DR_rust_version = Version("0.2.6.2")  # DR 的 Rust 编写部分的版本
-# 后面会移除的 DR_rs 相关信息
-# DR_rs和 DR_mod 的部分正在和 DR SDK 解耦
-
-long_version: int = 14
+long_version: int = 15
 """
 long_version: 一个用于标记内部协议的整数
+15: 完全移除 DR_rust 相关内容 解耦完成
 14: BaseScreen 的每一个函数都添加了一个参数: window: "ClientWindow"
 13: 为 DR_runtime 添加 API_version
 12: 去除 DR_runtime 的 global_logger
@@ -66,7 +62,6 @@ class _DR_option(Options):
     DR_rust_available:          bool = False
     use_cProfile:               bool = False
     use_local_logging:          bool = False
-    use_DR_rust:                bool = True
     
     # tests
     playing:                bool = False
@@ -75,26 +70,6 @@ class _DR_option(Options):
 
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
-
-    def init(self, **kwargs):
-        try:
-            from libs.Difficult_Rocket_rs import test_call, get_version_str
-            test_call(self)
-            print(f'DR_rust available: {get_version_str()}')
-        except ImportError:
-            if __name__ != '__main__':
-                traceback.print_exc()
-            self.DR_rust_available = False
-        self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
-        self.flush_option()
-
-    def test_rust(self):
-        if self.DR_rust_available:
-            from libs.Difficult_Rocket_rs import part_list_read_test
-            part_list_read_test("./configs/PartList.xml")
-
-    def draw(self):
-        self.DR_rust_available = True
 
     @property
     def std_font_size(self) -> int:
@@ -114,9 +89,6 @@ class _DR_runtime(Options):
     DR_long_version: int = long_version  # DR SDK 内部协议版本 （不要问我为什么不用 Version，我也在考虑）
 
     DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表 (name, version)
-
-    DR_Rust_version: Version = DR_rust_version  # 后面要去掉的 DR_rs 版本
-    DR_Rust_get_version: Optional[Version] = None  # 后面也要去掉的 DR_rs 版本
     
     # run status
     running:               bool = False
@@ -132,15 +104,6 @@ class _DR_runtime(Options):
     language: str = 'zh-CN'
     default_language: str = 'zh-CN'
 
-    def init(self, **kwargs) -> None:
-        with contextlib.suppress(ImportError):
-            from libs.Difficult_Rocket_rs import get_version_str
-            self.DR_Rust_get_version = Version(get_version_str())
-            if self.DR_Rust_get_version != self.DR_Rust_version:
-                relationship = 'larger' if self.DR_Rust_version > self.DR_Rust_get_version else 'smaller'
-                warnings.warn(f'DR_rust builtin version is {self.DR_Rust_version} but true version is {get_version_str()}.\n'
-                              f'Builtin version {relationship} than true version')
-
     def load_file(self) -> bool:
         with contextlib.suppress(FileNotFoundError):
             with open('./configs/main.toml', 'r', encoding='utf-8') as f:
@@ -153,7 +116,11 @@ class _DR_runtime(Options):
 
     def find_mods(self) -> List[str]:
         mods = []
-        paths = Path(self.mod_path).iterdir()
+        mod_path = Path(self.mod_path)
+        if not mod_path.exists():
+            mod_path.mkdir()
+            return []
+        paths = mod_path.iterdir()
         sys.path.append(self.mod_path)
         for mod_path in paths:
             try:
@@ -182,9 +149,6 @@ DR_option = _DR_option()
 DR_runtime = _DR_runtime()
 
 if DR_option.playing:
-    from Difficult_Rocket.utils import new_thread
-
-
     def think_it(something):
         return something
 

@@ -22,13 +22,15 @@ import multiprocessing
 
 from io import StringIO
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
 from Difficult_Rocket import client, server, DR_option, DR_runtime
-
+if TYPE_CHECKING:
+    from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.crash import write_info_to_cache
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.utils.translate import tr
@@ -74,7 +76,12 @@ class Game:
 
     def load_mods(self) -> None:
         mods = []
-        paths = Path(DR_runtime.mod_path).iterdir()
+        mod_path = Path(DR_runtime.mod_path)
+        if not mod_path.exists():
+            self.logger.info(tr().main.mod.find.faild.no_mod_folder())
+            return
+        # 寻找有效 mod
+        paths = mod_path.iterdir()
         sys.path.append(DR_runtime.mod_path)
         for mod_path in paths:
             try:
@@ -92,6 +99,7 @@ class Game:
             except ImportError as e:
                 self.logger.warning(tr().main.mod.find.faild().format(mod_path, e))
         self.logger.info(tr().main.mod.find.done())
+        # 加载有效 mod
         module = []
         for mod in mods:
             try:
@@ -101,7 +109,7 @@ class Game:
                     self.logger.warning(tr().main.mod.load.faild.info().format(mod, tr().main.mod.load.faild.no_mod_class()))
                     del mod_module  # 释放内存
                     continue
-                mod_class = mod_module.mod_class
+                mod_class: type(ModInfo) = mod_module.mod_class
                 mod_class = mod_class()
                 module.append(mod_class)
                 self.logger.info(tr().main.mod.load.info().format(mod_class.mod_id, mod_class.version))
@@ -112,6 +120,8 @@ class Game:
         mod_list = []
         for mod in module:
             mod_list.append((mod.mod_id, mod.version))
+        # 调用 on_load
+        self.dispatch_event('on_load', game=self)
         DR_runtime.DR_Mod_List = mod_list
 
     def dispatch_event(self, event_name: str, *args, **kwargs) -> None:
