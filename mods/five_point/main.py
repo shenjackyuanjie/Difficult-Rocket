@@ -13,18 +13,18 @@ class FivePointRender(BaseScreen):
     def __init__(self, main_window: "ClientWindow"):
         super().__init__(main_window)
 
-        self.scale = 30
-        self.sheet_size = (-15, 15)
+        self.scale = 50
+        self.sheet_size = (-10, 10)
         self.chest_sheet = []
         self.batch = Batch()
         center_x, center_y = main_window.width // 2, main_window.height // 2
         for dx in range(self.sheet_size[0], self.sheet_size[1] + 1):
             x_side = Line(x=0, y=center_y + (dx * self.scale),
                           x2=main_window.width, y2=center_y + (dx * self.scale),
-                          width=2, color=(0, 200, 0, 200), batch=self.batch)
+                          width=3, color=(0, 200, 0, 200), batch=self.batch)
             y_side = Line(x=center_x + (dx * self.scale), y=0,
                           x2=center_x + (dx * self.scale), y2=main_window.height,
-                          width=2, color=(0, 200, 0, 200), batch=self.batch)
+                          width=3, color=(0, 200, 0, 200), batch=self.batch)
             self.chest_sheet.append([x_side, y_side])
         self.nodes: Dict[str, Circle] = {}
 
