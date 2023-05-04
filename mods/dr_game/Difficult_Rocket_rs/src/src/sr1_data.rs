@@ -125,7 +125,7 @@ pub mod part_list {
         pub fn to_damage(&self) -> crate::types::sr1::Damage {
             crate::types::sr1::Damage {
                 disconnect: self.disconnect,
-                explode: self.explode,
+                explode: self.explode.to_owned(),
                 explosion_power: self.explosion_power.unwrap_or(100),
                 explosion_size: self.explosion_size.unwrap_or(100),
             }
