@@ -16,7 +16,7 @@ mod types;
 
 use pyo3::prelude::*;
 
-const MOD_PATH: String = String::from("mods");
+// const MOD_PATH: String = String::from("mods");
 
 enum LoadState {
     init,
@@ -55,6 +55,6 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     Ok(())
 }
 
-pub fn run() {}
+// pub fn run() {}
 
-fn init() {}
+// fn init() {}
