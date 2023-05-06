@@ -10,13 +10,6 @@ if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
 
 ./.github/workflows/env.ps1
 
-Set-Location libs
-Set-Location Difficult_Rocket_rs
-Set-Location src
-python3.8 setup.py build
-python post_build.py
-Set-Location ../../..
-
 $arg = @()
 # 输出配置
 $arg += @("--standalone")
