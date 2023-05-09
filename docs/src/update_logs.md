@@ -70,6 +70,10 @@
     - Completely removed the `DR_rust` part
 - 现在 `client` 不会在 `setup()` 中调用 `DR_runtime` 的 `find_mods()` 方法
   - Now `client` will not call the `find_mods()` method of `DR_runtime` in `setup()`
+- `Difficult_Rocket.crash`
+  - Remove `write_options` method
+  - Remove `write_markdown_tablet` method
+    - Replace with `Option().as_markdown()`
 
 ### Changes
 
@@ -100,6 +104,14 @@
 - `Difficult_Rocket.api`
   - 大重构,移除定义,改为引用
     - Big refactoring, remove definition, change to reference
+
+### Add
+
+- `Difficult_Rocket.api.types.Options`
+  - 添加 `as_markdown` 方法
+    - 用于方便的用人类可读的 Markdown 格式 直接输出一个已经实例化的 `Options` 类的所有字段
+  - Add `as_markdown` method
+    - Used to easily output all fields of an instantiated `Options` class in a human-readable Markdown format
 
 ### Docs
 

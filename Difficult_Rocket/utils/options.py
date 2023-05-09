@@ -5,6 +5,7 @@
 #  -------------------------------
 
 import traceback
+from io import StringIO
 from dataclasses import dataclass
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING
 
@@ -136,6 +137,22 @@ class Options:
             max_len_value_t = max(max_len_value_t, len(str(value_t)))
             option_list.append((key, value, value_t))
         return [option_list, max_len_key, max_len_value, max_len_value_t]
+
+    def as_markdown(self) -> str:
+        value = self.option_with_len()
+        cache = StringIO()
+        option_len = max(value[1], len('Option'))
+        value_len = max(value[2], len('Value'))
+        value_type_len = max(value[3], len('Value Type'))
+        cache.write(f"| Option{' '*(option_len-3)}| Value{' '*(value_len-2)}| Value Type{' '*(value_type_len-7)}|\n")
+        cache.write(f'|:{"-" * (option_len+3)}|:{"-" * (value_len+3)}|:{"-" * (value_type_len + 3)}|\n')
+        for option, value, value_t in value[0]:
+            cache.write(f"| `{option}`{' '* (option_len - len(option))} "
+                        f"| `{value}`{' '* (value_len - len(str(value)))} "
+                        f"| `{value_t}`{' '* (value_type_len - len(str(value_t)))} |\n")
+        result = cache.getvalue()
+        cache.close()
+        return result
 
     @classmethod
     def add_option(cls, name: str, value: Union[Callable, object]) -> Dict:
