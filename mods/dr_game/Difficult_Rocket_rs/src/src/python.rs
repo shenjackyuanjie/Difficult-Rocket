@@ -28,7 +28,7 @@ pub mod data {
         fn get_name(&self) -> String { self.data.name.clone() }
 
         #[getter]
-        fn get_mass(&self) -> f64 { self.data.mass }
+        fn get_mass(&self) -> f64 { self.data.mass.to_owned() }
     }
 
     impl PySR1PartType {
@@ -101,9 +101,9 @@ pub mod data {
 
         fn get_description(&self) -> String { self.ship.description.clone() }
 
-        fn get_lift_off(&self) -> bool { self.ship.lift_off }
+        fn get_lift_off(&self) -> bool { self.ship.lift_off.to_owned() }
 
-        fn get_touch_ground(&self) -> bool { self.ship.touch_ground }
+        fn get_touch_ground(&self) -> bool { self.ship.touch_ground.to_owned() }
     }
 }
 
