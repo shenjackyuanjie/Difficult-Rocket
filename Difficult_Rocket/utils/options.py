@@ -39,7 +39,12 @@ class OptionNotFound(OptionsError):
 
 class Options:
     """
-    Difficult Rocket 的游戏配置的存储基类
+    一个用于存储选项 / 提供 API 定义 的类
+    用法:
+    继承 Options 类
+    在类里定义 option: typing
+    (可选 定义 name: str = 'Option Base' 用于在打印的时候显示名字)
+    
     """
     name = 'Option Base'
     cached_options: Dict[str, Union[str, Any]] = {}
