@@ -104,10 +104,12 @@
 - `Difficult_Rocket.api`
   - 大重构,移除定义,改为引用
     - Big refactoring, remove definition, change to reference
+- `Difficult_Rocket.api.types.Options` ( `Difficult_Rocket.utils.options.Options` )
+  - `options` -> `_options`
 
 ### Add
 
-- `Difficult_Rocket.api.types.Options`
+- `Difficult_Rocket.api.types.Options` ( `Difficult_Rocket.utils.options.Options` )
   - 添加 `as_markdown` 方法
     - 用于方便的用人类可读的 Markdown 格式 直接输出一个已经实例化的 `Options` 类的所有字段
   - Add `as_markdown` method

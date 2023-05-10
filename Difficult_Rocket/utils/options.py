@@ -51,7 +51,7 @@ class Options:
         :param kwargs:
         """
         if TYPE_CHECKING:
-            self.options: Dict[str, Union[Callable, object]] = {}
+            self._options: Dict[str, Union[Callable, object]] = {}
         self.flush_option()
         for option, value in kwargs.items():
             if option not in self.cached_options:
@@ -67,7 +67,7 @@ class Options:
         self.flush_option()
 
     if TYPE_CHECKING:
-        options: Dict[str, Union[Callable, object]] = {}
+        _options: Dict[str, Union[Callable, object]] = {}
 
         def init(self, **kwargs) -> None:
             """ 如果子类定义了这个函数，则会在 __init__ 之后调用这个函数 """
@@ -90,9 +90,9 @@ class Options:
             if values[ann] is None:
                 values[ann] = self.__annotations__[ann]
 
-        if not hasattr(self, 'options'):
-            self.options: Dict[str, Union[Callable, object]] = {}
-        for option, a_fun in self.options.items():  # 获取额外内容
+        if not hasattr(self, '_options'):
+            self._options: Dict[str, Union[Callable, object]] = {}
+        for option, a_fun in self._options.items():  # 获取额外内容
             values[option] = a_fun
 
         for option, a_fun in values.items():  # 检查是否为 property
@@ -156,10 +156,10 @@ class Options:
 
     @classmethod
     def add_option(cls, name: str, value: Union[Callable, object]) -> Dict:
-        if not hasattr(cls, 'options'):
-            cls.options: Dict[str, Union[Callable, object]] = {}
-        cls.options[name] = value
-        return cls.options
+        if not hasattr(cls, '_options'):
+            cls._options: Dict[str, Union[Callable, object]] = {}
+        cls._options[name] = value
+        return cls._options
 
     @staticmethod
     def init_option(options_class: Type['Options'], init_value: Optional[dict] = None) -> 'Options':
