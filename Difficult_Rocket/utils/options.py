@@ -124,19 +124,19 @@ class Options:
         self.cached_options = self.option()
         return self.cached_options
 
-    def option_with_len(self) -> List[Union[List[Tuple[str, Any, Any]], int, Any]]:
+    def option_with_len(self) -> Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]:
         options = self.flush_option()
         max_len_key = 1
         max_len_value = 1
         max_len_value_t = 1
         option_list = []
         for key, value in options.items():
-            value_t = value if isinstance(value, Type) else type(value)
+            value_t = value if isinstance(value, Type) else type(value)  # 判定这个类型 是不是 基本类型
             max_len_key = max(max_len_key, len(key))
             max_len_value = max(max_len_value, len(str(value)))
             max_len_value_t = max(max_len_value_t, len(str(value_t)))
             option_list.append((key, value, value_t))
-        return [option_list, max_len_key, max_len_value, max_len_value_t]
+        return option_list, max_len_key, max_len_value, max_len_value_t
 
     def as_markdown(self) -> str:
         value = self.option_with_len()

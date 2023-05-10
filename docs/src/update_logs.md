@@ -106,6 +106,10 @@
     - Big refactoring, remove definition, change to reference
 - `Difficult_Rocket.api.types.Options` ( `Difficult_Rocket.utils.options.Options` )
   - `options` -> `_options`
+  - `option_with_len(self) ->`
+    - 修改 返回值 类型+类型注释
+    - Modify the return value type + type annotation
+    - `List[Union[List[Tuple[str, Any, Any]], int, Any]]:` -> `Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]`
 
 ### Add
 
