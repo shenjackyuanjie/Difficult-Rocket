@@ -41,10 +41,14 @@ class Options:
     """
     一个用于存储选项 / 提供 API 定义 的类
     用法:
-    继承 Options 类
-    在类里定义 option: typing
-    (可选 定义 name: str = 'Option Base' 用于在打印的时候显示名字)
-    
+    存储配置: 继承 Options 类
+            在类里定义 option: typing
+            (可选 定义 name: str = 'Option Base' 用于在打印的时候显示名字)
+    提供 API 接口: 继承 Options 类
+            在类里定义 option: typing
+            定义 一些需要的方法
+            子类: 继承 新的 Options 类
+                实现定义的方法
     """
     name = 'Option Base'
     cached_options: Dict[str, Union[str, Any]] = {}
@@ -130,6 +134,10 @@ class Options:
         return self.cached_options
 
     def option_with_len(self) -> Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]:
+        """
+        返回一个可以用于打印的 option 列表
+        :return:
+        """
         options = self.flush_option()
         max_len_key = 1
         max_len_value = 1
@@ -144,6 +152,10 @@ class Options:
         return option_list, max_len_key, max_len_value, max_len_value_t
 
     def as_markdown(self) -> str:
+        """
+        返回一个 markdown 格式的 option 字符串
+        :return: markdown 格式的 option 字符串
+        """
         value = self.option_with_len()
         cache = StringIO()
         option_len = max(value[1], len('Option'))
@@ -161,6 +173,12 @@ class Options:
 
     @classmethod
     def add_option(cls, name: str, value: Union[Callable, object]) -> Dict:
+        """
+        向配置类中添加一个额外的配置
+        :param name: 配置的名字
+        :param value: 用于获取配置的函数或者类
+        :return: 配置类的所有配置
+        """
         if not hasattr(cls, '_options'):
             cls._options: Dict[str, Union[Callable, object]] = {}
         cls._options[name] = value

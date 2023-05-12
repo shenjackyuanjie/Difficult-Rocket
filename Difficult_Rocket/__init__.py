@@ -5,7 +5,6 @@
 #  -------------------------------
 
 import sys
-import warnings
 import importlib
 import traceback
 import contextlib
@@ -14,7 +13,7 @@ from pathlib import Path
 from typing import Optional, List, Tuple
 
 from Difficult_Rocket.api.types import Options
-from Difficult_Rocket.utils.new_thread import new_thread
+from Difficult_Rocket.utils.thread import new_thread
 
 from libs.MCDR.version import Version
 

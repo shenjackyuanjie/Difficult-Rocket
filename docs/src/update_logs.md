@@ -74,6 +74,10 @@
   - Remove `write_options` method
   - Remove `write_markdown_tablet` method
     - Replace with `Option().as_markdown()`
+- `Difficult_Rocket.utils.new_thread`
+  - Moved to `Diffiuclt_Rocket.utils.thread`
+- `Difficult_Rocket.utils.thread`
+  - Remove `Threads`
 
 ### Changes
 

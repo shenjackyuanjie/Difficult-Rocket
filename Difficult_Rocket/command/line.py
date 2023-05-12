@@ -27,7 +27,7 @@ from pyglet.graphics import Batch, Group
 # from DR
 from Difficult_Rocket.utils import translate
 from Difficult_Rocket.command.api import CommandText
-from Difficult_Rocket.utils.new_thread import new_thread
+from Difficult_Rocket.utils.thread import new_thread
 
 
 class CommandLineTextEntry(widgets.TextEntry):
