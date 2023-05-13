@@ -7,9 +7,10 @@ import os
 import shutil
 import warnings
 import traceback
+from pathlib import Path
 
 package_path = 'Difficult_Rocket_rs'
-lib_path = '../lib'
+lib_path = Path('../lib').resolve()
 build_path = 'build'
 
 if not os.path.exists(lib_path):
@@ -28,7 +29,6 @@ for build_dir in builds:
         warnings.warn(f'package not found at {build_path}/{build_dir}')
         continue
     for file in os.listdir(os.path.join(build_path, build_dir, package_path)):
-        # file_name = os.path.join(lib_path, file.replace(package_path, f'{package_path}.{DR_runtime.DR_Rust_version}'))
         file_name = os.path.join(lib_path, file)
         shutil.rmtree(file_name, ignore_errors=True)
         try:

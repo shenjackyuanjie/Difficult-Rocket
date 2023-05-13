@@ -86,3 +86,4 @@ class ModInfo(Options):
     def on_unload(self, game: Game):
         """ 卸载时调用 """
         print(f'Mod {self.mod_id} unloaded')
+

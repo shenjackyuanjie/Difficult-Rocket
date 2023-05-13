@@ -1,0 +1,83 @@
+# 名称
+name: Build DR rs
+
+# 运行条件
+on:
+  # 触发条件
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# 主任务
+jobs:
+  build-dr-rs:
+    if: ${{!startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[build rs skip]') == false }}
+    # 全都要！
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        python-version: ["3.8", "3.10"]  # 3.11 still not support by nuitka
+
+    runs-on:  ${{ matrix.os }}
+
+    steps:
+      # Check-out repository
+      - name: Check out
+        uses: actions/checkout@v3
+
+      # 获取短 sha
+      - name: Get short commit sha
+        id: get_short_sha
+        shell: pwsh
+        run: |
+          # short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)
+          # echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+          # echo $GITHUB_OUTPUT
+          $short_sha = Write-Output $env:GITHUB_SHA
+          $short_sha = $short_sha.substring(1,7)
+          Write-Output $short_sha
+          Write-Output "short_sha=$short_sha" >> $env:GITHUB_ENV
+
+
+      # 安装 Python
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}  # 为了支持 win7 我还是得用 3.8
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirement-dev.txt
+            .github/workflows/requirement.txt
+
+      # 安装依赖
+      - name: Install env
+        run: |
+          pip install -r requirement-dev.txt
+
+      # 提取 DR 版本和其他信息
+      - name: Display Difficult-Rocket info
+        id: DR_info
+        shell: pwsh
+        run: |
+          $infos = python .github/workflows/get_info.py -github
+          Write-Output $infos >> $env:GITHUB_ENV
+          python .github/workflows/get_info.py
+
+      # 编译 dr_rs
+      - name: Build dr_rs
+        shell: pwsh
+        run: |
+          Set-Location mods/dr_game/Difficult_Rocket_rs/src
+          python setup.py build
+          python post_build.py
+          python setup.py clean
+
+      # Uploads artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: DR_rs${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}
+          path: |
+            mods/dr_game/Difficult_Rocket_rs/lib

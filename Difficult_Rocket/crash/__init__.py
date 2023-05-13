@@ -19,7 +19,7 @@ import traceback
 import threading
 import multiprocessing
 from pathlib import Path
-from typing import Optional, Union, TextIO
+from typing import Optional, Union
 
 # import psutil
 # for more system info
@@ -73,18 +73,6 @@ def to_code(string: str):
     return f'`{string}`'
 
 
-def write_markdown_tablet(crash_file: TextIO, tablet: list) -> None:
-    a_len = max(tablet[1], 6)
-    b_len = max(tablet[2], 5)
-    c_len = max(tablet[3], 10)
-    crash_file.write(f'\n| Option{" " * (a_len - 4)} | Value{" " * (b_len - 3)} | Value Type{" " * (c_len - 8)} |\n')
-    crash_file.write(f'|:{"-" * (a_len + 3)}|:{"-" * (b_len + 3)}|:{"-" * (c_len + 3)}|\n')
-    for a, b, c in tablet[0]:
-        b, c = str(b), str(c)
-        crash_file.write(
-            f'| `{a}`{" " * (a_len - len(a))} | `{b}`{" " * (b_len - len(b))} | `{c}`{" " * (c_len - len(c))} |\n')
-
-
 def create_crash_report(info: Optional[str] = None) -> None:
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
@@ -116,8 +104,10 @@ def write_info_to_cache(cache_stream):
     cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
     cache_stream.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
     cache_stream.write(markdown_line_handler(f'Running Dir: {Path(os.curdir).resolve()}', level=1))
-    write_options(DR_runtime, cache_stream, DR_configs)
-    write_options(DR_option, cache_stream, Process_message)
+    cache_stream.write(f"\n{DR_runtime.as_markdown()}")
+    cache_stream.write(DR_configs)
+    cache_stream.write(f"\n{DR_option.as_markdown()}")
+    cache_stream.write(Process_message)
     for process in all_process:
         process: multiprocessing.Process
         cache_stream.write(markdown_line_handler(f'{process.name}', code=True))
@@ -146,13 +136,6 @@ def write_info_to_cache(cache_stream):
     cache_stream.write(markdown_line_handler(f'processor: {to_code(platform.processor())}', level=1))
     cache_stream.write(markdown_line_handler(f'release: {to_code(platform.release())}', level=1))
     cache_stream.write(markdown_line_handler(f'version: {to_code(platform.version())}', level=1))
-
-
-def write_options(arg0, cache_stream, arg2):
-    result = arg0.option_with_len()
-    write_markdown_tablet(crash_file=cache_stream, tablet=result)
-    # # DR 的游戏设置
-    cache_stream.write(arg2)
 
 
 if __name__ == '__main__':

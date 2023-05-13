@@ -10,13 +10,6 @@ if (-Not (Test-Path -Path "./.github/workflows/env.ps1"))
 
 ./.github/workflows/env.ps1
 
-Set-Location libs
-Set-Location Difficult_Rocket_rs
-Set-Location src
-python3.9 setup.py build
-python3 post_build.py
-Set-Location ../../..
-
 $arg = @()
 # 输出配置
 $arg += @("--standalone")
@@ -44,11 +37,11 @@ python3.9 -m nuitka $arg $args DR.py
 
 $end_time = Get-Uptime
 $out = $end_time.TotalMilliseconds - $start_time.TotalMilliseconds
+
 Write-Output $end_time.TotalSeconds $start_time.TotalSeconds $out s
 Write-Output $start_time $end_time
 Write-Output "--clang --lto=no and ($args)"
 
-Copy-Item .\libs\pyglet\ .\build\nuitka-mac\DR.dist -Recurse
 # --include-data-dir=./libs/pyglet=./pyglet
 # --run
 # --disable-ccache

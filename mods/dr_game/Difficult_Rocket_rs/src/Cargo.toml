@@ -23,11 +23,11 @@ codegen-units = 1
 #features = ["serialize"]
 
 [dependencies.serde]
-version = "1.0.157"
+version = "1.0.163"
 features = ["derive"]
 
 [dependencies.xml-rs]
-version = "0.8.4"
+version = "0.8.10"
 
 [dependencies.serde-xml-rs]
 version = "0.6.0"
@@ -37,5 +37,5 @@ version = "0.17.2"
 features = ["simd-stable"]
 
 [dependencies.pyo3]
-version = "0.18.1"
+version = "0.18.3"
 features = ["extension-module"]

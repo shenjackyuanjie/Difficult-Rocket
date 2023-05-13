@@ -124,8 +124,8 @@ pub mod part_list {
         #[inline]
         pub fn to_damage(&self) -> crate::types::sr1::Damage {
             crate::types::sr1::Damage {
-                disconnect: self.disconnect,
-                explode: self.explode,
+                disconnect: self.disconnect.to_owned(),
+                explode: self.explode.to_owned(),
                 explosion_power: self.explosion_power.unwrap_or(100),
                 explosion_size: self.explosion_size.unwrap_or(100),
             }
@@ -299,9 +299,9 @@ pub mod part_list {
                 description: self.description.clone(),
                 sprite: self.sprite.clone(),
                 p_type: self.r#type,
-                mass: self.mass,
-                width: self.width,
-                height: self.height,
+                mass: self.mass.to_owned(),
+                width: self.width.to_owned(),
+                height: self.height.to_owned(),
                 friction: self.friction.unwrap_or(0.0),
                 category: self.category.clone().unwrap_or("".to_string()),
                 ignore_editor_intersections: self.ignore_editor_intersections.unwrap_or(false),
@@ -419,9 +419,8 @@ pub mod ship {
         pub engine: Option<Engine>,
         #[serde(rename = "Pod")]
         pub pod: Option<Pod>,
-
         #[serde(rename = "partType")]
-        pub part_type: SR1PartTypeEnum,
+        pub part_type_id: String,
         pub id: i64,
         pub x: f64,
         pub y: f64,
@@ -519,58 +518,28 @@ pub mod ship {
         pub child_part: i64,
     }
 
+    impl Part {
+        /// 根据 Part 的原始数据猜测 Part 的类型
+        /// jundroo 我日你先人
+        fn guess_part_type(&self) -> SR1PartTypeEnum { todo!() }
+    }
+
     impl SR1PartDataTrait for Part {
         fn to_sr_part_data(&self) -> SR1PartData {
-            let attr = match self.part_type {
-                SR1PartTypeEnum::tank => SR1PartDataAttr::Tank {
-                    fuel: if let Some(tank) = &self.tank { tank.fuel } else { 0_f64 },
-                },
-                SR1PartTypeEnum::engine => SR1PartDataAttr::Engine {
-                    fuel: if let Some(engine) = &self.engine { engine.fuel } else { 0_f64 },
-                },
-                SR1PartTypeEnum::solar => SR1PartDataAttr::Solar {
-                    extension: self.extension.unwrap_or(0_f64),
-                },
-                SR1PartTypeEnum::parachute => SR1PartDataAttr::Parachute {
-                    chute_x: self.chute_x.unwrap_or(0_f64),
-                    chute_y: self.chute_y.unwrap_or(0_f64),
-                    chute_angle: self.chute_angle.unwrap_or(0_f64),
-                    chute_height: self.chute_height.unwrap_or(0_f64),
-                    inflate: i8_to_bool(self.inflate.unwrap_or(0_i8)),
-                    inflation: i8_to_bool(self.inflation.unwrap_or(0_i8)),
-                    deployed: i8_to_bool(self.deployed.unwrap_or(0_i8)),
-                    rope: i8_to_bool(self.rope.unwrap_or(0_i8)),
-                },
-                SR1PartTypeEnum::pod => {
-                    let pod = self.pod.as_ref().unwrap(); // 一定是有的，别问我为什么
-                    let mut steps = Vec::new();
-                    for step in &pod.stages.steps {
-                        let mut activates = Vec::new();
-                        for active in &step.activates {
-                            activates.push((active.id, i8_to_bool(active.moved)))
-                        }
-                        steps.push(activates)
-                    }
-                    SR1PartDataAttr::Pod {
-                        name: pod.name.clone(),
-                        throttle: pod.throttle,
-                        current_stage: pod.stages.current_stage,
-                        steps,
-                    }
-                }
-                _ => SR1PartDataAttr::None,
-            };
+            let attr = SR1PartDataAttr::from_raw(&self, None, true);
+            let part_type = attr.get_part_type();
             SR1PartData {
                 attr,
-                x: self.x,
-                y: self.y,
-                id: self.id,
-                angle: self.angle,
-                angle_v: self.angle_v,
+                x: self.x.to_owned(),
+                y: self.y.to_owned(),
+                id: self.id.to_owned(),
+                angle: self.angle.to_owned(),
+                angle_v: self.angle_v.to_owned(),
                 flip_x: i8_to_bool(self.flip_x.unwrap_or(0_i8)),
                 flip_y: i8_to_bool(self.flip_y.unwrap_or(0_i8)),
-                editor_angle: self.editor_angle,
-                part_type: self.part_type,
+                editor_angle: self.editor_angle.to_owned(),
+                part_type,
+                part_type_id: self.part_type_id.clone(),
                 active: i8_to_bool(self.activated.unwrap_or(0_i8)),
                 explode: i8_to_bool(self.exploded.unwrap_or(0_i8)),
             }
@@ -588,8 +557,6 @@ pub mod ship {
             }
             let disconnected = match &self.disconnected {
                 Some(disconnect) => {
-                    // let mut disconnect_parts = Vec::new();
-
                     let mut disconnect_parts = Vec::new();
                     for disconnected_part in &disconnect.parts {
                         let mut parts_vec = Vec::new();
@@ -611,8 +578,8 @@ pub mod ship {
                 description: "".to_string(),
                 parts,
                 connections,
-                lift_off: i8_to_bool(self.lift_off),
-                touch_ground: i8_to_bool(self.touch_ground),
+                lift_off: i8_to_bool(self.lift_off.to_owned()),
+                touch_ground: i8_to_bool(self.touch_ground.to_owned()),
                 disconnected,
             }
         }

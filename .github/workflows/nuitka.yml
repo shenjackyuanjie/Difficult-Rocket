@@ -1,5 +1,5 @@
 # 名称
-name: Build
+name: Build DR nuitka
 
 # 运行条件
 on:
@@ -10,7 +10,7 @@ on:
 
 # 主任务
 jobs:
-  build:
+  build-nuitka:
     if: ${{!startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[build skip]') == false }}
     # 全都要！
     strategy:

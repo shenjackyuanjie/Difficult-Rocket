@@ -20,6 +20,7 @@ DR_rust_version = Version("0.2.7.0")  # DR_mod 的 Rust 编写部分的兼容版
 
 
 class _DR_mod_runtime(Options):
+    name = 'DR mod runtime'
 
     use_DR_rust: bool = True
     DR_rust_available: bool = False

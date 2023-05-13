@@ -5,6 +5,7 @@
 #  -------------------------------
 
 import traceback
+from io import StringIO
 from dataclasses import dataclass
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING
 
@@ -38,7 +39,16 @@ class OptionNotFound(OptionsError):
 
 class Options:
     """
-    Difficult Rocket 的游戏配置的存储基类
+    一个用于存储选项 / 提供 API 定义 的类
+    用法:
+    存储配置: 继承 Options 类
+            在类里定义 option: typing
+            (可选 定义 name: str = 'Option Base' 用于在打印的时候显示名字)
+    提供 API 接口: 继承 Options 类
+            在类里定义 option: typing
+            定义 一些需要的方法
+            子类: 继承 新的 Options 类
+                实现定义的方法
     """
     name = 'Option Base'
     cached_options: Dict[str, Union[str, Any]] = {}
@@ -50,7 +60,7 @@ class Options:
         :param kwargs:
         """
         if TYPE_CHECKING:
-            self.options: Dict[str, Union[Callable, object]] = {}
+            self._options: Dict[str, Union[Callable, object]] = {}
         self.flush_option()
         for option, value in kwargs.items():
             if option not in self.cached_options:
@@ -66,7 +76,7 @@ class Options:
         self.flush_option()
 
     if TYPE_CHECKING:
-        options: Dict[str, Union[Callable, object]] = {}
+        _options: Dict[str, Union[Callable, object]] = {}
 
         def init(self, **kwargs) -> None:
             """ 如果子类定义了这个函数，则会在 __init__ 之后调用这个函数 """
@@ -89,9 +99,9 @@ class Options:
             if values[ann] is None:
                 values[ann] = self.__annotations__[ann]
 
-        if not hasattr(self, 'options'):
-            self.options: Dict[str, Union[Callable, object]] = {}
-        for option, a_fun in self.options.items():  # 获取额外内容
+        if not hasattr(self, '_options'):
+            self._options: Dict[str, Union[Callable, object]] = {}
+        for option, a_fun in self._options.items():  # 获取额外内容
             values[option] = a_fun
 
         for option, a_fun in values.items():  # 检查是否为 property
@@ -123,26 +133,56 @@ class Options:
         self.cached_options = self.option()
         return self.cached_options
 
-    def option_with_len(self) -> List[Union[List[Tuple[str, Any, Any]], int, Any]]:
+    def option_with_len(self) -> Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]:
+        """
+        返回一个可以用于打印的 option 列表
+        :return:
+        """
         options = self.flush_option()
         max_len_key = 1
         max_len_value = 1
         max_len_value_t = 1
         option_list = []
         for key, value in options.items():
-            value_t = value if isinstance(value, Type) else type(value)
+            value_t = value if isinstance(value, Type) else type(value)  # 判定这个类型 是不是 基本类型
             max_len_key = max(max_len_key, len(key))
             max_len_value = max(max_len_value, len(str(value)))
             max_len_value_t = max(max_len_value_t, len(str(value_t)))
             option_list.append((key, value, value_t))
-        return [option_list, max_len_key, max_len_value, max_len_value_t]
+        return option_list, max_len_key, max_len_value, max_len_value_t
+
+    def as_markdown(self) -> str:
+        """
+        返回一个 markdown 格式的 option 字符串
+        :return: markdown 格式的 option 字符串
+        """
+        value = self.option_with_len()
+        cache = StringIO()
+        option_len = max(value[1], len('Option'))
+        value_len = max(value[2], len('Value'))
+        value_type_len = max(value[3], len('Value Type'))
+        cache.write(f"| Option{' '*(option_len-3)}| Value{' '*(value_len-2)}| Value Type{' '*(value_type_len-7)}|\n")
+        cache.write(f'|:{"-" * (option_len+3)}|:{"-" * (value_len+3)}|:{"-" * (value_type_len + 3)}|\n')
+        for option, value, value_t in value[0]:
+            cache.write(f"| `{option}`{' '* (option_len - len(option))} "
+                        f"| `{value}`{' '* (value_len - len(str(value)))} "
+                        f"| `{value_t}`{' '* (value_type_len - len(str(value_t)))} |\n")
+        result = cache.getvalue()
+        cache.close()
+        return result
 
     @classmethod
     def add_option(cls, name: str, value: Union[Callable, object]) -> Dict:
-        if not hasattr(cls, 'options'):
-            cls.options: Dict[str, Union[Callable, object]] = {}
-        cls.options[name] = value
-        return cls.options
+        """
+        向配置类中添加一个额外的配置
+        :param name: 配置的名字
+        :param value: 用于获取配置的函数或者类
+        :return: 配置类的所有配置
+        """
+        if not hasattr(cls, '_options'):
+            cls._options: Dict[str, Union[Callable, object]] = {}
+        cls._options[name] = value
+        return cls._options
 
     @staticmethod
     def init_option(options_class: Type['Options'], init_value: Optional[dict] = None) -> 'Options':

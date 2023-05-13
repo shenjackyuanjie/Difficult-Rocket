@@ -28,7 +28,7 @@ pub mod data {
         fn get_name(&self) -> String { self.data.name.clone() }
 
         #[getter]
-        fn get_mass(&self) -> f64 { self.data.mass }
+        fn get_mass(&self) -> f64 { self.data.mass.to_owned() }
     }
 
     impl PySR1PartType {
@@ -39,7 +39,7 @@ pub mod data {
     #[pyo3(name = "SR1PartList_rs")]
     #[pyo3(text_signature = "(file_path = './configs/PartList.xml', list_name = 'NewPartList')")]
     pub struct PySR1PartList {
-        pub part_list: SR1PartList,
+        pub data: SR1PartList,
     }
 
     #[pymethods]
@@ -47,16 +47,16 @@ pub mod data {
         #[new]
         fn new(file_path: String, list_name: String) -> Self {
             let raw_part_list: RawPartList = RawPartList::from_file(file_path).unwrap();
-            let part_list = raw_part_list.to_sr_part_list(Some(list_name));
-            Self { part_list }
+            let data = raw_part_list.to_sr_part_list(Some(list_name));
+            Self { data }
         }
 
         fn as_dict(&self) -> HashMap<String, PySR1PartType> {
-            self.part_list.cache.iter().map(|(k, v)| (k.clone(), PySR1PartType::new(v.clone()))).collect()
+            self.data.get_cache().iter().map(|(k, v)| (k.clone(), PySR1PartType::new(v.clone()))).collect()
         }
 
-        fn get_part_type(&mut self, name: String) -> Option<PySR1PartType> {
-            let part_type = self.part_list.cache.get(&name);
+        fn get_part_type(&self, name: String) -> Option<PySR1PartType> {
+            let part_type = self.data.get_part_type(name.clone());
             if let Some(part_type) = part_type {
                 Some(PySR1PartType::new(part_type.clone()))
             } else {
@@ -94,28 +94,22 @@ pub mod data {
             // 左下角，右上角
             let mut max_box = get_max_box(&self.ship.parts, &self.part_list);
             todo!();
-            img_pos
+            // img_pos
         }
 
         fn get_name(&self) -> String { self.ship.name.clone() }
 
         fn get_description(&self) -> String { self.ship.description.clone() }
 
-        fn get_lift_off(&self) -> bool { self.ship.lift_off }
+        fn get_lift_off(&self) -> bool { self.ship.lift_off.to_owned() }
 
-        fn get_touch_ground(&self) -> bool { self.ship.touch_ground }
+        fn get_touch_ground(&self) -> bool { self.ship.touch_ground.to_owned() }
     }
 }
 
 pub mod translate {
     use pyo3::prelude::*;
     use pyo3::types::PyDict;
-
-    #[derive(Clone)]
-    pub enum BoolString {
-        Bool(bool),
-        String(String),
-    }
 
     #[pyclass]
     #[pyo3(name = "TranslateConfig_rs")]
