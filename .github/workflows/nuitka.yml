@@ -11,7 +11,7 @@ on:
 # 主任务
 jobs:
   build-nuitka:
-    if: ${{!startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[build skip]') == false }}
+    if: ${{!startsWith(github.event.ref, 'refs/tags/') && contains(github.event.head_commit.message, '[build rs skip]') == false }}
     # 全都要！
     strategy:
       fail-fast: false
