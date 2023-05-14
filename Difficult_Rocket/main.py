@@ -11,10 +11,10 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import os
 import sys
 import time
 import logging
+import traceback
 import importlib
 import importlib.util
 import logging.config
@@ -22,59 +22,83 @@ import multiprocessing
 
 from io import StringIO
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Optional, Dict, TypeVar
 
 if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from Difficult_Rocket import client, server, DR_option, DR_runtime
 if TYPE_CHECKING:
     from Difficult_Rocket.api.mod import ModInfo
-from Difficult_Rocket.crash import write_info_to_cache
+else:
+    ModInfo = TypeVar('ModInfo')
 from Difficult_Rocket.utils import tools
+from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.utils.translate import tr
+from Difficult_Rocket.utils.thread import new_thread
+from Difficult_Rocket.crash import write_info_to_cache
+from Difficult_Rocket import client, server, DR_option, DR_runtime
 
 
-class Game:
-    def __init__(self):
-        # basic config
-        self.on_python_v_info = sys.version_info
-        self.on_python_v = sys.version.split(' ')[0]
-        self.start_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
-        # lang_config
-        self.language = tools.load_file('configs/main.toml', 'runtime')['language']
-        DR_option.language = self.language
-        # logging config
-        log_config = tools.load_file('configs/logger.toml')
-        file_name = log_config['handlers']['file']['filename']
-        del log_config['handlers']['file']['datefmt']
-        log_config['handlers']['file']['filename'] = f'logs/{file_name.format(self.start_time)}'
-        try:
-            logging.config.dictConfig(log_config)
-            self.logger = logging.getLogger('main')
-        except ValueError:  # it should be no 'logs/' folder
-            os.mkdir('logs')
-            logging.config.dictConfig(log_config)
-            self.logger = logging.getLogger('main')
+class Console(Options):
+    name = 'python stdin console'
+
+    running: bool = False
+
+    @new_thread('python console', daemon=True, log_thread=True)
+    def main(self):
+        while self.running:
+            try:
+                get_str = input('>>>')
+            except (EOFError, KeyboardInterrupt):
+                get_str = 'stop'
+            self.caches.append(get_str)
+            if get_str == 'stop':
+                self.running = False
+                break
+
+    def start(self):
+        self.running = True
+        self.caches: List[str] = []
+        self.main()
+
+    def stop(self):
+        self.running = False
+
+    def get_command(self) -> str:
+        return self.caches.pop(0)
+
+
+class Game(Options):
+    name = 'MainGame'
+
+    client: client.Client
+    server: server.Server
+    console: Console
+    console_class: Console = Console
+
+    main_config: Dict
+    logging_config: Dict
+    logger: logging.Logger
+
+    mod_module: List["ModInfo"]
+
+    def init_logger(self) -> None:
+        log_path = self.logging_config['handlers']['file']['filename']
+        log_path = Path(f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S' , time.gmtime(DR_runtime.start_time_ns / 1000_000_000)))}")
+        mkdir = False
+        if not Path("logs/").exists():
+            log_path.mkdir(parents=True)
+            mkdir = True
+        self.logging_config['handlers']['file']['filename'] = str(log_path.absolute())
+        logging.config.dictConfig(self.logging_config)
+        self.logger = logging.getLogger('main')
+        if mkdir:
             self.logger.info(tr().main.logger.mkdir())
-        self.logger.info(tr().language_set_to())
-        self.logger.info(tr().main.logger.created())
-        # version check
-        self.log_env()
-        self.python_version_check()
-        self.loaded_mods = []
-        # self.client = client.Client
-        # self.server = server.Server
-        self.setup()
-        
-    def log_env(self) -> None:
-        cache_steam = StringIO()
-        write_info_to_cache(cache_steam)
-        text = cache_steam.getvalue()
-        self.logger.info(text)
 
-    def load_mods(self) -> None:
+    def init_mods(self) -> None:
+        """验证/加载 mod"""
+        print(self)
         mods = []
         mod_path = Path(DR_runtime.mod_path)
         if not mod_path.exists():
@@ -114,9 +138,9 @@ class Game:
                 module.append(mod_class)
                 self.logger.info(tr().main.mod.load.info().format(mod_class.mod_id, mod_class.version))
             except ImportError as e:
-                self.logger.warning(tr().main.mod.load.faild().format(mod, e))
+                self.logger.warning(tr().main.mod.load.faild.info().format(mod, e))
         self.logger.info(tr().main.mod.load.done())
-        self.loaded_mods = module
+        self.mod_module = module
         mod_list = []
         for mod in module:
             mod_list.append((mod.mod_id, mod.version))
@@ -124,30 +148,11 @@ class Game:
         self.dispatch_event('on_load', game=self)
         DR_runtime.DR_Mod_List = mod_list
 
-    def dispatch_event(self, event_name: str, *args, **kwargs) -> None:
-        for mod in self.loaded_mods:
-            if hasattr(mod, event_name):
-                try:
-                    getattr(mod, event_name)(*args, **kwargs)
-                except Exception as e:
-                    self.logger.error(tr().main.mod.event.error().format(event_name, e, mod.mod_id))
+    def init_console(self) -> None:
+        self.console = self.console_class()
+        self.console.start()
 
-    def setup(self) -> None:
-        self.load_mods()
-        self.client = client.Client(game=self, net_mode='local')
-        self.server = server.Server(net_mode='local')
-
-    def python_version_check(self) -> None:  # best 3.8+ and write at 3.8.10
-        self.logger.info(f"{tr().main.version.now_on()} {self.on_python_v}")
-        if self.on_python_v_info[0] == 2:
-            self.logger.critical(tr().main.version.need3p())
-            raise SystemError(tr().main.version.need3p())
-        elif self.on_python_v_info[1] < 8:
-            warning = tools.name_handler(tr.main.version.best38p())
-            self.logger.warning(warning)
-
-    # @new_thread('main')
-    def _start(self):
+    def start(self):
         self.server.run()
         if DR_option.use_multiprocess:
             try:
@@ -161,5 +166,42 @@ class Game:
         else:
             self.client.start()
 
-    def start(self) -> None:
-        self._start()
+    def dispatch_event(self, event_name: str, *args, **kwargs) -> None:
+        """向 mod 分发事件"""
+        for mod in self.mod_module:
+            if hasattr(mod, event_name):
+                try:
+                    getattr(mod, event_name)(*args, **kwargs)
+                except Exception:
+                    error = traceback.format_exc()
+                    self.logger.error(tr().main.mod.event.error().format(event_name, error, mod.mod_id))
+
+    def log_env(self) -> None:
+        cache_steam = StringIO()
+        write_info_to_cache(cache_steam)
+        text = cache_steam.getvalue()
+        self.logger.info(text)
+        self.flush_option()
+        config_cache = self.logging_config.copy()
+        self.logging_config = {"logging_config": "too long to show"}
+        self.logger.info(f"\n{self.as_markdown()}")
+        self.logging_config = config_cache
+
+    def setup(self) -> None:
+        self.client = client.Client(game=self, net_mode='local')
+        self.server = server.Server(net_mode='local')
+
+    def init(self, **kwargs) -> bool:
+        self.load_file()
+        self.setup()
+        self.log_env()
+        return True
+
+    def load_file(self) -> bool:
+        """加载文件"""
+        self.logging_config = tools.load_file('configs/logger.toml')
+        self.init_logger()
+        self.init_mods()
+        self.init_console()
+        return True
+

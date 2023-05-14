@@ -27,7 +27,6 @@ level = "DEBUG"
 [handlers.file]
 class = "logging.FileHandler"
 filename = "{} DR.log"
-datefmt = "%Y-%m-%d %H:%M:%S"
 encoding = "utf-8"
 formatter = "file"
 level = "DEBUG"

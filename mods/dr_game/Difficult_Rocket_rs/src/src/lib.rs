@@ -18,16 +18,17 @@ use pyo3::prelude::*;
 
 // const MOD_PATH: String = String::from("mods");
 
+#[allow(unused)]
 enum LoadState {
-    init,
-    wait_start,
-    pre_start,
-    running,
-    clean,
+    Init,
+    WaitStart,
+    PreStart,
+    Running,
+    Clean,
 }
 
 #[pyfunction]
-fn get_version_str() -> String { "0.2.7.0".to_string() }
+fn get_version_str() -> String { "0.2.8.0".to_string() }
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {
@@ -52,6 +53,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;
     m.add_class::<python::data::PySR1PartType>()?;
+    m.add_class::<python::console::PyConsole>()?;
     Ok(())
 }
 

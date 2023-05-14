@@ -9,14 +9,13 @@ import traceback
 
 from typing import Optional
 
-
 from libs.MCDR.version import Version
-from Difficult_Rocket.main import Game
+from Difficult_Rocket.main import Game, Console
 from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.client import ClientWindow
 
-DR_rust_version = Version("0.2.7.0")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.2.8.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
 
 class _DR_mod_runtime(Options):
@@ -68,6 +67,10 @@ class DR_mod(ModInfo):
     def on_load(self, game: Game, old_self: Optional["DR_mod"] = None) -> bool:
         if not DR_mod_runtime.DR_rust_available:
             return False
+        from .console import RustConsole
+
+        game.console_class = RustConsole  # 替换掉原来的 console 类
+
         if old_self:
             game.client.window.add_sub_screen("SR1_ship", old_self.screen)
         else:
