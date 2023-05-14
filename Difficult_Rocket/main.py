@@ -85,10 +85,10 @@ class Game(Options):
 
     def init_logger(self) -> None:
         log_path = self.logging_config['handlers']['file']['filename']
-        log_path = Path(f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S' , time.gmtime(DR_runtime.start_time_ns / 1000_000_000)))}")
+        log_path = f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S' , time.gmtime(DR_runtime.start_time_ns / 1000_000_000)))}"
         mkdir = False
-        if not Path("logs/").exists():
-            log_path.mkdir(parents=True)
+        if not Path('logs/').is_dir():
+            Path('logs/').mkdir()
             mkdir = True
         self.logging_config['handlers']['file']['filename'] = str(log_path.absolute())
         logging.config.dictConfig(self.logging_config)
