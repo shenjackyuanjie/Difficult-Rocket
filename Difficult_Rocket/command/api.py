@@ -43,7 +43,14 @@ class CommandText:
                 break
             i += 1
 
-    def find(self, text: str) -> Union[str, bool]:
+    def find(self, text: str) -> bool:
+        find = self.text.find(text)
+        if find != -1:
+            self.text = self.text[find + len(text):]
+            return True
+        return False
+
+    def re_find(self, text: str) -> Union[str, bool]:
         return finding.group() if (finding := re.match(text, self.text)) else False
 
     def re_match(self, text: str) -> bool:

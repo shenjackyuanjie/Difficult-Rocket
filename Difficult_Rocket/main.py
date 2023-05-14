@@ -149,7 +149,7 @@ class Game(Options):
         DR_runtime.DR_Mod_List = mod_list
 
     def init_console(self) -> None:
-        self.console = Console()
+        self.console = self.console_class()
         self.console.start()
 
     def start(self):

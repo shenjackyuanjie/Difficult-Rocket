@@ -210,8 +210,6 @@ class ClientWindow(Window):
 
     def start_game(self) -> None:
         self.set_icon(pyglet.image.load('./textures/icon.png'))
-        self.run_input = True
-        # self.read_input()
         try:
             pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
         except KeyboardInterrupt:
@@ -220,22 +218,6 @@ class ClientWindow(Window):
             print("==========client stop. KeyboardInterrupt info end==========")
             self.dispatch_event("on_close")
             sys.exit(0)
-
-    @new_thread('window read_input', daemon=True)
-    def read_input(self):
-        self.logger.debug('read_input start')
-        while self.run_input:
-            try:
-                get = input(">")
-            except (EOFError, KeyboardInterrupt):
-                self.run_input = False
-                break
-            if get in ('', ' ', '\n', '\r'):
-                continue
-            if get == 'stop':
-                self.run_input = False
-            self.command_list.append(get)
-        self.logger.debug('read_input end')
 
     @new_thread('window save_info')
     def save_info(self):
@@ -266,10 +248,8 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_draw(self, *dt):
-        if self.command_list:
-            for command in self.command_list:
-                self.on_command(line.CommandText(command))
-                self.command_list.pop(0)
+        while command := self.game.console.get_command():
+            self.on_command(line.CommandText(command))
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
         self.draw_update(float(self.SPF))
@@ -310,26 +290,26 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_command(self, command: line.CommandText):
-        print(command.re_match('/'))
+        print(command.find('/'))
         self.logger.info(tr().window.command.text().format(command))
-        if command.re_match('stop'):
+        if command.find('stop'):
             # self.dispatch_event('on_exit')
             print("command stop!")
             pyglet.app.platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command
-        elif command.re_match('fps'):
-            if command.re_match('log'):
+        elif command.find('fps'):
+            if command.find('log'):
                 self.logger.debug(self.fps_log.fps_list)
-            elif command.re_match('max'):
+            elif command.find('max'):
                 self.logger.info(self.fps_log.max_fps)
                 self.command.push_line(self.fps_log.max_fps, block_line=True)
-            elif command.re_match('min'):
+            elif command.find('min'):
                 self.logger.info(self.fps_log.min_fps)
                 self.command.push_line(self.fps_log.min_fps, block_line=True)
-        elif command.re_match('default'):
+        elif command.find('default'):
             self.set_size(int(self.main_config['window_default']['width']),
                           int(self.main_config['window_default']['height']))
-        elif command.re_match('lang'):
+        elif command.find('lang'):
             try:
                 lang = command.text[5:]
                 tr._language = lang
