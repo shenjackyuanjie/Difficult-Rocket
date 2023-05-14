@@ -90,7 +90,7 @@ class Game(Options):
         if not Path('logs/').is_dir():
             Path('logs/').mkdir()
             mkdir = True
-        self.logging_config['handlers']['file']['filename'] = str(log_path.absolute())
+        self.logging_config['handlers']['file']['filename'] = log_path
         logging.config.dictConfig(self.logging_config)
         self.logger = logging.getLogger('main')
         if mkdir:
