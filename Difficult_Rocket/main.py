@@ -15,6 +15,7 @@ import os
 import sys
 import time
 import logging
+import traceback
 import importlib
 import importlib.util
 import logging.config
@@ -28,16 +29,16 @@ if __name__ == '__main__':  # been start will not run this
     sys.path.append('/bin/libs')
     sys.path.append('/bin')
 
-from Difficult_Rocket import client, server, DR_option, DR_runtime
 if TYPE_CHECKING:
     from Difficult_Rocket.api.mod import ModInfo
 else:
     ModInfo = TypeVar('ModInfo')
 from Difficult_Rocket.utils import tools
-from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.crash import write_info_to_cache
 from Difficult_Rocket.api.types import Options
+from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.utils.thread import new_thread
+from Difficult_Rocket.crash import write_info_to_cache
+from Difficult_Rocket import client, server, DR_option, DR_runtime
 
 
 class Game:
@@ -206,12 +207,23 @@ class MainGame(Options):
     console: Console
 
     main_config: Dict
+    logging_config: Dict
     logger: logging.Logger
 
     mod_module: List["ModInfo"]
 
     def init_logger(self) -> None:
-        ...
+        log_path = self.logging_config['handlers']['file']['filename']
+        log_path = Path(f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S' , time.gmtime(DR_runtime.start_time_ns)))}")
+        mkdir = False
+        if not log_path.exists():
+            log_path.mkdir(parents=True)
+            mkdir = True
+        self.logging_config['handlers']['file']['filename'] = log_path.name
+        logging.config.dictConfig(self.logging_config)
+        self.logger = logging.getLogger('main')
+        if mkdir:
+            self.logger.info(tr().main.logger.mkdir())
 
     def init_console(self) -> None:
         self.console = Console()
@@ -274,14 +286,33 @@ class MainGame(Options):
             if hasattr(mod, event_name):
                 try:
                     getattr(mod, event_name)(*args, **kwargs)
-                except Exception as e:
-                    self.logger.error(tr().main.mod.event.error().format(event_name, e, mod.mod_id))
+                except Exception:
+                    error = traceback.format_exc()
+                    self.logger.error(tr().main.mod.event.error().format(event_name, error, mod.mod_id))
 
-    def init(self, **kwargs) -> None:
-        ...
+    def log_env(self) -> None:
+        cache_steam = StringIO()
+        write_info_to_cache(cache_steam)
+        text = cache_steam.getvalue()
+        self.logger.info(text)
+        self.flush_option()
+        self.logger.info(self.as_markdown())
+
+    def setup(self) -> None:
+        self.client = client.Client(game=self, net_mode='local')
+        self.server = server.Server(net_mode='local')
+
+    def init(self, **kwargs) -> bool:
+        self.load_file()
+        self.setup()
+        self.log_env()
+        return True
 
     def load_file(self) -> bool:
         """加载文件"""
+        self.logging_config = tools.load_file('configs/logger.toml')
         self.init_logger()
         self.init_mods()
+        self.init_console()
         return True
+

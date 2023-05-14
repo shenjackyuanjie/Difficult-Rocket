@@ -66,9 +66,10 @@ class Options:
             if option not in self.cached_options:
                 raise OptionNameNotDefined(f"option: {option} with value: {value} is not defined")
             setattr(self, option, value)
+        run_load_file = True
         if hasattr(self, 'init'):
-            self.init(**kwargs)
-        if hasattr(self, 'load_file'):
+            run_load_file = not self.init(**kwargs)  # 默认 False/None
+        if hasattr(self, 'load_file') and run_load_file:
             try:
                 self.load_file()
             except Exception:
@@ -78,8 +79,10 @@ class Options:
     if TYPE_CHECKING:
         _options: Dict[str, Union[Callable, object]] = {}
 
-        def init(self, **kwargs) -> None:
-            """ 如果子类定义了这个函数，则会在 __init__ 之后调用这个函数 """
+        def init(self, **kwargs) -> bool:
+            """ 如果子类定义了这个函数，则会在 __init__ 之后调用这个函数
+            返回值为 True 则不会调用 load_file 函数
+            """
 
         def load_file(self) -> bool:
             """如果子类定义了这个函数，则会在 __init__ 和 init 之后再调用这个函数
