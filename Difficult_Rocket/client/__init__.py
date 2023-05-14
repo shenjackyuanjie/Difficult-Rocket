@@ -211,7 +211,7 @@ class ClientWindow(Window):
     def start_game(self) -> None:
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.run_input = True
-        self.read_input()
+        # self.read_input()
         try:
             pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
         except KeyboardInterrupt:
@@ -314,6 +314,7 @@ class ClientWindow(Window):
         self.logger.info(tr().window.command.text().format(command))
         if command.re_match('stop'):
             # self.dispatch_event('on_exit')
+            print("command stop!")
             pyglet.app.platform_event_loop.stop()
             self.dispatch_event('on_close', 'command')  # source = command
         elif command.re_match('fps'):
@@ -439,10 +440,13 @@ class ClientWindow(Window):
         self.game.dispatch_event('on_close', game=self.game, client=self, source=source)
         self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
-        self.fps_log.check_list = False
+        # self.fps_log.check_list = False
         DR_runtime.running = False
         if self.run_input:
             self.run_input = False
         self.save_info()
         super().on_close()
         self.logger.info(tr().window.game.end())
+
+
+ClientWindow.register_event_type("on_command")
