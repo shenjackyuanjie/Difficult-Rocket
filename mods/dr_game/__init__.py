@@ -69,11 +69,7 @@ class DR_mod(ModInfo):
             return False
         from .console import RustConsole
 
-        def init_console(self) -> None:
-            self.console = RustConsole()
-            self.console.start()
-
-        game.init_console = init_console  # 替换掉原来的 init_console 函数
+        game.console_class = RustConsole  # 替换掉原来的 console 类
 
         if old_self:
             game.client.window.add_sub_screen("SR1_ship", old_self.screen)
