@@ -114,6 +114,13 @@
     - 修改 返回值 类型+类型注释
     - Modify the return value type + type annotation
     - `List[Union[List[Tuple[str, Any, Any]], int, Any]]:` -> `Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]`
+- `Difficult_Roocket.main.Game`
+  - 使用 `Options` 完全重构
+  - 分离 `init mods` `init console` `init logger` `load_file`
+    - Completely refactored using `Options`
+    - Separate `init mods` `init console` `init logger` `load_file`
+- `Difficult_Rocket.command.api.CommandText`
+  - `find` -> `re_find`
 
 ### Add
 
@@ -122,6 +129,10 @@
     - 用于方便的用人类可读的 Markdown 格式 直接输出一个已经实例化的 `Options` 类的所有字段
   - Add `as_markdown` method
     - Used to easily output all fields of an instantiated `Options` class in a human-readable Markdown format
+- `Difficult_Rocket.command.api.CommandText`
+  - 添加基于 `str.find` 的 `find(text: str) -> bool` 方法
+  - Add method `find(text: str)` based on `str.find`
+
 
 ### Docs
 
