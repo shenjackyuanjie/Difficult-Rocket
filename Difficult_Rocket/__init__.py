@@ -5,7 +5,6 @@
 #  -------------------------------
 
 import sys
-import time
 import importlib
 import traceback
 import contextlib
@@ -18,9 +17,9 @@ from Difficult_Rocket.utils.thread import new_thread
 
 from libs.MCDR.version import Version
 
-game_version = Version("0.7.2.2")  # 游戏版本
+game_version = Version("0.8.0.0")  # 游戏版本
 build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)
-Api_version = Version("0.1.0.0")  # API 版本
+Api_version = Version("0.1.1.0")  # API 版本
 __version__ = game_version
 
 long_version: int = 15

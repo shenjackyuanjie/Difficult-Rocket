@@ -15,7 +15,7 @@
 [关于版本号的说明/about version](version.md)
 
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-![Generic badge](https://img.shields.io/badge/Version-0.7.2.0-yellow.svg)
+![Generic badge](https://img.shields.io/badge/Version-0.8.0.0-yellow.svg)
 
 - [![Readme-github](https://img.shields.io/badge/Readme-Github-blue.svg?style=flat-square&logo=Github)](https://github.com/shenjackyuanjie/Difficult-Rocket)
 - [![Readme-gitee](https://img.shields.io/badge/Readme-Gitee-blue.svg?style=flat-square&logo=Gitee)](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
@@ -27,6 +27,8 @@
 > 啊哈！ mod 加载来啦！
 
 > 啊啊啊啊啊 大重构 api
+
+> 现在控制台是 真 多线程了
 
 ### DR_api `0.1.0.0`
 
