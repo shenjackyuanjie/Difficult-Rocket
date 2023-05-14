@@ -52,6 +52,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;
     m.add_class::<python::data::PySR1PartType>()?;
+    m.add_class::<python::console::PyConsole>()?;
     Ok(())
 }
 

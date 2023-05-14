@@ -138,10 +138,10 @@ pub mod sr1 {
     impl Damage {
         pub fn to_raw_damage(&self) -> RawDamage {
             RawDamage {
-                disconnect: self.disconnect.to_owned(),
-                explode: self.explode.to_owned(),
-                explosion_power: Some(self.explosion_power.to_owned()),
-                explosion_size: Some(self.explosion_size.to_owned()),
+                disconnect: self.disconnect,
+                explode: self.explode,
+                explosion_power: Some(self.explosion_power),
+                explosion_size: Some(self.explosion_size),
             }
         }
     }
@@ -225,10 +225,10 @@ pub mod sr1 {
             if cache.is_none() {
                 let mut map = HashMap::new();
                 for part in self.types.iter() {
-                    map.insert(part.id.to_owned(), part.to_owned());
+                    map.insert(part.id.clone(), part.clone());
                 }
-                *cache = Some(map);
-                self.cache.replace(cache.to_owned());
+                *cache = Some(map.clone());
+                self.cache.replace(cache.clone());
             }
             cache.to_owned().unwrap()
         }
@@ -237,7 +237,7 @@ pub mod sr1 {
         pub fn get_part_type(&self, type_name: String) -> Option<SR1PartType> {
             let cache = self.get_cache();
             match cache.get(&type_name) {
-                Some(part) => Some(part.to_owned()),
+                Some(part) => Some(part.clone()),
                 None => None,
             }
         }
@@ -294,18 +294,18 @@ pub mod sr1 {
 
         fn to_raw_part_type(&self) -> RawPartType {
             let tank: Option<Tank> = match &self.attr {
-                Some(attr) => match attr {
+                Some(attr) => match attr.to_owned() {
                     SR1PartTypeAttr::Tank { fuel, dry_mass, fuel_type } => Some(Tank {
-                        fuel: fuel.to_owned(),
-                        dry_mass: dry_mass.to_owned(),
-                        fuel_type: Some(fuel_type.to_owned()),
+                        fuel,
+                        dry_mass,
+                        fuel_type: Some(fuel_type),
                     }),
                     _ => None,
                 },
                 _ => None,
             };
             let engine: Option<Engine> = match &self.attr {
-                Some(attr) => match attr {
+                Some(attr) => match attr.to_owned() {
                     SR1PartTypeAttr::Engine {
                         power,
                         consumption,
@@ -314,39 +314,33 @@ pub mod sr1 {
                         fuel_type,
                         throttle_exponential,
                     } => Some(Engine {
-                        power: power.to_owned(),
-                        consumption: consumption.to_owned(),
-                        throttle_exponential: Some(throttle_exponential.to_owned()),
-                        size: size.to_owned(),
-                        turn: turn.to_owned(),
-                        fuel_type: Some(fuel_type.to_owned()),
+                        power,
+                        consumption,
+                        throttle_exponential: Some(throttle_exponential),
+                        size,
+                        turn,
+                        fuel_type: Some(fuel_type),
                     }),
                     _ => None,
                 },
                 _ => None,
             };
             let rcs: Option<Rcs> = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartTypeAttr::Rcs { power, consumption, size } => Some(Rcs {
-                        power: power.to_owned(),
-                        consumption: consumption.to_owned(),
-                        size: size.to_owned(),
-                    }),
+                Some(attr) => match attr.to_owned() {
+                    SR1PartTypeAttr::Rcs { power, consumption, size } => Some(Rcs { power, consumption, size }),
                     _ => None,
                 },
                 _ => None,
             };
             let solar: Option<Solar> = match &self.attr {
-                Some(attr) => match attr {
-                    SR1PartTypeAttr::Solar { charge_rate } => Some(Solar {
-                        charge_rate: charge_rate.to_owned(),
-                    }),
+                Some(attr) => match attr.to_owned() {
+                    SR1PartTypeAttr::Solar { charge_rate } => Some(Solar { charge_rate }),
                     _ => None,
                 },
                 _ => None,
             };
             let lander: Option<Lander> = match &self.attr {
-                Some(attr) => match attr {
+                Some(attr) => match attr.to_owned() {
                     SR1PartTypeAttr::Lander {
                         max_angle,
                         min_length,
@@ -355,12 +349,12 @@ pub mod sr1 {
                         length_speed,
                         width,
                     } => Some(Lander {
-                        max_angle: max_angle.to_owned(),
-                        min_length: min_length.to_owned(),
-                        max_length: max_length.to_owned(),
-                        angle_speed: Some(angle_speed.to_owned()),
-                        length_speed: Some(length_speed.to_owned()),
-                        width: width.to_owned(),
+                        max_angle,
+                        min_length,
+                        max_length,
+                        angle_speed: Some(angle_speed),
+                        length_speed: Some(length_speed),
+                        width,
                     }),
                     _ => None,
                 },
@@ -382,19 +376,19 @@ pub mod sr1 {
                 description: self.description.clone(),
                 sprite: self.sprite.clone(),
                 r#type: self.p_type.clone(),
-                mass: self.mass.to_owned(),
-                width: self.width.to_owned(),
-                height: self.height.to_owned(),
-                friction: Some(self.friction.to_owned()),
+                mass: self.mass,
+                width: self.width,
+                height: self.height,
+                friction: Some(self.friction),
                 category: Some(self.category.clone()),
-                ignore_editor_intersections: Some(self.ignore_editor_intersections.to_owned()),
-                disable_editor_rotation: Some(self.disable_editor_rotation.to_owned()),
-                can_explode: Some(self.can_explode.to_owned()),
-                cover_height: Some(self.cover_height.to_owned()),
-                sandbox_only: Some(self.sandbox_only.to_owned()),
-                drag: Some(self.drag.to_owned()),
-                hidden: Some(self.hidden.to_owned()),
-                buoyancy: Some(self.buoyancy.to_owned()),
+                ignore_editor_intersections: Some(self.ignore_editor_intersections),
+                disable_editor_rotation: Some(self.disable_editor_rotation),
+                can_explode: Some(self.can_explode),
+                cover_height: Some(self.cover_height),
+                sandbox_only: Some(self.sandbox_only),
+                drag: Some(self.drag),
+                hidden: Some(self.hidden),
+                buoyancy: Some(self.buoyancy),
                 damage: Some(self.damage.to_raw_damage()),
                 tank,
                 engine,
@@ -422,36 +416,6 @@ pub mod sr1 {
             } else {
                 (None, None)
             };
-            // let pod = match &self.attr {
-            //     SR1PartDataAttr::Pod {
-            //         name,
-            //         throttle,
-            //         current_stage,
-            //         steps,
-            //     } => Some({
-            //         let mut actives = Vec::new();
-            //         for step in steps {
-            //             let mut steps_ = Vec::new();
-            //             for active in step {
-            //                 steps_.push(RawActivate {
-            //                     id: active.0,
-            //                     moved: bool_to_i8(active.1),
-            //                 });
-            //             }
-            //             actives.push(RawStep { activates: steps_ });
-            //         }
-            //         let stages = RawStaging {
-            //             current_stage: *current_stage,
-            //             steps: actives,
-            //         };
-            //         RawPod {
-            //             name: name.clone(),
-            //             throttle: *throttle,
-            //             stages,
-            //         }
-            //     }),
-            //     _ => None,
-            // };
             let pod = match (&self.attr.name, &self.attr.throttle, &self.attr.current_stage, &self.attr.steps) {
                 (Some(name), Some(throttle), Some(current_stage), Some(steps)) => Some({
                     let mut actives = Vec::new();
@@ -482,25 +446,25 @@ pub mod sr1 {
                 engine,
                 pod,
                 part_type_id: self.part_type_id.clone(),
-                id: self.id.to_owned(),
-                x: self.x.to_owned(),
-                y: self.y.to_owned(),
-                editor_angle: self.editor_angle.to_owned(),
-                angle: self.angle.to_owned(),
-                angle_v: self.angle_v.to_owned(),
-                flip_x: Some(bool_to_i8(self.flip_x.to_owned())),
-                flip_y: Some(bool_to_i8(self.flip_y.to_owned())),
-                chute_x: self.attr.chute_x.to_owned(),
-                chute_y: self.attr.chute_y.to_owned(),
-                chute_height: self.attr.chute_height.to_owned(),
-                extension: self.attr.extension.to_owned(),
-                inflate: option_bool_to_option_i8(self.attr.inflate.to_owned()),
-                inflation: option_bool_to_option_i8(self.attr.inflation.to_owned()),
-                exploded: Some(bool_to_i8(self.explode.to_owned())),
-                rope: option_bool_to_option_i8(self.attr.rope.to_owned()),
-                chute_angle: self.attr.chute_angle.to_owned(),
-                activated: Some(bool_to_i8(self.active.to_owned())),
-                deployed: option_bool_to_option_i8(self.attr.deployed.to_owned()),
+                id: self.id,
+                x: self.x,
+                y: self.y,
+                editor_angle: self.editor_angle,
+                angle: self.angle,
+                angle_v: self.angle_v,
+                flip_x: Some(bool_to_i8(self.flip_x)),
+                flip_y: Some(bool_to_i8(self.flip_y)),
+                chute_x: self.attr.chute_x,
+                chute_y: self.attr.chute_y,
+                chute_height: self.attr.chute_height,
+                extension: self.attr.extension,
+                inflate: option_bool_to_option_i8(self.attr.inflate),
+                inflation: option_bool_to_option_i8(self.attr.inflation),
+                exploded: Some(bool_to_i8(self.explode)),
+                rope: option_bool_to_option_i8(self.attr.rope),
+                chute_angle: self.attr.chute_angle,
+                activated: Some(bool_to_i8(self.active)),
+                deployed: option_bool_to_option_i8(self.attr.deployed),
             }
         }
     }
@@ -528,11 +492,11 @@ pub mod sr1 {
 
     impl SR1PartData {
         pub fn get_box(&self, part_type: &SR1PartType) -> (f64, f64, f64, f64) {
-            let width = part_type.width.to_owned();
-            let height = part_type.height.to_owned();
-            let radius = self.angle.to_owned();
+            let width = part_type.width;
+            let height = part_type.height;
+            let radius = self.angle;
             let mut shape = Shape::new_width_height(width as f64, height as f64, Some(radius));
-            shape.move_xy(Some(self.x.to_owned()), Some(self.y.to_owned()));
+            shape.move_xy(Some(self.x), Some(self.y));
             let mut pos_box = (0_f64, 0_f64, 0_f64, 0_f64);
             match shape.bounds[0] {
                 Edge::OneTimeLine(line) => {
@@ -652,15 +616,15 @@ pub mod sr1 {
             };
             let (name, throttle, current_stage, steps) = if let Some(pod) = &raw_data.pod {
                 (
-                    Some(pod.name.to_owned()),
-                    Some(pod.throttle.to_owned()),
-                    Some(pod.stages.current_stage.to_owned()),
+                    Some(pod.name.clone()),
+                    Some(pod.throttle),
+                    Some(pod.stages.current_stage),
                     Some({
                         let mut steps = Vec::new();
                         for step in &pod.stages.steps {
                             let mut step_vec = Vec::new();
                             for act in &step.activates {
-                                step_vec.push((act.id.to_owned(), i8_to_bool(act.moved.to_owned())));
+                                step_vec.push((act.id, i8_to_bool(act.moved)));
                             }
                             steps.push(step_vec);
                         }
@@ -676,15 +640,15 @@ pub mod sr1 {
                 throttle,
                 current_stage,
                 steps,
-                extension: raw_data.extension.to_owned(),
-                chute_x: raw_data.chute_x.to_owned(),
-                chute_y: raw_data.chute_y.to_owned(),
-                chute_height: raw_data.chute_height.to_owned(),
-                chute_angle: raw_data.chute_angle.to_owned(),
-                inflate: option_i8_to_option_bool(raw_data.inflate.to_owned()),
-                inflation: option_i8_to_option_bool(raw_data.inflation.to_owned()),
-                deployed: option_i8_to_option_bool(raw_data.deployed.to_owned()),
-                rope: option_i8_to_option_bool(raw_data.rope.to_owned()),
+                extension: raw_data.extension,
+                chute_x: raw_data.chute_x,
+                chute_y: raw_data.chute_y,
+                chute_height: raw_data.chute_height,
+                chute_angle: raw_data.chute_angle,
+                inflate: option_i8_to_option_bool(raw_data.inflate),
+                inflation: option_i8_to_option_bool(raw_data.inflation),
+                deployed: option_i8_to_option_bool(raw_data.deployed),
+                rope: option_i8_to_option_bool(raw_data.rope),
                 part_type: Cell::new(part_type),
             };
             if guess & results.part_type.get().is_none() {
@@ -714,6 +678,30 @@ pub mod sr1 {
             // 解析为 RawShip
             let ship: RawShip = RawShip::from_file(file_name).unwrap();
             Some(ship.to_sr_ship(ship_name))
+        }
+
+        pub fn parse_part_list_to_part(&mut self, part_list: SR1PartList) {
+            // parse parts
+            for part in self.parts.iter_mut() {
+                let part_type_id = part.part_type_id.clone();
+                if let Some(part_type) = part_list.get_part_type(part_type_id) {
+                    part.part_type = part_type.p_type;
+                } else {
+                    part.part_type = SR1PartTypeEnum::strut;
+                }
+            }
+            for disconnects in self.disconnected.iter_mut() {
+                for (parts, _) in disconnects.iter_mut() {
+                    for part in parts.iter_mut() {
+                        let part_type_id = part.part_type_id.clone();
+                        if let Some(part_type) = part_list.get_part_type(part_type_id) {
+                            part.part_type = part_type.p_type;
+                        } else {
+                            part.part_type = SR1PartTypeEnum::strut;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -761,8 +749,8 @@ pub mod sr1 {
                 parts: RawParts { parts },
                 connects: connections,
                 version: 1,
-                lift_off: bool_to_i8(self.lift_off.to_owned()),
-                touch_ground: bool_to_i8(self.touch_ground.to_owned()),
+                lift_off: bool_to_i8(self.lift_off),
+                touch_ground: bool_to_i8(self.touch_ground),
                 disconnected,
             }
         }
@@ -800,8 +788,8 @@ pub mod math {
 
         #[inline]
         pub fn distance(&self, other: &Point2D) -> f64 {
-            let dx = (other.x.to_owned() - self.x.to_owned()).powf(2.0);
-            let dy = (other.y.to_owned() - self.y.to_owned()).powf(2.0);
+            let dx = (other.x - self.x).powf(2.0);
+            let dy = (other.y - self.y).powf(2.0);
             (dx + dy).powf(0.5)
         }
 
