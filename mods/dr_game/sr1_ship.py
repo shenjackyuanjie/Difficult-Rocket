@@ -36,7 +36,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_mod_runtime.use_DR_rust:
-    from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, Console_rs
+    from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs
 
 
 logger = logging.getLogger('client')
@@ -135,7 +135,6 @@ class SR1ShipRender(BaseScreen):
                                              min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
             self.part_list_rs = SR1PartList_rs('configs/PartList.xml', 'default_part_list')
-            self.console = Console_rs()
 
     def load_xml(self, file_path: str) -> bool:
         try:
@@ -271,11 +270,6 @@ class SR1ShipRender(BaseScreen):
             self.debug_mouse_label.draw()
         if SR1ShipRender_Option.debug_mouse_d_pos:
             self.debug_mouse_delta_line.draw()
-        if DR_mod_runtime.use_DR_rust:
-            read_input = self.console.get_command()
-            if read_input:
-                print(f"Rust console: |{read_input}|")
-                window.dispatch_event("on_command", CommandText(read_input))
 
     def on_resize(self, width: int, height: int, window: "ClientWindow"):
         if not self.rendered:
@@ -387,9 +381,6 @@ class SR1ShipRender(BaseScreen):
             if self.load_xml(path):  # 加载成功一个就停下
                 break
         self.render_ship()
-    
-    def on_close(self, window: "ClientWindow"):
-        self.console.stop_console()
 
 
 if __name__ == '__main__':

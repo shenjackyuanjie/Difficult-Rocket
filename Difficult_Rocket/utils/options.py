@@ -68,7 +68,8 @@ class Options:
             setattr(self, option, value)
         run_load_file = True
         if hasattr(self, 'init'):
-            run_load_file = not self.init(**kwargs)  # 默认 False/None
+            run_load_file = self.init(**kwargs)  # 默认 False/None
+            run_load_file = not run_load_file
         if hasattr(self, 'load_file') and run_load_file:
             try:
                 self.load_file()
