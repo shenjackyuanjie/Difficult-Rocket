@@ -19,15 +19,15 @@ use pyo3::prelude::*;
 // const MOD_PATH: String = String::from("mods");
 
 enum LoadState {
-    init,
-    wait_start,
-    pre_start,
-    running,
-    clean,
+    Init,
+    WaitStart,
+    PreStart,
+    Running,
+    Clean,
 }
 
 #[pyfunction]
-fn get_version_str() -> String { "0.2.7.0".to_string() }
+fn get_version_str() -> String { "0.2.8.0".to_string() }
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {

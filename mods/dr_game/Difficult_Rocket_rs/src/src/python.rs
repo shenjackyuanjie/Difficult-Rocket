@@ -212,7 +212,7 @@ pub mod console {
         }
 
         fn stop(&self) -> bool {
-            if let (Some(sender)) = &self.stop_sender {
+            if let Some(sender) = &self.stop_sender {
                 sender.send(()).unwrap();
                 return true;
             }
@@ -221,7 +221,7 @@ pub mod console {
 
         fn get_command(&self) -> Option<String> {
             // 获取输入
-            if let (Some(receiver)) = &self.keyboard_input_receiver {
+            if let Some(receiver) = &self.keyboard_input_receiver {
                 if let Ok(string) = receiver.try_recv() {
                     return Some(string);
                 }
