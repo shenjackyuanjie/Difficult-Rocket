@@ -59,6 +59,9 @@
   - `get_box(&self, part_type: &SR1PartType) -> (f64, f64, f64, f64)`
 - `types::SR1Ship`
   - `from_file`
+- 添加了 `Console_rs`
+  - 用于使用 Rust 多线程读取 stdin
+  - Use Rust mutithread to read stdin
 
 ### Remove
 
