@@ -88,7 +88,8 @@ jobs:
           cd docs
           mdbook build
           cd ..
-          Copy-Item docs/book/README-en.html docs/book/html/README-en.html
+          # Copy-Item docs/book/README-en.html docs/book/html/README-en.html
+          Copy-Item index.html docs/book/index.html
           Get-ChildItem -Recurse -Path .\docs\book\* | ?{$_.PsIsContainer -eq $false} | Get-FileHash -Algorithm MD5 >> .\docs\md5.txt
 
       - name: 上传到 github pages
