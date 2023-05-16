@@ -37,7 +37,7 @@
 
 [YouTrack](https://difficult-rocket.youtrack.cloud/projects/8dafd498-59c0-4ce7-9900-d9292e9ed1f0)
 
-## [更新日志](docs/src/update_logs.md)
+## [更新日志](docs/src/change_log/update_logs.md)
 
 ## 环境需求 (测试过的 / 开发平台)
 

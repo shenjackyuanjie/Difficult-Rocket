@@ -37,7 +37,7 @@
 
 [YouTrack](https://difficult-rocket.youtrack.cloud/projects/8dafd498-59c0-4ce7-9900-d9292e9ed1f0)
 
-## [Update logs](src/update_logs.md)
+## [Update logs](src/change_log/readme.md)
 
 ## Environment (been tested / developed on)
 
