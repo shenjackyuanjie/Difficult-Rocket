@@ -5,7 +5,10 @@
 
 - [Semver++](./version.md)
 
-- [update logs](./update_logs.md)
+- [Change Log](./change_log/readme.md)
+  - [DR sdk](./change_log/dr_sdk.md)
+  - [DR game/DR rs](./change_log/dr_game.md)
+
 - [Contributing](./contributing.md)
 
 - [rua! 奇怪的东西~](./rua!.md)

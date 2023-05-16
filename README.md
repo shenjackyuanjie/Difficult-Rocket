@@ -7,6 +7,8 @@
 - [discord](https://discord.gg/kWzw2JrG6M)
 - [kook](https://kook.top/sRPjFG)
 
+## 请注意 这个仓库未来只会发布 `DR SDK` 的更新 `DR game` 的更新会在 [这里](https://github.com/shenjackyuanjie/DR-game) 发布
+
 <a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/编写于_Python_版本-3.8.10-blue.svg)](https://Python.org)
