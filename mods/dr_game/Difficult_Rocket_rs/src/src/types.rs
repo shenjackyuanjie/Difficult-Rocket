@@ -221,16 +221,15 @@ pub mod sr1 {
         }
 
         pub fn get_cache(&self) -> HashMap<String, SR1PartType> {
-            let mut cache = self.cache.borrow_mut();
-            if cache.is_none() {
+            if self.cache.borrow().is_none() {
                 let mut map = HashMap::new();
                 for part in self.types.iter() {
                     map.insert(part.id.clone(), part.clone());
                 }
-                *cache = Some(map.clone());
+                let cache = Some(map.clone());
                 self.cache.replace(cache.clone());
             }
-            cache.to_owned().unwrap()
+            self.cache.borrow().clone().unwrap()
         }
 
         #[inline]
