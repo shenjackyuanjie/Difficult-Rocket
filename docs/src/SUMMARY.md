@@ -8,6 +8,7 @@
 - [Change Log](./change_log/readme.md)
   - [DR sdk](./change_log/dr_sdk.md)
   - [DR game/DR rs](./change_log/dr_game.md)
+  - [Old Update logs](./change_log/old.md)
 
 - [Contributing](./contributing.md)
 

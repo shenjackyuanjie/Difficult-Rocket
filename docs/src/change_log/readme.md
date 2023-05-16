@@ -2,3 +2,4 @@
 
 - [DR sdk](./dr_sdk.md)
 - [DR game/DR rs](./dr_game.md)
+- [old update logs](./old.md)
