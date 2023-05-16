@@ -90,13 +90,13 @@ jobs:
           cd ..
           # Copy-Item docs/book/README-en.html docs/book/html/README-en.html
           Copy-Item index.html docs/book/index.html
-          Get-ChildItem -Recurse -Path .\docs\book\* | ?{$_.PsIsContainer -eq $false} | Get-FileHash -Algorithm MD5 >> .\docs\md5.txt
+          Get-ChildItem -Recurse -Path .\docs\book* | ?{$_.PsIsContainer -eq $false} | Get-FileHash -Algorithm MD5 >> .\docs\md5.txt
 
       - name: 上传到 github pages
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: './docs/book/html'
+          path: './docs/book'
 
       - name: 部署到 github pages
         id: deployment

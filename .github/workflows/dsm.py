@@ -100,7 +100,7 @@ class DSM:
 
 
 def main():
-    docs_path = 'docs/book/html'
+    docs_path = 'docs/book'
     dsm_path = '/web/dr'
     dsm = DSM(docs_path, dsm_path)
     dsm.list_files()
