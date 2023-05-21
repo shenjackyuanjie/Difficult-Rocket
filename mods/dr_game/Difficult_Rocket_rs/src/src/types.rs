@@ -1016,8 +1016,4 @@ pub mod dr {
         pub flip_y: bool,
         pub connections: Option<Vec<usize>>,
     }
-
-    impl DRPartData {
-        pub fn get_textures(&self) -> String { "aaa".to_string() }
-    }
 }
