@@ -168,8 +168,6 @@ pub mod translate {
 }
 
 pub mod console {
-    use std::println;
-
     use pyo3::prelude::*;
 
     #[pyclass]

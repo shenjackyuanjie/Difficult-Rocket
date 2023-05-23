@@ -18,6 +18,7 @@ pub mod sr1 {
         Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart, DisconnectedParts as RawDisconnectedParts,
         Engine as RawEngine, Part as RawPartData, Parts as RawParts, Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
     };
+    use crate::types::math::{Point2D, Rotatable};
 
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -192,6 +193,14 @@ pub mod sr1 {
         pub attach_points: Option<Vec<AttachPoint>>,
         // 部件连接点
         pub attr: Option<SR1PartTypeAttr>, // 部件特殊属性
+    }
+
+    impl SR1PartType {
+        pub fn get_box(&self) -> (f64, f64, f64, f64) {
+            let x = self.width as f64 / 2.0;
+            let y = self.height as f64 / 2.0;
+            (-x, -y, x, y)
+        }
     }
 
     #[derive(Debug, Clone)]
@@ -757,10 +766,24 @@ pub mod sr1 {
 
     pub fn get_max_box(parts: &Vec<SR1PartData>, part_list: &SR1PartList) -> (f64, f64, f64, f64) {
         let mut max_box = (0_f64, 0_f64, 0_f64, 0_f64);
-        // for part in parts.iter() {
-        //     let part_type = part_list.get_part_type(part.id);
-        // }
-        todo!("get_max_box")
+        for part in parts.iter() {
+            let part_type = part_list.get_part_type(part.part_type_id.clone()).unwrap();
+            let (x1, y1, x2, y2) = part_type.get_box();
+            // rotate
+            let p1 = Point2D::new(x1, y1);
+            let p2 = Point2D::new(x2, y2);
+            let p1 = p1.rotate_radius(part.angle);
+            let p2 = p2.rotate_radius(part.angle);
+            let p1 = p1.add(part.x, part.y);
+            let p2 = p2.add(part.x, part.y);
+            let (x1, y1, x2, y2) = (p1.x, p1.y, p2.x, p2.y);
+            // get max box
+            max_box.0 = max_box.0.min(x1);
+            max_box.1 = max_box.1.min(y1);
+            max_box.2 = max_box.2.max(x2);
+            max_box.3 = max_box.3.max(y2);
+        }
+        max_box
     }
 }
 
@@ -794,6 +817,9 @@ pub mod math {
 
         #[inline]
         pub fn distance_00(&self) -> f64 { self.distance(&Point2D::new(0.0, 0.0)) }
+
+        #[inline]
+        pub fn add(&self, x: f64, y: f64) -> Self { Point2D::new(self.x + x, self.y + y) }
     }
 
     impl Rotatable for Point2D {

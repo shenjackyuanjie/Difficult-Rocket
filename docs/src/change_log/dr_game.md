@@ -18,6 +18,13 @@
   - 基于 `PyConsole`
   - 用于替换 `DR sdk` 的默认控制台方法
 
+## DR rs 0.2.9.1
+
+### 实现
+
+- `types::sr1::get_max_box`
+  - 部分实现
+
 ## DR rs 0.2.9.0
 
 ### 新功能
@@ -32,5 +39,4 @@
 ### Bug 修复
 
 - [#19](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/19) `BorrowMutError`
-
 
