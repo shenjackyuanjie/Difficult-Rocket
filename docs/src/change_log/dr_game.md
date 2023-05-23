@@ -24,6 +24,8 @@
 
 - `types::sr1::get_max_box`
   - 部分实现
+- `types::math::Rotatable`
+  - 添加了 mut 版方法
 
 ## DR rs 0.2.9.0
 

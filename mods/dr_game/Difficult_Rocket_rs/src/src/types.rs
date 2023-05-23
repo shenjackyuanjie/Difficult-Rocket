@@ -770,10 +770,10 @@ pub mod sr1 {
             let part_type = part_list.get_part_type(part.part_type_id.clone()).unwrap();
             let (x1, y1, x2, y2) = part_type.get_box();
             // rotate
-            let p1 = Point2D::new(x1, y1);
-            let p2 = Point2D::new(x2, y2);
-            let p1 = p1.rotate_radius(part.angle);
-            let p2 = p2.rotate_radius(part.angle);
+            let mut p1 = Point2D::new(x1, y1);
+            let mut p2 = Point2D::new(x2, y2);
+            p1.rotate_radius_mut(part.angle);
+            p2.rotate_radius_mut(part.angle);
             let p1 = p1.add(part.x, part.y);
             let p2 = p2.add(part.x, part.y);
             let (x1, y1, x2, y2) = (p1.x, p1.y, p2.x, p2.y);
@@ -794,6 +794,9 @@ pub mod math {
         // 懒了，直接实现一个协议得了
         fn rotate(&self, angle: f64) -> Self;
         fn rotate_radius(&self, radius: f64) -> Self;
+
+        fn rotate_mut(&mut self, angle: f64);
+        fn rotate_radius_mut(&mut self, radius: f64);
     }
 
     #[derive(Clone, Copy)]
@@ -834,6 +837,12 @@ pub mod math {
             let y = self.x * sin + self.y * cos;
             Point2D { x, y }
         }
+
+        #[inline]
+        fn rotate_mut(&mut self, angle: f64) { self.rotate_radius_mut(angle.to_radians()) }
+
+        #[inline]
+        fn rotate_radius_mut(&mut self, radius: f64) { *self = self.rotate_radius(radius); }
     }
 
     #[derive(Clone, Copy)]
@@ -864,6 +873,10 @@ pub mod math {
         fn rotate(&self, angle: f64) -> Self { self.rotate_radius(angle.to_radians()) }
 
         fn rotate_radius(&self, radius: f64) -> Self { OneTimeLine::point_new(&self.start.rotate_radius(radius), &self.end.rotate_radius(radius)) }
+
+        fn rotate_mut(&mut self, angle: f64) { self.rotate_radius_mut(angle.to_radians()) }
+
+        fn rotate_radius_mut(&mut self, radius: f64) { *self = self.rotate_radius(radius); }
     }
 
     #[derive(Clone, Copy)]
