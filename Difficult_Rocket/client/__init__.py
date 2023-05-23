@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.main import Game
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
-from Difficult_Rocket.command import line, tree
+from Difficult_Rocket.command import line
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket import DR_runtime
 from Difficult_Rocket.api.screen import BaseScreen
@@ -176,7 +176,6 @@ class ClientWindow(Window):
         self.setup()
         # 命令显示
         self.command_group = pyglet.graphics.Group(0)
-        self.command_tree = tree.CommandTree(tree.DR_command)
         self.input_box = InputBox(x=50, y=30, width=300,
                                   batch=self.label_batch, text='')  # 实例化
         self.input_box.push_handlers(self)

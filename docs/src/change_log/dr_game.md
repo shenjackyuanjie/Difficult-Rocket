@@ -2,10 +2,15 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.1.0.0
+  - DR game: 0.1.1.0
   - DR rs: 0.2.9.0
 
 ## DR game 0.1.1.0
+
+### 添加
+
+- `types.py`
+  - 从 `DR.api.types.SR1` 中移动过来
 
 ### 新功能
 

@@ -30,7 +30,7 @@ from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
-from Difficult_Rocket.api.types.SR1 import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
+from .types import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
 
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
@@ -318,8 +318,8 @@ class SR1ShipRender(BaseScreen):
         # self.update_parts()
 
     def on_command(self, command: CommandText, window: "ClientWindow"):
-        if command.re_match('render'):
-            if command.re_match('reset'):
+        if command.find('render'):
+            if command.find('reset'):
                 self.camera_rs.zoom = 1
                 self.camera_rs.dx = 0
                 self.camera_rs.dy = 0
@@ -327,15 +327,15 @@ class SR1ShipRender(BaseScreen):
             else:
                 self.need_draw = True
             print('应该渲染飞船的')
-        elif command.re_match('debug'):
+        elif command.find('debug'):
             print('sr ?')
-            if command.re_match('delta'):
+            if command.find('delta'):
                 SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                 self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
                 self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
                 # print('sr1 delta')
-            elif command.re_match('mouse'):
-                if command.re_match('delta'):
+            elif command.find('mouse'):
+                if command.find('delta'):
                     SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
@@ -344,7 +344,7 @@ class SR1ShipRender(BaseScreen):
                     SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                     self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
                     # print('sr1 mouse')
-        elif command.re_match('get_buf'):
+        elif command.find('get_buf'):
 
             def screenshot(window):
                 from libs.pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, \
@@ -361,7 +361,7 @@ class SR1ShipRender(BaseScreen):
 
             image_data = screenshot(self.window_pointer)
             image_data.save('test.png')
-        elif command.re_match('gen_img'):
+        elif command.find('gen_img'):
             if not self.rendered:
                 return
             # ship_size = self.ship.size
