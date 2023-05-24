@@ -299,7 +299,7 @@ class Sprite(event.EventDispatcher):
         else:
             self._texture = img.get_texture()
 
-        self._batch = batch or graphics.get_default_batch()
+        self._batch = batch
         self._group = self.group_class(self._texture, blend_src, blend_dest, self.program, group)
         self._subpixel = subpixel
         self._create_vertex_list()
@@ -656,27 +656,31 @@ class Sprite(event.EventDispatcher):
     def width(self):
         """Scaled width of the sprite.
 
-        Read-only.  Invariant under rotation.
+        Invariant under rotation.
 
         :type: int
         """
-        if self._subpixel:
-            return self._texture.width * abs(self._scale_x) * abs(self._scale)
-        else:
-            return int(self._texture.width * abs(self._scale_x) * abs(self._scale))
+        w = self._texture.width * abs(self._scale_x) * abs(self._scale)
+        return w if self._subpixel else int(w)
+
+    @width.setter
+    def width(self, width):
+        self.scale_x = width / (self._texture.width * abs(self._scale))
 
     @property
     def height(self):
         """Scaled height of the sprite.
 
-        Read-only.  Invariant under rotation.
+        Invariant under rotation.
 
         :type: int
         """
-        if self._subpixel:
-            return self._texture.height * abs(self._scale_y) * abs(self._scale)
-        else:
-            return int(self._texture.height * abs(self._scale_y) * abs(self._scale))
+        h = self._texture.height * abs(self._scale_y) * abs(self._scale)
+        return h if self._subpixel else int(h)
+
+    @height.setter
+    def height(self, height):
+        self.scale_y = height / (self._texture.height * abs(self._scale))
 
     @property
     def opacity(self):
