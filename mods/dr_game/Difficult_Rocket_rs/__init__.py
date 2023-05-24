@@ -90,6 +90,7 @@ if TYPE_CHECKING:
 
     class SR1Ship_rs:
         """ 用于高效且省内存的读取 SR1Ship """
+        def __init__(self, file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip'): ...
         @property
         def name(self) -> str: ...
         @property

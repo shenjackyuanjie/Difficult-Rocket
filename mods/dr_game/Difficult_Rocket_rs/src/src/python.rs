@@ -87,21 +87,30 @@ pub mod data {
             Self { ship, part_list }
         }
 
+        #[getter]
         fn get_img_pos(&self) -> (i64, i64, i64, i64) {
-            let mut img_pos = (0, 0, 0, 0);
+            // let mut img_pos = (0, 0, 0, 0);
             // -x, -y, +x, +y
             // 左下角，右上角
             let mut max_box = get_max_box(&self.ship.parts, &self.part_list);
-            todo!();
-            // img_pos
+            // 每个坐标 * 60
+            max_box.0 *= 60.0;
+            max_box.1 *= 60.0;
+            max_box.2 *= 60.0;
+            max_box.3 *= 60.0;
+            (max_box.0 as i64, max_box.1 as i64, max_box.2 as i64, max_box.3 as i64)
         }
 
+        #[getter]
         fn get_name(&self) -> String { self.ship.name.clone() }
 
+        #[getter]
         fn get_description(&self) -> String { self.ship.description.clone() }
 
+        #[getter]
         fn get_lift_off(&self) -> bool { self.ship.lift_off.to_owned() }
 
+        #[getter]
         fn get_touch_ground(&self) -> bool { self.ship.touch_ground.to_owned() }
     }
 }

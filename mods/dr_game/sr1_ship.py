@@ -7,6 +7,7 @@
 import time
 import random
 import logging
+import traceback
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
@@ -36,7 +37,7 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_mod_runtime.use_DR_rust:
-    from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs
+    from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, SR1Ship_rs
 
 
 logger = logging.getLogger('client')
@@ -144,6 +145,13 @@ class SR1ShipRender(BaseScreen):
             self.xml_doc = cache_doc
             self.xml_root = self.xml_doc.getroot()
             self.xml_name = file_path
+            if DR_mod_runtime.use_DR_rust:
+                try:
+                    self.rust_ship = SR1Ship_rs(file_path, 'configs/PartList.xml', 'a_new_ship')
+                    print(self.rust_ship.name)
+                    print(self.rust_ship.img_pos)
+                except Exception:
+                    traceback.print_exc()
             logger.info(tr().client.sr1_render.xml.load_done())
             logger.info(tr().client.sr1_render.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))
@@ -179,6 +187,7 @@ class SR1ShipRender(BaseScreen):
             cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
             cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
             self.parts_sprite[part.id] = cache_sprite
+
             # if not part_render:  # 如果不渲染(渲染有毛病)
             #     self.parts_sprite[part.id].visible = False
             count += 1
