@@ -4,6 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
+import math
 import time
 import random
 import logging
@@ -117,9 +118,10 @@ class SR1ShipRender(BaseScreen):
                                        x=main_window.width / 2, y=main_window.height / 2)
         self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
         self.textures: Union[SR1Textures, None] = None
-        self.xml_name = 'configs/dock1.xml'
-        self.xml_doc: ElementTree = parse('configs/dock1.xml')
-        self.xml_root: ElementTree.Element = self.xml_doc.getroot()
+        # self.xml_name = 'configs/dock1.xml'
+        # self.xml_doc: ElementTree = parse('configs/dock1.xml')
+        # self.xml_root: ElementTree.Element = self.xml_doc.getroot()
+        self.load_xml('configs/dock1.xml')
         self.part_batch = Batch()
         self.part_group = Group()
         self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_option.std_font_size,
@@ -373,9 +375,37 @@ class SR1ShipRender(BaseScreen):
         elif command.find('gen_img'):
             if not self.rendered:
                 return
-            # ship_size = self.ship.size
-            base_textures = Texture.create(100, 100)
-            ...
+            if not DR_mod_runtime.use_DR_rust:
+                # 这个功能依赖于 DR rs (简称,我懒得在Python端实现)
+                return
+            img_box = self.rust_ship.img_pos
+            img_size = (img_box[2] - img_box[0] + 1000, img_box[3] - img_box[1] + 1000)
+            # img_center = (abs(img_box[0]), abs(img_box[1]))
+            # 中心点是左上角坐标
+            img_center = (abs(img_box[0]), abs(img_box[3]))
+            print(f"img_box: {img_box} img_size: {img_size} img_center: {img_center}")
+            try:
+                from pyglet.image.codecs.pil import PILImageEncoder
+                from PIL import Image
+            except ImportError:
+                traceback.print_exc()
+                print('PIL not found')
+                return
+            img = Image.new('RGBA', img_size)
+            for part, sprite in self.parts_sprite.items():
+                img_data = sprite.image.get_image_data()
+                fmt = img_data.format
+                if fmt != 'RGB':
+                    fmt = 'RGBA'
+                pitch = -(img_data.width * len(fmt))
+                pil_image = Image.frombytes(fmt, (img_data.width, img_data.height), img_data.get_data(fmt, pitch))
+                pil_image = pil_image.rotate(-SR1Rotation.get_rotation(self.part_data[part].angle), expand=True)
+                if self.part_data[part].flip_y:
+                    pil_image.transpose(Image.FLIP_TOP_BOTTOM)
+                if self.part_data[part].flip_x:
+                    pil_image.transpose(Image.FLIP_LEFT_RIGHT)
+                img.paste(pil_image, (int(self.part_data[part].x*60 + img_center[0]), int(-self.part_data[part].y*60 + img_center[1])), pil_image)
+            img.save(f'test{time.time()}.png', 'PNG')
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if not self.focus:

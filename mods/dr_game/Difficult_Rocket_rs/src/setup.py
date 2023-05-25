@@ -12,7 +12,7 @@ package_path = 'Difficult_Rocket_rs'
 
 setup(
     name='Difficult_Rocket_rs',
-    version="0.2.9.2",
+    version="0.2.9.3",
     author='shenjackyuanjie',
     author_email='3695888@qq.com',
     rust_extensions=[RustExtension(target="Difficult_Rocket_rs.Difficult_Rocket_rs",
