@@ -18,6 +18,14 @@
   - 基于 `PyConsole`
   - 用于替换 `DR sdk` 的默认控制台方法
 
+## DR rs 0.2.9.2
+
+### `sr1_data`
+
+### Bug 修复
+
+- [#20](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/20) `<DisconnectedParts/>`
+
 ## DR rs 0.2.9.1
 
 ### 实现

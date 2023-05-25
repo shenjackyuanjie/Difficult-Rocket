@@ -198,8 +198,7 @@ pub mod sr1 {
     impl SR1PartType {
         pub fn get_box(&self) -> (f64, f64, f64, f64) {
             let x = self.width as f64 / 2.0;
-            let y = self.height as f64 / 2.0;
-            (-x, -y, x, y)
+            (-x, 0.0, x, self.height as f64)
         }
     }
 
@@ -749,7 +748,9 @@ pub mod sr1 {
                             },
                         });
                     }
-                    Some(RawDisconnectedParts { parts: disconnected_vec })
+                    Some(RawDisconnectedParts {
+                        parts: Some(disconnected_vec),
+                    })
                 }
                 _ => None,
             };
@@ -778,11 +779,14 @@ pub mod sr1 {
             let p2 = p2.add(part.x, part.y);
             let (x1, y1, x2, y2) = (p1.x, p1.y, p2.x, p2.y);
             // get max box
-            max_box.0 = max_box.0.min(x1);
-            max_box.1 = max_box.1.min(y1);
-            max_box.2 = max_box.2.max(x2);
-            max_box.3 = max_box.3.max(y2);
+            max_box.0 = max_box.0.min(x1).min(part.x);
+            max_box.1 = max_box.1.min(y1).min(part.y);
+            max_box.2 = max_box.2.max(x2).max(part.x);
+            max_box.3 = max_box.3.max(y2).max(part.y);
+            // * 60 print again
+            // println!("{} {} {} {} id:{}", x1 * 60.0, y1 * 60.0, x2 * 60.0, y2 * 60.0, part.id)
         }
+
         max_box
     }
 }

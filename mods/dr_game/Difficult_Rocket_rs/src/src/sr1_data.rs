@@ -495,7 +495,7 @@ pub mod ship {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct DisconnectedParts {
         #[serde(rename = "DisconnectedPart")]
-        pub parts: Vec<DisconnectedPart>,
+        pub parts: Option<Vec<DisconnectedPart>>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -556,17 +556,20 @@ pub mod ship {
                 parts.push(part.to_sr_part_data());
             }
             let disconnected = match &self.disconnected {
-                Some(disconnect) => {
-                    let mut disconnect_parts = Vec::new();
-                    for disconnected_part in &disconnect.parts {
-                        let mut parts_vec = Vec::new();
-                        for part in &disconnected_part.parts.parts {
-                            parts_vec.push(part.to_sr_part_data());
+                Some(disconnect) => match &disconnect.parts {
+                    Some(disconnected_parts) => {
+                        let mut disconnected_parts_vec = Vec::new();
+                        for disconnected_part in disconnected_parts {
+                            let mut parts_vec = Vec::new();
+                            for part in &disconnected_part.parts.parts {
+                                parts_vec.push(part.to_sr_part_data());
+                            }
+                            disconnected_parts_vec.push((parts_vec, disconnected_part.connects.connects.clone()));
                         }
-                        disconnect_parts.push((parts_vec, disconnected_part.connects.connects.clone()));
+                        Some(disconnected_parts_vec)
                     }
-                    Some(disconnect_parts)
-                }
+                    None => None,
+                },
                 _ => None,
             };
             let connections = match &self.connects.connects {

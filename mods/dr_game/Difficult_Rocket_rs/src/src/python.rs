@@ -112,6 +112,18 @@ pub mod data {
 
         #[getter]
         fn get_touch_ground(&self) -> bool { self.ship.touch_ground.to_owned() }
+
+        fn iter_parts(&self) -> HashMap<i64, (PySR1PartType, PySR1PartData)> {
+            let mut parts = HashMap::new();
+            for part_data in self.ship.parts.iter() {
+                let part_type = self.part_list.get_part_type(part_data.part_type_id.clone()).unwrap();
+                parts.insert(
+                    part_data.id,
+                    (PySR1PartType::new(part_type), PySR1PartData { data: part_data.clone() }),
+                );
+            }
+            parts
+        }
     }
 }
 
