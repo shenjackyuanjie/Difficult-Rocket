@@ -18,9 +18,18 @@
   - 基于 `PyConsole`
   - 用于替换 `DR sdk` 的默认控制台方法
 
-## DR rs 0.2.9.2
+## DR rs 0.2.9.3
 
 ### `sr1_data`
+
+- `inflation`
+  - `Option<bool>` -> `Option<f64>`
+
+### Bug 修复
+
+- [#21](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/21) `field: "missing field Activate"`
+
+## DR rs 0.2.9.2
 
 ### Bug 修复
 

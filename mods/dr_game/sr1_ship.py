@@ -385,7 +385,6 @@ class SR1ShipRender(BaseScreen):
             img_center = (abs(img_box[0]), abs(img_box[3]))
             print(f"img_box: {img_box} img_size: {img_size} img_center: {img_center}")
             try:
-                from pyglet.image.codecs.pil import PILImageEncoder
                 from PIL import Image
             except ImportError:
                 traceback.print_exc()

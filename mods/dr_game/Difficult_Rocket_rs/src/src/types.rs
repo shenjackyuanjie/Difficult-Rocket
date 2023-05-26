@@ -434,7 +434,7 @@ pub mod sr1 {
                                 moved: bool_to_i8(active.1.to_owned()),
                             });
                         }
-                        actives.push(RawStep { activates: steps_ });
+                        actives.push(RawStep { activates: Some(steps_) });
                     }
                     let stages = RawStaging {
                         current_stage: current_stage.to_owned(),
@@ -466,7 +466,7 @@ pub mod sr1 {
                 chute_height: self.attr.chute_height,
                 extension: self.attr.extension,
                 inflate: option_bool_to_option_i8(self.attr.inflate),
-                inflation: option_bool_to_option_i8(self.attr.inflation),
+                inflation: self.attr.inflation,
                 exploded: Some(bool_to_i8(self.explode)),
                 rope: option_bool_to_option_i8(self.attr.rope),
                 chute_angle: self.attr.chute_angle,
@@ -530,7 +530,7 @@ pub mod sr1 {
         // Pod
         pub name: Option<String>,
         pub throttle: Option<f64>,
-        pub current_stage: Option<u32>,
+        pub current_stage: Option<i32>,
         pub steps: Option<Vec<Vec<(i64, bool)>>>,
         // Solar
         pub extension: Option<f64>,
@@ -540,7 +540,7 @@ pub mod sr1 {
         pub chute_height: Option<f64>,
         pub chute_angle: Option<f64>,
         pub inflate: Option<bool>,
-        pub inflation: Option<bool>,
+        pub inflation: Option<f64>,
         pub deployed: Option<bool>,
         pub rope: Option<bool>,
         // part_type
@@ -581,7 +581,7 @@ pub mod sr1 {
             fuel: Option<f64>,
             name: Option<String>,
             throttle: Option<f64>,
-            current_stage: Option<u32>,
+            current_stage: Option<i32>,
             steps: Option<Vec<Vec<(i64, bool)>>>,
             extension: Option<f64>,
             chute_x: Option<f64>,
@@ -589,7 +589,7 @@ pub mod sr1 {
             chute_height: Option<f64>,
             chute_angle: Option<f64>,
             inflate: Option<bool>,
-            inflation: Option<bool>,
+            inflation: Option<f64>,
             deployed: Option<bool>,
             rope: Option<bool>,
             part_type: Option<SR1PartTypeEnum>,
@@ -630,8 +630,10 @@ pub mod sr1 {
                         let mut steps = Vec::new();
                         for step in &pod.stages.steps {
                             let mut step_vec = Vec::new();
-                            for act in &step.activates {
-                                step_vec.push((act.id, i8_to_bool(act.moved)));
+                            if let Some(active) = &step.activates {
+                                for act in active {
+                                    step_vec.push((act.id, i8_to_bool(act.moved)));
+                                }
                             }
                             steps.push(step_vec);
                         }
@@ -653,7 +655,7 @@ pub mod sr1 {
                 chute_height: raw_data.chute_height,
                 chute_angle: raw_data.chute_angle,
                 inflate: option_i8_to_option_bool(raw_data.inflate),
-                inflation: option_i8_to_option_bool(raw_data.inflation),
+                inflation: raw_data.inflation,
                 deployed: option_i8_to_option_bool(raw_data.deployed),
                 rope: option_i8_to_option_bool(raw_data.rope),
                 part_type: Cell::new(part_type),
