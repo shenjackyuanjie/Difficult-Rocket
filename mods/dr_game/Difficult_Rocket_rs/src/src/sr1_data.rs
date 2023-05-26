@@ -12,10 +12,9 @@ pub mod part_list {
     use pyo3::prelude::*;
     use serde::{Deserialize, Serialize};
     // use quick_xml::de::from_str;
-    use serde_xml_rs::from_str;
-
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1PartTypeAttr};
     use crate::types::sr1::{SR1PartListTrait, SR1PartTypeData};
+    use serde_xml_rs::from_str;
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct RawPartList {
@@ -377,6 +376,7 @@ pub mod ship {
     use serde::{Deserialize, Serialize};
     // use quick_xml::de::from_str;
     use serde_xml_rs::from_str;
+    use serde_xml_rs::Error as XmlError;
 
     use super::part_list::SR1PartTypeEnum;
 
@@ -444,7 +444,7 @@ pub mod ship {
         pub chute_height: Option<f64>,
         pub extension: Option<f64>,
         pub inflate: Option<i8>,
-        pub inflation: Option<i8>,
+        pub inflation: Option<f64>,
         pub exploded: Option<i8>,
         pub rope: Option<i8>,
         // ?
@@ -473,7 +473,7 @@ pub mod ship {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Staging {
         #[serde(rename = "currentStage")]
-        pub current_stage: u32,
+        pub current_stage: i32,
         #[serde(rename = "Step")]
         pub steps: Vec<Step>,
     }
@@ -481,7 +481,7 @@ pub mod ship {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Step {
         #[serde(rename = "Activate")]
-        pub activates: Vec<Activate>,
+        pub activates: Option<Vec<Activate>>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/21
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -595,8 +595,20 @@ pub mod ship {
         #[inline]
         pub fn from_file(path: String) -> Option<RawShip> {
             let ship_file = fs::read_to_string(path).unwrap();
-            let ship: RawShip = from_str(&ship_file).unwrap();
-            Some(ship)
+            let ship = from_str(&ship_file);
+            match ship {
+                Ok(ship) => Some(ship),
+                Err(e) => {
+                    println!("ERROR!\n{:?}\n----------", e);
+                    match e {
+                        XmlError::ParseIntError { source } => {
+                            println!("ParseIntError: {:?}", source.kind());
+                            None
+                        }
+                        _ => None,
+                    }
+                }
+            }
         }
     }
 

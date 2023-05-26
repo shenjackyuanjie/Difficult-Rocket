@@ -7,7 +7,7 @@ fonts_folder = "libs/fonts"
 
 [window]
 style = "None"
-width = 1683
+width = 1311
 height = 1474
 visible = true
 gui_scale = 1
