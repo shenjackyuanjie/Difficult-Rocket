@@ -47,10 +47,27 @@ class Status(Options):
             return False
 
     def gen_subprocess_cmd(self) -> List[str]:
+        cmd_list = ['python', '-m', 'nuitka']
         # macos 和 非 macos icon 参数不同
+        icon_cmd = ""
         if platform.system() == 'Darwin':
             icon_cmd = f"--macos-app-icon={self.icon_path.absolute()}"
         elif platform.system() == 'Windows':
             icon_cmd = f"--windows-icon-from-ico={self.icon_path.absolute()}"
+
+        if self.use_lto:
+            cmd_list.append('--lto=yes')
         else:
-            icon_cmd = ""
+            cmd_list.append('--lto=no')
+        if self.use_clang:
+            cmd_list.append('--clang')
+        if self.use_msvc:
+            cmd_list.append('--msvc=latest')
+        if self.standalone:
+            cmd_list.append('--standalone')
+
+
+        cmd_list += icon_cmd
+        return cmd_list
+
+
