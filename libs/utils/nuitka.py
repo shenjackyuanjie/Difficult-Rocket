@@ -21,10 +21,11 @@ class Status(Options):
     src_file: Path = Path('DR.py')
 
     # 以下为 nuitka 的参数
-    use_lto: bool = False
-    use_clang: bool = True
-    use_msvc: bool = True
-    standalone: bool = True
+    use_lto: bool = False  # --lto=yes (no is faster)
+    use_clang: bool = True  # --clang
+    use_msvc: bool = True  # --msvc=latest
+    use_mingw: bool = False  # --mingw64
+    standalone: bool = True  # --standalone
     company_name: str = 'tool-shenjack-workshop'
     product_name: str = 'Difficult-Rocket'
     product_version: Version
@@ -35,6 +36,10 @@ class Status(Options):
         # 非 windows 平台不使用 msvc
         if platform.system() != 'Windows':
             self.use_msvc = False
+            self.use_mingw = False
+        else:
+            self.use_mingw = self.use_mingw and not self.use_msvc
+            # Windows 平台下使用 msvc 时不使用 mingw
 
     def load_file(self) -> bool:
         try:
@@ -66,7 +71,10 @@ class Status(Options):
         if self.standalone:
             cmd_list.append('--standalone')
 
-
+        cmd_list.append(f"--company-name={self.company_name}")
+        cmd_list.append(f"--product-name={self.product_name}")
+        cmd_list.append(f"--product-version={self.product_version}")
+        cmd_list.append(f"--file-version={self.file_version}")
         cmd_list += icon_cmd
         return cmd_list
 
