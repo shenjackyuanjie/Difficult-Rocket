@@ -13,7 +13,6 @@ from pathlib import Path
 from typing import Optional, List, Tuple
 
 from Difficult_Rocket.api.types import Options
-from Difficult_Rocket.utils.thread import new_thread
 
 from libs.MCDR.version import Version
 
@@ -148,6 +147,8 @@ DR_option = _DR_option()
 DR_runtime = _DR_runtime()
 
 if DR_option.playing:
+    from Difficult_Rocket.utils.thread import new_thread
+
     def think_it(something):
         return something
 
