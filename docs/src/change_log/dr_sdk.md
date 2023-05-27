@@ -11,3 +11,7 @@
 - `api.types.SR1`
   - 移动到 `dr_game` 中
 
+### 添加
+
+- `api.types`
+  - 添加 `Version` (`libs.MCDR.version.Version`)
