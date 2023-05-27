@@ -10,8 +10,7 @@ import traceback
 from pathlib import Path
 from typing import List
 
-from Difficult_Rocket.api.types import Options
-from libs.MCDR.version import Version
+from Difficult_Rocket.api.types import Options, Version
 
 
 class Status(Options):

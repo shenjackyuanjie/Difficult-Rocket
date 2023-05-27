@@ -8,9 +8,12 @@ from Difficult_Rocket.utils.options import Options, FontData, Fonts, \
     OptionsError, OptionNameNotDefined, OptionNotFound, \
     get_type_hints_
 
+from libs.MCDR.version import Version
+
 __all__ = [
     # main class
     'Options',
+    'Version',
 
     # data class
     'FontData',
