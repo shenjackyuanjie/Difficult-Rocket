@@ -390,15 +390,34 @@ class SR1ShipRender(BaseScreen):
                 traceback.print_exc()
                 print('PIL not found')
                 return
+            min_x = 0
+            min_y = 0
+            max_x = 0
+            max_y = 0
+            for part, sprite in self.parts_sprite.items():
+                sprite_img = sprite.image
+                print(f"sprite_img: {sprite_img} {sprite_img.width} {sprite_img.height}")
+                # 碰撞箱是居中的
+                # -x, -y, +x, +y
+                part_data = self.part_data[part]
+                bound_box = [-sprite_img.width / 2 + part_data.x, -sprite_img.height / 2 + part_data.y, 
+                             sprite_img.width / 2 + part_data.x, sprite_img.height / 2 + part_data.y]
+                min_x = min(min_x, bound_box[0])
+                min_y = min(min_y, bound_box[1])
+                max_x = max(max_x, bound_box[2])
+                max_y = max(max_y, bound_box[3])
+            print(f"min_x: {min_x} min_y: {min_y} max_x: {max_x} max_y: {max_y}")
             img = Image.new('RGBA', img_size)
             for part, sprite in self.parts_sprite.items():
-                img_data = sprite.image.get_image_data()
+                sprite_img = sprite.image
+                print(f"sprite_img: {sprite_img} {sprite_img.width} {sprite_img.height}")
+                img_data = sprite_img.get_image_data()
                 fmt = img_data.format
                 if fmt != 'RGB':
                     fmt = 'RGBA'
                 pitch = -(img_data.width * len(fmt))
                 pil_image = Image.frombytes(fmt, (img_data.width, img_data.height), img_data.get_data(fmt, pitch))
-                pil_image = pil_image.rotate(-SR1Rotation.get_rotation(self.part_data[part].angle), expand=True)
+                pil_image = pil_image.rotate(SR1Rotation.get_rotation(self.part_data[part].angle), expand=True)
                 if self.part_data[part].flip_y:
                     pil_image.transpose(Image.FLIP_TOP_BOTTOM)
                 if self.part_data[part].flip_x:
