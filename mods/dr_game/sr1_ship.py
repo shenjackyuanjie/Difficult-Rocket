@@ -196,8 +196,8 @@ class SR1ShipRender(BaseScreen):
             if DR_mod_runtime.use_DR_rust:
                 part_type = self.part_list_rs.get_part_type(part.p_type)
                 if part_type is not None:
-                    part_width = part_type.width * 60
-                    part_height = part_type.height * 60
+                    part_width = part_type.width * 15
+                    part_height = part_type.height * 15
             part_box = Rectangle(x=render_x, y=render_y,
                                  width=part_width, height=part_height,
                                  batch=self.part_box_batch, group=self.part_group)
@@ -276,12 +276,9 @@ class SR1ShipRender(BaseScreen):
             self.need_update_parts = False
 
         with self.camera_rs:
-            from pyglet.gl import glEnable, glDisable, glDepthFunc, GL_DEPTH_TEST, GL_LEQUAL
-            glEnable(GL_DEPTH_TEST)
-            glDepthFunc(GL_LEQUAL)
             self.part_box_batch.draw()
             self.part_batch.draw()
-            glDisable(GL_DEPTH_TEST)
+            self.part_box_batch.draw()
 
         self.debug_label.draw()
 
