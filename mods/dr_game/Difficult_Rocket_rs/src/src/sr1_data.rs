@@ -472,7 +472,7 @@ pub mod ship {
         #[serde(rename = "currentStage")]
         pub current_stage: i32,
         #[serde(rename = "Step")]
-        pub steps: Vec<Step>,
+        pub steps: Option<Vec<Step>>,
     }
 
     #[derive(Debug, Serialize, Deserialize, Clone)]

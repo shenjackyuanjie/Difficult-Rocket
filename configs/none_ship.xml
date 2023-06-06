@@ -1,0 +1,10 @@
+<Ship version="1" liftedOff="0" touchingGround="0">
+    <Parts>
+        <Part partType="pod-1" id="1" x="0.000000" y="0.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+            <Pod throttle="0.000000" name="">
+                <Staging currentStage="0"/>
+            </Pod>
+        </Part>
+    </Parts>
+    <Connections/>
+</Ship>

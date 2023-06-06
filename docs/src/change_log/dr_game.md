@@ -18,9 +18,20 @@
   - 基于 `PyConsole`
   - 用于替换 `DR sdk` 的默认控制台方法
 
+## DR rs 0.2.10.1
+
+### `types.rs`
+
+- 兼容了 `Option<Vec<Step>>` 的 `sr1_data.rs`
+  - `Vec<Step>` -> `Option<Vec<Step>>`
+
+### Bug 修复
+
+- [#24](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/24) `无法解析 带 staging 不带 steps的飞船`
+
 ## DR rs 0.2.10.0
 
-## `python::PySR1PartType`
+### `python::PySR1PartType`
 
 - 添加可从 Python 端获取的部件信息
   - `get_descriptiton -> String`

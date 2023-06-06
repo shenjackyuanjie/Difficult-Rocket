@@ -439,7 +439,7 @@ pub mod sr1 {
                     }
                     let stages = RawStaging {
                         current_stage: current_stage.to_owned(),
-                        steps: actives,
+                        steps: Some(actives),
                     };
                     RawPod {
                         name: name.clone(),
@@ -629,14 +629,19 @@ pub mod sr1 {
                     Some(pod.stages.current_stage),
                     Some({
                         let mut steps = Vec::new();
-                        for step in &pod.stages.steps {
-                            let mut step_vec = Vec::new();
-                            if let Some(active) = &step.activates {
-                                for act in active {
-                                    step_vec.push((act.id, i8_to_bool(act.moved)));
+                        match &pod.stages.steps {
+                            Some(step_vec) => {
+                                for step in step_vec {
+                                    let mut step_vec = Vec::new();
+                                    if let Some(active) = &step.activates {
+                                        for act in active {
+                                            step_vec.push((act.id, i8_to_bool(act.moved)));
+                                        }
+                                    }
+                                    steps.push(step_vec);
                                 }
                             }
-                            steps.push(step_vec);
+                            None => {}
                         }
                         steps
                     }),
