@@ -16,8 +16,6 @@ mod types;
 
 use pyo3::prelude::*;
 
-// const MOD_PATH: String = String::from("mods");
-
 #[allow(unused)]
 enum LoadState {
     Init,
