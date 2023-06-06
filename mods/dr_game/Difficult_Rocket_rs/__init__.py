@@ -72,11 +72,30 @@ if TYPE_CHECKING:
 
     class SR1PartType_rs:
         """ 用于从 rust 中读取 SR1PartType
-        不能从 Python 端创建"""
+        不能从 Python 端创建
+        自带一些可从 Python 端读取的属性 (实际上就是一个接口)
+        """
         @property
-        def name(self) -> str: ...
+        def name(self) -> str:
+            """ 零件的名字 """
         @property
-        def mass(self) -> float: ...
+        def description(self) -> str:
+            """ 零件的描述 """
+        @property
+        def mass(self) -> float:
+            """ 零件的质量 """
+        @property
+        def width(self) -> int:
+            """ 零件的宽度 """
+        @property
+        def height(self) -> int:
+            """ 零件的高度 """
+        @property
+        def friction(self) -> float:
+            """ 零件的摩擦系数 """
+        @property
+        def hidden(self) -> bool:
+            """ 零件是否隐藏 """
 
 
     class SR1PartList_rs:

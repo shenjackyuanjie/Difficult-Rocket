@@ -18,6 +18,24 @@
   - 基于 `PyConsole`
   - 用于替换 `DR sdk` 的默认控制台方法
 
+## DR rs 0.2.10.0
+
+## `python::PySR1PartType`
+
+- 添加可从 Python 端获取的部件信息
+  - `get_descriptiton -> String`
+    - 部件描述 (Part description)
+  - `get_sprite -> String`
+    - 部件贴图 (Part sprite)
+  - `get_width -> u32`
+    - 部件宽度 (Part width)
+  - `get_height -> u32`
+    - 部件高度 (Part height)
+  - `get_friction`
+    - 部件摩擦系数 (Part friction)
+  - `get_hidden`
+    - 部件是否隐藏 (Part hidden)
+
 ## DR rs 0.2.9.3
 
 ### `sr1_data`

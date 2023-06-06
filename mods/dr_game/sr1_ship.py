@@ -19,7 +19,7 @@ from defusedxml.ElementTree import parse
 # pyglet
 from pyglet.math import Vec4
 from pyglet.text import Label
-from pyglet.shapes import Line
+from pyglet.shapes import Line, Rectangle
 from pyglet.sprite import Sprite
 from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
@@ -39,7 +39,6 @@ if TYPE_CHECKING:
 
 if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, SR1Ship_rs
-
 
 logger = logging.getLogger('client')
 
@@ -122,6 +121,7 @@ class SR1ShipRender(BaseScreen):
         # self.xml_doc: ElementTree = parse('configs/dock1.xml')
         # self.xml_root: ElementTree.Element = self.xml_doc.getroot()
         self.load_xml('configs/dock1.xml')
+        self.part_box_batch = Batch()
         self.part_batch = Batch()
         self.part_group = Group()
         self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_option.std_font_size,
@@ -130,6 +130,7 @@ class SR1ShipRender(BaseScreen):
                                  anchor_x='left', anchor_y='top')
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        self.part_box_dict: Dict[int, Rectangle] = {}
         load_end_time = time.time_ns()
         logger.info(tr().client.sr1_render.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
@@ -190,6 +191,18 @@ class SR1ShipRender(BaseScreen):
             cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
             self.parts_sprite[part.id] = cache_sprite
 
+            part_width = 100
+            part_height = 100
+            if DR_mod_runtime.use_DR_rust:
+                part_type = self.rust_parts.get_part_type(part.type_id)
+                if part_type is not None:
+                    part_width = part_type.width
+                    part_height = part_type.height
+            part_box = Rectangle(x=render_x, y=render_y,
+                                 width=100, height=100,
+                                 batch=self.part_box_batch, group=self.part_group)
+            part_box.opacity = 50
+            self.part_box_dict[part.id] = part_box
             # if not part_render:  # 如果不渲染(渲染有毛病)
             #     self.parts_sprite[part.id].visible = False
             count += 1
@@ -235,9 +248,6 @@ class SR1ShipRender(BaseScreen):
             len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else tr().game.require_DR_rs()))
         self.rendered = True
 
-    def get_ship_size(self) -> (int, int):
-        ...
-
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
@@ -269,6 +279,7 @@ class SR1ShipRender(BaseScreen):
             glEnable(GL_DEPTH_TEST)
             glDepthFunc(GL_LEQUAL)
             self.part_batch.draw()
+            self.part_box_batch.draw()
             glDisable(GL_DEPTH_TEST)
 
         self.debug_label.draw()
@@ -355,6 +366,7 @@ class SR1ShipRender(BaseScreen):
                     SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                     self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
                     # print('sr1 mouse')
+
         elif command.find('get_buf'):
 
             def screenshot(window):
@@ -400,7 +412,7 @@ class SR1ShipRender(BaseScreen):
                 # 碰撞箱是居中的
                 # -x, -y, +x, +y
                 part_data = self.part_data[part]
-                bound_box = [-sprite_img.width / 2 + part_data.x, -sprite_img.height / 2 + part_data.y, 
+                bound_box = [-sprite_img.width / 2 + part_data.x, -sprite_img.height / 2 + part_data.y,
                              sprite_img.width / 2 + part_data.x, sprite_img.height / 2 + part_data.y]
                 min_x = min(min_x, bound_box[0])
                 min_y = min(min_y, bound_box[1])
@@ -422,7 +434,7 @@ class SR1ShipRender(BaseScreen):
                     pil_image.transpose(Image.FLIP_TOP_BOTTOM)
                 if self.part_data[part].flip_x:
                     pil_image.transpose(Image.FLIP_LEFT_RIGHT)
-                img.paste(pil_image, (int(self.part_data[part].x*60 + img_center[0]), int(-self.part_data[part].y*60 + img_center[1])), pil_image)
+                img.paste(pil_image, (int(self.part_data[part].x * 60 + img_center[0]), int(-self.part_data[part].y * 60 + img_center[1])), pil_image)
             img.save(f'test{time.time()}.png', 'PNG')
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):

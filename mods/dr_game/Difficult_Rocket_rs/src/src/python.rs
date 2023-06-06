@@ -27,7 +27,25 @@ pub mod data {
         fn get_name(&self) -> String { self.data.name.clone() }
 
         #[getter]
-        fn get_mass(&self) -> f64 { self.data.mass.to_owned() }
+        fn get_description(&self) -> String { self.data.description.clone() }
+
+        #[getter]
+        fn get_sprite(&self) -> String { self.data.sprite.clone() }
+
+        #[getter]
+        fn get_mass(&self) -> f64 { self.data.mass }
+
+        #[getter]
+        fn get_width(&self) -> u32 { self.data.width }
+
+        #[getter]
+        fn get_height(&self) -> u32 { self.data.height }
+
+        #[getter]
+        fn get_friction(&self) -> f64 { self.data.friction }
+
+        #[getter]
+        fn get_hidden(&self) -> bool { self.data.hidden }
     }
 
     impl PySR1PartType {
