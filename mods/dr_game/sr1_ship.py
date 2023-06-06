@@ -194,13 +194,14 @@ class SR1ShipRender(BaseScreen):
             part_width = 100
             part_height = 100
             if DR_mod_runtime.use_DR_rust:
-                part_type = self.rust_parts.get_part_type(part.type_id)
+                part_type = self.part_list_rs.get_part_type(part.p_type)
                 if part_type is not None:
-                    part_width = part_type.width
-                    part_height = part_type.height
+                    part_width = part_type.width * 60
+                    part_height = part_type.height * 60
             part_box = Rectangle(x=render_x, y=render_y,
-                                 width=100, height=100,
+                                 width=part_width, height=part_height,
                                  batch=self.part_box_batch, group=self.part_group)
+            part_box.rotation = SR1Rotation.get_rotation(part.angle)
             part_box.opacity = 50
             self.part_box_dict[part.id] = part_box
             # if not part_render:  # 如果不渲染(渲染有毛病)
@@ -278,8 +279,8 @@ class SR1ShipRender(BaseScreen):
             from pyglet.gl import glEnable, glDisable, glDepthFunc, GL_DEPTH_TEST, GL_LEQUAL
             glEnable(GL_DEPTH_TEST)
             glDepthFunc(GL_LEQUAL)
-            self.part_batch.draw()
             self.part_box_batch.draw()
+            self.part_batch.draw()
             glDisable(GL_DEPTH_TEST)
 
         self.debug_label.draw()
