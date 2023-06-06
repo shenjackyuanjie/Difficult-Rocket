@@ -20,6 +20,7 @@ pub mod sr1 {
     };
     use crate::types::math::{Point2D, Rotatable};
 
+    #[allow(unused)]
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
         match ptype.as_str() {

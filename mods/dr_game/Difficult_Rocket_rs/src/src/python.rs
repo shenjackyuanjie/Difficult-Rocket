@@ -206,6 +206,30 @@ pub mod translate {
     }
 }
 
+pub mod physics {
+    use pyo3::prelude::*;
+
+    use crate::simulator::interface::PhysicsSpace;
+
+    #[pyclass]
+    #[pyo3(name = "PhysicsSpace_rs")]
+    pub struct PyPhysicsSpace {
+        pub space: PhysicsSpace,
+    }
+
+    #[pymethods]
+    impl PyPhysicsSpace {
+        #[new]
+        fn new(gravity: (f64, f64)) -> Self {
+            Self {
+                space: PhysicsSpace::new(gravity),
+            }
+        }
+
+        fn tick_space(&mut self) { self.space.tick_space() }
+    }
+}
+
 pub mod console {
     use pyo3::prelude::*;
 

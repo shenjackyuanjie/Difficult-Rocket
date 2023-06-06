@@ -103,9 +103,6 @@ pub mod part_list {
         pub fn new(attaches: Vec<AttachPoint>) -> Self { AttachPoints { points: attaches } }
 
         #[inline]
-        pub fn insert(&mut self, attach: AttachPoint) { self.points.push(attach); }
-
-        #[inline]
         pub fn unzip(&self) -> Vec<AttachPoint> { self.points.clone() }
     }
 
