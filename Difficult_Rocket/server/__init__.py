@@ -43,3 +43,6 @@ class Server:
 
     def run(self):
         self.logger.info(tr().server.os.pid_is().format(os.getpid(), os.getppid()))
+
+    def __repr__(self):
+        return f'<Server {self.process_name} {self.process_id}>'

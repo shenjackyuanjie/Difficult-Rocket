@@ -77,6 +77,12 @@ class Options:
                 traceback.print_exc()
         self.flush_option()
 
+    def __str__(self):
+        return f"<{self.__class__.__name__} {self.name}>" if self.name else f"<{self.__class__.__name__}>"
+
+    def __repr__(self):
+        return self.__str__()
+
     if TYPE_CHECKING:
         _options: Dict[str, Union[Callable, object]] = {}
 

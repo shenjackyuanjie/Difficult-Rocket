@@ -9,10 +9,9 @@ import traceback
 
 from typing import Optional
 
-from libs.MCDR.version import Version
 from Difficult_Rocket.main import Game
 from Difficult_Rocket.api.mod import ModInfo
-from Difficult_Rocket.api.types import Options
+from Difficult_Rocket.api.types import Options, Version
 from Difficult_Rocket.client import ClientWindow
 
 DR_rust_version = Version("0.2.10.1")  # DR_mod 的 Rust 编写部分的兼容版本
@@ -76,6 +75,7 @@ class DR_mod(ModInfo):
         else:
             self.config.flush_option()
         print("DR_mod: on_load")
+        print(self.as_markdown())
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):

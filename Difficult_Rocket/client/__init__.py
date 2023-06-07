@@ -92,6 +92,9 @@ class Client:
         self.window.start_game()  # 游戏启动
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
+    def __repr__(self):
+        return f'<Client {self.process_name} {self.process_pid}>'
+
 
 def pyglet_load_fonts_folder(folder) -> None:
     file_folder_list = os.listdir(folder)
