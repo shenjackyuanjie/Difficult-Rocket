@@ -24,12 +24,13 @@ $arg += @("--macos-app-icon=textures/icon.png")
 $arg += @("--clang")
 $arg += @("--lto=no")
 # 包配置
-$arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi")
+$arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi,pydoc")
 $arg += @("--follow-import-to=pyglet")
 # 数据配置
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
+$arg += @("--include-package=Difficult_Rocket.api")
 # 编译配置
 $arg += @("--show-memory")
 $arg += @("--show-progress")

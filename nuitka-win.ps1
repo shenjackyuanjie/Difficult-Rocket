@@ -32,6 +32,7 @@ $arg += @("--follow-import-to=pyglet")
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")
 $arg += @("--include-data-dir=./textures=./textures")
 $arg += @("--include-data-dir=./configs=./configs")
+$arg += @("--include-package=Difficult_Rocket.api")
 # 编译配置
 $arg += @("--show-memory")
 $arg += @("--show-progress")

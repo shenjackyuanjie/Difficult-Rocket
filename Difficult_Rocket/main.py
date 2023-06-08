@@ -81,7 +81,7 @@ class Game(Options):
     logging_config: Dict
     logger: logging.Logger
 
-    mod_module: List["ModInfo"]
+    mod_module: List["ModInfo"] = []
 
     def init_logger(self) -> None:
         log_path = self.logging_config['handlers']['file']['filename']
