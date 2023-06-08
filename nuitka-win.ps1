@@ -26,7 +26,7 @@ $arg += @("--msvc=latest")
 $arg += @("--clang")
 $arg += @("--lto=no")
 # 包配置
-$arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi")
+$arg += @("--nofollow-import-to=objprint,pillow,PIL,cffi,pydoc")
 $arg += @("--follow-import-to=pyglet")
 # 数据配置
 $arg += @("--include-data-dir=./libs/fonts=./libs/fonts")

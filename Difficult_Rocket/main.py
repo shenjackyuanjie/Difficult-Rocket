@@ -98,7 +98,7 @@ class Game(Options):
 
     def init_mods(self) -> None:
         """验证/加载 mod"""
-        print(self)
+        self.mod_module = []
         mods = []
         mod_path = Path(DR_runtime.mod_path)
         if not mod_path.exists():
