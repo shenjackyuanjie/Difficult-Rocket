@@ -8,7 +8,7 @@
 import platform
 import traceback
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 from Difficult_Rocket.api.types import Options, Version
 
@@ -30,6 +30,12 @@ class Status(Options):
     product_version: Version
     file_version: Version
     icon_path: Path = Path('textures/icon.png')
+    follow_import: List[str] = ['pyglet', 'Difficult_Rocket.api']
+    no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc']
+    include_data_dir: List[Tuple[Path, Path]] = [(Path('./libs/fonts'), Path('./libs/fonts')),
+                                                 (Path('./textures'), Path('./textures')),
+                                                 (Path('./configs'), Path('./configs'))]
+    include_packages: List[str] = []
 
     def init(self, **kwargs) -> None:
         # 非 windows 平台不使用 msvc
@@ -49,6 +55,11 @@ class Status(Options):
         except ImportError:
             traceback.print_exc()
             return False
+
+    def as_markdown(self) -> str:
+        front = super().as_markdown()
+        gen_cmd = self.gen_subprocess_cmd()
+        return f"{front}\n\n```bash\n{' '.join(gen_cmd)}\n```"
 
     def gen_subprocess_cmd(self) -> List[str]:
         cmd_list = ['python', '-m', 'nuitka']
@@ -75,6 +86,8 @@ class Status(Options):
         cmd_list.append(f"--product-version={self.product_version}")
         cmd_list.append(f"--file-version={self.file_version}")
         cmd_list += icon_cmd
+        cmd_list += [f"--include-data-file={src}={dst}" for src, dst in self.include_data_dir]
+        cmd_list += [f"--include-package={package}" for package in self.include_packages]
         return cmd_list
 
 
