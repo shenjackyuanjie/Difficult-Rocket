@@ -16,7 +16,7 @@ from Difficult_Rocket.api.types import Options, Version
 class Status(Options):
     name = 'Nuitka Build Status'
 
-    output_path: Path = Path("./build/nuitka")
+    output_path: Path = Path("./build/nuitka-win")
     src_file: Path = Path('DR.py')
 
     # 以下为 nuitka 的参数
@@ -25,13 +25,20 @@ class Status(Options):
     use_msvc: bool = True  # --msvc=latest
     use_mingw: bool = False  # --mingw64
     standalone: bool = True  # --standalone
+
+    show_progress: bool = True  # --show-progress
+    show_memory: bool = False  # --show-memory
+
     company_name: str = 'tool-shenjack-workshop'
     product_name: str = 'Difficult-Rocket'
     product_version: Version
     file_version: Version
+
     icon_path: Path = Path('textures/icon.png')
+
     follow_import: List[str] = ['pyglet', 'Difficult_Rocket.api']
-    no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc']
+    no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy']
+
     include_data_dir: List[Tuple[Path, Path]] = [(Path('./libs/fonts'), Path('./libs/fonts')),
                                                  (Path('./textures'), Path('./textures')),
                                                  (Path('./configs'), Path('./configs'))]
@@ -83,14 +90,27 @@ class Status(Options):
             cmd_list.append('--msvc=latest')
         if self.standalone:
             cmd_list.append('--standalone')
+        if self.show_progress:
+            cmd_list.append('--show-progress')
+        if self.show_memory:
+            cmd_list.append('--show-memory')
+
+        cmd_list.append(f"--output-dir={self.output_path.absolute()}")
 
         cmd_list.append(f"--company-name={self.company_name}")
         cmd_list.append(f"--product-name={self.product_name}")
         cmd_list.append(f"--product-version={self.product_version}")
         cmd_list.append(f"--file-version={self.file_version}")
-        cmd_list += icon_cmd
-        cmd_list += [f"--include-data-file={src}={dst}" for src, dst in self.include_data_dir]
+
+        cmd_list.append(icon_cmd)
+
+        cmd_list += [f"--include-data-dir={src}={dst}" for src, dst in self.include_data_dir]
         cmd_list += [f"--include-package={package}" for package in self.include_packages]
+
+        cmd_list.append(f"--follow-import-to={','.join(self.follow_import)}")
+        cmd_list.append(f"--nofollow-import-to={','.join(self.no_follow_import)}")
+
+        cmd_list.append(f"{self.src_file}")
         return cmd_list
 
 
