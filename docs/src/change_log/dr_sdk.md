@@ -15,3 +15,7 @@
 
 - `api.types`
   - 添加 `Version` (`libs.MCDR.version.Version`)
+
+### 修复 Bug
+
+- 自带的 `console` 类在 `get_command` 时 没有检查是否为空
