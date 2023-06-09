@@ -44,6 +44,7 @@ class Console(Options):
     name = 'python stdin console'
 
     running: bool = False
+    caches: List[str] = []
 
     @new_thread('python console', daemon=True, log_thread=True)
     def main(self):
@@ -59,14 +60,13 @@ class Console(Options):
 
     def start(self):
         self.running = True
-        self.caches: List[str] = []
         self.main()
 
     def stop(self):
         self.running = False
 
-    def get_command(self) -> str:
-        return self.caches.pop(0)
+    def get_command(self) -> Optional[str]:
+        return self.caches.pop(0) if self.caches else None
 
 
 class Game(Options):
