@@ -8,10 +8,12 @@ on:
     paths:
       - "mods/dr_game/**"  # 本体修改
       - ".github/workflows/**"  # workflow 修改
+      - "requirements*"  # 依赖修改
   pull_request:
     paths:
       - "mods/dr_game/**"  # 本体修改
       - ".github/workflows/**"  # workflow 修改
+      - "requirements*"  # 依赖修改
   workflow_dispatch:
 
 # 主任务
