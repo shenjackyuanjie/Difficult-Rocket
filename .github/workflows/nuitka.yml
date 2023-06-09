@@ -5,7 +5,17 @@ name: Build DR nuitka
 on:
   # 触发条件
   push:
+    paths:
+      - "Difficult_Rocket/**"  # 本体修改
+      - "configs/**"  # 配置修改
+      - "libs/pyglet/**"  # pyglet 修改
+      - ".github/workflows/**"  # workflow 修改
   pull_request:
+    paths:
+      - "Difficult_Rocket/**"  # 本体修改
+      - "configs/**"  # 配置修改
+      - "libs/pyglet/**"  # pyglet 修改
+      - ".github/workflows/**"  # workflow 修改
   workflow_dispatch:
 
 # 主任务
