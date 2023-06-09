@@ -5,7 +5,13 @@ name: Build DR rs
 on:
   # 触发条件
   push:
+    paths:
+      - "mods/dr_game/**"  # 本体修改
+      - ".github/workflows/**"  # workflow 修改
   pull_request:
+    paths:
+      - "mods/dr_game/**"  # 本体修改
+      - ".github/workflows/**"  # workflow 修改
   workflow_dispatch:
 
 # 主任务
