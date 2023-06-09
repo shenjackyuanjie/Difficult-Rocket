@@ -36,6 +36,9 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
 
+      - name: Checkout code
+        uses: nschloe/action-cached-lfs-checkout@v1
+
       # 获取短 sha
       - name: Get short commit sha
         id: get_short_sha
