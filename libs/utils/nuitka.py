@@ -27,9 +27,12 @@ class Status(Options):
     use_msvc: bool = True  # --msvc=latest
     use_mingw: bool = False  # --mingw64
     standalone: bool = True  # --standalone
+    use_ccache: bool = True  # not --disable-ccache
 
     show_progress: bool = True  # --show-progress
     show_memory: bool = False  # --show-memory
+
+    download_confirm: bool = True  # --assume-yes-for-download
 
     company_name: str = 'tool-shenjack-workshop'
     product_name: str = 'Difficult-Rocket'
@@ -41,9 +44,9 @@ class Status(Options):
     follow_import: List[str] = ['pyglet']
     no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy']
 
-    include_data_dir: List[Tuple[Path, Path]] = [(Path('./libs/fonts'), Path('./libs/fonts')),
-                                                 (Path('./textures'), Path('./textures')),
-                                                 (Path('./configs'), Path('./configs'))]
+    include_data_dir: List[Tuple[str, str]] = [('./libs/fonts', './libs/fonts'),
+                                               ('./textures', './textures'),
+                                               ('./configs', './configs')]
     include_packages: List[str] = ['Difficult_Rocket.api']
 
     def init(self, **kwargs) -> None:
@@ -86,16 +89,21 @@ class Status(Options):
             cmd_list.append('--lto=yes')
         else:
             cmd_list.append('--lto=no')
+
         if self.use_clang:
             cmd_list.append('--clang')
         if self.use_msvc:
             cmd_list.append('--msvc=latest')
         if self.standalone:
             cmd_list.append('--standalone')
+        if not self.use_ccache:
+            cmd_list.append('--disable-ccache')
         if self.show_progress:
             cmd_list.append('--show-progress')
         if self.show_memory:
             cmd_list.append('--show-memory')
+        if self.download_confirm:
+            cmd_list.append('--assume-yes-for-download')
 
         cmd_list.append(f"--output-dir={self.output_path.absolute()}")
 
@@ -114,5 +122,3 @@ class Status(Options):
 
         cmd_list.append(f"{self.src_file}")
         return cmd_list
-
-
