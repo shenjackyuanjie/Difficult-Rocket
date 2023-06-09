@@ -47,4 +47,4 @@ if __name__ == '__main__':
         start_time = time.time_ns()
         subprocess.run(compiler.gen_subprocess_cmd())
         print('Compile Done!')
-        print(f'Compile Time: {time.time_ns() - start_time} ns ({(time.time_ns() - start_time) / 1000000000} s)')
+        print(f'Compile Time: {time.time_ns() - start_time} ns ({(time.time_ns() - start_time) / 1000_000_000} s)')
