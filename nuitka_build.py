@@ -22,6 +22,10 @@ if __name__ == '__main__':
         sys.argv.remove('--output')
         sys.argv.remove(compiler.output_path)
 
+    # 检测 --github 参数
+    if '--github' in sys.argv:
+        compiler.use_ccache = False
+
     print(compiler.output_path)
 
     print(compiler)
