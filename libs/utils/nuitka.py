@@ -19,6 +19,8 @@ class Status(Options):
     output_path: Path = Path("./build/nuitka-win")
     src_file: Path = Path('DR.py')
 
+    python_cmd: str = 'python'
+
     # 以下为 nuitka 的参数
     use_lto: bool = False  # --lto=yes (no is faster)
     use_clang: bool = True  # --clang
@@ -36,13 +38,13 @@ class Status(Options):
 
     icon_path: Path = Path('textures/icon.png')
 
-    follow_import: List[str] = ['pyglet', 'Difficult_Rocket.api']
+    follow_import: List[str] = ['pyglet']
     no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy']
 
     include_data_dir: List[Tuple[Path, Path]] = [(Path('./libs/fonts'), Path('./libs/fonts')),
                                                  (Path('./textures'), Path('./textures')),
                                                  (Path('./configs'), Path('./configs'))]
-    include_packages: List[str] = []
+    include_packages: List[str] = ['Difficult_Rocket.api']
 
     def init(self, **kwargs) -> None:
         # 非 windows 平台不使用 msvc
@@ -72,7 +74,7 @@ class Status(Options):
         return f"{front}\n\n```bash\n{' '.join(gen_cmd)}\n```"
 
     def gen_subprocess_cmd(self) -> List[str]:
-        cmd_list = ['python', '-m', 'nuitka']
+        cmd_list = [self.python_cmd, '-m', 'nuitka']
         # macos 和 非 macos icon 参数不同
         icon_cmd = ""
         if platform.system() == 'Darwin':
