@@ -42,20 +42,21 @@
 ## Environment (been tested / developed on)
 
 - `Develop platform 1 - Windows 10 x64 22H2`
-  - pillow `9.5.0`
-  - psutil `5.9.5`
-  - rtoml `0.9.0`
-  - tomlkit `0.11.7`
-  - defusedxml `0.7.1`
-  - objprint `0.2.2`
-  - viztracer `0.15.6`
-  - vizplugins `0.1.3`
-  - nuitka `1.5.6`
-  - ordered-set `4.1.0`
-  - imageio `2.27.0`
-  - wheel `0.40.0`
-  - setuptools `67.6.1`
-  - setuptools-rust `1.5.2`
+  - Python `3.8.10`
+    - pillow `9.5.0`
+    - psutil `5.9.5`
+    - rtoml `0.9.0`
+    - tomlkit `0.11.8`
+    - defusedxml `0.7.1`
+    - objprint `0.2.2`
+    - viztracer `0.15.6`
+    - vizplugins `0.1.3`
+    - nuitka `1.6.1`
+    - ordered-set `4.1.0`
+    - imageio `2.31.0`
+    - wheel `0.40.0`
+    - setuptools `67.8.0`
+    - setuptools-rust `1.6.0`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 

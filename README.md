@@ -57,8 +57,8 @@
     - wheel `0.40.0`
     - setuptools `67.6.1`
     - setuptools-rust `1.5.2`
-    - `AMD R5 5600X`
-    - `AMD RX 550 4G`
+  - `AMD R5 5600X`
+  - `AMD RX 550 4G`
 
 ## 需要的 Python 模块
 
