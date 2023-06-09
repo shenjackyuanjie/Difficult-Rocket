@@ -56,6 +56,9 @@ class Status(Options):
             traceback.print_exc()
             return False
 
+    def __str__(self):
+        return self.as_markdown()
+
     def as_markdown(self) -> str:
         front = super().as_markdown()
         gen_cmd = self.gen_subprocess_cmd()
