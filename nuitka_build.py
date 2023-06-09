@@ -10,4 +10,7 @@ from libs.utils import nuitka
 if __name__ == '__main__':
     compiler = nuitka.Status()
 
+    print(compiler)
+
+    print(compiler.gen_subprocess_cmd())
 
