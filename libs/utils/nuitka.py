@@ -112,7 +112,8 @@ class CompilerHelper(Options):
         cmd_list.append(f"--product-version={self.product_version}")
         cmd_list.append(f"--file-version={self.file_version}")
 
-        cmd_list.append(icon_cmd)
+        if icon_cmd:
+            cmd_list.append(icon_cmd)
 
         cmd_list += [f"--include-data-dir={src}={dst}" for src, dst in self.include_data_dir]
         cmd_list += [f"--include-package={package}" for package in self.include_packages]
