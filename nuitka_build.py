@@ -10,7 +10,7 @@ import subprocess
 from libs.utils import nuitka
 
 if __name__ == '__main__':
-    compiler = nuitka.Status()
+    compiler = nuitka.CompilerHelper()
 
     # 修改 python 执行文件 为 运行时的 python
     compiler.python_cmd = sys.executable

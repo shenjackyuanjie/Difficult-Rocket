@@ -13,8 +13,8 @@ from typing import List, Tuple
 from Difficult_Rocket.api.types import Options, Version
 
 
-class Status(Options):
-    name = 'Nuitka Build Status'
+class CompilerHelper(Options):
+    name = 'Nuitka Compiler Helper'
 
     output_path: Path = Path("./build/nuitka-win")
     src_file: Path = Path('DR.py')
