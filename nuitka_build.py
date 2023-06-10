@@ -76,11 +76,11 @@ if __name__ == '__main__':
                 traceback.print_exc()
             print('Remove Useless Files Done!')
             # 压缩
-            # with zipfile.ZipFile(Path('./build/Difficult_Rocket.zip'), 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as dist_zip:
-            #     for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
-            #         print(f'writing {path}')
-            #         for file in sub_files:
-            #             file_path = os.path.join(path, file)
-            #             dist_zip.write(file_path)
-            # print('Zip Done!')
+            with zipfile.ZipFile(Path('./build/Difficult_Rocket.zip'), 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as dist_zip:
+                for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
+                    print(f'writing {path}')
+                    for file in sub_files:
+                        file_path = os.path.join(path, file)
+                        dist_zip.write(file_path)
+            print('Zip Done!')
     sys.exit(0)
