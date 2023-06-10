@@ -88,31 +88,6 @@ jobs:
           python nuitka_build.py --github
           # 集成的构建脚本 好耶！
 
-      # - name: after build
-      #   shell: pwsh
-      #   run: |
-      #     Get-ChildItem libs/fonts/Fira_Code -Recurse | Remove-Item -Force
-      #     Get-ChildItem libs/fonts/scientifica -Recurse | Remove-Item -Force
-      #     Remove-Item libs/fonts/Monocraft.otf -Force
-      #     Remove-Item libs/fonts/SmileySans-Oblique.ttf -Force
-      #     Get-ChildItem libs/fonts/HarmonyOS_Sans/HarmonyOS_Sans_Condensed/* -Recurse | Remove-Item -Force
-      #     Get-ChildItem libs/fonts/HarmonyOS_Sans/HarmonyOS_Sans/* -Recurse | Remove-Item -Force
-      #
-      #     Copy-Item libs/fonts build\DR.dist\libs\fonts -Recurse
-      #     # Copy-Item libs\pyglet\ build\DR.dist -Recurse
-      #
-      #     Rename-Item build/DR.dist Difficult-Rocket
-      #     python ./.github/workflows/post_compile.py
-
-
-  upload-artifact:
-    runs-on: ubuntu-latest
-
-    needs:
-      - build-nuitka
-
-    steps:
-
       # 获取短 sha
       - name: Get short commit sha
         id: get_short_sha
@@ -129,4 +104,4 @@ jobs:
         with:
           name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}
           path: |
-            build/main.zip
+            build/github/DR.dist
