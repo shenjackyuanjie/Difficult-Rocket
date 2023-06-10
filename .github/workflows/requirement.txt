@@ -1,5 +1,0 @@
-# for checker
-# ruff >= 0.0.253
-
-# for dsm upload
-synology-api >= 0.5.1
