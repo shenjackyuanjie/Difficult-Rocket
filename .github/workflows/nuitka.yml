@@ -10,6 +10,7 @@ on:
       - "configs/**"  # 配置修改
       - "libs/pyglet/**"  # pyglet 修改
       - ".github/workflows/**"  # workflow 修改
+      - "nuitka_build.py"  # 构建脚本修改
       - "requirements*"  # 依赖修改
   pull_request:
     paths:
@@ -17,6 +18,7 @@ on:
       - "configs/**"  # 配置修改
       - "libs/pyglet/**"  # pyglet 修改
       - ".github/workflows/**"  # workflow 修改
+      - "nuitka_build.py"  # 构建脚本修改
       - "requirements*"  # 依赖修改
   workflow_dispatch:
 
