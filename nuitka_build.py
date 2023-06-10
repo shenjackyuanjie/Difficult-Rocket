@@ -28,6 +28,7 @@ if __name__ == '__main__':
         compiler.use_ccache = False
         compiler.show_progress = False
         compiler.output_path = Path('./build/github')
+        compiler.python_cmd = 'python'
 
     # 检测 --output xx 参数
     if '--output' in sys.argv:
