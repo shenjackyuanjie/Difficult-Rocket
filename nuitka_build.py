@@ -4,6 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
+import os
 import sys
 import time
 import shutil
@@ -60,4 +61,17 @@ if __name__ == '__main__':
         print('Compile Done!')
         print(f'Compile Time: {time.time_ns() - start_time} ns ({(time.time_ns() - start_time) / 1000_000_000} s)')
         if is_github:
-            subprocess.run(['python', 'libs/utils/github.py', compiler.output_path])
+            # 去除无用字体文件
+            shutil.rmtree(compiler.output_path / 'fonts' / 'Fira_Code', ignore_errors=True)
+            shutil.rmtree(compiler.output_path / 'fonts' / 'scientifica', ignore_errors=True)
+            shutil.rmtree(compiler.output_path / 'fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans_Condensed', ignore_errors=True)
+            shutil.rmtree(compiler.output_path / 'fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans', ignore_errors=True)
+            os.remove(compiler.output_path / 'fonts' / 'Monocraft.otf')
+            os.remove(compiler.output_path / 'fonts' / 'SmileySans-Oblique.ttf')
+            # 压缩
+            with zipfile.ZipFile(Path('./build/Difficult_Rocket.zip'), 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as dist_zip:
+                for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
+                    print(f'writing {path}')
+                    for file in sub_files:
+                        file_path = os.path.join(path, file)
+                        dist_zip.write(file_path)

@@ -6,8 +6,8 @@
 
 import os
 import sys
-import zipfile
 import shutil
+import zipfile
 
 if sys.platform == "win32":
     os.system('')
