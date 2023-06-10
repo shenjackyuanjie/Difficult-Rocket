@@ -66,12 +66,12 @@ if __name__ == '__main__':
         if is_github:
             # 去除无用字体文件
             try:
-                shutil.rmtree(compiler.output_path / 'DR.dist' / 'fonts' / 'Fira_Code', ignore_errors=True)
-                shutil.rmtree(compiler.output_path / 'DR.dist' / 'fonts' / 'scientifica', ignore_errors=True)
-                shutil.rmtree(compiler.output_path / 'DR.dist' / 'fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans_Condensed', ignore_errors=True)
-                shutil.rmtree(compiler.output_path / 'DR.dist' / 'fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans', ignore_errors=True)
-                os.remove(compiler.output_path / 'DR.dist' / 'fonts' / 'Monocraft.otf')
-                os.remove(compiler.output_path / 'DR.dist' / 'fonts' / 'SmileySans-Oblique.ttf')
+                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'Fira_Code', ignore_errors=True)
+                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'scientifica', ignore_errors=True)
+                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans_Condensed', ignore_errors=True)
+                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans', ignore_errors=True)
+                os.remove(compiler.output_path / 'DR.dist/libs/fonts' / 'Monocraft.otf')
+                os.remove(compiler.output_path / 'DR.dist/libs/fonts' / 'SmileySans-Oblique.ttf')
             except Exception:
                 traceback.print_exc()
             print('Remove Useless Files Done!')
