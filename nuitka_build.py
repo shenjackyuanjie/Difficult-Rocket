@@ -57,6 +57,7 @@ if __name__ == '__main__':
 
     if do_compile == 'y':
         # 编译
+        time.sleep(1)  # 等待 1s
         start_time = time.time_ns()
         subprocess.run(compiler.gen_subprocess_cmd())
         print('Compile Done!')
@@ -69,6 +70,7 @@ if __name__ == '__main__':
             shutil.rmtree(compiler.output_path / 'DR.dist' / 'fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans', ignore_errors=True)
             os.remove(compiler.output_path / 'DR.dist' / 'fonts' / 'Monocraft.otf')
             os.remove(compiler.output_path / 'DR.dist' / 'fonts' / 'SmileySans-Oblique.ttf')
+            print('Remove Useless Files Done!')
             # 压缩
             with zipfile.ZipFile(Path('./build/Difficult_Rocket.zip'), 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as dist_zip:
                 for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
@@ -76,3 +78,4 @@ if __name__ == '__main__':
                     for file in sub_files:
                         file_path = os.path.join(path, file)
                         dist_zip.write(file_path)
+            print('Zip Done!')
