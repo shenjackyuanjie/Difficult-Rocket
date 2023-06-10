@@ -79,3 +79,4 @@ if __name__ == '__main__':
                         file_path = os.path.join(path, file)
                         dist_zip.write(file_path)
             print('Zip Done!')
+    sys.exit(0)
