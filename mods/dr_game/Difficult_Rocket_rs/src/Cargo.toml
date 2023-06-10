@@ -23,11 +23,11 @@ codegen-units = 1
 #features = ["serialize"]
 
 [dependencies.serde]
-version = "1.0.163"
+version = "1.0.164"
 features = ["derive"]
 
 [dependencies.xml-rs]
-version = "0.8.10"
+version = "0.8.14"
 
 [dependencies.serde-xml-rs]
 version = "0.6.0"
