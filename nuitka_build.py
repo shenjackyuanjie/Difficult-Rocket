@@ -21,13 +21,6 @@ if __name__ == '__main__':
     # 修改 python 执行文件 为 运行时的 python
     compiler.python_cmd = sys.executable
 
-    # 检测 --output xx 参数
-    if '--output' in sys.argv:
-        # 输入的是输出目录
-        compiler.output_path = sys.argv[sys.argv.index('--output') + 1]
-        sys.argv.remove('--output')
-        sys.argv.remove(compiler.output_path)
-
     # 检测 --github 参数
     is_github = False
     if '--github' in sys.argv:
@@ -35,6 +28,13 @@ if __name__ == '__main__':
         compiler.use_ccache = False
         compiler.show_progress = False
         compiler.output_path = Path('./build/github')
+
+    # 检测 --output xx 参数
+    if '--output' in sys.argv:
+        # 输入的是输出目录
+        compiler.output_path = sys.argv[sys.argv.index('--output') + 1]
+        sys.argv.remove('--output')
+        sys.argv.remove(compiler.output_path)
 
     print(compiler.output_path)
 
