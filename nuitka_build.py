@@ -19,7 +19,7 @@ if __name__ == '__main__':
     compiler = nuitka.CompilerHelper()
 
     # 修改 python 执行文件 为 运行时的 python
-    compiler.python_cmd = sys.argv[0]
+    compiler.python_cmd = sys.executable
 
     # 检测 --github 参数
     is_github = False
