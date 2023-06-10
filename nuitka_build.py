@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     # 确认是否需要编译
     # 如果包含 -y 参数 则直接编译
-    if ('-y' or '-n') not in sys.argv or not is_github:
+    if (('-y' or '-n') not in sys.argv) and (not is_github):
         while (do_compile := input('Do you want to compile this file? (y/n) ')) not in ['y', 'n']:
             pass
     elif '-y' in sys.argv:
