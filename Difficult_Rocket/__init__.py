@@ -12,9 +12,7 @@ import importlib.util
 from pathlib import Path
 from typing import Optional, List, Tuple
 
-from Difficult_Rocket.api.types import Options
-
-from libs.MCDR.version import Version
+from Difficult_Rocket.api.types import Options, Version
 
 game_version = Version("0.8.0.0")  # 游戏版本
 build_version = Version("1.2.1.0")  # 编译文件版本(与游戏本体无关)

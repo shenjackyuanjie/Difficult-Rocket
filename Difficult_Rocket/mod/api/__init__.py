@@ -23,10 +23,7 @@ else:
     Game = TypeVar("Game")
     ClientWindow = TypeVar("ClientWindow")
 from Difficult_Rocket import DR_runtime
-from Difficult_Rocket.utils.options import Options
-
-# from libs
-from libs.MCDR.version import Version
+from Difficult_Rocket.api.types import Options, Version
 
 RequireVersion = Tuple[Version, Version]
 # 第一个是最低兼容版本,第二个是最高兼容版本
