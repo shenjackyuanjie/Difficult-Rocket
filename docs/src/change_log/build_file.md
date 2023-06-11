@@ -2,7 +2,7 @@
 # DR 构建 更新日志
 
 - 最新构建版本号
-  - build_version: 1.3.0.0
+  - build_version: 2.1.0.0
 
 ## 20230611 build 2.1.0.0
 
