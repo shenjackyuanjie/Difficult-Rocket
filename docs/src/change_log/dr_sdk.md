@@ -19,6 +19,9 @@
   - `str_option`
     - 获取一个所有键、值都是 builtin 类型的字典
     - 可以用于写入文件
+  - `__str__`
+  - `__repr__`
+    - 让 `Options` 可以被 `print` 打印
 
 ### 修复 Bug
 
