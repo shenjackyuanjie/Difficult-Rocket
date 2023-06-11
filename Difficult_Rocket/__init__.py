@@ -15,7 +15,7 @@ from typing import Optional, List, Tuple
 from Difficult_Rocket.api.types import Options, Version
 
 game_version = Version("0.8.1.0")  # 游戏版本
-build_version = Version("2.0.0.0")  # 编译文件版本(与游戏本体无关)
+build_version = Version("2.1.0.0")  # 编译文件版本(与游戏本体无关)
 Api_version = Version("0.1.1.0")  # API 版本
 __version__ = game_version
 
