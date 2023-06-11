@@ -8,7 +8,9 @@ import os
 import sys
 import time
 import shutil
+import tomlkit
 import zipfile
+import platform
 import traceback
 import subprocess
 
@@ -30,6 +32,7 @@ if __name__ == '__main__':
         compiler.show_progress = False
         compiler.output_path = Path('./build/github')
         compiler.python_cmd = 'python'
+        compiler.include_data_dir.remove(('./libs/fonts', './libs/fonts'))
 
     # 检测 --output xx 参数
     if '--output' in sys.argv:
@@ -37,6 +40,27 @@ if __name__ == '__main__':
         compiler.output_path = sys.argv[sys.argv.index('--output') + 1]
         sys.argv.remove('--output')
         sys.argv.remove(compiler.output_path)
+
+    pyglet_optimizations = True
+    if pyglet_optimizations:
+        if platform.system() == "Windows":
+            compiler.no_follow_import.append('pyglet.libs.darwin')
+            compiler.no_follow_import.append('pyglet.libs.x11')
+            compiler.no_follow_import.append('pyglet.window.xlib')
+            compiler.no_follow_import.append('pyglet.window.cocoa')
+            compiler.no_follow_import.append('pyglet.window.headless')
+        elif platform.system() == "Darwin":
+            compiler.no_follow_import.append('pyglet.libs.win32')
+            compiler.no_follow_import.append('pyglet.libs.x11')
+            compiler.no_follow_import.append('pyglet.window.win32')
+            compiler.no_follow_import.append('pyglet.window.xlib')
+            compiler.no_follow_import.append('pyglet.window.headless')
+        elif platform.system() == "Linux":
+            compiler.no_follow_import.append('pyglet.libs.win32')
+            compiler.no_follow_import.append('pyglet.libs.darwin')
+            compiler.no_follow_import.append('pyglet.window.win32')
+            compiler.no_follow_import.append('pyglet.window.cocoa')
+            compiler.no_follow_import.append('pyglet.window.headless')
 
     print(compiler.output_path)
 
@@ -83,4 +107,21 @@ if __name__ == '__main__':
                         file_path = os.path.join(path, file)
                         dist_zip.write(file_path)
             print('Zip Done!')
+        elif platform.system() == 'Windows':
+            dist_dir_size = 0
+            for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
+                for file in sub_files:
+                    file_path = os.path.join(path, file)
+                    dist_dir_size += os.path.getsize(file_path)
+            exec_size = os.path.getsize(compiler.output_path / 'DR.dist' / 'DR.exe')
+            compile_data = {'compile_time_ns': time.time_ns() - start_time,
+                            'compile_time_s': (time.time_ns() - start_time) / 1000_000_000,
+                            'dist_size': dist_dir_size,
+                            'dist_size_mb': dist_dir_size / 1024 / 1024,
+                            'exec_size': exec_size,
+                            'exec_size_mb': exec_size / 1024 / 1024}
+            with open(compiler.output_path / f'../compile_data-{time.time()}.toml', 'w') as compile_data_file:
+                tomlkit.dump(compile_data, compile_data_file)
+
+
     sys.exit(0)
