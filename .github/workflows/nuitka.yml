@@ -40,9 +40,6 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
 
-      - name: Checkout code
-        uses: nschloe/action-cached-lfs-checkout@v1
-
       # 安装 Python
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
