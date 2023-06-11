@@ -13,8 +13,9 @@ import inspect
 import functools
 import traceback
 
-from typing import Callable, Dict, List, TYPE_CHECKING
+from pathlib import Path
 from decimal import Decimal
+from typing import Callable, Dict, List, TYPE_CHECKING
 
 # third function
 import rtoml
@@ -97,6 +98,10 @@ class Client:
 
 
 def pyglet_load_fonts_folder(folder) -> None:
+    font_path = Path(folder)
+    if not font_path.exists():
+        font_path.mkdir(parents=True)
+        return None
     file_folder_list = os.listdir(folder)
     for obj in file_folder_list:
         if os.path.isfile(os.path.join(folder, obj)):

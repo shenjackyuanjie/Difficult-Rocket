@@ -2,7 +2,14 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.1.0
+  - DR sdk: 0.8.2.0
+
+## DR sdk 0.8.2.0
+
+### Fix
+
+- issue #27 (https://github.com/shenjackyuanjie/Difficult_Rocket/issues/27)
+- ~~为什么每次发完release都要修issue啊 font文件夹不存在就会报错~~
 
 ## DR sdk 0.8.1.0
 
