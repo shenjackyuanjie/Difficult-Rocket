@@ -14,9 +14,11 @@ import platform
 import traceback
 import subprocess
 
+from typing import Tuple, Dict
 from pathlib import Path
 
 from libs.utils import nuitka
+
 
 if __name__ == '__main__':
     compiler = nuitka.CompilerHelper()
@@ -41,26 +43,32 @@ if __name__ == '__main__':
         sys.argv.remove('--output')
         sys.argv.remove(compiler.output_path)
 
+    # 检测 --no-pyglet-opt 参数
     pyglet_optimizations = True
-    if pyglet_optimizations:
+    if pyglet_optimizations and '--no-pyglet-opt' not in sys.argv:
+
+        compiler.no_follow_import += [f'pyglet.app.{x}' for x in ['win32', 'xlib', 'cocoa']]
+        compiler.no_follow_import += [f'pyglet.input.{x}' for x in ['win32', 'linux', 'macos']]
+        compiler.no_follow_import += [f'pyglet.libs.{x}' for x in ['win32', 'x11', 'wayland', 'darwin', 'egl', 'headless']]
+        compiler.no_follow_import += [f'pyglet.window.{x}' for x in ['win32', 'xlib', 'cocoa', 'headless']]
+        compiler.no_follow_import += [f'pyglet.canvas.{x}' for x in ['win32', 'xlib', 'xlib_vidmoderstore', 'cocoa', 'headless']]
+        compiler.no_follow_import += [f'pyglet.gl.{x}' for x in ['win32', 'xlib', 'cocoa', 'headless']]
+
+        mult_plat_libs = ['app', 'input', 'libs', 'window', 'canvas', 'gl']
         if platform.system() == "Windows":
-            compiler.no_follow_import.append('pyglet.libs.darwin')
-            compiler.no_follow_import.append('pyglet.libs.x11')
-            compiler.no_follow_import.append('pyglet.window.xlib')
-            compiler.no_follow_import.append('pyglet.window.cocoa')
-            compiler.no_follow_import.append('pyglet.window.headless')
-        elif platform.system() == "Darwin":
-            compiler.no_follow_import.append('pyglet.libs.win32')
-            compiler.no_follow_import.append('pyglet.libs.x11')
-            compiler.no_follow_import.append('pyglet.window.win32')
-            compiler.no_follow_import.append('pyglet.window.xlib')
-            compiler.no_follow_import.append('pyglet.window.headless')
+            for lib in mult_plat_libs:
+                compiler.no_follow_import.remove(f'pyglet.{lib}.win32')
         elif platform.system() == "Linux":
-            compiler.no_follow_import.append('pyglet.libs.win32')
-            compiler.no_follow_import.append('pyglet.libs.darwin')
-            compiler.no_follow_import.append('pyglet.window.win32')
-            compiler.no_follow_import.append('pyglet.window.cocoa')
-            compiler.no_follow_import.append('pyglet.window.headless')
+            for lib in mult_plat_libs:
+                for name in ('xlib', 'x11', 'wayland', 'egl'):
+                    if f'pyglet.{lib}.{name}' in compiler.no_follow_import:
+                        compiler.no_follow_import.remove(f'pyglet.{lib}.{name}')
+            compiler.no_follow_import.remove('pyglet.canvas.xlib_vidmoderstore')
+        elif platform.system() == "Darwin":
+            for lib in mult_plat_libs:
+                for name in ('cocoa', 'darwin', 'macos'):
+                    if f'pyglet.{lib}.{name}' in compiler.no_follow_import:
+                        compiler.no_follow_import.remove(f'pyglet.{lib}.{name}')
 
     print(compiler.output_path)
 
@@ -88,7 +96,7 @@ if __name__ == '__main__':
         print('Compile Done!')
         print(f'Compile Time: {time.time_ns() - start_time} ns ({(time.time_ns() - start_time) / 1000_000_000} s)')
         if is_github:
-            # 去除无用字体文件
+            # 去除无用字体文件 (其实现在也不会打包字体文件了 因为 git lfs 没宽带了)
             try:
                 shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'Fira_Code', ignore_errors=True)
                 shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'scientifica', ignore_errors=True)
@@ -107,21 +115,24 @@ if __name__ == '__main__':
                         file_path = os.path.join(path, file)
                         dist_zip.write(file_path)
             print('Zip Done!')
-        elif platform.system() == 'Windows':
+        else:
             dist_dir_size = 0
+            dist_file_size: Dict[str, Tuple[int, float]] = {}
             for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
                 for file in sub_files:
                     file_path = os.path.join(path, file)
                     dist_dir_size += os.path.getsize(file_path)
-            exec_size = os.path.getsize(compiler.output_path / 'DR.dist' / 'DR.exe')
+                    # 排除不需要记录的文件
+                    if any(x in file_path for x in ('configs', 'libs', 'textures')):
+                        continue
+                    dist_file_size[file_path] = (os.path.getsize(file_path), os.path.getsize(file_path) / 1024 / 1024)
             compile_data = {'compile_time_ns': time.time_ns() - start_time,
                             'compile_time_s': (time.time_ns() - start_time) / 1000_000_000,
                             'dist_size': dist_dir_size,
                             'dist_size_mb': dist_dir_size / 1024 / 1024,
-                            'exec_size': exec_size,
-                            'exec_size_mb': exec_size / 1024 / 1024}
+                            'compiler_data': compiler.str_option(),
+                            'dist_file_size': dist_file_size}
             with open(compiler.output_path / f'../compile_data-{time.time()}.toml', 'w') as compile_data_file:
                 tomlkit.dump(compile_data, compile_data_file)
-
 
     sys.exit(0)

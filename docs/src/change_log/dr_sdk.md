@@ -15,6 +15,10 @@
 
 - `api.types`
   - 添加 `Version` (`libs.MCDR.version.Version`)
+- `Difficult_Rocket.api.types.Options`
+  - `str_option`
+    - 获取一个所有键、值都是 builtin 类型的字典
+    - 可以用于写入文件
 
 ### 修复 Bug
 

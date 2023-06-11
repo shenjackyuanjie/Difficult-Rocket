@@ -7,7 +7,7 @@
 import traceback
 from io import StringIO
 from dataclasses import dataclass
-from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING
+from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING, Iterable
 
 __all__ = ['get_type_hints_',
            'Options',
@@ -23,6 +23,18 @@ def get_type_hints_(cls: Type):
         return get_type_hints(cls)
     except ValueError:
         return get_type_hints(cls, globalns={})
+
+
+def to_str_value_(value: Any) -> Any:
+    """递归的将输入值的每一个非 builtin type 转换成 str"""
+    if isinstance(value, (str, bytes, bytearray, int, float, bool, type(None))):
+        return value
+    elif isinstance(value, dict):
+        return {k: to_str_value_(v) for k, v in value.items()}
+    elif isinstance(value, (list, Iterable)):
+        return [to_str_value_(v) for v in value]
+    else:
+        return str(value)
 
 
 class OptionsError(Exception):
@@ -57,7 +69,7 @@ class Options:
         """
         创建一个新的 Options 的时候的配置
         如果存在 init 方法 会在设置完 kwargs 之后运行子类的 init 方法
-        :param kwargs:
+        :param kwargs: 需要设置的选项
         """
         if TYPE_CHECKING:
             self._options: Dict[str, Union[Callable, object]] = {}
@@ -90,6 +102,7 @@ class Options:
             """ 如果子类定义了这个函数，则会在 __init__ 之后调用这个函数
             返回值为 True 则不会调用 load_file 函数
             """
+            #
 
         def load_file(self) -> bool:
             """如果子类定义了这个函数，则会在 __init__ 和 init 之后再调用这个函数
@@ -124,6 +137,14 @@ class Options:
                     raise OptionNotFound(f'Option {option} is not found in {self.name}') from None
         return values
 
+    def str_option(self) -> Dict[str, Union[str, Any]]:
+        """
+        获取配置类的所有配置 并将所有非 BuiltInType 的值转换为 str
+        :return:
+        """
+        raw_option = self.option()
+        return to_str_value_(raw_option)
+
     def format(self, text: str) -> str:
         """
         使用自己的选项给输入的字符串替换内容
@@ -154,7 +175,7 @@ class Options:
         max_len_value_t = 1
         option_list = []
         for key, value in options.items():
-            value_t = value if isinstance(value, Type) else type(value)  # 判定这个类型 是不是 基本类型
+            value_t = type(value) if isinstance(value, type(value)) else type(value)  # 判定这个类型 是不是 基本类型
             max_len_key = max(max_len_key, len(key))
             max_len_value = max(max_len_value, len(str(value)))
             max_len_value_t = max(max_len_value_t, len(str(value_t)))
@@ -171,12 +192,13 @@ class Options:
         option_len = max(value[1], len('Option'))
         value_len = max(value[2], len('Value'))
         value_type_len = max(value[3], len('Value Type'))
-        cache.write(f"| Option{' '*(option_len-3)}| Value{' '*(value_len-2)}| Value Type{' '*(value_type_len-7)}|\n")
-        cache.write(f'|:{"-" * (option_len+3)}|:{"-" * (value_len+3)}|:{"-" * (value_type_len + 3)}|\n')
+        cache.write(
+            f"| Option{' ' * (option_len - 3)}| Value{' ' * (value_len - 2)}| Value Type{' ' * (value_type_len - 7)}|\n")
+        cache.write(f'|:{"-" * (option_len + 3)}|:{"-" * (value_len + 3)}|:{"-" * (value_type_len + 3)}|\n')
         for option, value, value_t in value[0]:
-            cache.write(f"| `{option}`{' '* (option_len - len(option))} "
-                        f"| `{value}`{' '* (value_len - len(str(value)))} "
-                        f"| `{value_t}`{' '* (value_type_len - len(str(value_t)))} |\n")
+            cache.write(f"| `{option}`{' ' * (option_len - len(option))} "
+                        f"| `{value}`{' ' * (value_len - len(str(value)))} "
+                        f"| `{value_t}`{' ' * (value_type_len - len(str(value_t)))} |\n")
         result = cache.getvalue()
         cache.close()
         return result
