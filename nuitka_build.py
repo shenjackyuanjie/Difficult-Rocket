@@ -26,15 +26,19 @@ if __name__ == '__main__':
     # 修改 python 执行文件 为 运行时的 python
     compiler.python_cmd = sys.executable
 
+    compiler.xml_path = Path(f"./build/compile_data-{time.time()}.xml")
+
     # 检测 --github 参数
     is_github = False
     if '--github' in sys.argv:
         is_github = True
         compiler.use_ccache = False
+        compiler.show_memory = False
         compiler.show_progress = False
         compiler.output_path = Path('./build/github')
         compiler.python_cmd = 'python'
         compiler.include_data_dir.remove(('./libs/fonts', './libs/fonts'))
+        compiler.save_xml = False
 
     # 检测 --output xx 参数
     if '--output' in sys.argv:

@@ -31,6 +31,8 @@ class CompilerHelper(Options):
 
     show_progress: bool = True  # --show-progress
     show_memory: bool = False  # --show-memory
+    save_xml: bool = True  # --xml
+    xml_path: Path = Path('build/compile_data.xml')
 
     download_confirm: bool = True  # --assume-yes-for-download
 
@@ -104,6 +106,8 @@ class CompilerHelper(Options):
             cmd_list.append('--show-memory')
         if self.download_confirm:
             cmd_list.append('--assume-yes-for-download')
+        if self.save_xml:
+            cmd_list.append(f'--xml={self.xml_path.absolute()}')
 
         cmd_list.append(f"--output-dir={self.output_path.absolute()}")
 
