@@ -40,6 +40,11 @@ if __name__ == '__main__':
         compiler.include_data_dir.remove(('./libs/fonts', './libs/fonts'))
         compiler.save_xml = False
 
+    # 检测 --xml 参数
+    if '--xml' in sys.argv:
+        compiler.save_xml = True
+        sys.argv.remove('--xml')
+
     # 检测 --output xx 参数
     if '--output' in sys.argv:
         # 输入的是输出目录

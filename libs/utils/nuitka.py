@@ -31,7 +31,7 @@ class CompilerHelper(Options):
 
     show_progress: bool = True  # --show-progress
     show_memory: bool = False  # --show-memory
-    save_xml: bool = True  # --xml
+    save_xml: bool = False  # --xml
     xml_path: Path = Path('build/compile_data.xml')
 
     download_confirm: bool = True  # --assume-yes-for-download
