@@ -55,6 +55,9 @@ class CompilerHelper(Options):
                                                ('./configs', './configs')]
     include_packages: List[str] = ['Difficult_Rocket.api']
 
+    enable_plugin: List[str] = []  # --enable-plugin=xxx,xxx
+    disable_plugin: List[str] = []  # --disable-plugin=xxx,xxx
+
     def init(self, **kwargs) -> None:
         # 非 windows 平台不使用 msvc
         if platform.system() != 'Windows':
@@ -138,6 +141,9 @@ class CompilerHelper(Options):
 
         cmd_list.append(f"--follow-import-to={','.join(self.follow_import)}")
         cmd_list.append(f"--nofollow-import-to={','.join(self.no_follow_import)}")
+
+        cmd_list.append(f"--enable-plugin={','.join(self.enable_plugin)}")
+        cmd_list.append(f"--disable-plugin={','.join(self.disable_plugin)}")
 
         cmd_list.append(f"{self.src_file}")
         return cmd_list
