@@ -8,7 +8,7 @@
 import platform
 import traceback
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from Difficult_Rocket.api.types import Options, Version
 
@@ -28,6 +28,7 @@ class CompilerHelper(Options):
     use_mingw: bool = False  # --mingw64
     standalone: bool = True  # --standalone
     use_ccache: bool = True  # not --disable-ccache
+    enable_console: bool = True  # --enable-console / --disable-console
 
     show_progress: bool = True  # --show-progress
     show_memory: bool = False  # --show-memory
@@ -38,8 +39,11 @@ class CompilerHelper(Options):
 
     company_name: str = 'tool-shenjack-workshop'
     product_name: str = 'Difficult-Rocket'
-    product_version: Version
     file_version: Version
+    product_version: Version
+    file_description: str = 'Difficult Rocket'  # --file-description
+
+    copy_right: str = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'  # --copyright
 
     icon_path: Path = Path('textures/icon.png')
 
@@ -73,8 +77,8 @@ class CompilerHelper(Options):
     def __str__(self):
         return self.as_markdown()
 
-    def as_markdown(self) -> str:
-        front = super().as_markdown()
+    def as_markdown(self, longest: Optional[int] = None) -> str:
+        front = super().as_markdown(longest)
         gen_cmd = self.gen_subprocess_cmd()
         return f"{front}\n\n```bash\n{' '.join(gen_cmd)}\n```"
 
@@ -84,13 +88,21 @@ class CompilerHelper(Options):
         icon_cmd = ""
         if platform.system() == 'Darwin':
             icon_cmd = f"--macos-app-icon={self.icon_path.absolute()}"
+            cmd_list.append(f"--macos-app-version={self.product_version}")
         elif platform.system() == 'Windows':
             icon_cmd = f"--windows-icon-from-ico={self.icon_path.absolute()}"
+        elif platform.system() == 'Linux':
+            icon_cmd = f"--linux-icon={self.icon_path.absolute()}"
 
         if self.use_lto:
             cmd_list.append('--lto=yes')
         else:
             cmd_list.append('--lto=no')
+
+        if self.enable_console:
+            cmd_list.append('--enable-console')
+        else:
+            cmd_list.append('--disable-console')
 
         if self.use_clang:
             cmd_list.append('--clang')
@@ -113,8 +125,10 @@ class CompilerHelper(Options):
 
         cmd_list.append(f"--company-name={self.company_name}")
         cmd_list.append(f"--product-name={self.product_name}")
-        cmd_list.append(f"--product-version={self.product_version}")
         cmd_list.append(f"--file-version={self.file_version}")
+        cmd_list.append(f"--product-version={self.product_version}")
+        cmd_list.append(f"--file-description={self.file_description}")
+        cmd_list.append(f"--copyright={self.copy_right}")
 
         if icon_cmd:
             cmd_list.append(icon_cmd)

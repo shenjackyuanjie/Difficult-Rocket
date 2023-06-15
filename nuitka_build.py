@@ -79,9 +79,11 @@ if __name__ == '__main__':
                     if f'pyglet.{lib}.{name}' in compiler.no_follow_import:
                         compiler.no_follow_import.remove(f'pyglet.{lib}.{name}')
 
-    print(compiler.output_path)
+    print(compiler.as_markdown(longest=70))
 
-    print(compiler)
+    if is_github:
+        from pprint import pprint
+        pprint(compiler.option())
 
     print(compiler.gen_subprocess_cmd())
 
