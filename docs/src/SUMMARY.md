@@ -17,6 +17,7 @@
   - [nuitka performents test](./nuitka/20221121_nuitka_performs.md)
   - [nuitka options](./nuitka/20230116_nuitka_options.md)
   - [nuitka 1.3.7 compile options](./nuitka/nuitka_options_137.md)
+  - [nuitka 1.6.1 compile options](./nuitka/nuitka_options_161.md)
 
 - [计划特性](./plan_features/README.md)
   - [格式](./plan_features/格式.md)
