@@ -136,14 +136,20 @@ class CompilerHelper(Options):
         if icon_cmd:
             cmd_list.append(icon_cmd)
 
-        cmd_list += [f"--include-data-dir={src}={dst}" for src, dst in self.include_data_dir]
-        cmd_list += [f"--include-package={package}" for package in self.include_packages]
+        if self.include_data_dir:
+            cmd_list += [f"--include-data-dir={src}={dst}" for src, dst in self.include_data_dir]
+        if self.include_packages:
+            cmd_list += [f"--include-package={package}" for package in self.include_packages]
 
-        cmd_list.append(f"--follow-import-to={','.join(self.follow_import)}")
-        cmd_list.append(f"--nofollow-import-to={','.join(self.no_follow_import)}")
+        if self.follow_import:
+            cmd_list.append(f"--follow-import-to={','.join(self.follow_import)}")
+        if self.no_follow_import:
+            cmd_list.append(f"--nofollow-import-to={','.join(self.no_follow_import)}")
 
-        cmd_list.append(f"--enable-plugin={','.join(self.enable_plugin)}")
-        cmd_list.append(f"--disable-plugin={','.join(self.disable_plugin)}")
+        if self.enable_plugin:
+            cmd_list.append(f"--enable-plugin={','.join(self.enable_plugin)}")
+        if self.disable_plugin:
+            cmd_list.append(f"--disable-plugin={','.join(self.disable_plugin)}")
 
         cmd_list.append(f"{self.src_file}")
         return cmd_list
