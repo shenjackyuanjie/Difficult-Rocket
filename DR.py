@@ -54,14 +54,6 @@ def main() -> int:
     from Difficult_Rocket import crash
     from Difficult_Rocket import DR_option
     try:
-        from libs.pyglet_rs import get_version_str, patch_vector
-        print('pyglet_rs available:', get_version_str())
-        print('trying to patch pyglet_rs')
-        patch_vector()
-    except ImportError:
-        print('pyglet_rs import error')
-        traceback.print_exc()
-    try:
         from libs import pyglet  # 导入pyglet
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
