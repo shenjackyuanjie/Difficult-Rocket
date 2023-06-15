@@ -135,7 +135,7 @@ if __name__ == '__main__':
                             'dist_size_mb': dist_dir_size / 1024 / 1024,
                             'compiler_data': compiler.str_option(),
                             'dist_file_size': dist_file_size}
-            with open(compiler.output_path / f'../compile_data-{time.time()}.toml', 'w') as compile_data_file:
+            with open(compiler.output_path / f'../compile_data-{time.time()}.toml', 'w', encoding='utf-8') as compile_data_file:
                 tomlkit.dump(compile_data, compile_data_file)
 
     sys.exit(0)
