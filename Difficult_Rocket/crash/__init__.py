@@ -99,14 +99,14 @@ def write_cache(cache_stream, crash_info):
 
 def write_info_to_cache(cache_stream):
     # 运行状态信息
-    from Difficult_Rocket import DR_option, DR_runtime
+    from Difficult_Rocket import DR_status, DR_runtime
     cache_stream.write(Run_message)
     cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
     cache_stream.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
     cache_stream.write(markdown_line_handler(f'Running Dir: {Path(os.curdir).resolve()}', level=1))
     cache_stream.write(f"\n{DR_runtime.as_markdown()}")
     cache_stream.write(DR_configs)
-    cache_stream.write(f"\n{DR_option.as_markdown()}")
+    cache_stream.write(f"\n{DR_status.as_markdown()}")
     cache_stream.write(Process_message)
     for process in all_process:
         process: multiprocessing.Process

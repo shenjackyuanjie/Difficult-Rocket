@@ -69,9 +69,9 @@ class CompilerHelper(Options):
 
     def load_file(self) -> bool:
         try:
-            from Difficult_Rocket import DR_runtime
-            self.product_version = DR_runtime.DR_version
-            self.file_version = DR_runtime.Build_version
+            from Difficult_Rocket import DR_status
+            self.product_version = DR_status.DR_version
+            self.file_version = DR_status.Build_version
             return True
         except ImportError:
             traceback.print_exc()

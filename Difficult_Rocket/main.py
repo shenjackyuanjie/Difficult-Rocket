@@ -37,7 +37,7 @@ from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.utils.thread import new_thread
 from Difficult_Rocket.crash import write_info_to_cache
-from Difficult_Rocket import client, server, DR_option, DR_runtime
+from Difficult_Rocket import client, server, DR_status, DR_runtime
 
 
 class Console(Options):
@@ -154,7 +154,7 @@ class Game(Options):
 
     def start(self):
         self.server.run()
-        if DR_option.use_multiprocess:
+        if DR_status.use_multiprocess:
             try:
                 game_process = multiprocessing.Process(target=self.client.start, name='pyglet app')
                 game_process.start()

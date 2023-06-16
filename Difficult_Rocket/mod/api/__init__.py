@@ -12,8 +12,8 @@ gitee:  @shenjackyuanjie
 """
 
 # system function
+import warnings
 from typing import Tuple, List, Optional, TypeVar, TYPE_CHECKING
-
 
 # from DR
 if TYPE_CHECKING:
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 else:
     Game = TypeVar("Game")
     ClientWindow = TypeVar("ClientWindow")
-from Difficult_Rocket import DR_runtime
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.api.types import Options, Version
 
 RequireVersion = Tuple[Version, Version]
@@ -47,8 +47,8 @@ class ModInfo(Options):
     info: str = ""  # 其他信息 (可以很多很多)
 
     """版本相关信息"""
-    DR_version: RequireVersion = (DR_runtime.DR_version, DR_runtime.DR_version)  # DR SDK 兼容版本
-    DR_Api_version: RequireVersion = (DR_runtime.API_version, DR_runtime.API_version)  # DR Api版本
+    DR_version: RequireVersion = (DR_status.DR_version, DR_status.DR_version)  # DR SDK 兼容版本
+    DR_Api_version: RequireVersion = (DR_status.API_version, DR_status.API_version)  # DR Api版本
     Mod_Require_version: List[Tuple[str, ForceRequire, RequireVersion]] = []  # mod 依赖版本
 
     """mod 状态"""
@@ -59,9 +59,15 @@ class ModInfo(Options):
     config: Options = Options()  # mod 配置存储
     old_mod: Optional["ModInfo"] = None  # 旧的mod实例
 
+    def __init__(self, **kwargs):
+        if not self.DR_version[0] <= DR_status.DR_version <= self.DR_version[1]:
+            warnings.warn(f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.DR_version}\nDR {self.DR_version} is required")
+        if not self.DR_Api_version[0] <= DR_status.API_version <= self.DR_Api_version[1]:
+            warnings.warn(f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.API_version}\nDR {self.DR_Api_version} is required")
+        super().__init__(**kwargs)
+
     def on_load(self, game: Game, old_self: Optional["ModInfo"] = None) -> bool:
         """ 加载时调用 """
-        print(f'Mod {self.mod_id} loaded')
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):
