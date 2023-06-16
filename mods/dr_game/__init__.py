@@ -12,8 +12,8 @@ from typing import Optional
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
 from Difficult_Rocket.api.mod import ModInfo
-from Difficult_Rocket.api.types import Options, Version
 from Difficult_Rocket.client import ClientWindow
+from Difficult_Rocket.api.types import Options, Version
 
 DR_rust_version = Version("0.2.10.1")  # DR_mod 的 Rust 编写部分的兼容版本
 
