@@ -12,6 +12,12 @@
   - 事实证明这玩意没啥用
   - Removed pyglet_rs
 
+### Fix
+
+- issue #31 (https://github.com/shenjackyuanjie/Difficult-Rocket/issues/31)
+  - 窗口标题不正确 (实际上是因为只使用 `DR_runtime` 进行格式化)
+  - Window title is incorrect
+
 ### 添加
 
 - `DR_status`
