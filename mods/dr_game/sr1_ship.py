@@ -4,12 +4,11 @@
 #  All rights reserved
 #  -------------------------------
 
-import math
+# import math
 import time
 import random
-import logging
 import traceback
-from xml.etree import ElementTree
+# from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
 
@@ -21,7 +20,7 @@ from pyglet.math import Vec4
 from pyglet.text import Label
 from pyglet.shapes import Line, Rectangle
 from pyglet.sprite import Sprite
-from pyglet.image import Texture
+# from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
 
 from . import DR_mod_runtime
@@ -32,6 +31,7 @@ from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
+from Difficult_Rocket.api.log import get_named_client_logger
 from .types import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
 
 if TYPE_CHECKING:
@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, SR1Ship_rs
 
-logger = logging.getLogger('client')
+logger = get_named_client_logger('dr_game_sr1_ship')
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:

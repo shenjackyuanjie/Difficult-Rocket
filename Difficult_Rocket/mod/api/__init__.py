@@ -12,8 +12,8 @@ gitee:  @shenjackyuanjie
 """
 
 # system function
+import warnings
 from typing import Tuple, List, Optional, TypeVar, TYPE_CHECKING
-
 
 # from DR
 if TYPE_CHECKING:
@@ -59,9 +59,15 @@ class ModInfo(Options):
     config: Options = Options()  # mod 配置存储
     old_mod: Optional["ModInfo"] = None  # 旧的mod实例
 
+    def __init__(self, **kwargs):
+        if not self.DR_version[0] <= DR_status.DR_version <= self.DR_version[1]:
+            warnings.warn(f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.DR_version}\nDR {self.DR_version} is required")
+        if not self.DR_Api_version[0] <= DR_status.API_version <= self.DR_Api_version[1]:
+            warnings.warn(f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.API_version}\nDR {self.DR_Api_version} is required")
+        super().__init__(**kwargs)
+
     def on_load(self, game: Game, old_self: Optional["ModInfo"] = None) -> bool:
         """ 加载时调用 """
-        print(f'Mod {self.mod_id} loaded')
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):

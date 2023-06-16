@@ -9,6 +9,7 @@ import traceback
 
 from typing import Optional
 
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
 from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.api.types import Options, Version
@@ -58,7 +59,7 @@ class DR_mod(ModInfo):
 
     config = DR_mod_runtime
 
-    # DR_version =  # DR SDK 兼容版本
+    DR_version = (DR_status.DR_version, DR_status.DR_version)  # DR SDK 兼容版本
     # 反正是内置 mod 跟着最新版本的 DR 走就行了
     # DR_Api_version =   # DR Api版本
     # 同理 不管 API 版本   这东西要是不兼容了才是大问题
