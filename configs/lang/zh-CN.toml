@@ -72,8 +72,8 @@ os.pid_is = "服务端 PID: {} PPID: {}"
 
 [game]
 input = "控制台"
-command = "游戏内命令行"
 window = "窗口"
+command = "游戏内命令行"
 require_DR_rs = "需要 DR_rs 模块"
 
 [client.sr1_render]

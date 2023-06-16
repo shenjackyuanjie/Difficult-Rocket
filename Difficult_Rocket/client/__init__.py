@@ -30,10 +30,10 @@ from pyglet.window import key, mouse
 if TYPE_CHECKING:
     from Difficult_Rocket.main import Game
 from Difficult_Rocket.utils import tools
-from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command import line
+from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket import DR_runtime
+from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.utils.thread import new_thread
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
@@ -51,7 +51,7 @@ class ClientOption(Options):
     resizeable: bool = True
     visible: bool = True
     gui_scale: float = 1.0
-    caption: str = "Difficult Rocket v{DR_version}|DR_rs v{DR_Rust_get_version}"
+    caption: str = "Difficult Rocket v{DR_version}"
 
     def load_file(self) -> None:
         file: dict = tools.load_file('./configs/main.toml')
@@ -223,7 +223,7 @@ class ClientWindow(Window):
             print("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
             print("==========client stop. KeyboardInterrupt info end==========")
-            self.dispatch_event("on_close")
+            self.dispatch_event("on_close", 'input')
             sys.exit(0)
 
     @new_thread('window save_info')
@@ -388,7 +388,7 @@ class ClientWindow(Window):
         if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
-            self.dispatch_event('on_close')
+            self.dispatch_event('on_close', 'window')
         if symbol == key.SLASH:
             self.input_box._set_focus(True)
         self.logger.debug(

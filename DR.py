@@ -58,7 +58,8 @@ def main() -> int:
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
 
-        from Difficult_Rocket import main, DR_runtime
+        from Difficult_Rocket import main
+        from Difficult_Rocket.runtime import DR_runtime
         DR_runtime.start_time_ns = start_time_ns
 
         # from pyglet.gl import glClearColor  # 调整背景颜色

@@ -17,8 +17,9 @@ import inspect
 from dataclasses import dataclass
 from typing import Union, Tuple, Any, List, Dict, Hashable, Optional
 
-from Difficult_Rocket import DR_runtime, DR_status
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils import tools
+from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.exception.language import (LanguageNotFound,
                                                  TranslateKeyNotFound)
 

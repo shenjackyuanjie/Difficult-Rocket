@@ -29,6 +29,7 @@ mod.load.info = "mod id: {} version: {}"
 mod.load.faild.info = "Mod load failed: {} error info: {}"
 mod.load.faild.no_mod_class = "Can't find Mod class"
 mod.load.done = "All Mod loaded"
+mod.event.error = "Mod evenet {} caught error: {} Mod: {}"
 
 [client]
 setup.start = "Client start loading"
@@ -71,8 +72,8 @@ os.pid_is = "Server PID: {} PPID: {}"
 
 [game]
 input = "console"
-command = "in game commands"
 window = "window"
+command = "in game commands"
 require_DR_rs = "require DR_rs module"
 
 [client.sr1_render]

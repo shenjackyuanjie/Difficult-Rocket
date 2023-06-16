@@ -10,12 +10,9 @@ import rtoml
 
 sys.path.append(os.path.abspath(os.curdir))
 
-from Difficult_Rocket import DR_runtime
+from Difficult_Rocket.runtime import DR_runtime
 
 args = ['-env', '-github-dev']
-
-# print(sys.argv)
-
 
 
 if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并输出
