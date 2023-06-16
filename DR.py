@@ -52,7 +52,7 @@ def main() -> int:
 
     from Difficult_Rocket.exception import TestError
     from Difficult_Rocket import crash
-    from Difficult_Rocket import DR_option
+    from Difficult_Rocket import DR_status
     try:
         from libs import pyglet  # 导入pyglet
         pyglet.resource.path = ['/textures/']
@@ -72,7 +72,7 @@ def main() -> int:
             cProfile.run('game.start()', sort='calls')  # 使用 cprofile 启动
         else:
             game.start()  # 直接启动
-        if DR_option.crash_report_test:
+        if DR_status.crash_report_test:
             raise TestError('debugging')  # debug 嘛，试试crash
     except Exception as exp:  # 出毛病了
         # 解析错误信息

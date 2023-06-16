@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 else:
     Game = TypeVar("Game")
     ClientWindow = TypeVar("ClientWindow")
-from Difficult_Rocket import DR_runtime
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.api.types import Options, Version
 
 RequireVersion = Tuple[Version, Version]
@@ -47,8 +47,8 @@ class ModInfo(Options):
     info: str = ""  # 其他信息 (可以很多很多)
 
     """版本相关信息"""
-    DR_version: RequireVersion = (DR_runtime.DR_version, DR_runtime.DR_version)  # DR SDK 兼容版本
-    DR_Api_version: RequireVersion = (DR_runtime.API_version, DR_runtime.API_version)  # DR Api版本
+    DR_version: RequireVersion = (DR_status.DR_version, DR_status.DR_version)  # DR SDK 兼容版本
+    DR_Api_version: RequireVersion = (DR_status.API_version, DR_status.API_version)  # DR Api版本
     Mod_Require_version: List[Tuple[str, ForceRequire, RequireVersion]] = []  # mod 依赖版本
 
     """mod 状态"""

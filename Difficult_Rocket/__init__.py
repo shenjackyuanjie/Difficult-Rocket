@@ -48,8 +48,6 @@ class _DR_status(Options):
     API_version: Version = Api_version  # DR SDK API 版本
 
     # game options
-    language: str = 'zh-CN'
-    mod_path: str = './mods'
     default_language: str = 'zh-CN'
 
     # window option
@@ -62,10 +60,12 @@ class _DR_status(Options):
 
 class _DR_runtime(Options):
     """
-    DR 的运行时配置/状态
+    DR 的运行时配置 / 状态
     """
     name = 'DR Runtime'
 
+    language: str = 'zh-CN'
+    mod_path: str = './mods'
     DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表 (name, version)
     
     # run status

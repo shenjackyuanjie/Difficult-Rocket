@@ -27,7 +27,7 @@ from pyglet.graphics import Batch, Group
 from . import DR_mod_runtime
 
 # Difficult Rocket
-from Difficult_Rocket import DR_option
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
@@ -124,7 +124,7 @@ class SR1ShipRender(BaseScreen):
         self.part_box_batch = Batch()
         self.part_batch = Batch()
         self.part_group = Group()
-        self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_option.std_font_size,
+        self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
                                  anchor_x='left', anchor_y='top')
@@ -171,7 +171,7 @@ class SR1ShipRender(BaseScreen):
         self.drawing = True
         for part_id, part in part_datas.items():
             # 下面就是调用 pyglet 去渲染的部分
-            # render_scale = DR_option.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
+            # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
             # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
             render_x = part.x * 60

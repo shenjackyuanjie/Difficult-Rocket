@@ -49,7 +49,7 @@ class DR_mod(ModInfo):
 
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
-    version = Version("0.1.0.0")
+    version = Version("0.2.0.0")
 
     writer = "shenjackyuanjie"
     link = "shenjack.top"

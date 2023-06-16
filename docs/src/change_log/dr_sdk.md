@@ -22,10 +22,9 @@
 
 - `Difficult_Rocket.DR_runtime`
   - `DR_version` -> `DR_status.DR_version`
-  - `Build_version` -> `DR_status.Build_version`
   - `API_version` -> `DR_status.API_version`
-  - `language` -> `DR_status.language`
-  - `mod_path` -> `DR_status.mod_path`
+  - `Build_version` -> `DR_status.Build_version`
+  - `default_language` -> `DR_status.default_language`
 
 ### 删除
 
