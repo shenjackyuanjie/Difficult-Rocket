@@ -29,6 +29,7 @@ from pyglet.window import key, mouse
 # Difficult_Rocket function
 if TYPE_CHECKING:
     from Difficult_Rocket.main import Game
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.command import line
 from Difficult_Rocket.api.types import Options
@@ -61,7 +62,8 @@ class ClientOption(Options):
         self.fullscreen = tools.format_bool(file['window']['full_screen'])
         self.resizeable = tools.format_bool(file['window']['resizable'])
         self.gui_scale = float(file['window']['gui_scale'])
-        self.caption = DR_runtime.format(file['window']['caption'])
+        self.caption = DR_status.format(file['window']['caption'])
+        self.caption = DR_runtime.format(self.caption)
 
 
 class Client:
