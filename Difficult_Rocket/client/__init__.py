@@ -223,7 +223,7 @@ class ClientWindow(Window):
             print("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
             print("==========client stop. KeyboardInterrupt info end==========")
-            self.dispatch_event("on_close")
+            self.dispatch_event("on_close", 'input')
             sys.exit(0)
 
     @new_thread('window save_info')
@@ -388,7 +388,7 @@ class ClientWindow(Window):
         if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |
                                                        key.MOD_CAPSLOCK |
                                                        key.MOD_SCROLLLOCK)):
-            self.dispatch_event('on_close')
+            self.dispatch_event('on_close', 'window')
         if symbol == key.SLASH:
             self.input_box._set_focus(True)
         self.logger.debug(
