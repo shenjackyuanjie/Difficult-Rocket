@@ -6,6 +6,12 @@
 
 ## DR sdk 0.8.3.0
 
+### 删除
+
+- `pyglet_rs`
+  - 事实证明这玩意没啥用
+  - Removed pyglet_rs
+
 ### 添加
 
 - `DR_status`
