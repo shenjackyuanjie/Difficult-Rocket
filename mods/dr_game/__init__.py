@@ -11,11 +11,16 @@ from typing import Optional
 
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
+from Difficult_Rocket.main import Console
 from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Options, Version
+from Difficult_Rocket.api.log import get_named_client_logger
 
 DR_rust_version = Version("0.2.10.1")  # DR_mod 的 Rust 编写部分的兼容版本
+
+
+logger = get_named_client_logger('dr_game')
 
 
 class _DR_mod_runtime(Options):
@@ -75,15 +80,24 @@ class DR_mod(ModInfo):
             game.client.window.add_sub_screen("SR1_ship", old_self.screen)
         else:
             self.config.flush_option()
-        print("DR_mod: on_load")
-        print(self.as_markdown())
+        logger.info("on_load")
+        logger.info(self.as_markdown())
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):
         from .sr1_ship import SR1ShipRender
         self.screen = SR1ShipRender
-        print('DR_mod: on_client_start')
         client.add_sub_screen("SR1_ship", SR1ShipRender)
+        logger.info('on_client_start added sub screen')
+
+    def on_unload(self, game: Game):
+        if DR_mod_runtime.DR_rust_available:
+            game.console.stop()
+            game.console_class = Console
+            logger.info('replace Console class')
+            game.init_console()
+            logger.info('reinit console')
+
 
 
 mod_class = DR_mod
