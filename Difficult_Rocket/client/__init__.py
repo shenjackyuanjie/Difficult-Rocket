@@ -43,6 +43,9 @@ from Difficult_Rocket.exception.language import LanguageNotFound
 from Difficult_Rocket.client.screen import DRScreen, DRDEBUGScreen
 
 
+logger = logging.getLogger('client')
+
+
 class ClientOption(Options):
     fps: int = 60
     width: int = 1024
@@ -107,9 +110,15 @@ def pyglet_load_fonts_folder(folder) -> None:
     file_folder_list = os.listdir(folder)
     for obj in file_folder_list:
         if os.path.isfile(os.path.join(folder, obj)):
-            if obj[-4:] == '.ttf':
-                pyglet.font.add_file(os.path.join(folder, obj))
+            if obj[-4:] == '.ttf' or obj[-4:] == '.otf':
+                logger.debug(f'loading font {os.path.join(folder, obj)}')
+                try:
+                    pyglet.font.add_file(os.path.join(folder, obj))
+                except Exception:
+                    logger.error(traceback.format_exc())
+                    logger.error(f'loading font {os.path.join(folder, obj)} failed')
         else:
+            logger.info(f'loading font folder {os.path.join(folder, obj)}')
             pyglet_load_fonts_folder(os.path.join(folder, obj))
 
 

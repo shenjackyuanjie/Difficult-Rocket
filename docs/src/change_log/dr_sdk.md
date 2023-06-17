@@ -4,6 +4,13 @@
 - 最新版本号
   - DR sdk: 0.8.3.0
 
+## DR sdk 0.8.3.1
+
+### Fix
+
+- issue #33 (https://github.com/shenjackyuanjie/Difficult-Rocket/issues/33)
+  - 修复了实际上并不会加载 `.otf` 格式的字体文件的问题
+
 ## DR sdk 0.8.3.0
 
 ### 删除
