@@ -12,8 +12,6 @@ gitee:  @shenjackyuanjie
 """
 
 
-# from Difficult_Rocket.api import screen, mod, exception
-
 __all__ = [
     'exception',
     # 错误类定义

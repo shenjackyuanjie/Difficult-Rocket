@@ -8,9 +8,15 @@
 import platform
 import traceback
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any
 
 from Difficult_Rocket.api.types import Options, Version
+
+
+def _add_cmd(cmd: List[str], string: Optional[Any]) -> List[str]:
+    if string is not None and string:
+        cmd.append(string)
+    return cmd
 
 
 class CompilerHelper(Options):
@@ -88,68 +94,44 @@ class CompilerHelper(Options):
     def gen_subprocess_cmd(self) -> List[str]:
         cmd_list = [self.python_cmd, '-m', 'nuitka']
         # macos 和 非 macos icon 参数不同
-        icon_cmd = ""
         if platform.system() == 'Darwin':
-            icon_cmd = f"--macos-app-icon={self.icon_path.absolute()}"
             cmd_list.append(f"--macos-app-version={self.product_version}")
+            _add_cmd(cmd_list, f'--macos-app-icon={self.icon_path.absolute()}' if self.icon_path else None)
         elif platform.system() == 'Windows':
-            icon_cmd = f"--windows-icon-from-ico={self.icon_path.absolute()}"
+            _add_cmd(cmd_list, f'--windows-icon-from-ico={self.icon_path.absolute()}' if self.icon_path else None)
         elif platform.system() == 'Linux':
-            icon_cmd = f"--linux-icon={self.icon_path.absolute()}"
+            _add_cmd(cmd_list, f'--linux-icon={self.icon_path.absolute()}' if self.icon_path else None)
 
-        if self.use_lto:
-            cmd_list.append('--lto=yes')
-        else:
-            cmd_list.append('--lto=no')
+        _add_cmd(cmd_list, '--lto=yes' if self.use_lto else '--lto=no')
+        _add_cmd(cmd_list, '--clang' if self.use_clang else None)
+        _add_cmd(cmd_list, '--msvc' if self.use_msvc else None)
+        _add_cmd(cmd_list, '--mingw64' if self.use_mingw else None)
+        _add_cmd(cmd_list, '--standalone' if self.standalone else None)
 
-        if self.enable_console:
-            cmd_list.append('--enable-console')
-        else:
-            cmd_list.append('--disable-console')
+        _add_cmd(cmd_list, '--disable-ccache' if self.use_ccache else None)
+        _add_cmd(cmd_list, '--show-progress' if self.show_progress else None)
+        _add_cmd(cmd_list, '--show-memory' if self.show_memory else None)
+        _add_cmd(cmd_list, '--assume-yes-for-download' if self.download_confirm else None)
+        _add_cmd(cmd_list, '--enable-console' if self.enable_console else '--disable-console')
 
-        if self.use_clang:
-            cmd_list.append('--clang')
-        if self.use_msvc:
-            cmd_list.append('--msvc=latest')
-        if self.standalone:
-            cmd_list.append('--standalone')
-        if not self.use_ccache:
-            cmd_list.append('--disable-ccache')
-        if self.show_progress:
-            cmd_list.append('--show-progress')
-        if self.show_memory:
-            cmd_list.append('--show-memory')
-        if self.download_confirm:
-            cmd_list.append('--assume-yes-for-download')
-        if self.save_xml:
-            cmd_list.append(f'--xml={self.xml_path.absolute()}')
+        _add_cmd(cmd_list, f'--xml={self.xml_path.absolute()}' if self.save_xml else None)
+        _add_cmd(cmd_list, f'--output-dir={self.output_path.absolute()}' if self.output_path else None)
+        _add_cmd(cmd_list, f'--company-name={self.company_name}' if self.company_name else None)
+        _add_cmd(cmd_list, f'--product-name={self.product_name}' if self.product_name else None)
+        _add_cmd(cmd_list, f'--file-version={self.file_version}' if self.file_version else None)
+        _add_cmd(cmd_list, f'--product-version={self.product_version}' if self.product_version else None)
+        _add_cmd(cmd_list, f'--file-description={self.file_description}' if self.file_description else None)
+        _add_cmd(cmd_list, f'--copy-right={self.copy_right}' if self.copy_right else None)
 
-        cmd_list.append(f"--output-dir={self.output_path.absolute()}")
-
-        cmd_list.append(f"--company-name={self.company_name}")
-        cmd_list.append(f"--product-name={self.product_name}")
-        cmd_list.append(f"--file-version={self.file_version}")
-        cmd_list.append(f"--product-version={self.product_version}")
-        cmd_list.append(f"--file-description={self.file_description}")
-        cmd_list.append(f"--copyright={self.copy_right}")
-
-        if icon_cmd:
-            cmd_list.append(icon_cmd)
+        _add_cmd(cmd_list, f'--follow-import-to={",".join(self.follow_import)}' if self.follow_import else None)
+        _add_cmd(cmd_list, f'--nofollow-import-to={",".join(self.no_follow_import)}' if self.no_follow_import else None)
+        _add_cmd(cmd_list, f'--enable-plugin={",".join(self.enable_plugin)}' if self.enable_plugin else None)
+        _add_cmd(cmd_list, f'--disable-plugin={",".join(self.disable_plugin)}' if self.disable_plugin else None)
 
         if self.include_data_dir:
             cmd_list += [f"--include-data-dir={src}={dst}" for src, dst in self.include_data_dir]
         if self.include_packages:
             cmd_list += [f"--include-package={package}" for package in self.include_packages]
-
-        if self.follow_import:
-            cmd_list.append(f"--follow-import-to={','.join(self.follow_import)}")
-        if self.no_follow_import:
-            cmd_list.append(f"--nofollow-import-to={','.join(self.no_follow_import)}")
-
-        if self.enable_plugin:
-            cmd_list.append(f"--enable-plugin={','.join(self.enable_plugin)}")
-        if self.disable_plugin:
-            cmd_list.append(f"--disable-plugin={','.join(self.disable_plugin)}")
 
         cmd_list.append(f"{self.src_file}")
         return cmd_list

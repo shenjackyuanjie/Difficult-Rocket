@@ -7,11 +7,11 @@ Thanks a lot to Fallen_Breath and MCDR contributors
 GNU Lesser General Public License v3.0 (GNU LGPL v3)
 """
 
+import re
+from typing import List, Callable, Tuple, Optional, Union
 """
 Plugin Version
 """
-import re
-from typing import List, Callable, Tuple, Optional, Union
 
 
 # beta.3 -> (beta, 3), random -> (random, None)

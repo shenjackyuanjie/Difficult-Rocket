@@ -16,7 +16,6 @@ from Difficult_Rocket.mod.api import ModInfo
 
 class ModManager(Options):
     name = 'Mod Manager'
-    logger: logging.Logger
 
     mods_path: List[Path] = [Path('./mods')]
     loaded_mod_modules: Dict[str, ModInfo] = {}
