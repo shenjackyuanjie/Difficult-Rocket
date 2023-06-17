@@ -4,19 +4,20 @@
 #  All rights reserved
 #  -------------------------------
 
-import warnings
 import traceback
 from io import StringIO
 from dataclasses import dataclass
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING, Iterable
 
-__all__ = ['get_type_hints_',
-           'Options',
-           'Fonts',
-           'FontData',
-           'OptionsError',
-           'OptionNotFound',
-           'OptionNameNotDefined']
+__all__ = [
+    'get_type_hints_',
+    'Options',
+    'OptionsError',
+    'OptionNotFound',
+    'OptionNameNotDefined',
+    'Fonts',
+    'FontData'
+]
 
 
 def get_type_hints_(cls: Type):

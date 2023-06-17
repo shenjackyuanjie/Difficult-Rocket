@@ -108,7 +108,7 @@ class CompilerHelper(Options):
         _add_cmd(cmd_list, '--mingw64' if self.use_mingw else None)
         _add_cmd(cmd_list, '--standalone' if self.standalone else None)
 
-        _add_cmd(cmd_list, '--disable-ccache' if self.use_ccache else None)
+        _add_cmd(cmd_list, '--disable-ccache' if not self.use_ccache else None)
         _add_cmd(cmd_list, '--show-progress' if self.show_progress else None)
         _add_cmd(cmd_list, '--show-memory' if self.show_memory else None)
         _add_cmd(cmd_list, '--assume-yes-for-download' if self.download_confirm else None)
