@@ -11,7 +11,7 @@
 
 - `Python::data::PySR1Ship`
   - `get_part_box(&self, part_id: i64) -> Option<(f64, f64), (f64, f64)>`
-    - 用于获取对应 id 的碰撞箱
+    - 用于获取对应 id 的实际碰撞箱
 
 ## DR game 0.2.0.0
 
