@@ -21,6 +21,4 @@ __all__ = [
     # 类型定义
     'mod',
     # mod api
-    'log'
-    # log api
 ]

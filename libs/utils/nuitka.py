@@ -121,7 +121,7 @@ class CompilerHelper(Options):
         _add_cmd(cmd_list, f'--file-version={self.file_version}' if self.file_version else None)
         _add_cmd(cmd_list, f'--product-version={self.product_version}' if self.product_version else None)
         _add_cmd(cmd_list, f'--file-description={self.file_description}' if self.file_description else None)
-        _add_cmd(cmd_list, f'--copy-right={self.copy_right}' if self.copy_right else None)
+        _add_cmd(cmd_list, f'--copyright={self.copy_right}' if self.copy_right else None)
 
         _add_cmd(cmd_list, f'--follow-import-to={",".join(self.follow_import)}' if self.follow_import else None)
         _add_cmd(cmd_list, f'--nofollow-import-to={",".join(self.no_follow_import)}' if self.no_follow_import else None)
