@@ -357,22 +357,22 @@ class SR1ShipRender(BaseScreen):
                 self.need_draw = True
             print('应该渲染飞船的')
         elif command.find('debug'):
-            print('sr ?')
             if command.find('delta'):
-                SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
-                self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
-                self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
-                # print('sr1 delta')
+                # SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
+                self.debug_line.visible = not self.debug_line.visible
+                self.debug_d_pos_label.visible = not self.debug_d_pos_label.visible
+                SR1ShipRender_Option.debug_d_pos = self.debug_line.visible
+                logger.debug('sr1 delta')
             elif command.find('mouse'):
                 if command.find('delta'):
                     SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
-                    # print('sr1 mouse delta')
+                    logger.debug(f'sr1 mouse delta {SR1ShipRender_Option.debug_mouse_pos}')
                 else:
-                    SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
-                    self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
-                    # print('sr1 mouse')
+                    self.debug_mouse_delta_line.visible = not self.debug_mouse_delta_line.visible
+                    SR1ShipRender_Option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
+                    logger.debug(f'sr1 mouse {SR1ShipRender_Option.debug_mouse_d_pos}')
             elif command.find('ship'):
                 if self.rendered:
                     for index, sprite in self.parts_sprite.items():
