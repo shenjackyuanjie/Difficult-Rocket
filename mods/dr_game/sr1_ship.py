@@ -197,7 +197,7 @@ class SR1ShipRender(BaseScreen):
                 if part_debug_box:
                     # 线框
                     part_line_box = []
-                    width = 3
+                    width = 4
                     color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(100, 200))
                     part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
@@ -228,6 +228,7 @@ class SR1ShipRender(BaseScreen):
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        self.part_line_box = {}
         self.camera_rs.zoom = 1.0
         if DR_mod_runtime.use_DR_rust:
             self.camera_rs.dx = 0
@@ -372,6 +373,10 @@ class SR1ShipRender(BaseScreen):
                     SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
                     self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
                     # print('sr1 mouse')
+            elif command.find('ship'):
+                if self.rendered:
+                    for index, sprite in self.parts_sprite.items():
+                        sprite.visible = not sprite.visible
 
         elif command.find('get_buf'):
 
