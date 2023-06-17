@@ -104,7 +104,7 @@ class CompilerHelper(Options):
 
         _add_cmd(cmd_list, '--lto=yes' if self.use_lto else '--lto=no')
         _add_cmd(cmd_list, '--clang' if self.use_clang else None)
-        _add_cmd(cmd_list, '--msvc' if self.use_msvc else None)
+        _add_cmd(cmd_list, '--msvc=latest' if self.use_msvc else None)
         _add_cmd(cmd_list, '--mingw64' if self.use_mingw else None)
         _add_cmd(cmd_list, '--standalone' if self.standalone else None)
 
