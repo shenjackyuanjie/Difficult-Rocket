@@ -19,7 +19,6 @@ from Difficult_Rocket.api.types import Options, Version
 
 DR_rust_version = Version("0.2.10.1")  # DR_mod 的 Rust 编写部分的兼容版本
 
-
 logger = logging.getLogger('client.dr_game')
 
 
@@ -38,8 +37,9 @@ class _DR_mod_runtime(Options):
             self.DR_rust_available = True
             if self.DR_rust_get_version != self.DR_rust_version:
                 relationship = 'larger' if self.DR_rust_version > self.DR_rust_version else 'smaller'
-                warnings.warn(f'DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n'
-                              f'Builtin version {relationship} than true version')
+                warnings.warn(
+                    f'DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n'
+                    f'Builtin version {relationship} than true version')
             self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
         except Exception:
             traceback.print_exc()
@@ -52,7 +52,6 @@ DR_mod_runtime = _DR_mod_runtime()
 
 
 class DR_mod(ModInfo):
-
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
     version = Version("0.2.0.0")
@@ -65,6 +64,7 @@ class DR_mod(ModInfo):
     config = DR_mod_runtime
 
     DR_version = (DR_status.DR_version, DR_status.DR_version)  # DR SDK 兼容版本
+
     # 反正是内置 mod 跟着最新版本的 DR 走就行了
     # DR_Api_version =   # DR Api版本
     # 同理 不管 API 版本   这东西要是不兼容了才是大问题
@@ -97,7 +97,6 @@ class DR_mod(ModInfo):
             logger.info('replace Console class')
             game.init_console()
             logger.info('reinit console')
-
 
 
 mod_class = DR_mod
