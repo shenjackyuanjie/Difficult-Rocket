@@ -19,10 +19,10 @@ from defusedxml.ElementTree import parse
 # pyglet
 from pyglet.math import Vec4
 from pyglet.text import Label
-from pyglet.shapes import Line, Rectangle
 from pyglet.sprite import Sprite
 # from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
+from pyglet.shapes import Line, Rectangle
 
 from . import DR_mod_runtime
 
@@ -131,6 +131,7 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
+        self.part_line_box: Dict[int, List[Line]] = {}
         load_end_time = time.time_ns()
         logger.info(tr().client.sr1_render.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
@@ -193,17 +194,37 @@ class SR1ShipRender(BaseScreen):
 
             part_width = 100
             part_height = 100
+
             if DR_mod_runtime.use_DR_rust:
                 part_type = self.part_list_rs.get_part_type(part.p_type)
+                part_debug_box = self.rust_ship.get_part_box(part.id)
                 if part_type is not None:
                     part_width = part_type.width * 15
                     part_height = part_type.height * 15
-            part_box = Rectangle(x=render_x, y=render_y,
-                                 width=part_width, height=part_height,
-                                 batch=self.part_box_batch, group=self.part_group)
-            part_box.rotation = SR1Rotation.get_rotation(part.angle)
-            part_box.opacity = 50
-            self.part_box_dict[part.id] = part_box
+                # 白色框框
+                part_box = Rectangle(x=render_x, y=render_y,
+                                     width=part_width, height=part_height,
+                                     batch=self.part_box_batch, group=self.part_group)
+                part_box.rotation = SR1Rotation.get_rotation(part.angle)
+                part_box.opacity = 50
+                self.part_box_dict[part.id] = part_box
+                # 线框
+                part_line_box = []
+                width = 3
+                color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
+                part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
+                                          x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
+                                          batch=self.part_box_batch, width=width, color=color))
+                part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[1][1] * 30,
+                                          x2=part_debug_box[1][0] * 30, y2=part_debug_box[1][1] * 30,
+                                          batch=self.part_box_batch, width=width, color=color))
+                part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[1][1] * 30,
+                                          x2=part_debug_box[1][0] * 30, y2=part_debug_box[0][1] * 30,
+                                          batch=self.part_box_batch, width=width, color=color))
+                part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
+                                          x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
+                                          batch=self.part_box_batch, width=width, color=color))
+                self.part_line_box[part.id] = part_line_box
             # if not part_render:  # 如果不渲染(渲染有毛病)
             #     self.parts_sprite[part.id].visible = False
             count += 1
@@ -400,23 +421,6 @@ class SR1ShipRender(BaseScreen):
                 traceback.print_exc()
                 print('PIL not found')
                 return
-            min_x = 0
-            min_y = 0
-            max_x = 0
-            max_y = 0
-            for part, sprite in self.parts_sprite.items():
-                sprite_img = sprite.image
-                print(f"sprite_img: {sprite_img} {sprite_img.width} {sprite_img.height}")
-                # 碰撞箱是居中的
-                # -x, -y, +x, +y
-                part_data = self.part_data[part]
-                bound_box = [-sprite_img.width / 2 + part_data.x, -sprite_img.height / 2 + part_data.y,
-                             sprite_img.width / 2 + part_data.x, sprite_img.height / 2 + part_data.y]
-                min_x = min(min_x, bound_box[0])
-                min_y = min(min_y, bound_box[1])
-                max_x = max(max_x, bound_box[2])
-                max_y = max(max_y, bound_box[3])
-            print(f"min_x: {min_x} min_y: {min_y} max_x: {max_x} max_y: {max_y}")
             img = Image.new('RGBA', img_size)
             for part, sprite in self.parts_sprite.items():
                 sprite_img = sprite.image
