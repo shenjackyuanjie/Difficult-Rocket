@@ -52,21 +52,14 @@ def main() -> int:
 
     from Difficult_Rocket.exception import TestError
     from Difficult_Rocket import crash
-    from Difficult_Rocket import DR_option
-    try:
-        from libs.pyglet_rs import get_version_str, patch_vector
-        print('pyglet_rs available:', get_version_str())
-        print('trying to patch pyglet_rs')
-        patch_vector()
-    except ImportError:
-        print('pyglet_rs import error')
-        traceback.print_exc()
+    from Difficult_Rocket import DR_status
     try:
         from libs import pyglet  # 导入pyglet
         pyglet.resource.path = ['/textures/']
         pyglet.resource.reindex()
 
-        from Difficult_Rocket import main, DR_runtime
+        from Difficult_Rocket import main
+        from Difficult_Rocket.runtime import DR_runtime
         DR_runtime.start_time_ns = start_time_ns
 
         # from pyglet.gl import glClearColor  # 调整背景颜色
@@ -80,7 +73,7 @@ def main() -> int:
             cProfile.run('game.start()', sort='calls')  # 使用 cprofile 启动
         else:
             game.start()  # 直接启动
-        if DR_option.crash_report_test:
+        if DR_status.crash_report_test:
             raise TestError('debugging')  # debug 嘛，试试crash
     except Exception as exp:  # 出毛病了
         # 解析错误信息

@@ -2,7 +2,8 @@
 #   DR basic running from source
 
 # for images
-pillow >= 9.5.0
+# not for pypy >= 3.10
+pillow >= 9.5.0; platform_python_implementation == "PyPy" and python_version < "3.10"
 
 # for sys info
 psutil >= 5.9.5

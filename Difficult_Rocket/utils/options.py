@@ -9,13 +9,15 @@ from io import StringIO
 from dataclasses import dataclass
 from typing import get_type_hints, Type, List, Union, Dict, Any, Callable, Tuple, Optional, TYPE_CHECKING, Iterable
 
-__all__ = ['get_type_hints_',
-           'Options',
-           'Fonts',
-           'FontData',
-           'OptionsError',
-           'OptionNotFound',
-           'OptionNameNotDefined']
+__all__ = [
+    'get_type_hints_',
+    'Options',
+    'OptionsError',
+    'OptionNotFound',
+    'OptionNameNotDefined',
+    'Fonts',
+    'FontData'
+]
 
 
 def get_type_hints_(cls: Type):
@@ -137,13 +139,22 @@ class Options:
                     raise OptionNotFound(f'Option {option} is not found in {self.name}') from None
         return values
 
-    def str_option(self) -> Dict[str, Union[str, Any]]:
+    def str_option(self, shrink_to_long: Optional[int] = None) -> Dict[str, Union[str, Any]]:
         """
-        获取配置类的所有配置 并将所有非 BuiltInType 的值转换为 str
+        获取配置类的所有配置 并将所有非 BuiltIn 类型的值转换为 str
         :return:
         """
         raw_option = self.option()
-        return to_str_value_(raw_option)
+        str_option = to_str_value_(raw_option)
+        if shrink_to_long is None:
+            return str_option
+        if not isinstance(shrink_to_long, int) or shrink_to_long <= 0:
+            return str_option
+        for option, value in str_option.items():
+            if value is not None:
+                if len(str(value)) > shrink_to_long:
+                    str_option[option] = str(value)[:shrink_to_long] + '...'
+        return str_option
 
     def format(self, text: str) -> str:
         """
@@ -164,12 +175,15 @@ class Options:
         self.cached_options = self.option()
         return self.cached_options
 
-    def option_with_len(self) -> Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]:
+    def option_with_len(self, longest: Optional[int] = None) -> Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]:
         """
         返回一个可以用于打印的 option 列表
         :return:
         """
-        options = self.flush_option()
+        if longest is None:
+            options = self.flush_option()
+        else:
+            options = self.str_option(longest)
         max_len_key = 1
         max_len_value = 1
         max_len_value_t = 1
@@ -182,12 +196,12 @@ class Options:
             option_list.append((key, value, value_t))
         return option_list, max_len_key, max_len_value, max_len_value_t
 
-    def as_markdown(self) -> str:
+    def as_markdown(self, longest: Optional[int] = None) -> str:
         """
         返回一个 markdown 格式的 option 字符串
         :return: markdown 格式的 option 字符串
         """
-        value = self.option_with_len()
+        value = self.option_with_len(longest)
         cache = StringIO()
         option_len = max(value[1], len('Option'))
         value_len = max(value[2], len('Value'))

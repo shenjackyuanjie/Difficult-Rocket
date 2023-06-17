@@ -31,7 +31,7 @@ from pyglet.text.layout import IncrementalTextLayout
 
 from Difficult_Rocket.api.types import FontData, Fonts
 # from Difficult_Rocket.client.guis.format import html
-from Difficult_Rocket import DR_option
+from Difficult_Rocket import DR_status
 
 __all__ = ['InputBox']
 
@@ -59,7 +59,7 @@ class TextButton(widgets.WidgetBase):
         ...
 
 
-if not DR_option.InputBox_use_TextEntry:
+if not DR_status.InputBox_use_TextEntry:
     class InputBox(widgets.TextEntry):
         """ 自定义的输入框 """
 
@@ -134,7 +134,7 @@ if not DR_option.InputBox_use_TextEntry:
     #                               dpi=font_dpi)
     #         self.font_height = self.font.ascent - self.font.descent
     #         self.out_bound = out_line
-    #         if DR_option.InputBox_use_TextEntry:
+    #         if DR_status.InputBox_use_TextEntry:
     #             # 基于IncrementalTextLayout的处理系统
     #             self._doc = FormattedDocument(message)
     #             # self._doc.set_style()

@@ -17,8 +17,9 @@ import inspect
 from dataclasses import dataclass
 from typing import Union, Tuple, Any, List, Dict, Hashable, Optional
 
-from Difficult_Rocket import DR_runtime, DR_option
+from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils import tools
+from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.exception.language import (LanguageNotFound,
                                                  TranslateKeyNotFound)
 
@@ -82,7 +83,7 @@ class Translates:
     def _raise_no_value(self, e: Exception, item: key_type):
         if self._config.raise_error:
             raise TranslateKeyNotFound(self._value, [x[1] for x in self._get_list]) from None
-        elif DR_option.report_translate_not_found:
+        elif DR_status.report_translate_not_found:
             frame = inspect.currentframe()
             if frame is not None:
                 frame = frame.f_back.f_back
@@ -160,7 +161,7 @@ class Tr:
         """
         self.language_name = language if language is not None else DR_runtime.language
         self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{self.language_name}.toml')
-        self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
+        self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_status.default_language}.toml')
         self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
 

@@ -10,12 +10,9 @@ import rtoml
 
 sys.path.append(os.path.abspath(os.curdir))
 
-from Difficult_Rocket import DR_runtime
+from Difficult_Rocket import DR_status
 
 args = ['-env', '-github-dev']
-
-# print(sys.argv)
-
 
 
 if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并输出
@@ -29,13 +26,9 @@ if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并�
 
 elif os.path.abspath(os.curdir) in sys.path and '-env' in sys.argv:
     with open('./.github/workflows/env.ps1', encoding='utf-8', mode='w') as env_file:
-        print(f'$env:DR_version = "{DR_runtime.DR_version}"', file=env_file)
-        print(f'$env:DR_language = "{DR_runtime.language}"', file=env_file)
-        print(f'$env:DR_long_version = "{DR_runtime.DR_long_version}"', file=env_file)
-        print(f'$env:Build_version = "{DR_runtime.Build_version}"', file=env_file)
+        print(f'$env:DR_version = "{DR_status.DR_version}"', file=env_file)
+        print(f'$env:Build_version = "{DR_status.Build_version}"', file=env_file)
 
 elif os.path.abspath(os.curdir) in sys.path and '-github' in sys.argv:
-    print(f'DR_version={DR_runtime.DR_version}')
-    print(f'DR_language={DR_runtime.language}')
-    print(f'DR_long_version={DR_runtime.DR_long_version}')
-    print(f'Build_version={DR_runtime.Build_version}')
+    print(f'DR_version={DR_status.DR_version}')
+    print(f'Build_version={DR_status.Build_version}')

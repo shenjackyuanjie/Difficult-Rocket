@@ -7,7 +7,6 @@ env.version.python = "Python version: {}"
 env.version.DR = "Difficult_Rocket version: {}"
 env.version.DR_rs = "Difficult_Rocket_rs version: {}"
 env.version.pyglet = "pyglet version: {}"
-env.version.pyglet_rs = "pyglet_rs version: {}"
 version.now_on = "Difficult Rocket is running on Python Vision"
 version.need3p = "Difficult Rocket depends on Python vision 3.0+"
 version.best38p = "Difficult Rocket is writen in Python {write_py_v}, and now is running on Python {py_v} may cause BUG"
@@ -30,6 +29,7 @@ mod.load.info = "mod id: {} version: {}"
 mod.load.faild.info = "Mod load failed: {} error info: {}"
 mod.load.faild.no_mod_class = "Can't find Mod class"
 mod.load.done = "All Mod loaded"
+mod.event.error = "Mod evenet {} caught error: {} Mod: {}"
 
 [client]
 setup.start = "Client start loading"
@@ -72,8 +72,8 @@ os.pid_is = "Server PID: {} PPID: {}"
 
 [game]
 input = "console"
-command = "in game commands"
 window = "window"
+command = "in game commands"
 require_DR_rs = "require DR_rs module"
 
 [client.sr1_render]

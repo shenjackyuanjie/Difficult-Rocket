@@ -24,10 +24,6 @@ from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, List, Optional, Dict, TypeVar
 
-if __name__ == '__main__':  # been start will not run this
-    sys.path.append('/bin/libs')
-    sys.path.append('/bin')
-
 if TYPE_CHECKING:
     from Difficult_Rocket.api.mod import ModInfo
 else:
@@ -35,9 +31,10 @@ else:
 from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.utils.translate import tr
+from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.utils.thread import new_thread
 from Difficult_Rocket.crash import write_info_to_cache
-from Difficult_Rocket import client, server, DR_option, DR_runtime
+from Difficult_Rocket import client, server, DR_status
 
 
 class Console(Options):
@@ -154,7 +151,7 @@ class Game(Options):
 
     def start(self):
         self.server.run()
-        if DR_option.use_multiprocess:
+        if DR_status.use_multiprocess:
             try:
                 game_process = multiprocessing.Process(target=self.client.start, name='pyglet app')
                 game_process.start()
