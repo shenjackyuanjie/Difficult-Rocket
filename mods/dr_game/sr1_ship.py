@@ -198,7 +198,7 @@ class SR1ShipRender(BaseScreen):
                     # 线框
                     part_line_box = []
                     width = 3
-                    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
+                    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(100, 200))
                     part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
                                               batch=self.part_box_batch, width=width, color=color))

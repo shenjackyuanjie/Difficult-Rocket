@@ -5,6 +5,15 @@
   - DR game: 0.2.0.0
   - DR rs: 0.2.11.0
 
+## DR game 0.1.2.0
+
+### 修改
+
+- 现在渲染飞船的时候不会再显示那个白色框了
+  - 改为一个彩色的框
+- Now, the ship will not be displayed in the white box
+  - Change to a colored box
+
 ## DR rs 0.2.11.0
 
 ### 添加
