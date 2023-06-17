@@ -308,7 +308,6 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_command(self, command: line.CommandText):
-        print(command.find('/'))
         self.logger.info(tr().window.command.text().format(command))
         if command.find('stop'):
             # self.dispatch_event('on_exit')
