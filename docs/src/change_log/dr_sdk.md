@@ -32,13 +32,6 @@
 - Mod loader
   - 添加了对支持版本号的 warnings
   - Added warnings for supporting version numbers
-- API
-  - `Difficult_Rocket.api.log`
-    - `get_named_client_logger`
-    - `get_named_server_logger`
-    - `get_named_main_logger`
-      - 分别用于获取 基于 对应名称配置的 logger
-      - Get the logger for the corresponding name configuration
 
 ### 移动
 
