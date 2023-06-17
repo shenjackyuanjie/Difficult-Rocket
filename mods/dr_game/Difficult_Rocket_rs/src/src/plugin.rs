@@ -12,6 +12,7 @@
 /// 插件加载
 ///
 
+#[allow(unused)]
 pub mod plugin_trait {
     pub struct ModInfo {
         pub name: String,

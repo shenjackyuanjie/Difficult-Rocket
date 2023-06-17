@@ -197,9 +197,13 @@ pub mod sr1 {
     }
 
     impl SR1PartType {
-        pub fn get_box(&self) -> (f64, f64, f64, f64) {
-            let x = self.width as f64 / 2.0;
-            (-x, 0.0, x, self.height as f64)
+        pub fn get_box(&self) -> ((f64, f64), (f64, f64)) {
+            // -x, -y, x, y
+            // 居中
+            (
+                (-(self.width as f64 / 2.0), -(self.height as f64 / 2.0)),
+                (self.width as f64 / 2.0, self.height as f64 / 2.0),
+            )
         }
     }
 
@@ -777,14 +781,14 @@ pub mod sr1 {
         let mut max_box = (0_f64, 0_f64, 0_f64, 0_f64);
         for part in parts.iter() {
             let part_type = part_list.get_part_type(part.part_type_id.clone()).unwrap();
-            let (x1, y1, x2, y2) = part_type.get_box();
+            let ((x1, y1), (x2, y2)) = part_type.get_box();
             // rotate
             let mut p1 = Point2D::new(x1, y1);
             let mut p2 = Point2D::new(x2, y2);
             p1.rotate_radius_mut(part.angle);
             p2.rotate_radius_mut(part.angle);
-            let p1 = p1.add(part.x, part.y);
-            let p2 = p2.add(part.x, part.y);
+            let p1 = p1.add(part.x * 2.0, part.y * 2.0);
+            let p2 = p2.add(part.x * 2.0, part.y * 2.0);
             let (x1, y1, x2, y2) = (p1.x, p1.y, p2.x, p2.y);
             // get max box
             max_box.0 = max_box.0.min(x1).min(part.x);
@@ -835,6 +839,12 @@ pub mod math {
 
         #[inline]
         pub fn add(&self, x: f64, y: f64) -> Self { Point2D::new(self.x + x, self.y + y) }
+
+        #[inline]
+        pub fn add_mut(&mut self, x: f64, y: f64) -> () {
+            self.x += x;
+            self.y += y;
+        }
     }
 
     impl Rotatable for Point2D {
