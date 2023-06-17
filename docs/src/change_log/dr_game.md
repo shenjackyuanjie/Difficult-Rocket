@@ -3,7 +3,15 @@
 
 - 最新版本号
   - DR game: 0.2.0.0
-  - DR rs: 0.2.10.1
+  - DR rs: 0.2.11.0
+
+## DR rs 0.2.11.0
+
+### 添加
+
+- `Python::data::PySR1Ship`
+  - `get_part_box(&self, part_id: i64) -> Option<(f64, f64), (f64, f64)>`
+    - 用于获取对应 id 的碰撞箱
 
 ## DR game 0.2.0.0
 

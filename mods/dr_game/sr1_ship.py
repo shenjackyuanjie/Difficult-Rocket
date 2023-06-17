@@ -192,39 +192,26 @@ class SR1ShipRender(BaseScreen):
             cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
             self.parts_sprite[part.id] = cache_sprite
 
-            part_width = 100
-            part_height = 100
-
             if DR_mod_runtime.use_DR_rust:
-                part_type = self.part_list_rs.get_part_type(part.p_type)
                 part_debug_box = self.rust_ship.get_part_box(part.id)
-                if part_type is not None:
-                    part_width = part_type.width * 15
-                    part_height = part_type.height * 15
-                # 白色框框
-                part_box = Rectangle(x=render_x, y=render_y,
-                                     width=part_width, height=part_height,
-                                     batch=self.part_box_batch, group=self.part_group)
-                part_box.rotation = SR1Rotation.get_rotation(part.angle)
-                part_box.opacity = 50
-                self.part_box_dict[part.id] = part_box
-                # 线框
-                part_line_box = []
-                width = 3
-                color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
-                part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
-                                          x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
-                                          batch=self.part_box_batch, width=width, color=color))
-                part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[1][1] * 30,
-                                          x2=part_debug_box[1][0] * 30, y2=part_debug_box[1][1] * 30,
-                                          batch=self.part_box_batch, width=width, color=color))
-                part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[1][1] * 30,
-                                          x2=part_debug_box[1][0] * 30, y2=part_debug_box[0][1] * 30,
-                                          batch=self.part_box_batch, width=width, color=color))
-                part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
-                                          x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
-                                          batch=self.part_box_batch, width=width, color=color))
-                self.part_line_box[part.id] = part_line_box
+                if part_debug_box:
+                    # 线框
+                    part_line_box = []
+                    width = 3
+                    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
+                    part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
+                                              x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[1][1] * 30,
+                                              x2=part_debug_box[1][0] * 30, y2=part_debug_box[1][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[1][1] * 30,
+                                              x2=part_debug_box[1][0] * 30, y2=part_debug_box[0][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
+                                              x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    self.part_line_box[part.id] = part_line_box
             # if not part_render:  # 如果不渲染(渲染有毛病)
             #     self.parts_sprite[part.id].visible = False
             count += 1
