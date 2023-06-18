@@ -65,6 +65,9 @@ class Console(Options):
     def get_command(self) -> Optional[str]:
         return self.caches.pop(0) if self.caches else None
 
+    def new_command(self) -> None:
+        return None
+
 
 class Game(Options):
     name = 'MainGame'

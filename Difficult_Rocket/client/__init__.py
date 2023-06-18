@@ -15,7 +15,7 @@ import traceback
 
 from pathlib import Path
 from decimal import Decimal
-from typing import Callable, Dict, List, TYPE_CHECKING
+from typing import Callable, Dict, List, TYPE_CHECKING, Optional
 
 # third function
 import rtoml
@@ -120,6 +120,17 @@ def pyglet_load_fonts_folder(folder) -> None:
         else:
             logger.info(f'loading font folder {os.path.join(folder, obj)}')
             pyglet_load_fonts_folder(os.path.join(folder, obj))
+
+
+def _call_back(call_back: Callable) -> Callable:
+    def wrapper(func):
+        @functools.wraps(func)
+        def warp(self: "ClientWindow", *args, **kwargs):
+            result = func(self, *args, **kwargs)
+            call_back(self)
+            return result
+        return warp
+    return wrapper
 
 
 def _call_screen_after(func: Callable) -> Callable:
@@ -306,8 +317,13 @@ class ClientWindow(Window):
         self.on_command(command_text)
         self.input_box.value = ''
 
+    def new_command(self):
+        self.game.console.new_command()
+
+    @_call_back(new_command)
     @_call_screen_after
     def on_command(self, command: line.CommandText):
+        command.text = command.text.rstrip('\n')
         self.logger.info(tr().window.command.text().format(command))
         command.find('/')
         if command.find('stop'):
@@ -335,8 +351,9 @@ class ClientWindow(Window):
             except LanguageNotFound:
                 self.logger.info(tr().language_available().format(os.listdir('./configs/lang')))
             self.save_info()
-
-        # self.command_tree.parse(command.plain_command)
+        elif command.find('mods'):
+            for mod in self.game.mod_module:
+                self.logger.info(f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}")
 
     @_call_screen_after
     def on_message(self, message: line.CommandText):

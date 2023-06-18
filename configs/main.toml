@@ -7,8 +7,8 @@ fonts_folder = "libs/fonts"
 
 [window]
 style = "None"
-width = 2175
-height = 1808
+width = 1094
+height = 1173
 visible = true
 gui_scale = 1
 caption = "Difficult Rocket v{DR_version}"

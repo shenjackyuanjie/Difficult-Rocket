@@ -228,6 +228,7 @@ pub mod translate {
 
 pub mod console {
     use pyo3::prelude::*;
+    use std::io::{self, Write};
 
     #[pyclass]
     #[pyo3(name = "Console_rs")]
@@ -251,7 +252,7 @@ pub mod console {
             let (stop_sender, stop_receiver) = std::sync::mpsc::channel();
             let (keyboard_input_sender, keyboard_input_receiver) = std::sync::mpsc::channel();
             std::thread::spawn(move || {
-                let std_in = std::io::stdin();
+                let std_in = io::stdin();
                 loop {
                     if let Ok(()) = stop_receiver.try_recv() {
                         break;
@@ -261,9 +262,10 @@ pub mod console {
                     if !input.is_empty() {
                         keyboard_input_sender.send(input).unwrap();
                     }
-                    print!(">>");
                 }
             });
+            print!("rs>");
+            io::stdout().flush().unwrap();
             self.stop_sender = Some(stop_sender);
             self.keyboard_input_receiver = Some(keyboard_input_receiver);
         }
@@ -274,6 +276,12 @@ pub mod console {
                 return true;
             }
             false
+        }
+
+        fn new_command(&self) -> bool {
+            print!("rs>");
+            io::stdout().flush().unwrap();
+            true
         }
 
         fn get_command(&self) -> Option<String> {
