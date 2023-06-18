@@ -403,7 +403,6 @@ class SR1ShipRender(BaseScreen):
                 return
             img_box = self.rust_ship.img_pos
             img_size = (img_box[2] - img_box[0] + 1000, img_box[3] - img_box[1] + 1000)
-            # img_center = (abs(img_box[0]), abs(img_box[1]))
             # 中心点是左上角坐标
             img_center = (abs(img_box[0]), abs(img_box[3]))
             print(f"img_box: {img_box} img_size: {img_size} img_center: {img_center}")

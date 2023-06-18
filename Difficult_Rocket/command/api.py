@@ -44,12 +44,12 @@ class CommandText:
             i += 1
 
     def find(self, text: str) -> bool:
-        print(f'text: {text} startswith: {self.text.startswith(text)} find: {self.text.find(text)}')
-        startswitch = self.text.startswith(text)
-        if startswitch:
+        startswith = self.text.startswith(text)
+        if startswith:
             find = self.text.find(text)
             if find != -1:
-                self.text = self.text[find + len(text):] if not self.text[find+len(text)] == ' ' else self.text[find + len(text) + 1:]
+                if not len(text) == len(self.text):
+                    self.text = self.text[find + len(text):] if not self.text[find+len(text)] == ' ' else self.text[find + len(text) + 1:]
                 return True
         return False
 
