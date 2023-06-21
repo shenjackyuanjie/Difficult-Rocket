@@ -6,13 +6,14 @@
  * -------------------------------
  */
 
+mod types;
 mod logger;
 mod plugin;
 mod python;
 mod render;
-mod simulator;
 mod sr1_data;
-mod types;
+mod simulator;
+mod translate;
 
 use pyo3::prelude::*;
 
