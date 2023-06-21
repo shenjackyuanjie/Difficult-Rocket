@@ -12,6 +12,7 @@ pub mod data {
     use pyo3::prelude::*;
 
     use crate::sr1_data::part_list::RawPartList;
+    use crate::types::math::{Point2D, Rotatable};
     use crate::types::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
 
@@ -142,96 +143,35 @@ pub mod data {
             }
             parts
         }
+
+        fn get_part_box(&self, part_id: i64) -> Option<((f64, f64), (f64, f64))> {
+            let part_data = self.ship.parts.iter().find(|&x| x.id == part_id);
+            if let Some(part_data) = part_data {
+                let part_type = self.part_list.get_part_type(part_data.part_type_id.clone()).unwrap();
+                // rotate
+                let radius = part_data.angle;
+                let ((x1, y1), (x2, y2)) = part_type.get_box();
+                let mut p1 = Point2D::new(x1, y1);
+                let mut p2 = Point2D::new(x2, y2);
+                p1.rotate_radius_mut(radius);
+                p2.rotate_radius_mut(radius);
+                // transform
+                p1.add_mut(part_data.x * 2.0, part_data.y * 2.0);
+                p2.add_mut(part_data.x * 2.0, part_data.y * 2.0);
+                return Some(((p1.x, p1.y), (p2.x, p2.y)));
+            }
+            None
+        }
     }
 }
 
 pub mod translate {
-    use pyo3::prelude::*;
-    use pyo3::types::PyDict;
-
-    #[pyclass]
-    #[pyo3(name = "TranslateConfig_rs")]
-    #[pyo3(text_signature = "(language, raise_error = False, replace_normal = False, add_error = False, is_result = False, keep_get = False)")]
-    pub struct PyTranslateConfig {
-        pub raise_error: bool,
-        pub replace_normal: bool,
-        pub add_error: bool,
-        pub is_result: bool,
-        pub keep_get: bool,
-        pub language: String,
-    }
-
-    #[pymethods]
-    impl PyTranslateConfig {
-        #[new]
-        fn new(py_: Python, raise_error: bool, replace_normal: bool, language: Option<String>) -> Self {
-            let dr_runtime = PyModule::import(py_, "Difficult_Rocket").unwrap().get_item("DR_runtime").unwrap();
-            let default_language = dr_runtime.get_item("language").unwrap().extract::<String>().unwrap();
-            Self {
-                raise_error,
-                replace_normal,
-                add_error: false,
-                is_result: false,
-                keep_get: false,
-                language: language.unwrap_or(default_language),
-            }
-        }
-
-        // fn set(&self, py_: Python, item: String, value: BoolString) -> &Self {
-        //     match item.as_str() {
-        //         "raise_error" => self,
-        //         _ => self,
-        //     }
-        // }
-    }
-
-    #[pyclass]
-    pub struct PyTranslate {
-        pub data: Py<PyAny>,
-        pub get_list: Vec<(String, bool)>,
-        pub config: PyTranslateConfig,
-    }
-
-    #[pymethods]
-    impl PyTranslate {
-        #[new]
-        fn py_new(py_: Python, data: &PyAny) -> Self {
-            let _ = data.is_instance_of::<PyDict>();
-            Self {
-                data: data.into_py(py_),
-                get_list: Vec::new(),
-                config: PyTranslateConfig::new(py_, false, false, None),
-            }
-        }
-    }
-}
-
-pub mod physics {
-    use pyo3::prelude::*;
-
-    use crate::simulator::interface::PhysicsSpace;
-
-    #[pyclass]
-    #[pyo3(name = "PhysicsSpace_rs")]
-    pub struct PyPhysicsSpace {
-        pub space: PhysicsSpace,
-    }
-
-    #[pymethods]
-    impl PyPhysicsSpace {
-        #[new]
-        fn new(gravity: (f64, f64)) -> Self {
-            Self {
-                space: PhysicsSpace::new(gravity),
-            }
-        }
-
-        fn tick_space(&mut self) { self.space.tick_space() }
-    }
+    use crate::translate;
 }
 
 pub mod console {
     use pyo3::prelude::*;
+    use std::io::{self, Write};
 
     #[pyclass]
     #[pyo3(name = "Console_rs")]
@@ -255,7 +195,7 @@ pub mod console {
             let (stop_sender, stop_receiver) = std::sync::mpsc::channel();
             let (keyboard_input_sender, keyboard_input_receiver) = std::sync::mpsc::channel();
             std::thread::spawn(move || {
-                let std_in = std::io::stdin();
+                let std_in = io::stdin();
                 loop {
                     if let Ok(()) = stop_receiver.try_recv() {
                         break;
@@ -265,9 +205,10 @@ pub mod console {
                     if !input.is_empty() {
                         keyboard_input_sender.send(input).unwrap();
                     }
-                    print!(">>");
                 }
             });
+            print!("rs>");
+            io::stdout().flush().unwrap();
             self.stop_sender = Some(stop_sender);
             self.keyboard_input_receiver = Some(keyboard_input_receiver);
         }
@@ -278,6 +219,12 @@ pub mod console {
                 return true;
             }
             false
+        }
+
+        fn new_command(&self) -> bool {
+            print!("rs>");
+            io::stdout().flush().unwrap();
+            true
         }
 
         fn get_command(&self) -> Option<String> {

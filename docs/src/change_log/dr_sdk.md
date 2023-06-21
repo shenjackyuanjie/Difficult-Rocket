@@ -11,6 +11,21 @@
 - issue #33 (https://github.com/shenjackyuanjie/Difficult-Rocket/issues/33)
   - 修复了实际上并不会加载 `.otf` 格式的字体文件的问题
 
+### 修改
+
+- 现在输入命令之后不会输出一个 `True`/`False` 了
+  - (实际上是用来检测命令是不是用 `/` 开头的)
+  - Now, the command will not output a `True`/`False`
+    - (Actually used to detect whether the command starts with `/`)
+- `CommandText`
+  - `find`
+    - 现在会先用 `str.startswith` 检测是否以要求的字符串开头
+      - 实际上就是丐版 `re.match`
+    - 并且会在匹配上之后 如果匹配内容后面第一个字符是空格 则会截取掉空格
+    - Now, it will first use `str.startswith` to detect whether it starts with the required string
+      - Actually a poor version of `re.match`
+    - And after matching, if the first character after the matching content is a space, the space will be intercepted
+
 ## DR sdk 0.8.3.0
 
 ### 删除

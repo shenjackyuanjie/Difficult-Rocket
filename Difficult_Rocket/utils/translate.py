@@ -14,6 +14,7 @@ gitee:  @shenjackyuanjie
 import os
 import inspect
 
+from pathlib import Path
 from dataclasses import dataclass
 from typing import Union, Tuple, Any, List, Dict, Hashable, Optional
 
@@ -153,15 +154,16 @@ class Tr:
     GOOD
     """
 
-    def __init__(self, language: str = None, config: Optional[TranslateConfig] = None):
+    def __init__(self, language: str = None, config: Optional[TranslateConfig] = None, lang_path: Optional[Path] = None):
         """
         诶嘿，我抄的MCDR
         :param language: Tr 所使用的的语言
         :param config: 配置
         """
         self.language_name = language if language is not None else DR_runtime.language
-        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{self.language_name}.toml')
-        self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_status.default_language}.toml')
+        self.language_path = lang_path if lang_path is not None else Path('configs/lang')
+        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(self.language_path / f'{self.language_name}.toml')
+        self.default_translate: Dict = tools.load_file(f'{self.language_path}/{DR_status.default_language}.toml')
         self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
 
@@ -185,11 +187,11 @@ class Tr:
         if lang == ' ' or lang == '':
             raise LanguageNotFound('Can not be empty')
         lang = lang or self.language_name
-        if not os.path.exists(f'./configs/lang/{lang}.toml'):
-            print(f"lang: {os.path.exists(f'./configs/lang/{lang}.toml')} language = {lang} {self.language_name=}")
+        if not os.path.exists(f'{self.language_path}/{lang}.toml'):
+            print(f"lang: {os.path.exists(f'{self.language_path}/{lang}.toml')} language = {lang} {self.language_name=}")
             raise LanguageNotFound(lang)
-        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'configs/lang/{lang}.toml')
-        self.default_translate: Dict = tools.load_file(f'configs/lang/{DR_runtime.default_language}.toml')
+        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(f'{self.language_path}/{lang}.toml')
+        self.default_translate: Dict = tools.load_file(f'{self.language_path}/{DR_runtime.default_language}.toml')
         self.translates_cache = Translates(value=self.translates, config=self.default_config.copy())
         self.language_name = lang
         DR_runtime.language = self.language_name

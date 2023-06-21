@@ -7,22 +7,15 @@
 import typing
 
 from pyglet.text import Label
-from pyglet.graphics import Batch, Group
 from pyglet.clock import get_frequency
+from pyglet.graphics import Batch, Group
 
 # Difficult Rocket function
 from Difficult_Rocket.api.types import Fonts
-# from Difficult_Rocket.utils import translate
 from Difficult_Rocket.api.screen import BaseScreen
-# from Difficult_Rocket.command.tree import CommandTree
 
 if typing.TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
-
-
-class DRScreen(BaseScreen):
-    def __init__(self, main_window: "ClientWindow"):
-        super().__init__(main_window)
 
 
 class DRDEBUGScreen(BaseScreen):
@@ -55,4 +48,3 @@ class DRDEBUGScreen(BaseScreen):
 
     def on_draw(self, *dt, window: "ClientWindow"):
         self.main_batch.draw()
-        # print(self.window_pointer.try_if_runs)

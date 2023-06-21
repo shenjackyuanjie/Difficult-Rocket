@@ -9,26 +9,24 @@ import time
 import random
 import logging
 import traceback
-# from xml.etree import ElementTree
+
+from pathlib import Path
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
-
-# third party package
 from defusedxml.ElementTree import parse
 
-# pyglet
 from pyglet.math import Vec4
 from pyglet.text import Label
-from pyglet.shapes import Line, Rectangle
 from pyglet.sprite import Sprite
 # from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
+from pyglet.shapes import Line, Rectangle
 
 from . import DR_mod_runtime
 
 # Difficult Rocket
 from Difficult_Rocket import DR_status
-from Difficult_Rocket.utils.translate import tr
+from Difficult_Rocket.utils.translate import Tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
@@ -41,6 +39,7 @@ if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, SR1Ship_rs
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
+sr_tr = Tr(lang_path=Path('./mods/dr_game/lang'))
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -88,7 +87,7 @@ class SR1ShipRender(BaseScreen):
     def __init__(self,
                  main_window: "ClientWindow"):
         super().__init__(main_window)
-        logger.info(tr().client.sr1_render.setup.start())
+        logger.info(sr_tr().mod.info.setup.start())
         load_start_time = time.time_ns()
         self.rendered = False
         self.focus = True
@@ -124,15 +123,16 @@ class SR1ShipRender(BaseScreen):
         self.part_box_batch = Batch()
         self.part_batch = Batch()
         self.part_group = Group()
-        self.debug_label = Label(x=20, y=main_window.height - 20, font_size=DR_status.std_font_size,
+        self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
                                  anchor_x='left', anchor_y='top')
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
+        self.part_line_box: Dict[int, List[Line]] = {}
         load_end_time = time.time_ns()
-        logger.info(tr().client.sr1_render.setup.use_time().format(
+        logger.info(sr_tr().mod.info.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
         if DR_mod_runtime.use_DR_rust:
             self.camera_rs = CenterCamera_rs(main_window,
@@ -143,7 +143,7 @@ class SR1ShipRender(BaseScreen):
     def load_xml(self, file_path: str) -> bool:
         try:
             start_time = time.time_ns()
-            logger.info(tr().client.sr1_render.xml.loading().format(file_path))
+            logger.info(sr_tr().sr1.ship.xml.loading().format(file_path))
             cache_doc = parse(file_path)
             self.xml_doc = cache_doc
             self.xml_root = self.xml_doc.getroot()
@@ -155,8 +155,8 @@ class SR1ShipRender(BaseScreen):
                     print(self.rust_ship.img_pos)
                 except Exception:
                     traceback.print_exc()
-            logger.info(tr().client.sr1_render.xml.load_done())
-            logger.info(tr().client.sr1_render.xml.load_time().format(
+            logger.info(sr_tr().sr1.ship.xml.load_done())
+            logger.info(sr_tr().sr1.ship.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))
             return True
         except Exception as e:
@@ -191,19 +191,26 @@ class SR1ShipRender(BaseScreen):
             cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
             self.parts_sprite[part.id] = cache_sprite
 
-            part_width = 100
-            part_height = 100
             if DR_mod_runtime.use_DR_rust:
-                part_type = self.part_list_rs.get_part_type(part.p_type)
-                if part_type is not None:
-                    part_width = part_type.width * 15
-                    part_height = part_type.height * 15
-            part_box = Rectangle(x=render_x, y=render_y,
-                                 width=part_width, height=part_height,
-                                 batch=self.part_box_batch, group=self.part_group)
-            part_box.rotation = SR1Rotation.get_rotation(part.angle)
-            part_box.opacity = 50
-            self.part_box_dict[part.id] = part_box
+                part_debug_box = self.rust_ship.get_part_box(part.id)
+                if part_debug_box:
+                    # 线框
+                    part_line_box = []
+                    width = 4
+                    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(100, 200))
+                    part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
+                                              x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[1][1] * 30,
+                                              x2=part_debug_box[1][0] * 30, y2=part_debug_box[1][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[1][1] * 30,
+                                              x2=part_debug_box[1][0] * 30, y2=part_debug_box[0][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
+                                              x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
+                                              batch=self.part_box_batch, width=width, color=color))
+                    self.part_line_box[part.id] = part_line_box
             # if not part_render:  # 如果不渲染(渲染有毛病)
             #     self.parts_sprite[part.id].visible = False
             count += 1
@@ -216,10 +223,11 @@ class SR1ShipRender(BaseScreen):
     def render_ship(self):
         if self.textures is None:
             self.load_textures()
-        logger.info(tr().client.sr1_render.ship.load().format(self.xml_name))
+        logger.info(sr_tr().sr1.ship.ship.load().format(self.xml_name))
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
+        self.part_line_box = {}
         self.camera_rs.zoom = 1.0
         if DR_mod_runtime.use_DR_rust:
             self.camera_rs.dx = 0
@@ -243,10 +251,10 @@ class SR1ShipRender(BaseScreen):
         if DR_mod_runtime.use_DR_rust:
             for part in self.part_data:
                 full_mass += self.part_list_rs.get_part_type(self.part_data[part].p_type).mass * 500
-        logger.info(tr().client.sr1_render.ship.load_time().format(
+        logger.info(sr_tr().sr1.ship.ship.load_time().format(
             (time.perf_counter_ns() - start_time) / 1000000000))
-        logger.info(tr().client.sr1_render.ship.info().format(
-            len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else tr().game.require_DR_rs()))
+        logger.info(sr_tr().sr1.ship.ship.info().format(
+            len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
         self.rendered = True
 
     def update_parts(self) -> bool:
@@ -269,7 +277,7 @@ class SR1ShipRender(BaseScreen):
                 next(self.gen_draw)
             except GeneratorExit:
                 self.drawing = False
-                logger.info(tr().client.sr1_render.ship.render.done())
+                logger.info(sr_tr().sr1.ship.ship.render.done())
 
         if self.need_update_parts:
             self.update_parts()
@@ -292,6 +300,7 @@ class SR1ShipRender(BaseScreen):
             self.debug_mouse_delta_line.draw()
 
     def on_resize(self, width: int, height: int, window: "ClientWindow"):
+        self.debug_label.y = height - 100
         if not self.rendered:
             return
         self.debug_line.x = width / 2
@@ -348,22 +357,26 @@ class SR1ShipRender(BaseScreen):
                 self.need_draw = True
             print('应该渲染飞船的')
         elif command.find('debug'):
-            print('sr ?')
             if command.find('delta'):
-                SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
-                self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
-                self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
-                # print('sr1 delta')
+                # SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
+                self.debug_line.visible = not self.debug_line.visible
+                self.debug_d_pos_label.visible = not self.debug_d_pos_label.visible
+                SR1ShipRender_Option.debug_d_pos = self.debug_line.visible
+                logger.debug('sr1 delta')
             elif command.find('mouse'):
                 if command.find('delta'):
                     SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
                     self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
-                    # print('sr1 mouse delta')
+                    logger.debug(f'sr1 mouse delta {SR1ShipRender_Option.debug_mouse_pos}')
                 else:
-                    SR1ShipRender_Option.debug_mouse_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
-                    self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
-                    # print('sr1 mouse')
+                    self.debug_mouse_delta_line.visible = not self.debug_mouse_delta_line.visible
+                    SR1ShipRender_Option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
+                    logger.debug(f'sr1 mouse {SR1ShipRender_Option.debug_mouse_d_pos}')
+            elif command.find('ship'):
+                if self.rendered:
+                    for index, sprite in self.parts_sprite.items():
+                        sprite.visible = not sprite.visible
 
         elif command.find('get_buf'):
 
@@ -390,7 +403,6 @@ class SR1ShipRender(BaseScreen):
                 return
             img_box = self.rust_ship.img_pos
             img_size = (img_box[2] - img_box[0] + 1000, img_box[3] - img_box[1] + 1000)
-            # img_center = (abs(img_box[0]), abs(img_box[1]))
             # 中心点是左上角坐标
             img_center = (abs(img_box[0]), abs(img_box[3]))
             print(f"img_box: {img_box} img_size: {img_size} img_center: {img_center}")
@@ -400,23 +412,6 @@ class SR1ShipRender(BaseScreen):
                 traceback.print_exc()
                 print('PIL not found')
                 return
-            min_x = 0
-            min_y = 0
-            max_x = 0
-            max_y = 0
-            for part, sprite in self.parts_sprite.items():
-                sprite_img = sprite.image
-                print(f"sprite_img: {sprite_img} {sprite_img.width} {sprite_img.height}")
-                # 碰撞箱是居中的
-                # -x, -y, +x, +y
-                part_data = self.part_data[part]
-                bound_box = [-sprite_img.width / 2 + part_data.x, -sprite_img.height / 2 + part_data.y,
-                             sprite_img.width / 2 + part_data.x, sprite_img.height / 2 + part_data.y]
-                min_x = min(min_x, bound_box[0])
-                min_y = min(min_y, bound_box[1])
-                max_x = max(max_x, bound_box[2])
-                max_y = max(max_y, bound_box[3])
-            print(f"min_x: {min_x} min_y: {min_y} max_x: {max_x} max_y: {max_y}")
             img = Image.new('RGBA', img_size)
             for part, sprite in self.parts_sprite.items():
                 sprite_img = sprite.image
