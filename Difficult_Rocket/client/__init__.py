@@ -23,6 +23,7 @@ import pyglet
 # from pyglet import gl
 # from pyglet.gl import glClearColor
 # from pyglet.libs.win32 import _user32
+from pyglet.graphics import Group, Batch
 from pyglet.window import Window
 from pyglet.window import key, mouse
 
@@ -37,10 +38,10 @@ from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.utils.thread import new_thread
+from Difficult_Rocket.client.screen import DRDEBUGScreen
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.language import LanguageNotFound
-from Difficult_Rocket.client.screen import DRScreen, DRDEBUGScreen
 
 
 logger = logging.getLogger('client')
@@ -123,6 +124,16 @@ def pyglet_load_fonts_folder(folder) -> None:
 
 
 def _call_back(call_back: Callable) -> Callable:
+    """
+    >>> def call_back():
+    >>>     pass
+    >>> @_call_back(call_back)
+    >>> def on_draw(self):
+    >>>     pass
+    用于在调用窗口函数后调用指定函数 的装饰器
+    :param call_back: 需要调用的函数
+    :return: 包装后的函数
+    """
     def wrapper(func):
         @functools.wraps(func)
         def warp(self: "ClientWindow", *args, **kwargs):
@@ -134,6 +145,14 @@ def _call_back(call_back: Callable) -> Callable:
 
 
 def _call_screen_after(func: Callable) -> Callable:
+    """
+    >>> @_call_screen_after
+    >>> def on_draw(self):
+    >>>     pass
+    用于在调用窗口函数后调用子窗口函数 的装饰器
+    :param func: 需要包装的函数
+    :return: 包装后的函数
+    """
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
         result = func(self, *args, **kwargs)
@@ -152,6 +171,14 @@ def _call_screen_after(func: Callable) -> Callable:
 
 
 def _call_screen_before(func: Callable) -> Callable:
+    """
+    >>> @_call_screen_before
+    >>> def on_draw(self):
+    >>>     pass
+    用于在调用窗口函数前调用子窗口函数 的装饰器
+    :param func: 需要包装的函数
+    :return: 包装后的函数
+    """
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
         for title, a_screen in self.screen_list.items():
@@ -196,8 +223,9 @@ class ClientWindow(Window):
         self.SPF = Decimal('1') / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS))
         # batch
-        self.part_batch = pyglet.graphics.Batch()
-        self.label_batch = pyglet.graphics.Batch()
+        self.part_batch = Batch()
+        self.label_batch = Batch()
+        self.main_group = Group(0)
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
         self.M_frame = pyglet.gui.MovableFrame(self, modifier=key.LCTRL)
@@ -205,9 +233,10 @@ class ClientWindow(Window):
         # setup
         self.setup()
         # 命令显示
-        self.command_group = pyglet.graphics.Group(0)
+        self.command_batch = Batch()
+        self.command_group = Group(1, parent=self.main_group)
         self.input_box = InputBox(x=50, y=30, width=300,
-                                  batch=self.label_batch, text='')  # 实例化
+                                  batch=self.command_batch, text='')  # 实例化
         self.input_box.push_handlers(self)
         self.input_box.set_handler('on_commit', self.on_input)
         self.set_handlers(self.input_box)
@@ -226,9 +255,7 @@ class ClientWindow(Window):
     def setup(self):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.load_fonts()
-        # TODO 读取配置文件，加载不同的屏幕，解耦
         self.screen_list['DR_debug'] = DRDEBUGScreen(self)
-        self.screen_list['DR_main'] = DRScreen(self)
         self.game.dispatch_event('on_client_start', game=self.game, client=self)
 
     def load_fonts(self) -> None:
@@ -275,6 +302,10 @@ class ClientWindow(Window):
         now_FPS = pyglet.clock.get_frequency()
         self.fps_log.update_tick(now_FPS, decimal_tick)
 
+    def on_command_draw(self):
+        self.command_batch.draw()
+
+    @_call_back(on_command_draw)
     @_call_screen_after
     def on_draw(self, *dt):
         while command := self.game.console.get_command():
