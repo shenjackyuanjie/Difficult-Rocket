@@ -123,7 +123,7 @@ class SR1ShipRender(BaseScreen):
         self.part_box_batch = Batch()
         self.part_batch = Batch()
         self.part_group = Group()
-        self.debug_label = Label(x=20, y=main_window.height - 50, font_size=DR_status.std_font_size,
+        self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
                                  anchor_x='left', anchor_y='top')
@@ -220,9 +220,6 @@ class SR1ShipRender(BaseScreen):
         self.drawing = False
         raise GeneratorExit
 
-    def on_resize(self, width: int, height: int, window: "ClientWindow"):
-        self.debug_label.y = height - 50
-
     def render_ship(self):
         if self.textures is None:
             self.load_textures()
@@ -303,6 +300,7 @@ class SR1ShipRender(BaseScreen):
             self.debug_mouse_delta_line.draw()
 
     def on_resize(self, width: int, height: int, window: "ClientWindow"):
+        self.debug_label.y = height - 100
         if not self.rendered:
             return
         self.debug_line.x = width / 2
