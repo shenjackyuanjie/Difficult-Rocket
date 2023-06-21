@@ -9,14 +9,12 @@ import time
 import random
 import logging
 import traceback
-# from xml.etree import ElementTree
+
+from pathlib import Path
 from xml.etree.ElementTree import Element
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
-
-# third party package
 from defusedxml.ElementTree import parse
 
-# pyglet
 from pyglet.math import Vec4
 from pyglet.text import Label
 from pyglet.sprite import Sprite
@@ -28,7 +26,7 @@ from . import DR_mod_runtime
 
 # Difficult Rocket
 from Difficult_Rocket import DR_status
-from Difficult_Rocket.utils.translate import tr
+from Difficult_Rocket.utils.translate import Tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
@@ -41,6 +39,7 @@ if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, SR1Ship_rs
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
+sr_tr = Tr(lang_path=Path('./mods/dr_game/lang'))
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
@@ -88,7 +87,7 @@ class SR1ShipRender(BaseScreen):
     def __init__(self,
                  main_window: "ClientWindow"):
         super().__init__(main_window)
-        logger.info(tr().client.sr1_render.setup.start())
+        logger.info(sr_tr().mod.info.setup.start())
         load_start_time = time.time_ns()
         self.rendered = False
         self.focus = True
@@ -133,7 +132,7 @@ class SR1ShipRender(BaseScreen):
         self.part_box_dict: Dict[int, Rectangle] = {}
         self.part_line_box: Dict[int, List[Line]] = {}
         load_end_time = time.time_ns()
-        logger.info(tr().client.sr1_render.setup.use_time().format(
+        logger.info(sr_tr().mod.info.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
         if DR_mod_runtime.use_DR_rust:
             self.camera_rs = CenterCamera_rs(main_window,
@@ -144,7 +143,7 @@ class SR1ShipRender(BaseScreen):
     def load_xml(self, file_path: str) -> bool:
         try:
             start_time = time.time_ns()
-            logger.info(tr().client.sr1_render.xml.loading().format(file_path))
+            logger.info(sr_tr().sr1.ship.xml.loading().format(file_path))
             cache_doc = parse(file_path)
             self.xml_doc = cache_doc
             self.xml_root = self.xml_doc.getroot()
@@ -156,8 +155,8 @@ class SR1ShipRender(BaseScreen):
                     print(self.rust_ship.img_pos)
                 except Exception:
                     traceback.print_exc()
-            logger.info(tr().client.sr1_render.xml.load_done())
-            logger.info(tr().client.sr1_render.xml.load_time().format(
+            logger.info(sr_tr().sr1.ship.xml.load_done())
+            logger.info(sr_tr().sr1.ship.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))
             return True
         except Exception as e:
@@ -224,7 +223,7 @@ class SR1ShipRender(BaseScreen):
     def render_ship(self):
         if self.textures is None:
             self.load_textures()
-        logger.info(tr().client.sr1_render.ship.load().format(self.xml_name))
+        logger.info(sr_tr().sr1.ship.ship.load().format(self.xml_name))
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
@@ -252,10 +251,10 @@ class SR1ShipRender(BaseScreen):
         if DR_mod_runtime.use_DR_rust:
             for part in self.part_data:
                 full_mass += self.part_list_rs.get_part_type(self.part_data[part].p_type).mass * 500
-        logger.info(tr().client.sr1_render.ship.load_time().format(
+        logger.info(sr_tr().sr1.ship.ship.load_time().format(
             (time.perf_counter_ns() - start_time) / 1000000000))
-        logger.info(tr().client.sr1_render.ship.info().format(
-            len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else tr().game.require_DR_rs()))
+        logger.info(sr_tr().sr1.ship.ship.info().format(
+            len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
         self.rendered = True
 
     def update_parts(self) -> bool:
@@ -278,7 +277,7 @@ class SR1ShipRender(BaseScreen):
                 next(self.gen_draw)
             except GeneratorExit:
                 self.drawing = False
-                logger.info(tr().client.sr1_render.ship.render.done())
+                logger.info(sr_tr().sr1.ship.ship.render.done())
 
         if self.need_update_parts:
             self.update_parts()
