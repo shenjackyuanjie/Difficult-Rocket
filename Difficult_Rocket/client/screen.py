@@ -48,4 +48,3 @@ class DRDEBUGScreen(BaseScreen):
 
     def on_draw(self, *dt, window: "ClientWindow"):
         self.main_batch.draw()
-        # print(self.window_pointer.try_if_runs)
