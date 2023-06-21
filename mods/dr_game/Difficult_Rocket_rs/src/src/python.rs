@@ -167,7 +167,6 @@ pub mod data {
 
 pub mod translate {
     use crate::translate;
-
 }
 
 pub mod console {

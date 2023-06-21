@@ -6,7 +6,6 @@
  * -------------------------------
  */
 
-
 use std::collections::HashMap;
 
 type TranslateMapper = HashMap<String, HashMap<String, HashMap<String, String>>>;
