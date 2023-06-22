@@ -140,12 +140,12 @@ class Translates:
 
     def __str__(self):
         if not any(not x[0] for x in self._get_list):
-            return self._value
+            return str(self._value)
         if self._config.crack_normal:
             return f'{".".join(f"{gets[1]}({gets[0]})" for gets in self._get_list)}'
         elif self._config.insert_crack:
             return f'{self._value}.{".".join(gets[1] for gets in self._get_list if not gets[0])}'
-        return self._value
+        return str(self._value)
 
 
 class Tr:

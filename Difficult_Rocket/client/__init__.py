@@ -256,7 +256,7 @@ class ClientWindow(Window):
         self.set_icon(pyglet.image.load('./textures/icon.png'))
         self.load_fonts()
         self.screen_list['DR_debug'] = DRDEBUGScreen(self)
-        self.game.dispatch_event('on_client_start', game=self.game, client=self)
+        self.game.dispatch_mod_event('on_client_start', game=self.game, client=self)
 
     def load_fonts(self) -> None:
         fonts_folder_path = self.main_config['runtime']['fonts_folder']
@@ -383,7 +383,7 @@ class ClientWindow(Window):
                 self.logger.info(tr().language_available().format(os.listdir('./configs/lang')))
             self.save_info()
         elif command.find('mods'):
-            for mod in self.game.mod_module:
+            for mod in self.game.mod_manager.loaded_mod_modules.values():
                 self.logger.info(f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}")
 
     @_call_screen_after
@@ -483,7 +483,7 @@ class ClientWindow(Window):
 
     @_call_screen_before
     def on_close(self, source: str = 'window') -> None:
-        self.game.dispatch_event('on_close', game=self.game, client=self, source=source)
+        self.game.dispatch_mod_event('on_close', game=self.game, client=self, source=source)
         self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
         # self.fps_log.check_list = False

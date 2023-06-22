@@ -4,6 +4,10 @@
 #  All rights reserved
 #  -------------------------------
 
+import time
+import logging.config
+from pathlib import Path
+
 from Difficult_Rocket.api.types import Options, Version
 
 game_version = Version("0.8.3.0")  # 游戏版本
@@ -69,6 +73,22 @@ class _DR_status(Options):
 
 
 DR_status = _DR_status()
+
+
+def load_logging():
+    with open('./configs/logger.toml') as f:
+        import rtoml
+        logger_config = rtoml.load(f)
+    log_path = logger_config['handlers']['file']['filename']
+    log_path = f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time_ns() / 1000_000_000)))}"
+    if not Path('logs/').is_dir():
+        Path('logs/').mkdir()
+    logger_config['handlers']['file']['filename'] = log_path
+    logging.config.dictConfig(logger_config)
+
+
+load_logging()
+
 
 if DR_status.playing:
     from Difficult_Rocket.utils.thread import new_thread
