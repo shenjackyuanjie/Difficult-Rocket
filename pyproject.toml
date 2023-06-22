@@ -6,7 +6,7 @@ build-backend = "pdm.pep517.api"
 
 [project]
 name = "difficult-rocket"
-version = "0.8.3.0"
+version = "0.8.4.0"
 description = "A rocket game"
 authors = [
     {name = "shenjackyuanjie", email = "3695888@qq.com"}
