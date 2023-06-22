@@ -17,7 +17,7 @@ from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Options, Version
 
-DR_rust_version = Version("0.2.11.0")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.2.12.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
 logger = logging.getLogger('client.dr_game')
 

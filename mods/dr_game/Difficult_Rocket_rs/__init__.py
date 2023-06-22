@@ -6,7 +6,7 @@
 
 from .lib import *
 
-from typing import TYPE_CHECKING, Dict, Tuple, Optional
+from typing import TYPE_CHECKING, Dict, Tuple, Optional, List, Tuple
 
 if TYPE_CHECKING:
 
@@ -107,6 +107,20 @@ if TYPE_CHECKING:
 
         def get_part_type(self, name: str) -> SR1PartType_rs: ...
 
+    class SR1PartData_rs:
+        """ 用于从 rust 中读取 SR1PartData (其实好像也没啥用哈)
+        """
+        @property
+        def part_type_id(self) -> str: ...
+        @property
+        def pos(self) -> Tuple[float, float]: ...
+        @property
+        def angle(self) -> float: ...
+        @property
+        def flip_x(self) -> bool: ...
+        @property
+        def flip_y(self) -> bool: ...
+
     class SR1Ship_rs:
         """ 用于高效且省内存的读取 SR1Ship """
         def __init__(self, file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip'): ...
@@ -122,6 +136,8 @@ if TYPE_CHECKING:
         def img_pos(self) -> Tuple[int, int, int, int]: ...
         """ -x -y +x +y  左下右上 """
         def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]: ...
+        def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData]]]: 
+            """用于返回一个包含所有已连接零件的字典"""
         
     class Console_rs:
         def __init__(self) -> None: ...

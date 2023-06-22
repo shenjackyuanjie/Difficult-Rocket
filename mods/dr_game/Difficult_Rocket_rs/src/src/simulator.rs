@@ -64,8 +64,38 @@ pub fn simulation() -> () {
     }
 }
 
-#[allow(unused)]
+pub struct Simulator {
+    pub rigid_body_set: RigidBodySet,
+    pub collider_set: ColliderSet,
+    pub gravity: Vector<f64>,
+    pub integration_parameters: IntegrationParameters,
+    pub physics_pipeline: PhysicsPipeline,
+    pub island_manager: IslandManager,
+    pub broad_phase: BroadPhase,
+    pub narrow_phase: NarrowPhase,
+    pub impulse_joint_set: ImpulseJointSet,
+    pub multibody_joint_set: MultibodyJointSet,
+    pub ccd_solver: CCDSolver,
+    pub physics_hooks: (),
+    pub event_handler: (),
+}
+
 pub mod python {
     use pyo3::prelude::*;
     use rapier2d_f64::prelude::*;
+
+    #[pyclass]
+    pub struct PyIntegrationParameters {
+        pub data: IntegrationParameters,
+    }
+
+    #[pymethods]
+    impl PyIntegrationParameters {
+        #[new]
+        fn new() -> Self {
+            PyIntegrationParameters {
+                data: IntegrationParameters::default(),
+            }
+        }
+    }
 }

@@ -430,6 +430,14 @@ class SR1ShipRender(BaseScreen):
                 img.paste(pil_image, (int(self.part_data[part].x * 60 + img_center[0]), int(-self.part_data[part].y * 60 + img_center[1])), pil_image)
             img.save(f'test{time.time()}.png', 'PNG')
 
+        elif command.find('test'):
+            if command.find('save'):
+                if not self.rendered:
+                    return
+                if not DR_mod_runtime.use_DR_rust:
+                    return
+                self.rust_ship.save('./test-save.xml')
+
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if not self.focus:
             return
