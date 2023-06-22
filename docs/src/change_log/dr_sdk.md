@@ -11,6 +11,17 @@
 - issue #33 (https://github.com/shenjackyuanjie/Difficult-Rocket/issues/33)
   - 修复了实际上并不会加载 `.otf` 格式的字体文件的问题
 
+### language
+
+- 去除了 `dr_game` 相关的键值
+  - 现在这些键值已经在 `dr_game` 自己的语言文件中了
+  - Removed the key values related to `dr_game`
+    - Now these key values are in the language file of `dr_game` itself
+- 将 mod 加载部分的键值独立出来
+  - 这样调用起来更方便一些
+  - Separate the key values of the mod loading part
+    - This makes it easier to call
+
 ### 修改
 
 - 现在 `logging` 的配置转移到 `__init__` 中了
