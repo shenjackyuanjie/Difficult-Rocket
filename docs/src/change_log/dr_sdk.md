@@ -13,6 +13,10 @@
 
 ### 修改
 
+- 现在 `logging` 的配置转移到 `__init__` 中了
+  - 保证调用 `logging` 的时候可以正常使用
+  - Now the configuration of `logging` is moved to `__init__`
+    - Ensure that `logging` can be used normally when called
 - 现在输入命令之后不会输出一个 `True`/`False` 了
   - (实际上是用来检测命令是不是用 `/` 开头的)
   - Now, the command will not output a `True`/`False`
