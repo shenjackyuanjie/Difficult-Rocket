@@ -154,11 +154,15 @@ class Tr:
     GOOD
     """
 
-    def __init__(self, language: str = None, config: Optional[TranslateConfig] = None, lang_path: Optional[Path] = None):
+    def __init__(self,
+                 language: str = None,
+                 config: Optional[TranslateConfig] = None,
+                 lang_path: Optional[Path] = None):
         """
         诶嘿，我抄的MCDR
         :param language: Tr 所使用的的语言
         :param config: 配置
+        :param lang_path: 语言文件夹路径
         """
         self.language_name = language if language is not None else DR_runtime.language
         self.language_path = lang_path if lang_path is not None else Path('configs/lang')
