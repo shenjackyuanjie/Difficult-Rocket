@@ -24,6 +24,11 @@
 
 ### 修改
 
+- `utils.translate`
+  - `Tr`
+    - 现在支持自定义语言文件的路径了
+      - `lang_path`
+    - 用于给 mod 加载自己的语言文件
 - 现在 `logging` 的配置转移到 `__init__` 中了
   - 保证调用 `logging` 的时候可以正常使用
   - Now the configuration of `logging` is moved to `__init__`
