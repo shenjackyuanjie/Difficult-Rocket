@@ -611,6 +611,7 @@ pub mod ship {
         #[inline]
         pub fn save(&self, file_name: String) -> Option<()> {
             let part_list_file = serde_xml_rs::to_string(self);
+            print!("{:?}", part_list_file);
             if let Ok(part_list_file) = part_list_file {
                 fs::write(file_name, part_list_file).unwrap();
                 Some(())

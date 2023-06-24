@@ -18,16 +18,11 @@ if TYPE_CHECKING:
 
     def get_version_str() -> str: ...
 
-
-    def simluation() -> None: ...
-
-
-    """ 用来测试 rust 的物理模拟能不能用 """
-
-
     def part_list_read_test(file_name: Optional[str] = "./configs/PartList.xml") -> None: ...
 
     def read_ship_test(path: Optional[str] = "./configs/dock1.xml") -> None: ...
+    
+    def load_and_save_test(file_name: str): ...
 
     class Camera_rs:
         """ 用于闲的没事 用 rust 写一个 camera """

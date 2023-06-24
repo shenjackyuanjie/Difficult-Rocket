@@ -36,7 +36,11 @@ if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_mod_runtime.use_DR_rust:
-    from .Difficult_Rocket_rs import CenterCamera_rs, SR1PartList_rs, SR1Ship_rs
+    from .Difficult_Rocket_rs import (CenterCamera_rs, 
+                                      SR1PartList_rs, 
+                                      SR1Ship_rs, 
+                                      load_and_save_test,
+                                      test_ship_read_and_write)
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
 sr_tr = Tr(lang_path=Path('./mods/dr_game/lang'))
@@ -150,6 +154,8 @@ class SR1ShipRender(BaseScreen):
             self.xml_name = file_path
             if DR_mod_runtime.use_DR_rust:
                 try:
+                    load_and_save_test(self.xml_name)
+                    test_ship_read_and_write(self.xml_name)
                     self.rust_ship = SR1Ship_rs(file_path, 'configs/PartList.xml', 'a_new_ship')
                     print(self.rust_ship.name)
                     print(self.rust_ship.img_pos)
@@ -436,6 +442,7 @@ class SR1ShipRender(BaseScreen):
                     return
                 if not DR_mod_runtime.use_DR_rust:
                     return
+                logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
                 self.rust_ship.save('./test-save.xml')
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):

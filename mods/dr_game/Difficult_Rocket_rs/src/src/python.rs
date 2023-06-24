@@ -55,7 +55,6 @@ pub mod data {
 
     #[pyclass]
     #[pyo3(name = "SR1PartList_rs")]
-    #[pyo3(text_signature = "(file_path = './configs/PartList.xml', list_name = 'NewPartList')")]
     pub struct PySR1PartList {
         pub data: SR1PartList,
     }
@@ -63,6 +62,7 @@ pub mod data {
     #[pymethods]
     impl PySR1PartList {
         #[new]
+        #[pyo3(text_signature = "(file_path = './configs/PartList.xml', list_name = 'NewPartList')")]
         fn new(file_path: String, list_name: String) -> Self {
             let raw_part_list: RawPartList = RawPartList::from_file(file_path).unwrap();
             let data = raw_part_list.to_sr_part_list(Some(list_name));
@@ -113,7 +113,6 @@ pub mod data {
 
     #[pyclass]
     #[pyo3(name = "SR1Ship_rs")]
-    #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
     pub struct PySR1Ship {
         pub ship: SR1Ship,
         pub part_list: SR1PartList,
@@ -122,6 +121,7 @@ pub mod data {
     #[pymethods]
     impl PySR1Ship {
         #[new]
+        #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
         fn new(file_path: String, part_list: String, ship_name: String) -> Self {
             let mut ship = SR1Ship::from_file(file_path, Some(ship_name)).unwrap();
             let part_list = SR1PartList::from_file(part_list).unwrap();
@@ -205,6 +205,15 @@ pub mod data {
             Ok(())
         }
     }
+
+    #[pyfunction]
+    pub fn load_and_save_test(file_name: String) -> PyResult<()> {
+        use crate::sr1_data::ship::RawShip;
+        use serde_xml_rs::to_string;
+        let ship = RawShip::from_file(file_name).unwrap();
+        let _save_string = to_string(&ship);
+        Ok(())
+    }
 }
 
 pub mod console {
@@ -274,5 +283,128 @@ pub mod console {
             }
             None
         }
+    }
+}
+
+pub mod serde_test {
+    use pyo3::prelude::*;
+    use quick_xml::de::from_str;
+    use quick_xml::se::to_string;
+    use serde::{Deserialize, Serialize};
+    use std::fs;
+
+    type IdType = i64;
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    #[serde(rename = "Ship")]
+    pub struct TestShip {
+        #[serde(rename = "@version")]
+        pub version: i32,
+        #[serde(rename = "@liftedOff")]
+        pub lift_off: i8,
+        #[serde(rename = "@touchingGround")]
+        pub touching_ground: i8,
+        #[serde(rename = "Connections")]
+        pub connections: Connections,
+        #[serde(rename = "DisconnectedParts")]
+        pub disconnected_parts: Option<DisconnectedParts>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct DisconnectedParts {
+        #[serde(rename = "DisconnectedPart")]
+        pub disconnected_part: Option<Vec<DisconnectedPart>>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct DisconnectedPart {
+        #[serde(rename = "Parts")]
+        pub parts: Parts,
+        #[serde(rename = "Connections")]
+        pub connections: Connections,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Connections {
+        #[serde(rename = "Connection")]
+        pub connection: Option<Vec<Connection>>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Connection {
+        #[serde(rename = "@parentAttachPoint")]
+        pub parent_attach_point: i32,
+        #[serde(rename = "@childAttachPoint")]
+        pub child_attach_point: i32,
+        #[serde(rename = "@parentPart")]
+        pub parent_part: IdType,
+        #[serde(rename = "@childPart")]
+        pub child_part: IdType,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Parts {
+        #[serde(rename = "Part")]
+        pub part: Vec<Part>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Part {
+        // #[serde(rename = "@Tank")]
+        // pub tank: Option<Tank>,
+        // #[serde(rename = "@Engine")]
+        // pub engine: Option<Engine>,
+        // #[serde(rename = "@Pod")]
+        // pub pod: Option<Pod>,
+        #[serde(rename = "@partType")]
+        pub part_type_id: String,
+        #[serde(rename = "@id")]
+        pub id: i64,
+        #[serde(rename = "@x")]
+        pub x: f64,
+        #[serde(rename = "@y")]
+        pub y: f64,
+        #[serde(rename = "@editorAngle")]
+        pub editor_angle: i32,
+        #[serde(rename = "@angle")]
+        pub angle: f64,
+        #[serde(rename = "@angleV")]
+        pub angle_v: f64,
+        #[serde(rename = "@flippedX")]
+        pub flip_x: Option<i8>,
+        #[serde(rename = "@flippedY")]
+        pub flip_y: Option<i8>,
+        #[serde(rename = "@chuteX")]
+        pub chute_x: Option<f64>,
+        #[serde(rename = "@chuteY")]
+        pub chute_y: Option<f64>,
+        #[serde(rename = "@chuteAngle")]
+        pub chute_angle: Option<f64>,
+        #[serde(rename = "@chuteHeight")]
+        pub chute_height: Option<f64>,
+        #[serde(rename = "@extension")]
+        pub extension: Option<f64>,
+        #[serde(rename = "@inflate")]
+        pub inflate: Option<i8>,
+        #[serde(rename = "@inflation")]
+        pub inflation: Option<f64>,
+        #[serde(rename = "@exploded")]
+        pub exploded: Option<i8>,
+        #[serde(rename = "@rope")]
+        pub rope: Option<i8>,
+        #[serde(rename = "@activated")]
+        pub activated: Option<i8>,
+        #[serde(rename = "@deployed")]
+        pub deployed: Option<i8>,
+    }
+
+    #[pyfunction]
+    #[pyo3(name = "test_ship_read_and_write")]
+    pub fn test_ship_read_and_write(file_name: String) -> PyResult<()> {
+        let file = fs::read_to_string(file_name).unwrap();
+        let ship: TestShip = from_str(&file).unwrap();
+        let save_string = to_string(&ship).unwrap();
+        fs::write("./test-xml-rs.xml", save_string).unwrap();
+        Ok(())
     }
 }

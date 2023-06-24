@@ -44,6 +44,8 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(test_call, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_data::part_list::read_part_list_py, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_data::ship::py_raw_ship_from_file, m)?)?;
+    m.add_function(wrap_pyfunction!(python::data::load_and_save_test, m)?)?;
+    m.add_function(wrap_pyfunction!(python::serde_test::test_ship_read_and_write, m)?)?;
     m.add_class::<render::camera::CameraRs>()?;
     m.add_class::<render::camera::CenterCameraRs>()?;
     m.add_class::<render::screen::PartFrame>()?;
