@@ -124,7 +124,8 @@ class SR1ShipRender(BaseScreen):
         self.load_xml('configs/dock1.xml')
         self.part_box_batch = Batch()
         self.part_batch = Batch()
-        self.part_group = Group()
+        self.part_group = Group(2)
+        self.part_line_group = Group(1, parent=self.part_group)
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
@@ -133,6 +134,7 @@ class SR1ShipRender(BaseScreen):
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
         self.part_line_box: Dict[int, List[Line]] = {}
+        self.part_line_list: List[Line] = []
         load_end_time = time.time_ns()
         logger.info(sr_tr().mod.info.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
@@ -219,6 +221,20 @@ class SR1ShipRender(BaseScreen):
             if count >= each_count:
                 count = 0
                 yield each_count
+        if DR_mod_runtime.use_DR_rust:
+            for connect in self.rust_ship.connection:
+                # 连接线
+                parent_part_data = self.part_data[connect[2]]
+                child_part_data = self.part_data[connect[3]]
+                color = (random.randrange(100, 255), random.randrange(0, 255), random.randrange(0, 255), 255)
+                self.part_line_list.append(Line(x=parent_part_data.x * 60, y=parent_part_data.y * 60,
+                                                x2=child_part_data.x * 60, y2=child_part_data.y * 60,
+                                                batch=self.part_batch, group=self.part_line_group,
+                                                width=1, color=color))
+                count += 1
+                if count >= each_count:
+                    count = 0
+                    yield each_count
         self.drawing = False
         raise GeneratorExit
 

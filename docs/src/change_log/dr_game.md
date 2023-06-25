@@ -2,8 +2,20 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.2.0.0
-  - DR rs: 0.2.14.0
+  - DR game: 0.2.1.0
+  - DR rs: 0.2.15.0
+
+## DR rs 0.2.15.0
+
+### 添加
+
+- `IdType = i64`
+  - 统一的 id 类型
+  - Unified id type
+- `PySR1Ship`
+  - `get_connection -> Vec<(i32, i32, IdType, IdType)>`
+    - 获取飞船的连接信息
+    - Get the connection information of the ship
 
 ## DR rs 0.2.14.0
 
@@ -23,6 +35,8 @@
 
 - 将 `sr1_ship` 中的 `Camera_rs` 改为 `Difficult_Rocket.utils.camera.Camera`
   - Change `Camera_rs` in `sr1_ship` to `Difficult_Rocket.utils.camera.Camera`
+- 添加了部件的连接线(都是彩色哒)
+  - Add the connection line of the part (all are colored)
 
 ## DR rs 0.2.13.0
 
