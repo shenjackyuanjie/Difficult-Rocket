@@ -378,7 +378,7 @@ pub mod ship {
     use super::part_list::SR1PartTypeEnum;
 
     use crate::types::sr1::{i8_to_bool, SR1PartDataTrait, SR1PartTypeAttr, SR1ShipTrait};
-    use crate::types::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
+    use crate::types::sr1::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     #[serde(rename = "Ship")]
@@ -506,13 +506,13 @@ pub mod ship {
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct Connection {
         #[serde(rename = "parentAttachPoint")]
-        pub parent_attach_point: i64,
+        pub parent_attach_point: i32,
         #[serde(rename = "childAttachPoint")]
-        pub child_attach_point: i64,
+        pub child_attach_point: i32,
         #[serde(rename = "parentPart")]
-        pub parent_part: i64,
+        pub parent_part: IdType,
         #[serde(rename = "childPart")]
-        pub child_part: i64,
+        pub child_part: IdType,
     }
 
     impl Part {

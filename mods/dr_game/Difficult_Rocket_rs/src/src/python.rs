@@ -13,8 +13,8 @@ pub mod data {
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::types::math::{Point2D, Rotatable};
-    use crate::types::sr1::SaveStatus;
     use crate::types::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
+    use crate::types::sr1::{IdType, SaveStatus};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
 
     #[pyclass]
@@ -185,6 +185,20 @@ pub mod data {
                 mass += part_type.mass
             }
             mass
+        }
+
+        #[getter]
+        fn get_connection(&self) -> Vec<(i32, i32, IdType, IdType)> {
+            let mut connections = Vec::new();
+            for connect in self.ship.connections.iter() {
+                connections.push((
+                    connect.parent_attach_point,
+                    connect.child_attach_point,
+                    connect.parent_part,
+                    connect.child_part,
+                ));
+            }
+            connections
         }
 
         fn as_dict(&self) -> HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> {

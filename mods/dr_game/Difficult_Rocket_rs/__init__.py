@@ -91,6 +91,9 @@ if TYPE_CHECKING:
         @property
         def img_pos(self) -> Tuple[int, int, int, int]: ...
         """ -x -y +x +y  左下右上 """
+        @property
+        def connection(self) -> List[Tuple[int, int, int, int]]: ...
+        """获取所有连接信息"""
         def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]: ...
         def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData]]]: 
             """用于返回一个包含所有已连接零件的字典"""

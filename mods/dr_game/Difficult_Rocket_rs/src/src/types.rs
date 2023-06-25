@@ -20,6 +20,8 @@ pub mod sr1 {
     };
     use crate::types::math::{Point2D, Rotatable};
 
+    pub type IdType = i64;
+
     #[allow(unused)]
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -488,7 +490,7 @@ pub mod sr1 {
         // 基本状态属性
         pub x: f64,
         pub y: f64,
-        pub id: i64,
+        pub id: IdType,
         pub angle: f64, // 弧度制
         pub angle_v: f64,
         // 状态属性
@@ -536,7 +538,7 @@ pub mod sr1 {
         pub name: Option<String>,
         pub throttle: Option<f64>,
         pub current_stage: Option<i32>,
-        pub steps: Option<Vec<Vec<(i64, bool)>>>,
+        pub steps: Option<Vec<Vec<(IdType, bool)>>>,
         // Solar
         pub extension: Option<f64>,
         // Parachute
@@ -587,7 +589,7 @@ pub mod sr1 {
             name: Option<String>,
             throttle: Option<f64>,
             current_stage: Option<i32>,
-            steps: Option<Vec<Vec<(i64, bool)>>>,
+            steps: Option<Vec<Vec<(IdType, bool)>>>,
             extension: Option<f64>,
             chute_x: Option<f64>,
             chute_y: Option<f64>,
@@ -731,11 +733,11 @@ pub mod sr1 {
             }
         }
 
-        pub fn part_as_hashmap(&self) -> HashMap<i64, Vec<SR1PartData>> {
+        pub fn part_as_hashmap(&self) -> HashMap<IdType, Vec<SR1PartData>> {
             // 返回一个 HashMap 用于快速查找
             // 同时为了 防止出现多个相同的 PartID 造成的数据丢失
             // 采用 Vec 存储
-            let mut result: HashMap<i64, Vec<SR1PartData>> = HashMap::new();
+            let mut result: HashMap<IdType, Vec<SR1PartData>> = HashMap::new();
             for part_data in self.parts.iter() {
                 if let Some(part_vec) = result.get_mut(&part_data.id) {
                     part_vec.push(part_data.clone());
