@@ -166,3 +166,8 @@ other things/
 
 *cmake-build-debug
 .pdm.toml
+
+writer-test.xml
+test-xml-rs.xml
+test-file.xml
+test-save.xml
