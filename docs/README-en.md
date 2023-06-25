@@ -25,6 +25,10 @@
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 
+[DR sdk latest Action build](https://nightly.link/shenjackyuanjie/Difficult-Rocket/workflows/nuitka/main)
+
+[DR rs latest Action build](https://nightly.link/shenjackyuanjie/Difficult-Rocket/workflows/dr_rs/main)
+
 ## 中文README请移步 [这里](../README.md)
 
 > Difficult-rocket is a Simple Rocket liked game build with Python (in short: rocket simulator)

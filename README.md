@@ -25,6 +25,10 @@
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 
+[DR sdk 最新 Action 构建](https://nightly.link/shenjackyuanjie/Difficult-Rocket/workflows/nuitka/main)
+
+[DR rs 最新 Action 构建](https://nightly.link/shenjackyuanjie/Difficult-Rocket/workflows/dr_rs/main)
+
 ## English README please look [here](./docs/README-en.md)
 
 > 这是一个用Python制作的类Simple Rocket游戏(简称：火箭模拟器)
