@@ -289,10 +289,13 @@ pub mod console {
 pub mod serde_test {
     use pyo3::prelude::*;
     use quick_xml::de::from_str;
+    use quick_xml::events::{BytesEnd, BytesStart, Event};
+    use quick_xml::reader::Reader;
     use quick_xml::se::to_string;
-    use quick_xml::Writer;
+    use quick_xml::writer::Writer;
     use serde::{Deserialize, Serialize};
     use std::fs;
+    use std::io::Cursor;
 
     type IdType = i64;
 
@@ -309,6 +312,8 @@ pub mod serde_test {
         pub connections: Connections,
         #[serde(rename = "DisconnectedParts")]
         pub disconnected_parts: Option<DisconnectedParts>,
+        #[serde(rename = "Parts")]
+        pub parts: Parts,
     }
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -350,9 +355,15 @@ pub mod serde_test {
     }
 
     #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Tank {
+        #[serde(rename = "@fuel")]
+        pub fuel: f64,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
     pub struct Part {
-        // #[serde(rename = "@Tank")]
-        // pub tank: Option<Tank>,
+        #[serde(rename = "Tank")]
+        pub tank: Option<Tank>,
         // #[serde(rename = "@Engine")]
         // pub engine: Option<Engine>,
         // #[serde(rename = "@Pod")]
@@ -399,11 +410,29 @@ pub mod serde_test {
         pub deployed: Option<i8>,
     }
 
+    pub fn writer_write_test(ship_data: &TestShip) -> String {
+        let mut writer: Writer<Cursor<Vec<u8>>> = Writer::new(Cursor::new(Vec::new()));
+
+        // ship attr
+        let mut ship_elem = BytesStart::new("Ship");
+        ship_elem.push_attribute(("version", ship_data.version.to_string().as_str()));
+        ship_elem.push_attribute(("liftedOff", ship_data.lift_off.to_string().as_str()));
+        ship_elem.push_attribute(("touchingGround", ship_data.touching_ground.to_string().as_str()));
+        writer.write_event(Event::Start(ship_elem)).unwrap();
+
+        writer.write_event(Event::End(BytesEnd::new("Ship"))).unwrap();
+
+        let result: Vec<u8> = writer.into_inner().into_inner();
+        return String::from_utf8(result).unwrap();
+    }
+
     #[pyfunction]
     #[pyo3(name = "test_ship_read_and_write")]
     pub fn test_ship_read_and_write(file_name: String) -> PyResult<()> {
         let file = fs::read_to_string(file_name).unwrap();
         let ship: TestShip = from_str(&file).unwrap();
+        let writer_string = writer_write_test(&ship);
+        fs::write("./writer-test.xml", writer_string).unwrap();
         let save_string = to_string(&ship).unwrap();
         fs::write("./test-xml-rs.xml", save_string).unwrap();
         Ok(())

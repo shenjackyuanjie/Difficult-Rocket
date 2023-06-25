@@ -23,7 +23,7 @@ pub mod part_list {
     }
 
     #[allow(non_camel_case_types)]
-    #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+    #[derive(Debug, Serialize, Deserialize, Copy, Clone, PartialEq)]
     pub enum SR1PartTypeEnum {
         pod,
         detacher,
@@ -576,6 +576,7 @@ pub mod ship {
             SR1Ship {
                 name: name.unwrap_or("NewShip".to_string()),
                 description: "".to_string(),
+                version: self.version,
                 parts,
                 connections,
                 lift_off: i8_to_bool(self.lift_off.to_owned()),

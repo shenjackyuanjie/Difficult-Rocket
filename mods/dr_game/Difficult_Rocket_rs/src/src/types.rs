@@ -681,10 +681,11 @@ pub mod sr1 {
     pub struct SR1Ship {
         pub name: String,
         pub description: String,
-        pub parts: Vec<SR1PartData>,
-        pub connections: Vec<Connection>,
+        pub version: i32,
         pub lift_off: bool,
         pub touch_ground: bool,
+        pub parts: Vec<SR1PartData>,
+        pub connections: Vec<Connection>,
         pub disconnected: Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
     }
 
@@ -737,8 +738,73 @@ pub mod sr1 {
         }
 
         pub fn save(&self, file_name: String) -> Option<()> {
-            let raw_ship = self.to_raw_ship();
-            raw_ship.save(file_name);
+            use quick_xml::events::{BytesEnd, BytesStart, Event};
+            use quick_xml::writer::Writer;
+            use std::fs;
+            use std::io::Cursor;
+
+            macro_rules! option_push_attr {
+                ($elem: ident, $test_block: block, $push: expr) => {
+                    if ($test_block) {
+                        $elem.push_attribute($push);
+                    }
+                };
+            }
+
+            fn write_parts(parts: &Vec<SR1PartData>, writer: &mut Writer<Cursor<Vec<u8>>>) -> () {
+                writer.write_event(Event::Start(BytesStart::new("Parts"))).unwrap();
+                for part in parts.iter() {
+                    let mut part_attr = BytesStart::new("Part");
+                    part_attr.push_attribute(("x", part.x.to_string().as_str()));
+                    part_attr.push_attribute(("y", part.y.to_string().as_str()));
+                    part_attr.push_attribute(("id", part.id.to_string().as_str()));
+                    part_attr.push_attribute(("type", part.part_type_id.as_str()));
+                    part_attr.push_attribute(("editorAngle", part.editor_angle.to_string().as_str()));
+                    part_attr.push_attribute(("angle", part.angle.to_string().as_str()));
+                    part_attr.push_attribute(("angleV", part.angle_v.to_string().as_str()));
+                    part_attr.push_attribute(("flippedX", part.flip_x.to_string().as_str()));
+                    part_attr.push_attribute(("flippedY", part.flip_y.to_string().as_str()));
+                    part_attr.push_attribute(("activated", part.active.to_string().as_str()));
+                    writer.write_event(Event::Start(part_attr)).unwrap();
+                    match part.part_type {
+                        SR1PartTypeEnum::tank | SR1PartTypeEnum::engine => {
+                            let mut tank_attr = BytesStart::new({
+                                if part.part_type == SR1PartTypeEnum::tank {
+                                    "Tank"
+                                } else {
+                                    "Engine"
+                                }
+                            });
+                            tank_attr.push_attribute(("fuel", part.attr.fuel.unwrap().to_string().as_str()));
+                            writer.write_event(Event::Empty(tank_attr)).unwrap();
+                        }
+                        _ => {}
+                    }
+                    writer.write_event(Event::End(BytesEnd::new("Part"))).unwrap();
+                }
+                writer.write_event(Event::End(BytesEnd::new("Parts"))).unwrap();
+            }
+
+            fn write_data(data: &SR1Ship) -> String {
+                let mut writer: Writer<Cursor<Vec<u8>>> = Writer::new(Cursor::new(Vec::new()));
+
+                {
+                    // ship attr
+                    let mut ship_elem = BytesStart::new("Ship");
+                    ship_elem.push_attribute(("version", data.version.to_string().as_str()));
+                    ship_elem.push_attribute(("liftedOff", data.lift_off.to_string().as_str()));
+                    ship_elem.push_attribute(("touchingGround", data.touch_ground.to_string().as_str()));
+                    writer.write_event(Event::Start(ship_elem)).unwrap();
+                }
+                {
+                    // Parts
+                    write_parts(&data.parts, &mut writer);
+                }
+                writer.write_event(Event::End(BytesEnd::new("Ship"))).unwrap();
+
+                return String::from_utf8(writer.into_inner().into_inner()).unwrap();
+            }
+            fs::write(file_name, write_data(self)).unwrap();
             Some(())
         }
     }
@@ -788,7 +854,7 @@ pub mod sr1 {
             RawShip {
                 parts: RawParts { parts },
                 connects: connections,
-                version: 1,
+                version: self.version,
                 lift_off: bool_to_i8(self.lift_off),
                 touch_ground: bool_to_i8(self.touch_ground),
                 disconnected,
