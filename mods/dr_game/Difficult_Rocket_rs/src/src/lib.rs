@@ -9,10 +9,8 @@
 mod logger;
 mod plugin;
 mod python;
-mod render;
 mod simulator;
 mod sr1_data;
-mod translate;
 mod types;
 
 use pyo3::prelude::*;
@@ -27,7 +25,7 @@ enum LoadState {
 }
 
 #[pyfunction]
-fn get_version_str() -> String { "0.2.11.0".to_string() }
+fn get_version_str() -> String { "0.2.13.0".to_string() }
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {
@@ -45,9 +43,8 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(test_call, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_data::part_list::read_part_list_py, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_data::ship::py_raw_ship_from_file, m)?)?;
-    m.add_class::<render::camera::CameraRs>()?;
-    m.add_class::<render::camera::CenterCameraRs>()?;
-    m.add_class::<render::screen::PartFrame>()?;
+    m.add_function(wrap_pyfunction!(python::data::load_and_save_test, m)?)?;
+    m.add_function(wrap_pyfunction!(python::serde_test::test_ship_read_and_write, m)?)?;
     m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;
     m.add_class::<python::data::PySR1PartType>()?;

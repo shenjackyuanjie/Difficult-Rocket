@@ -12,16 +12,16 @@
 <a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 [![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
 [![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.5-blue.svg)](https://pyglet.org)
+[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.8-blue.svg)](https://pyglet.org)
 [![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_|_3.11_-blue.svg)](https://Python.org)
 
 ## Version
 
 [About Versions](src/version.md)
 
-[![Generic badge](https://img.shields.io/badge/Release-0.8.3.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Release-0.8.4.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Pre_Release-0.8.4.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Devloping-0.8.4-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Devloping-0.8.5-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 

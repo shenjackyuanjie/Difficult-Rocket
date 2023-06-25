@@ -55,7 +55,6 @@ pub mod data {
 
     #[pyclass]
     #[pyo3(name = "SR1PartList_rs")]
-    #[pyo3(text_signature = "(file_path = './configs/PartList.xml', list_name = 'NewPartList')")]
     pub struct PySR1PartList {
         pub data: SR1PartList,
     }
@@ -63,6 +62,7 @@ pub mod data {
     #[pymethods]
     impl PySR1PartList {
         #[new]
+        #[pyo3(text_signature = "(file_path = './configs/PartList.xml', list_name = 'NewPartList')")]
         fn new(file_path: String, list_name: String) -> Self {
             let raw_part_list: RawPartList = RawPartList::from_file(file_path).unwrap();
             let data = raw_part_list.to_sr_part_list(Some(list_name));
@@ -74,7 +74,7 @@ pub mod data {
         }
 
         fn get_part_type(&self, name: String) -> Option<PySR1PartType> {
-            let part_type = self.data.get_part_type(name.clone());
+            let part_type = self.data.get_part_type(&name);
             if let Some(part_type) = part_type {
                 Some(PySR1PartType::new(part_type.clone()))
             } else {
@@ -89,9 +89,30 @@ pub mod data {
         pub data: SR1PartData,
     }
 
+    impl PySR1PartData {
+        pub fn new(data: SR1PartData) -> Self { Self { data } }
+    }
+
+    #[pymethods]
+    impl PySR1PartData {
+        #[getter]
+        fn get_part_type_id(&self) -> String { self.data.part_type_id.clone() }
+
+        #[getter]
+        fn get_pos(&self) -> (f64, f64) { (self.data.x, self.data.y) }
+
+        #[getter]
+        fn get_angle(&self) -> f64 { self.data.angle }
+
+        #[getter]
+        fn get_flip_x(&self) -> bool { self.data.flip_x }
+
+        #[getter]
+        fn get_flip_y(&self) -> bool { self.data.flip_y }
+    }
+
     #[pyclass]
     #[pyo3(name = "SR1Ship_rs")]
-    #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
     pub struct PySR1Ship {
         pub ship: SR1Ship,
         pub part_list: SR1PartList,
@@ -100,9 +121,11 @@ pub mod data {
     #[pymethods]
     impl PySR1Ship {
         #[new]
+        #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
         fn new(file_path: String, part_list: String, ship_name: String) -> Self {
-            let ship = SR1Ship::from_file(file_path, Some(ship_name)).unwrap();
+            let mut ship = SR1Ship::from_file(file_path, Some(ship_name)).unwrap();
             let part_list = SR1PartList::from_file(part_list).unwrap();
+            ship.parse_part_list_to_part(&part_list); //
             Self { ship, part_list }
         }
 
@@ -132,14 +155,28 @@ pub mod data {
         #[getter]
         fn get_touch_ground(&self) -> bool { self.ship.touch_ground.to_owned() }
 
-        fn iter_parts(&self) -> HashMap<i64, (PySR1PartType, PySR1PartData)> {
-            let mut parts = HashMap::new();
+        #[getter]
+        fn get_mass(&self) -> f64 {
+            let mut mass = 0_f64;
             for part_data in self.ship.parts.iter() {
-                let part_type = self.part_list.get_part_type(part_data.part_type_id.clone()).unwrap();
-                parts.insert(
-                    part_data.id,
-                    (PySR1PartType::new(part_type), PySR1PartData { data: part_data.clone() }),
-                );
+                let part_type = self.part_list.get_part_type(&part_data.part_type_id).unwrap();
+                mass += part_type.mass
+            }
+            mass
+        }
+
+        fn as_dict(&self) -> HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> {
+            let mut parts: HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> = HashMap::new();
+            for part_data in self.ship.parts.iter() {
+                if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                    let part_type = PySR1PartType::new(part_type.clone());
+                    let py_part_data = PySR1PartData::new(part_data.clone());
+                    if let Some(part_list) = parts.get_mut(&part_data.id) {
+                        part_list.push((part_type, py_part_data));
+                    } else {
+                        parts.insert(part_data.id, vec![(part_type, py_part_data)]);
+                    }
+                }
             }
             parts
         }
@@ -147,7 +184,7 @@ pub mod data {
         fn get_part_box(&self, part_id: i64) -> Option<((f64, f64), (f64, f64))> {
             let part_data = self.ship.parts.iter().find(|&x| x.id == part_id);
             if let Some(part_data) = part_data {
-                let part_type = self.part_list.get_part_type(part_data.part_type_id.clone()).unwrap();
+                let part_type = self.part_list.get_part_type(&part_data.part_type_id).unwrap();
                 // rotate
                 let radius = part_data.angle;
                 let ((x1, y1), (x2, y2)) = part_type.get_box();
@@ -162,11 +199,21 @@ pub mod data {
             }
             None
         }
-    }
-}
 
-pub mod translate {
-    use crate::translate;
+        fn save(&self, file_path: String) -> PyResult<()> {
+            self.ship.save(file_path).unwrap();
+            Ok(())
+        }
+    }
+
+    #[pyfunction]
+    pub fn load_and_save_test(file_name: String) -> PyResult<()> {
+        use crate::sr1_data::ship::RawShip;
+        use serde_xml_rs::to_string;
+        let ship = RawShip::from_file(file_name).unwrap();
+        let _save_string = to_string(&ship);
+        Ok(())
+    }
 }
 
 pub mod console {
@@ -236,5 +283,129 @@ pub mod console {
             }
             None
         }
+    }
+}
+
+pub mod serde_test {
+    use pyo3::prelude::*;
+    use quick_xml::de::from_str;
+    use quick_xml::se::to_string;
+    use quick_xml::Writer;
+    use serde::{Deserialize, Serialize};
+    use std::fs;
+
+    type IdType = i64;
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    #[serde(rename = "Ship")]
+    pub struct TestShip {
+        #[serde(rename = "@version")]
+        pub version: i32,
+        #[serde(rename = "@liftedOff")]
+        pub lift_off: i8,
+        #[serde(rename = "@touchingGround")]
+        pub touching_ground: i8,
+        #[serde(rename = "Connections")]
+        pub connections: Connections,
+        #[serde(rename = "DisconnectedParts")]
+        pub disconnected_parts: Option<DisconnectedParts>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct DisconnectedParts {
+        #[serde(rename = "DisconnectedPart")]
+        pub disconnected_part: Option<Vec<DisconnectedPart>>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct DisconnectedPart {
+        #[serde(rename = "Parts")]
+        pub parts: Parts,
+        #[serde(rename = "Connections")]
+        pub connections: Connections,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Connections {
+        #[serde(rename = "Connection")]
+        pub connection: Option<Vec<Connection>>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Connection {
+        #[serde(rename = "@parentAttachPoint")]
+        pub parent_attach_point: i32,
+        #[serde(rename = "@childAttachPoint")]
+        pub child_attach_point: i32,
+        #[serde(rename = "@parentPart")]
+        pub parent_part: IdType,
+        #[serde(rename = "@childPart")]
+        pub child_part: IdType,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Parts {
+        #[serde(rename = "Part")]
+        pub part: Vec<Part>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Clone)]
+    pub struct Part {
+        // #[serde(rename = "@Tank")]
+        // pub tank: Option<Tank>,
+        // #[serde(rename = "@Engine")]
+        // pub engine: Option<Engine>,
+        // #[serde(rename = "@Pod")]
+        // pub pod: Option<Pod>,
+        #[serde(rename = "@partType")]
+        pub part_type_id: String,
+        #[serde(rename = "@id")]
+        pub id: i64,
+        #[serde(rename = "@x")]
+        pub x: f64,
+        #[serde(rename = "@y")]
+        pub y: f64,
+        #[serde(rename = "@editorAngle")]
+        pub editor_angle: i32,
+        #[serde(rename = "@angle")]
+        pub angle: f64,
+        #[serde(rename = "@angleV")]
+        pub angle_v: f64,
+        #[serde(rename = "@flippedX")]
+        pub flip_x: Option<i8>,
+        #[serde(rename = "@flippedY")]
+        pub flip_y: Option<i8>,
+        #[serde(rename = "@chuteX")]
+        pub chute_x: Option<f64>,
+        #[serde(rename = "@chuteY")]
+        pub chute_y: Option<f64>,
+        #[serde(rename = "@chuteAngle")]
+        pub chute_angle: Option<f64>,
+        #[serde(rename = "@chuteHeight")]
+        pub chute_height: Option<f64>,
+        #[serde(rename = "@extension")]
+        pub extension: Option<f64>,
+        #[serde(rename = "@inflate")]
+        pub inflate: Option<i8>,
+        #[serde(rename = "@inflation")]
+        pub inflation: Option<f64>,
+        #[serde(rename = "@exploded")]
+        pub exploded: Option<i8>,
+        #[serde(rename = "@rope")]
+        pub rope: Option<i8>,
+        #[serde(rename = "@activated")]
+        pub activated: Option<i8>,
+        #[serde(rename = "@deployed")]
+        pub deployed: Option<i8>,
+    }
+
+    #[pyfunction]
+    #[pyo3(name = "test_ship_read_and_write")]
+    pub fn test_ship_read_and_write(file_name: String) -> PyResult<()> {
+        let file = fs::read_to_string(file_name).unwrap();
+        let ship: TestShip = from_str(&file).unwrap();
+        let save_string = to_string(&ship).unwrap();
+        fs::write("./test-xml-rs.xml", save_string).unwrap();
+        Ok(())
     }
 }

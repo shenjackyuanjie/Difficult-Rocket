@@ -6,7 +6,7 @@
 
 from .lib import *
 
-from typing import TYPE_CHECKING, Dict, Tuple, Optional
+from typing import TYPE_CHECKING, Dict, Tuple, Optional, List, Tuple
 
 if TYPE_CHECKING:
 
@@ -18,56 +18,11 @@ if TYPE_CHECKING:
 
     def get_version_str() -> str: ...
 
-
-    def simluation() -> None: ...
-
-
-    """ 用来测试 rust 的物理模拟能不能用 """
-
-
     def part_list_read_test(file_name: Optional[str] = "./configs/PartList.xml") -> None: ...
 
     def read_ship_test(path: Optional[str] = "./configs/dock1.xml") -> None: ...
-
-    class Camera_rs:
-        """ 用于闲的没事 用 rust 写一个 camera """
-
-        def __new__(cls, window: Window,
-                    zoom: float = 1.0,
-                    dx: float = 1.0, dy: float = 1.0,
-                    min_zoom: float = 1.0,
-                    max_zoom: float = 1.0): ...
-
-        @property
-        def dx(self) -> float: ...
-        @property
-        def dy(self) -> float: ...
-        @property
-        def zoom(self) -> float: ...
-        @property
-        def position(self) -> Tuple[float, float]: ...
-        @dx.setter
-        def dx(self, value: float) -> None: ...
-        @dy.setter
-        def dy(self, value: float) -> None: ...
-        @zoom.setter
-        def zoom(self, value: float) -> None: ...
-
-        def begin(self) -> None: ...
-
-        def end(self) -> None: ...
-
-        def __enter__(self, window) -> None: ...
-
-        def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
-
-
-    class CenterCamera_rs(Camera_rs):
-        """ 用于依旧闲的没事 用 rust 写一个中央对齐的 camera """
-
-
-    class PartFrame_rs:
-        ...
+    
+    def load_and_save_test(file_name: str): ...
 
 
     class SR1PartType_rs:
@@ -107,6 +62,20 @@ if TYPE_CHECKING:
 
         def get_part_type(self, name: str) -> SR1PartType_rs: ...
 
+    class SR1PartData_rs:
+        """ 用于从 rust 中读取 SR1PartData (其实好像也没啥用哈)
+        """
+        @property
+        def part_type_id(self) -> str: ...
+        @property
+        def pos(self) -> Tuple[float, float]: ...
+        @property
+        def angle(self) -> float: ...
+        @property
+        def flip_x(self) -> bool: ...
+        @property
+        def flip_y(self) -> bool: ...
+
     class SR1Ship_rs:
         """ 用于高效且省内存的读取 SR1Ship """
         def __init__(self, file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip'): ...
@@ -122,6 +91,8 @@ if TYPE_CHECKING:
         def img_pos(self) -> Tuple[int, int, int, int]: ...
         """ -x -y +x +y  左下右上 """
         def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]: ...
+        def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData]]]: 
+            """用于返回一个包含所有已连接零件的字典"""
         
     class Console_rs:
         def __init__(self) -> None: ...

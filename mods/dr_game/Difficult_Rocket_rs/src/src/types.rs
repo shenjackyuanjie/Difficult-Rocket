@@ -246,9 +246,9 @@ pub mod sr1 {
         }
 
         #[inline]
-        pub fn get_part_type(&self, type_name: String) -> Option<SR1PartType> {
+        pub fn get_part_type(&self, type_name: &String) -> Option<SR1PartType> {
             let cache = self.get_cache();
-            match cache.get(&type_name) {
+            match cache.get(type_name) {
                 Some(part) => Some(part.clone()),
                 None => None,
             }
@@ -699,11 +699,10 @@ pub mod sr1 {
             Some(ship.to_sr_ship(ship_name))
         }
 
-        pub fn parse_part_list_to_part(&mut self, part_list: SR1PartList) {
+        pub fn parse_part_list_to_part(&mut self, part_list: &SR1PartList) {
             // parse parts
             for part in self.parts.iter_mut() {
-                let part_type_id = part.part_type_id.clone();
-                if let Some(part_type) = part_list.get_part_type(part_type_id) {
+                if let Some(part_type) = part_list.get_part_type(&part.part_type_id) {
                     part.part_type = part_type.p_type;
                 } else {
                     part.part_type = SR1PartTypeEnum::strut;
@@ -712,8 +711,7 @@ pub mod sr1 {
             for disconnects in self.disconnected.iter_mut() {
                 for (parts, _) in disconnects.iter_mut() {
                     for part in parts.iter_mut() {
-                        let part_type_id = part.part_type_id.clone();
-                        if let Some(part_type) = part_list.get_part_type(part_type_id) {
+                        if let Some(part_type) = part_list.get_part_type(&part.part_type_id) {
                             part.part_type = part_type.p_type;
                         } else {
                             part.part_type = SR1PartTypeEnum::strut;
@@ -721,6 +719,27 @@ pub mod sr1 {
                     }
                 }
             }
+        }
+
+        pub fn part_as_hashmap(&self) -> HashMap<i64, Vec<SR1PartData>> {
+            // 返回一个 HashMap 用于快速查找
+            // 同时为了 防止出现多个相同的 PartID 造成的数据丢失
+            // 采用 Vec 存储
+            let mut result: HashMap<i64, Vec<SR1PartData>> = HashMap::new();
+            for part_data in self.parts.iter() {
+                if let Some(part_vec) = result.get_mut(&part_data.id) {
+                    part_vec.push(part_data.clone());
+                } else {
+                    result.insert(part_data.id, vec![part_data.clone()]);
+                }
+            }
+            result
+        }
+
+        pub fn save(&self, file_name: String) -> Option<()> {
+            let raw_ship = self.to_raw_ship();
+            raw_ship.save(file_name);
+            Some(())
         }
     }
 
@@ -780,7 +799,7 @@ pub mod sr1 {
     pub fn get_max_box(parts: &Vec<SR1PartData>, part_list: &SR1PartList) -> (f64, f64, f64, f64) {
         let mut max_box = (0_f64, 0_f64, 0_f64, 0_f64);
         for part in parts.iter() {
-            let part_type = part_list.get_part_type(part.part_type_id.clone()).unwrap();
+            let part_type = part_list.get_part_type(&part.part_type_id).unwrap();
             let ((x1, y1), (x2, y2)) = part_type.get_box();
             // rotate
             let mut p1 = Point2D::new(x1, y1);

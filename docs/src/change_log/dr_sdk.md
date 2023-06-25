@@ -2,13 +2,23 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.3.0
+  - DR sdk: 0.8.4.0
+
+## DR sdk 0.8.4.1
+
+### Add
+
+- `utils.camera`
+  - `Camera`
+    - 一个 2D 摄影机，可以用于高效变换渲染坐标
+  - `CenterCamera`
+    - 一个中心对器的 2D 摄影机，可以用于高效变换渲染坐标
 
 ## DR sdk 0.8.4.0
 
 ### Fix
 
-- issue #33 (https://github.com/shenjackyuanjie/Difficult-Rocket/issues/33)
+- issue #33 (<https://github.com/shenjackyuanjie/Difficult-Rocket/issues/33>)
   - 修复了实际上并不会加载 `.otf` 格式的字体文件的问题
 
 ### language
