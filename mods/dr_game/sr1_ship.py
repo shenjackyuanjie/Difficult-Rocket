@@ -38,9 +38,7 @@ if TYPE_CHECKING:
 
 if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import (SR1PartList_rs,
-                                      SR1Ship_rs, 
-                                      load_and_save_test,
-                                      test_ship_read_and_write)
+                                      SR1Ship_rs)
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
 sr_tr = Tr(lang_path=Path('./mods/dr_game/lang'))
@@ -154,8 +152,6 @@ class SR1ShipRender(BaseScreen):
             self.xml_name = file_path
             if DR_mod_runtime.use_DR_rust:
                 try:
-                    load_and_save_test(self.xml_name)
-                    test_ship_read_and_write(self.xml_name)
                     self.rust_ship = SR1Ship_rs(file_path, 'configs/PartList.xml', 'a_new_ship')
                     print(self.rust_ship.name)
                     print(self.rust_ship.img_pos)

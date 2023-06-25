@@ -13,8 +13,30 @@ pub mod data {
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::types::math::{Point2D, Rotatable};
+    use crate::types::sr1::SaveStatus;
     use crate::types::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
+
+    #[pyclass]
+    #[pyo3(name = "SaveStatus_rs")]
+    #[derive(Clone, Debug)]
+    pub struct PySaveStatus {
+        pub status: SaveStatus,
+    }
+
+    #[pymethods]
+    impl PySaveStatus {
+        #[new]
+        fn new(save_default: bool) -> Self {
+            Self {
+                status: SaveStatus::new(save_default),
+            }
+        }
+    }
+
+    impl Default for PySaveStatus {
+        fn default() -> Self { Self::new(false) }
+    }
 
     #[pyclass]
     #[pyo3(name = "SR1PartType_rs")]
@@ -200,8 +222,8 @@ pub mod data {
             None
         }
 
-        fn save(&self, file_path: String) -> PyResult<()> {
-            self.ship.save(file_path).unwrap();
+        fn save(&self, file_path: String, save_status: Option<PySaveStatus>) -> PyResult<()> {
+            self.ship.save(file_path, &save_status.unwrap_or_default().status).unwrap();
             Ok(())
         }
     }
@@ -283,158 +305,5 @@ pub mod console {
             }
             None
         }
-    }
-}
-
-pub mod serde_test {
-    use pyo3::prelude::*;
-    use quick_xml::de::from_str;
-    use quick_xml::events::{BytesEnd, BytesStart, Event};
-    use quick_xml::reader::Reader;
-    use quick_xml::se::to_string;
-    use quick_xml::writer::Writer;
-    use serde::{Deserialize, Serialize};
-    use std::fs;
-    use std::io::Cursor;
-
-    type IdType = i64;
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    #[serde(rename = "Ship")]
-    pub struct TestShip {
-        #[serde(rename = "@version")]
-        pub version: i32,
-        #[serde(rename = "@liftedOff")]
-        pub lift_off: i8,
-        #[serde(rename = "@touchingGround")]
-        pub touching_ground: i8,
-        #[serde(rename = "Connections")]
-        pub connections: Connections,
-        #[serde(rename = "DisconnectedParts")]
-        pub disconnected_parts: Option<DisconnectedParts>,
-        #[serde(rename = "Parts")]
-        pub parts: Parts,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct DisconnectedParts {
-        #[serde(rename = "DisconnectedPart")]
-        pub disconnected_part: Option<Vec<DisconnectedPart>>,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct DisconnectedPart {
-        #[serde(rename = "Parts")]
-        pub parts: Parts,
-        #[serde(rename = "Connections")]
-        pub connections: Connections,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct Connections {
-        #[serde(rename = "Connection")]
-        pub connection: Option<Vec<Connection>>,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct Connection {
-        #[serde(rename = "@parentAttachPoint")]
-        pub parent_attach_point: i32,
-        #[serde(rename = "@childAttachPoint")]
-        pub child_attach_point: i32,
-        #[serde(rename = "@parentPart")]
-        pub parent_part: IdType,
-        #[serde(rename = "@childPart")]
-        pub child_part: IdType,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct Parts {
-        #[serde(rename = "Part")]
-        pub part: Vec<Part>,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct Tank {
-        #[serde(rename = "@fuel")]
-        pub fuel: f64,
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Clone)]
-    pub struct Part {
-        #[serde(rename = "Tank")]
-        pub tank: Option<Tank>,
-        // #[serde(rename = "@Engine")]
-        // pub engine: Option<Engine>,
-        // #[serde(rename = "@Pod")]
-        // pub pod: Option<Pod>,
-        #[serde(rename = "@partType")]
-        pub part_type_id: String,
-        #[serde(rename = "@id")]
-        pub id: i64,
-        #[serde(rename = "@x")]
-        pub x: f64,
-        #[serde(rename = "@y")]
-        pub y: f64,
-        #[serde(rename = "@editorAngle")]
-        pub editor_angle: i32,
-        #[serde(rename = "@angle")]
-        pub angle: f64,
-        #[serde(rename = "@angleV")]
-        pub angle_v: f64,
-        #[serde(rename = "@flippedX")]
-        pub flip_x: Option<i8>,
-        #[serde(rename = "@flippedY")]
-        pub flip_y: Option<i8>,
-        #[serde(rename = "@chuteX")]
-        pub chute_x: Option<f64>,
-        #[serde(rename = "@chuteY")]
-        pub chute_y: Option<f64>,
-        #[serde(rename = "@chuteAngle")]
-        pub chute_angle: Option<f64>,
-        #[serde(rename = "@chuteHeight")]
-        pub chute_height: Option<f64>,
-        #[serde(rename = "@extension")]
-        pub extension: Option<f64>,
-        #[serde(rename = "@inflate")]
-        pub inflate: Option<i8>,
-        #[serde(rename = "@inflation")]
-        pub inflation: Option<f64>,
-        #[serde(rename = "@exploded")]
-        pub exploded: Option<i8>,
-        #[serde(rename = "@rope")]
-        pub rope: Option<i8>,
-        #[serde(rename = "@activated")]
-        pub activated: Option<i8>,
-        #[serde(rename = "@deployed")]
-        pub deployed: Option<i8>,
-    }
-
-    pub fn writer_write_test(ship_data: &TestShip) -> String {
-        let mut writer: Writer<Cursor<Vec<u8>>> = Writer::new(Cursor::new(Vec::new()));
-
-        // ship attr
-        let mut ship_elem = BytesStart::new("Ship");
-        ship_elem.push_attribute(("version", ship_data.version.to_string().as_str()));
-        ship_elem.push_attribute(("liftedOff", ship_data.lift_off.to_string().as_str()));
-        ship_elem.push_attribute(("touchingGround", ship_data.touching_ground.to_string().as_str()));
-        writer.write_event(Event::Start(ship_elem)).unwrap();
-
-        writer.write_event(Event::End(BytesEnd::new("Ship"))).unwrap();
-
-        let result: Vec<u8> = writer.into_inner().into_inner();
-        return String::from_utf8(result).unwrap();
-    }
-
-    #[pyfunction]
-    #[pyo3(name = "test_ship_read_and_write")]
-    pub fn test_ship_read_and_write(file_name: String) -> PyResult<()> {
-        let file = fs::read_to_string(file_name).unwrap();
-        let ship: TestShip = from_str(&file).unwrap();
-        let writer_string = writer_write_test(&ship);
-        fs::write("./writer-test.xml", writer_string).unwrap();
-        let save_string = to_string(&ship).unwrap();
-        fs::write("./test-xml-rs.xml", save_string).unwrap();
-        Ok(())
     }
 }

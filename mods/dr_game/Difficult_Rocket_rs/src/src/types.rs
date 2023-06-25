@@ -689,6 +689,15 @@ pub mod sr1 {
         pub disconnected: Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
     }
 
+    #[derive(Debug, Clone, Copy)]
+    pub struct SaveStatus {
+        pub save_default: bool,
+    }
+
+    impl SaveStatus {
+        pub fn new(save_default: bool) -> Self { SaveStatus { save_default } }
+    }
+
     impl SR1Ship {
         pub fn from_file(file_name: String, ship_name: Option<String>) -> Option<Self> {
             // 首先验证文件是否存在 不存在则返回None
@@ -737,33 +746,41 @@ pub mod sr1 {
             result
         }
 
-        pub fn save(&self, file_name: String) -> Option<()> {
+        pub fn save(&self, file_name: String, save_status: &SaveStatus) -> Option<()> {
             use quick_xml::events::{BytesEnd, BytesStart, Event};
             use quick_xml::writer::Writer;
             use std::fs;
             use std::io::Cursor;
 
             macro_rules! option_push_attr {
-                ($elem: ident, $test_block: block, $push: expr) => {
+                ($elem: ident, $test_block: expr, $push: expr) => {
                     if ($test_block) {
                         $elem.push_attribute($push);
                     }
                 };
             }
 
-            fn write_parts(parts: &Vec<SR1PartData>, writer: &mut Writer<Cursor<Vec<u8>>>) -> () {
+            fn write_parts(parts: &Vec<SR1PartData>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
                 writer.write_event(Event::Start(BytesStart::new("Parts"))).unwrap();
                 for part in parts.iter() {
                     let mut part_attr = BytesStart::new("Part");
+                    part_attr.push_attribute(("type", part.part_type_id.as_str()));
                     part_attr.push_attribute(("x", part.x.to_string().as_str()));
                     part_attr.push_attribute(("y", part.y.to_string().as_str()));
                     part_attr.push_attribute(("id", part.id.to_string().as_str()));
-                    part_attr.push_attribute(("type", part.part_type_id.as_str()));
                     part_attr.push_attribute(("editorAngle", part.editor_angle.to_string().as_str()));
                     part_attr.push_attribute(("angle", part.angle.to_string().as_str()));
                     part_attr.push_attribute(("angleV", part.angle_v.to_string().as_str()));
-                    part_attr.push_attribute(("flippedX", part.flip_x.to_string().as_str()));
-                    part_attr.push_attribute(("flippedY", part.flip_y.to_string().as_str()));
+                    option_push_attr!(
+                        part_attr,
+                        part.flip_x && !save_status.save_default,
+                        ("flippedX", part.flip_x.to_string().as_str())
+                    );
+                    option_push_attr!(
+                        part_attr,
+                        part.flip_y && !save_status.save_default,
+                        ("flippedY", part.flip_y.to_string().as_str())
+                    );
                     part_attr.push_attribute(("activated", part.active.to_string().as_str()));
                     writer.write_event(Event::Start(part_attr)).unwrap();
                     match part.part_type {
@@ -785,7 +802,20 @@ pub mod sr1 {
                 writer.write_event(Event::End(BytesEnd::new("Parts"))).unwrap();
             }
 
-            fn write_data(data: &SR1Ship) -> String {
+            fn write_connections(connects: &Vec<Connection>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
+                writer.write_event(Event::Start(BytesStart::new("Connections"))).unwrap();
+                for connect in connects.iter() {
+                    let mut connect_elem = BytesStart::new("Connection");
+                    connect_elem.push_attribute(("parentAttachPoint", connect.parent_attach_point.to_string().as_str()));
+                    connect_elem.push_attribute(("childAttachPoint", connect.child_attach_point.to_string().as_str()));
+                    connect_elem.push_attribute(("parentPart", connect.parent_part.to_string().as_str()));
+                    connect_elem.push_attribute(("childPart", connect.child_part.to_string().as_str()));
+                    writer.write_event(Event::Empty(connect_elem)).unwrap();
+                }
+                writer.write_event(Event::End(BytesEnd::new("Connections"))).unwrap();
+            }
+
+            fn write_data(data: &SR1Ship, save_status: &SaveStatus) -> String {
                 let mut writer: Writer<Cursor<Vec<u8>>> = Writer::new(Cursor::new(Vec::new()));
 
                 {
@@ -796,15 +826,13 @@ pub mod sr1 {
                     ship_elem.push_attribute(("touchingGround", data.touch_ground.to_string().as_str()));
                     writer.write_event(Event::Start(ship_elem)).unwrap();
                 }
-                {
-                    // Parts
-                    write_parts(&data.parts, &mut writer);
-                }
+                write_parts(&data.parts, &mut writer, save_status);
+                write_connections(&data.connections, &mut writer, save_status);
                 writer.write_event(Event::End(BytesEnd::new("Ship"))).unwrap();
 
                 return String::from_utf8(writer.into_inner().into_inner()).unwrap();
             }
-            fs::write(file_name, write_data(self)).unwrap();
+            fs::write(file_name, write_data(self, save_status)).unwrap();
             Some(())
         }
     }
