@@ -30,14 +30,14 @@ from Difficult_Rocket.utils.translate import Tr
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
+from Difficult_Rocket.utils.camera import CenterCamera
 from .types import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
 
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
 
 if DR_mod_runtime.use_DR_rust:
-    from .Difficult_Rocket_rs import (CenterCamera_rs, 
-                                      SR1PartList_rs, 
+    from .Difficult_Rocket_rs import (SR1PartList_rs,
                                       SR1Ship_rs, 
                                       load_and_save_test,
                                       test_ship_read_and_write)
@@ -138,9 +138,9 @@ class SR1ShipRender(BaseScreen):
         load_end_time = time.time_ns()
         logger.info(sr_tr().mod.info.setup.use_time().format(
             (load_end_time - load_start_time) / 1000000000))
+        self.camera = CenterCamera(main_window,
+                                   min_zoom=(1 / 2) ** 10, max_zoom=10)
         if DR_mod_runtime.use_DR_rust:
-            self.camera_rs = CenterCamera_rs(main_window,
-                                             min_zoom=(1 / 2) ** 10, max_zoom=10)
             self.rust_parts = None
             self.part_list_rs = SR1PartList_rs('configs/PartList.xml', 'default_part_list')
 
@@ -234,10 +234,9 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
-        self.camera_rs.zoom = 1.0
-        if DR_mod_runtime.use_DR_rust:
-            self.camera_rs.dx = 0
-            self.camera_rs.dy = 0
+        self.camera.zoom = 1.0
+        self.camera.dx = 0
+        self.camera.dy = 0
         parts = self.xml_root.find('Parts')
         for part_xml in parts:
             if part_xml.tag != 'Part':
@@ -266,11 +265,11 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
-        self.debug_line.x2, self.debug_line.y2 = self.camera_rs.dx + (
-                self.window_pointer.width / 2), self.camera_rs.dy + (
+        self.debug_line.x2, self.debug_line.y2 = self.camera.dx + (
+                self.window_pointer.width / 2), self.camera.dy + (
                                                          self.window_pointer.height / 2)
-        self.debug_d_pos_label.text = f'x: {self.camera_rs.dx} y: {self.camera_rs.dy}'
-        self.debug_d_pos_label.position = self.camera_rs.dx + (self.window_pointer.width / 2), self.camera_rs.dy + (
+        self.debug_d_pos_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
+        self.debug_d_pos_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
                 self.window_pointer.height / 2) + 10, 0
         self.need_update_parts = False
 
@@ -289,7 +288,7 @@ class SR1ShipRender(BaseScreen):
             self.update_parts()
             self.need_update_parts = False
 
-        with self.camera_rs:
+        with self.camera:
             self.part_box_batch.draw()
             self.part_batch.draw()
             self.part_box_batch.draw()
@@ -323,29 +322,29 @@ class SR1ShipRender(BaseScreen):
         mouse_dx = x - (window.width / 2)
         mouse_dy = y - (window.height / 2)
         # 鼠标缩放位置相对于屏幕中心的位置
-        mouse_dx_d = mouse_dx - self.camera_rs.dx
-        mouse_dy_d = mouse_dy - self.camera_rs.dy
+        mouse_dx_d = mouse_dx - self.camera.dx
+        mouse_dy_d = mouse_dy - self.camera.dy
         # 鼠标相对偏移量的偏移量
         if scroll_y == 0:
             zoom_d = 1
         else:
             zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
         # 缩放的变换量
-        if not (self.camera_rs.zoom == 10 and scroll_y > 0):
-            if self.camera_rs.zoom * zoom_d >= 10:
-                zoom_d = 10 / self.camera_rs.zoom
-                self.camera_rs.zoom = 10
+        if not (self.camera.zoom == 10 and scroll_y > 0):
+            if self.camera.zoom * zoom_d >= 10:
+                zoom_d = 10 / self.camera.zoom
+                self.camera.zoom = 10
             else:
-                self.camera_rs.zoom *= zoom_d
+                self.camera.zoom *= zoom_d
             mouse_dx_d *= (1 - zoom_d)
             mouse_dy_d *= (1 - zoom_d)
-            self.camera_rs.dx += mouse_dx_d
-            self.camera_rs.dy += mouse_dy_d
+            self.camera.dx += mouse_dx_d
+            self.camera.dy += mouse_dy_d
 
         self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
-        self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera_rs.dx) * (1 - (0.5 ** scroll_y)) + (
+        self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera.dx) * (1 - (0.5 ** scroll_y)) + (
                 window.width / 2)
-        self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera_rs.dy) * (1 - (0.5 ** scroll_y)) + (
+        self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera.dy) * (1 - (0.5 ** scroll_y)) + (
                 window.height / 2)
         self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
         self.debug_mouse_label.position = x, y + 10, 0
@@ -355,9 +354,9 @@ class SR1ShipRender(BaseScreen):
     def on_command(self, command: CommandText, window: "ClientWindow"):
         if command.find('render'):
             if command.find('reset'):
-                self.camera_rs.zoom = 1
-                self.camera_rs.dx = 0
-                self.camera_rs.dy = 0
+                self.camera.zoom = 1
+                self.camera.dx = 0
+                self.camera.dy = 0
                 self.window_pointer.view = Vec4()
             else:
                 self.need_draw = True
@@ -448,8 +447,8 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if not self.focus:
             return
-        self.camera_rs.dx += dx
-        self.camera_rs.dy += dy
+        self.camera.dx += dx
+        self.camera.dy += dy
         self.need_update_parts = True
         # self.update_parts()
 
