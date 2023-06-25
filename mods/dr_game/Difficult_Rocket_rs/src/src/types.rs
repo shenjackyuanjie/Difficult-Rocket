@@ -774,15 +774,19 @@ pub mod sr1 {
                     option_push_attr!(
                         part_attr,
                         part.flip_x && !save_status.save_default,
-                        ("flippedX", part.flip_x.to_string().as_str())
+                        ("flippedX", bool_to_i8(part.flip_x).to_string().as_str())
                     );
                     option_push_attr!(
                         part_attr,
                         part.flip_y && !save_status.save_default,
-                        ("flippedY", part.flip_y.to_string().as_str())
+                        ("flippedY", bool_to_i8(part.flip_y).to_string().as_str())
                     );
-                    part_attr.push_attribute(("activated", part.active.to_string().as_str()));
-                    // writer.write_event(Event::Start(part_attr)).unwrap();
+                    // part_attr.push_attribute(("activated", bool_to_i8(part.active).to_string().as_str()));
+                    option_push_attr!(
+                        part_attr,
+                        part.active && !save_status.save_default,
+                        ("activated", bool_to_i8(part.active).to_string().as_str())
+                    );
                     let inner_attr: Option<BytesStart> = match part.part_type {
                         SR1PartTypeEnum::tank | SR1PartTypeEnum::engine => {
                             let mut tank_attr = BytesStart::new({
@@ -795,6 +799,39 @@ pub mod sr1 {
                             tank_attr.push_attribute(("fuel", part.attr.fuel.unwrap().to_string().as_str()));
                             Some(tank_attr)
                         }
+                        SR1PartTypeEnum::pod => {
+                            writer.write_event(Event::Start(part_attr.to_owned())).unwrap();
+                            // pod tag
+                            let mut pod_elem = BytesStart::new("Pod");
+                            pod_elem.push_attribute(("throttle", part.attr.throttle.unwrap().to_string().as_str()));
+                            pod_elem.push_attribute(("name", part.attr.name.as_ref().unwrap().as_str()));
+                            writer.write_event(Event::Start(pod_elem.to_owned())).unwrap();
+
+                            let mut stage_attr = BytesStart::new("Staging");
+                            stage_attr.push_attribute(("currentStage", part.attr.current_stage.unwrap().to_string().as_str()));
+                            match &part.attr.steps {
+                                Some(steps) => {
+                                    writer.write_event(Event::Start(stage_attr)).unwrap();
+                                    for step in steps.iter() {
+                                        writer.write_event(Event::Start(BytesStart::new("Step"))).unwrap();
+                                        for activate in step.iter() {
+                                            let mut activate_attr = BytesStart::new("Activate");
+                                            activate_attr.push_attribute(("Id", activate.0.to_string().as_str()));
+                                            activate_attr.push_attribute(("moved", bool_to_i8(activate.1).to_string().as_str()));
+                                            writer.write_event(Event::Empty(activate_attr)).unwrap();
+                                        }
+                                        writer.write_event(Event::End(BytesEnd::new("Step"))).unwrap();
+                                    }
+                                    writer.write_event(Event::End(BytesEnd::new("Staging"))).unwrap();
+                                }
+                                None => {
+                                    writer.write_event(Event::Empty(stage_attr)).unwrap();
+                                }
+                            }
+                            writer.write_event(Event::End(BytesEnd::new("Pod"))).unwrap();
+                            writer.write_event(Event::End(BytesEnd::new("Part"))).unwrap();
+                            Some(pod_elem)
+                        }
                         SR1PartTypeEnum::solar => {
                             part_attr.push_attribute(("extension", part.attr.extension.unwrap().to_string().as_str()));
                             None
@@ -804,20 +841,23 @@ pub mod sr1 {
                             part_attr.push_attribute(("chuteY", part.attr.chute_y.unwrap().to_string().as_str()));
                             part_attr.push_attribute(("chuteHeight", part.attr.chute_height.unwrap().to_string().as_str()));
                             part_attr.push_attribute(("chuteAngle", part.attr.chute_angle.unwrap().to_string().as_str()));
-                            part_attr.push_attribute(("inflate", part.attr.inflate.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("inflate", bool_to_i8(part.attr.inflate.unwrap()).to_string().as_str()));
                             part_attr.push_attribute(("inflation", part.attr.inflation.unwrap().to_string().as_str()));
-                            part_attr.push_attribute(("deployed", part.attr.deployed.unwrap().to_string().as_str()));
-                            part_attr.push_attribute(("rope", part.attr.rope.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("deployed", bool_to_i8(part.attr.deployed.unwrap()).to_string().as_str()));
+                            part_attr.push_attribute(("rope", bool_to_i8(part.attr.rope.unwrap()).to_string().as_str()));
                             None
                         }
                         _ => None,
                     };
                     match inner_attr {
-                        Some(inner_attr) => {
-                            writer.write_event(Event::Start(part_attr)).unwrap();
-                            writer.write_event(Event::Empty(inner_attr)).unwrap();
-                            writer.write_event(Event::End(BytesEnd::new("Part"))).unwrap();
-                        }
+                        Some(inner_attr) => match part.part_type {
+                            SR1PartTypeEnum::pod => {}
+                            _ => {
+                                writer.write_event(Event::Start(part_attr)).unwrap();
+                                writer.write_event(Event::Empty(inner_attr)).unwrap();
+                                writer.write_event(Event::End(BytesEnd::new("Part"))).unwrap();
+                            }
+                        },
                         None => {
                             writer.write_event(Event::Empty(part_attr)).unwrap();
                         }
@@ -846,8 +886,8 @@ pub mod sr1 {
                     // ship attr
                     let mut ship_elem = BytesStart::new("Ship");
                     ship_elem.push_attribute(("version", data.version.to_string().as_str()));
-                    ship_elem.push_attribute(("liftedOff", data.lift_off.to_string().as_str()));
-                    ship_elem.push_attribute(("touchingGround", data.touch_ground.to_string().as_str()));
+                    ship_elem.push_attribute(("liftedOff", bool_to_i8(data.lift_off).to_string().as_str()));
+                    ship_elem.push_attribute(("touchingGround", bool_to_i8(data.touch_ground).to_string().as_str()));
                     writer.write_event(Event::Start(ship_elem)).unwrap();
                 }
                 write_parts(&data.parts, &mut writer, save_status);
