@@ -3,7 +3,27 @@
 
 - 最新版本号
   - DR game: 0.2.0.0
-  - DR rs: 0.2.11.0
+  - DR rs: 0.2.13.0
+
+## DR game 0.2.1.0
+
+### 修改
+
+- 将 `sr1_ship` 中的 `Camera_rs` 改为 `Difficult_Rocket.utils.camera.Camera`
+
+## DR rs 0.2.13.0
+
+### 删除
+
+- 删除了 `render.rs`
+  - 没必要拿 rust 写这玩意（
+  - 用 `DR game` 的 `camera` 代替
+
+## DR rs 0.2.12.0
+
+### 添加
+
+- 添加了 xml 的读取测试
 
 ## DR game 0.1.2.0
 

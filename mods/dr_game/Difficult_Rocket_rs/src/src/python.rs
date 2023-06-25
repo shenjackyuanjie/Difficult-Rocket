@@ -290,6 +290,7 @@ pub mod serde_test {
     use pyo3::prelude::*;
     use quick_xml::de::from_str;
     use quick_xml::se::to_string;
+    use quick_xml::Writer;
     use serde::{Deserialize, Serialize};
     use std::fs;
 
