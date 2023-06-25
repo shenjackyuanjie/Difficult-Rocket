@@ -782,8 +782,8 @@ pub mod sr1 {
                         ("flippedY", part.flip_y.to_string().as_str())
                     );
                     part_attr.push_attribute(("activated", part.active.to_string().as_str()));
-                    writer.write_event(Event::Start(part_attr)).unwrap();
-                    match part.part_type {
+                    // writer.write_event(Event::Start(part_attr)).unwrap();
+                    let inner_attr: Option<BytesStart> = match part.part_type {
                         SR1PartTypeEnum::tank | SR1PartTypeEnum::engine => {
                             let mut tank_attr = BytesStart::new({
                                 if part.part_type == SR1PartTypeEnum::tank {
@@ -793,11 +793,35 @@ pub mod sr1 {
                                 }
                             });
                             tank_attr.push_attribute(("fuel", part.attr.fuel.unwrap().to_string().as_str()));
-                            writer.write_event(Event::Empty(tank_attr)).unwrap();
+                            Some(tank_attr)
                         }
-                        _ => {}
+                        SR1PartTypeEnum::solar => {
+                            part_attr.push_attribute(("extension", part.attr.extension.unwrap().to_string().as_str()));
+                            None
+                        }
+                        SR1PartTypeEnum::parachute => {
+                            part_attr.push_attribute(("chuteX", part.attr.chute_x.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("chuteY", part.attr.chute_y.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("chuteHeight", part.attr.chute_height.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("chuteAngle", part.attr.chute_angle.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("inflate", part.attr.inflate.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("inflation", part.attr.inflation.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("deployed", part.attr.deployed.unwrap().to_string().as_str()));
+                            part_attr.push_attribute(("rope", part.attr.rope.unwrap().to_string().as_str()));
+                            None
+                        }
+                        _ => None,
+                    };
+                    match inner_attr {
+                        Some(inner_attr) => {
+                            writer.write_event(Event::Start(part_attr)).unwrap();
+                            writer.write_event(Event::Empty(inner_attr)).unwrap();
+                            writer.write_event(Event::End(BytesEnd::new("Part"))).unwrap();
+                        }
+                        None => {
+                            writer.write_event(Event::Empty(part_attr)).unwrap();
+                        }
                     }
-                    writer.write_event(Event::End(BytesEnd::new("Part"))).unwrap();
                 }
                 writer.write_event(Event::End(BytesEnd::new("Parts"))).unwrap();
             }
