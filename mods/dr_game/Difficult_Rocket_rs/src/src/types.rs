@@ -866,7 +866,7 @@ pub mod sr1 {
                 writer.write_event(Event::End(BytesEnd::new("Parts"))).unwrap();
             }
 
-            fn write_connections(connects: &Vec<Connection>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
+            fn write_connections(connects: &Vec<Connection>, writer: &mut Writer<Cursor<Vec<u8>>>) {
                 writer.write_event(Event::Start(BytesStart::new("Connections"))).unwrap();
                 for connect in connects.iter() {
                     let mut connect_elem = BytesStart::new("Connection");
@@ -877,6 +877,31 @@ pub mod sr1 {
                     writer.write_event(Event::Empty(connect_elem)).unwrap();
                 }
                 writer.write_event(Event::End(BytesEnd::new("Connections"))).unwrap();
+            }
+
+            fn write_disconnect(
+                data: &Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
+                writer: &mut Writer<Cursor<Vec<u8>>>,
+                save_status: &SaveStatus,
+            ) {
+                match data {
+                    Some(data) => {
+                        writer.write_event(Event::Start(BytesStart::new("DisconnectedParts"))).unwrap();
+                        for (parts, connects) in data.iter() {
+                            writer.write_event(Event::Start(BytesStart::new("DisconnectedPart"))).unwrap();
+                            write_parts(parts, writer, save_status);
+                            match connects {
+                                Some(connects) => write_connections(connects, writer),
+                                None => {
+                                    writer.write_event(Event::Empty(BytesStart::new("Connections"))).unwrap();
+                                }
+                            }
+                            writer.write_event(Event::End(BytesEnd::new("DisconnectedPart"))).unwrap();
+                        }
+                        writer.write_event(Event::End(BytesEnd::new("DisconnectedParts"))).unwrap();
+                    }
+                    None => {}
+                }
             }
 
             fn write_data(data: &SR1Ship, save_status: &SaveStatus) -> String {
@@ -891,7 +916,8 @@ pub mod sr1 {
                     writer.write_event(Event::Start(ship_elem)).unwrap();
                 }
                 write_parts(&data.parts, &mut writer, save_status);
-                write_connections(&data.connections, &mut writer, save_status);
+                write_connections(&data.connections, &mut writer);
+                write_disconnect(&data.disconnected, &mut writer, save_status);
                 writer.write_event(Event::End(BytesEnd::new("Ship"))).unwrap();
 
                 return String::from_utf8(writer.into_inner().into_inner()).unwrap();

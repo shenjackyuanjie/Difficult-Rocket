@@ -180,7 +180,7 @@
         <Part partType="engine-2" id="112" x="-13.000000" y="-5.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
             <Engine fuel="0.000000"/>
         </Part>
-        <Part partType="port-1" id="167" x="-13.000000" y="-7.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+        <Part partType="port-1" id="167" x="-13.000000" y="-7.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="1" exploded="0" flippedX="1" flippedY="0"/>
         <Part partType="engine-2" id="113" x="-19.000000" y="-5.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
             <Engine fuel="0.000000"/>
         </Part>
