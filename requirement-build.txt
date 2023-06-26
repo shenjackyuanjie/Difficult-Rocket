@@ -18,7 +18,7 @@ defusedxml >= 0.7.1
 objprint >= 0.2.2
 
 # for compile
-nuitka >= 1.6.3
+nuitka >= 1.6.5
 ordered-set >= 4.1.0
 imageio >= 2.31.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 wheel >= 0.40.0

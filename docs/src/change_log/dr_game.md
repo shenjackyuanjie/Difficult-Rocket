@@ -2,10 +2,27 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.2.1.0
+  - DR game: 0.3.0.0
   - DR rs: 0.2.15.0
 
+## DR rs 0.3.0.0
+
+### 修改
+
+- 适配了 `DR sdk` 的关于 mods 的修改
+  - Adapted the modification of mods about `DR sdk`
+- `RustConsole`
+  - 现在输入体验更好了
+  - Now the input experience is better
+
 ## DR rs 0.2.15.0
+
+### 修改
+
+- 现在支持新的 mods reload 和 unload 了
+  - 适配了 `DR sdk` 的关于 mods 的修改
+  - Now support new mods reload and unload
+    - Adapted the modification of mods about `DR sdk`
 
 ### 添加
 

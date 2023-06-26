@@ -19,9 +19,9 @@
 
 [About Versions](src/version.md)
 
-[![Generic badge](https://img.shields.io/badge/Release-0.8.4.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Pre_Release-0.8.4.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Devloping-0.8.5-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Release-0.8.5.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Pre_Release-0.8.5.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Devloping-0.8.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 
@@ -66,7 +66,7 @@
 
 ## Required python modules
 
-- `pyglet` (pre-installed V2.0.5 path:`./libs/pyglet`)
+- `pyglet` (pre-installed V2.0.8 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
 
@@ -77,28 +77,30 @@
 #   DR contributing
 
 # for images
-pillow >= 9.5.0
+# not for pypy >= 3.10
+pillow >= 9.5.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 
 # for sys info
 psutil >= 5.9.5
 
 # for files
 rtoml >= 0.9.0
-tomlkit >= 0.11.7
+tomlkit >= 0.11.8
 defusedxml >= 0.7.1
 
 # for debug
 objprint >= 0.2.2
-viztracer >= 0.15.6
-vizplugins >= 0.1.3
+viztracer >= 0.15.6; platform_python_implementation != "PyPy"
+vizplugins >= 0.1.3; platform_python_implementation != "PyPy"
 
 # for compile
-nuitka >= 1.5.6
+nuitka >= 1.6.5
 ordered-set >= 4.1.0
-imageio >= 2.27.0
+imageio >= 2.31.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 wheel >= 0.40.0
-setuptools >= 67.6.1
-setuptools-rust >= 1.5.2
+setuptools >= 67.8.0
+setuptools-rust >= 1.6.0
+
 ```
 
 ## thanks to
@@ -108,8 +110,8 @@ setuptools-rust >= 1.5.2
   - `tomlkit` / `rtoml` toml parser
   - `xmltodict`: translate data between xml and dict
   - `pyperclip`: paste board!
-  - `rapier2d`: Phy simulate engine
-  - `pyo3`: Rust Python Binding
+  - [rapier2d](https://rapier.rs/) : Phy simulate engine
+  - [pyo3](https://pyo3.rs/main) : Rust Python Binding
 
 - Main contributors
   - [@Rayawa](https://github.com/Rayawa) : Check mistake in docs & some translates
