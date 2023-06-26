@@ -77,7 +77,8 @@ class DR_mod(ModInfo):
         game.console_class = RustConsole  # 替换掉原来的 console 类
 
         if old_self:
-            game.client.window.add_sub_screen("SR1_ship", old_self.screen)
+            from .sr1_ship import SR1ShipRender
+            game.client.window.add_sub_screen("SR1_ship", SR1ShipRender)
         else:
             self.config.flush_option()
         logger.info("on_load")
@@ -86,11 +87,11 @@ class DR_mod(ModInfo):
 
     def on_client_start(self, game: Game, client: ClientWindow):
         from .sr1_ship import SR1ShipRender
-        self.screen = SR1ShipRender
         client.add_sub_screen("SR1_ship", SR1ShipRender)
         logger.info('on_client_start added sub screen')
 
     def on_unload(self, game: Game):
+        game.client.window.screen_list.pop("SR1_ship")
         if DR_mod_runtime.DR_rust_available:
             game.console.stop()
             game.console_class = Console

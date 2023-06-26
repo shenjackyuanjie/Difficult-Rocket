@@ -286,6 +286,8 @@ pub mod console {
                     let mut input = String::new();
                     let _ = std_in.read_line(&mut input);
                     if !input.is_empty() {
+                        // 预处理
+                        input = input.trim().to_string();
                         keyboard_input_sender.send(input).unwrap();
                     }
                 }

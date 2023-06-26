@@ -355,7 +355,8 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_command(self, command: line.CommandText):
         command.text = command.text.rstrip('\n')
-        self.logger.info(tr().window.command.text().format(command))
+        command.text = command.text.rstrip(' ')
+        self.logger.info(tr().window.command.text().format(f"|{command.text}|"))
         command.find('/')
         if command.find('stop'):
             # self.dispatch_event('on_exit')
@@ -383,8 +384,15 @@ class ClientWindow(Window):
                 self.logger.info(tr().language_available().format(os.listdir('./configs/lang')))
             self.save_info()
         elif command.find('mods'):
-            for mod in self.game.mod_manager.loaded_mod_modules.values():
-                self.logger.info(f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}")
+            if command.find('list'):
+                for mod in self.game.mod_manager.loaded_mod_modules.values():
+                    self.logger.info(f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}")
+            elif command.find('reload'):
+                if not len(command.text) == 0:
+                    print(f"reload mod: |{command.text}|")
+                    self.game.mod_manager.reload_mod(command.text, game=self.game)
+                else:
+                    logger.info(tr().window.command.mods.reload.no_mod_id())
 
     @_call_screen_after
     def on_message(self, message: line.CommandText):
