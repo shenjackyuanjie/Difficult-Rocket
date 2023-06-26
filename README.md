@@ -66,7 +66,7 @@
 
 ## 需要的 Python 模块
 
-- `pyglet` (已经内置 V2.0.5 路径：`./libs/pyglet`)
+- `pyglet` (已经内置 V2.0.8 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
 - `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
 
@@ -77,28 +77,29 @@
 #   DR contributing
 
 # for images
-pillow >= 9.5.0
+# not for pypy >= 3.10
+pillow >= 9.5.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 
 # for sys info
 psutil >= 5.9.5
 
 # for files
 rtoml >= 0.9.0
-tomlkit >= 0.11.7
+tomlkit >= 0.11.8
 defusedxml >= 0.7.1
 
 # for debug
 objprint >= 0.2.2
-viztracer >= 0.15.6
-vizplugins >= 0.1.3
+viztracer >= 0.15.6; platform_python_implementation != "PyPy"
+vizplugins >= 0.1.3; platform_python_implementation != "PyPy"
 
 # for compile
-nuitka >= 1.5.6
+nuitka >= 1.6.5
 ordered-set >= 4.1.0
-imageio >= 2.27.0
+imageio >= 2.31.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 wheel >= 0.40.0
-setuptools >= 67.6.1
-setuptools-rust >= 1.5.2
+setuptools >= 67.8.0
+setuptools-rust >= 1.6.0
 ```
 
 ## 感谢
@@ -108,8 +109,8 @@ setuptools-rust >= 1.5.2
   - `tomlkit` / `rtoml` : toml 解析器
   - `xmltodict`: xml 与 dict 转换器
   - `pyperclip`: 剪贴板!
-  - `rapier2d`: 物理模拟引擎
-  - `pyo3`: Rust Python 扩展
+  - [rapier2d](https://rapier.rs/) : 物理模拟引擎
+  - [pyo3](https://pyo3.rs/main): Rust Python 扩展
 
 - 主要贡献者
   - [@Rayawa](https://github.com/Rayawa) : 文档矫正 & 翻译部分 lang

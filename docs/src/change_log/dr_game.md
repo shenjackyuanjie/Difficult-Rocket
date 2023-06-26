@@ -2,7 +2,7 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.2.1.0
+  - DR game: 0.3.0.0
   - DR rs: 0.2.15.0
 
 ## DR rs 0.3.0.0

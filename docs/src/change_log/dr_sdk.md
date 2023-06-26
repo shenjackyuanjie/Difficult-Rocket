@@ -2,7 +2,38 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.4.0
+  - DR sdk: 0.8.5.0
+
+## DR sdk 0.8.5.0
+
+### Changes
+
+- `ModManager`
+  - `get_mod_module(mod_name: str) -> Optional[ModInfo]`
+    - 通过 mod 名称获取 mod 的信息
+    - Get mod information by mod name
+  - `load_mod(mod_path: Path) -> Optional[ModInfo]`
+    - 加载指定路径的 mod
+    - Load the mod at the specified path
+  - `find_mods_in_path(extra_mods_path: Optional[List[Path]]) -> List[Path]`
+    - 在指定的路径中查找 mod 并返回 mod 的路径
+    - Find mods in the specified path and return the path of the mod
+  - `unload_mod(mod_id: str, game: Game) -> Optional[ModInfo]`
+    - 卸载指定的 mod 并返回 mod 的信息
+    - Unload the specified mod and return the mod information
+  - `reload_mod(mod_id: str, game: Game)`
+    - 重新加载指定的 mod
+    - Reload the specified mod
+
+### Command
+
+- `mods`
+  - `list`
+    - 列出所有已加载的 mod
+    - List all loaded mods
+  - `reload <mod_id>`
+    - 重新加载指定的 mod
+    - Reload the specified mod
 
 ## DR sdk 0.8.4.1
 
