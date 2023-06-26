@@ -308,7 +308,7 @@ class ClientWindow(Window):
     @_call_back(on_command_draw)
     @_call_screen_after
     def on_draw(self, *dt):
-        while command := self.game.console.get_command():
+        while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()

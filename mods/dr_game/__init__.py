@@ -79,6 +79,8 @@ class DR_mod(ModInfo):
         if old_self:
             from .sr1_ship import SR1ShipRender
             game.client.window.add_sub_screen("SR1_ship", SR1ShipRender)
+            game.console.stop()
+            game.init_console()
         else:
             self.config.flush_option()
         logger.info("on_load")
