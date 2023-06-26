@@ -6,7 +6,6 @@
  * -------------------------------
  */
 
-mod logger;
 mod plugin;
 mod python;
 mod simulator;

@@ -12,7 +12,7 @@ import traceback
 
 from pathlib import Path
 from xml.etree.ElementTree import Element
-from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator
+from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Type
 from defusedxml.ElementTree import parse
 
 from pyglet.math import Vec4
@@ -99,14 +99,6 @@ class SR1ShipRender(BaseScreen):
         self.need_update_parts = False
         self.dx = 0
         self.dy = 0
-        self.debug_line = Line(main_window.width / 2, main_window.height / 2,
-                               main_window.width / 2, main_window.height / 2,
-                               width=3, color=(200, 10, 200, 255))
-        self.debug_line.visible = SR1ShipRender_Option.debug_d_pos
-        self.debug_mouse_line = Line(main_window.width / 2, main_window.height / 2,
-                                     main_window.width / 2, main_window.height / 2,
-                                     width=3, color=(10, 200, 200, 255))
-        self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
         self.debug_mouse_delta_line = Line(main_window.width / 2, main_window.height / 2,
                                            main_window.width / 2, main_window.height / 2,
                                            width=2, color=(200, 200, 10, 255))
@@ -114,9 +106,6 @@ class SR1ShipRender(BaseScreen):
         self.debug_d_pos_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                        x=main_window.width / 2, y=main_window.height / 2)
         self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
-        self.debug_mouse_label = Label('debug mouse_label NODATA', font_name=Fonts.微软等宽无线,
-                                       x=main_window.width / 2, y=main_window.height / 2)
-        self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
         self.textures: Union[SR1Textures, None] = None
         # self.xml_name = 'configs/dock1.xml'
         # self.xml_doc: ElementTree = parse('configs/dock1.xml')
@@ -153,12 +142,7 @@ class SR1ShipRender(BaseScreen):
             self.xml_root = self.xml_doc.getroot()
             self.xml_name = file_path
             if DR_mod_runtime.use_DR_rust:
-                try:
-                    self.rust_ship = SR1Ship_rs(file_path, 'configs/PartList.xml', 'a_new_ship')
-                    print(self.rust_ship.name)
-                    print(self.rust_ship.img_pos)
-                except Exception:
-                    traceback.print_exc()
+                self.rust_ship = SR1Ship_rs(file_path, 'configs/PartList.xml', 'a_new_ship')
             logger.info(sr_tr().sr1.ship.xml.load_done())
             logger.info(sr_tr().sr1.ship.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))
@@ -277,9 +261,6 @@ class SR1ShipRender(BaseScreen):
     def update_parts(self) -> bool:
         if not self.rendered:
             return False
-        self.debug_line.x2, self.debug_line.y2 = self.camera.dx + (
-                self.window_pointer.width / 2), self.camera.dy + (
-                                                         self.window_pointer.height / 2)
         self.debug_d_pos_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
         self.debug_d_pos_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
                 self.window_pointer.height / 2) + 10, 0
@@ -307,12 +288,6 @@ class SR1ShipRender(BaseScreen):
 
         self.debug_label.draw()
 
-        if SR1ShipRender_Option.debug_d_pos:
-            self.debug_line.draw()
-            self.debug_d_pos_label.draw()
-        if SR1ShipRender_Option.debug_mouse_pos:
-            self.debug_mouse_line.draw()
-            self.debug_mouse_label.draw()
         if SR1ShipRender_Option.debug_mouse_d_pos:
             self.debug_mouse_delta_line.draw()
 
@@ -320,11 +295,6 @@ class SR1ShipRender(BaseScreen):
         self.debug_label.y = height - 100
         if not self.rendered:
             return
-        self.debug_line.x = width / 2
-        self.debug_line.y = height / 2
-        self.debug_mouse_line.x = width / 2
-        self.debug_mouse_line.y = height / 2
-        self.debug_mouse_delta_line.x = width / 2
         self.debug_mouse_delta_line.y = height / 2
         self.update_parts()
 
@@ -353,15 +323,11 @@ class SR1ShipRender(BaseScreen):
             self.camera.dx += mouse_dx_d
             self.camera.dy += mouse_dy_d
 
-        self.debug_mouse_line.x2, self.debug_mouse_line.y2 = x, y
         self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera.dx) * (1 - (0.5 ** scroll_y)) + (
                 window.width / 2)
         self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera.dy) * (1 - (0.5 ** scroll_y)) + (
                 window.height / 2)
-        self.debug_mouse_label.text = f'x: {mouse_dx} y: {mouse_dy}'
-        self.debug_mouse_label.position = x, y + 10, 0
         self.need_update_parts = True
-        # self.update_parts()
 
     def on_command(self, command: CommandText, window: "ClientWindow"):
         if command.find('render'):
@@ -374,22 +340,10 @@ class SR1ShipRender(BaseScreen):
                 self.need_draw = True
             print('应该渲染飞船的')
         elif command.find('debug'):
-            if command.find('delta'):
-                # SR1ShipRender_Option.debug_d_pos = not SR1ShipRender_Option.debug_mouse_d_pos
-                self.debug_line.visible = not self.debug_line.visible
-                self.debug_d_pos_label.visible = not self.debug_d_pos_label.visible
-                SR1ShipRender_Option.debug_d_pos = self.debug_line.visible
-                logger.debug('sr1 delta')
-            elif command.find('mouse'):
-                if command.find('delta'):
-                    SR1ShipRender_Option.debug_mouse_pos = not SR1ShipRender_Option.debug_mouse_pos
-                    self.debug_mouse_line.visible = SR1ShipRender_Option.debug_mouse_pos
-                    self.debug_mouse_label.visible = SR1ShipRender_Option.debug_mouse_pos
-                    logger.debug(f'sr1 mouse delta {SR1ShipRender_Option.debug_mouse_pos}')
-                else:
-                    self.debug_mouse_delta_line.visible = not self.debug_mouse_delta_line.visible
-                    SR1ShipRender_Option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
-                    logger.debug(f'sr1 mouse {SR1ShipRender_Option.debug_mouse_d_pos}')
+            if command.find('mouse'):
+                self.debug_mouse_delta_line.visible = not self.debug_mouse_delta_line.visible
+                SR1ShipRender_Option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
+                logger.debug(f'sr1 mouse {SR1ShipRender_Option.debug_mouse_d_pos}')
             elif command.find('ship'):
                 if self.rendered:
                     for index, sprite in self.parts_sprite.items():
@@ -398,17 +352,13 @@ class SR1ShipRender(BaseScreen):
         elif command.find('get_buf'):
 
             def screenshot(window):
-                from libs.pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, \
+                from pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, \
                     glReadPixels
                 import pyglet
-
-                width = window.width
-                height = window.height
                 format_str = "RGBA"
-
-                buf = (GLubyte * (len(format_str) * width * height))()
-                glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf)
-                return pyglet.image.ImageData(width, height, format_str, buf)
+                buf = (GLubyte * (len(format_str) * window.width * window.height))()
+                glReadPixels(0, 0, window.width, window.height, GL_RGBA, GL_UNSIGNED_BYTE, buf)
+                return pyglet.image.ImageData(window.width, window.height, format_str, buf)
 
             image_data = screenshot(self.window_pointer)
             image_data.save('test.png')
@@ -422,7 +372,6 @@ class SR1ShipRender(BaseScreen):
             img_size = (img_box[2] - img_box[0] + 1000, img_box[3] - img_box[1] + 1000)
             # 中心点是左上角坐标
             img_center = (abs(img_box[0]), abs(img_box[3]))
-            print(f"img_box: {img_box} img_size: {img_size} img_center: {img_center}")
             try:
                 from PIL import Image
             except ImportError:

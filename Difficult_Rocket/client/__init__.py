@@ -15,7 +15,7 @@ import traceback
 
 from pathlib import Path
 from decimal import Decimal
-from typing import Callable, Dict, List, TYPE_CHECKING, Optional
+from typing import Callable, Dict, List, TYPE_CHECKING, Optional, Type
 
 # third function
 import rtoml
@@ -269,9 +269,9 @@ class ClientWindow(Window):
         try:
             pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
         except KeyboardInterrupt:
-            print("==========client stop. KeyboardInterrupt info==========")
+            self.logger.warn("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
-            print("==========client stop. KeyboardInterrupt info end==========")
+            self.logger.warn("==========client stop. KeyboardInterrupt info end==========")
             self.dispatch_event("on_close", 'input')
             sys.exit(0)
 
@@ -289,8 +289,11 @@ class ClientWindow(Window):
     client api
     """
 
-    def add_sub_screen(self, title: str, sub_screen: type(BaseScreen)):
+    def add_sub_screen(self, title: str, sub_screen: Type[BaseScreen]):
         self.screen_list[title] = sub_screen(self)
+
+    def remove_sub_screen(self, title: str):
+        self.screen_list.pop(title)
 
     """
     draws and some event
