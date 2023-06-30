@@ -8,6 +8,9 @@
 
 ### Changes
 
+- `Difficult_Rocket.__init__`
+  - 重命名 / Rename
+  - `game_version` -> `sdk_version`
 - `ModManager`
   - `get_mod_module(mod_name: str) -> Optional[ModInfo]`
     - 通过 mod 名称获取 mod 的信息
