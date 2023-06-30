@@ -25,6 +25,12 @@
     - 重新加载指定的 mod
     - Reload the specified mod
 
+### Remove
+
+- `DR.client.guis.widget.InputBox`
+  - 没用了 `TextEntry` 已经好了 可以直接用了
+  - Use Less, the `TextEntry` is ok to use
+
 ### Command
 
 - `mods`
