@@ -9,7 +9,6 @@ import sys
 import time
 import shutil
 import tomlkit
-import zipfile
 import platform
 import traceback
 import subprocess
@@ -79,11 +78,13 @@ if __name__ == '__main__':
                     if f'pyglet.{lib}.{name}' in compiler.no_follow_import:
                         compiler.no_follow_import.remove(f'pyglet.{lib}.{name}')
 
-    print(compiler.as_markdown(longest=70))
-
     if is_github:
         from pprint import pprint
         pprint(compiler.option())
+    else:
+        compiler.output_path = Path(f'./build/nuitka-{platform.system().lower()}')
+
+    print(compiler.as_markdown(longest=70))
 
     print(compiler.gen_subprocess_cmd())
 

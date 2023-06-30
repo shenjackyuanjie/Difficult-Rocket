@@ -22,7 +22,7 @@ def _add_cmd(cmd: List[str], string: Optional[Any]) -> List[str]:
 class CompilerHelper(Options):
     name = 'Nuitka Compiler Helper'
 
-    output_path: Path = Path("./build/nuitka-win")
+    output_path: Path = Path("./build/nuitka")
     src_file: Path = Path('DR.py')
 
     python_cmd: str = 'python'
