@@ -81,6 +81,8 @@ jobs:
           python setup.py build
           python post_build.py
           python setup.py clean
+          cd ..
+          Remove-Item -Recurse -Force src
 
       # Uploads artifact
       - name: Upload Artifact
@@ -88,4 +90,4 @@ jobs:
         with:
           name: DR_rs${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}
           path: |
-            mods/dr_game/Difficult_Rocket_rs/lib
+            mods/dr_game
