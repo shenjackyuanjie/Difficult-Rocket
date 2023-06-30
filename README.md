@@ -46,21 +46,21 @@
 ## 环境需求 (测试过的 / 开发平台)
 
 - `开发平台 1 - Windows 10 x64 22H2`
-  - Python `3.8.10`
+  - Python `3.8.10` / `3.10.11`
     - pillow `9.5.0`
     - psutil `5.9.5`
     - rtoml `0.9.0`
-    - tomlkit `0.11.7`
+    - tomlkit `0.11.8`
     - defusedxml `0.7.1`
     - objprint `0.2.2`
     - viztracer `0.15.6`
     - vizplugins `0.1.3`
-    - nuitka `1.5.6`
+    - nuitka `1.6.6`
     - ordered-set `4.1.0`
-    - imageio `2.27.0`
+    - imageio `2.31.0`
     - wheel `0.40.0`
-    - setuptools `67.6.1`
-    - setuptools-rust `1.5.2`
+    - setuptools `67.8.0`
+    - setuptools-rust `1.6.0`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 
@@ -94,12 +94,13 @@ viztracer >= 0.15.6; platform_python_implementation != "PyPy"
 vizplugins >= 0.1.3; platform_python_implementation != "PyPy"
 
 # for compile
-nuitka >= 1.6.5
+nuitka >= 1.6.6
 ordered-set >= 4.1.0
 imageio >= 2.31.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 wheel >= 0.40.0
 setuptools >= 67.8.0
 setuptools-rust >= 1.6.0
+
 ```
 
 ## 感谢
