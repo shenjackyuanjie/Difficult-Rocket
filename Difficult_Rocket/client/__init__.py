@@ -26,6 +26,7 @@ import pyglet
 from pyglet.graphics import Group, Batch
 from pyglet.window import Window
 from pyglet.window import key, mouse
+from pyglet.gui.widgets import TextEntry
 
 # Difficult_Rocket function
 if TYPE_CHECKING:
@@ -40,7 +41,6 @@ from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.utils.thread import new_thread
 from Difficult_Rocket.client.screen import DRDEBUGScreen
 from Difficult_Rocket.client.fps.fps_log import FpsLogger
-from Difficult_Rocket.client.guis.widgets import InputBox
 from Difficult_Rocket.exception.language import LanguageNotFound
 
 
@@ -235,8 +235,8 @@ class ClientWindow(Window):
         # 命令显示
         self.command_batch = Batch()
         self.command_group = Group(1, parent=self.main_group)
-        self.input_box = InputBox(x=50, y=30, width=300,
-                                  batch=self.command_batch, text='')  # 实例化
+        self.input_box = TextEntry(x=50, y=30, width=300,
+                                   batch=self.command_batch, text='')  # 实例化
         self.input_box.push_handlers(self)
         self.input_box.set_handler('on_commit', self.on_input)
         self.set_handlers(self.input_box)
