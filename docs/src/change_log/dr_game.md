@@ -2,8 +2,17 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.0.0
+  - DR game: 0.3.1.0
   - DR rs: 0.2.15.0
+
+## DR game 0.3.1.0
+
+- 使用 `Difficult_Rocket.api.camera.Camera` 类
+  - Use `Difficult_Rocket.api.camera.Camera` class
+
+## DR game 0.3.0.0
+
+有一些修改（忘记记录了
 
 ## DR rs 0.3.0.0
 

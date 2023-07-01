@@ -2,7 +2,14 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.5.0
+  - DR sdk: 0.8.5.1
+
+## DR sdk 0.8.5.1
+
+### API
+
+- 将 `Camera` 和 `CenterCamera` 添加到 `Difficult_Rocket.api.camera`
+  - Add `Camera` and `CenterCamera` to `Difficult_Rocket.api.camera`
 
 ## DR sdk 0.8.5.0
 

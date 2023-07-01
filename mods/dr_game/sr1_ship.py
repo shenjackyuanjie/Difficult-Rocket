@@ -27,10 +27,10 @@ from . import DR_mod_runtime
 # Difficult Rocket
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils.translate import Tr
+from Difficult_Rocket.api.camera import CenterCamera
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
-from Difficult_Rocket.utils.camera import CenterCamera
 from .types import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
 
 if TYPE_CHECKING:
