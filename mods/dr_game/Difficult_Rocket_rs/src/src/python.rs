@@ -97,11 +97,7 @@ pub mod data {
 
         fn get_part_type(&self, name: String) -> Option<PySR1PartType> {
             let part_type = self.data.get_part_type(&name);
-            if let Some(part_type) = part_type {
-                Some(PySR1PartType::new(part_type.clone()))
-            } else {
-                None
-            }
+            part_type.map(|part_type| PySR1PartType::new(part_type))
         }
     }
 

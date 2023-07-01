@@ -9,8 +9,8 @@
 
 ### Changes
 
-- `types.rs` 利用可用的 Clippy 改进了代码
-  - `types.rs` improved the code with available Clippy
+- `types.rs` & `python.rs` 利用可用的 Clippy 改进了代码
+  - `types.rs` & `python.rs` improved the code with available Clippy
 
 ## DR game 0.3.1.1
 
