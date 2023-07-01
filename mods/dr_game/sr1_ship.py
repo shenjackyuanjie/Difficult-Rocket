@@ -41,7 +41,7 @@ if DR_mod_runtime.use_DR_rust:
                                       SR1Ship_rs)
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
-sr_tr = Tr(lang_path=Path('./mods/dr_game/lang'))
+sr_tr = Tr(lang_path=Path(__file__).parent / 'lang')
 
 
 def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:

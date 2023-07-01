@@ -102,7 +102,7 @@ def write_info_to_cache(cache_stream):
     from Difficult_Rocket import DR_status
     from Difficult_Rocket.runtime import DR_runtime
     cache_stream.write(Run_message)
-    cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.game_version}', level=1))
+    cache_stream.write(markdown_line_handler(f'DR Version: {Difficult_Rocket.sdk_version}', level=1))
     cache_stream.write(markdown_line_handler(f'DR language: {DR_runtime.language}', level=1))
     cache_stream.write(markdown_line_handler(f'Running Dir: {Path(os.curdir).resolve()}', level=1))
     cache_stream.write(f"\n{DR_runtime.as_markdown()}")
