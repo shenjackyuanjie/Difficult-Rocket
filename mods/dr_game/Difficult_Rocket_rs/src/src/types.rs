@@ -18,9 +18,11 @@ pub mod sr1 {
         Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart, DisconnectedParts as RawDisconnectedParts,
         Engine as RawEngine, Part as RawPartData, Parts as RawParts, Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
     };
+
     use crate::types::math::{Point2D, Rotatable};
 
     pub type IdType = i64;
+    pub type ConnectionsType = Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>;
 
     #[allow(unused)]
     #[inline]
@@ -59,12 +61,7 @@ pub mod sr1 {
     }
 
     #[inline]
-    pub fn i8_to_bool(i: i8) -> bool {
-        match i {
-            0 => false,
-            _ => true,
-        }
-    }
+    pub fn i8_to_bool(i: i8) -> bool { !matches!(i, 0) }
 
     #[inline]
     pub fn bool_to_i8(b: bool) -> i8 {
@@ -75,20 +72,10 @@ pub mod sr1 {
     }
 
     #[inline]
-    pub fn option_i8_to_option_bool(i: Option<i8>) -> Option<bool> {
-        match i {
-            Some(i) => Some(i8_to_bool(i)),
-            None => None,
-        }
-    }
+    pub fn option_i8_to_option_bool(i: Option<i8>) -> Option<bool> { i.map(i8_to_bool) }
 
     #[inline]
-    pub fn option_bool_to_option_i8(b: Option<bool>) -> Option<i8> {
-        match b {
-            Some(b) => Some(bool_to_i8(b)),
-            None => None,
-        }
-    }
+    pub fn option_bool_to_option_i8(b: Option<bool>) -> Option<i8> { b.map(bool_to_i8) }
 
     #[derive(Debug, Copy, Clone)]
     pub enum SR1PartTypeAttr {
@@ -140,7 +127,7 @@ pub mod sr1 {
     }
 
     impl Damage {
-        pub fn to_raw_damage(&self) -> RawDamage {
+        pub fn as_raw_damage(&self) -> RawDamage {
             RawDamage {
                 disconnect: self.disconnect,
                 explode: self.explode,
@@ -242,7 +229,7 @@ pub mod sr1 {
                     map.insert(part.id.clone(), part.clone());
                 }
                 let cache = Some(map.clone());
-                self.cache.replace(cache.clone());
+                self.cache.replace(cache);
             }
             self.cache.borrow().clone().unwrap()
         }
@@ -250,17 +237,14 @@ pub mod sr1 {
         #[inline]
         pub fn get_part_type(&self, type_name: &String) -> Option<SR1PartType> {
             let cache = self.get_cache();
-            match cache.get(type_name) {
-                Some(part) => Some(part.clone()),
-                None => None,
-            }
+            cache.get(type_name).cloned()
         }
 
         pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
             SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
         }
 
-        pub fn insert_part(&mut self, part: SR1PartType) -> () { self.types.insert(0, part); }
+        pub fn insert_part(&mut self, part: SR1PartType) { self.types.insert(0, part); }
     }
 
     pub trait SR1PartTypeData {
@@ -285,13 +269,13 @@ pub mod sr1 {
 
     impl SR1PartListTrait for SR1PartList {
         fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
-            return if let Some(name) = name {
+            if let Some(name) = name {
                 let mut dupe = self.clone();
                 dupe.name = name;
                 dupe
             } else {
                 self.clone()
-            };
+            }
         }
 
         fn to_raw_part_list(&self) -> RawPartList {
@@ -376,7 +360,7 @@ pub mod sr1 {
             };
             let attach_point: Option<AttachPoints> = match &self.attach_points {
                 Some(attach_points) => {
-                    if attach_points.len() > 0 {
+                    if !attach_points.is_empty() {
                         Some(AttachPoints::new(attach_points.clone()))
                     } else {
                         None
@@ -389,7 +373,7 @@ pub mod sr1 {
                 name: self.name.clone(),
                 description: self.description.clone(),
                 sprite: self.sprite.clone(),
-                r#type: self.p_type.clone(),
+                r#type: self.p_type,
                 mass: self.mass,
                 width: self.width,
                 height: self.height,
@@ -403,7 +387,7 @@ pub mod sr1 {
                 drag: Some(self.drag),
                 hidden: Some(self.hidden),
                 buoyancy: Some(self.buoyancy),
-                damage: Some(self.damage.to_raw_damage()),
+                damage: Some(self.damage.as_raw_damage()),
                 tank,
                 engine,
                 rcs,
@@ -512,19 +496,13 @@ pub mod sr1 {
             let mut shape = Shape::new_width_height(width as f64, height as f64, Some(radius));
             shape.move_xy(Some(self.x), Some(self.y));
             let mut pos_box = (0_f64, 0_f64, 0_f64, 0_f64);
-            match shape.bounds[0] {
-                Edge::OneTimeLine(line) => {
-                    pos_box.0 = line.start.x;
-                    pos_box.1 = line.start.y;
-                }
-                _ => {}
+            if let Edge::OneTimeLine(line) = shape.bounds[0] {
+                pos_box.0 = line.start.x;
+                pos_box.1 = line.start.y;
             }
-            match shape.bounds[2] {
-                Edge::OneTimeLine(line) => {
-                    pos_box.2 = line.start.x;
-                    pos_box.3 = line.start.y;
-                }
-                _ => {}
+            if let Edge::OneTimeLine(line) = shape.bounds[2] {
+                pos_box.2 = line.start.x;
+                pos_box.3 = line.start.y;
             }
             pos_box
         }
@@ -623,10 +601,8 @@ pub mod sr1 {
         pub fn from_raw(raw_data: &RawPartData, part_type: Option<SR1PartTypeEnum>, guess: bool) -> Self {
             let fuel = if let Some(tank) = &raw_data.tank {
                 Some(tank.fuel.to_owned())
-            } else if let Some(engine) = &raw_data.engine {
-                Some(engine.fuel.to_owned())
             } else {
-                None
+                raw_data.engine.as_ref().map(|engine| engine.fuel.to_owned())
             };
             let (name, throttle, current_stage, steps) = if let Some(pod) = &raw_data.pod {
                 (
@@ -688,7 +664,7 @@ pub mod sr1 {
         pub touch_ground: bool,
         pub parts: Vec<SR1PartData>,
         pub connections: Vec<Connection>,
-        pub disconnected: Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
+        pub disconnected: Option<ConnectionsType>,
     }
 
     #[derive(Debug, Clone, Copy)]
@@ -762,7 +738,7 @@ pub mod sr1 {
                 };
             }
 
-            fn write_parts(parts: &Vec<SR1PartData>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
+            fn write_parts(parts: &[SR1PartData], writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
                 writer.write_event(Event::Start(BytesStart::new("Parts"))).unwrap();
                 for part in parts.iter() {
                     let mut part_attr = BytesStart::new("Part");
@@ -868,7 +844,7 @@ pub mod sr1 {
                 writer.write_event(Event::End(BytesEnd::new("Parts"))).unwrap();
             }
 
-            fn write_connections(connects: &Vec<Connection>, writer: &mut Writer<Cursor<Vec<u8>>>) {
+            fn write_connections(connects: &[Connection], writer: &mut Writer<Cursor<Vec<u8>>>) {
                 writer.write_event(Event::Start(BytesStart::new("Connections"))).unwrap();
                 for connect in connects.iter() {
                     let mut connect_elem = BytesStart::new("Connection");
@@ -881,11 +857,7 @@ pub mod sr1 {
                 writer.write_event(Event::End(BytesEnd::new("Connections"))).unwrap();
             }
 
-            fn write_disconnect(
-                data: &Option<Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>>,
-                writer: &mut Writer<Cursor<Vec<u8>>>,
-                save_status: &SaveStatus,
-            ) {
+            fn write_disconnect(data: &Option<ConnectionsType>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
                 match data {
                     Some(data) => {
                         writer.write_event(Event::Start(BytesStart::new("DisconnectedParts"))).unwrap();
@@ -922,7 +894,7 @@ pub mod sr1 {
                 write_disconnect(&data.disconnected, &mut writer, save_status);
                 writer.write_event(Event::End(BytesEnd::new("Ship"))).unwrap();
 
-                return String::from_utf8(writer.into_inner().into_inner()).unwrap();
+                String::from_utf8(writer.into_inner().into_inner()).unwrap()
             }
             fs::write(file_name, write_data(self, save_status)).unwrap();
             Some(())
@@ -982,7 +954,7 @@ pub mod sr1 {
         }
     }
 
-    pub fn get_max_box(parts: &Vec<SR1PartData>, part_list: &SR1PartList) -> (f64, f64, f64, f64) {
+    pub fn get_max_box(parts: &[SR1PartData], part_list: &SR1PartList) -> (f64, f64, f64, f64) {
         let mut max_box = (0_f64, 0_f64, 0_f64, 0_f64);
         for part in parts.iter() {
             let part_type = part_list.get_part_type(&part.part_type_id).unwrap();
@@ -1046,7 +1018,7 @@ pub mod math {
         pub fn add(&self, x: f64, y: f64) -> Self { Point2D::new(self.x + x, self.y + y) }
 
         #[inline]
-        pub fn add_mut(&mut self, x: f64, y: f64) -> () {
+        pub fn add_mut(&mut self, x: f64, y: f64) {
             self.x += x;
             self.y += y;
         }

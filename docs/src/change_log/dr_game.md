@@ -3,7 +3,14 @@
 
 - 最新版本号
   - DR game: 0.3.1.1
-  - DR rs: 0.2.15.0
+  - DR rs: 0.2.15.1
+
+## DR rs 0.2.15.1
+
+### Changes
+
+- `types.rs` 利用可用的 Clippy 改进了代码
+  - `types.rs` improved the code with available Clippy
 
 ## DR game 0.3.1.1
 
