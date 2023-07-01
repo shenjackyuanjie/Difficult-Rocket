@@ -2,8 +2,15 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.1.0
+  - DR game: 0.3.1.1
   - DR rs: 0.2.15.0
+
+## DR game 0.3.1.1
+
+### Fix
+
+- `sr_tr` 加载语言文件的路径并没有跟随目录名称改变
+  - `sr_tr` does not follow the directory name change when loading the language file path
 
 ## DR game 0.3.1.0
 
