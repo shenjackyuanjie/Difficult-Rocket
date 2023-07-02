@@ -226,6 +226,7 @@ class SR1ShipRender(BaseScreen):
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
+        self.part_line_list = []
         self.camera.zoom = 1.0
         self.camera.dx = 0
         self.camera.dy = 0
