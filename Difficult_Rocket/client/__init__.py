@@ -223,8 +223,7 @@ class ClientWindow(Window):
         self.SPF = Decimal('1') / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS))
         # batch
-        self.part_batch = Batch()
-        self.label_batch = Batch()
+        self.main_batch = Batch()
         self.main_group = Group(0)
         # frame
         self.frame = pyglet.gui.Frame(self, order=20)
@@ -233,10 +232,8 @@ class ClientWindow(Window):
         # setup
         self.setup()
         # 命令显示
-        self.command_batch = Batch()
-        self.command_group = Group(1, parent=self.main_group)
         self.input_box = TextEntry(x=50, y=30, width=300,
-                                   batch=self.command_batch, text='')  # 实例化
+                                   batch=self.main_batch, text='', group=Group(1000, parent=self.main_group))  # 实例化
         self.input_box.push_handlers(self)
         self.input_box.set_handler('on_commit', self.on_input)
         self.set_handlers(self.input_box)
@@ -269,9 +266,9 @@ class ClientWindow(Window):
         try:
             pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
         except KeyboardInterrupt:
-            self.logger.warn("==========client stop. KeyboardInterrupt info==========")
+            self.logger.warning("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
-            self.logger.warn("==========client stop. KeyboardInterrupt info end==========")
+            self.logger.warning("==========client stop. KeyboardInterrupt info end==========")
             self.dispatch_event("on_close", 'input')
             sys.exit(0)
 
@@ -305,10 +302,6 @@ class ClientWindow(Window):
         now_FPS = pyglet.clock.get_frequency()
         self.fps_log.update_tick(now_FPS, decimal_tick)
 
-    def on_command_draw(self):
-        self.command_batch.draw()
-
-    @_call_back(on_command_draw)
     @_call_screen_after
     def on_draw(self, *dt):
         while (command := self.game.console.get_command()) is not None:
@@ -337,10 +330,9 @@ class ClientWindow(Window):
         # self.set_location(*self.get_location())
         print('on hide!')
 
-    @_call_screen_after
+    @_call_screen_before
     def draw_batch(self):
-        self.part_batch.draw()
-        self.label_batch.draw()
+        self.main_batch.draw()
 
     """
     command line event

@@ -107,10 +107,8 @@ class SR1ShipRender(BaseScreen):
         # self.xml_doc: ElementTree = parse('configs/dock1.xml')
         # self.xml_root: ElementTree.Element = self.xml_doc.getroot()
         self.load_xml('configs/dock1.xml')
-        self.part_box_batch = Batch()
-        self.part_batch = Batch()
-        self.part_group = Group(2)
-        self.part_line_group = Group(1, parent=self.part_group)
+        self.main_batch = Batch()
+        self.part_group = Group(10, parent=main_window.main_group)
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
@@ -163,7 +161,7 @@ class SR1ShipRender(BaseScreen):
             # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y, z=random.random(),
-                                  batch=self.part_batch, group=self.part_group)
+                                  batch=self.main_batch, group=self.part_group)
             # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系（OK
             # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
             cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
@@ -176,6 +174,7 @@ class SR1ShipRender(BaseScreen):
             self.parts_sprite[part.id] = cache_sprite
 
             if DR_mod_runtime.use_DR_rust:
+                line_box_group = Group(6, parent=self.part_group)
                 part_debug_box = self.rust_ship.get_part_box(part.id)
                 if part_debug_box:
                     # 线框
@@ -184,16 +183,16 @@ class SR1ShipRender(BaseScreen):
                     color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(100, 200))
                     part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
-                                              batch=self.part_box_batch, width=width, color=color))
+                                              batch=self.main_batch, width=width, color=color, group=line_box_group))
                     part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[1][1] * 30,
                                               x2=part_debug_box[1][0] * 30, y2=part_debug_box[1][1] * 30,
-                                              batch=self.part_box_batch, width=width, color=color))
+                                              batch=self.main_batch, width=width, color=color, group=line_box_group))
                     part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[1][1] * 30,
                                               x2=part_debug_box[1][0] * 30, y2=part_debug_box[0][1] * 30,
-                                              batch=self.part_box_batch, width=width, color=color))
+                                              batch=self.main_batch, width=width, color=color, group=line_box_group))
                     part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
-                                              batch=self.part_box_batch, width=width, color=color))
+                                              batch=self.main_batch, width=width, color=color, group=line_box_group))
                     self.part_line_box[part.id] = part_line_box
             # if not part_render:  # 如果不渲染(渲染有毛病)
             #     self.parts_sprite[part.id].visible = False
@@ -202,6 +201,7 @@ class SR1ShipRender(BaseScreen):
                 count = 0
                 yield each_count
         if DR_mod_runtime.use_DR_rust:
+            connect_line_group = Group(5, parent=self.part_group)
             for connect in self.rust_ship.connection:
                 # 连接线
                 parent_part_data = self.part_data[connect[2]]
@@ -209,7 +209,7 @@ class SR1ShipRender(BaseScreen):
                 color = (random.randrange(100, 255), random.randrange(0, 255), random.randrange(0, 255), 255)
                 self.part_line_list.append(Line(x=parent_part_data.x * 60, y=parent_part_data.y * 60,
                                                 x2=child_part_data.x * 60, y2=child_part_data.y * 60,
-                                                batch=self.part_batch, group=self.part_line_group,
+                                                batch=self.main_batch, group=connect_line_group,
                                                 width=1, color=color))
                 count += 1
                 if count >= each_count:
@@ -262,6 +262,10 @@ class SR1ShipRender(BaseScreen):
                 self.window_pointer.height / 2) + 10, 0
         self.need_update_parts = False
 
+    def draw_batch(self, window: "ClientWindow"):
+        with self.camera:
+            self.main_batch.draw()
+
     def on_draw(self, window: "ClientWindow"):
         if self.need_draw:
             self.render_ship()
@@ -276,11 +280,6 @@ class SR1ShipRender(BaseScreen):
         if self.need_update_parts:
             self.update_parts()
             self.need_update_parts = False
-
-        with self.camera:
-            self.part_box_batch.draw()
-            self.part_batch.draw()
-            self.part_box_batch.draw()
 
         self.debug_label.draw()
 
