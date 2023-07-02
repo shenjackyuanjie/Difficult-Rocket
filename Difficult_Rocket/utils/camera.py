@@ -37,9 +37,7 @@ class Camera:
         self.zoom = zoom
         self.min_zoom = min_zoom
         self.max_zoom = max_zoom
-
-    def get_view(self):
-        return self.window.view
+        self._stored_view = window.view
 
     @property
     def position(self) -> Tuple[float, float]:
@@ -59,6 +57,7 @@ class Camera:
 
     def begin(self) -> None:
         view = self.window.view
+        self._stored_view = view
         x = self.window.width / self.zoom + (self.dx / self.zoom)
         y = self.window.height / self.zoom + (self.dy / self.zoom)
 
@@ -68,14 +67,7 @@ class Camera:
         self.window.view = view_matrix
 
     def end(self) -> None:
-        view = self.window.view
-        x = self.window.width / self.zoom + (self.dx / self.zoom)
-        y = self.window.height / self.zoom + (self.dy / self.zoom)
-
-        view_matrix = view.scale((1.0 / self.zoom, 1.0 / self.zoom, 1))
-        view_matrix = view_matrix.translate((-x * self.zoom, -y * self.zoom, 0))
-
-        self.window.view = view_matrix
+        self.window.view = self._stored_view
     
     def __enter__(self):
         self.begin()
@@ -87,7 +79,7 @@ class Camera:
 
 class CenterCamera(Camera):
     """
-    A camera that centers the view on the center of the window
+    A camera that centers the view in the center of the window
     
     >>> from pyglet.window import Window
     >>> window = Window()
@@ -103,6 +95,7 @@ class CenterCamera(Camera):
     """
     def begin(self) -> None:
         view = self.window.view
+        self._stored_view = view
         x = self.window.width / 2.0 / self.zoom + (self.dx / self.zoom)
         y = self.window.height / 2.0 / self.zoom + (self.dy / self.zoom)
 
@@ -112,12 +105,5 @@ class CenterCamera(Camera):
         self.window.view = view_matrix
 
     def end(self) -> None:
-        view = self.window.view
-        x = self.window.width / 2.0 / self.zoom + (self.dx / self.zoom)
-        y = self.window.height / 2.0 / self.zoom + (self.dy / self.zoom)
-
-        view_matrix = view.scale((1.0 / self.zoom, 1.0 / self.zoom, 1))
-        view_matrix = view_matrix.translate((-x * self.zoom, -y * self.zoom, 0))
-
-        self.window.view = view_matrix
+        self.window.view = self._stored_view
     

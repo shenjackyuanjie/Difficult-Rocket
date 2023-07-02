@@ -199,9 +199,9 @@ class SR1ShipRender(BaseScreen):
             count += 1
             if count >= each_count:
                 count = 0
-                yield each_count
+                yield count
         if DR_mod_runtime.use_DR_rust:
-            connect_line_group = Group(5, parent=self.part_group)
+            connect_line_group = Group(7, parent=self.part_group)
             for connect in self.rust_ship.connection:
                 # 连接线
                 parent_part_data = self.part_data[connect[2]]
@@ -212,9 +212,9 @@ class SR1ShipRender(BaseScreen):
                                                 batch=self.main_batch, group=connect_line_group,
                                                 width=1, color=color))
                 count += 1
-                if count >= each_count:
+                if count >= each_count * 3:
                     count = 0
-                    yield each_count
+                    yield count
         self.drawing = False
         raise GeneratorExit
 
