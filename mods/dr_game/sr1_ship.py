@@ -12,7 +12,7 @@ import traceback
 
 from pathlib import Path
 from xml.etree.ElementTree import Element
-from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Type
+from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Tuple
 from defusedxml.ElementTree import parse
 
 from pyglet.math import Vec4
@@ -21,6 +21,8 @@ from pyglet.sprite import Sprite
 # from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Rectangle
+# pyglet OpenGL
+from pyglet.gl import glViewport
 
 from . import DR_mod_runtime
 
@@ -74,9 +76,7 @@ class _SR1ShipRender_Option(Options):
     debug_d_pos: bool = False
     debug_mouse_pos: bool = False
     debug_mouse_d_pos: bool = False
-
-
-SR1ShipRender_Option = _SR1ShipRender_Option()
+    draw_size: Tuple[int, int] = (100, 100)
 
 
 class SR1ShipRender(BaseScreen):
@@ -93,15 +93,16 @@ class SR1ShipRender(BaseScreen):
         self.drawing = False
         self.gen_draw: Optional[Generator] = None
         self.need_update_parts = False
+        self.render_option = _SR1ShipRender_Option()
         self.dx = 0
         self.dy = 0
         self.debug_mouse_delta_line = Line(main_window.width / 2, main_window.height / 2,
                                            main_window.width / 2, main_window.height / 2,
                                            width=2, color=(200, 200, 10, 255))
-        self.debug_mouse_delta_line.visible = SR1ShipRender_Option.debug_mouse_d_pos
+        self.debug_mouse_delta_line.visible = self.render_option.debug_mouse_d_pos
         self.debug_d_pos_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                        x=main_window.width / 2, y=main_window.height / 2)
-        self.debug_d_pos_label.visible = SR1ShipRender_Option.debug_d_pos
+        self.debug_d_pos_label.visible = self.render_option.debug_d_pos
         self.textures: Union[SR1Textures, None] = None
         # self.xml_name = 'configs/dock1.xml'
         # self.xml_doc: ElementTree = parse('configs/dock1.xml')
@@ -265,7 +266,9 @@ class SR1ShipRender(BaseScreen):
 
     def draw_batch(self, window: "ClientWindow"):
         with self.camera:
+            # glViewport(int(self.camera.dx), int(self.camera.dy), window.width // 2, window.height // 2)
             self.main_batch.draw()
+            # glViewport(0, 0, window.width, window.height)
 
     def on_draw(self, window: "ClientWindow"):
         if self.need_draw:
@@ -284,7 +287,7 @@ class SR1ShipRender(BaseScreen):
 
         self.debug_label.draw()
 
-        if SR1ShipRender_Option.debug_mouse_d_pos:
+        if self.render_option.debug_mouse_d_pos:
             self.debug_mouse_delta_line.draw()
 
     def on_resize(self, width: int, height: int, window: "ClientWindow"):
@@ -293,6 +296,7 @@ class SR1ShipRender(BaseScreen):
             return
         self.debug_mouse_delta_line.y = height / 2
         self.update_parts()
+        self.render_option.draw_size = (width, height)
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: "ClientWindow"):
         if not self.rendered:
@@ -338,8 +342,8 @@ class SR1ShipRender(BaseScreen):
         elif command.find('debug'):
             if command.find('mouse'):
                 self.debug_mouse_delta_line.visible = not self.debug_mouse_delta_line.visible
-                SR1ShipRender_Option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
-                logger.debug(f'sr1 mouse {SR1ShipRender_Option.debug_mouse_d_pos}')
+                self.render_option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
+                logger.debug(f'sr1 mouse {self.render_option.debug_mouse_d_pos}')
             elif command.find('ship'):
                 if self.rendered:
                     for index, sprite in self.parts_sprite.items():
@@ -400,6 +404,8 @@ class SR1ShipRender(BaseScreen):
                     return
                 logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
                 self.rust_ship.save('./test-save.xml')
+            elif command.find('render'):
+                glViewport(0, 0, 1000, 1000)
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if not self.focus:
@@ -419,4 +425,4 @@ class SR1ShipRender(BaseScreen):
 if __name__ == '__main__':
     from objprint import op
 
-    op(SR1ShipRender_Option)
+    op(_SR1ShipRender_Option())
