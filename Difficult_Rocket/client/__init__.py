@@ -354,10 +354,9 @@ class ClientWindow(Window):
         self.logger.info(tr().window.command.text().format(f"|{command.text}|"))
         command.find('/')
         if command.find('stop'):
-            # self.dispatch_event('on_exit')
-            print("command stop!")
-            pyglet.app.platform_event_loop.stop()
-            self.dispatch_event('on_close', 'command')  # source = command
+            self.logger.info("command stop!")
+            # HUGE THANKS to Discord @nokiyasos for this fix!
+            pyglet.app.exit()
         elif command.find('fps'):
             if command.find('log'):
                 self.logger.debug(self.fps_log.fps_list)
