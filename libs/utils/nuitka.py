@@ -6,11 +6,12 @@
 
 # 用于使用 nuitka 构建 DR
 import platform
+import warnings
 import traceback
 from pathlib import Path
 from typing import List, Tuple, Optional, Any
 
-from Difficult_Rocket.api.types import Options, Version
+from Difficult_Rocket.api.types import Options, Version, VersionRequirement
 
 
 def _add_cmd(cmd: List[str], string: Optional[Any]) -> List[str]:
@@ -20,12 +21,18 @@ def _add_cmd(cmd: List[str], string: Optional[Any]) -> List[str]:
 
 
 class CompilerHelper(Options):
+    """
+    用于帮助生成 nuitka 构建脚本的类
+    Use to help generate nuitka build script
+    
+    """
     name = 'Nuitka Compiler Helper'
 
     output_path: Path = Path("./build/nuitka")
     src_file: Path = Path('DR.py')
 
     python_cmd: str = 'python'
+    compat_nuitka_version: VersionRequirement = VersionRequirement("~1.7.1")  # STATIC VERSION
 
     # 以下为 nuitka 的参数
     use_lto: bool = False  # --lto=yes (no is faster)
@@ -42,6 +49,7 @@ class CompilerHelper(Options):
     xml_path: Path = Path('build/compile_data.xml')
 
     download_confirm: bool = True  # --assume-yes-for-download
+    run_after_build: bool = False  # --run
 
     company_name: str = 'tool-shenjack-workshop'
     product_name: str = 'Difficult-Rocket'
@@ -65,6 +73,12 @@ class CompilerHelper(Options):
     disable_plugin: List[str] = []  # --disable-plugin=xxx,xxx
 
     def init(self, **kwargs) -> None:
+        if (compat_version := kwargs.get('compat_nuitka_version')) is not None:
+            if not self.compat_nuitka_version.accept(compat_version):
+                warnings.warn(
+                    f"Nuitka version may not compat with {compat_version}\n"
+                    "requirement: {self.compat_nuitka_version}"
+                )
         # 非 windows 平台不使用 msvc
         if platform.system() != 'Windows':
             self.use_msvc = False
@@ -87,11 +101,32 @@ class CompilerHelper(Options):
         return self.as_markdown()
 
     def as_markdown(self, longest: Optional[int] = None) -> str:
+        """
+        输出编译器帮助信息
+        Output compiler help information
+        
+        Args:
+            longest (Optional[int], optional): 
+                输出信息的最大长度限制 The maximum length of output information. 
+                Defaults to None.
+
+        Returns:
+            str: 以 markdown 格式输出的编译器帮助信息
+                Compile helper information in markdown format
+        """
         front = super().as_markdown(longest)
         gen_cmd = self.gen_subprocess_cmd()
         return f"{front}\n\n```bash\n{' '.join(gen_cmd)}\n```"
 
     def gen_subprocess_cmd(self) -> List[str]:
+        """生成 nuitka 构建脚本
+        Generate nuitka build script
+
+        Returns:
+            List[str]: 
+                生成的 nuitka 构建脚本
+                Generated nuitka build script
+        """
         cmd_list = [self.python_cmd, '-m', 'nuitka']
         # macos 和 非 macos icon 参数不同
         if platform.system() == 'Darwin':
@@ -112,6 +147,7 @@ class CompilerHelper(Options):
         _add_cmd(cmd_list, '--show-progress' if self.show_progress else None)
         _add_cmd(cmd_list, '--show-memory' if self.show_memory else None)
         _add_cmd(cmd_list, '--assume-yes-for-download' if self.download_confirm else None)
+        _add_cmd(cmd_list, '--run' if self.run_after_build else None)
         _add_cmd(cmd_list, '--enable-console' if self.enable_console else '--disable-console')
 
         _add_cmd(cmd_list, f'--xml={self.xml_path.absolute()}' if self.save_xml else None)
@@ -133,5 +169,5 @@ class CompilerHelper(Options):
         if self.include_packages:
             cmd_list += [f"--include-package={package}" for package in self.include_packages]
 
-        cmd_list.append(f"{self.src_file}")
+        cmd_list.append(f"--main={self.src_file}")
         return cmd_list

@@ -2,7 +2,18 @@
 # DR 构建 更新日志
 
 - 最新构建版本号
-  - build_version: 2.1.1.0
+  - build_version: 2.1.2.0
+
+## 20230708 build 2.1.2.0
+
+### 修改
+
+- 同步了 `lib-not-dr` 的修改
+  - `NuitkaCompiler`
+    - 添加了 `run_after_build` 选项
+      - `--run`
+    - 添加了 `compat_nuitka_version` 选项
+      - 目前是 `1.7.1`
 
 ## 20230630 build 2.1.1.0
 
