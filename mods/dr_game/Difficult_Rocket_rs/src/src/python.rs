@@ -167,7 +167,6 @@ pub mod data {
 
         #[getter]
         fn get_img_pos(&self) -> (i64, i64, i64, i64) {
-            // let mut img_pos = (0, 0, 0, 0);
             // -x, -y, +x, +y
             // 左下角，右上角
             let mut max_box = get_max_box(&self.ship.parts, &self.part_list);
