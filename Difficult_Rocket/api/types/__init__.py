@@ -12,12 +12,15 @@ from Difficult_Rocket.utils.options import (Options,
                                             OptionNotFound,
                                             get_type_hints_)
 
-from libs.MCDR.version import Version
+from libs.MCDR.version import (Version,
+                               VersionRequirement,
+                               VersionParsingError)
 
 __all__ = [
     # main class
     'Options',
     'Version',
+    'VersionRequirement',
 
     # data class
     'FontData',
@@ -27,6 +30,7 @@ __all__ = [
     'OptionsError',
     'OptionNameNotDefined',
     'OptionNotFound',
+    'VersionParsingError',
 
     # other
     'get_type_hints_',

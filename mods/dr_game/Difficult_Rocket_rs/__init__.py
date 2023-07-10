@@ -6,15 +6,14 @@
 
 from .lib import *
 
-from typing import TYPE_CHECKING, Dict, Tuple, Optional, List, Tuple
+from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
 
 if TYPE_CHECKING:
 
-    from pyglet.window import Window
-
-
-    def test_call(py_obj) -> bool: ...
-
+    def test_call(py_obj) -> bool:
+        """ 这里展示的代码实际上就是实际的等效实现 """
+        py_obj.draw()
+        return True
 
     def get_version_str() -> str: ...
 
@@ -64,11 +63,23 @@ if TYPE_CHECKING:
         """ 用于从 rust 中读取 SR1PartData (其实好像也没啥用哈)
         """
         @property
+        def id(self) -> int: ...
+        @property
         def part_type_id(self) -> str: ...
         @property
         def pos(self) -> Tuple[float, float]: ...
         @property
+        def x(self) -> float: ...
+        @property
+        def y(self) -> float: ...
+        @property
+        def activate(self) -> bool: ...
+        @property
         def angle(self) -> float: ...
+        @property
+        def angle_v(self) -> float: ...
+        @property
+        def explode(self) -> bool: ...
         @property
         def flip_x(self) -> bool: ...
         @property
@@ -76,7 +87,7 @@ if TYPE_CHECKING:
 
     class SaveStatus_rs:
         def __init__(self, save_default: Optional[bool] = False) -> None: ...
-        
+
     class SR1Ship_rs:
         """ 用于高效且省内存的读取 SR1Ship """
         def __init__(self, file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip'): ...
@@ -95,10 +106,10 @@ if TYPE_CHECKING:
         def connection(self) -> List[Tuple[int, int, int, int]]: ...
         """获取所有连接信息"""
         def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]: ...
-        def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData]]]: 
+        def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData_rs]]]:
             """用于返回一个包含所有已连接零件的字典"""
         def save(self, file_path: str, save_status: Optional[SaveStatus_rs] = None) -> None: ...
-    
+
     class Console_rs:
         def __init__(self) -> None: ...
         def start(self) -> None: ...

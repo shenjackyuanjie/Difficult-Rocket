@@ -3,7 +3,19 @@
 
 - 最新版本号
   - DR game: 0.3.1.1
-  - DR rs: 0.2.15.1
+  - DR rs: 0.2.15.2
+
+## DR rs 0.2.15.2
+
+### Add
+
+- `SR1PartData_rs`
+  - `get_id -> IdType`
+  - `get_x -> f64`
+  - `get_y -> f64`
+  - `get_activate -> bool`
+  - `get_angle_v -> f64`
+  - `get_explode -> bool`
 
 ## DR rs 0.2.15.1
 

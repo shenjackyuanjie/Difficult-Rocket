@@ -24,7 +24,7 @@ enum LoadState {
 }
 
 #[pyfunction]
-fn get_version_str() -> String { "0.2.15.1".to_string() }
+fn get_version_str() -> String { "0.2.15.2".to_string() }
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {
