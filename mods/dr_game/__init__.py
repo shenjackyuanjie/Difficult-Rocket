@@ -12,7 +12,6 @@ from typing import Optional
 
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
-from Difficult_Rocket.main import Console
 from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Options, Version
