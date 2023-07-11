@@ -39,7 +39,7 @@ def modify_path() -> None:
 
 
 if __name__ == '__main__':
-    print(hi)  # hi！
+    print(hi,f"\n{time.ctime()}")  # hi！
     # 记录启动信息
     start_time_ns = time.time_ns()
     start_time_perf_ns = time.perf_counter_ns()
