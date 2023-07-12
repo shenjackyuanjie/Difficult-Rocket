@@ -379,6 +379,7 @@ class ClientWindow(Window):
             self.save_info()
         elif command.find('mods'):
             if command.find('list'):
+                self.logger.info(tr().mod.list())
                 for mod in self.game.mod_manager.loaded_mod_modules.values():
                     self.logger.info(f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}")
             elif command.find('reload'):

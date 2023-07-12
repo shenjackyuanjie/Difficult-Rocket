@@ -22,6 +22,7 @@ logger.logfile_datefmt = "Log file date format : "
 game_start.at = "Game MainThread start at: {}"
 
 [mod]
+list = "Mod list:"
 find.finded = "Mod founded: {}"
 load.start = "Loading Mod in path {}"
 load.use_time = "Mod loading has used: {} second"
