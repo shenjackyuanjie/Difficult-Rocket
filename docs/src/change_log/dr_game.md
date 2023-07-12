@@ -2,8 +2,13 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.1.2
+  - DR game: 0.3.1.3
   - DR rs: 0.2.15.2
+
+## DR game 0.3.1.2 / 0.3.1.3
+
+- 加回了显示 delta 的那根线
+  - Add back the line that displays delta
 
 ## DR rs 0.2.15.2
 
