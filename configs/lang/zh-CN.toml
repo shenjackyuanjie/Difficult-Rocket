@@ -22,7 +22,7 @@ logger.logfile_datefmt = "日志文件日期格式："
 game_start.at = "游戏主线程开始于："
 
 [mod]
-list = "Mod 列表:"
+list = "Mod 列表: "
 find.finded = "找到 Mod: {}"
 load.start = "开始加载路径 {} 下的 Mod"
 load.use_time = "Mod 加载消耗时间: {} 秒"
