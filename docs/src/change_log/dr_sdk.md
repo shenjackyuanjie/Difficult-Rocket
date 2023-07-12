@@ -2,13 +2,16 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.5.1
+  - DR sdk: 0.8.5.2
 
 ## DR sdk 0.8.5.2
 
 ### Fix
 
 - `crash` 引用了已经重命名的 `Difficult_Rocket.game_version` (`Difficult_Rocket.sdk_version`)
+- `Difficult_Rocket.api.types`
+  - `VersionRequirement`
+  - `VersionParsingError`
 
 ## DR sdk 0.8.5.1
 
