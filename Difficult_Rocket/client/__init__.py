@@ -349,10 +349,8 @@ class ClientWindow(Window):
     @_call_back(new_command)
     @_call_screen_after
     def on_command(self, command: line.CommandText):
-        command.text = command.text.rstrip('\n')
-        command.text = command.text.rstrip(' ')
+        command.text = command.text.rstrip('\n').rstrip(' ').strip('/')
         self.logger.info(tr().window.command.text().format(f"|{command.text}|"))
-        command.find('/')
         if command.find('stop'):
             self.logger.info("command stop!")
             # HUGE THANKS to Discord @nokiyasos for this fix!

@@ -11,9 +11,9 @@ import logging
 import traceback
 
 from pathlib import Path
-from xml.etree.ElementTree import Element
-from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Tuple
 from defusedxml.ElementTree import parse
+from xml.etree.ElementTree import Element, ElementTree
+from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Tuple
 
 from pyglet.math import Vec4
 from pyglet.text import Label
@@ -43,6 +43,7 @@ if DR_mod_runtime.use_DR_rust:
                                       SR1Ship_rs)
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
+logger.level = logging.DEBUG
 sr_tr = Tr(lang_path=Path(__file__).parent / 'lang')
 
 
@@ -71,7 +72,7 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
                        flip_y=part_flip_y, explode=part_explode, textures=part_textures)
 
 
-class _SR1ShipRender_Option(Options):
+class SR1ShipRender_Option(Options):
     # debug option
     debug_d_pos: bool = False
     debug_mouse_pos: bool = False
@@ -85,45 +86,51 @@ class SR1ShipRender(BaseScreen):
     def __init__(self,
                  main_window: "ClientWindow"):
         super().__init__(main_window)
+        self.logger = logger
         logger.info(sr_tr().mod.info.setup.start())
         load_start_time = time.time_ns()
         self.rendered = False
         self.focus = True
         self.need_draw = False
         self.drawing = False
-        self.gen_draw: Optional[Generator] = None
         self.need_update_parts = False
-        self.render_option = _SR1ShipRender_Option()
+        self.render_option = SR1ShipRender_Option()
         self.dx = 0
         self.dy = 0
-        self.debug_mouse_delta_line = Line(main_window.width / 2, main_window.height / 2,
-                                           main_window.width / 2, main_window.height / 2,
-                                           width=2, color=(200, 200, 10, 255))
-        self.debug_mouse_delta_line.visible = self.render_option.debug_mouse_d_pos
-        self.debug_d_pos_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
-                                       x=main_window.width / 2, y=main_window.height / 2)
-        self.debug_d_pos_label.visible = self.render_option.debug_d_pos
-        self.textures: Union[SR1Textures, None] = None
-        # self.xml_name = 'configs/dock1.xml'
-        # self.xml_doc: ElementTree = parse('configs/dock1.xml')
-        # self.xml_root: ElementTree.Element = self.xml_doc.getroot()
-        self.load_xml('configs/dock1.xml')
         self.main_batch = Batch()
         self.part_group = Group(10, parent=main_window.main_group)
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
-                                 anchor_x='left', anchor_y='top')
+                                 anchor_x='left', anchor_y='top',
+                                 batch=self.main_batch, group=Group(5, parent=self.part_group))
+        self.render_d_line = Line(0, 0, 0, 0, width=5, color=(200, 200, 10, 255),
+                                  batch=self.main_batch, group=Group(5, parent=self.part_group))
+        self.render_d_line.visible = self.render_option.debug_mouse_d_pos
+        self.render_d_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
+                                    x=main_window.width / 2, y=main_window.height / 2)
+        self.render_d_label.visible = self.render_option.debug_d_pos
+
+        # Optional data
+        self.gen_draw: Optional[Generator] = None
+        self.textures: Union[SR1Textures, None] = None
+        self.xml_name: Optional[str] = None
+        self.xml_doc: Optional[ElementTree] = None
+        self.xml_root: Optional[Element] = None
+        self.rust_ship: Optional[SR1Ship_rs] = None
+
+        # List/Dict data
         self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
         self.part_line_box: Dict[int, List[Line]] = {}
         self.part_line_list: List[Line] = []
+
+        self.load_xml('configs/dock1.xml')
+
         load_end_time = time.time_ns()
-        logger.info(sr_tr().mod.info.setup.use_time().format(
-            (load_end_time - load_start_time) / 1000000000))
-        self.camera = CenterCamera(main_window,
-                                   min_zoom=(1 / 2) ** 10, max_zoom=10)
+        logger.info(sr_tr().mod.info.setup.use_time().format((load_end_time - load_start_time) / 1000000000))
+        self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
         if DR_mod_runtime.use_DR_rust:
             self.rust_parts = None
             self.part_list_rs = SR1PartList_rs('configs/PartList.xml', 'default_part_list')
@@ -181,7 +188,8 @@ class SR1ShipRender(BaseScreen):
                     # 线框
                     part_line_box = []
                     width = 4
-                    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255), random.randrange(100, 200))
+                    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255),
+                             random.randrange(100, 200))
                     part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
@@ -256,15 +264,13 @@ class SR1ShipRender(BaseScreen):
             len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
         self.rendered = True
 
-    def update_parts(self) -> bool:
-        if not self.rendered:
-            return False
-        self.debug_d_pos_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
-        self.debug_d_pos_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
-                self.window_pointer.height / 2) + 10, 0
-        self.need_update_parts = False
-
     def draw_batch(self, window: "ClientWindow"):
+        if self.rendered:
+            self.render_d_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
+            self.render_d_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
+                    self.window_pointer.height / 2) + 10, 0  # 0 for z
+            self.render_d_line.x2 = self.camera.dx
+            self.render_d_line.y2 = self.camera.dy
         with self.camera:
             # glViewport(int(self.camera.dx), int(self.camera.dy), window.width // 2, window.height // 2)
             self.main_batch.draw()
@@ -279,23 +285,16 @@ class SR1ShipRender(BaseScreen):
                 next(self.gen_draw)
             except GeneratorExit:
                 self.drawing = False
-                logger.info(sr_tr().sr1.ship.ship.render.done())
-
-        if self.need_update_parts:
-            self.update_parts()
-            self.need_update_parts = False
+                self.logger.info(sr_tr().sr1.ship.ship.render.done())
 
         self.debug_label.draw()
-
-        if self.render_option.debug_mouse_d_pos:
-            self.debug_mouse_delta_line.draw()
 
     def on_resize(self, width: int, height: int, window: "ClientWindow"):
         self.debug_label.y = height - 100
         if not self.rendered:
             return
-        self.debug_mouse_delta_line.y = height / 2
-        self.update_parts()
+        self.render_d_line.x2 = width // 2
+        self.render_d_line.y2 = height // 2
         self.render_option.draw_size = (width, height)
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: "ClientWindow"):
@@ -323,13 +322,9 @@ class SR1ShipRender(BaseScreen):
             self.camera.dx += mouse_dx_d
             self.camera.dy += mouse_dy_d
 
-        self.debug_mouse_delta_line.x2 = (mouse_dx - self.camera.dx) * (1 - (0.5 ** scroll_y)) + (
-                window.width / 2)
-        self.debug_mouse_delta_line.y2 = (mouse_dy - self.camera.dy) * (1 - (0.5 ** scroll_y)) + (
-                window.height / 2)
-        self.need_update_parts = True
 
     def on_command(self, command: CommandText, window: "ClientWindow"):
+        self.logger.info(f'command: {command}')
         if command.find('render'):
             if command.find('reset'):
                 self.camera.zoom = 1
@@ -340,10 +335,10 @@ class SR1ShipRender(BaseScreen):
                 self.need_draw = True
             print('应该渲染飞船的')
         elif command.find('debug'):
-            if command.find('mouse'):
-                self.debug_mouse_delta_line.visible = not self.debug_mouse_delta_line.visible
-                self.render_option.debug_mouse_d_pos = self.debug_mouse_delta_line.visible
-                logger.debug(f'sr1 mouse {self.render_option.debug_mouse_d_pos}')
+            if command.find('delta'):
+                self.render_d_line.visible = not self.render_d_line.visible
+                self.render_option.debug_mouse_d_pos = self.render_d_line.visible
+                self.logger.info(f'sr1 mouse {self.render_option.debug_mouse_d_pos}')
             elif command.find('ship'):
                 if self.rendered:
                     for index, sprite in self.parts_sprite.items():
@@ -393,7 +388,9 @@ class SR1ShipRender(BaseScreen):
                     pil_image.transpose(Image.FLIP_TOP_BOTTOM)
                 if self.part_data[part].flip_x:
                     pil_image.transpose(Image.FLIP_LEFT_RIGHT)
-                img.paste(pil_image, (int(self.part_data[part].x * 60 + img_center[0]), int(-self.part_data[part].y * 60 + img_center[1])), pil_image)
+                img.paste(pil_image, (
+                int(self.part_data[part].x * 60 + img_center[0]), int(-self.part_data[part].y * 60 + img_center[1])),
+                          pil_image)
             img.save(f'test{time.time()}.png', 'PNG')
 
         elif command.find('test'):
@@ -425,4 +422,4 @@ class SR1ShipRender(BaseScreen):
 if __name__ == '__main__':
     from objprint import op
 
-    op(_SR1ShipRender_Option())
+    op(SR1ShipRender_Option())
