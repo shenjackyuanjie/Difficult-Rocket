@@ -49,12 +49,12 @@ jobs:
         run: |
           # 设置变量
           $urls = @(
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-i18n',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-theme',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-cmdrun',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-pagetoc',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-footnote',
-            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.3/mdbook-external-links',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.4/mdbook-i18n',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.4/mdbook-theme',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.4/mdbook-cmdrun',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.4/mdbook-pagetoc',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.4/mdbook-footnote',
+            'https://github.com/shenjackyuanjie/Minecraft_Science_Tree/releases/download/0.0.4/mdbook-external-links',
             'https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar'
           )
           # 下载文件
