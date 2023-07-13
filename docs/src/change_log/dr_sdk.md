@@ -13,6 +13,20 @@
   - `VersionRequirement`
   - `VersionParsingError`
 
+### Change
+
+- 修改了 `DR.py`
+  - 实际上是 `DR-start.py` 的改名
+  - Changed `DR.py`
+    - Actually renamed `DR-start.py`
+
+### Remove
+
+- 删除了 `DR-start.py`
+  - 实际上是改成了 `DR.py`
+  - Removed `DR-start.py`
+    - Actually changed to `DR.py`
+
 ## DR sdk 0.8.5.1
 
 ### API
