@@ -1,29 +1,20 @@
-"""
-writen by shenjackyuanjie
-email: 3695888@qq.com
-"""
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
+#  All rights reserved
+#  -------------------------------
+
 import os
 import sys
 import time
-import cProfile
 import traceback
 import threading
 
-from io import StringIO
-
-# TODO 默认位置配置文件
-# TODO 可自定义工作路径
+from pathlib import Path
 
 hi = """Difficult Rocket is writen by shenjackyuanjie
 email: 3695888@qq.com or shyj3695888@163.com
 QQ: 3695888"""
-
-error_format = {
-    'TestError':      '游戏正在调试中，某处引发了一个 TestError，不是bug造成的原因',
-    'AssertionError': '游戏的某处检查未通过，情报告issue',
-    'error.unknown':  '游戏报错了，现在输出报错信息，请报告issue',
-    'error.happen':   '游戏出现了一个报错！正在处理'
-}
 
 
 def print_path() -> None:
@@ -31,79 +22,48 @@ def print_path() -> None:
     print(f'{sys.path=}')
     print(f'{sys.path[0]=}')
     print(f'{sys.argv[0]=}')
-    print(f'{os.curdir=}')
-    print(f'{os.getcwd()=}')
-    print(f'{os.path.abspath(os.curdir)=}')
-    print(f'{os.path.abspath(__file__)=}')
-    print(f'{os.path.realpath(__file__)=}')
-    print(f'{os.path.split(os.path.split(os.path.realpath(__file__))[0])=}')
-    # 输出一遍大部分文件位置相关信息 以后可能会加到logs里
+    print(f'{Path.cwd()=}')
+    print(f'{Path(__file__).absolute()=}')
+
+
+def modify_path() -> None:
+    os.chdir(Path(__file__).parent)  # 将运行路径切换到文件位置 防止bug
+    sys.path.append('./Difficult_Rocket')  # 添加local path
+    sys.path.append('./libs')  # 添加 libs path
+
+
+def start(start_time_ns: int) -> None:
+    from Difficult_Rocket import crash, DR_status
+    from Difficult_Rocket.runtime import DR_runtime
+    from Difficult_Rocket.exception import TestError
+    DR_runtime.start_time_ns = start_time_ns
+    try:
+        from Difficult_Rocket import main
+        main_game = main.Game()
+        main_game.start()
+        if DR_status.crash_report_test:
+            raise TestError('debug crash test')
+    except:
+        trace = traceback.format_exc()
+        crash.create_crash_report(trace)
+        crash.write_info_to_cache(sys.stdout)
+    print(crash.all_thread)
+    print(crash.all_process)
+    for a_thread in threading.enumerate():
+        print(a_thread)
+        if a_thread.is_alive() and a_thread != threading.current_thread() and a_thread != threading.main_thread():
+            a_thread.join(2)  # wait for 2 sec
+    import pyglet
+    pyglet.app.exit()  # make sure that pyglet has stopped
 
 
 def main() -> int:
-    print(hi)  # hi！
+    print(hi, f"\n{time.ctime()}")  # hi！
+    # 记录启动信息
     start_time_ns = time.time_ns()
-    start_time_perf_ns = time.perf_counter_ns()
     print_path()
-    file_path = os.path.split(os.path.realpath(__file__))[0]
-    os.chdir(file_path)  # 将运行路径切换到文件位置 防止bug
-    sys.path.append(f'{file_path}/Difficult_Rocket')  # 添加local path
-    sys.path.append(f'{file_path}/libs')  # 添加 libs path
-
-    from Difficult_Rocket.exception import TestError
-    from Difficult_Rocket import crash
-    from Difficult_Rocket import DR_status
-    try:
-        from libs import pyglet  # 导入pyglet
-        pyglet.resource.path = ['/textures/']
-        pyglet.resource.reindex()
-
-        from Difficult_Rocket import main
-        from Difficult_Rocket.runtime import DR_runtime
-        DR_runtime.start_time_ns = start_time_ns
-
-        game = main.Game()  # 实例化一个游戏
-        print(time.perf_counter_ns() - start_time_perf_ns, (time.perf_counter_ns() - start_time_perf_ns) / (10 ** 9), 'start')  # 输出一下启动用时
-
-        cprofile = False  # 是否使用cprofile
-        if cprofile:
-            cProfile.run('game.start()', sort='calls')  # 使用 cprofile 启动
-        else:
-            game.start()  # 直接启动
-        if DR_status.crash_report_test:
-            raise TestError('debugging')  # debug 嘛，试试crash
-    except Exception as exp:  # 出毛病了
-        # 解析错误信息
-        print(error_format['error.happen'])
-        error = traceback.format_exc()
-        name = type(exp).__name__
-        if name in error_format:
-            print(error_format[name])
-        else:
-            print(error_format['error.unknown'])
-        print(error)
-        # 输出 crash 信息
-        crash.create_crash_report(error)
-        cache_steam = StringIO()
-        crash.write_info_to_cache(cache_steam)
-        text = cache_steam.getvalue()
-        print(text)
-    else:
-        crash.record_thread = False
-        print(crash.all_thread)
-        print(crash.all_process)
-    # join all thread
-    for thread in threading.enumerate():
-        print(thread)
-        if thread.name == 'MainThread' or thread == threading.main_thread() or thread == threading.current_thread():
-            continue
-        if thread.daemon:
-            continue
-        thread.join()
-    # stop pyglet
-    import pyglet
-    pyglet.app.exit()
-    print("Difficult_Rocket 已关闭")
+    modify_path()
+    start(start_time_ns)
     return 0
 
 

@@ -11,12 +11,9 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-import os
 import unittest
 
-os.chdir('../../..')
-
-from client.guis.format import html
+from Difficult_Rocket.client.guis.format import html
 
 try_texts = [
     '明天天气很好',
@@ -27,7 +24,6 @@ try_texts = [
     'adwiuahiaa奥迪帮我auawuawdawdadw阿达达瓦aawd 2313',
     '阿松大阿瓦达达娃啊aawadaawdawd阿瓦达达娃'
 ]
-
 
 
 class HtmlFormatTest(unittest.TestCase):
