@@ -20,12 +20,14 @@
   - Changed `DR.py`
     - Actually renamed `DR-start.py`
 
-### Remove
+### Clean
 
 - 删除了 `DR-start.py`
   - 实际上是改成了 `DR.py`
   - Removed `DR-start.py`
     - Actually changed to `DR.py`
+- 删除了 `libs/utils/dsm.py`
+  - Deleted `libs/utils/dsm.py`
 
 ## DR sdk 0.8.5.1
 

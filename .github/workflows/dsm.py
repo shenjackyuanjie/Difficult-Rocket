@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #  -------------------------------
 #  Difficult Rocket
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
@@ -109,7 +108,7 @@ def main():
         return 0
     dsm.clear_dsm()
     dsm.upload_docs('docs/md5.txt')
-    dsm.fl.session.logout('FileStation')
+    dsm.fl.logout()
 
 
 if __name__ == '__main__':
