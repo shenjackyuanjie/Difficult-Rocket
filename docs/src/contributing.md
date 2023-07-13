@@ -18,3 +18,5 @@
    - `python -m pip install -r requre`
 3. 使用 `build_rs.ps1` 尝试编译一次 `DR_rs`
    - `./build_rs.ps1` 38/39/310/311
+
+<!-- cmdrun test.ps1 -->
