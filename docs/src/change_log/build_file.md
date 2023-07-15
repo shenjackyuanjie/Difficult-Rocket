@@ -2,7 +2,14 @@
 # DR 构建 更新日志
 
 - 最新构建版本号
-  - build_version: 2.1.2.0
+  - build_version: 2.1.3.0
+
+## 20230715 build 2.1.3.0
+
+### 修改
+
+- 添加 `email` `win32con` `smtplib` `win32evtlog` `win32evtlogutil` `win32api` 到 `--no-follow-import`
+  - Add `email`, `win32con`, `smtplib`, `win32evtlog`, `win32evtlogutil`, `win32api` to `--no-follow-import`
 
 ## 20230708 build 2.1.2.0
 

@@ -62,7 +62,8 @@ class CompilerHelper(Options):
     icon_path: Path = Path('textures/icon.png')
 
     follow_import: List[str] = ['pyglet']
-    no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy']
+    no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy', 'email', 'win32con',
+                                   'smtplib', 'win32evtlog', 'win32evtlogutil', 'win32api']
 
     include_data_dir: List[Tuple[str, str]] = [('./libs/fonts', './libs/fonts'),
                                                ('./textures', './textures'),
@@ -77,7 +78,7 @@ class CompilerHelper(Options):
             if not self.compat_nuitka_version.accept(compat_version):
                 warnings.warn(
                     f"Nuitka version may not compat with {compat_version}\n"
-                    "requirement: {self.compat_nuitka_version}"
+                    f"requirement: {self.compat_nuitka_version}"
                 )
         # 非 windows 平台不使用 msvc
         if platform.system() != 'Windows':
