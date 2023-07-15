@@ -77,7 +77,7 @@ def create_crash_report(info: Optional[str] = None) -> None:
     crash_info = crash_info_handler(info)
     if 'crash_report' not in os.listdir('./'):
         os.mkdir('./crash_report')
-    date_time = time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time()))
+    date_time = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     filename = f'crash-{date_time}.md'
     cache_stream = io.StringIO()
     try:
@@ -92,7 +92,7 @@ def create_crash_report(info: Optional[str] = None) -> None:
 
 def write_cache(cache_stream, crash_info):
     # 开头信息
-    cache_stream.write(Head_message.format(now_time=time.strftime('%Y/%m/%d %H:%M:%S', time.gmtime(time.time()))))
+    cache_stream.write(Head_message.format(now_time=time.strftime('%Y/%m/%d %H:%M:%S', time.localtime())))
     # 崩溃信息
     cache_stream.write(crash_info)
 
