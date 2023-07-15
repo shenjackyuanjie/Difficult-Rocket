@@ -65,9 +65,7 @@ class CompilerHelper(Options):
     no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy', 'email', 'win32con',
                                    'smtplib', 'win32evtlog', 'win32evtlogutil', 'win32api']
 
-    include_data_dir: List[Tuple[str, str]] = [('./libs/fonts', './libs/fonts'),
-                                               ('./textures', './textures'),
-                                               ('./config', './config'),
+    include_data_dir: List[Tuple[str, str]] = [('./config', './config'),
                                                ('./assets', './assets')]
     include_packages: List[str] = ['Difficult_Rocket.api']
 

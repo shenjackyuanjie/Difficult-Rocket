@@ -10,6 +10,8 @@
 
 - 添加 `email` `win32con` `smtplib` `win32evtlog` `win32evtlogutil` `win32api` 到 `--no-follow-import`
   - Add `email`, `win32con`, `smtplib`, `win32evtlog`, `win32evtlogutil`, `win32api` to `--no-follow-import`
+- `include_data_dir` 移除 `libs/fonts` `textures`
+  - 改为 `assets` 和 `config`
 
 ## 20230708 build 2.1.2.0
 

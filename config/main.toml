@@ -3,7 +3,7 @@ fps = 60
 language = "zh-CN"
 date_fmt = "%Y-%m-%d %H-%M-%S"
 write_py_v = "3.8.10"
-fonts_folder = "libs/fonts"
+fonts_folder = "assets/fonts"
 
 [window]
 style = "None"
