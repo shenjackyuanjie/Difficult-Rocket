@@ -76,7 +76,7 @@ DR_status = _DR_status()
 
 
 def load_logging():
-    with open('./configs/logger.toml') as f:
+    with open('./config/logger.toml') as f:
         import rtoml
         logger_config = rtoml.load(f)
     log_path = logger_config['handlers']['file']['filename']

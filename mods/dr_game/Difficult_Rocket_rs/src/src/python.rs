@@ -84,7 +84,7 @@ pub mod data {
     #[pymethods]
     impl PySR1PartList {
         #[new]
-        #[pyo3(text_signature = "(file_path = './configs/PartList.xml', list_name = 'NewPartList')")]
+        #[pyo3(text_signature = "(file_path = './assets/builtin/PartList.xml', list_name = 'NewPartList')")]
         fn new(file_path: String, list_name: String) -> Self {
             let raw_part_list: RawPartList = RawPartList::from_file(file_path).unwrap();
             let data = raw_part_list.to_sr_part_list(Some(list_name));
@@ -157,7 +157,7 @@ pub mod data {
     #[pymethods]
     impl PySR1Ship {
         #[new]
-        #[pyo3(text_signature = "(file_path = './configs/dock1.xml', part_list = './configs/PartList.xml', ship_name = 'NewShip')")]
+        #[pyo3(text_signature = "(file_path = './assets/builtin/dock1.xml', part_list = './assets/builtin/PartList.xml', ship_name = 'NewShip')")]
         fn new(file_path: String, part_list: String, ship_name: String) -> Self {
             let mut ship = SR1Ship::from_file(file_path, Some(ship_name)).unwrap();
             let part_list = SR1PartList::from_file(part_list).unwrap();

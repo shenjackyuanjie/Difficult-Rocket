@@ -67,7 +67,8 @@ class CompilerHelper(Options):
 
     include_data_dir: List[Tuple[str, str]] = [('./libs/fonts', './libs/fonts'),
                                                ('./textures', './textures'),
-                                               ('./configs', './configs')]
+                                               ('./config', './config'),
+                                               ('./assets', './assets')]
     include_packages: List[str] = ['Difficult_Rocket.api']
 
     enable_plugin: List[str] = []  # --enable-plugin=xxx,xxx

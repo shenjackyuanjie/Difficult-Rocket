@@ -59,7 +59,7 @@ class ClientOption(Options):
     caption: str = "Difficult Rocket v{DR_version}"
 
     def load_file(self) -> None:
-        file: dict = tools.load_file('./configs/main.toml')
+        file: dict = tools.load_file('./config/main.toml')
         self.fps = int(file['runtime']['fps'])
         self.width = int(file['window']['width'])
         self.height = int(file['window']['height'])
@@ -215,9 +215,9 @@ class ClientWindow(Window):
         self.net_mode = net_mode
         self.run_input = False
         self.command_list: List[str] = []
-        # configs
-        self.main_config = tools.load_file('./configs/main.toml')
-        self.game_config = tools.load_file('./configs/game.config')
+        # config
+        self.main_config = tools.load_file('./config/main.toml')
+        self.game_config = tools.load_file('./config/game.config')
         # FPS
         self.FPS = Decimal(int(self.main_config['runtime']['fps']))
         self.SPF = Decimal('1') / self.FPS
@@ -275,11 +275,11 @@ class ClientWindow(Window):
     @new_thread('window save_info')
     def save_info(self):
         self.logger.info(tr().client.config.save.start())
-        config_file: dict = tools.load_file('./configs/main.toml')
+        config_file: dict = tools.load_file('./config/main.toml')
         config_file['window']['width'] = self.width
         config_file['window']['height'] = self.height
         config_file['runtime']['language'] = DR_runtime.language
-        rtoml.dump(config_file, open('./configs/main.toml', 'w'))
+        rtoml.dump(config_file, open('./config/main.toml', 'w'))
         self.logger.info(tr().client.config.save.done())
 
     """
@@ -373,7 +373,7 @@ class ClientWindow(Window):
                 tr._language = lang
                 self.logger.info(tr().language_set_to())
             except LanguageNotFound:
-                self.logger.info(tr().language_available().format(os.listdir('./configs/lang')))
+                self.logger.info(tr().language_available().format(os.listdir('./config/lang')))
             self.save_info()
         elif command.find('mods'):
             if command.find('list'):

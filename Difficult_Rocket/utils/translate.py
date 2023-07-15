@@ -165,7 +165,7 @@ class Tr:
         :param lang_path: 语言文件夹路径
         """
         self.language_name = language if language is not None else DR_runtime.language
-        self.language_path = lang_path if lang_path is not None else Path('configs/lang')
+        self.language_path = lang_path if lang_path is not None else Path('assets/lang')
         self.translates: Dict[str, Union[str, Dict]] = tools.load_file(self.language_path / f'{self.language_name}.toml')
         self.default_translate: Dict = tools.load_file(f'{self.language_path}/{DR_status.default_language}.toml')
         self.default_config = config.set('source', self) if config is not None else TranslateConfig(source=self)

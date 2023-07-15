@@ -19,10 +19,10 @@ if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并�
     print(sys.version)
     from Difficult_Rocket.utils import tools
     # 重置窗口信息
-    config_file = tools.load_file('./configs/main.toml')
+    config_file = tools.load_file('./config/main.toml')
     config_file['window']['width'] = 1024
     config_file['window']['height'] = 768
-    rtoml.dump(config_file, open('./configs/main.toml', 'w'))
+    rtoml.dump(config_file, open('./config/main.toml', 'w'))
 
 elif os.path.abspath(os.curdir) in sys.path and '-env' in sys.argv:
     with open('./.github/workflows/env.ps1', encoding='utf-8', mode='w') as env_file:

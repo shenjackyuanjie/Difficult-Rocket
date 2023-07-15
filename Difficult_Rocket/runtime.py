@@ -37,7 +37,7 @@ class _DR_runtime(Options):
 
     def load_file(self) -> bool:
         with contextlib.suppress(FileNotFoundError):
-            with open('./configs/main.toml', 'r', encoding='utf-8') as f:
+            with open('./config/main.toml', 'r', encoding='utf-8') as f:
                 import rtoml
                 config_file = rtoml.load(f)
                 self.language = config_file['runtime']['language']
