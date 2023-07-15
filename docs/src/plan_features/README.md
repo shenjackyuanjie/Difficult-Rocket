@@ -23,6 +23,7 @@
 |   部件平移    |      part-move      | planing |
 |  存档额外信息   |   extra-save-info   | planing |
 | 自定义部件分组开关 | custom-stage-on-off | planing |
+|  各种奇怪部件   |     custom-part     | planing |
 
 # 文件范例
 
