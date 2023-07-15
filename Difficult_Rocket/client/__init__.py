@@ -250,7 +250,7 @@ class ClientWindow(Window):
         self.count = 0
 
     def setup(self):
-        self.set_icon(pyglet.image.load('./textures/icon.png'))
+        self.set_icon(pyglet.image.load('assets/textures/icon.png'))
         self.load_fonts()
         self.screen_list['DR_debug'] = DRDEBUGScreen(self)
         self.game.dispatch_mod_event('on_client_start', game=self.game, client=self)
@@ -262,7 +262,7 @@ class ClientWindow(Window):
         pyglet_load_fonts_folder(fonts_folder_path)
 
     def start_game(self) -> None:
-        self.set_icon(pyglet.image.load('./textures/icon.png'))
+        self.set_icon(pyglet.image.load('assets/textures/icon.png'))
         try:
             pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
         except KeyboardInterrupt:

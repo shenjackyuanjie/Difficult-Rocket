@@ -127,7 +127,7 @@ if __name__ == '__main__':
                     file_path = os.path.join(path, file)
                     dist_dir_size += os.path.getsize(file_path)
                     # 排除不需要记录的文件
-                    if any(x in file_path for x in ('config', 'libs', 'textures')):
+                    if any(x in file_path for x in ('config', 'libs', 'assets')):
                         continue
                     dist_file_size[file_path] = (os.path.getsize(file_path), os.path.getsize(file_path) / 1024 / 1024)
             compile_data = {'compile_time_ns': time.time_ns() - start_time,

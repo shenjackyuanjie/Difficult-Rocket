@@ -19,5 +19,5 @@ pyglet 坐标轴原点是左上角 0, 0
 我check一下微调器的代码，原理应该一样，有个函数我看看怎么实现
 # 素材提供
 
-[背景候选1号](../../textures/runtime/background.png)
+[背景候选1号](../../assets/textures/runtime/background.png)
 来自 @底层萌新 QQ：1744251171
