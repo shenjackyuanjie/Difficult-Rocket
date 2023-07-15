@@ -25,6 +25,7 @@
   - [部件可成环](./plan_features/multi-connect.md)
   - [多指令舱控制](./plan_features/multi-control.md)
   - [轨道规划](./plan_features/orbit-plan.md)
+  - [自定义部件收集](./plan_features/custom-part.md)
 
 - [开发文档](./howto/readme.md)
   - [client](./howto/client.md)
