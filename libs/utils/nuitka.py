@@ -59,7 +59,7 @@ class CompilerHelper(Options):
 
     copy_right: str = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'  # --copyright
 
-    icon_path: Path = Path('textures/icon.png')
+    icon_path: Path = Path('assets/textures/icon.png')
 
     follow_import: List[str] = ['pyglet']
     no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy', 'email', 'win32con',
