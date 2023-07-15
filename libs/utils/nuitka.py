@@ -59,15 +59,14 @@ class CompilerHelper(Options):
 
     copy_right: str = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'  # --copyright
 
-    icon_path: Path = Path('textures/icon.png')
+    icon_path: Path = Path('assets/textures/icon.png')
 
     follow_import: List[str] = ['pyglet']
     no_follow_import: List[str] = ['objprint', 'pillow', 'PIL', 'cffi', 'pydoc', 'numpy', 'email', 'win32con',
                                    'smtplib', 'win32evtlog', 'win32evtlogutil', 'win32api']
 
-    include_data_dir: List[Tuple[str, str]] = [('./libs/fonts', './libs/fonts'),
-                                               ('./textures', './textures'),
-                                               ('./configs', './configs')]
+    include_data_dir: List[Tuple[str, str]] = [('./config', './config'),
+                                               ('./assets', './assets')]
     include_packages: List[str] = ['Difficult_Rocket.api']
 
     enable_plugin: List[str] = []  # --enable-plugin=xxx,xxx

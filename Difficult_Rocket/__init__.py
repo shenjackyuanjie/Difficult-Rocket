@@ -10,7 +10,7 @@ from pathlib import Path
 
 from Difficult_Rocket.api.types import Options, Version
 
-sdk_version = Version("0.8.5.2")  # SDK 版本
+sdk_version = Version("0.8.6.0")  # SDK 版本
 build_version = Version("2.1.3.0")  # 编译文件版本(与游戏本体无关)
 Api_version = Version("0.1.1.0")  # API 版本
 __version__ = sdk_version
@@ -76,7 +76,7 @@ DR_status = _DR_status()
 
 
 def load_logging():
-    with open('./configs/logger.toml') as f:
+    with open('./config/logger.toml') as f:
         import rtoml
         logger_config = rtoml.load(f)
     log_path = logger_config['handlers']['file']['filename']

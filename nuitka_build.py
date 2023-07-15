@@ -36,7 +36,6 @@ if __name__ == '__main__':
         compiler.show_progress = False
         compiler.output_path = Path('./build/github')
         compiler.python_cmd = 'python'
-        compiler.include_data_dir.remove(('./libs/fonts', './libs/fonts'))
         compiler.save_xml = False
 
     # 检测 --xml 参数
@@ -127,7 +126,7 @@ if __name__ == '__main__':
                     file_path = os.path.join(path, file)
                     dist_dir_size += os.path.getsize(file_path)
                     # 排除不需要记录的文件
-                    if any(x in file_path for x in ('configs', 'libs', 'textures')):
+                    if any(x in file_path for x in ('config', 'libs', 'assets')):
                         continue
                     dist_file_size[file_path] = (os.path.getsize(file_path), os.path.getsize(file_path) / 1024 / 1024)
             compile_data = {'compile_time_ns': time.time_ns() - start_time,

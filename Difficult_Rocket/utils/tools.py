@@ -30,7 +30,7 @@ from Difficult_Rocket.exception.unsupport import NoMoreJson5
 # logger
 tools_logger = logging.getLogger('tools')
 """
-file configs
+file config
 """
 
 file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}',
@@ -99,7 +99,7 @@ def save_dict_file(file_name: str,
 
 
 # main config
-main_config_file = load_file('./configs/main.toml')
+main_config_file = load_file('./config/main.toml')
 
 
 def get_At(name, in_xml, need_type=str):

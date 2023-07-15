@@ -37,7 +37,7 @@ class SR1Textures(Options):
         super().__init__(**kwargs)
         self.flush_option()
         for image_name in self.cached_options:
-            img = load(f'textures/parts/{image_name}.png')
+            img = load(f'assets/textures/parts/{image_name}.png')
             img.anchor_x = img.width // 2
             img.anchor_y = img.height // 2
             setattr(self, image_name, img)

@@ -20,7 +20,7 @@
 [关于版本号的说明](./docs/src/version.md)
 
 [![Generic badge](https://img.shields.io/badge/Release-0.8.5.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Pre_Release-0.8.5.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![Generic badge](https://img.shields.io/badge/Pre_Release-0.8.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![Generic badge](https://img.shields.io/badge/Devloping-0.8.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
@@ -94,7 +94,7 @@ viztracer >= 0.15.6; platform_python_implementation != "PyPy"
 vizplugins >= 0.1.3; platform_python_implementation != "PyPy"
 
 # for compile
-nuitka >= 1.6.6
+nuitka >= 1.7.5
 ordered-set >= 4.1.0
 imageio >= 2.31.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
 wheel >= 0.40.0

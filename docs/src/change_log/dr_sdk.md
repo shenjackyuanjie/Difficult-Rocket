@@ -2,7 +2,28 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.5.2
+  - DR sdk: 0.8.6.0
+
+## DR sdk 0.8.6.0
+
+重构了一下项目结构
+
+Refactored the project structure
+
+### Fix
+
+- issue [#42](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/42)
+  - Crash report 的时区不正确
+    - Crash report time zone is incorrect
+
+### Change
+
+- 将大部分资源文件移动到 `assets/`
+  - `libs/fonts` -> `assets/fonts`
+  - `configs/lang` -> `assets/lang`
+  - `configs/xxx.xml` -> `assets/builtin/xxx.xml`
+  - `textures` -> `assets/textures`
+  - Move all the resources to `assets/`
 
 ## DR sdk 0.8.5.2
 

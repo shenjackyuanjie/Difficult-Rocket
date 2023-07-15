@@ -351,9 +351,9 @@ pub mod part_list {
 
     #[inline]
     #[pyfunction]
-    #[pyo3(name = "part_list_read_test", signature = (file_name = "./configs/PartList.xml".to_string()))]
+    #[pyo3(name = "part_list_read_test", signature = (file_name = "./assets/builtin/PartList.xml".to_string()))]
     pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
-        let file_name = file_name.unwrap_or("./configs/PartList.xml".to_string());
+        let file_name = file_name.unwrap_or("./assets/builtin/PartList.xml".to_string());
         let _parts = RawPartList::from_file(file_name);
         if let Some(parts) = _parts {
             // println!("{:?}", parts)
@@ -624,7 +624,7 @@ pub mod ship {
 
     #[pyfunction]
     #[pyo3(name = "read_ship_test")]
-    #[pyo3(signature = (path = "./configs/dock1.xml".to_string()))]
+    #[pyo3(signature = (path = "./assets/builtin/dock1.xml".to_string()))]
     pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
         let file = fs::read_to_string(path).unwrap();
         let raw_ship = from_str::<RawShip>(&file);

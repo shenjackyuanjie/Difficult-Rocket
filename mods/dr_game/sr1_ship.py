@@ -126,14 +126,14 @@ class SR1ShipRender(BaseScreen):
         self.part_line_box: Dict[int, List[Line]] = {}
         self.part_line_list: List[Line] = []
 
-        self.load_xml('configs/dock1.xml')
+        self.load_xml('assets/builtin/dock1.xml')
 
         load_end_time = time.time_ns()
         logger.info(sr_tr().mod.info.setup.use_time().format((load_end_time - load_start_time) / 1000000000))
         self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
         if DR_mod_runtime.use_DR_rust:
             self.rust_parts = None
-            self.part_list_rs = SR1PartList_rs('configs/PartList.xml', 'default_part_list')
+            self.part_list_rs = SR1PartList_rs('assets/builtin/PartList.xml', 'default_part_list')
 
     def load_xml(self, file_path: str) -> bool:
         try:
@@ -144,7 +144,7 @@ class SR1ShipRender(BaseScreen):
             self.xml_root = self.xml_doc.getroot()
             self.xml_name = file_path
             if DR_mod_runtime.use_DR_rust:
-                self.rust_ship = SR1Ship_rs(file_path, 'configs/PartList.xml', 'a_new_ship')
+                self.rust_ship = SR1Ship_rs(file_path, 'assets/builtin/PartList.xml', 'a_new_ship')
             logger.info(sr_tr().sr1.ship.xml.load_done())
             logger.info(sr_tr().sr1.ship.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))

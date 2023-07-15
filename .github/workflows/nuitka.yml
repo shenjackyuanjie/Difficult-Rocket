@@ -7,7 +7,6 @@ on:
   push:
     paths:
       - "Difficult_Rocket/**"  # 本体修改
-      - "configs/**"  # 配置修改
       - "libs/pyglet/**"  # pyglet 修改
       - ".github/workflows/**"  # workflow 修改
       - "nuitka_build.py"  # 构建脚本修改
@@ -15,7 +14,6 @@ on:
   pull_request:
     paths:
       - "Difficult_Rocket/**"  # 本体修改
-      - "configs/**"  # 配置修改
       - "libs/pyglet/**"  # pyglet 修改
       - ".github/workflows/**"  # workflow 修改
       - "nuitka_build.py"  # 构建脚本修改
