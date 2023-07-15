@@ -36,7 +36,6 @@ if __name__ == '__main__':
         compiler.show_progress = False
         compiler.output_path = Path('./build/github')
         compiler.python_cmd = 'python'
-        compiler.include_data_dir.remove(('./libs/fonts', './libs/fonts'))
         compiler.save_xml = False
 
     # 检测 --xml 参数
