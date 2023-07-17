@@ -28,7 +28,6 @@ elif os.path.abspath(os.curdir) in sys.path and '-env' in sys.argv:
     with open('./.github/workflows/env.ps1', encoding='utf-8', mode='w') as env_file:
         print(f'$env:DR_version = "{DR_status.DR_version}"', file=env_file)
         print(f'$env:Build_version = "{DR_status.Build_version}"', file=env_file)
-
 elif os.path.abspath(os.curdir) in sys.path and '-github' in sys.argv:
     print(f'DR_version={DR_status.DR_version}')
     print(f'Build_version={DR_status.Build_version}')

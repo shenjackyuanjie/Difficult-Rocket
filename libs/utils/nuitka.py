@@ -119,7 +119,8 @@ class CompilerHelper(Options):
         return f"{front}\n\n```bash\n{' '.join(gen_cmd)}\n```"
 
     def gen_subprocess_cmd(self) -> List[str]:
-        """生成 nuitka 构建脚本
+        """
+        生成 nuitka 构建脚本
         Generate nuitka build script
 
         Returns:
