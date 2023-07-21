@@ -129,7 +129,7 @@ class SR1ShipRender(BaseScreen):
 
         # List/Dict data
         self.part_data: Dict[int, SR1PartData] = {}
-        self.parts_sprite: Dict[int, Sprite] = {}
+        self.parts_sprite: Dict[int, List[Sprite]] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
         self.part_line_box: Dict[int, List[Line]] = {}
         self.part_line_list: List[Line] = []
@@ -181,15 +181,18 @@ class SR1ShipRender(BaseScreen):
             for p_id, parts in self.rust_ship.as_dict().items():
                 p_id: int
                 parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
-                part_group = Group(20, parent=self.part_group)
+                part_group = Group(2, parent=self.part_group)
                 batch = []
                 for p_type, p_data in parts:
                     part_sprite = Sprite(img=self.textures.get_texture(map_ptype_textures(p_data.part_type_id)),
                                          x=p_data.x * 60, y=p_data.y * 60, z=random.random(),
                                          batch=self.main_batch, group=part_group)
+                    part_sprite.rotation = p_data.angle_r
+                    part_sprite.scale_x = -1 if p_data.flip_x else 1
+                    part_sprite.scale_y = -1 if p_data.flip_y else 1
 
                     batch.append(part_sprite)
-
+                self.parts_sprite[p_id] = batch
                 count += 1
                 if count >= each_count:
                     count = 0

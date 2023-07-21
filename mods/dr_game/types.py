@@ -50,7 +50,11 @@ class SR1Textures(Options):
         if name in self.cached_options:
             return self.cached_options.get(name)
         else:
-            return None
+            img = load(f'assets/textures/parts/{name}.png')
+            img.anchor_x = img.width // 2
+            img.anchor_y = img.height // 2
+            setattr(self, name, img)
+            return img
 
     Battery:               AbstractImage = None
     Beam:                  AbstractImage = None
