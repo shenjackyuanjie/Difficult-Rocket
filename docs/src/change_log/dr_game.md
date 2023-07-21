@@ -7,6 +7,13 @@
 
 ## 20230721 DR rs 0.2.17.0
 
+### Add
+
+- 导出了 export
+  - `PySR1PartData`
+  - `PySaveStatus`
+  - `map_ptype_textures(part_type: str) -> str`
+
 ### BreakingChanges
 
 - `SR1Ship_rs`

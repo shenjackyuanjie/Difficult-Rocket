@@ -40,7 +40,10 @@ if TYPE_CHECKING:
 
 if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import (SR1PartList_rs,
-                                      SR1Ship_rs)
+                                      SR1Ship_rs,
+                                      SR1PartData_rs,
+                                      SR1PartType_rs,
+                                      map_ptype_textures)
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
 logger.level = logging.DEBUG
@@ -117,8 +120,8 @@ class SR1ShipRender(BaseScreen):
         self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
 
         # Optional data
+        self.textures: SR1Textures = SR1Textures()
         self.gen_draw: Optional[Generator] = None
-        self.textures: Union[SR1Textures, None] = None
         self.xml_name: Optional[str] = None  # 准备移除, 更换为基于 rust 的 xml 解析
         self.xml_doc: Optional[ElementTree] = None  # 准备移除, 更换为基于 rust 的 xml 解析
         self.xml_root: Optional[Element] = None  # 准备移除, 更换为基于 rust 的 xml 解析
@@ -163,13 +166,6 @@ class SR1ShipRender(BaseScreen):
             print(e)
             return False
 
-    def load_textures(self):
-        """
-        初始化纹理加载
-        :return:
-        """
-        self.textures = SR1Textures()
-
     def gen_sprite(self, part_datas: Dict[int, SR1PartData], each_count: int = 100) -> Generator:
         """
         生成 sprite
@@ -181,8 +177,24 @@ class SR1ShipRender(BaseScreen):
         count = 0
         self.drawing = True
         # rust 渲染
+        if DR_mod_runtime.use_DR_rust:
+            for p_id, parts in self.rust_ship.as_dict().items():
+                p_id: int
+                parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
+                part_group = Group(20, parent=self.part_group)
+                batch = []
+                for p_type, p_data in parts:
+                    part_sprite = Sprite(img=self.textures.get_texture(map_ptype_textures(p_data.part_type_id)),
+                                         x=p_data.x * 60, y=p_data.y * 60, z=random.random(),
+                                         batch=self.main_batch, group=part_group)
 
-        
+                    batch.append(part_sprite)
+
+                count += 1
+                if count >= each_count:
+                    count = 0
+                    yield
+
         # python 渲染
         for part_id, part in part_datas.items():
             # 下面就是调用 pyglet 去渲染的部分
@@ -252,8 +264,6 @@ class SR1ShipRender(BaseScreen):
         """
         渲染船
         """
-        if self.textures is None:
-            self.load_textures()
         logger.info(sr_tr().sr1.ship.ship.load().format(self.xml_name))
         start_time = time.perf_counter_ns()
         self.part_data: Dict[int, SR1PartData] = {}

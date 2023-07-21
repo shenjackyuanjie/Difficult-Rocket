@@ -15,15 +15,37 @@ if TYPE_CHECKING:
         py_obj.draw()
         return True
 
-    def get_version_str() -> str: ...
+    def get_version_str() -> str:
+        """
+        获取版本号
+        :return: 版本号
+        """
 
-    def part_list_read_test(file_name: Optional[str] = "./assets/builtin/PartList.xml") -> None: ...
+    def part_list_read_test(file_name: Optional[str] = "./assets/builtin/PartList.xml") -> None:
+        """
+        PartList 读取测试
+        :param file_name:
+        :return:
+        """
 
-    def read_ship_test(path: Optional[str] = "./assets/builtin/dock1.xml") -> None: ...
+    def read_ship_test(path: Optional[str] = "./assets/builtin/dock1.xml") -> None:
+        """
+        飞船存档读取测试
+        :param path:
+        :return:
+        """
+
+    def map_ptype_textures(part_type: str) -> str:
+        """
+        获取零件的贴图 (写死的)
+        :param part_type:
+        :return:
+        """
 
 
-    class SR1PartType_rs:
-        """ 用于从 rust 中读取 SR1PartType
+    class SR1PartType_rs: # NOQA
+        """
+        用于从 rust 中读取 SR1PartType
         不能从 Python 端创建
         自带一些可从 Python 端读取的属性 (实际上就是一个接口)
         """
@@ -50,7 +72,7 @@ if TYPE_CHECKING:
             """ 零件是否隐藏 """
 
 
-    class SR1PartList_rs:
+    class SR1PartList_rs: # NOQA
         """ 用于从 rust 中读取 SR1PartList """
         def __init__(self, file_name: Optional[str] = "./assets/builtin/PartList.xml",
                      list_name: Optional[str] = 'NewPartList'): ...
@@ -59,8 +81,9 @@ if TYPE_CHECKING:
 
         def get_part_type(self, name: str) -> SR1PartType_rs: ...
 
-    class SR1PartData_rs:
-        """ 用于从 rust 中读取 SR1PartData (其实好像也没啥用哈)
+    class SR1PartData_rs: # NOQA
+        """
+        用于从 rust 中读取 SR1PartData (其实好像也没啥用哈)
         """
         @property
         def id(self) -> int: ...
@@ -85,10 +108,10 @@ if TYPE_CHECKING:
         @property
         def flip_y(self) -> bool: ...
 
-    class SaveStatus_rs:
+    class SaveStatus_rs: # NOQA
         def __init__(self, save_default: Optional[bool] = False) -> None: ...
 
-    class SR1Ship_rs:
+    class SR1Ship_rs: # NOQA
         """ 用于高效且省内存的读取 SR1Ship """
         def __init__(self,
                      file_path: Optional[str] = './assets/builtin/dock1.xml',
@@ -113,7 +136,7 @@ if TYPE_CHECKING:
             """用于返回一个包含所有已连接零件的字典"""
         def save(self, file_path: str, save_status: Optional[SaveStatus_rs] = None) -> None: ...
 
-    class Console_rs:
+    class Console_rs: # NOQA
         def __init__(self) -> None: ...
         def start(self) -> None: ...
         def stop(self) -> bool: ...
