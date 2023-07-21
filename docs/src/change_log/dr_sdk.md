@@ -4,6 +4,13 @@
 - 最新版本号
   - DR sdk: 0.8.6.0
 
+## DR sdk 0.8.6.1
+
+### Fix
+
+- 现在 `DR.py` 启动之后如果崩溃会在控制台输出完整的 Crash report 了
+  - Now, after `DR.py` starts, if it crashes, the complete Crash report will be output to the console
+
 ## DR sdk 0.8.6.0
 
 重构了一下项目结构

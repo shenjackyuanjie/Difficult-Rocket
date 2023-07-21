@@ -46,6 +46,7 @@ def start(start_time_ns: int) -> None:
     except:
         trace = traceback.format_exc()
         crash.create_crash_report(trace)
+        print(trace)
         crash.write_info_to_cache(sys.stdout)
     print(crash.all_thread)
     print(crash.all_process)
