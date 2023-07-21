@@ -24,6 +24,29 @@ pub mod sr1 {
     pub type IdType = i64;
     pub type ConnectionsType = Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>;
 
+    #[inline]
+    pub fn radians_map_to_degrees(angle: f64) -> f64 {
+        // match angle {
+        //     0.0 => 0.,
+        //     1.570796 => 270.,
+        //     3.141593 => 180.,
+        //     4.712389 => 90.,
+        //     _ => {
+        //         angle.to_degrees()
+        //     }
+        // }
+        #[allow(clippy::approx_constant)]
+        if angle == 1.570796 {
+            270.
+        } else if angle == 3.141593 {
+            180.
+        } else if angle == 4.712389 {
+            90.
+        } else {
+            angle.to_degrees()
+        }
+    }
+
     #[allow(unused)]
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -506,6 +529,8 @@ pub mod sr1 {
             }
             pos_box
         }
+
+        pub fn angle_degrees(&self) -> f64 { radians_map_to_degrees(self.angle) }
     }
 
     #[derive(Debug, Clone)]
