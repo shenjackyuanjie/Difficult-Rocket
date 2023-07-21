@@ -16,7 +16,7 @@ from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Options, Version
 
-DR_rust_version = Version("0.2.18.0")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.2.19.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
 logger = logging.getLogger('client.dr_game')
 
@@ -53,7 +53,7 @@ DR_mod_runtime = _DR_mod_runtime()
 class DR_mod(ModInfo):  # NOQA
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
-    version = Version("0.3.1.2")
+    version = Version("0.3.2.0")
 
     writer = "shenjackyuanjie"
     link = "shenjack.top"
@@ -81,7 +81,7 @@ class DR_mod(ModInfo):  # NOQA
         else:
             self.config.flush_option()
         logger.info("on_load")
-        logger.info(self.as_markdown())
+        logger.info(f"\n{self.as_markdown()}")
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):

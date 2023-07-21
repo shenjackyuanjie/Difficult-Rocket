@@ -229,8 +229,20 @@ pub mod data {
             connections
         }
 
-        fn as_dict(&self) -> HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> {
-            let mut parts: HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> = HashMap::new();
+        fn as_list(&self) -> Vec<(PySR1PartType, PySR1PartData)> {
+            let mut parts: Vec<(PySR1PartType, PySR1PartData)> = Vec::new();
+            for part_data in self.ship.parts.iter() {
+                if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                    let part_type = PySR1PartType::new(part_type.clone());
+                    let py_part_data = PySR1PartData::new(part_data.clone());
+                    parts.push((part_type, py_part_data));
+                }
+            }
+            parts
+        }
+
+        fn as_dict(&self) -> HashMap<IdType, Vec<(PySR1PartType, PySR1PartData)>> {
+            let mut parts: HashMap<IdType, Vec<(PySR1PartType, PySR1PartData)>> = HashMap::new();
             for part_data in self.ship.parts.iter() {
                 if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
                     let part_type = PySR1PartType::new(part_type.clone());

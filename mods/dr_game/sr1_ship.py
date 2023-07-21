@@ -50,31 +50,6 @@ logger.level = logging.DEBUG
 sr_tr = Tr(lang_path=Path(__file__).parent / 'lang')
 
 
-def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
-    if part_xml.tag != 'Part':
-        return None
-    # print(f"tag: {part.tag} attrib: {part.attrib}")
-    part_id = int(part_xml.attrib.get('id'))
-    part_type = part_xml.attrib.get('partType')
-    part_x = float(part_xml.attrib.get('x'))
-    part_y = float(part_xml.attrib.get('y'))
-    part_activate = xml_bool(part_xml.attrib.get('activated'))
-    part_angle = float(part_xml.attrib.get('angle'))
-    part_angle_v = float(part_xml.attrib.get('angleV'))
-    part_editor_angle = int(part_xml.attrib.get('editorAngle'))
-    part_flip_x = xml_bool(part_xml.attrib.get('flippedX'))
-    part_flip_y = xml_bool(part_xml.attrib.get('flippedY'))
-    part_explode = xml_bool(part_xml.attrib.get('exploded'))
-    if part_type not in SR1PartTexture.part_type_sprite:
-        part_textures = None
-    else:
-        part_textures = SR1PartTexture.get_textures_from_type(part_type)
-    return SR1PartData(x=part_x, y=part_y, id=part_id, p_type=part_type,
-                       active=part_activate, angle=part_angle, angle_v=part_angle_v,
-                       editor_angle=part_editor_angle, flip_x=part_flip_x,
-                       flip_y=part_flip_y, explode=part_explode, textures=part_textures)
-
-
 class SR1ShipRender_Option(Options):  # NOQA
     # debug option
     debug_d_pos: bool = False
@@ -122,13 +97,10 @@ class SR1ShipRender(BaseScreen):
         # Optional data
         self.textures: SR1Textures = SR1Textures()
         self.gen_draw: Optional[Generator] = None
-        self.xml_name: Optional[str] = None  # 准备移除, 更换为基于 rust 的 xml 解析
-        self.xml_doc: Optional[ElementTree] = None  # 准备移除, 更换为基于 rust 的 xml 解析
-        self.xml_root: Optional[Element] = None  # 准备移除, 更换为基于 rust 的 xml 解析
         self.rust_ship: Optional[SR1Ship_rs] = None
+        self.ship_name: Optional[str] = None
 
         # List/Dict data
-        self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, List[Sprite]] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
         self.part_line_box: Dict[int, List[Line]] = {}
@@ -152,10 +124,7 @@ class SR1ShipRender(BaseScreen):
         try:
             start_time = time.time_ns()
             logger.info(sr_tr().sr1.ship.xml.loading().format(file_path))
-            cache_doc = parse(file_path)
-            self.xml_doc = cache_doc
-            self.xml_root = self.xml_doc.getroot()
-            self.xml_name = file_path
+            self.ship_name = file_path.split('/')[-1].split('.')[0]
             if DR_mod_runtime.use_DR_rust:
                 self.rust_ship = SR1Ship_rs(file_path, self.part_list_rs, 'a_new_ship')
             logger.info(sr_tr().sr1.ship.xml.load_done())
@@ -166,11 +135,10 @@ class SR1ShipRender(BaseScreen):
             print(e)
             return False
 
-    def gen_sprite(self, part_datas: Dict[int, SR1PartData], each_count: int = 100) -> Generator:
+    def gen_sprite(self, each_count: int = 100) -> Generator:
         """
         生成 sprite
         通过生成器减少一次性渲染的压力
-        :param part_datas: 所有的部件数据
         :param each_count: 每次生成的数量 (默认 100) (过大会导致卡顿)
         :return: 生成器
         """
@@ -178,7 +146,8 @@ class SR1ShipRender(BaseScreen):
         self.drawing = True
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
-            for p_id, parts in self.rust_ship.as_dict().items():
+            cache = self.rust_ship.as_dict()
+            for p_id, parts in cache.items():
                 p_id: int
                 parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
                 part_group = Group(2, parent=self.part_group)
@@ -192,34 +161,8 @@ class SR1ShipRender(BaseScreen):
                     part_sprite.scale_y = -1 if p_data.flip_y else 1
 
                     batch.append(part_sprite)
-                self.parts_sprite[p_id] = batch
-                count += 1
-                if count >= each_count:
-                    count = 0
-                    yield
-
-        # python 渲染
-        for part_id, part in part_datas.items():
-            # 下面就是调用 pyglet 去渲染的部分
-            # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的
-            # 在不缩放的情况下，XML的1个单位长度对应60个像素
-            # render_x = part.x * 60
-            # render_y = part.y * 60
-            # cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
-            #                       x=render_x, y=render_y, z=random.random(),
-            #                       batch=self.main_batch, group=self.part_group)
-            # # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系
-            # # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
-            # cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
-            # if part.flip_x:
-            #     cache_sprite.scale_x = -1
-            # if part.flip_y:
-            #     cache_sprite.scale_y = -1
-            # self.parts_sprite[part.id] = cache_sprite
-
-            if DR_mod_runtime.use_DR_rust:
                 line_box_group = Group(6, parent=self.part_group)
-                part_debug_box = self.rust_ship.get_part_box(part.id)
+                part_debug_box = self.rust_ship.get_part_box(p_id)
                 if part_debug_box:
                     # 线框
                     part_line_box = []
@@ -238,17 +181,17 @@ class SR1ShipRender(BaseScreen):
                     part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
-                    self.part_line_box[part.id] = part_line_box
-            count += 1
-            if count >= each_count:
-                count = 0
-                yield count
-        if DR_mod_runtime.use_DR_rust:
+                    self.part_line_box[p_id] = part_line_box
+                self.parts_sprite[p_id] = batch
+                count += 1
+                if count >= each_count:
+                    count = 0
+                    yield
             connect_line_group = Group(7, parent=self.part_group)
             for connect in self.rust_ship.connection:
                 # 连接线
-                parent_part_data = self.part_data[connect[2]]
-                child_part_data = self.part_data[connect[3]]
+                parent_part_data = cache[connect[2]][0][1]
+                child_part_data = cache[connect[3]][0][1]
                 color = (random.randrange(100, 255), random.randrange(0, 255), random.randrange(0, 255), 255)
                 self.part_line_list.append(Line(x=parent_part_data.x * 60, y=parent_part_data.y * 60,
                                                 x2=child_part_data.x * 60, y2=child_part_data.y * 60,
@@ -258,6 +201,31 @@ class SR1ShipRender(BaseScreen):
                 if count >= each_count * 3:
                     count = 0
                     yield count
+
+        # python 渲染
+        # for part_id, part in part_datas.items():
+        #     # 下面就是调用 pyglet 去渲染的部分
+        #     # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的
+        #     # 在不缩放的情况下，XML的1个单位长度对应60个像素
+        #     # render_x = part.x * 60
+        #     # render_y = part.y * 60
+        #     # cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
+        #     #                       x=render_x, y=render_y, z=random.random(),
+        #     #                       batch=self.main_batch, group=self.part_group)
+        #     # # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系
+        #     # # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
+        #     # cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
+        #     # if part.flip_x:
+        #     #     cache_sprite.scale_x = -1
+        #     # if part.flip_y:
+        #     #     cache_sprite.scale_y = -1
+        #     # self.parts_sprite[part.id] = cache_sprite
+        #
+        #     if DR_mod_runtime.use_DR_rust:
+        #     count += 1
+        #     if count >= each_count:
+        #         count = 0
+        #         yield count
         self.drawing = False
         raise GeneratorExit
 
@@ -265,38 +233,28 @@ class SR1ShipRender(BaseScreen):
         """
         渲染船
         """
-        logger.info(sr_tr().sr1.ship.ship.load().format(self.xml_name))
+        logger.info(sr_tr().sr1.ship.ship.load().format(self.ship_name))
         start_time = time.perf_counter_ns()
-        self.part_data: Dict[int, SR1PartData] = {}
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
         self.part_line_list = []
-        self.camera.zoom = 1.0
-        self.camera.dx = 0
-        self.camera.dy = 0
-        parts = self.xml_root.find('Parts')
-        for part_xml in parts:
-            if part_xml.tag != 'Part':
-                continue  # 如果不是部件，则跳过
-            part = get_sr1_part(part_xml)
-            if part.id in self.part_data:
-                print(f'hey! warning! id{part.id}')
-            self.part_data[part.id] = part
+        # self.camera.zoom = 1.0
+        # self.camera.dx = 0
+        # self.camera.dy = 0
         # 调用生成器 减少卡顿
         try:
-            self.gen_draw = self.gen_sprite(self.part_data)
+            self.gen_draw = self.gen_sprite()
             next(self.gen_draw)
-        except GeneratorExit:
+        except (GeneratorExit, StopIteration):
             self.drawing = False
         self.need_draw = False
         full_mass = 0
         if DR_mod_runtime.use_DR_rust:
-            for part in self.part_data:
-                full_mass += self.part_list_rs.get_part_type(self.part_data[part].p_type).mass * 500
+            full_mass = self.rust_ship.mass
         logger.info(sr_tr().sr1.ship.ship.load_time().format(
             (time.perf_counter_ns() - start_time) / 1000000000))
         logger.info(sr_tr().sr1.ship.ship.info().format(
-            len(self.part_data), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
+            len(self.rust_ship.as_list()), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
         self.rendered = True
 
     def draw_batch(self, window: "ClientWindow"):
@@ -318,7 +276,7 @@ class SR1ShipRender(BaseScreen):
         if self.drawing:
             try:
                 next(self.gen_draw)
-            except GeneratorExit:
+            except (GeneratorExit, StopIteration):
                 self.drawing = False
                 self.logger.info(sr_tr().sr1.ship.ship.render.done())
 

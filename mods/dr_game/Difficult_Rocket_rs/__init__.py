@@ -26,7 +26,6 @@ if TYPE_CHECKING:
         """
         PartList 读取测试
         :param file_name:
-        :return:
         """
 
 
@@ -160,16 +159,22 @@ if TYPE_CHECKING:
         def touch_ground(self) -> bool: ...
 
         @property
-        def img_pos(self) -> Tuple[int, int, int, int]: ...
-
-        """ -x -y +x +y  左下右上 """
+        def mass(self) -> float:
+            """ 获取整搜船的质量 """
 
         @property
-        def connection(self) -> List[Tuple[int, int, int, int]]: ...
+        def img_pos(self) -> Tuple[int, int, int, int]:
+            """ -x -y +x +y  左下右上 """
 
-        """获取所有连接信息"""
+        @property
+        def connection(self) -> List[Tuple[int, int, int, int]]:
+            """获取所有连接信息"""
 
-        def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]: ...
+        def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]:
+            """获取所有零件的盒子"""
+
+        def as_list(self) -> List[Tuple[SR1PartType_rs, SR1PartData_rs]]:
+            """用于返回一个包含所有已连接零件的列表"""
 
         def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData_rs]]]:
             """用于返回一个包含所有已连接零件的字典"""
