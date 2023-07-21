@@ -16,12 +16,12 @@ from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Options, Version
 
-DR_rust_version = Version("0.2.16.0")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.2.17.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
 logger = logging.getLogger('client.dr_game')
 
 
-class _DR_mod_runtime(Options):
+class _DR_mod_runtime(Options):  # NOQA
     name = 'DR mod runtime'
 
     use_DR_rust: bool = True
@@ -50,7 +50,7 @@ class _DR_mod_runtime(Options):
 DR_mod_runtime = _DR_mod_runtime()
 
 
-class DR_mod(ModInfo):
+class DR_mod(ModInfo):  # NOQA
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
     version = Version("0.3.1.2")

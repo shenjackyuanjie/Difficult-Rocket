@@ -91,9 +91,9 @@ if TYPE_CHECKING:
     class SR1Ship_rs:
         """ 用于高效且省内存的读取 SR1Ship """
         def __init__(self,
-                     file_path = './assets/builtin/dock1.xml',
-                     part_list = './assets/builtin/PartList.xml',
-                     ship_name = 'NewShip'): ...
+                     file_path: Optional[str] = './assets/builtin/dock1.xml',
+                     part_list: Optional[SR1PartList_rs] = None,
+                     ship_name: Optional[str] = 'NewShip'): ...
         @property
         def name(self) -> str: ...
         @property

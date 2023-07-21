@@ -44,6 +44,11 @@ class SR1Textures(Options):
         self.flush_option()
 
     def get_texture(self, name: str):
+        """
+        获取材质
+        :param name:
+        :return:
+        """
         assert name in self.cached_options
         return self.cached_options.get(name)
 

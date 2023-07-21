@@ -3,7 +3,16 @@
 
 - 最新版本号
   - DR game: 0.3.1.3
-  - DR rs: 0.2.16.0
+  - DR rs: 0.2.17.0
+
+## 20230721 DR rs 0.2.17.0
+
+### BreakingChanges
+
+- `SR1Ship_rs`
+  - `__init__`
+    - 将 `part_list` 参数从传入 `PartList.xml` 路径 改为直接传入 `SR1PartList_rs` 实例
+      - Change the `part_list` parameter from passing in the `PartList.xml` path to directly passing in the `SR1PartList_rs` instance
 
 ## 20230721 DR rs 0.2.16.0
 

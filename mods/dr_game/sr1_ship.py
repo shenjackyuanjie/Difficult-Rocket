@@ -72,7 +72,7 @@ def get_sr1_part(part_xml: Element) -> Optional[SR1PartData]:
                        flip_y=part_flip_y, explode=part_explode, textures=part_textures)
 
 
-class SR1ShipRender_Option(Options):
+class SR1ShipRender_Option(Options):  # NOQA
     # debug option
     debug_d_pos: bool = False
     debug_mouse_pos: bool = False
@@ -97,8 +97,10 @@ class SR1ShipRender(BaseScreen):
         self.render_option = SR1ShipRender_Option()
         self.dx = 0
         self.dy = 0
+
         self.main_batch = Batch()
         self.part_group = Group(10, parent=main_window.main_group)
+
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
                                  width=main_window.width - 20, height=20,
@@ -126,16 +128,22 @@ class SR1ShipRender(BaseScreen):
         self.part_line_box: Dict[int, List[Line]] = {}
         self.part_line_list: List[Line] = []
 
-        self.load_xml('assets/builtin/dock1.xml')
 
         load_end_time = time.time_ns()
         logger.info(sr_tr().mod.info.setup.use_time().format((load_end_time - load_start_time) / 1000000000))
         self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
         if DR_mod_runtime.use_DR_rust:
             self.rust_parts = None
-            self.part_list_rs = SR1PartList_rs('assets/builtin/PartList.xml', 'default_part_list')
+            self.part_list_rs = SR1PartList_rs('assets/builtin/PartList.xml', 'builtin_part_list')
+
+        self.load_xml('assets/builtin/dock1.xml')
 
     def load_xml(self, file_path: str) -> bool:
+        """
+        加载 xml 文件
+        :param file_path:
+        :return:
+        """
         try:
             start_time = time.time_ns()
             logger.info(sr_tr().sr1.ship.xml.loading().format(file_path))
@@ -144,7 +152,7 @@ class SR1ShipRender(BaseScreen):
             self.xml_root = self.xml_doc.getroot()
             self.xml_name = file_path
             if DR_mod_runtime.use_DR_rust:
-                self.rust_ship = SR1Ship_rs(file_path, 'assets/builtin/PartList.xml', 'a_new_ship')
+                self.rust_ship = SR1Ship_rs(file_path, self.part_list_rs, 'a_new_ship')
             logger.info(sr_tr().sr1.ship.xml.load_done())
             logger.info(sr_tr().sr1.ship.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))
@@ -154,19 +162,28 @@ class SR1ShipRender(BaseScreen):
             return False
 
     def load_textures(self):
+        """
+        初始化纹理加载
+        :return:
+        """
         self.textures = SR1Textures()
 
     def gen_sprite(self, part_datas: Dict[int, SR1PartData], each_count: int = 100) -> Generator:
+        """
+        生成 sprite
+        通过生成器减少一次性渲染的压力
+        :param part_datas: 所有的部件数据
+        :param each_count: 每次生成的数量 (默认 100) (过大会导致卡顿)
+        :return: 生成器
+        """
         count = 0
         self.drawing = True
         for part_id, part in part_datas.items():
             # 下面就是调用 pyglet 去渲染的部分
-            # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的(
-            # 主要是 Windows 下有一个缩放系数嘛，我待会试试这玩意能不能获取（估计得 ctypes
+            # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
             render_x = part.x * 60
             render_y = part.y * 60
-            # 你就这里改吧
             cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
                                   x=render_x, y=render_y, z=random.random(),
                                   batch=self.main_batch, group=self.part_group)
@@ -174,7 +191,7 @@ class SR1ShipRender(BaseScreen):
             # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
             cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
             if part.flip_x:
-                cache_sprite.scale_x = -1  # 就是直接取反缩放，应该没问题····吧？（待会试试就知道了
+                cache_sprite.scale_x = -1
             if part.flip_y:
                 cache_sprite.scale_y = -1
             cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
@@ -203,8 +220,6 @@ class SR1ShipRender(BaseScreen):
                                               x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
                     self.part_line_box[part.id] = part_line_box
-            # if not part_render:  # 如果不渲染(渲染有毛病)
-            #     self.parts_sprite[part.id].visible = False
             count += 1
             if count >= each_count:
                 count = 0
@@ -228,6 +243,9 @@ class SR1ShipRender(BaseScreen):
         raise GeneratorExit
 
     def render_ship(self):
+        """
+        渲染船
+        """
         if self.textures is None:
             self.load_textures()
         logger.info(sr_tr().sr1.ship.ship.load().format(self.xml_name))
@@ -322,8 +340,8 @@ class SR1ShipRender(BaseScreen):
             self.camera.dx += mouse_dx_d
             self.camera.dy += mouse_dy_d
 
-
     def on_command(self, command: CommandText, window: "ClientWindow"):
+        """ 解析命令 """
         self.logger.info(f'command: {command}')
         if command.find('render'):
             if command.find('reset'):
@@ -347,6 +365,11 @@ class SR1ShipRender(BaseScreen):
         elif command.find('get_buf'):
 
             def screenshot(window):
+                """
+                从窗口截图
+                :param window:
+                :return:
+                """
                 from pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, \
                     glReadPixels
                 import pyglet
@@ -389,7 +412,8 @@ class SR1ShipRender(BaseScreen):
                 if self.part_data[part].flip_x:
                     pil_image.transpose(Image.FLIP_LEFT_RIGHT)
                 img.paste(pil_image, (
-                int(self.part_data[part].x * 60 + img_center[0]), int(-self.part_data[part].y * 60 + img_center[1])),
+                    int(self.part_data[part].x * 60 + img_center[0]),
+                    int(-self.part_data[part].y * 60 + img_center[1])),
                           pil_image)
             img.save(f'test{time.time()}.png', 'PNG')
 

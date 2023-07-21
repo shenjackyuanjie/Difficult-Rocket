@@ -39,6 +39,7 @@ pub mod data {
     }
 
     #[pyclass]
+    #[derive(Clone, Debug)]
     #[pyo3(name = "SR1PartType_rs")]
     pub struct PySR1PartType {
         pub data: SR1PartType,
@@ -76,6 +77,7 @@ pub mod data {
     }
 
     #[pyclass]
+    #[derive(Clone, Debug)]
     #[pyo3(name = "SR1PartList_rs")]
     pub struct PySR1PartList {
         pub data: SR1PartList,
@@ -102,6 +104,7 @@ pub mod data {
     }
 
     #[pyclass]
+    #[derive(Clone, Debug)]
     #[pyo3(name = "SR1PartData_rs")]
     pub struct PySR1PartData {
         pub data: SR1PartData,
@@ -148,6 +151,7 @@ pub mod data {
     }
 
     #[pyclass]
+    #[derive(Clone, Debug)]
     #[pyo3(name = "SR1Ship_rs")]
     pub struct PySR1Ship {
         pub ship: SR1Ship,
@@ -157,11 +161,14 @@ pub mod data {
     #[pymethods]
     impl PySR1Ship {
         #[new]
-        #[pyo3(text_signature = "(file_path = './assets/builtin/dock1.xml', part_list = './assets/builtin/PartList.xml', ship_name = 'NewShip')")]
-        fn new(file_path: String, part_list: String, ship_name: String) -> Self {
-            let mut ship = SR1Ship::from_file(file_path, Some(ship_name)).unwrap();
-            let part_list = SR1PartList::from_file(part_list).unwrap();
-            ship.parse_part_list_to_part(&part_list); //
+        #[pyo3(text_signature = "(file_path = './assets/builtin/dock1.xml', part_list = None, ship_name = 'NewShip')")]
+        fn new(file_path: String, part_list: Option<PySR1PartList>, ship_name: Option<String>) -> Self {
+            let mut ship = SR1Ship::from_file(file_path, Some(ship_name.unwrap_or("new ship".to_string()))).unwrap();
+            let part_list = match part_list {
+                Some(part_list) => part_list.data,
+                None => SR1PartList::from_file("./assets/builtin/PartList.xml".to_string()).unwrap(),
+            };
+            ship.parse_part_list_to_part(&part_list);
             Self { ship, part_list }
         }
 
