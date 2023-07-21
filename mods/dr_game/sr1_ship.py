@@ -194,8 +194,6 @@ class SR1ShipRender(BaseScreen):
                 cache_sprite.scale_x = -1
             if part.flip_y:
                 cache_sprite.scale_y = -1
-            cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
-            cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
             self.parts_sprite[part.id] = cache_sprite
 
             if DR_mod_runtime.use_DR_rust:
