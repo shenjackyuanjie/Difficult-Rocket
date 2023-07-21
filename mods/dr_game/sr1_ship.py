@@ -97,6 +97,8 @@ class SR1ShipRender(BaseScreen):
         self.render_option = SR1ShipRender_Option()
         self.dx = 0
         self.dy = 0
+        self.width = main_window.width
+        self.height = main_window.height
 
         self.main_batch = Batch()
         self.part_group = Group(10, parent=main_window.main_group)
@@ -112,6 +114,7 @@ class SR1ShipRender(BaseScreen):
         self.render_d_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                     x=main_window.width / 2, y=main_window.height / 2)
         self.render_d_label.visible = self.render_option.debug_d_pos
+        self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
 
         # Optional data
         self.gen_draw: Optional[Generator] = None
@@ -128,15 +131,14 @@ class SR1ShipRender(BaseScreen):
         self.part_line_box: Dict[int, List[Line]] = {}
         self.part_line_list: List[Line] = []
 
-
-        load_end_time = time.time_ns()
-        logger.info(sr_tr().mod.info.setup.use_time().format((load_end_time - load_start_time) / 1000000000))
-        self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
         if DR_mod_runtime.use_DR_rust:
             self.rust_parts = None
             self.part_list_rs = SR1PartList_rs('assets/builtin/PartList.xml', 'builtin_part_list')
 
         self.load_xml('assets/builtin/dock1.xml')
+
+        load_end_time = time.time_ns()
+        logger.info(sr_tr().mod.info.setup.use_time().format((load_end_time - load_start_time) / 1000000000))
 
     def load_xml(self, file_path: str) -> bool:
         """
@@ -178,25 +180,29 @@ class SR1ShipRender(BaseScreen):
         """
         count = 0
         self.drawing = True
+        # rust 渲染
+
+        
+        # python 渲染
         for part_id, part in part_datas.items():
             # 下面就是调用 pyglet 去渲染的部分
             # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的
             # 在不缩放的情况下，XML的1个单位长度对应60个像素
-            render_x = part.x * 60
-            render_y = part.y * 60
-            cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
-                                  x=render_x, y=render_y, z=random.random(),
-                                  batch=self.main_batch, group=self.part_group)
-            # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系（OK
-            # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
-            cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
-            if part.flip_x:
-                cache_sprite.scale_x = -1
-            if part.flip_y:
-                cache_sprite.scale_y = -1
-            cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
-            cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
-            self.parts_sprite[part.id] = cache_sprite
+            # render_x = part.x * 60
+            # render_y = part.y * 60
+            # cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
+            #                       x=render_x, y=render_y, z=random.random(),
+            #                       batch=self.main_batch, group=self.part_group)
+            # # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系
+            # # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
+            # cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
+            # if part.flip_x:
+            #     cache_sprite.scale_x = -1
+            # if part.flip_y:
+            #     cache_sprite.scale_y = -1
+            # cache_sprite.x = cache_sprite.x - cache_sprite.scale_x / 2
+            # cache_sprite.y = cache_sprite.y - cache_sprite.scale_y / 2
+            # self.parts_sprite[part.id] = cache_sprite
 
             if DR_mod_runtime.use_DR_rust:
                 line_box_group = Group(6, parent=self.part_group)
