@@ -3,7 +3,20 @@
 
 - 最新版本号
   - DR game: 0.3.1.3
-  - DR rs: 0.2.15.2
+  - DR rs: 0.2.16.0
+
+## 20230721 DR rs 0.2.16.0
+
+### Dependencies
+
+in [#45](https://github.com/shenjackyuanjie/Difficult-Rocket/pull/45)
+
+- `pyo3`
+  - `0.19.0` -> `0.19.1`
+- `xml-rs`
+  - `0.8.14` -> `0.8.16`
+- `serde`
+  - `1.0.164` -> `1.0.173`
 
 ## DR game 0.3.1.2 / 0.3.1.3
 

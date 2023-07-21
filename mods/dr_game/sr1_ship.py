@@ -114,9 +114,9 @@ class SR1ShipRender(BaseScreen):
         # Optional data
         self.gen_draw: Optional[Generator] = None
         self.textures: Union[SR1Textures, None] = None
-        self.xml_name: Optional[str] = None
-        self.xml_doc: Optional[ElementTree] = None
-        self.xml_root: Optional[Element] = None
+        self.xml_name: Optional[str] = None  # 准备移除, 更换为基于 rust 的 xml 解析
+        self.xml_doc: Optional[ElementTree] = None  # 准备移除, 更换为基于 rust 的 xml 解析
+        self.xml_root: Optional[Element] = None  # 准备移除, 更换为基于 rust 的 xml 解析
         self.rust_ship: Optional[SR1Ship_rs] = None
 
         # List/Dict data
