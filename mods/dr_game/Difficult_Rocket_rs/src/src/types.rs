@@ -759,7 +759,6 @@ pub mod sr1 {
                         part.flip_y && !save_status.save_default,
                         ("flippedY", bool_to_i8(part.flip_y).to_string().as_str())
                     );
-                    // part_attr.push_attribute(("activated", bool_to_i8(part.active).to_string().as_str()));
                     option_push_attr!(
                         part_attr,
                         part.active && !save_status.save_default,
