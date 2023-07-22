@@ -2,8 +2,31 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.1.3
-  - DR rs: 0.2.17.0
+  - DR game: 0.3.2.0
+  - DR rs: 0.2.19.0
+
+## 20230721 DR rs 0.2.19.0
+
+### Add
+
+- `PySR1Ship`
+  - `as_list`
+
+## 20230721 DR game 0.3.2.0
+
+### BUG Fix
+
+- [#46](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/46)
+  - 渲染偏移 bug
+
+## 20230721 DR rs 0.2.18.0
+
+### Add
+
+- 导出了 export
+  - `PySR1PartData`
+  - `PySaveStatus`
+  - `map_ptype_textures(part_type: str) -> str`
 
 ## 20230721 DR rs 0.2.17.0
 

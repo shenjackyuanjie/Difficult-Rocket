@@ -13,9 +13,14 @@ pub mod data {
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::types::math::{Point2D, Rotatable};
-    use crate::types::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
+    use crate::types::sr1::{get_max_box, map_ptype_textures, SR1PartData, SR1PartListTrait};
     use crate::types::sr1::{IdType, SaveStatus};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
+
+    #[pyfunction]
+    #[pyo3(signature = (part_type))]
+    #[pyo3(name = "map_ptype_textures")]
+    pub fn py_map_ptype_textures(part_type: String) -> String { map_ptype_textures(part_type) }
 
     #[pyclass]
     #[pyo3(name = "SaveStatus_rs")]
@@ -138,6 +143,9 @@ pub mod data {
         fn get_angle(&self) -> f64 { self.data.angle }
 
         #[getter]
+        fn get_angle_r(&self) -> f64 { self.data.angle_degrees() }
+
+        #[getter]
         fn get_angle_v(&self) -> f64 { self.data.angle_v }
 
         #[getter]
@@ -221,8 +229,20 @@ pub mod data {
             connections
         }
 
-        fn as_dict(&self) -> HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> {
-            let mut parts: HashMap<i64, Vec<(PySR1PartType, PySR1PartData)>> = HashMap::new();
+        fn as_list(&self) -> Vec<(PySR1PartType, PySR1PartData)> {
+            let mut parts: Vec<(PySR1PartType, PySR1PartData)> = Vec::new();
+            for part_data in self.ship.parts.iter() {
+                if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                    let part_type = PySR1PartType::new(part_type.clone());
+                    let py_part_data = PySR1PartData::new(part_data.clone());
+                    parts.push((part_type, py_part_data));
+                }
+            }
+            parts
+        }
+
+        fn as_dict(&self) -> HashMap<IdType, Vec<(PySR1PartType, PySR1PartData)>> {
+            let mut parts: HashMap<IdType, Vec<(PySR1PartType, PySR1PartData)>> = HashMap::new();
             for part_data in self.ship.parts.iter() {
                 if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
                     let part_type = PySR1PartType::new(part_type.clone());

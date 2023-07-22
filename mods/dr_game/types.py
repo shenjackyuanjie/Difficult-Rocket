@@ -33,10 +33,8 @@ class SR1PartData:
 
 class SR1Textures(Options):
     """ 存储 sr1 的材质 img """
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.flush_option()
-        for image_name in self.cached_options:
+    def load_file(self, **kwargs):
+        for image_name in self.flush_option():
             img = load(f'assets/textures/parts/{image_name}.png')
             img.anchor_x = img.width // 2
             img.anchor_y = img.height // 2
@@ -49,8 +47,14 @@ class SR1Textures(Options):
         :param name:
         :return:
         """
-        assert name in self.cached_options
-        return self.cached_options.get(name)
+        if name in self.cached_options:
+            return self.cached_options.get(name)
+        else:
+            img = load(f'assets/textures/parts/{name}.png')
+            img.anchor_x = img.width // 2
+            img.anchor_y = img.height // 2
+            setattr(self, name, img)
+            return img
 
     Battery:               AbstractImage = None
     Beam:                  AbstractImage = None
@@ -134,6 +138,11 @@ class SR1Rotation(Options):
 
     @classmethod
     def get_rotation(cls, radian: float) -> float:
+        """
+        实际上就是将弧度转换为角度 (同时自带一个映射表)
+        :param radian:
+        :return:
+        """
         if radian in cls.radian_angle_map:
             return cls.radian_angle_map[radian]
         else:
