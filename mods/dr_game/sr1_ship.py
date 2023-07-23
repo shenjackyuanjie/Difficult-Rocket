@@ -362,7 +362,7 @@ class SR1ShipRender(BaseScreen):
                 # 这个功能依赖于 DR rs (简称,我懒得在Python端实现)
                 return
             img_box = self.rust_ship.img_pos
-            img_size = (img_box[2] - img_box[0] + 1000, img_box[3] - img_box[1] + 1000)
+            img_size = (img_box[2] - img_box[0], img_box[3] - img_box[1])
             # 中心点是左上角坐标
             img_center = (abs(img_box[0]), abs(img_box[3]))
             try:
@@ -372,24 +372,30 @@ class SR1ShipRender(BaseScreen):
                 print('PIL not found')
                 return
             img = Image.new('RGBA', img_size)
-            for part, sprite in self.parts_sprite.items():
-                sprite_img = sprite.image
-                print(f"sprite_img: {sprite_img} {sprite_img.width} {sprite_img.height}")
-                img_data = sprite_img.get_image_data()
-                fmt = img_data.format
-                if fmt != 'RGB':
-                    fmt = 'RGBA'
-                pitch = -(img_data.width * len(fmt))
-                pil_image = Image.frombytes(fmt, (img_data.width, img_data.height), img_data.get_data(fmt, pitch))
-                pil_image = pil_image.rotate(SR1Rotation.get_rotation(self.part_data[part].angle), expand=True)
-                if self.part_data[part].flip_y:
-                    pil_image.transpose(Image.FLIP_TOP_BOTTOM)
-                if self.part_data[part].flip_x:
-                    pil_image.transpose(Image.FLIP_LEFT_RIGHT)
-                img.paste(pil_image, (
-                    int(self.part_data[part].x * 60 + img_center[0]),
-                    int(-self.part_data[part].y * 60 + img_center[1])),
-                          pil_image)
+            part_data = self.rust_ship.as_dict()
+            for part, sprites in self.parts_sprite.items():
+                for index, sprite in enumerate(sprites):
+                    sprite_img = sprite.image
+                    print(f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} {part_data[part][index][1].y * 60}")
+                    img_data = sprite_img.get_image_data()
+                    fmt = img_data.format
+                    if fmt != 'RGB':
+                        fmt = 'RGBA'
+                    pitch = -(img_data.width * len(fmt))
+                    pil_image = Image.frombytes(fmt, (img_data.width, img_data.height), img_data.get_data(fmt, pitch))
+
+                    pil_image = pil_image.rotate(-SR1Rotation.get_rotation(part_data[part][index][1].angle), expand=True)
+
+                    if part_data[part][index][1].flip_y:
+                        pil_image.transpose(Image.FLIP_TOP_BOTTOM)
+                    if part_data[part][index][1].flip_x:
+                        pil_image.transpose(Image.FLIP_LEFT_RIGHT)
+                    pil_image.show()
+
+                    img.paste(pil_image, (
+                        int(part_data[part][index][1].x * 60 + img_center[0]),
+                        int(-part_data[part][index][1].y * 60 + img_center[1])))
+            img.show("???")
             img.save(f'test{time.time()}.png', 'PNG')
 
         elif command.find('test'):
