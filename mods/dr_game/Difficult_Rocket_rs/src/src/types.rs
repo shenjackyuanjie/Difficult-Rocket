@@ -977,7 +977,7 @@ pub mod sr1 {
             RawShip {
                 parts: RawParts { parts },
                 connects: connections,
-                version: self.version,
+                version: Some(self.version),
                 lift_off: bool_to_i8(self.lift_off),
                 touch_ground: bool_to_i8(self.touch_ground),
                 disconnected,

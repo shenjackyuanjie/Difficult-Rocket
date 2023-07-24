@@ -387,7 +387,9 @@ pub mod ship {
         pub parts: Parts,
         #[serde(rename = "Connections")]
         pub connects: Connections,
-        pub version: i32,
+        pub version: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48
+        // SR1 says version is also optional, let them happy
+        // it's always 1
         #[serde(rename = "liftedOff")]
         pub lift_off: i8,
         #[serde(rename = "touchingGround")]
@@ -423,6 +425,7 @@ pub mod ship {
         pub y: f64,
         #[serde(rename = "editorAngle")]
         pub editor_angle: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47
+        // SR1 says it's optional, let them happy
         pub angle: f64,
         #[serde(rename = "angleV")]
         pub angle_v: f64,
@@ -570,7 +573,7 @@ pub mod ship {
             SR1Ship {
                 name: name.unwrap_or("NewShip".to_string()),
                 description: "".to_string(),
-                version: self.version,
+                version: self.version.unwrap_or(1_i32),
                 parts,
                 connections,
                 lift_off: i8_to_bool(self.lift_off.to_owned()),

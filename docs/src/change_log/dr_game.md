@@ -3,7 +3,31 @@
 
 - 最新版本号
   - DR game: 0.3.2.0
-  - DR rs: 0.2.19.0
+  - DR rs: 0.2.20.1
+
+## 20230724 DR rs 0.2.20.1
+
+### Fix
+
+- [#48](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48)
+  - `missing field version`
+  - SR1 says: `version` field is NOT Required
+    - make them happy
+    - SR1 说: `version` 字段也是可选的
+      - 让他们开心
+      - 我谢谢您啊 Jundroo
+      - 我就看看我能发多少个 issue
+
+## 20230724 DR rs 0.2.20.0
+
+### Fix
+
+- [#47](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47)
+  - `editorAngle field is Option<i32>`
+  - SR1 says: `editorAngle` field is Optional
+    - make them happy
+    - SR1 说: `editorAngle` 字段是可选的
+      - 让他们开心
 
 ## 20230721 DR rs 0.2.19.0
 
