@@ -284,11 +284,7 @@ pub mod part_list {
                 explosion_power: Some(0u32),
                 explosion_size: Some(0u32),
             });
-            let attach_points: Option<Vec<AttachPoint>> = if let Some(attach_points) = &self.attach_points {
-                Some(attach_points.unzip())
-            } else {
-                None
-            };
+            let attach_points: Option<Vec<AttachPoint>> = self.attach_points.as_ref().map(|attach_points| attach_points.unzip());
             SR1PartType {
                 id: self.id.clone(),
                 name: self.name.clone(),
