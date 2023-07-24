@@ -144,7 +144,14 @@ if TYPE_CHECKING:
         def __init__(self,
                      file_path: Optional[str] = './assets/builtin/dock1.xml',
                      part_list: Optional[SR1PartList_rs] = None,
-                     ship_name: Optional[str] = 'NewShip'): ...
+                     ship_name: Optional[str] = 'NewShip'):
+            """
+            读取 SR1Ship
+            :raise ValueError: 读取失败
+            :param file_path:
+            :param part_list:
+            :param ship_name:
+            """
 
         @property
         def name(self) -> str: ...

@@ -9,6 +9,7 @@
 pub mod data {
     use std::collections::HashMap;
 
+    use pyo3::exceptions::PyValueError;
     use pyo3::prelude::*;
 
     use crate::sr1_data::part_list::RawPartList;
@@ -170,14 +171,19 @@ pub mod data {
     impl PySR1Ship {
         #[new]
         #[pyo3(text_signature = "(file_path = './assets/builtin/dock1.xml', part_list = None, ship_name = 'NewShip')")]
-        fn new(file_path: String, part_list: Option<PySR1PartList>, ship_name: Option<String>) -> Self {
-            let mut ship = SR1Ship::from_file(file_path, Some(ship_name.unwrap_or("new ship".to_string()))).unwrap();
-            let part_list = match part_list {
-                Some(part_list) => part_list.data,
-                None => SR1PartList::from_file("./assets/builtin/PartList.xml".to_string()).unwrap(),
-            };
-            ship.parse_part_list_to_part(&part_list);
-            Self { ship, part_list }
+        fn new(file_path: String, part_list: Option<PySR1PartList>, ship_name: Option<String>) -> PyResult<Self> {
+            let ship = SR1Ship::from_file(file_path.clone(), Some(ship_name.unwrap_or("new ship".to_string())));
+            match ship {
+                Some(mut ship) => {
+                    let part_list = match part_list {
+                        Some(part_list) => part_list.data,
+                        None => SR1PartList::from_file("./assets/builtin/PartList.xml".to_string()).unwrap(),
+                    };
+                    ship.parse_part_list_to_part(&part_list);
+                    Ok(Self { ship, part_list })
+                }
+                None => Err(PyValueError::new_err(format!("Parse ship failed! {}", file_path))),
+            }
         }
 
         #[getter]
