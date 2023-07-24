@@ -592,7 +592,12 @@ pub mod ship {
     impl RawShip {
         #[inline]
         pub fn from_file(path: String) -> Option<RawShip> {
-            let ship_file = fs::read_to_string(path).unwrap();
+            let ship_file = fs::read_to_string(path);  // for encoding error
+            if let Err(e) = ship_file {
+                println!("ERROR!\n{:?}\n----------", e);
+                return None;
+            }
+            let ship_file = ship_file.unwrap();
             let ship = from_str(&ship_file);
             match ship {
                 Ok(ship) => Some(ship),
