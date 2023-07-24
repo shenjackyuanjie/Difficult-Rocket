@@ -12,8 +12,8 @@ import logging
 import traceback
 
 from pathlib import Path
-from defusedxml.ElementTree import parse
-from xml.etree.ElementTree import Element, ElementTree
+# from defusedxml.ElementTree import parse
+# from xml.etree.ElementTree import Element, ElementTree
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Tuple
 
 from pyglet.math import Vec4
