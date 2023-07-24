@@ -2,8 +2,67 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.1.3
-  - DR rs: 0.2.17.0
+  - DR game: 0.3.2.0
+  - DR rs: 0.2.20.2
+
+## 20230724 DR rs 0.2.20.2
+
+### Fix
+
+- [#49](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49)
+  - missing field `touchingGround`
+  - SR1 says: `touchingGround` field is NOT Required
+    - make them happy
+    - SR1 说: `touchingGround` 字段也是可选的
+      - 让他们开心
+      - 我就看看我能发多少个 issue
+
+## 20230724 DR rs 0.2.20.1
+
+### Fix
+
+- [#48](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48)
+  - `missing field version`
+  - SR1 says: `version` field is NOT Required
+    - make them happy
+    - SR1 说: `version` 字段也是可选的
+      - 让他们开心
+      - 我谢谢您啊 Jundroo
+      - 我就看看我能发多少个 issue
+
+## 20230724 DR rs 0.2.20.0
+
+### Fix
+
+- [#47](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47)
+  - `editorAngle field is Option<i32>`
+  - SR1 says: `editorAngle` field is Optional
+    - make them happy
+    - SR1 说: `editorAngle` 字段是可选的
+      - 让他们开心
+
+## 20230721 DR rs 0.2.19.0
+
+### Add
+
+- `PySR1Ship`
+  - `as_list`
+
+## 20230721 DR game 0.3.2.0
+
+### BUG Fix
+
+- [#46](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/46)
+  - 渲染偏移 bug
+
+## 20230721 DR rs 0.2.18.0
+
+### Add
+
+- 导出了 export
+  - `PySR1PartData`
+  - `PySaveStatus`
+  - `map_ptype_textures(part_type: str) -> str`
 
 ## 20230721 DR rs 0.2.17.0
 

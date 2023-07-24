@@ -24,6 +24,29 @@ pub mod sr1 {
     pub type IdType = i64;
     pub type ConnectionsType = Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>;
 
+    #[inline]
+    pub fn radians_map_to_degrees(angle: f64) -> f64 {
+        // match angle {
+        //     0.0 => 0.,
+        //     1.570796 => 270.,
+        //     3.141593 => 180.,
+        //     4.712389 => 90.,
+        //     _ => {
+        //         angle.to_degrees()
+        //     }
+        // }
+        #[allow(clippy::approx_constant)]
+        if angle == 1.570796 {
+            270.
+        } else if angle == 3.141593 {
+            180.
+        } else if angle == 4.712389 {
+            90.
+        } else {
+            angle.to_degrees()
+        }
+    }
+
     #[allow(unused)]
     #[inline]
     pub fn map_ptype_textures(ptype: String) -> String {
@@ -447,7 +470,7 @@ pub mod sr1 {
                 id: self.id,
                 x: self.x,
                 y: self.y,
-                editor_angle: self.editor_angle,
+                editor_angle: Some(self.editor_angle),
                 angle: self.angle,
                 angle_v: self.angle_v,
                 flip_x: Some(bool_to_i8(self.flip_x)),
@@ -506,6 +529,8 @@ pub mod sr1 {
             }
             pos_box
         }
+
+        pub fn angle_degrees(&self) -> f64 { radians_map_to_degrees(self.angle) }
     }
 
     #[derive(Debug, Clone)]
@@ -683,8 +708,15 @@ pub mod sr1 {
                 return None;
             }
             // 解析为 RawShip
-            let ship: RawShip = RawShip::from_file(file_name).unwrap();
-            Some(ship.to_sr_ship(ship_name))
+            let ship: Option<RawShip> = RawShip::from_file(file_name);
+            match ship {
+                Some(ship) => {
+                    // 解析为 SR1Ship
+                    let sr_ship = ship.to_sr_ship(ship_name);
+                    Some(sr_ship)
+                }
+                None => None,
+            }
         }
 
         pub fn parse_part_list_to_part(&mut self, part_list: &SR1PartList) {
@@ -945,9 +977,9 @@ pub mod sr1 {
             RawShip {
                 parts: RawParts { parts },
                 connects: connections,
-                version: self.version,
+                version: Some(self.version),
                 lift_off: bool_to_i8(self.lift_off),
-                touch_ground: bool_to_i8(self.touch_ground),
+                touch_ground: Some(bool_to_i8(self.touch_ground)),
                 disconnected,
             }
         }

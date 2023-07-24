@@ -1,3 +1,5 @@
+<div style="text-align: center;">
+
 # Difficult Rocket
 
 中文 | [English](./docs/README-en.md)
@@ -118,6 +120,8 @@ setuptools-rust >= 1.6.0
   - [@rouxiao-you](https://github.com/ruoxiao-you) : 翻译 lang
   - [@Billchyi](https://github.com/Billchyi) : 文档矫正
   - [@MSDNicrosoft](https://github.com/MSDNicrosoft) : 优化代码
+
+</div>
 
 ## 相关链接
 

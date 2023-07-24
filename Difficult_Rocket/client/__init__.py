@@ -264,7 +264,7 @@ class ClientWindow(Window):
     def start_game(self) -> None:
         self.set_icon(pyglet.image.load('assets/textures/icon.png'))
         try:
-            pyglet.app.event_loop.run(1 / self.main_config['runtime']['fps'])
+            pyglet.app.run(1 / self.main_config['runtime']['fps'])
         except KeyboardInterrupt:
             self.logger.warning("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
