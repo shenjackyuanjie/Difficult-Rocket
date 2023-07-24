@@ -5,6 +5,7 @@
 #  -------------------------------
 
 # import math
+import re
 import time
 import random
 import logging
@@ -21,6 +22,7 @@ from pyglet.sprite import Sprite
 # from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Rectangle
+from pyglet.image import Framebuffer, Texture
 # pyglet OpenGL
 from pyglet.gl import glViewport
 
@@ -50,12 +52,19 @@ logger.level = logging.DEBUG
 sr_tr = Tr(lang_path=Path(__file__).parent / 'lang')
 
 
-class SR1ShipRender_Option(Options):  # NOQA
-    # debug option
-    debug_d_pos: bool = False
-    debug_mouse_pos: bool = False
-    debug_mouse_d_pos: bool = False
-    draw_size: Tuple[int, int] = (100, 100)
+class SR1ShipRenderStatus(Options):  # NOQA
+    name = "SR1ShipRenderStatus"
+    # main status
+    draw_done: bool = False
+    draw_call: bool = False
+    update_call: bool = False
+    focus: bool = True
+    moving: bool = False
+
+    # debug status
+    draw_d_pos: bool = False
+    draw_mouse_pos: bool = False
+    draw_mouse_d_pos: bool = False
 
 
 class SR1ShipRender(BaseScreen):
@@ -67,16 +76,16 @@ class SR1ShipRender(BaseScreen):
         self.logger = logger
         logger.info(sr_tr().mod.info.setup.start())
         load_start_time = time.time_ns()
-        self.rendered = False
-        self.focus = True
-        self.need_draw = False
-        self.drawing = False
-        self.need_update_parts = False
-        self.render_option = SR1ShipRender_Option()
+        # status
+        self.status = SR1ShipRenderStatus()
+        
         self.dx = 0
         self.dy = 0
-        self.width = main_window.width
-        self.height = main_window.height
+        self.width = main_window.width - 100
+        self.height = main_window.height - 100
+        self.buffer = Framebuffer()
+        self.render_texture = Texture.create(self.width, self.height)
+        self.buffer.attach_texture(self.render_texture)
 
         self.main_batch = Batch()
         self.part_group = Group(10, parent=main_window.main_group)
@@ -88,10 +97,10 @@ class SR1ShipRender(BaseScreen):
                                  batch=self.main_batch, group=Group(5, parent=self.part_group))
         self.render_d_line = Line(0, 0, 0, 0, width=5, color=(200, 200, 10, 255),
                                   batch=self.main_batch, group=Group(5, parent=self.part_group))
-        self.render_d_line.visible = self.render_option.debug_mouse_d_pos
+        self.render_d_line.visible = self.status.draw_d_pos
         self.render_d_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                     x=main_window.width / 2, y=main_window.height / 2)
-        self.render_d_label.visible = self.render_option.debug_d_pos
+        self.render_d_label.visible = self.status.draw_d_pos
         self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
 
         # Optional data
@@ -115,6 +124,18 @@ class SR1ShipRender(BaseScreen):
         load_end_time = time.time_ns()
         logger.info(sr_tr().mod.info.setup.use_time().format((load_end_time - load_start_time) / 1000000000))
 
+    @property
+    def size(self) -> Tuple[int, int]:
+        """ 渲染器的渲染大小 """
+        return self.width, self.height
+
+    @size.setter
+    def size(self, value: Tuple[int, int]):
+        if not self.width == value[0] or not self.height == value[1]:
+            self.width, self.height = value
+            self.render_texture = Texture.create(self.width, self.height)
+            self.buffer.attach_texture(self.render_texture)
+
     def load_xml(self, file_path: str) -> bool:
         """
         加载 xml 文件
@@ -131,8 +152,9 @@ class SR1ShipRender(BaseScreen):
             logger.info(sr_tr().sr1.ship.xml.load_time().format(
                 (time.time_ns() - start_time) / 1000000000))
             return True
-        except Exception as e:
-            print(e)
+        except Exception:
+            traceback.print_exc()
+            self.logger.error(traceback.format_exc())
             return False
 
     def gen_sprite(self, each_count: int = 100) -> Generator:
@@ -143,7 +165,7 @@ class SR1ShipRender(BaseScreen):
         :return: 生成器
         """
         count = 0
-        self.drawing = True
+        self.status.draw_done = False
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
             cache = self.rust_ship.as_dict()
@@ -226,72 +248,80 @@ class SR1ShipRender(BaseScreen):
         #     if count >= each_count:
         #         count = 0
         #         yield count
-        self.drawing = False
+        self.status.draw_done = True
         raise GeneratorExit
 
     def render_ship(self):
         """
         渲染船
         """
+        self.status.draw_done = False
         logger.info(sr_tr().sr1.ship.ship.load().format(self.ship_name))
         start_time = time.perf_counter_ns()
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
         self.part_line_list = []
-        # self.camera.zoom = 1.0
-        # self.camera.dx = 0
-        # self.camera.dy = 0
+        self.camera.zoom = 1.0
+        self.camera.dx = 0
+        self.camera.dy = 0
         # 调用生成器 减少卡顿
         try:
             self.gen_draw = self.gen_sprite()
-            next(self.gen_draw)
+            if not self.status.draw_done:
+                next(self.gen_draw)
         except (GeneratorExit, StopIteration):
-            self.drawing = False
-        self.need_draw = False
+            self.status.draw_done = True
+        self.status.draw_call = False
         full_mass = 0
         if DR_mod_runtime.use_DR_rust:
             full_mass = self.rust_ship.mass
         logger.info(sr_tr().sr1.ship.ship.load_time().format(
             (time.perf_counter_ns() - start_time) / 1000000000))
         logger.info(sr_tr().sr1.ship.ship.info().format(
-            len(self.rust_ship.as_list()), f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
-        self.rendered = True
+            len(self.rust_ship.as_list()),
+            f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
 
     def draw_batch(self, window: "ClientWindow"):
-        if self.rendered:
+        if self.status.draw_done:
             self.render_d_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
             self.render_d_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
                     self.window_pointer.height / 2) + 10, 0  # 0 for z
             self.render_d_line.x2 = self.camera.dx
             self.render_d_line.y2 = self.camera.dy
+        self.buffer.bind()
+        window.clear()
         with self.camera:
             # glViewport(int(self.camera.dx), int(self.camera.dy), window.width // 2, window.height // 2)
             self.main_batch.draw()
             # glViewport(0, 0, window.width, window.height)
+        self.buffer.unbind()
+        self.render_texture.blit(x=0, y=0, z=0, width=self.width, height=self.height)
 
     def on_draw(self, window: "ClientWindow"):
-        if self.need_draw:
+        if self.status.draw_call:
             self.render_ship()
 
-        if self.drawing:
+        if not self.status.draw_done:
             try:
                 next(self.gen_draw)
             except (GeneratorExit, StopIteration):
-                self.drawing = False
+                self.status.draw_done = True
                 self.logger.info(sr_tr().sr1.ship.ship.render.done())
+            except TypeError:
+                pass
 
         self.debug_label.draw()
 
     def on_resize(self, width: int, height: int, window: "ClientWindow"):
         self.debug_label.y = height - 100
-        if not self.rendered:
+        if not self.status.draw_done:
             return
         self.render_d_line.x2 = width // 2
         self.render_d_line.y2 = height // 2
-        self.render_option.draw_size = (width, height)
+        self.size = width - 100, height - 100
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: "ClientWindow"):
-        if not self.rendered:
+        if not self.status.draw_done:
             return
         mouse_dx = x - (window.width / 2)
         mouse_dy = y - (window.height / 2)
@@ -325,15 +355,16 @@ class SR1ShipRender(BaseScreen):
                 self.camera.dy = 0
                 self.window_pointer.view = Vec4()
             else:
-                self.need_draw = True
+                self.status.draw_call = True
             print('应该渲染飞船的')
+
         elif command.find('debug'):
             if command.find('delta'):
                 self.render_d_line.visible = not self.render_d_line.visible
-                self.render_option.debug_mouse_d_pos = self.render_d_line.visible
-                self.logger.info(f'sr1 mouse {self.render_option.debug_mouse_d_pos}')
+                self.status.draw_mouse_d_pos = self.render_d_line.visible
+                self.logger.info(f'sr1 mouse {self.status.draw_mouse_d_pos}')
             elif command.find('ship'):
-                if self.rendered:
+                if self.status.draw_done:
                     for index, sprite in self.parts_sprite.items():
                         sprite.visible = not sprite.visible
 
@@ -345,8 +376,7 @@ class SR1ShipRender(BaseScreen):
                 :param window:
                 :return:
                 """
-                from pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, \
-                    glReadPixels
+                from pyglet.gl import GLubyte, GL_RGBA, GL_UNSIGNED_BYTE, glReadPixels
                 import pyglet
                 format_str = "RGBA"
                 buf = (GLubyte * (len(format_str) * window.width * window.height))()
@@ -356,7 +386,7 @@ class SR1ShipRender(BaseScreen):
             image_data = screenshot(self.window_pointer)
             image_data.save('test.png')
         elif command.find('gen_img'):
-            if not self.rendered:
+            if not self.status.draw_done:
                 return
             if not DR_mod_runtime.use_DR_rust:
                 # 这个功能依赖于 DR rs (简称,我懒得在Python端实现)
@@ -376,7 +406,8 @@ class SR1ShipRender(BaseScreen):
             for part, sprites in self.parts_sprite.items():
                 for index, sprite in enumerate(sprites):
                     sprite_img = sprite.image
-                    print(f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} {part_data[part][index][1].y * 60}")
+                    print(
+                        f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} {part_data[part][index][1].y * 60}")
                     img_data = sprite_img.get_image_data()
                     fmt = img_data.format
                     if fmt != 'RGB':
@@ -384,23 +415,24 @@ class SR1ShipRender(BaseScreen):
                     pitch = -(img_data.width * len(fmt))
                     pil_image = Image.frombytes(fmt, (img_data.width, img_data.height), img_data.get_data(fmt, pitch))
 
-                    pil_image = pil_image.rotate(-SR1Rotation.get_rotation(part_data[part][index][1].angle), expand=True)
+                    pil_image = pil_image.rotate(-SR1Rotation.get_rotation(part_data[part][index][1].angle),
+                                                 expand=True)
 
                     if part_data[part][index][1].flip_y:
                         pil_image.transpose(Image.FLIP_TOP_BOTTOM)
                     if part_data[part][index][1].flip_x:
                         pil_image.transpose(Image.FLIP_LEFT_RIGHT)
-                    pil_image.show()
 
                     img.paste(pil_image, (
                         int(part_data[part][index][1].x * 60 + img_center[0]),
                         int(-part_data[part][index][1].y * 60 + img_center[1])))
+
             img.show("???")
             img.save(f'test{time.time()}.png', 'PNG')
 
         elif command.find('test'):
             if command.find('save'):
-                if not self.rendered:
+                if not self.status.draw_done:
                     return
                 if not DR_mod_runtime.use_DR_rust:
                     return
@@ -410,21 +442,35 @@ class SR1ShipRender(BaseScreen):
                 glViewport(0, 0, 1000, 1000)
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
-        if not self.focus:
+        if not self.status.focus:
             return
         self.camera.dx += dx
         self.camera.dy += dy
-        self.need_update_parts = True
-        # self.update_parts()
+        self.status.update_call = True
 
     def on_file_drop(self, x: int, y: int, paths: List[str], window: "ClientWindow"):
-        for path in paths:
-            if self.load_xml(path):  # 加载成功一个就停下
-                break
-        self.render_ship()
+        if len(paths) > 1:
+            for path in paths:
+                try:
+                    self.load_xml(path)
+                except Exception:
+                    traceback.print_exc()
+        else:
+            if Path(paths[0]).is_dir():
+                for path in Path(paths[0]).glob('*.xml'):
+                    try:
+                        self.load_xml(str(path))
+                    except ValueError:
+                        traceback.print_exc()
+            if self.load_xml(paths[0]):
+                self.render_ship()
+        # for path in paths:
+        #     if self.load_xml(path):  # 加载成功一个就停下
+        #         break
+        # self.render_ship()
 
 
 if __name__ == '__main__':
     from objprint import op
 
-    op(SR1ShipRender_Option())
+    op(SR1ShipRenderStatus())
