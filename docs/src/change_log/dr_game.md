@@ -3,7 +3,19 @@
 
 - 最新版本号
   - DR game: 0.3.2.0
-  - DR rs: 0.2.20.1
+  - DR rs: 0.2.20.2
+
+## 20230724 DR rs 0.2.20.2
+
+### Fix
+
+- [#49](https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49)
+  - missing field `touchingGround`
+  - SR1 says: `touchingGround` field is NOT Required
+    - make them happy
+    - SR1 说: `touchingGround` 字段也是可选的
+      - 让他们开心
+      - 我就看看我能发多少个 issue
 
 ## 20230724 DR rs 0.2.20.1
 

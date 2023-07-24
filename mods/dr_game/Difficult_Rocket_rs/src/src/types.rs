@@ -979,7 +979,7 @@ pub mod sr1 {
                 connects: connections,
                 version: Some(self.version),
                 lift_off: bool_to_i8(self.lift_off),
-                touch_ground: bool_to_i8(self.touch_ground),
+                touch_ground: Some(bool_to_i8(self.touch_ground)),
                 disconnected,
             }
         }

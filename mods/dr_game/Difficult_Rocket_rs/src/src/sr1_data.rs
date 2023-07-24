@@ -377,7 +377,7 @@ pub mod ship {
 
     use super::part_list::SR1PartTypeEnum;
 
-    use crate::types::sr1::{i8_to_bool, SR1PartDataTrait, SR1PartTypeAttr, SR1ShipTrait};
+    use crate::types::sr1::{i8_to_bool, option_i8_to_option_bool, SR1PartDataTrait, SR1PartTypeAttr, SR1ShipTrait};
     use crate::types::sr1::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -393,7 +393,9 @@ pub mod ship {
         #[serde(rename = "liftedOff")]
         pub lift_off: i8,
         #[serde(rename = "touchingGround")]
-        pub touch_ground: i8,
+        pub touch_ground: Option<i8>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49
+        // SR1 says it's optional, let them happy
+        // NOT always 0
         #[serde(rename = "DisconnectedParts")]
         pub disconnected: Option<DisconnectedParts>,
     }
@@ -577,7 +579,7 @@ pub mod ship {
                 parts,
                 connections,
                 lift_off: i8_to_bool(self.lift_off.to_owned()),
-                touch_ground: i8_to_bool(self.touch_ground.to_owned()),
+                touch_ground: option_i8_to_option_bool(self.touch_ground.to_owned()).unwrap_or(true),
                 disconnected,
             }
         }
