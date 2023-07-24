@@ -470,7 +470,7 @@ pub mod sr1 {
                 id: self.id,
                 x: self.x,
                 y: self.y,
-                editor_angle: self.editor_angle,
+                editor_angle: Some(self.editor_angle),
                 angle: self.angle,
                 angle_v: self.angle_v,
                 flip_x: Some(bool_to_i8(self.flip_x)),
@@ -708,8 +708,15 @@ pub mod sr1 {
                 return None;
             }
             // 解析为 RawShip
-            let ship: RawShip = RawShip::from_file(file_name).unwrap();
-            Some(ship.to_sr_ship(ship_name))
+            let ship: Option<RawShip> = RawShip::from_file(file_name);
+            match ship {
+                Some(ship) => {
+                    // 解析为 SR1Ship
+                    let sr_ship = ship.to_sr_ship(ship_name);
+                    Some(sr_ship)
+                }
+                None => None,
+            }
         }
 
         pub fn parse_part_list_to_part(&mut self, part_list: &SR1PartList) {

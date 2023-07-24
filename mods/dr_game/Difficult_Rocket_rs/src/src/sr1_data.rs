@@ -422,7 +422,7 @@ pub mod ship {
         pub x: f64,
         pub y: f64,
         #[serde(rename = "editorAngle")]
-        pub editor_angle: i32,
+        pub editor_angle: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47
         pub angle: f64,
         #[serde(rename = "angleV")]
         pub angle_v: f64,
@@ -515,12 +515,6 @@ pub mod ship {
         pub child_part: IdType,
     }
 
-    impl Part {
-        /// 根据 Part 的原始数据猜测 Part 的类型
-        /// jundroo 我日你先人
-        fn guess_part_type(&self) -> SR1PartTypeEnum { todo!() }
-    }
-
     impl SR1PartDataTrait for Part {
         fn to_sr_part_data(&self) -> SR1PartData {
             let attr = SR1PartDataAttr::from_raw(&self, None, true);
@@ -534,7 +528,7 @@ pub mod ship {
                 angle_v: self.angle_v.to_owned(),
                 flip_x: i8_to_bool(self.flip_x.unwrap_or(0_i8)),
                 flip_y: i8_to_bool(self.flip_y.unwrap_or(0_i8)),
-                editor_angle: self.editor_angle.to_owned(),
+                editor_angle: self.editor_angle.unwrap_or(0_i32),
                 part_type,
                 part_type_id: self.part_type_id.clone(),
                 active: i8_to_bool(self.activated.unwrap_or(0_i8)),
