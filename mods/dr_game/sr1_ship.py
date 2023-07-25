@@ -4,16 +4,12 @@
 #  All rights reserved
 #  -------------------------------
 
-# import math
-import re
 import time
 import random
 import logging
 import traceback
 
 from pathlib import Path
-# from defusedxml.ElementTree import parse
-# from xml.etree.ElementTree import Element, ElementTree
 from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Tuple
 
 from pyglet.math import Vec4
@@ -23,8 +19,6 @@ from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Rectangle
 from pyglet.image import Framebuffer, Texture
-# pyglet OpenGL
-from pyglet.gl import glViewport
 
 from . import DR_mod_runtime
 
@@ -35,7 +29,7 @@ from Difficult_Rocket.api.camera import CenterCamera
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
-from .types import SR1Textures, SR1PartTexture, SR1PartData, SR1Rotation, xml_bool
+from .types import SR1Textures, SR1Rotation
 
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
@@ -291,11 +285,9 @@ class SR1ShipRender(BaseScreen):
         self.buffer.bind()
         window.clear()
         with self.camera:
-            # glViewport(int(self.camera.dx), int(self.camera.dy), window.width // 2, window.height // 2)
             self.main_batch.draw()
-            # glViewport(0, 0, window.width, window.height)
         self.buffer.unbind()
-        self.render_texture.blit(x=0, y=0, z=0, width=self.width, height=self.height)
+        self.render_texture.blit(x=self.dx, y=self.dy, z=0, width=self.width, height=self.height)
 
     def on_draw(self, window: "ClientWindow"):
         if self.status.draw_call:
@@ -318,32 +310,42 @@ class SR1ShipRender(BaseScreen):
             return
         self.render_d_line.x2 = width // 2
         self.render_d_line.y2 = height // 2
-        self.size = width - 100, height - 100
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: "ClientWindow"):
         if not self.status.draw_done:
             return
-        mouse_dx = x - (window.width / 2)
-        mouse_dy = y - (window.height / 2)
-        # 鼠标缩放位置相对于屏幕中心的位置
-        mouse_dx_d = mouse_dx - self.camera.dx
-        mouse_dy_d = mouse_dy - self.camera.dy
-        # 鼠标相对偏移量的偏移量
-        if scroll_y == 0:
-            zoom_d = 1
-        else:
-            zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
-        # 缩放的变换量
-        if not (self.camera.zoom == 10 and scroll_y > 0):
-            if self.camera.zoom * zoom_d >= 10:
-                zoom_d = 10 / self.camera.zoom
-                self.camera.zoom = 10
+        if self.status.focus:
+            mouse_dx = x - (window.width / 2)
+            mouse_dy = y - (window.height / 2)
+            # 鼠标缩放位置相对于屏幕中心的位置
+            mouse_dx_d = mouse_dx - self.camera.dx
+            mouse_dy_d = mouse_dy - self.camera.dy
+            # 鼠标相对偏移量的偏移量
+            if scroll_y == 0:
+                zoom_d = 1
             else:
-                self.camera.zoom *= zoom_d
-            mouse_dx_d *= (1 - zoom_d)
-            mouse_dy_d *= (1 - zoom_d)
-            self.camera.dx += mouse_dx_d
-            self.camera.dy += mouse_dy_d
+                zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
+            # 缩放的变换量
+            if not (self.camera.zoom == 10 and scroll_y > 0):
+                if self.camera.zoom * zoom_d >= 10:
+                    zoom_d = 10 / self.camera.zoom
+                    self.camera.zoom = 10
+                else:
+                    self.camera.zoom *= zoom_d
+                mouse_dx_d *= (1 - zoom_d)
+                mouse_dy_d *= (1 - zoom_d)
+                self.camera.dx += mouse_dx_d
+                self.camera.dy += mouse_dy_d
+        elif self.status.moving:
+            # 如果是在移动整体渲染位置
+            size_x, size_y = self.size
+            size_x += round(scroll_y) * 10
+            size_y += round(scroll_y) * 10
+            if size_x < 10:
+                size_x = 10
+            if size_y < 10:
+                size_y = 10
+            self.size = size_x, size_y
 
     def on_command(self, command: CommandText, window: "ClientWindow"):
         """ 解析命令 """
@@ -427,7 +429,6 @@ class SR1ShipRender(BaseScreen):
                         int(part_data[part][index][1].x * 60 + img_center[0]),
                         int(-part_data[part][index][1].y * 60 + img_center[1])))
 
-            img.show("???")
             img.save(f'test{time.time()}.png', 'PNG')
 
         elif command.find('test'):
@@ -442,11 +443,14 @@ class SR1ShipRender(BaseScreen):
                 glViewport(0, 0, 1000, 1000)
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
-        if not self.status.focus:
-            return
-        self.camera.dx += dx
-        self.camera.dy += dy
-        self.status.update_call = True
+        if self.status.focus:
+            self.camera.dx += dx
+            self.camera.dy += dy
+            self.status.update_call = True
+        elif self.status.moving:
+            # 如果是在移动整体渲染位置
+            self.dx += dx
+            self.dy += dy
 
     def on_file_drop(self, x: int, y: int, paths: List[str], window: "ClientWindow"):
         if len(paths) > 1:

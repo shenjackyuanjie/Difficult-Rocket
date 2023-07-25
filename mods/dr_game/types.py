@@ -15,22 +15,6 @@ from pyglet.image import load, AbstractImage
 from Difficult_Rocket.utils.options import Options
 
 
-@dataclass
-class SR1PartData:
-    x: float
-    y: float
-    id: int
-    p_type: str
-    active: bool
-    angle: float
-    angle_v: float
-    editor_angle: int
-    flip_x: bool
-    flip_y: bool
-    explode: bool
-    textures: Optional[str] = None
-
-
 class SR1Textures(Options):
     """ 存储 sr1 的材质 img """
     def load_file(self, **kwargs):
@@ -147,13 +131,3 @@ class SR1Rotation(Options):
             return cls.radian_angle_map[radian]
         else:
             return (radian / math.pi) * 180
-
-
-def xml_bool(bool_like: Union[str, int, bool, None]) -> bool:
-    if bool_like is None:
-        return False
-    if isinstance(bool_like, bool):
-        return bool_like
-    if isinstance(bool_like, int):
-        return bool_like != 0
-    return False if bool_like == '0' else bool_like.lower() != 'false'
