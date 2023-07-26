@@ -439,8 +439,6 @@ class SR1ShipRender(BaseScreen):
                     return
                 logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
                 self.rust_ship.save('./test-save.xml')
-            elif command.find('render'):
-                glViewport(0, 0, 1000, 1000)
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if self.status.focus:
