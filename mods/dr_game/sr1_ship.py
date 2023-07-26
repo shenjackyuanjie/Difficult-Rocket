@@ -178,25 +178,23 @@ class SR1ShipRender(BaseScreen):
 
                     batch.append(part_sprite)
                 line_box_group = Group(6, parent=self.part_group)
-                part_debug_box = self.rust_ship.get_part_box(p_id)
-                if part_debug_box:
+                part_box = self.rust_ship.get_part_box(p_id)
+                if part_box:
                     # 线框
                     part_line_box = []
                     width = 4
                     color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255),
                              random.randrange(100, 200))
-                    part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[0][1] * 30,
-                                              x2=part_debug_box[0][0] * 30, y2=part_debug_box[1][1] * 30,
+                    (x, y), (x2, y2) = part_box
+                    part_line_box.append(Line(x=x * 30, y=y * 30, x2=x * 30, y2=y2 * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
-                    part_line_box.append(Line(x=part_debug_box[0][0] * 30, y=part_debug_box[1][1] * 30,
-                                              x2=part_debug_box[1][0] * 30, y2=part_debug_box[1][1] * 30,
+                    part_line_box.append(Line(x=x * 30, y=y2 * 30, x2=x2 * 30, y2=y2 * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
-                    part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[1][1] * 30,
-                                              x2=part_debug_box[1][0] * 30, y2=part_debug_box[0][1] * 30,
+                    part_line_box.append(Line(x=x2 * 30, y=y2 * 30, x2=x2 * 30, y2=y * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
-                    part_line_box.append(Line(x=part_debug_box[1][0] * 30, y=part_debug_box[0][1] * 30,
-                                              x2=part_debug_box[0][0] * 30, y2=part_debug_box[0][1] * 30,
+                    part_line_box.append(Line(x=x2 * 30, y=y * 30, x2=x * 30, y2=y * 30,
                                               batch=self.main_batch, width=width, color=color, group=line_box_group))
+                    # 直接用循环得了
                     self.part_line_box[p_id] = part_line_box
                 self.parts_sprite[p_id] = batch
                 count += 1
