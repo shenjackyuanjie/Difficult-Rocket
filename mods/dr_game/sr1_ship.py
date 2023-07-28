@@ -72,7 +72,7 @@ class SR1ShipRender(BaseScreen):
         load_start_time = time.time_ns()
         # status
         self.status = SR1ShipRenderStatus()
-        
+
         self.dx = 0
         self.dy = 0
         self.width = main_window.width - 100
