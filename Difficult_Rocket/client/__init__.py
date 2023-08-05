@@ -15,7 +15,7 @@ import traceback
 
 from pathlib import Path
 from decimal import Decimal
-from typing import Callable, Dict, List, TYPE_CHECKING, Optional, Type
+from typing import Callable, Dict, List, TYPE_CHECKING, Type
 
 # third function
 import rtoml
@@ -71,6 +71,9 @@ class ClientOption(Options):
 
 
 class Client:
+    """
+    客户端
+    """
     def __init__(self, game: "Game", net_mode='local'):
         start_time = time.time_ns()
         # logging
@@ -95,6 +98,9 @@ class Client:
         self.logger.debug(tr().client.setup.use_time_ns().format(self.use_time))
 
     def start(self):
+        """
+        启动客户端
+        """
         DR_runtime.running = True
         self.window.start_game()  # 游戏启动
         # TODO 写一下服务端启动相关，还是需要服务端啊
@@ -104,6 +110,11 @@ class Client:
 
 
 def pyglet_load_fonts_folder(folder) -> None:
+    """
+    递归加载字体文件夹
+    :param folder:
+    :return:
+    """
     font_path = Path(folder)
     if not font_path.exists():
         font_path.mkdir(parents=True)
