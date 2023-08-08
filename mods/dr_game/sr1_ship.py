@@ -169,7 +169,8 @@ class SR1ShipRender(BaseScreen):
                 part_group = Group(2, parent=self.part_group)
                 batch = []
                 for p_type, p_data in parts:
-                    part_sprite = Sprite(img=self.textures.get_texture(map_ptype_textures(p_data.part_type_id)),
+                    sprite_name = self.part_list_rs.get_part_type(p_data.part_type_id).sprite
+                    part_sprite = Sprite(img=self.textures.get_texture(sprite_name),
                                          x=p_data.x * 60, y=p_data.y * 60, z=random.random(),
                                          batch=self.main_batch, group=part_group)
                     part_sprite.rotation = p_data.angle_r

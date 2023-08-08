@@ -76,6 +76,9 @@ pub mod data {
 
         #[getter]
         fn get_hidden(&self) -> bool { self.data.hidden }
+
+        #[getter]
+        fn get_type(&self) -> String { self.data.p_type.into() }
     }
 
     impl PySR1PartType {

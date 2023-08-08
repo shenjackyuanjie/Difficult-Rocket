@@ -3,7 +3,20 @@
 
 - 最新版本号
   - DR game: 0.3.2.0
-  - DR rs: 0.2.20.2
+  - DR rs: 0.2.21.0
+
+## 20230808 DR rs 0.2.21.0
+
+### Add
+
+- 在 `__init__.py` 里添加了
+  - `sprite`
+  - `type`
+  - 的导出 (实际上就是 typing)
+- `SR1PartType_rs`
+  - 添加了 `type` getter
+
+摸鱼真开心
 
 ## 20230724 DR rs 0.2.20.2
 

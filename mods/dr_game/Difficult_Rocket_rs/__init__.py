@@ -61,6 +61,10 @@ if TYPE_CHECKING:
             """ 零件的描述 """
 
         @property
+        def sprite(self) -> str:
+            """ 零件的贴图 """
+
+        @property
         def mass(self) -> float:
             """ 零件的质量 """
 
@@ -79,6 +83,10 @@ if TYPE_CHECKING:
         @property
         def hidden(self) -> bool:
             """ 零件是否隐藏 """
+
+        @property
+        def type(self):
+            """ 零件的类型 """
 
 
     class SR1PartList_rs:  # NOQA
