@@ -3,10 +3,13 @@
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-
 # Huge thanks to pyglet developers
 
 from typing import Tuple, Optional
+
+from pyglet.gl import gl
+from pyglet.math import Mat4, Vec3
+from pyglet.graphics import Group
 
 
 class Camera:
@@ -24,8 +27,9 @@ class Camera:
     >>>     camera.end()
     
     """
-    def __init__(self, 
-                 window, 
+
+    def __init__(self,
+                 window,
                  zoom: Optional[float] = 1.0,
                  dx: Optional[float] = 1.0,
                  dy: Optional[float] = 1.0,
@@ -68,11 +72,11 @@ class Camera:
 
     def end(self) -> None:
         self.window.view = self._stored_view
-    
+
     def __enter__(self):
         self.begin()
         return self
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.end()
 
@@ -91,8 +95,8 @@ class CenterCamera(Camera):
     >>>     camera.begin()
     >>>     window.clear()
     >>>     camera.end()
-    
     """
+
     def begin(self) -> None:
         view = self.window.view
         self._stored_view = view
@@ -100,10 +104,77 @@ class CenterCamera(Camera):
         y = self.window.height / 2.0 / self.zoom + (self.dy / self.zoom)
 
         view_matrix = view.translate((x * self.zoom, y * self.zoom, 0))
+        # print(f"camera translation {view_matrix}")
         view_matrix = view_matrix.scale((self.zoom, self.zoom, 1))
 
         self.window.view = view_matrix
 
     def end(self) -> None:
         self.window.view = self._stored_view
-    
+
+
+class GroupCamera(Group):
+    """
+    A camera by group
+    can be used by just added to your widget
+    """
+
+    def __init__(self,
+                 window,
+                 order: int = 0,
+                 parent: Optional[Group] = None,
+                 view_x: Optional[int] = 0,
+                 view_y: Optional[int] = 0,
+                 zoom: Optional[float] = 1.0, ):
+        super().__init__(order=order, parent=parent)
+        self._window = window
+        self._previous_view = None
+
+        self._view_x = view_x
+        self._view_y = view_y
+        self._zoom = zoom
+        self._zoom_x = self._zoom
+        self._zoom_y = self._zoom
+
+    @property
+    def view_x(self) -> int:
+        return self._view_x
+
+    @view_x.setter
+    def view_x(self, value: int):
+        self._view_x = value
+
+    @property
+    def view_y(self) -> int:
+        return self._view_y
+
+    @view_y.setter
+    def view_y(self, value: int):
+        self._view_y = value
+
+    @property
+    def zoom(self) -> float:
+        return self._zoom
+
+    @zoom.setter
+    def zoom(self, value: float):
+        self._zoom = value
+
+    def set_state(self):
+        self._previous_view = self._window.view
+        # print(self._previous_view)
+
+        x = self._window.width / 2.0 / self._zoom_x + (self._view_x / self._zoom_x)
+        y = self._window.height / 2.0 / self._zoom_y + (self._view_y / self._zoom_y)
+
+        # view = Mat4.from_translation(Vec3(self._view_x * x, self._view_y * y, 0))
+        view = Mat4.from_translation(Vec3(self._view_x, self._view_y, 0))
+        # print(f"group translation {view}")
+        if self._zoom == 1.0:
+            self._window.view = view
+        else:
+            view = view.scale(Vec3(self._zoom, self._zoom, 1))
+            self._window.view = view
+
+    def unset_state(self):
+        self._window.view = self._previous_view

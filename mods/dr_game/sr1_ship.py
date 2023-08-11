@@ -25,7 +25,7 @@ from . import DR_mod_runtime
 # Difficult Rocket
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils.translate import Tr
-from Difficult_Rocket.api.camera import CenterCamera
+from Difficult_Rocket.api.camera import CenterCamera, GroupCamera
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
@@ -38,8 +38,7 @@ if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import (SR1PartList_rs,
                                       SR1Ship_rs,
                                       SR1PartData_rs,
-                                      SR1PartType_rs,
-                                      map_ptype_textures)
+                                      SR1PartType_rs)
 
 logger = logging.getLogger('client.dr_game_sr1_ship')
 logger.level = logging.DEBUG
@@ -82,6 +81,8 @@ class SR1ShipRender(BaseScreen):
         self.buffer.attach_texture(self.render_texture)
 
         self.main_batch = Batch()
+        # self.group_camera = GroupCamera(window=main_window, order=10, parent=main_window.main_group)
+        # self.part_group = Group(0, parent=self.group_camera)
         self.part_group = Group(10, parent=main_window.main_group)
 
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
@@ -163,10 +164,11 @@ class SR1ShipRender(BaseScreen):
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
             cache = self.rust_ship.as_dict()
+            part_group = Group(2, parent=self.part_group)
+            line_box_group = Group(6, parent=self.part_group)
             for p_id, parts in cache.items():
                 p_id: int
                 parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
-                part_group = Group(2, parent=self.part_group)
                 batch = []
                 for p_type, p_data in parts:
                     sprite_name = self.part_list_rs.get_part_type(p_data.part_type_id).sprite
@@ -178,7 +180,6 @@ class SR1ShipRender(BaseScreen):
                     part_sprite.scale_y = -1 if p_data.flip_y else 1
 
                     batch.append(part_sprite)
-                line_box_group = Group(6, parent=self.part_group)
                 part_box = self.rust_ship.get_part_box(p_id)
                 if part_box:
                     # 线框
@@ -285,9 +286,11 @@ class SR1ShipRender(BaseScreen):
         window.clear()
         with self.camera:
             self.main_batch.draw()
+        # self.main_batch.draw()  # use group camera, no need to with
         self.buffer.unbind()
         self.render_texture.blit(x=self.dx, y=self.dy, z=0, width=self.width, height=self.height)
 
+    # def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
     def on_draw(self, window: "ClientWindow"):
         if self.status.draw_call:
             self.render_ship()
@@ -443,6 +446,8 @@ class SR1ShipRender(BaseScreen):
         if self.status.focus:
             self.camera.dx += dx
             self.camera.dy += dy
+            self.group_camera.view_x += dx
+            self.group_camera.view_y += dy
             self.status.update_call = True
         elif self.status.moving:
             # 如果是在移动整体渲染位置
