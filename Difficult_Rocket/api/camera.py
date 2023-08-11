@@ -6,10 +6,12 @@
 
 from Difficult_Rocket.utils.camera import (Camera,
                                            CenterCamera,
-                                           GroupCamera)
+                                           GroupCamera,
+                                           CenterGroupCamera)
 
 __all__ = [
     'Camera',
     'CenterCamera',
-    'GroupCamera'
+    'GroupCamera',
+    'CenterGroupCamera'
 ]

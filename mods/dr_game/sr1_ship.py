@@ -10,26 +10,25 @@ import logging
 import traceback
 
 from pathlib import Path
-from typing import List, TYPE_CHECKING, Union, Dict, Optional, Generator, Tuple
+from typing import List, TYPE_CHECKING, Dict, Optional, Generator, Tuple
 
 from pyglet.math import Vec4
 from pyglet.text import Label
 from pyglet.sprite import Sprite
-# from pyglet.image import Texture
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Rectangle
 from pyglet.image import Framebuffer, Texture
 
 from . import DR_mod_runtime
+from .types import SR1Textures, SR1Rotation
 
 # Difficult Rocket
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils.translate import Tr
-from Difficult_Rocket.api.camera import CenterCamera, GroupCamera
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
-from .types import SR1Textures, SR1Rotation
+from Difficult_Rocket.api.camera import CenterGroupCamera
 
 if TYPE_CHECKING:
     from Difficult_Rocket.client import ClientWindow
@@ -81,9 +80,12 @@ class SR1ShipRender(BaseScreen):
         self.buffer.attach_texture(self.render_texture)
 
         self.main_batch = Batch()
-        # self.group_camera = GroupCamera(window=main_window, order=10, parent=main_window.main_group)
-        # self.part_group = Group(0, parent=self.group_camera)
-        self.part_group = Group(10, parent=main_window.main_group)
+        self.group_camera = CenterGroupCamera(window=main_window,
+                                              order=10,
+                                              parent=main_window.main_group,
+                                              min_zoom=(1 / 2) ** 10,
+                                              max_zoom=10)
+        self.part_group = Group(0, parent=self.group_camera)
 
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
                                  text='SR1 render!', font_name=Fonts.微软等宽无线,
@@ -96,7 +98,6 @@ class SR1ShipRender(BaseScreen):
         self.render_d_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                     x=main_window.width / 2, y=main_window.height / 2)
         self.render_d_label.visible = self.status.draw_d_pos
-        self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
 
         # Optional data
         self.textures: SR1Textures = SR1Textures()
@@ -255,9 +256,7 @@ class SR1ShipRender(BaseScreen):
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
         self.part_line_list = []
-        self.camera.zoom = 1.0
-        self.camera.dx = 0
-        self.camera.dy = 0
+        self.group_camera.reset()
         # 调用生成器 减少卡顿
         try:
             self.gen_draw = self.gen_sprite()
@@ -277,16 +276,14 @@ class SR1ShipRender(BaseScreen):
 
     def draw_batch(self, window: "ClientWindow"):
         if self.status.draw_done:
-            self.render_d_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
-            self.render_d_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
+            self.render_d_label.text = f'x: {self.group_camera.view_x} y: {self.group_camera.view_y}'
+            self.render_d_label.position = self.group_camera.view_x + (self.window_pointer.width / 2), self.group_camera.view_y + (
                     self.window_pointer.height / 2) + 10, 0  # 0 for z
-            self.render_d_line.x2 = self.camera.dx
-            self.render_d_line.y2 = self.camera.dy
+            self.render_d_line.x2 = self.group_camera.view_x
+            self.render_d_line.y2 = self.group_camera.view_y
         self.buffer.bind()
         window.clear()
-        with self.camera:
-            self.main_batch.draw()
-        # self.main_batch.draw()  # use group camera, no need to with
+        self.main_batch.draw()  # use group camera, no need to with
         self.buffer.unbind()
         self.render_texture.blit(x=self.dx, y=self.dy, z=0, width=self.width, height=self.height)
 
@@ -320,24 +317,24 @@ class SR1ShipRender(BaseScreen):
             mouse_dx = x - (window.width / 2)
             mouse_dy = y - (window.height / 2)
             # 鼠标缩放位置相对于屏幕中心的位置
-            mouse_dx_d = mouse_dx - self.camera.dx
-            mouse_dy_d = mouse_dy - self.camera.dy
+            mouse_dx_d = mouse_dx - self.group_camera.view_x
+            mouse_dy_d = mouse_dy - self.group_camera.view_y
             # 鼠标相对偏移量的偏移量
             if scroll_y == 0:
                 zoom_d = 1
             else:
                 zoom_d = ((2 ** scroll_y) - 1) * 0.5 + 1
             # 缩放的变换量
-            if not (self.camera.zoom == 10 and scroll_y > 0):
-                if self.camera.zoom * zoom_d >= 10:
-                    zoom_d = 10 / self.camera.zoom
-                    self.camera.zoom = 10
+            if not (self.group_camera.zoom == 10 and scroll_y > 0):
+                if self.group_camera.zoom * zoom_d >= 10:
+                    zoom_d = 10 / self.group_camera.zoom
+                    self.group_camera.zoom = 10
                 else:
-                    self.camera.zoom *= zoom_d
+                    self.group_camera.zoom *= zoom_d
                 mouse_dx_d *= (1 - zoom_d)
                 mouse_dy_d *= (1 - zoom_d)
-                self.camera.dx += mouse_dx_d
-                self.camera.dy += mouse_dy_d
+                self.group_camera.view_x += mouse_dx_d
+                self.group_camera.view_y += mouse_dy_d
         elif self.status.moving:
             # 如果是在移动整体渲染位置
             size_x, size_y = self.size
@@ -354,9 +351,7 @@ class SR1ShipRender(BaseScreen):
         self.logger.info(f'command: {command}')
         if command.find('render'):
             if command.find('reset'):
-                self.camera.zoom = 1
-                self.camera.dx = 0
-                self.camera.dy = 0
+                self.group_camera.reset()
                 self.window_pointer.view = Vec4()
             else:
                 self.status.draw_call = True
@@ -444,8 +439,6 @@ class SR1ShipRender(BaseScreen):
 
     def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
         if self.status.focus:
-            self.camera.dx += dx
-            self.camera.dy += dy
             self.group_camera.view_x += dx
             self.group_camera.view_y += dy
             self.status.update_call = True

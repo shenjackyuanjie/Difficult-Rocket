@@ -2,7 +2,30 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.6.0
+  - DR sdk: 0.8.7.0
+  - DR api: 0.1.1.0
+
+## DR sdk 0.8.7.0
+
+### Add
+
+- 添加了 `Difficult_Rocket.utils.camera.GroupCamera`
+  - 和 `Difficult_Rocket.utils.camera.CenterGroupCamera`
+  - 实际上就是使用 `pyglet.graphics.Group` 来实现的 `Camera`
+  - 具有相同的功能
+  - 顺便同样在 `api.camera` 里添加了导出
+    - 这次我一定不会再忘记导出了
+  - Added `Difficult_Rocket.utils.camera.GroupCamera`
+  - And `Difficult_Rocket.utils.camera.CenterGroupCamera`
+  - Actually, it is implemented `Camera` using `pyglet.graphics.Group`
+  - Has the same function
+  - By the way, the export was also added in `api.camera`
+    - This time I will never forget to export it again
+- 为所有 `xxCamera` 添加了
+  - `reset` 方法
+  - 用于一键重置缩放+平移
+  - Added `reset` method for all `xxCamera`
+    - Used to reset zoom + translation with one click
 
 ## DR sdk 0.8.6.1
 
