@@ -80,7 +80,11 @@ class SR1ShipRender(BaseScreen):
         self.buffer.attach_texture(self.render_texture)
 
         self.main_batch = Batch()
-        self.group_camera = CenterGroupCamera(window=main_window, order=10, parent=main_window.main_group)
+        self.group_camera = CenterGroupCamera(window=main_window,
+                                              order=10,
+                                              parent=main_window.main_group,
+                                              min_zoom=(1 / 2) ** 10,
+                                              max_zoom=10)
         self.part_group = Group(0, parent=self.group_camera)
 
         self.debug_label = Label(x=20, y=main_window.height - 100, font_size=DR_status.std_font_size,
@@ -94,7 +98,6 @@ class SR1ShipRender(BaseScreen):
         self.render_d_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                     x=main_window.width / 2, y=main_window.height / 2)
         self.render_d_label.visible = self.status.draw_d_pos
-        self.camera = CenterCamera(main_window, min_zoom=(1 / 2) ** 10, max_zoom=10)
 
         # Optional data
         self.textures: SR1Textures = SR1Textures()
@@ -253,9 +256,7 @@ class SR1ShipRender(BaseScreen):
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
         self.part_line_list = []
-        self.camera.zoom = 1.0
-        self.camera.dx = 0
-        self.camera.dy = 0
+        self.group_camera.reset()
         # 调用生成器 减少卡顿
         try:
             self.gen_draw = self.gen_sprite()
@@ -275,11 +276,11 @@ class SR1ShipRender(BaseScreen):
 
     def draw_batch(self, window: "ClientWindow"):
         if self.status.draw_done:
-            self.render_d_label.text = f'x: {self.camera.dx} y: {self.camera.dy}'
-            self.render_d_label.position = self.camera.dx + (self.window_pointer.width / 2), self.camera.dy + (
+            self.render_d_label.text = f'x: {self.group_camera.view_x} y: {self.group_camera.view_y}'
+            self.render_d_label.position = self.group_camera.view_x + (self.window_pointer.width / 2), self.group_camera.view_y + (
                     self.window_pointer.height / 2) + 10, 0  # 0 for z
-            self.render_d_line.x2 = self.camera.dx
-            self.render_d_line.y2 = self.camera.dy
+            self.render_d_line.x2 = self.group_camera.view_x
+            self.render_d_line.y2 = self.group_camera.view_y
         self.buffer.bind()
         window.clear()
         self.main_batch.draw()  # use group camera, no need to with

@@ -167,6 +167,8 @@ class GroupCamera(Group):
     @zoom.setter
     def zoom(self, value: float):
         self._zoom = value
+        self._zoom_x = self._zoom
+        self._zoom_y = self._zoom
 
     def reset(self):
         self._view_x = 0
