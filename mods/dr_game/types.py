@@ -33,8 +33,10 @@ class SR1Textures(Options):
         """
         if name in self.cached_options:
             return self.cached_options.get(name)
+        elif name.split('.')[0] in self.cached_options:
+            return self.cached_options.get(name.split('.')[0])
         else:
-            img = load(f'assets/textures/parts/{name}.png')
+            img = load(f'assets/textures/parts/{name}')
             img.anchor_x = img.width // 2
             img.anchor_y = img.height // 2
             setattr(self, name, img)

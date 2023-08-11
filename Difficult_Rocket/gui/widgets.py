@@ -26,29 +26,25 @@ from pyglet.text.caret import Caret
 from pyglet.text.document import UnformattedDocument
 from pyglet.text.layout import IncrementalTextLayout
 
-# from libs import pyperclip
-# from libs.pyperclip import paste
-
-from Difficult_Rocket.api.types import FontData, Fonts
-# from Difficult_Rocket.client.guis.format import html
+from Difficult_Rocket.api.types import Fonts
 from Difficult_Rocket import DR_status
-
-__all__ = ['InputBox']
 
 
 class TextButton(widgets.WidgetBase):
     """
-    自带字符的按钮，就不用单独做材质了
+    自带 字符 + 材质 的按钮，就不用单独做材质了
     """
 
     def __init__(self,
-                 x: int, y: int, width: int, height: int,
+                 x: int,
+                 y: int,
+                 width: int,
+                 height: int,
                  text: str,
                  font: str = Fonts.鸿蒙简体, font_size: int = 13):
         super().__init__(x, y, width, height)
         self.text = text
-        self.text_label = Label(
-            font_name=font, font_size=font_size)
+        self.text_label = Label(font_name=font, font_size=font_size)
 
     @property
     def value(self):

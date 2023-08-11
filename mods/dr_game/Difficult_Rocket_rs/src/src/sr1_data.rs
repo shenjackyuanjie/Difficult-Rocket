@@ -41,6 +41,27 @@ pub mod part_list {
         lander,
     }
 
+    impl Into<String> for SR1PartTypeEnum {
+        fn into(self) -> String {
+            match self {
+                SR1PartTypeEnum::pod => "pod".to_string(),
+                SR1PartTypeEnum::detacher => "detacher".to_string(),
+                SR1PartTypeEnum::wheel => "wheel".to_string(),
+                SR1PartTypeEnum::fuselage => "fuselage".to_string(),
+                SR1PartTypeEnum::strut => "strut".to_string(),
+                SR1PartTypeEnum::tank => "tank".to_string(),
+                SR1PartTypeEnum::engine => "engine".to_string(),
+                SR1PartTypeEnum::parachute => "parachute".to_string(),
+                SR1PartTypeEnum::nosecone => "nosecone".to_string(),
+                SR1PartTypeEnum::rcs => "rcs".to_string(),
+                SR1PartTypeEnum::solar => "solar".to_string(),
+                SR1PartTypeEnum::dockconnector => "dockconnector".to_string(),
+                SR1PartTypeEnum::dockport => "dockport".to_string(),
+                SR1PartTypeEnum::lander => "lander".to_string(),
+            }
+        }
+    }
+
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub enum Location {
         Top,

@@ -4,9 +4,14 @@
 #  All rights reserved
 #  -------------------------------
 
-from Difficult_Rocket.utils.camera import (Camera, CenterCamera)
+from Difficult_Rocket.utils.camera import (Camera,
+                                           CenterCamera,
+                                           GroupCamera,
+                                           CenterGroupCamera)
 
 __all__ = [
     'Camera',
-    'CenterCamera'
+    'CenterCamera',
+    'GroupCamera',
+    'CenterGroupCamera'
 ]

@@ -2,8 +2,36 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.2.0
-  - DR rs: 0.2.20.2
+  - DR game: 0.3.3.0
+  - DR rs: 0.2.21.0
+
+## 20230812 DR game 0.3.3.0
+
+### Changes
+
+- 将 `sr1_ship` 渲染器使用的 Camera 改成 `CenterGroupCamera`
+- 删除了之前的 Camera 相关代码
+
+## 20230809 DR game 0.3.2.1
+
+### Fix
+
+- 因为把部件加载图片的数据源改成从 `SR1PartType_rs` 里取
+- 所以修改了 `SR1Textures` 的加载逻辑
+  - 可以自动忽略文件名最后的 `.png`
+
+## 20230808 DR rs 0.2.21.0
+
+### Add
+
+- 在 `__init__.py` 里添加了
+  - `sprite`
+  - `type`
+  - 的导出 (实际上就是 typing)
+- `SR1PartType_rs`
+  - 添加了 `type` getter
+
+摸鱼真开心
 
 ## 20230724 DR rs 0.2.20.2
 

@@ -275,7 +275,10 @@ class ClientWindow(Window):
     def start_game(self) -> None:
         self.set_icon(pyglet.image.load('assets/textures/icon.png'))
         try:
-            pyglet.app.run(1 / self.main_config['runtime']['fps'])
+            # pyglet.clock.schedule_interval(self.on_draw, float(self.SPF))
+            # pyglet.app.run()
+            # TODO: wait for pyglet 2.1
+            pyglet.app.run(float(self.SPF))
         except KeyboardInterrupt:
             self.logger.warning("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
@@ -314,11 +317,13 @@ class ClientWindow(Window):
         self.fps_log.update_tick(now_FPS, decimal_tick)
 
     @_call_screen_after
-    def on_draw(self, *dt):
+    # def on_draw(self, dt: float):  # TODO: wait for pyglet 2.1
+    def on_draw(self):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
         pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
         self.clear()
+        # self.draw_update(dt)  # TODO: wait for pyglet 2.1
         self.draw_update(float(self.SPF))
         self.draw_batch()
 
