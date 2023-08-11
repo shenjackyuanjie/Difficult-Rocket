@@ -2,8 +2,15 @@
 # DR game/DR rs 更新日志
 
 - 最新版本号
-  - DR game: 0.3.2.1
+  - DR game: 0.3.3.0
   - DR rs: 0.2.21.0
+
+## 20230812 DR game 0.3.3.0
+
+### Changes
+
+- 将 `sr1_ship` 渲染器使用的 Camera 改成 `CenterGroupCamera`
+- 删除了之前的 Camera 相关代码
 
 ## 20230809 DR game 0.3.2.1
 

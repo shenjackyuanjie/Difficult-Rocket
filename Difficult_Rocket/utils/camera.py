@@ -173,7 +173,7 @@ class GroupCamera(Group):
     def reset(self):
         self._view_x = 0
         self._view_y = 0
-        self._zoom = 1
+        self.zoom = 1
 
     def set_state(self):
         self._previous_view = self._window.view
