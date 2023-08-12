@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import List, TYPE_CHECKING, Dict, Optional, Generator, Tuple
 
 from pyglet.gl import gl
+from pyglet.math import Mat4
 from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
