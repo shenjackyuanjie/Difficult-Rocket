@@ -7,7 +7,7 @@
 
 from typing import Tuple, Optional
 
-from pyglet.gl import gl
+# from pyglet.gl import gl_compat
 from pyglet.math import Mat4, Vec3
 from pyglet.graphics import Group
 
@@ -160,7 +160,7 @@ class GroupCamera(Group):
 
     @property
     def zoom(self) -> float:
-        return self._zoom
+        return min(max(self._zoom, self.min_zoom), self.max_zoom)
 
     @zoom.setter
     def zoom(self, value: float):
@@ -193,6 +193,7 @@ class CenterGroupCamera(GroupCamera):
 
     def set_state(self):
         self._previous_view = self._window.view
+        # gl_compat.glPushMatrix()
 
         x = (self._window.width / 2) / self._zoom + (self._view_x / self._zoom)
         y = (self._window.height / 2) / self._zoom + (self._view_y / self._zoom)
@@ -207,3 +208,43 @@ class CenterGroupCamera(GroupCamera):
 
     def unset_state(self):
         self._window.view = self._previous_view
+        # gl_compat.glPopMatrix()
+
+
+class CenterGroupFrame(Group):
+    """
+    A camera by group
+    can be used by just added to your widget
+    """
+
+    def __init__(self,
+                 order: int = 0,
+                 parent: Optional[Group] = None,
+                 dx: Optional[int] = 0,
+                 dy: Optional[int] = 0,
+                 width: Optional[int] = 0,
+                 height: Optional[int] = 0,
+                 zoom: Optional[float] = 1.0,
+                 min_zoom: Optional[float] = 1.0,
+                 max_zoom: Optional[float] = 1.0):
+        super().__init__(order=order, parent=parent)
+        self._dx = dx
+        self._dy = dy
+        self._width = width
+        self._height = height
+        self._zoom = zoom
+        self.min_zoom = min_zoom
+        self.max_zoom = max_zoom
+
+    @property
+    def zoom(self) -> float:
+        return self._zoom
+
+    @zoom.setter
+    def zoom(self, value: float):
+        self._zoom = min(max(value, self.min_zoom), self.max_zoom)
+
+    # def set_state(self):
+
+
+
