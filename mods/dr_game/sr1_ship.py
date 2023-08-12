@@ -12,12 +12,11 @@ import traceback
 from pathlib import Path
 from typing import List, TYPE_CHECKING, Dict, Optional, Generator, Tuple
 
-from pyglet.math import Vec4, Mat4
+from pyglet.gl import gl
 from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Rectangle
-from pyglet.image import Framebuffer, Texture
 
 from . import DR_mod_runtime
 from .types import SR1Textures, SR1Rotation
@@ -75,12 +74,9 @@ class SR1ShipRender(BaseScreen):
         self.dy = 0
         self.width = main_window.width
         self.height = main_window.height
-        self.buffer = Framebuffer()
-        self.render_texture = Texture.create(self.width, self.height)
-        self.buffer.attach_texture(self.render_texture)
 
         self.main_batch = Batch()
-        self.group_camera = CenterGroupCamera(window=self,
+        self.group_camera = CenterGroupCamera(window=main_window,
                                               order=10,
                                               parent=main_window.main_group,
                                               min_zoom=(1 / 2) ** 10,
@@ -129,8 +125,6 @@ class SR1ShipRender(BaseScreen):
     def size(self, value: Tuple[int, int]):
         if not self.width == value[0] or not self.height == value[1]:
             self.width, self.height = value
-            self.render_texture = Texture.create(self.width, self.height)
-            self.buffer.attach_texture(self.render_texture)
 
     def load_xml(self, file_path: str) -> bool:
         """
@@ -281,11 +275,14 @@ class SR1ShipRender(BaseScreen):
                     self.window_pointer.height / 2) + 10, 0  # 0 for z
             self.render_d_line.x2 = self.group_camera.view_x
             self.render_d_line.y2 = self.group_camera.view_y
-        self.buffer.bind()
-        window.clear()
+
+        gl.glEnable(gl.GL_SCISSOR_TEST)
+        gl.glScissor(int(self.dx), int(self.dy), int(self.width), int(self.height))
+        gl.glViewport(int(self.dx), int(self.dy), self.window_pointer.width, self.window_pointer.height)
         self.main_batch.draw()  # use group camera, no need to with
-        self.buffer.unbind()
-        self.render_texture.blit(x=self.dx, y=self.dy, z=0, width=self.width, height=self.height)
+        gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
+        gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
+        gl.glDisable(gl.GL_SCISSOR_TEST)
 
     # def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
     def on_draw(self, window: "ClientWindow"):
@@ -352,7 +349,6 @@ class SR1ShipRender(BaseScreen):
         if command.find('render'):
             if command.find('reset'):
                 self.group_camera.reset()
-                self.window_pointer.view = Vec4()
             else:
                 self.status.draw_call = True
             print('应该渲染飞船的')

@@ -11,6 +11,8 @@
 
 - 将 `sr1_ship` 渲染器使用的 Camera 改成 `CenterGroupCamera`
 - 删除了之前的 Camera 相关代码
+- 将用于渲染到材质的代码部分改为使用 `glScissor` 和 `glViewport`
+  - 优化了一点性能 ( 毕竟是OpenGL )
 
 ## 20230809 DR game 0.3.2.1
 
