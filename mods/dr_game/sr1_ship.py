@@ -12,7 +12,7 @@ import traceback
 from pathlib import Path
 from typing import List, TYPE_CHECKING, Dict, Optional, Generator, Tuple
 
-from pyglet.math import Vec4
+from pyglet.math import Vec4, Mat4
 from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
@@ -73,14 +73,14 @@ class SR1ShipRender(BaseScreen):
 
         self.dx = 0
         self.dy = 0
-        self.width = main_window.width - 100
-        self.height = main_window.height - 100
+        self.width = main_window.width
+        self.height = main_window.height
         self.buffer = Framebuffer()
         self.render_texture = Texture.create(self.width, self.height)
         self.buffer.attach_texture(self.render_texture)
 
         self.main_batch = Batch()
-        self.group_camera = CenterGroupCamera(window=main_window,
+        self.group_camera = CenterGroupCamera(window=self,
                                               order=10,
                                               parent=main_window.main_group,
                                               min_zoom=(1 / 2) ** 10,
@@ -314,8 +314,8 @@ class SR1ShipRender(BaseScreen):
         if not self.status.draw_done:
             return
         if self.status.focus:
-            mouse_dx = x - (window.width / 2)
-            mouse_dy = y - (window.height / 2)
+            mouse_dx = x - (self.width / 2) + self.dx
+            mouse_dy = y - (self.height / 2) + self.dy
             # 鼠标缩放位置相对于屏幕中心的位置
             mouse_dx_d = mouse_dx - self.group_camera.view_x
             mouse_dy_d = mouse_dy - self.group_camera.view_y
@@ -467,6 +467,14 @@ class SR1ShipRender(BaseScreen):
         #     if self.load_xml(path):  # 加载成功一个就停下
         #         break
         # self.render_ship()
+
+    @property
+    def view(self):
+        return self.window_pointer.view
+
+    @view.setter
+    def view(self, value: Mat4):
+        self.window_pointer.view = value
 
 
 if __name__ == '__main__':
