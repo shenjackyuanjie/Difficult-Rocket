@@ -139,8 +139,6 @@ class GroupCamera(Group):
         self._view_x = view_x
         self._view_y = view_y
         self._zoom = zoom
-        self._zoom_x = self._zoom
-        self._zoom_y = self._zoom
         self.min_zoom = min_zoom
         self.max_zoom = max_zoom
 
@@ -167,8 +165,6 @@ class GroupCamera(Group):
     @zoom.setter
     def zoom(self, value: float):
         self._zoom = value
-        self._zoom_x = self._zoom
-        self._zoom_y = self._zoom
 
     def reset(self):
         self._view_x = 0
@@ -198,15 +194,15 @@ class CenterGroupCamera(GroupCamera):
     def set_state(self):
         self._previous_view = self._window.view
 
-        x = (self._window.width / 2) / self._zoom_x + (self._view_x / self._zoom_x)
-        y = (self._window.height / 2) / self._zoom_y + (self._view_y / self._zoom_y)
+        x = (self._window.width / 2) / self._zoom + (self._view_x / self._zoom)
+        y = (self._window.height / 2) / self._zoom + (self._view_y / self._zoom)
 
-        view = Mat4.from_translation(Vec3(x * self._zoom_x, y * self._zoom_y, 0))
+        view = Mat4.from_translation(Vec3(x * self._zoom, y * self._zoom, 0))
         # 不懂就问 为啥这里 * zoom 下面还 * zoom
-        if self._zoom == 1.0 and self._zoom_x == 1.0 and self._zoom_y == 1.0:
+        if self._zoom == 1.0:
             self._window.view = view
         else:
-            view = view.scale(Vec3(self._zoom_x, self._zoom_y, 1))
+            view = view.scale(Vec3(self._zoom, self._zoom, 1))
             self._window.view = view
 
     def unset_state(self):
