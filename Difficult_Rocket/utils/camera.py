@@ -7,7 +7,7 @@
 
 from typing import Tuple, Optional
 
-# from pyglet.gl import gl_compat
+from pyglet.gl import gl_compat, gl
 from pyglet.math import Mat4, Vec3
 from pyglet.graphics import Group
 
@@ -194,7 +194,13 @@ class CenterGroupCamera(GroupCamera):
     def set_state(self):
         self._previous_view = self._window.view
         # gl_compat.glPushMatrix()
+        # gl_compat.glMatrixMode(gl_compat.GL_MODELVIEW)
+        #
+        # gl_compat.glTranslatef(self._view_x, self._view_y, 0)
+        # gl_compat.glTranslated(self._window.width / 2, self._window.height / 2, 0)
+        # gl_compat.glTranslated(self._window.dx, self._window.dy, 0)s
 
+        # gl_compat.glScaled(self._zoom, self._zoom, 1)
         x = (self._window.width / 2) / self._zoom + (self._view_x / self._zoom)
         y = (self._window.height / 2) / self._zoom + (self._view_y / self._zoom)
 
@@ -245,6 +251,7 @@ class CenterGroupFrame(Group):
         self._zoom = min(max(value, self.min_zoom), self.max_zoom)
 
     # def set_state(self):
+        
 
 
 
