@@ -51,6 +51,10 @@ pub mod data {
         pub data: SR1PartType,
     }
 
+    impl PySR1PartType {
+        pub fn new(data: SR1PartType) -> Self { Self { data } }
+    }
+
     #[pymethods]
     impl PySR1PartType {
         #[getter]
@@ -79,10 +83,6 @@ pub mod data {
 
         #[getter]
         fn get_type(&self) -> String { self.data.p_type.into() }
-    }
-
-    impl PySR1PartType {
-        pub fn new(data: SR1PartType) -> Self { Self { data } }
     }
 
     #[pyclass]
