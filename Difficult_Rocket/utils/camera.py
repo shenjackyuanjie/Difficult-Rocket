@@ -193,14 +193,6 @@ class CenterGroupCamera(GroupCamera):
 
     def set_state(self):
         self._previous_view = self._window.view
-        # gl_compat.glPushMatrix()
-        # gl_compat.glMatrixMode(gl_compat.GL_MODELVIEW)
-        #
-        # gl_compat.glTranslatef(self._view_x, self._view_y, 0)
-        # gl_compat.glTranslated(self._window.width / 2, self._window.height / 2, 0)
-        # gl_compat.glTranslated(self._window.dx, self._window.dy, 0)s
-
-        # gl_compat.glScaled(self._zoom, self._zoom, 1)
         x = (self._window.width / 2) / self._zoom + (self._view_x / self._zoom)
         y = (self._window.height / 2) / self._zoom + (self._view_y / self._zoom)
 
@@ -214,7 +206,6 @@ class CenterGroupCamera(GroupCamera):
 
     def unset_state(self):
         self._window.view = self._previous_view
-        # gl_compat.glPopMatrix()
 
 
 class CenterGroupFrame(Group):
@@ -224,6 +215,7 @@ class CenterGroupFrame(Group):
     """
 
     def __init__(self,
+                 window,
                  order: int = 0,
                  parent: Optional[Group] = None,
                  dx: Optional[int] = 0,
@@ -234,8 +226,9 @@ class CenterGroupFrame(Group):
                  min_zoom: Optional[float] = 1.0,
                  max_zoom: Optional[float] = 1.0):
         super().__init__(order=order, parent=parent)
-        self._dx = dx
-        self._dy = dy
+        self.window = window
+        self.dx = dx
+        self.dy = dy
         self._width = width
         self._height = height
         self._zoom = zoom
@@ -250,8 +243,21 @@ class CenterGroupFrame(Group):
     def zoom(self, value: float):
         self._zoom = min(max(value, self.min_zoom), self.max_zoom)
 
-    # def set_state(self):
-        
+    def set_state(self):
+        self._previous_view = self.window.view
 
+        gl.glScissor(int(self.dx), int(self.dy), int(self._width), int(self._height))
+        gl.glViewport(int(self.dx), int(self.dy), int(self.window.width), int(self.window.height))
+        gl.glEnable(gl.GL_SCISSOR_TEST)
 
+        x = (self.window.width / 2) / self._zoom + (self.dx / self._zoom)
+        y = (self.window.height / 2) / self._zoom + (self.dy / self._zoom)
 
+        view = Mat4.from_translation(Vec3(x * self._zoom, y * self._zoom, 0))
+        view.scale(Vec3(self._zoom, self._zoom, 1))
+        self.window.view = view
+
+    def unset_state(self):
+        self.window.view = self._previous_view
+        gl.glDisable(gl.GL_SCISSOR_TEST)
+        gl.glViewport(0, 0, int(self.window.width), int(self.window.height))
