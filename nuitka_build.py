@@ -37,6 +37,7 @@ if __name__ == '__main__':
         compiler.output_path = Path('./build/github')
         compiler.python_cmd = 'python'
         compiler.save_xml = False
+        compiler.use_lto = True
 
     # 检测 --xml 参数
     if '--xml' in sys.argv:
