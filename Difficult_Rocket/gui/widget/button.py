@@ -41,10 +41,26 @@ class TextButton(widgets.WidgetBase):
                  width: int,
                  height: int,
                  text: str,
-                 font: str = Fonts.鸿蒙简体, font_size: int = 13):
+                 font: str = Fonts.鸿蒙简体,
+                 font_size: int = 13,
+                 batch: Optional[Batch] = None,
+                 group: Optional[Group] = None,
+                 ):
         super().__init__(x, y, width, height)
+        self.back_ground_batch = Batch()
+        self.front_batch = batch or Batch()
+        if group:
+            self.front_group = Group(order=5, parent=group)
+            self.back_ground_group = Group(order=10, parent=group)
+        else:
+            self.front_group = Group(order=5)
+            self.back_ground_group = Group(order=10)
+
         self.text = text
-        self.text_label = Label(font_name=font, font_size=font_size)
+        self.text_label = Label(font_name=font, font_size=font_size,
+                                batch=self.front_batch, group=self.front_group)
+        self.back_rec = Rectangle(x=self._x, y=self._y, width=self._width, height=self._height,
+                                  batch=self.back_ground_batch, group=self.back_ground_group)
 
     @property
     def value(self):
