@@ -45,6 +45,7 @@ class CompilerHelper(Options):
 
     show_progress: bool = True  # --show-progress
     show_memory: bool = False  # --show-memory
+    remove_output: bool = True  # --remove-output
     save_xml: bool = False  # --xml
     xml_path: Path = Path('build/compile_data.xml')
 
@@ -147,6 +148,7 @@ class CompilerHelper(Options):
         _add_cmd(cmd_list, '--disable-ccache' if not self.use_ccache else None)
         _add_cmd(cmd_list, '--show-progress' if self.show_progress else None)
         _add_cmd(cmd_list, '--show-memory' if self.show_memory else None)
+        _add_cmd(cmd_list, '--remove-output' if self.remove_output else None)
         _add_cmd(cmd_list, '--assume-yes-for-download' if self.download_confirm else None)
         _add_cmd(cmd_list, '--run' if self.run_after_build else None)
         _add_cmd(cmd_list, '--enable-console' if self.enable_console else '--disable-console')

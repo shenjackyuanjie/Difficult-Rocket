@@ -46,9 +46,10 @@ if __name__ == '__main__':
     # 检测 --output xx 参数
     if '--output' in sys.argv:
         # 输入的是输出目录
-        compiler.output_path = sys.argv[sys.argv.index('--output') + 1]
+        out_path = sys.argv[sys.argv.index('--output') + 1]
+        compiler.output_path = Path(out_path)
         sys.argv.remove('--output')
-        sys.argv.remove(compiler.output_path)
+        sys.argv.remove(out_path)
 
     # 检测 --no-pyglet-opt 参数
     pyglet_optimizations = True
