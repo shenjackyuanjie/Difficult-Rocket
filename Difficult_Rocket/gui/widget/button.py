@@ -46,7 +46,6 @@ class BaseTheme:
         self.main_font = main_font
 
 
-
 class PressTextButton(widgets.WidgetBase):
     """
     自带 字符 + 材质 的按钮，就不用单独做材质了
