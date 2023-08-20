@@ -4,6 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
+import shutil
 import traceback
 from io import StringIO
 from dataclasses import dataclass
@@ -175,15 +176,12 @@ class Options:
         self.cached_options = self.option()
         return self.cached_options
 
-    def option_with_len(self, longest: Optional[int] = None) -> Tuple[List[Tuple[str, Union[Any, Type], Type]], int, int, int]:
+    def option_with_len(self) -> Tuple[List[Tuple[str, Any, Type]], int, int, int]:
         """
         返回一个可以用于打印的 option 列表
         :return:
         """
-        if longest is None:
-            options = self.flush_option()
-        else:
-            options = self.str_option(longest)
+        options = self.flush_option()
         max_len_key = 1
         max_len_value = 1
         max_len_value_t = 1
@@ -193,19 +191,53 @@ class Options:
             max_len_key = max(max_len_key, len(key))
             max_len_value = max(max_len_value, len(str(value)))
             max_len_value_t = max(max_len_value_t, len(str(value_t)))
-            option_list.append((key, value, value_t))
-        return option_list, max_len_key, max_len_value, max_len_value_t
+            option_list.append([key, value, value_t])
+        return [option_list, max_len_key, max_len_value, max_len_value_t]  # noqa
 
     def as_markdown(self, longest: Optional[int] = None) -> str:
         """
         返回一个 markdown 格式的 option 字符串
         :return: markdown 格式的 option 字符串
         """
-        value = self.option_with_len(longest)
+        value = self.option_with_len()
         cache = StringIO()
         option_len = max(value[1], len('Option'))
         value_len = max(value[2], len('Value'))
         value_type_len = max(value[3], len('Value Type'))
+
+        # | Option | Value | Value Type |
+        shortest = len('Option" "Value" "Value Type')
+
+        if longest is not None:
+            console_width = max(longest, shortest)
+        else:
+            console_width = shutil.get_terminal_size(fallback=(100, 80)).columns
+            console_width = max(console_width, shortest)
+
+        option_len = min(option_len, console_width // 3)
+        value_len = min(value_len, console_width // 3)
+        value_type_len = min(value_type_len, console_width // 3)
+        # 先指定每一个列的输出最窄宽度, 然后去尝试增加宽度
+        while option_len + value_len + value_type_len + 16 < console_width:
+            # 每一个部分的逻辑都是
+            # 如果现在的输出长度小于原始长度
+            # 并且长度 + 1 之后的总长度依然在允许范围内
+            # 那么就 + 1
+            if option_len < value[1] and option_len + value_len + value_type_len + 1 + 15 < console_width:
+                option_len += 1
+            if value_len < value[2] and option_len + value_len + value_type_len + 1 + 15 < console_width:
+                value_len += 1
+            if value_type_len < value[3] and option_len + value_len + value_type_len + 1 + 15 < console_width:
+                value_type_len += 1
+
+        for k in range(len(value[0])):
+            if len(str(value[0][k][0])) > option_len:
+                value[0][k][0] = str(value[0][k][0])[:value_len - 3] + '..'
+            if len(str(value[0][k][1])) > value_len:
+                value[0][k][1] = str(value[0][k][1])[:value_len - 3] + '..'
+            if len(str(value[0][k][2])) > value_type_len:
+                value[0][k][2] = str(value[0][k][2])[:value_len - 3] + '..'
+
         cache.write(
             f"| Option{' ' * (option_len - 3)}| Value{' ' * (value_len - 2)}| Value Type{' ' * (value_type_len - 7)}|\n")
         cache.write(f'|:{"-" * (option_len + 3)}|:{"-" * (value_len + 3)}|:{"-" * (value_type_len + 3)}|\n')
