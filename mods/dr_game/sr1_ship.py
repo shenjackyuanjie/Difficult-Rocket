@@ -25,13 +25,12 @@ from .types import SR1Textures, SR1Rotation
 # Difficult Rocket
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.utils.translate import Tr
+from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.camera import CenterGroupCamera
-
-if TYPE_CHECKING:
-    from Difficult_Rocket.client import ClientWindow
+from Difficult_Rocket.api.gui.widget import PressTextButton
 
 if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import (SR1PartList_rs,
@@ -63,7 +62,7 @@ class SR1ShipRender(BaseScreen):
     """用于渲染 sr1 船的类"""
 
     def __init__(self,
-                 main_window: "ClientWindow"):
+                 main_window: ClientWindow):
         super().__init__(main_window)
         self.logger = logger
         logger.info(sr_tr().mod.info.setup.start())
@@ -95,6 +94,12 @@ class SR1ShipRender(BaseScreen):
         self.render_d_label = Label('debug label NODATA', font_name=Fonts.微软等宽无线,
                                     x=main_window.width / 2, y=main_window.height / 2)
         self.render_d_label.visible = self.status.draw_d_pos
+
+        self.test_button = PressTextButton(x=100, y=100,
+                                           width=100, height=20, text='test button',
+                                           batch=self.main_batch, group=Group(5, parent=main_window.main_group))
+        # self.test_button.push_handlers(main_window)
+        main_window.push_handlers(self.test_button)
 
         # Optional data
         self.textures: SR1Textures = SR1Textures()
@@ -269,7 +274,7 @@ class SR1ShipRender(BaseScreen):
             len(self.rust_ship.as_list()),
             f'{full_mass}kg' if DR_mod_runtime.use_DR_rust else sr_tr().game.require_DR_rs()))
 
-    def draw_batch(self, window: "ClientWindow"):
+    def draw_batch(self, window: ClientWindow):
         if self.status.draw_done:
             self.render_d_label.text = f'x: {self.group_camera.view_x} y: {self.group_camera.view_y}'
             self.render_d_label.position = self.group_camera.view_x + (self.window_pointer.width / 2), self.group_camera.view_y + (
@@ -286,7 +291,7 @@ class SR1ShipRender(BaseScreen):
         gl.glDisable(gl.GL_SCISSOR_TEST)
 
     # def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
-    def on_draw(self, window: "ClientWindow"):
+    def on_draw(self, window: ClientWindow):
         if self.status.draw_call:
             self.render_ship()
 
@@ -301,14 +306,15 @@ class SR1ShipRender(BaseScreen):
 
         self.debug_label.draw()
 
-    def on_resize(self, width: int, height: int, window: "ClientWindow"):
+    def on_resize(self, width: int, height: int, window: ClientWindow):
         self.debug_label.y = height - 100
         if not self.status.draw_done:
             return
         self.render_d_line.x2 = width // 2
         self.render_d_line.y2 = height // 2
+        self.test_button._update_position()
 
-    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: "ClientWindow"):
+    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow):
         if not self.status.draw_done:
             return
         if self.status.focus:
@@ -344,7 +350,7 @@ class SR1ShipRender(BaseScreen):
                 size_y = 10
             self.size = size_x, size_y
 
-    def on_command(self, command: CommandText, window: "ClientWindow"):
+    def on_command(self, command: CommandText, window: ClientWindow):
         """ 解析命令 """
         self.logger.info(f'command: {command}')
         if command.find('render'):
@@ -434,7 +440,7 @@ class SR1ShipRender(BaseScreen):
                 logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
                 self.rust_ship.save('./test-save.xml')
 
-    def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: "ClientWindow"):
+    def on_mouse_drag(self, x: int, y: int, dx: int, dy: int, buttons: int, modifiers: int, window: ClientWindow):
         if self.status.focus:
             self.group_camera.view_x += dx
             self.group_camera.view_y += dy
@@ -444,7 +450,7 @@ class SR1ShipRender(BaseScreen):
             self.dx += dx
             self.dy += dy
 
-    def on_file_drop(self, x: int, y: int, paths: List[str], window: "ClientWindow"):
+    def on_file_drop(self, x: int, y: int, paths: List[str], window: ClientWindow):
         if len(paths) > 1:
             for path in paths:
                 try:
@@ -472,6 +478,7 @@ class SR1ShipRender(BaseScreen):
     @view.setter
     def view(self, value: Mat4):
         self.window_pointer.view = value
+
 
 
 if __name__ == '__main__':

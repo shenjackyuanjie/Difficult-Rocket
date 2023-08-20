@@ -247,7 +247,7 @@ class ClientWindow(Window):
                                    batch=self.main_batch, text='', group=Group(1000, parent=self.main_group))  # 实例化
         self.input_box.push_handlers(self)
         self.input_box.set_handler('on_commit', self.on_input)
-        self.set_handlers(self.input_box)
+        self.push_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
         # pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
@@ -424,7 +424,7 @@ class ClientWindow(Window):
         ...
 
     @_call_screen_after
-    def on_mouse_motion(self, x, y, dx, dy) -> None:
+    def on_mouse_motion(self, x, y, dx, dy):
         ...
 
     @_call_screen_after

@@ -84,7 +84,7 @@ if __name__ == '__main__':
     else:
         compiler.output_path = Path(f'./build/nuitka-{platform.system().lower()}')
 
-    print(compiler.as_markdown(longest=70))
+    print(compiler.as_markdown())
 
     print(compiler.gen_subprocess_cmd())
 
