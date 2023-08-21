@@ -96,7 +96,7 @@ class SR1ShipRender(BaseScreen):
         self.render_d_label.visible = self.status.draw_d_pos
 
         self.test_button = PressTextButton(x=100, y=100,
-                                           width=100, height=20, text='test button',
+                                           width=150, height=30, text='test button',
                                            batch=self.main_batch, group=Group(5, parent=main_window.main_group))
         # self.test_button.push_handlers(main_window)
         main_window.push_handlers(self.test_button)

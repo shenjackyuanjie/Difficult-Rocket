@@ -14,10 +14,10 @@ gitee:  @shenjackyuanjie
 from typing import Optional, Union, Tuple
 
 # from libs import pyglet
-# from pyglet import font
+import pyglet
 from pyglet.text import Label
-from pyglet.window import mouse
 from pyglet.gui import widgets
+from pyglet.window import mouse
 # from pyglet.sprite import Sprite
 from pyglet.shapes import Rectangle
 # from pyglet.image import AbstractImage
@@ -57,8 +57,8 @@ class PressTextButton(widgets.WidgetBase):
                  width: int,
                  height: int,
                  text: str,
-                 font: str = Fonts.鸿蒙简体,
-                 font_size: int = 13,
+                 font_name: str = Fonts.鸿蒙简体,
+                 font_size: int = 15,
                  batch: Optional[Batch] = None,
                  group: Optional[Group] = None,
                  ):
@@ -71,7 +71,6 @@ class PressTextButton(widgets.WidgetBase):
         else:
             self.front_group = Group(order=5)
             self.back_ground_group = Group(order=10)
-
         self.pressed = False
 
         self.untouched_color = (39, 73, 114, 255)
@@ -80,16 +79,32 @@ class PressTextButton(widgets.WidgetBase):
         # from ImGui
 
         self.text = text
-        self.text_label = Label(font_name=font, font_size=font_size,
+        self.text_label = Label(font_name=font_name, font_size=font_size,
                                 batch=self.front_batch, group=self.front_group,
-                                x=self._x, y=self._y, text=self.text)
-        self.back_rec = Rectangle(x=self._x, y=self._y, width=self._width, height=self._height,
+                                x=self._x, y=self._y, width=self._width,
+                                height=self._height,)
+        self.font = pyglet.font.load(font_name, font_size)
+        self.font_height = self.font.ascent - self.font.descent
+        self.back_rec = Rectangle(x=self._x, y=self._y,
+                                  width=self._width, height=self._height,
                                   color=self.untouched_color,  # ImGui color
                                   batch=self.back_ground_batch, group=self.back_ground_group)
+
+        self.value = text  # 重新分配一下高度和宽度的位置
 
     @property
     def value(self):
         return self.text
+
+    @value.setter
+    def value(self, value):
+        self.text = value
+        self.text_label.text = value
+        text_width = self.text_label.content_width
+        self.text_label.x = self._x + (self.width - text_width) // 2
+        self.text_label.y = self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)  # 修正一下位置
+        print(self.text_label.x, self.text_label.y)
+        print(self.height, self.font_height)
 
     def __contains__(self, item):
         return item in self.back_rec
@@ -120,6 +135,9 @@ class PressTextButton(widgets.WidgetBase):
         self.back_rec.width = self._width
         self.back_rec.height = self._height
         ...
+
+    def on_press(self, x, y):
+        self.value += "1"
 
 
 PressTextButton.register_event_type('on_press')
