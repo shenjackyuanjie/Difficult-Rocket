@@ -207,8 +207,8 @@ class Options:
         value_type_len = max(value[3], len('Value Type'))
 
         # | Option | Value | Value Type |
-        shortest = len('Option" "Value" "Value Type')
-
+        shortest = len('Option | Value | Value Type')
+        
         if longest is not None:
             console_width = max(longest, shortest)
         else:
@@ -230,11 +230,11 @@ class Options:
             # 如果现在的输出长度小于原始长度
             # 并且长度 + 1 之后的总长度依然在允许范围内
             # 那么就 + 1
-            if option_len < value[1] and option_len + value_len + value_type_len + 15 < console_width:
+            if option_len < value[1] and option_len + value_len + value_type_len + 16 < console_width:
                 option_len += 1
-            if value_len < value[2] and option_len + value_len + value_type_len + 15 < console_width:
+            if value_len < value[2] and option_len + value_len + value_type_len + 16 < console_width:
                 value_len += 1
-            if value_type_len < value[3] and option_len + value_len + value_type_len + 15 < console_width:
+            if value_type_len < value[3] and option_len + value_len + value_type_len + 16 < console_width:
                 value_type_len += 1
         # 实际上 对于列表(可变对象) for 出来的这个值是一个引用
         # 所以可以直接修改 string
