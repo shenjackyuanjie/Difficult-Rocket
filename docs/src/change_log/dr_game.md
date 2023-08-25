@@ -3,7 +3,25 @@
 
 - 最新版本号
   - DR game: 0.3.3.0
-  - DR rs: 0.2.21.0
+  - DR rs: 0.2.22.0
+
+## 20230825 DR rs 0.2.22.0
+
+### Remove
+
+- 删除了 `map_ptype_textures` 函数
+  - 直接通过 `SR1PartType_rs` 实例获取贴图路径
+  - Delete `map_ptype_textures`
+    - Get the texture path directly through the `SR1PartType_rs` instance
+
+### Changes
+
+- 为 `types.rs` 添加了一些注释
+  - 感谢 `sssssssboom` 的帮助
+  - Add some comments to `types.rs`
+    - Thanks to `sssssssboom` for the help
+- 正在设计 DR 的数据结构
+  - Designing DR's data structure
 
 ## 20230812 DR game 0.3.3.0
 

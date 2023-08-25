@@ -14,14 +14,9 @@ pub mod data {
 
     use crate::sr1_data::part_list::RawPartList;
     use crate::types::math::{Point2D, Rotatable};
-    use crate::types::sr1::{get_max_box, map_ptype_textures, SR1PartData, SR1PartListTrait};
+    use crate::types::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
     use crate::types::sr1::{IdType, SaveStatus};
     use crate::types::sr1::{SR1PartList, SR1PartType, SR1Ship};
-
-    #[pyfunction]
-    #[pyo3(signature = (part_type))]
-    #[pyo3(name = "map_ptype_textures")]
-    pub fn py_map_ptype_textures(part_type: String) -> String { map_ptype_textures(part_type) }
 
     #[pyclass]
     #[pyo3(name = "SaveStatus_rs")]

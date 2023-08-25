@@ -26,15 +26,6 @@ pub mod sr1 {
 
     #[inline]
     pub fn radians_map_to_degrees(angle: f64) -> f64 {
-        // match angle {
-        //     0.0 => 0.,
-        //     1.570796 => 270.,
-        //     3.141593 => 180.,
-        //     4.712389 => 90.,
-        //     _ => {
-        //         angle.to_degrees()
-        //     }
-        // }
         #[allow(clippy::approx_constant)]
         if angle == 1.570796 {
             270.
@@ -45,42 +36,6 @@ pub mod sr1 {
         } else {
             angle.to_degrees()
         }
-    }
-
-    #[allow(unused)]
-    #[inline]
-    pub fn map_ptype_textures(ptype: String) -> String {
-        match ptype.as_str() {
-            "pod-1" => "Pod",
-            "detacher-1" => "DetacherVertical",
-            "detacher-2" => "DetacherRadial",
-            "wheel-1" => "Wheel",
-            "wheel-2" => "Wheel",
-            "fuselage-1" => "Fuselage",
-            "strut-1" => "Beam",
-            "fueltank-0" => "TankTiny",
-            "fueltank-1" => "TankSmall",
-            "fueltank-2" => "TankMedium",
-            "fueltank-3" => "TankLarge",
-            "fueltank-4" => "Puffy750",
-            "fueltank-5" => "SideTank",
-            "engine-0" => "EngineTiny",
-            "engine-1" => "EngineSmall",
-            "engine-2" => "EngineMedium",
-            "engine-3" => "EngineLarge",
-            "engine-4" => "SolidRocketBooster",
-            "ion-0" => "EngineIon",
-            "parachute-1" => "ParachuteCanister",
-            "nosecone-1" => "NoseCone",
-            "rcs-1" => "RcsBlock",
-            "solar-1" => "SolarPanelBase",
-            "battery-0" => "Battery",
-            "dock-1" => "DockingConnector",
-            "port-1" => "DockingPort",
-            "lander-1" => "LanderLegPreview",
-            _ => "Pod",
-        }
-        .to_string()
     }
 
     #[inline]
@@ -113,10 +68,10 @@ pub mod sr1 {
             size: f64,
             turn: f64,
             fuel_type: i32,
-            // 0 -> 普通燃料
-            // 1 -> Rcs
-            // 2 -> 电量
-            // 3 -> 固推
+            /// 0 -> 普通燃料
+            /// 1 -> Rcs
+            /// 2 -> 电量
+            /// 3 -> 固推
             throttle_exponential: bool,
         },
         Rcs {
@@ -139,14 +94,14 @@ pub mod sr1 {
 
     #[derive(Debug, Copy, Clone)]
     pub struct Damage {
-        pub disconnect: i32,
-        // 断裂受力大小
-        pub explode: i32,
-        // 爆炸受力大小
-        pub explosion_power: u32,
-        // 爆炸力量
-        pub explosion_size: u32,
-        // 爆炸大小
+        /// 导致断裂的受力大小
+        pub disconnect: f64,
+        /// 导致爆炸的受力大小
+        pub explode: f64,
+        /// 爆炸威力（虽然在 sr1 里不是 0 就没用）
+        pub explosion_power: f64,
+        /// 爆炸影响范围（虽然在 sr1 里不是 0 就没用）
+        pub explosion_size: f64,
     }
 
     impl Damage {
@@ -162,50 +117,51 @@ pub mod sr1 {
 
     #[derive(Debug, Clone)]
     pub struct SR1PartType {
+        /// 部件 ID
         pub id: String,
-        // 部件 ID
+        /// 部件名称
         pub name: String,
-        // 部件名称
+        /// 部件描述
         pub description: String,
-        // 部件描述
+        /// 部件材质
         pub sprite: String,
-        // 部件材质
+        /// 部件类型
         pub p_type: SR1PartTypeEnum,
-        // 部件类型
+        /// 部件质量
         pub mass: f64,
-        // 部件质量
+        /// 部件宽度
         pub width: u32,
-        // 部件宽度
+        /// 部件高度
         pub height: u32,
-        // 部件高度
+        /// 摩擦力
         pub friction: f64,
-        // 摩擦力
+        /// 部件类别 (原版仅有 "Satellite" 可自定义)
         pub category: String,
-        // 部件类别 (原版仅有 "Satellite" 可自定义)
+        /// 是否忽略编辑器碰撞
         pub ignore_editor_intersections: bool,
-        // 是否忽略编辑器碰撞
+        /// 是否禁用编辑器旋转
         pub disable_editor_rotation: bool,
-        // 是否禁用编辑器旋转
+        /// 是否可爆炸
         pub can_explode: bool,
-        // 是否可爆炸
+        /// 覆盖高度 (原版仅在固态推进器使用)
         pub cover_height: u32,
-        // 覆盖高度 (原版仅在固态推进器使用)
+        /// 是否只在沙盒模式显示
         pub sandbox_only: bool,
-        // 是否只在沙盒模式显示
+        /// 阻力
         pub drag: f64,
-        // 阻力
+        /// 是否隐藏
         pub hidden: bool,
-        // 是否隐藏
+        /// 浮力
         pub buoyancy: f64,
-        // 浮力
         // 综合属性
+        /// 部件受损相关属性
         pub damage: Damage,
-        // 部件受损相关属性
+        /// 部件碰撞箱
         pub shape: Option<Vec<RawShape>>,
-        // 部件碰撞箱
+        /// 部件连接点
         pub attach_points: Option<Vec<AttachPoint>>,
-        // 部件连接点
-        pub attr: Option<SR1PartTypeAttr>, // 部件特殊属性
+        /// 部件特殊属性
+        pub attr: Option<SR1PartTypeAttr>,
     }
 
     impl SR1PartType {
@@ -492,22 +448,34 @@ pub mod sr1 {
 
     #[derive(Debug, Clone)]
     pub struct SR1PartData {
-        // 单独的属性
+        /// 单独的属性
         pub attr: SR1PartDataAttr,
         // 基本状态属性
+        /// x 坐标
         pub x: f64,
+        /// y 坐标
         pub y: f64,
+        /// 零件 id
         pub id: IdType,
-        pub angle: f64, // 弧度制
+        /// 旋转角度 弧度
+        pub angle: f64,
+        /// 旋转角速度 弧度/秒
         pub angle_v: f64,
         // 状态属性
+        /// 零件类型
         pub part_type: SR1PartTypeEnum,
+        /// 零件类型 id
         pub part_type_id: String,
+        /// 零件被顺时针转了几个90度，影响连接点的位置，不影响碰撞箱
+        /// 在游戏里计算飞船朝向也会参考
         pub editor_angle: i32,
+        /// 是否水平翻转
         pub flip_x: bool,
+        /// 是否垂直翻转
         pub flip_y: bool,
+        /// 是否启用
         pub active: bool,
-
+        /// 是否爆炸
         pub explode: bool,
     }
 
@@ -1239,6 +1207,12 @@ pub mod math {
 #[allow(dead_code)]
 pub mod dr {
 
+    use std::collections::HashMap;
+
+    use rapier2d_f64::geometry::{SharedShape, TriMeshFlags};
+    use rapier2d_f64::math::{Isometry, Point, Real};
+    use rapier2d_f64::parry::transformation::vhacd::VHACDParameters;
+
     #[derive(Clone, Copy)]
     pub enum ConnectType {
         Stick,
@@ -1253,36 +1227,148 @@ pub mod dr {
         pub angel: f64,
     }
 
-    #[derive(Clone, Copy)]
-    pub enum PartType {
-        Pod,
-        Separator,
-        Wheel,
-        Fuselage,
-        Beam,
-        Engine,
-        FuelTank,
-        Parachute,
-        Nosecone,
-        SolarPanel,
-        Battery,
-        Dock,
-        Port,
-        Lander,
-    }
-
     pub struct DRPartData {
         pub x: f64,
         pub y: f64,
         pub dx: f64,
         pub dy: f64,
         pub id: i64,
-        pub p_type: PartType,
+        pub p_type: String,
         pub active: bool,
         pub angle: f64, // 角度制
         pub angle_v: f64,
         pub flip_x: bool,
         pub flip_y: bool,
         pub connections: Option<Vec<usize>>,
+        pub shape_type: bool,
+        pub shape_data: ShapeData,
+    }
+
+    pub enum ShapeData {
+        // rapier2d_f64::geometry::ColliderBuilder
+        /// 球
+        /// 半径
+        Ball(Real),
+        /// 矩形
+        /// 宽 高
+        Cuboid(Real, Real),
+        /// 圆角矩形
+        /// 宽 高 圆角半径
+        RoundCuboid(Real, Real, Real),
+        /// 三角形
+        /// 三个点坐标
+        Triangle(Point<Real>, Point<Real>, Point<Real>),
+        /// 圆角三角形
+        /// 三个点坐标 圆角半径
+        RoundTriangle(Point<Real>, Point<Real>, Point<Real>, Real),
+        /// 圆柱体 ( 横向 )
+        /// 半径 高
+        CapsuleX(Real, Real),
+        /// 圆柱体 ( 纵向 )
+        /// 半径 高
+        CapsuleY(Real, Real),
+        /// 复合形状
+        /// 给一堆坐标
+        Segment(Point<Real>, Point<Real>),
+        /// 三角形面定义的几何体（有限元？）
+        /// 使用由顶点和索引缓冲区定义的三角形网格形状
+        TriMesh(Vec<Point<Real>>, Vec<[u32; 3]>),
+        /// 三角形面定义的几何体（有限元？），带一系列可定义的Flags
+        /// 三角形网格形状由其顶点和索引缓冲区以及控制其预处理的标志定义。
+        TriMeshWithFlags(Vec<Point<Real>>, Vec<[u32; 3]>, TriMeshFlags),
+        /// 给定一个多边形几何体，此方法将其分解为一系列凸多边形
+        ConvexDecomposition(Vec<Point<Real>>, Vec<[u32; 2]>),
+        /// 给定一个圆角的多边形几何体，此方法将其分解为一系列圆角的凸多边形，虽然不知道怎么分
+        RoundConvexDecomposition(Vec<Point<Real>>, Vec<[u32; 2]>, Real),
+        /// 给定一个多边形几何体，此方法将其分解为一系列凸多边形
+        /// 由VHACDParameters指定算法的参数，这将影响分解的结果或质量
+        ConvexDecompositionWithParams(Vec<Point<Real>>, Vec<[u32; 2]>, VHACDParameters),
+        /// 给定一个圆角的多边形几何体，此方法将其分解为一系列圆角的凸多边形，虽然不知道怎么分
+        /// 由VHACDParameters指定算法的参数，这将影响分解的结果或质量
+        RoundConvexDecompositionWithParams(Vec<Point<Real>>, Vec<[u32; 2]>, VHACDParameters, Real),
+        /// 给定一系列点，计算出对应的凸包络的多边形
+        ConvexHull(Vec<Point<Real>>),
+        /// 给定一系列点，计算出对应的凸包络的多边形，然后加上圆角
+        RoundConvexHull(Vec<Point<Real>>, Real),
+        /// 给定一系列点，按照凸多边形来计算碰撞箱，但不会算出这个凸多边形
+        /// 如果实际上这些点并没有定义一个凸多边形，在计算过程可能导致bug
+        ConvexPolyline(Vec<Point<Real>>),
+        /// 给定一系列点，按照凸多边形加上圆角来计算碰撞箱，但不会算出这个凸多边形
+        /// 如果实际上这些点并没有定义一个凸多边形，在计算过程可能导致bug
+        RoundConvexPolyline(Vec<Point<Real>>, Real),
+        /// 由顶点定义的多边形
+        Polyline(Vec<(Real, Real)>),
+        /// 由一系列高度定义的某种东西，大概是地面之类的
+        Heightfield(Vec<(Real, Real)>),
+        /// 凸分解的复合形状
+        Compound(Vec<(Isometry<Real>, SharedShape)>), //凸分解，好像可以略微提升复杂刚体碰撞的性能
+    }
+
+    pub struct TankData {
+        /// 油量，if p_type==tank
+        pub fuel: f64,
+        /// 空油罐的质量，if p_type==tank
+        pub dry_mass: f64,
+        /// 燃油种类，if p_type==tank
+        pub fuel_type: i32,
+    }
+
+    pub struct EngineData {
+        pub power: f64,
+        pub consumption: f64,
+        pub size: f64,
+        pub turn: f64,
+        pub fuel_type: f64,
+        pub throttle_exponential: f64,
+    }
+
+    pub trait DRPartTypeAttrTrait {
+        fn name() -> String;
+    }
+
+    pub struct DRPartType<T>
+    where
+        T: DRPartTypeAttrTrait,
+    {
+        /// 部件 ID
+        pub id: String,
+        /// 是否支持自定义形状
+        /// shenjack: 折磨我的时候到了
+        pub shape_type: bool,
+        /// 所有 raiper2d 支持的碰撞箱类型
+        pub shape_data: ShapeData,
+        // 基本属性
+        /// 名称
+        pub name: String,
+        /// 描述
+        pub description: String,
+        /// 贴图
+        pub sprite: String,
+        ///pub r#type: SR1PartTypeEnum,
+        /// 质量，单位500kg
+        pub mass: f64,
+        /// 宽度，用于判断放置时是否回合其他零件重叠
+        pub width: f64,
+        /// 高度，用于判断放置时是否回合其他零件重叠
+        pub height: f64,
+        // 可选属性
+        /// 摩擦力
+        pub friction: f64,
+        /// 分类
+        pub category: String,
+        /// 是否可以爆炸
+        pub can_explode: bool,
+        /// 好像是影响引擎下方连接点被连接时外面那层贴图的高度，装饰作用
+        pub cover_height: Option<u32>,
+        /// 是否只有沙盒可用
+        pub sandbox_only: Option<bool>,
+        /// 减阻效果
+        pub drag: Option<f64>,
+        /// 是否隐藏
+        pub hidden: Option<bool>,
+        /// 浮力
+        pub buoyancy: Option<f64>,
+        // 附加属性
+        pub attr: HashMap<String, T>,
     }
 }

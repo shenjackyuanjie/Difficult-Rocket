@@ -129,22 +129,22 @@ pub mod part_list {
 
     #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
     pub struct Damage {
-        pub disconnect: i32,
-        pub explode: i32,
+        pub disconnect: f64,
+        pub explode: f64,
         #[serde(rename = "explosionPower")]
-        pub explosion_power: Option<u32>,
+        pub explosion_power: Option<f64>,
         #[serde(rename = "explosionSize")]
-        pub explosion_size: Option<u32>,
+        pub explosion_size: Option<f64>,
     }
 
     impl Damage {
         #[inline]
         pub fn to_damage(&self) -> crate::types::sr1::Damage {
             crate::types::sr1::Damage {
-                disconnect: self.disconnect.to_owned(),
-                explode: self.explode.to_owned(),
-                explosion_power: self.explosion_power.unwrap_or(100),
-                explosion_size: self.explosion_size.unwrap_or(100),
+                disconnect: self.disconnect,
+                explode: self.explode,
+                explosion_power: self.explosion_power.unwrap_or(100_f64),
+                explosion_size: self.explosion_size.unwrap_or(100_f64),
             }
         }
     }
@@ -300,10 +300,10 @@ pub mod part_list {
                 _ => None,
             };
             let damage = self.damage.unwrap_or(Damage {
-                disconnect: 0,
-                explode: 0,
-                explosion_power: Some(0u32),
-                explosion_size: Some(0u32),
+                disconnect: 0_f64,
+                explode: 0_f64,
+                explosion_power: Some(0_f64),
+                explosion_size: Some(0_f64),
             });
             let attach_points: Option<Vec<AttachPoint>> = self.attach_points.as_ref().map(|attach_points| attach_points.unzip());
             SR1PartType {

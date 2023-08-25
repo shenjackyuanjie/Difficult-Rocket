@@ -116,7 +116,7 @@ dependencies = [
 
 [[package]]
 name = "difficult_rocket_rs"
-version = "0.2.20"
+version = "0.2.22"
 dependencies = [
  "pyo3",
  "quick-xml",
@@ -408,9 +408,9 @@ dependencies = [
 
 [[package]]
 name = "quick-xml"
-version = "0.29.0"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "81b9228215d82c7b61490fec1de287136b5de6f5700f6e58ea9ad61a7964ca51"
+checksum = "eff6510e86862b57b210fd8cbe8ed3f0d7d600b9c2863cd4549a2e033c66e956"
 dependencies = [
  "memchr",
  "serde",
@@ -490,9 +490,9 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
 name = "serde"
-version = "1.0.173"
+version = "1.0.186"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e91f70896d6720bc714a4a57d22fc91f1db634680e65c8efe13323f1fa38d53f"
+checksum = "9f5db24220c009de9bd45e69fb2938f4b6d2df856aa9304ce377b3180f83b7c1"
 dependencies = [
  "serde_derive",
 ]
@@ -511,13 +511,13 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.173"
+version = "1.0.186"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a6250dde8342e0232232be9ca3db7aa40aceb5a3e5dd9bddbc00d99a007cde49"
+checksum = "5ad697f7e0b65af4983a4ce8f56ed5b357e8d3c36651bf6a7e13639c17b8e670"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.26",
+ "syn 2.0.29",
 ]
 
 [[package]]
@@ -573,9 +573,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.26"
+version = "2.0.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "45c3457aacde3c65315de5031ec191ce46604304d2446e803d71ade03308d970"
+checksum = "c324c494eba9d92503e6f1ef2e6df781e78f6a7705a0202d9801b198807d518a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -605,7 +605,7 @@ checksum = "f9456a42c5b0d803c8cd86e73dd7cc9edd429499f37a3550d286d5e86720569f"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.26",
+ "syn 2.0.29",
 ]
 
 [[package]]
