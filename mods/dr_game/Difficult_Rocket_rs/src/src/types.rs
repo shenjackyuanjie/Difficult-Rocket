@@ -1244,6 +1244,8 @@ pub mod dr {
         pub shape_data: ShapeData,
     }
 
+    /// 为了保证能使用到 所有类型的 碰撞体
+    /// 写了这么长一个玩意
     pub enum ShapeData {
         // rapier2d_f64::geometry::ColliderBuilder
         /// 球
@@ -1301,6 +1303,7 @@ pub mod dr {
         /// 由一系列高度定义的某种东西，大概是地面之类的
         Heightfield(Vec<(Real, Real)>),
         /// 凸分解的复合形状
+        /// 就是不知道能不能真用上
         Compound(Vec<(Isometry<Real>, SharedShape)>), //凸分解，好像可以略微提升复杂刚体碰撞的性能
     }
 
@@ -1314,21 +1317,28 @@ pub mod dr {
     }
 
     pub struct EngineData {
+        /// 推力大小，if p_type==engine
         pub power: f64,
+        /// 消耗速率，if p_type==engine
         pub consumption: f64,
-        pub size: f64,
+        /// 大小，if p_type==engine
+        // pub size: f64,
+        /// 转向范围，if p_type==engine
         pub turn: f64,
+        /// 燃料类型，if p_type==engine
         pub fuel_type: f64,
-        pub throttle_exponential: f64,
+        // pub throttle_exponential: f64,
     }
 
     pub trait DRPartTypeAttrTrait {
         fn name() -> String;
+        // fn get_all_attr() -> HashMap<String, >;
     }
 
+    /// 用于描述一个零件的属性
     pub struct DRPartType<T>
     where
-        T: DRPartTypeAttrTrait,
+        T: DRPartTypeAttrTrait + Clone,
     {
         /// 部件 ID
         pub id: String,
@@ -1344,7 +1354,7 @@ pub mod dr {
         pub description: String,
         /// 贴图
         pub sprite: String,
-        ///pub r#type: SR1PartTypeEnum,
+        /// pub r#type: SR1PartTypeEnum,
         /// 质量，单位500kg
         pub mass: f64,
         /// 宽度，用于判断放置时是否回合其他零件重叠
@@ -1370,5 +1380,26 @@ pub mod dr {
         pub buoyancy: Option<f64>,
         // 附加属性
         pub attr: HashMap<String, T>,
+    }
+
+    impl<T: DRPartTypeAttrTrait> DRPartType<T>
+    where
+        T: DRPartTypeAttrTrait + Clone,
+    {
+        #[inline]
+        pub fn data_ref(&self, name: &str) -> Option<&T> {
+            if let Some(data) = self.attr.get(name) {
+                return Some(data);
+            }
+            None
+        }
+
+        #[inline]
+        pub fn data(&self, name: &str) -> Option<T> {
+            if let Some(data) = self.attr.get(name) {
+                return Some(data.clone());
+            }
+            None
+        }
     }
 }

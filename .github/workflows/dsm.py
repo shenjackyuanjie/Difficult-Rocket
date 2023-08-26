@@ -108,6 +108,7 @@ def main():
         return 0
     dsm.clear_dsm()
     dsm.upload_docs('docs/md5.txt')
+
     dsm.fl.logout()
 
 

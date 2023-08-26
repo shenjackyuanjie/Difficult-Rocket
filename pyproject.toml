@@ -6,7 +6,7 @@ build-backend = "pdm.pep517.api"
 
 [project]
 name = "difficult-rocket"
-version = "0.8.6.0"
+version = "0.8.7.1"
 description = "A rocket game"
 authors = [
     {name = "shenjackyuanjie", email = "3695888@qq.com"}
@@ -27,7 +27,7 @@ readme = "README.md"
 build = [
     "setuptools-rust>=1.5.2,<=1.6.0",
     "wheel>=0.38.4,<1.0.0",
-    "nuitka>=1.4,<1.5.0",
+    "nuitka>=1.8.1,<1.9.0",
     "setuptools>=65.5.0",
     "viztracer<1.0.0,>=0.15.4",
     "vizplugins<1.0.0,>=0.1.2",

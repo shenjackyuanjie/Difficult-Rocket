@@ -26,6 +26,7 @@ if __name__ == '__main__':
     compiler.python_cmd = sys.executable
 
     compiler.xml_path = Path(f"./build/compile_data-{time.time()}.xml")
+    compiler.report_path = Path(f"./build/compile_report-{time.time()}.xml")
 
     # 检测 --github 参数
     is_github = False
@@ -42,6 +43,10 @@ if __name__ == '__main__':
     if '--xml' in sys.argv:
         compiler.save_xml = True
         sys.argv.remove('--xml')
+
+    if '--report' in sys.argv:
+        compiler.save_report = True
+        sys.argv.remove('--report')
 
     # 检测 --output xx 参数
     if '--output' in sys.argv:

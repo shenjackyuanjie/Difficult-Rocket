@@ -34,6 +34,13 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
 
+      # 缓存 Rust 构建
+      - name: Cache rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspace: mods/dr_game/Difficult_Rocket_rs
+          key: dr_rs-v1
+
       # 获取短 sha
       - name: Get short commit sha
         id: get_short_sha

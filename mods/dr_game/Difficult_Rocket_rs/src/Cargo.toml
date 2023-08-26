@@ -40,5 +40,5 @@ version = "0.17.2"
 features = ["simd-stable"]
 
 [dependencies.pyo3]
-version = "0.19.2"
+version = "0.20.0"
 features = ["extension-module" , "macros"]

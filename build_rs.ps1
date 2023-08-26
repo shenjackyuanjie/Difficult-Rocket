@@ -4,7 +4,7 @@ Write-Output $args[0]
 
 $do = 0
 
-if ("38" -notin $args -and "39" -notin $args -and "310" -notin $args -and "311" -notin $args) {
+if ("38" -notin $args -and "39" -notin $args -and "310" -notin $args -and "311" -notin $args -and "312" -notin $args) {
     $do = 1
 }
 
@@ -21,6 +21,9 @@ if ($do -or "310" -in $args) {
 }
 if ($do -or "311" -in $args) {
     python3.11 setup.py build
+}
+if ($do -or "312" -in $args) {
+    python3.12 setup.py build
 }
 
 python3.8 post_build.py

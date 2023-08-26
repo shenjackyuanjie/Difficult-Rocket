@@ -655,7 +655,6 @@ pub mod ship {
             }
             Err(e) => {
                 println!("{:?}", e);
-                // println!("{:?}", e.provide());
             }
         }
         Ok(true)

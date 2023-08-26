@@ -14,7 +14,7 @@ from typing import List, Dict, Optional, TypeVar
 
 from Difficult_Rocket.mod.api import ModInfo
 from Difficult_Rocket.utils.translate import tr
-from Difficult_Rocket.api.types import Options, Version
+from Difficult_Rocket.api.types import Options
 
 Game = TypeVar('Game')
 

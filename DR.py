@@ -43,7 +43,7 @@ def start(start_time_ns: int) -> None:
         main_game.start()
         if DR_status.crash_report_test:
             raise TestError('debug crash test')
-    except:
+    except:  # noqa: E722
         trace = traceback.format_exc()
         crash.create_crash_report(trace)
         print(trace)

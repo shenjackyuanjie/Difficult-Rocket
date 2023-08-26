@@ -47,6 +47,10 @@ setup.use_time = "Client loading has used: {} second"
 setup.use_time_ns = "Client loading has used: {} nano second"
 config.save.start = "Saving config……"
 config.save.done = "Config saved"
+load.font.start = "Font loading~ from folder {}"
+load.font.file = "Loading font file: {}"
+load.font.error = "Font {} Load failed\ntraceback: {}"
+load.font.use_time = "Font loading has used: {} second"
 
 [window]
 setup.start = "Window start loading"

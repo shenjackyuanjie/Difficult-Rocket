@@ -10,7 +10,7 @@ import logging
 import traceback
 
 from pathlib import Path
-from typing import List, TYPE_CHECKING, Dict, Optional, Generator, Tuple
+from typing import List, Dict, Optional, Generator, Tuple
 
 from pyglet.gl import gl
 from pyglet.math import Mat4
@@ -52,6 +52,11 @@ class SR1ShipRenderStatus(Options):  # NOQA
     focus: bool = True
     moving: bool = False
 
+    # button status
+    show_moving: bool = False
+    show_focus: bool = False
+    show_scale: bool = False
+
     # debug status
     draw_d_pos: bool = False
     draw_mouse_pos: bool = False
@@ -60,6 +65,8 @@ class SR1ShipRenderStatus(Options):  # NOQA
 
 class SR1ShipRender(BaseScreen):
     """用于渲染 sr1 船的类"""
+
+    name = 'DR_game_sr1_ship_render'
 
     def __init__(self,
                  main_window: ClientWindow):
@@ -95,8 +102,7 @@ class SR1ShipRender(BaseScreen):
                                     x=main_window.width / 2, y=main_window.height / 2)
         self.render_d_label.visible = self.status.draw_d_pos
 
-        self.test_button = PressTextButton(x=100, y=100,
-                                           width=150, height=30, text='test button',
+        self.test_button = PressTextButton(x=100, y=100, width=150, height=30, text='test button',
                                            batch=self.main_batch, group=Group(5, parent=main_window.main_group))
         # self.test_button.push_handlers(main_window)
         main_window.push_handlers(self.test_button)
@@ -277,8 +283,9 @@ class SR1ShipRender(BaseScreen):
     def draw_batch(self, window: ClientWindow):
         if self.status.draw_done:
             self.render_d_label.text = f'x: {self.group_camera.view_x} y: {self.group_camera.view_y}'
-            self.render_d_label.position = self.group_camera.view_x + (self.window_pointer.width / 2), self.group_camera.view_y + (
-                    self.window_pointer.height / 2) + 10, 0  # 0 for z
+            self.render_d_label.position = self.group_camera.view_x + (
+                        self.window_pointer.width / 2), self.group_camera.view_y + (
+                                                   self.window_pointer.height / 2) + 10, 0  # 0 for z
             self.render_d_line.x2 = self.group_camera.view_x
             self.render_d_line.y2 = self.group_camera.view_y
 
@@ -478,7 +485,6 @@ class SR1ShipRender(BaseScreen):
     @view.setter
     def view(self, value: Mat4):
         self.window_pointer.view = value
-
 
 
 if __name__ == '__main__':

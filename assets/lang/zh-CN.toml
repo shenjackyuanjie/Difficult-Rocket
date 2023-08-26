@@ -47,6 +47,10 @@ setup.use_time = "客户端载入花费: {} 秒"
 setup.use_time_ns = "客户端载入花费: {} 纳秒"
 config.save.start = "正在保存配置文件"
 config.save.done = "配置文件保存完成"
+load.font.start = "正在加载文件夹 {} 下的字体文件"
+load.font.file = "正在加载字体文件: {}"
+load.font.error = "字体加载失败: {}\n错误信息: {}"
+load.font.use_time = "字体加载消耗时间: {} 秒"
 
 [window]
 setup.start = "游戏窗口加载开始"

@@ -10,7 +10,10 @@ import rtoml
 
 sys.path.append(os.path.abspath(os.curdir))
 
-from Difficult_Rocket import DR_status
+try:
+    from Difficult_Rocket import DR_status
+except ImportError:
+    raise
 
 args = ['-env', '-github-dev']
 

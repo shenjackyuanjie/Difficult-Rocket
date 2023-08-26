@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-from .lib import *
+from .lib import *  # noqa: F403
 
 from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
 

@@ -119,26 +119,28 @@ def pyglet_load_fonts_folder(folder) -> None:
     if not font_path.exists():
         font_path.mkdir(parents=True)
         return None
-    file_folder_list = os.listdir(folder)
-    for obj in file_folder_list:
-        if os.path.isfile(os.path.join(folder, obj)):
-            if obj[-4:] == '.ttf' or obj[-4:] == '.otf':
-                logger.debug(f'loading font {os.path.join(folder, obj)}')
+    logger.info(tr().client.load.font.start().format(font_path))
+    start_time = time.time_ns()
+    for dir_path, dir_names, file_names in os.walk(font_path):
+        dir_path = Path(dir_path)
+        for file_name in file_names:
+            file_name = Path(file_name)
+            if file_name.suffix in ('.ttf', '.otf'):
+                logger.debug(tr().client.load.font.file().format(str(dir_path / file_name)))
                 try:
-                    pyglet.font.add_file(os.path.join(folder, obj))
+                    pyglet.font.add_file(str(dir_path / file_name))
                 except Exception:
-                    logger.error(traceback.format_exc())
-                    logger.error(f'loading font {os.path.join(folder, obj)} failed')
-        else:
-            logger.info(f'loading font folder {os.path.join(folder, obj)}')
-            pyglet_load_fonts_folder(os.path.join(folder, obj))
+                    logger.error(tr().client.load.font.error().format(str(dir_path / file_name), traceback.format_exc()))
+    end_time = time.time_ns()
+    use_time = end_time - start_time
+    logger.info(tr().client.load.font.use_time().format(use_time / 1000000000))
 
 
 def _call_back(call_back: Callable) -> Callable:
     """
-    >>> def call_back():
+    >>> def call_back_example():
     >>>     pass
-    >>> @_call_back(call_back)
+    >>> @_call_back(call_back_example)
     >>> def on_draw(self):
     >>>     pass
     用于在调用窗口函数后调用指定函数 的装饰器
@@ -149,7 +151,7 @@ def _call_back(call_back: Callable) -> Callable:
         @functools.wraps(func)
         def warp(self: "ClientWindow", *args, **kwargs):
             result = func(self, *args, **kwargs)
-            call_back(self)
+            # call_back(self)
             return result
         return warp
     return wrapper
@@ -256,7 +258,7 @@ class ClientWindow(Window):
         end_time = time.time_ns()
         self.use_time = end_time - start_time
         DR_runtime.client_setup_cause_ns = self.use_time
-        self.logger.info(tr().window.setup.use_time().format(Decimal(self.use_time) / 1000000000))
+        self.logger.info(tr().window.setup.use_time().format(self.use_time / 1000000000))
         self.logger.debug(tr().window.setup.use_time_ns().format(self.use_time))
         self.count = 0
 
@@ -321,7 +323,7 @@ class ClientWindow(Window):
     def on_draw(self):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
-        pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
+        pyglet.gl.glClearColor(21/255, 22/255, 23/255, 0.0)
         self.clear()
         # self.draw_update(dt)  # TODO: wait for pyglet 2.1
         self.draw_update(float(self.SPF))
@@ -376,10 +378,10 @@ class ClientWindow(Window):
                 self.logger.debug(self.fps_log.fps_list)
             elif command.find('max'):
                 self.logger.info(self.fps_log.max_fps)
-                self.command.push_line(self.fps_log.max_fps, block_line=True)
+                # self.command.push_line(self.fps_log.max_fps, block_line=True)
             elif command.find('min'):
                 self.logger.info(self.fps_log.min_fps)
-                self.command.push_line(self.fps_log.min_fps, block_line=True)
+                # self.command.push_line(self.fps_log.min_fps, block_line=True)
         elif command.find('default'):
             self.set_size(int(self.main_config['window_default']['width']),
                           int(self.main_config['window_default']['height']))

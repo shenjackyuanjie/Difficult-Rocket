@@ -11,6 +11,7 @@ from os import PathLike
 from pyglet.event import EventDispatcher
 
 # Difficult Rocket function
+from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.command.api import CommandText
 
 if TYPE_CHECKING:
@@ -19,10 +20,12 @@ else:
     ClientWindow = TypeVar("ClientWindow")
 
 
-class BaseScreen(EventDispatcher):
+class BaseScreen(EventDispatcher, Options):
     """
     DR 的 页面API
     """
+
+    name: str = 'BaseScreen'
 
     def __init__(self, main_window: ClientWindow):
         super().__init__()

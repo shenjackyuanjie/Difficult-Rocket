@@ -5,6 +5,47 @@
   - DR sdk: 0.8.7.0
   - DR api: 0.1.1.0
 
+## Draft DR sdk 0.8.7.2
+
+### Add
+
+- `assets/fonts`
+  - `unifont.otf`
+    - `unifont v 15.1.02`
+
+### Translate key
+
+- Add
+  - `client`
+    - `load.font`
+      - `start`
+      - `file`
+      - `error`
+      - `use_time`
+
+### Enhance
+
+- `client.pyglet_load_fonts_folder`
+  - 现在使用 `os.walk` 遍历文件夹
+  - 使用 `tr` 进行日志记录
+
+## DR sdk 0.8.7.1
+
+### Add
+
+- `BaseScreen`
+  - 现在继承了 `Options`
+  - 添加了 `name` 选项来识别名称
+  - Now inherits `Options`
+  - Added `name` option to identify name
+- `gui.widget.PressTextButton`
+  - 作为 gui 的一部分
+  - 依然在测试阶段
+  - 有人发现 bug 请务必发 issue, 十分感谢
+  - As part of gui
+  - Still in the testing phase
+  - If you find a bug, please be sure to issue it, thank you very much
+
 ## DR sdk 0.8.7.0
 
 ### Add

@@ -8,4 +8,4 @@
 from typing import TYPE_CHECKING
 
 if not TYPE_CHECKING:
-    from .Difficult_Rocket_rs import *
+    from .Difficult_Rocket_rs import *  # noqa: F403

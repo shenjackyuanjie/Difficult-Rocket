@@ -7,7 +7,7 @@
 
 from typing import Tuple, Optional
 
-from pyglet.gl import gl_compat, gl
+from pyglet.gl import gl
 from pyglet.math import Mat4, Vec3
 from pyglet.graphics import Group
 

@@ -24,7 +24,7 @@
 [关于版本号的说明](./docs/src/version.md)
 
 [![release version](https://img.shields.io/badge/Release-0.8.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![pre version](https://img.shields.io/badge/Pre_Release-0.8.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![pre version](https://img.shields.io/badge/Pre_Release-0.8.7.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![devlo version](https://img.shields.io/badge/Devloping-0.8.7-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
@@ -51,20 +51,20 @@
 
 - `开发平台 1 - Windows 10 x64 22H2`
   - Python `3.8.10` / `3.10.11`
-    - pillow `9.5.0`
+    - pillow `10.0.0`
     - psutil `5.9.5`
     - rtoml `0.9.0`
-    - tomlkit `0.11.8`
+    - tomlkit `0.12.1`
     - defusedxml `0.7.1`
     - objprint `0.2.2`
     - viztracer `0.15.6`
     - vizplugins `0.1.3`
-    - nuitka `1.6.6`
+    - nuitka `1.7.10`
     - ordered-set `4.1.0`
-    - imageio `2.31.0`
-    - wheel `0.40.0`
-    - setuptools `67.8.0`
-    - setuptools-rust `1.6.0`
+    - imageio `2.31.2`
+    - wheel `0.41.2`
+    - setuptools `68.1.2`
+    - setuptools-rust `1.7.0`
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 

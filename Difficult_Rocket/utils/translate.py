@@ -58,7 +58,6 @@ key_type = Union[str, int, Hashable]
 
 
 class Translates:
-    name = 'Translate'
 
     def __init__(self, value: Union[Dict[str, Any], list, tuple, str],
                  config: Optional[TranslateConfig] = None,
