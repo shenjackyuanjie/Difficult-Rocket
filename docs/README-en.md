@@ -21,9 +21,9 @@
 
 [About Versions](src/version.md)
 
-[![Generic badge](https://img.shields.io/badge/Release-0.8.5.1-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Pre_Release-0.8.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![Generic badge](https://img.shields.io/badge/Devloping-0.8.6-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![release version](https://img.shields.io/badge/Release-0.8.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![pre version](https://img.shields.io/badge/Pre_Release-0.8.6.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![devlo version](https://img.shields.io/badge/Devloping-0.8.7-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 
