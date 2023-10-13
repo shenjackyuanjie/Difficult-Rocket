@@ -2,10 +2,19 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.7.0
+  - DR sdk: 0.8.7.2
   - DR api: 0.1.1.0
 
-## Draft DR sdk 0.8.7.2
+## Draft DR sdk 0.9.0.0
+
+### Add
+
+- 添加内置依赖: `lib-not-dr`
+  - Added built-in dependency: `lib-not-dr`
+  - 不再同时维护两份代码
+  - No longer maintain two sets of code at the same time
+
+## DR sdk 0.8.7.2
 
 ### Add
 
