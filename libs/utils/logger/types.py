@@ -29,5 +29,3 @@ class LogMessage(Options):
     stack_trace: Optional[FrameType] = None
 
 
-# [App -> Logger +-> Handler(Formatter)] -> Queue(log) -> [(File, Socket) Output] ?
-#                |-> Handler(Formatter) -> Console Output

@@ -6,7 +6,6 @@
 
 __all__ = [
     'camera',
-    'options',
     'thread',
     'tools',
     'translate'
