@@ -64,6 +64,7 @@ class Options:
     """
     name = 'Option Base'
     cached_options: Dict[str, Union[str, Any]] = {}
+    _check_options: bool = True
 
     def __init__(self, **kwargs):
         """
@@ -75,7 +76,7 @@ class Options:
             self._options: Dict[str, Union[Callable, object]] = {}
         self.flush_option()
         for option, value in kwargs.items():
-            if option not in self.cached_options:
+            if option not in self.cached_options and self._check_options:
                 raise OptionNameNotDefined(f"option: {option} with value: {value} is not defined")
             setattr(self, option, value)
         run_load_file = True

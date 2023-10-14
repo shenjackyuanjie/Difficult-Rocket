@@ -1,9 +1,17 @@
-
 # DR game/DR rs 更新日志
 
 - 最新版本号
   - DR game: 0.3.3.0
-  - DR rs: 0.2.22.0
+  - DR rs: 0.2.23.0
+
+## 20231101 DR rs 0.2.23.0
+
+### Dependency
+
+- Update `DR rs` dependency
+  - `quick-xml`: `0.30.0` -> `0.31.0`
+  - `serde`: `1.0.186` -> `1.0.190`
+  - `xml-rs`: `0.8.16` -> `0.8.19`
 
 ## 20230825 DR rs 0.2.22.0
 

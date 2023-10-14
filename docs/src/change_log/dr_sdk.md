@@ -1,4 +1,3 @@
-
 # DR SDK 更新日志
 
 - 最新版本号
@@ -13,6 +12,20 @@
   - Added built-in dependency: `lib-not-dr`
   - 不再同时维护两份代码
   - No longer maintain two sets of code at the same time
+
+### Fix
+
+- 如果没有 DR_game 的情况下, 退出时会 join 控制台线程
+  - 通过检测线程是否是守护线程来判断是否 join
+  - If there is no DR_game, join the console thread when exiting
+    - Determine whether to join by detecting whether the thread is a daemon thread
+
+### Dependency
+
+- 更新了所有的依赖版本号
+  - 去看 `requirements.txt` 吧
+- Updated all dependency version numbers
+  - Go see `requirements.txt`
 
 ## DR sdk 0.8.7.2
 

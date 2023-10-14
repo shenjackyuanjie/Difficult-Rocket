@@ -1086,9 +1086,6 @@ def test_logger(the_logger: Logger):
     the_logger.debug('debugging')
     the_logger.info("Hello World!!")
     the_logger.info("Hello World!!")
-    the_logger.info("Hello World!!")
-    the_logger.info("Hello World!!")
-    the_logger.info("Hello World!!")
     the_logger.warn('warning')
     the_logger.warn('warning')
     the_logger.error('error haaaa')
@@ -1111,9 +1108,9 @@ if __name__ == "__main__":
     a_logger.error('error haaaa')
     a_logger.fatal('oh no')
     logger.info('my name is:', logger.name)
-    for _ in range(5):
-        test_logger(logger)
-        test_logger(a_logger)
+    # for _ in range(5):
+    test_logger(logger)
+    test_logger(a_logger)
     print(Message_content(log_time=time.time(), text='aaa', level=4, marker='abc', end='abc', flush=False,
                           frame=inspect.currentframe()))
     print(ColorCodeEnum.code_line.name)

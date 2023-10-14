@@ -1,6 +1,6 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.2.22"
+version = "0.2.23"
 edition = "2021"
 license-file = '../../LICENSE'
 authors = [
@@ -22,15 +22,15 @@ opt-level = "s"
 # codegen-units = 1
 
 [dependencies.quick-xml]
-version = "0.30.0"
+version = "0.31.0"
 features = ["serialize"]
 
 [dependencies.serde]
-version = "1.0.186"
+version = "1.0.190"
 features = ["derive"]
 
 [dependencies.xml-rs]
-version = "0.8.16"
+version = "0.8.19"
 
 [dependencies.serde-xml-rs]
 version = "0.6.0"

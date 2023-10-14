@@ -47,14 +47,10 @@ if __name__ == '__main__':
     if '--report' in sys.argv:
         compiler.save_report = True
         sys.argv.remove('--report')
-
-    # 检测 --output xx 参数
-    if '--output' in sys.argv:
-        # 输入的是输出目录
-        out_path = sys.argv[sys.argv.index('--output') + 1]
-        compiler.output_path = Path(out_path)
-        sys.argv.remove('--output')
-        sys.argv.remove(out_path)
+    
+    if '--lto=yes' in sys.argv:
+        compiler.use_lto = True
+        sys.argv.remove('--lto=yes')
 
     # 检测 --no-pyglet-opt 参数
     pyglet_optimizations = True
@@ -88,6 +84,16 @@ if __name__ == '__main__':
         pprint(compiler.option())
     else:
         compiler.output_path = Path(f'./build/nuitka-{platform.system().lower()}')
+        compiler.show_memory = False
+        compiler.show_progress = False
+
+    # 检测 --output xx 参数
+    if '--output' in sys.argv:
+        # 输入的是输出目录
+        out_path = sys.argv[sys.argv.index('--output') + 1]
+        compiler.output_path = Path(out_path)
+        sys.argv.remove('--output')
+        sys.argv.remove(out_path)
 
     print(compiler.as_markdown())
 

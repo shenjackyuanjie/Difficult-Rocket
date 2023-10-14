@@ -26,6 +26,7 @@ from collections.abc import Iterator as _Iterator
 
 
 number = _typing.Union[float, int]
+Mat3T = _typing.TypeVar("Mat3T", bound="Mat3")
 Mat4T = _typing.TypeVar("Mat4T", bound="Mat4")
 
 
@@ -627,7 +628,7 @@ class Mat3(tuple):
     the "@" operator.
     """
 
-    def __new__(cls, values: _Iterable[float] = (1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0)) -> Mat3:
+    def __new__(cls: type[Mat3T], values: _Iterable[float] = (1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0)) -> Mat3T:
         """Create a 3x3 Matrix
 
         A Mat3 can be created with a list or tuple of 9 values.
@@ -639,7 +640,7 @@ class Mat3(tuple):
             `values` : tuple of float or int
                 A tuple or list containing 9 floats or ints.
         """
-        new = super().__new__(Mat3, values)
+        new = super().__new__(cls, values)
         assert len(new) == 9, "A 3x3 Matrix requires 9 values"
         return new
 
@@ -720,10 +721,10 @@ class Mat3(tuple):
 
 class Mat4(tuple):
 
-    def __new__(cls, values: _Iterable[float] = (1.0, 0.0, 0.0, 0.0,
-                                                 0.0, 1.0, 0.0, 0.0,
-                                                 0.0, 0.0, 1.0, 0.0,
-                                                 0.0, 0.0, 0.0, 1.0,)) -> Mat4:
+    def __new__(cls: type[Mat4T], values: _Iterable[float] = (1.0, 0.0, 0.0, 0.0,
+                                                              0.0, 1.0, 0.0, 0.0,
+                                                              0.0, 0.0, 1.0, 0.0,
+                                                              0.0, 0.0, 0.0, 1.0,)) -> Mat4T:
         """Create a 4x4 Matrix.
 
         `Mat4` is an immutable 4x4 Matrix, which includs most common
@@ -738,7 +739,7 @@ class Mat4(tuple):
         .. note:: Matrix multiplication is performed using the "@" operator.
         """
 
-        new = super().__new__(Mat4, values)
+        new = super().__new__(cls, values)
         assert len(new) == 16, "A 4x4 Matrix requires 16 values"
         return new
 
@@ -1011,3 +1012,106 @@ class Mat4(tuple):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}{self[0:4]}\n    {self[4:8]}\n    {self[8:12]}\n    {self[12:16]}"
+
+
+class Quaternion(tuple):
+    """Quaternion"""
+
+    def __new__(cls, w: float = 1.0, x: float = 0.0, y: float = 0.0, z: float = 0.0) -> Quaternion:
+        return super().__new__(Quaternion, (w, x, y, z))
+
+    @classmethod
+    def from_mat3(cls) -> Quaternion:
+        raise NotImplementedError("Not yet implemented")
+
+    @classmethod
+    def from_mat4(cls) -> Quaternion:
+        raise NotImplementedError("Not yet implemented")
+
+    def to_mat4(self) -> Mat4:
+        w = self.w
+        x = self.x
+        y = self.y
+        z = self.z
+
+        a = 1 - (y ** 2 + z ** 2) * 2
+        b = 2 * (x * y - z * w)
+        c = 2 * (x * z + y * w)
+
+        e = 2 * (x * y + z * w)
+        f = 1 - (x ** 2 + z ** 2) * 2
+        g = 2 * (y * z - x * w)
+
+        i = 2 * (x * z - y * w)
+        j = 2 * (y * z + x * w)
+        k = 1 - (x ** 2 + y ** 2) * 2
+
+        # a, b, c, -
+        # e, f, g, -
+        # i, j, k, -
+        # -, -, -, -
+
+        return Mat4((a, b, c, 0.0, e, f, g, 0.0, i, j, k, 0.0, 0.0, 0.0, 0.0, 1.0))
+
+    def to_mat3(self) -> Mat3:
+        w = self.w
+        x = self.x
+        y = self.y
+        z = self.z
+
+        a = 1 - (y ** 2 + z ** 2) * 2
+        b = 2 * (x * y - z * w)
+        c = 2 * (x * z + y * w)
+
+        e = 2 * (x * y + z * w)
+        f = 1 - (x ** 2 + z ** 2) * 2
+        g = 2 * (y * z - x * w)
+
+        i = 2 * (x * z - y * w)
+        j = 2 * (y * z + x * w)
+        k = 1 - (x ** 2 + y ** 2) * 2
+
+        # a, b, c, -
+        # e, f, g, -
+        # i, j, k, -
+        # -, -, -, -
+
+        return Mat3((a, b, c, e, f, g, i, j, k))
+
+    @property
+    def w(self) -> float:
+        return self[0]
+
+    @property
+    def x(self) -> float:
+        return self[1]
+
+    @property
+    def y(self) -> float:
+        return self[2]
+
+    @property
+    def z(self) -> float:
+        return self[3]
+
+    def conjugate(self) -> Quaternion:
+        return Quaternion(self.w, -self.x, -self.y, -self.z)
+
+    @property
+    def mag(self) -> float:
+        return self.__abs__()
+
+    def normalize(self) -> Quaternion:
+        m = self.__abs__()
+        if m == 0:
+            return self
+        return Quaternion(self[0] / m, self[1] / m, self[2] / m, self[3] / m)
+
+    def __abs__(self) -> float:
+        return _math.sqrt(self.w ** 2 + self.x ** 2 + self.y ** 2 + self.z ** 2)
+
+    def __invert__(self) -> Quaternion:
+        raise NotImplementedError("Not yet implemented")
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(w={self[0]}, x={self[1]}, y={self[2]}, z={self[3]})"

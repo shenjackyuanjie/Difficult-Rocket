@@ -52,8 +52,9 @@ def start(start_time_ns: int) -> None:
     print(crash.all_process)
     for a_thread in threading.enumerate():
         print(a_thread)
-        if a_thread.is_alive() and a_thread != threading.current_thread() and a_thread != threading.main_thread():
-            a_thread.join(2)  # wait for 2 sec
+        if a_thread.is_alive() and not a_thread.daemon:
+            if a_thread != threading.current_thread() and a_thread != threading.main_thread():
+                a_thread.join(2)  # wait for 2 sec
     import pyglet
     pyglet.app.exit()  # make sure that pyglet has stopped
 
