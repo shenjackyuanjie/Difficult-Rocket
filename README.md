@@ -47,6 +47,36 @@
 
 ## [更新日志](docs/src/change_log/readme.md)
 
+## 运行方式
+
+### clone
+
+```bash title="clone.sh"
+mkdir DR
+cd DR
+git clone https://github.com/shenjackyuanjie/Difficult-Rocket.git
+# 或者
+git clone https://gitee.com/shenjackyuanjie/Difficult-Rocket.git
+# 又或者
+git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
+```
+
+### 安装依赖
+
+```bash title="install.sh"
+python -m pip install -r requirements.txt
+git submodule update --init --recursive
+cd libs
+cd lib_not_dr
+python -m pip install .
+```
+
+### 运行
+
+```bash title="run.sh"
+python DR.py
+```
+
 ## 环境需求 (测试过的 / 开发平台)
 
 - `开发平台 1 - Windows 10 x64 22H2`

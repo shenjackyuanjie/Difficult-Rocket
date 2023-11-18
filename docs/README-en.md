@@ -45,6 +45,39 @@
 
 ## [Update logs](src/change_log/readme.md)
 
+## How To Run
+
+### clone
+
+### clone
+
+```bash title="clone.sh"
+mkdir DR
+cd DR
+git clone https://github.com/shenjackyuanjie/Difficult-Rocket.git
+# or
+git clone https://gitee.com/shenjackyuanjie/Difficult-Rocket.git
+# or
+git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
+```
+
+### Install requirements
+
+```bash title="install.sh"
+python -m pip install -r requirements.txt
+git submodule update --init --recursive
+cd libs
+cd lib_not_dr
+python -m pip install .
+```
+
+### Run
+
+```bash title="run.sh"
+python DR.py
+```
+
+
 ## Environment (been tested / developed on)
 
 - `Develop platform 1 - Windows 10 x64 22H2`
