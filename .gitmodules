@@ -1,0 +1,3 @@
+[submodule "libs/lib_not_dr"]
+	path = libs/lib_not_dr
+	url = git@github.com:shenjackyuanjie/lib-not-dr.git
