@@ -66,7 +66,7 @@ class SingleTextStyle:
 
     @tag.setter
     def tag(self, value: list):
-        assert type(value) == list, 'SingleTextStyle.tag must be list'
+        assert isinstance(value, list), 'SingleTextStyle.tag must be list'
         for tag in value:
             if tag not in self._tag:
                 self._tag.append(tag)
@@ -82,7 +82,7 @@ class SingleTextStyle:
         :param other: 叠加的字体样式
         :return: 叠加后的字体样式
         """
-        assert type(other) == SingleTextStyle, f'SingleTextStyle + other\n other must be the same type, not a {type(other)}'
+        assert isinstance(other, SingleTextStyle), f'SingleTextStyle + other\n other must be the same type, not a {type(other)}'
         return SingleTextStyle(
             font_name=other.font_name or self.font_name,
             font_size=other.font_size or self.font_size,
@@ -102,7 +102,7 @@ class SingleTextStyle:
         :param other: 叠加的字体样式
         :return: 叠加后的字体样式
         """
-        assert type(other) == SingleTextStyle, f'SingleTextStyle += other\n other must be the same type, not a {type(other)}'
+        assert isinstance(other, SingleTextStyle), f'SingleTextStyle += other\n other must be the same type, not a {type(other)}'
         self.font_name = other.font_name or self.font_name
         self.font_size = other.font_size or self.font_size
         self.bold = other.bold or self.bold
@@ -125,7 +125,7 @@ class SingleTextStyle:
         :param other: 叠加的字体样式
         :return: 是否相同
         """
-        assert type(other) == SingleTextStyle
+        assert isinstance(other, SingleTextStyle)
         return other.tag in self.tag
 
     def same_font(self, other: 'SingleTextStyle') -> bool:
@@ -134,7 +134,7 @@ class SingleTextStyle:
         :param other: 叠加的字体样式
         :return: 是否相同
         """
-        assert type(other) == SingleTextStyle
+        assert isinstance(other, SingleTextStyle)
         return (self.font_name == other.font_name and
                 self.font_size == other.font_size and
                 self.color == other.color and
@@ -146,7 +146,7 @@ class SingleTextStyle:
         :param other: 叠加的字体样式
         :return: 是否相同
         """
-        assert type(other) == SingleTextStyle
+        assert isinstance(other, SingleTextStyle)
         return self.bold == other.bold
 
     def same_italic(self, other: 'SingleTextStyle') -> bool:
@@ -155,7 +155,7 @@ class SingleTextStyle:
         :param other: 叠加的字体样式
         :return: 是否相同
         """
-        assert type(other) == SingleTextStyle
+        assert isinstance(other, SingleTextStyle)
         return self.italic == other.italic
 
     """

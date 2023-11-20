@@ -5,8 +5,7 @@
 #  -------------------------------
 
 import math
-from typing import Dict, Union, Optional
-from dataclasses import dataclass
+from typing import Dict, Union
 
 # pyglet
 from pyglet.image import load, AbstractImage

@@ -7,11 +7,11 @@
 from typing import Dict, Union
 from dataclasses import dataclass
 
-from libs.lib_not_dr.types.options import (Options,
-                                           OptionsError,
-                                           OptionNameNotDefined,
-                                           OptionNotFound,
-                                           get_type_hints_)
+from lib_not_dr.types.options import (Options,
+                                      OptionsError,
+                                      OptionNameNotDefined,
+                                      OptionNotFound,
+                                      get_type_hints_)
 from libs.MCDR.version import (Version,
                                VersionRequirement,
                                VersionParsingError)

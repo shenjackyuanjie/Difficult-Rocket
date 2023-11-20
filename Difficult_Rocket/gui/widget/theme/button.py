@@ -4,9 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
-from typing import Optional, Tuple
+from typing import Tuple
 
-from pyglet.shapes import Rectangle
 from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.gui.widget.theme import BaseTheme, FontTheme

@@ -40,17 +40,19 @@ build = [
 
 target-version = "py38"
 line-length = 150
-src = ["Difficult_Rocket", "libs/lib_not_dr", "libs/utils"]
+src = ["Difficult_Rocket", "libs/utils", "mods"]
+exclude = [
+    'libs/pyglet',
+    'libs/pyperclip',
+    'libs/lib_not_dr',
+    'libs/MCDR/serializer.py',
+    'libs/utils/logger-old.py', # 旧版日志, 忽略他就好
+]
 
-exclude = ['libs/pyglet', 'libs/pyperclip', 'libs/MCDR/serializer.py']
-
-[nuitka]
+[tool.lndl.nuitka]
 
 lto = "yes"
 main = "DR.py"
 clang = true
 standalone = true
 output-dir = "build/windows"
-
-
-

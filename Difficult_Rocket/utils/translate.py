@@ -37,7 +37,7 @@ class TranslateConfig:
 
     def set(self, item: str, value: Union[bool, "Tr", "Translates"]) -> 'TranslateConfig':
         assert getattr(self, item, None) is not None, f'Config {item} is not in TranslateConfig'
-        assert type(value) is bool
+        assert isinstance(value, bool)
         setattr(self, item, value)
         return self
 

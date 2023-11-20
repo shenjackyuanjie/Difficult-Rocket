@@ -125,7 +125,7 @@ class CommandLine(widgets.WidgetBase):
 
     @text.setter
     def text(self, value):
-        assert type(value) is str, 'CommandLine\'s text must be string!'
+        assert isinstance(value, str), 'CommandLine\'s text must be string!'
         self._text = value
         self._line.text = value
 
@@ -143,7 +143,7 @@ class CommandLine(widgets.WidgetBase):
         0 ~ (self.length-1) -> 切换视角到对应的行数
                                实际上还有一个限制
         """
-        assert type(value) is int, 'Command View must be integer'
+        assert isinstance(value, int), 'Command View must be integer'
         assert -self.length < value < self.length, f'Command View must be bigger than {-self.length} and smaller than {self.length}'
         if value == -1:  # flush command list
             self._label.insert(0, self._label[-1])
@@ -168,7 +168,7 @@ class CommandLine(widgets.WidgetBase):
 
     @editing.setter
     def editing(self, value):
-        assert type(value) is bool, 'Command editing must be bool!'
+        assert isinstance(value, bool), 'Command editing must be bool!'
         self._editing = value
         self._line.visible = value
         self._outline.visible = value
