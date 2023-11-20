@@ -36,7 +36,13 @@ jobs:
     steps:
       # Check-out repository
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      # 初始化子模块
+      - name: Init submodules
+        run: |
+          git submodule init
+          git submodule update
 
       # 安装 Python
       - name: Setup Python ${{ matrix.python-version }}

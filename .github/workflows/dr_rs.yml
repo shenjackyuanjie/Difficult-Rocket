@@ -32,13 +32,19 @@ jobs:
     steps:
       # Check-out repository
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      # check out submodule
+      - name: init submodule
+        run: |
+          git submodule init
+          git submodule update
 
       # 缓存 Rust 构建
       - name: Cache rust
         uses: Swatinem/rust-cache@v2
         with:
-          workspace: mods/dr_game/Difficult_Rocket_rs
+          workspaces: mods/dr_game/Difficult_Rocket_rs
           key: dr_rs-v1
 
       # 获取短 sha
