@@ -54,5 +54,7 @@ exclude = [
 lto = "yes"
 main = "DR.py"
 clang = true
+msvc = "latest"
 standalone = true
-output-dir = "build/windows"
+output-dir = "build"
+
