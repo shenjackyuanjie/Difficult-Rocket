@@ -45,7 +45,7 @@ config_version = 1
 
     [Outstream.std_out]
     # 输出流名称
-    class = "StdOutputStream
+    class = "StdOutputStream"
     # 输出流参数
     formatter = "std_formatter"
     use_stderr = false
