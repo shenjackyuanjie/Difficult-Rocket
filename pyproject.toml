@@ -49,12 +49,55 @@ exclude = [
     'libs/utils/logger-old.py', # 旧版日志, 忽略他就好
 ]
 
+[tool.lndl]
+nuitka-script = 'nuitka-script.py'
+
 [tool.lndl.nuitka]
+main = "DR.py"
 
 lto = "yes"
-main = "DR.py"
 clang = true
 msvc = "latest"
-standalone = true
-output-dir = "build"
+mingw64 = false
 
+standalone = true
+output-dir = "build/nuitka"
+run = false
+
+disable-console = false
+assume-yes-for-download = true
+
+company-name = 'tool-shenjack-workshop'
+product-name = 'Difficult Rocket'
+file-version = false  # require script
+product-version = false  # require script
+macos-app-version = false  # require script
+file-description = 'Difficult Rocket a rocket game'
+copyright = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'
+
+windows-icon-from-ico = 'assets/textures/icon.png'  # require script
+macos-app-icon = 'assets/textures/icon.png'  # require script
+linux-icon = 'assets/textures/icon.png'  # require script
+
+nofollow-import-to = [
+    'objprint',
+    'PIL',
+    'cffi',
+    'pydoc',
+    'numpy',
+    'email',
+    'win32con',
+    'smtplib',
+    'win32evtlog',
+    'win32evtlogutil',
+    'win32api'
+]
+
+include-data-dir = [
+    ['./config', './config'],
+    ['./assets', './assets']
+]
+include-packages = ['Difficult_Rocket.api']
+# DR.api 没有直接 import, 所以需要手动添加
+
+disable-plugin = ['pyqt5', 'tk-inter']
