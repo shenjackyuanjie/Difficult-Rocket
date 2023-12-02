@@ -4,7 +4,7 @@ build-backend = "nuitka.distutils.Build"
 
 [project]
 name = "difficult-rocket"
-version = "0.8.7.2"
+version = "0.8.7.3"
 description = "A rocket game"
 authors = [{ name = "shenjackyuanjie", email = "3695888@qq.com" }]
 dependencies = [
