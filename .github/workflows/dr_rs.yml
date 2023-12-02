@@ -35,10 +35,10 @@ jobs:
         uses: actions/checkout@v4
 
       # check out submodule
-      # - name: init submodule
-      #   run: |
-      #     git submodule init
-      #     git submodule update
+      - name: init submodule
+        run: |
+          git submodule init
+          git submodule update
 
       # 缓存 Rust 构建
       - name: Cache rust

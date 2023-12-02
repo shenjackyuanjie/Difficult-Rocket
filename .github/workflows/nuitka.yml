@@ -39,11 +39,10 @@ jobs:
         uses: actions/checkout@v4
 
       # 初始化子模块
-      # 暂时不需要 因为直接用 git install
-      # - name: Init submodules
-      #   run: |
-      #     git submodule init
-      #     git submodule update
+      - name: Init submodules
+        run: |
+          git submodule init
+          git submodule update
 
       # 安装 Python
       - name: Setup Python ${{ matrix.python-version }}
