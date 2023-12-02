@@ -24,11 +24,11 @@ def print_path() -> None:
     print(f'{sys.argv[0]=}')
     print(f'{Path.cwd()=}')
     print(f'{Path(__file__).absolute()=}')
+    print(f'{Path(__file__).parent=}')
 
 
 def modify_path() -> None:
     os.chdir(Path(__file__).parent)  # 将运行路径切换到文件位置 防止bug
-    sys.path.append('./Difficult_Rocket')  # 添加local path
     sys.path.append('./libs')  # 添加 libs path
 
 
