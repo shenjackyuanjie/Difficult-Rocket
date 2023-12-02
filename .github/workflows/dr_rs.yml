@@ -75,7 +75,7 @@ jobs:
       - name: Install env
         run: |
           pip install -r requirement-dev.txt
-          pip install git+https://github.com/shenjackyuanjie/lib-not-dr.git
+          pip install libs/lib_not_dr
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info

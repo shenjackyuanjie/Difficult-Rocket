@@ -58,8 +58,8 @@ jobs:
       # 安装特殊依赖
       - name: Install git denpendencies
         run: |
-          pip install git+https://github.com/shenjackyuanjie/pyglet.git
-          pip install git+https://github.com/shenjackyuanjie/lib-not-dr.git
+          pip install libs/lib_not_dr
+          pip install libs/pyglet
 
       # 安装依赖
       - name: Install env
