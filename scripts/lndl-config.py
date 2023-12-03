@@ -28,13 +28,13 @@ def gen_pyglet_no_follow_import() -> list:
     ]
     no_follow_import += [
         f"pyglet.canvas.{x}"
-        for x in [
+        for x in (
             "win32",
             "xlib",
             "xlib_vidmoderstore",
             "cocoa",
             "headless",
-        ]
+        )
     ]
     no_follow_import += [
         f"pyglet.gl.{x}" for x in ["win32", "xlib", "cocoa", "headless"]
@@ -67,7 +67,7 @@ def main(config: raw_config_type) -> nuitka_config_type:
     config['macos-app-version'] = str(sdk_version)
 
     config['nofollow-import-to'] += gen_pyglet_no_follow_import()
+    config['output-dir'] = './build/nuitka-' + platform.system().lower()
 
     print('done', config)
     return config
-

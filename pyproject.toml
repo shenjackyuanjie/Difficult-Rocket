@@ -110,7 +110,7 @@ include-data-dir = [
     ['./config', './config'],
     ['./assets', './assets']
 ]
-include-packages = ['Difficult_Rocket.api']
+include-package = ['Difficult_Rocket.api']
 # DR.api 没有直接 import, 所以需要手动添加
 
 disable-plugin = ['pyqt5', 'tk-inter']
