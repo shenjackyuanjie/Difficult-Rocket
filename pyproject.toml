@@ -59,12 +59,8 @@ select = [
 ]
 ignore = ["I001"]  # do not sort my imports
 
-
-[tool.lndl]
-nuitka-script = 'nuitka-script.py'
-
 [tool.lndl.nuitka]
-script = 'nuitka-config.py'
+script = 'scripts/lndl-config.py'
 
 [tool.lndl.nuitka.cli]
 main = "DR.py"
