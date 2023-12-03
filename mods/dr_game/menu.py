@@ -16,10 +16,10 @@ class Menu(BaseScreen):
     """
     DR game 的 菜单
     """
-    name = 'DR_game_menu'
 
-    def __init__(self,
-                 main_window: ClientWindow):
+    name = "DR_game_menu"
+
+    def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
         self.main_batch = Batch()
         self.main_group = Group(parent=main_window.main_group, order=1)

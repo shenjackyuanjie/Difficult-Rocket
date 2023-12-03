@@ -14,27 +14,29 @@ from pyglet.graphics import Group
 
 class Camera:
     """
-    
+
     >>> from pyglet.window import Window
     >>> window = Window()
-    
+
     >>> camera = Camera(window)
     >>> @window.event
-    
+
     >>> def on_draw():
     >>>     camera.begin()
     >>>     window.clear()
     >>>     camera.end()
-    
+
     """
 
-    def __init__(self,
-                 window,
-                 zoom: Optional[float] = 1.0,
-                 dx: Optional[float] = 1.0,
-                 dy: Optional[float] = 1.0,
-                 min_zoom: Optional[float] = 1.0,
-                 max_zoom: Optional[float] = 1.0) -> None:
+    def __init__(
+        self,
+        window,
+        zoom: Optional[float] = 1.0,
+        dx: Optional[float] = 1.0,
+        dy: Optional[float] = 1.0,
+        min_zoom: Optional[float] = 1.0,
+        max_zoom: Optional[float] = 1.0,
+    ) -> None:
         self.window = window
         self.dx = dx
         self.dy = dy
@@ -89,13 +91,13 @@ class Camera:
 class CenterCamera(Camera):
     """
     A camera that centers the view in the center of the window
-    
+
     >>> from pyglet.window import Window
     >>> window = Window()
-    
+
     >>> camera = CenterCamera(window)
     >>> @window.event
-    
+
     >>> def on_draw():
     >>>     camera.begin()
     >>>     window.clear()
@@ -123,15 +125,17 @@ class GroupCamera(Group):
     can be used by just added to your widget
     """
 
-    def __init__(self,
-                 window,
-                 order: int = 0,
-                 parent: Optional[Group] = None,
-                 view_x: Optional[int] = 0,
-                 view_y: Optional[int] = 0,
-                 zoom: Optional[float] = 1.0,
-                 min_zoom: Optional[float] = 1.0,
-                 max_zoom: Optional[float] = 1.0):
+    def __init__(
+        self,
+        window,
+        order: int = 0,
+        parent: Optional[Group] = None,
+        view_x: Optional[int] = 0,
+        view_y: Optional[int] = 0,
+        zoom: Optional[float] = 1.0,
+        min_zoom: Optional[float] = 1.0,
+        max_zoom: Optional[float] = 1.0,
+    ):
         super().__init__(order=order, parent=parent)
         self._window = window
         self._previous_view = None
@@ -214,17 +218,19 @@ class CenterGroupFrame(Group):
     can be used by just added to your widget
     """
 
-    def __init__(self,
-                 window,
-                 order: int = 0,
-                 parent: Optional[Group] = None,
-                 dx: Optional[int] = 0,
-                 dy: Optional[int] = 0,
-                 width: Optional[int] = 0,
-                 height: Optional[int] = 0,
-                 zoom: Optional[float] = 1.0,
-                 min_zoom: Optional[float] = 1.0,
-                 max_zoom: Optional[float] = 1.0):
+    def __init__(
+        self,
+        window,
+        order: int = 0,
+        parent: Optional[Group] = None,
+        dx: Optional[int] = 0,
+        dy: Optional[int] = 0,
+        width: Optional[int] = 0,
+        height: Optional[int] = 0,
+        zoom: Optional[float] = 1.0,
+        min_zoom: Optional[float] = 1.0,
+        max_zoom: Optional[float] = 1.0,
+    ):
         super().__init__(order=order, parent=parent)
         self.window = window
         self.dx = dx
@@ -247,7 +253,9 @@ class CenterGroupFrame(Group):
         self._previous_view = self.window.view
 
         gl.glScissor(int(self.dx), int(self.dy), int(self._width), int(self._height))
-        gl.glViewport(int(self.dx), int(self.dy), int(self.window.width), int(self.window.height))
+        gl.glViewport(
+            int(self.dx), int(self.dy), int(self.window.width), int(self.window.height)
+        )
         gl.glEnable(gl.GL_SCISSOR_TEST)
 
         x = (self.window.width / 2) / self._zoom + (self.dx / self._zoom)

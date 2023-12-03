@@ -13,6 +13,7 @@ gitee:  @shenjackyuanjie
 
 # import time
 import logging
+
 # import traceback
 import logging.config
 import multiprocessing
@@ -23,29 +24,31 @@ from typing import List, Optional, Dict
 
 # from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
+
 # from Difficult_Rocket.utils.translate import tr
 # from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.mod.loader import ModManager
 from Difficult_Rocket.utils.thread import new_thread
+
 # from Difficult_Rocket.crash import write_info_to_cache
 from Difficult_Rocket import client, server, DR_status
 
 
 class Console(Options):
-    name = 'python stdin console'
+    name = "python stdin console"
 
     running: bool = False
     caches: List[str] = []
 
-    @new_thread('python console', daemon=True, log_thread=True)
+    @new_thread("python console", daemon=True, log_thread=True)
     def main(self):
         while self.running:
             try:
-                get_str = input('>>>')
+                get_str = input(">>>")
             except (EOFError, KeyboardInterrupt):
-                get_str = 'stop'
+                get_str = "stop"
             self.caches.append(get_str)
-            if get_str == 'stop':
+            if get_str == "stop":
                 self.running = False
                 break
 
@@ -64,7 +67,7 @@ class Console(Options):
 
 
 class Game(Options):
-    name = 'MainGame'
+    name = "MainGame"
 
     client: client.Client
     server: server.Server
@@ -82,11 +85,12 @@ class Game(Options):
     def init_mods(self) -> None:
         """验证/加载 mod"""
         from Difficult_Rocket.mod import loader as mod_loader
-        mod_loader.logger = logging.getLogger('mod_manager')
+
+        mod_loader.logger = logging.getLogger("mod_manager")
         self.mod_manager = ModManager()
         mod_class = self.mod_manager.load_mods()
         self.mod_manager.init_mods(mod_class)
-        self.dispatch_mod_event('on_load', game=self)
+        self.dispatch_mod_event("on_load", game=self)
 
     def init_console(self) -> None:
         self.console = self.console_class()
@@ -96,7 +100,9 @@ class Game(Options):
         self.server.run()
         if DR_status.use_multiprocess:
             try:
-                game_process = multiprocessing.Process(target=self.client.start, name='pyglet app')
+                game_process = multiprocessing.Process(
+                    target=self.client.start, name="pyglet app"
+                )
                 game_process.start()
                 game_process.join()
             except Exception:
@@ -107,14 +113,14 @@ class Game(Options):
             self.client.start()
 
     def log_env(self) -> None:
-        self.logger.info(f'\n{self.as_markdown()}')
+        self.logger.info(f"\n{self.as_markdown()}")
 
     def setup(self) -> None:
-        self.client = client.Client(game=self, net_mode='local')
-        self.server = server.Server(net_mode='local')
+        self.client = client.Client(game=self, net_mode="local")
+        self.server = server.Server(net_mode="local")
 
     def init(self, **kwargs) -> bool:
-        self.logger = logging.getLogger('main')
+        self.logger = logging.getLogger("main")
         self.load_file()
         self.setup()
         self.log_env()

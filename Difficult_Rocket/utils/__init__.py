@@ -4,9 +4,4 @@
 #  All rights reserved
 #  -------------------------------
 
-__all__ = [
-    'camera',
-    'thread',
-    'tools',
-    'translate'
-]
+__all__ = ["camera", "thread", "tools", "translate"]

@@ -28,78 +28,91 @@ from defusedxml.ElementTree import parse
 from Difficult_Rocket.exception.unsupport import NoMoreJson5
 
 # logger
-tools_logger = logging.getLogger('tools')
+tools_logger = logging.getLogger("tools")
 """
 file config
 """
 
-file_error = {FileNotFoundError: 'no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}',
-              KeyError:          'no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}',
-              Exception:         'get some {error_type} when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}'}
+file_error = {
+    FileNotFoundError: "no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}",
+    KeyError: "no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}",
+    Exception: "get some {error_type} when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}",
+}
 
 
-def load_file(file_name: Union[str, Path],
-              stack: Optional[Union[str, list, dict]] = None,
-              raise_error: Optional[bool] = True,
-              encoding: Optional[str] = 'utf-8') -> Union[dict, ElementTree.ElementTree]:
+def load_file(
+    file_name: Union[str, Path],
+    stack: Optional[Union[str, list, dict]] = None,
+    raise_error: Optional[bool] = True,
+    encoding: Optional[str] = "utf-8",
+) -> Union[dict, ElementTree.ElementTree]:
     if isinstance(file_name, Path):
         file_name = str(file_name)
-    f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
-    get_file = NotImplementedError('解析失败，请检查文件类型/文件内容/文件是否存在！')
+    f_type = file_name[file_name.rfind(".") + 1 :]  # 从最后一个.到末尾 (截取文件格式)
+    get_file = NotImplementedError("解析失败，请检查文件类型/文件内容/文件是否存在！")
     try:
-        if f_type == 'xml':
+        if f_type == "xml":
             xml_load: ElementTree.ElementTree = parse(file_name)
             if stack is not None:
                 get_file = xml_load.findall(stack)
-        elif (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
+        elif (f_type == "config") or (f_type == "conf") or (f_type == "ini"):
             get_file = configparser.ConfigParser()
             get_file.read(file_name)
             if stack:
                 get_file = get_file[stack]
-        elif f_type == 'toml':
-            with open(file_name, mode='r', encoding=encoding) as file:
+        elif f_type == "toml":
+            with open(file_name, mode="r", encoding=encoding) as file:
                 get_file = rtoml.load(file)
             if stack is not None:
                 get_file = get_file[stack]
-        elif f_type == 'json':
-            with open(file_name, mode='r', encoding=encoding) as file:
+        elif f_type == "json":
+            with open(file_name, mode="r", encoding=encoding) as file:
                 get_file = json.load(file)
             if stack is not None:
                 get_file = get_file[stack]
-        elif f_type == 'json5':
+        elif f_type == "json5":
             raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:
         error_type = type(exp)
         if error_type in file_error:
-            tools_logger.error(file_error[error_type].format(filetype=f_type, filename=file_name, stack=stack))
+            tools_logger.error(
+                file_error[error_type].format(
+                    filetype=f_type, filename=file_name, stack=stack
+                )
+            )
         else:
-            tools_logger.error(file_error[Exception].format(error_type=error_type, filetype=f_type, filename=file_name, stack=stack))
+            tools_logger.error(
+                file_error[Exception].format(
+                    error_type=error_type,
+                    filetype=f_type,
+                    filename=file_name,
+                    stack=stack,
+                )
+            )
         if raise_error:
             raise exp from None
     return get_file
 
 
-def save_dict_file(file_name: str,
-                   data: dict,
-                   encoding: str = 'utf-8') -> bool:
-    f_type = file_name[file_name.rfind('.') + 1:]  # 从最后一个.到末尾 (截取文件格式)
+def save_dict_file(file_name: str, data: dict, encoding: str = "utf-8") -> bool:
+    f_type = file_name[file_name.rfind(".") + 1 :]  # 从最后一个.到末尾 (截取文件格式)
     try:
-        if (f_type == 'config') or (f_type == 'conf') or (f_type == 'ini'):
+        if (f_type == "config") or (f_type == "conf") or (f_type == "ini"):
             return False
-        elif f_type == 'toml':
-            with open(file_name, mode='w', encoding=encoding) as file:
+        elif f_type == "toml":
+            with open(file_name, mode="w", encoding=encoding) as file:
                 rtoml.dump(data, file)
-        elif f_type == 'json':
-            with open(file_name, mode='w', encoding=encoding) as file:
+        elif f_type == "json":
+            with open(file_name, mode="w", encoding=encoding) as file:
                 json.dump(data, file)
-        elif f_type == 'json5':
+        elif f_type == "json5":
             raise NoMoreJson5("我说什么也不用json5了！喵的")
     except Exception as exp:
         raise exp
 
 
 # main config
-main_config_file = load_file('./config/main.toml')
+main_config_file = load_file("./config/main.toml")
 
 
 def get_At(name, in_xml, need_type=str):
@@ -124,7 +137,9 @@ def get_At(name, in_xml, need_type=str):
         else:
             return None
     else:
-        raise TypeError('only str and list type is ok but you give me a' + name_type + 'type')
+        raise TypeError(
+            "only str and list type is ok but you give me a" + name_type + "type"
+        )
     return need_type(attr)
 
 
@@ -134,11 +149,11 @@ def default_name_handler(name_: str) -> str:
     just return one
     """
     name = name_
-    name = name.replace('{time.time}', str(time.time()))
-    name = name.replace('{dir}', str(os.getcwd()))
-    name = name.replace('{py_v}', str(sys.version.split(' ')[0]))
-    name = name.replace('{version}', str(main_config_file['runtime']['version']))
-    name = name.replace('{write_v}', str(main_config_file['runtime']['write_py_v']))
+    name = name.replace("{time.time}", str(time.time()))
+    name = name.replace("{dir}", str(os.getcwd()))
+    name = name.replace("{py_v}", str(sys.version.split(" ")[0]))
+    name = name.replace("{version}", str(main_config_file["runtime"]["version"]))
+    name = name.replace("{write_v}", str(main_config_file["runtime"]["write_py_v"]))
     return name
 
 
@@ -148,11 +163,13 @@ def name_handler(name: str, formats: dict = None) -> str:
     name = default_name_handler(name)
     for need_replace in formats:
         replace = formats[need_replace]
-        if need_replace == '{date}':
-            if '{date}' in formats:
-                replace = time.strftime(formats['{date}'], time.gmtime(time.time()))
+        if need_replace == "{date}":
+            if "{date}" in formats:
+                replace = time.strftime(formats["{date}"], time.gmtime(time.time()))
             else:
-                replace = time.strftime(main_config_file['runtime']['date_fmt'], time.gmtime(time.time()))
+                replace = time.strftime(
+                    main_config_file["runtime"]["date_fmt"], time.gmtime(time.time())
+                )
         name = name.replace(need_replace, replace)
     return name
 
@@ -161,8 +178,8 @@ def name_handler(name: str, formats: dict = None) -> str:
 some tools
 """
 
-yes = ['true', '1', 1, 1.0, True]
-no = ['false', '0', 0, 0.0, False, None]
+yes = ["true", "1", 1, 1.0, True]
+no = ["false", "0", 0, 0.0, False, None]
 
 
 def format_bool(thing) -> bool:
@@ -184,27 +201,38 @@ def format_bool(thing) -> bool:
         raise TypeError("Need a 'like bool' not a {}".format(thing))
 
 
-level_ = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL',
-          logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL]
+level_ = [
+    "DEBUG",
+    "INFO",
+    "WARNING",
+    "ERROR",
+    "CRITICAL",
+    logging.DEBUG,
+    logging.INFO,
+    logging.WARNING,
+    logging.ERROR,
+    logging.CRITICAL,
+]
 
 
 def log_level(level):
     if level in level_:
-        if (level == 'DEBUG') or (level == logging.DEBUG):
+        if (level == "DEBUG") or (level == logging.DEBUG):
             return logging.DEBUG
-        if (level == 'INFO') or (level == logging.INFO):
+        if (level == "INFO") or (level == logging.INFO):
             return logging.INFO
-        if (level == 'WARNING') or (level == logging.WARNING):
+        if (level == "WARNING") or (level == logging.WARNING):
             return logging.WARNING
-        if (level == 'ERROR') or (level == logging.ERROR):
+        if (level == "ERROR") or (level == logging.ERROR):
             return logging.ERROR
-        if (level == 'CRITICAL') or (level == logging.CRITICAL):
+        if (level == "CRITICAL") or (level == logging.CRITICAL):
             return logging.CRITICAL
     else:
-        raise ValueError('Need a like logging.level thing not anything else')
+        raise ValueError("Need a like logging.level thing not anything else")
 
 
 # linear_algebra
+
 
 def C_R_P(position, degrees):  # stand for calculation
     """
@@ -215,5 +243,8 @@ def C_R_P(position, degrees):  # stand for calculation
     radians = degrees * (math.pi / 180)
     cos = math.cos(radians)
     sin = math.sin(radians)
-    rotated_pos = (position[0] * cos - position[1] * sin, position[0] * sin + position[1] * cos)
+    rotated_pos = (
+        position[0] * cos - position[1] * sin,
+        position[0] * sin + position[1] * cos,
+    )
     return rotated_pos

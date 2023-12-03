@@ -17,14 +17,14 @@ from Difficult_Rocket.exception.unsupport import (
     ThinkError,
     BrainError,
     BigBrainError,
-    GrammarError
+    GrammarError,
 )
 
 __all__ = [
-    'NoMoreJson5',
-    'Nope418ImATeapot',
-    'ThinkError',
-    'BrainError',
-    'BigBrainError',
-    'GrammarError'
+    "NoMoreJson5",
+    "Nope418ImATeapot",
+    "ThinkError",
+    "BrainError",
+    "BigBrainError",
+    "GrammarError",
 ]

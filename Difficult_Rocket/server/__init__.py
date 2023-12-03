@@ -26,17 +26,17 @@ from Difficult_Rocket.utils.translate import tr
 
 
 class Server:
-    def __init__(self, net_mode='local'):
+    def __init__(self, net_mode="local"):
         start_time = time.time()
         # logging
-        self.logger = logging.getLogger('server')
+        self.logger = logging.getLogger("server")
         self.logger.info(tr().server.setup.start())
         # value
         self.process_id = os.getpid()
         # os.set
-        self.process_name = 'server process'
+        self.process_name = "server process"
         # config
-        self.config = tools.load_file('config/main.toml')
+        self.config = tools.load_file("config/main.toml")
         # self.dev = Dev
         # self.net_mode = net_mode
         self.logger.info(tr().server.setup.use_time().format(time.time() - start_time))
@@ -45,4 +45,4 @@ class Server:
         self.logger.info(tr().server.os.pid_is().format(os.getpid(), os.getppid()))
 
     def __repr__(self):
-        return f'<Server {self.process_name} {self.process_id}>'
+        return f"<Server {self.process_name} {self.process_id}>"

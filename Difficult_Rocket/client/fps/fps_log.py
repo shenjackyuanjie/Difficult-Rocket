@@ -18,9 +18,7 @@ from decimal import Decimal
 
 
 class FpsLogger:
-    def __init__(self,
-                 stable_fps: int = 60,
-                 count: int = 700):
+    def __init__(self, stable_fps: int = 60, count: int = 700):
         self.stable_fps = stable_fps
         self.count = count
         self._fps = stable_fps
@@ -30,9 +28,7 @@ class FpsLogger:
         self._max_fps = stable_fps
         self._min_fps = stable_fps
 
-    def update_tick(self,
-                    pyglet_fps: float,
-                    tick: Decimal):
+    def update_tick(self, pyglet_fps: float, tick: Decimal):
         if pyglet_fps != 0:
             self.fps_list.append(pyglet_fps)
         elif tick == 0:
@@ -40,11 +36,13 @@ class FpsLogger:
         else:
             self.fps_list.append(float(1 / tick))
         if len(self.fps_list) > self.count:
-            self.fps_list = self.fps_list[-self.count + 1:]  # 整个列表往前挪一位
+            self.fps_list = self.fps_list[-self.count + 1 :]  # 整个列表往前挪一位
         if len(self.get_fps_list) > self.count:
-            self.get_fps_list = self.get_fps_list[-self.count + 1:]  # 整个列表往前挪一位
+            self.get_fps_list = self.get_fps_list[-self.count + 1 :]  # 整个列表往前挪一位
         try:
-            self._fps = statistics.geometric_mean(self.fps_list[-100:])  # 取最后100个值的平均值
+            self._fps = statistics.geometric_mean(
+                self.fps_list[-100:]
+            )  # 取最后100个值的平均值
             self.middle_fps = statistics.median(self.fps_list)  # 取中间值
         except Exception:
             print(self.fps_list)

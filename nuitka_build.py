@@ -19,7 +19,7 @@ from pathlib import Path
 from libs.utils import nuitka
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     compiler = nuitka.CompilerHelper()
 
     # 修改 python 执行文件 为 运行时的 python
@@ -30,69 +30,89 @@ if __name__ == '__main__':
 
     # 检测 --github 参数
     is_github = False
-    if '--github' in sys.argv:
+    if "--github" in sys.argv:
         is_github = True
         compiler.use_ccache = False
         compiler.show_memory = False
         compiler.show_progress = False
-        compiler.output_path = Path('./build/github')
-        compiler.python_cmd = 'python'
+        compiler.output_path = Path("./build/github")
+        compiler.python_cmd = "python"
         compiler.save_xml = False
 
     # 检测 --xml 参数
-    if '--xml' in sys.argv:
+    if "--xml" in sys.argv:
         compiler.save_xml = True
-        sys.argv.remove('--xml')
+        sys.argv.remove("--xml")
 
-    if '--report' in sys.argv:
+    if "--report" in sys.argv:
         compiler.save_report = True
-        sys.argv.remove('--report')
-    
-    if '--lto=yes' in sys.argv:
+        sys.argv.remove("--report")
+
+    if "--lto=yes" in sys.argv:
         compiler.use_lto = True
-        sys.argv.remove('--lto=yes')
+        sys.argv.remove("--lto=yes")
 
     # 检测 --no-pyglet-opt 参数
     pyglet_optimizations = True
-    if pyglet_optimizations and '--no-pyglet-opt' not in sys.argv:
+    if pyglet_optimizations and "--no-pyglet-opt" not in sys.argv:
+        compiler.no_follow_import += [
+            f"pyglet.app.{x}" for x in ["win32", "xlib", "cocoa"]
+        ]
+        compiler.no_follow_import += [
+            f"pyglet.input.{x}" for x in ["win32", "linux", "macos"]
+        ]
+        compiler.no_follow_import += [
+            f"pyglet.libs.{x}"
+            for x in ["win32", "x11", "wayland", "darwin", "egl", "headless"]
+        ]
+        compiler.no_follow_import += [
+            f"pyglet.window.{x}" for x in ["win32", "xlib", "cocoa", "headless"]
+        ]
+        compiler.no_follow_import += [
+            f"pyglet.canvas.{x}"
+            for x in [
+                "win32",
+                "xlib",
+                "xlib_vidmoderstore",
+                "cocoa",
+                "headless",
+            ]
+        ]
+        compiler.no_follow_import += [
+            f"pyglet.gl.{x}" for x in ["win32", "xlib", "cocoa", "headless"]
+        ]
 
-        compiler.no_follow_import += [f'pyglet.app.{x}' for x in ['win32', 'xlib', 'cocoa']]
-        compiler.no_follow_import += [f'pyglet.input.{x}' for x in ['win32', 'linux', 'macos']]
-        compiler.no_follow_import += [f'pyglet.libs.{x}' for x in ['win32', 'x11', 'wayland', 'darwin', 'egl', 'headless']]
-        compiler.no_follow_import += [f'pyglet.window.{x}' for x in ['win32', 'xlib', 'cocoa', 'headless']]
-        compiler.no_follow_import += [f'pyglet.canvas.{x}' for x in ['win32', 'xlib', 'xlib_vidmoderstore', 'cocoa', 'headless']]
-        compiler.no_follow_import += [f'pyglet.gl.{x}' for x in ['win32', 'xlib', 'cocoa', 'headless']]
-
-        mult_plat_libs = ['app', 'input', 'libs', 'window', 'canvas', 'gl']
+        mult_plat_libs = ["app", "input", "libs", "window", "canvas", "gl"]
         if platform.system() == "Windows":
             for lib in mult_plat_libs:
-                compiler.no_follow_import.remove(f'pyglet.{lib}.win32')
+                compiler.no_follow_import.remove(f"pyglet.{lib}.win32")
         elif platform.system() == "Linux":
             for lib in mult_plat_libs:
-                for name in ('xlib', 'x11', 'wayland', 'egl'):
-                    if f'pyglet.{lib}.{name}' in compiler.no_follow_import:
-                        compiler.no_follow_import.remove(f'pyglet.{lib}.{name}')
-            compiler.no_follow_import.remove('pyglet.canvas.xlib_vidmoderstore')
+                for name in ("xlib", "x11", "wayland", "egl"):
+                    if f"pyglet.{lib}.{name}" in compiler.no_follow_import:
+                        compiler.no_follow_import.remove(f"pyglet.{lib}.{name}")
+            compiler.no_follow_import.remove("pyglet.canvas.xlib_vidmoderstore")
         elif platform.system() == "Darwin":
             for lib in mult_plat_libs:
-                for name in ('cocoa', 'darwin', 'macos'):
-                    if f'pyglet.{lib}.{name}' in compiler.no_follow_import:
-                        compiler.no_follow_import.remove(f'pyglet.{lib}.{name}')
+                for name in ("cocoa", "darwin", "macos"):
+                    if f"pyglet.{lib}.{name}" in compiler.no_follow_import:
+                        compiler.no_follow_import.remove(f"pyglet.{lib}.{name}")
 
     if is_github:
         from pprint import pprint
+
         pprint(compiler.option())
     else:
-        compiler.output_path = Path(f'./build/nuitka-{platform.system().lower()}')
+        compiler.output_path = Path(f"./build/nuitka-{platform.system().lower()}")
         compiler.show_memory = False
         compiler.show_progress = False
 
     # 检测 --output xx 参数
-    if '--output' in sys.argv:
+    if "--output" in sys.argv:
         # 输入的是输出目录
-        out_path = sys.argv[sys.argv.index('--output') + 1]
+        out_path = sys.argv[sys.argv.index("--output") + 1]
         compiler.output_path = Path(out_path)
-        sys.argv.remove('--output')
+        sys.argv.remove("--output")
         sys.argv.remove(out_path)
 
     print(compiler.as_markdown())
@@ -101,53 +121,87 @@ if __name__ == '__main__':
 
     # 确认是否需要编译
     # 如果包含 -y 参数 则直接编译
-    if (('-y' or '-n') not in sys.argv) and (not is_github):
-        while (do_compile := input('Do you want to compile this file? (y/n) ')) not in ['y', 'n']:
+    if (("-y" or "-n") not in sys.argv) and (not is_github):
+        while (do_compile := input("Do you want to compile this file? (y/n) ")) not in [
+            "y",
+            "n",
+        ]:
             pass
-    elif '-y' in sys.argv:
-        do_compile = 'y'
+    elif "-y" in sys.argv:
+        do_compile = "y"
     elif is_github:
-        do_compile = 'y'
+        do_compile = "y"
     else:
-        do_compile = 'n'
+        do_compile = "n"
 
-    if do_compile == 'y':
+    if do_compile == "y":
         # 编译
         time.sleep(1)  # 等待 1s
         start_time = time.time_ns()
         subprocess.run(compiler.gen_subprocess_cmd())
-        print('Compile Done!')
-        print(f'Compile Time: {time.time_ns() - start_time} ns ({(time.time_ns() - start_time) / 1000_000_000} s)')
+        print("Compile Done!")
+        print(
+            f"Compile Time: {time.time_ns() - start_time} ns ({(time.time_ns() - start_time) / 1000_000_000} s)"
+        )
         if is_github:
             # 去除无用字体文件 (其实现在也不会打包字体文件了 因为 git lfs 没宽带了)
             try:
-                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'Fira_Code', ignore_errors=True)
-                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'scientifica', ignore_errors=True)
-                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans_Condensed', ignore_errors=True)
-                shutil.rmtree(compiler.output_path / 'DR.dist/libs/fonts' / 'HarmonyOS_Sans' / 'HarmonyOS_Sans', ignore_errors=True)
-                os.remove(compiler.output_path / 'DR.dist/libs/fonts' / 'Monocraft.otf')
-                os.remove(compiler.output_path / 'DR.dist/libs/fonts' / 'SmileySans-Oblique.ttf')
+                shutil.rmtree(
+                    compiler.output_path / "DR.dist/libs/fonts" / "Fira_Code",
+                    ignore_errors=True,
+                )
+                shutil.rmtree(
+                    compiler.output_path / "DR.dist/libs/fonts" / "scientifica",
+                    ignore_errors=True,
+                )
+                shutil.rmtree(
+                    compiler.output_path
+                    / "DR.dist/libs/fonts"
+                    / "HarmonyOS_Sans"
+                    / "HarmonyOS_Sans_Condensed",
+                    ignore_errors=True,
+                )
+                shutil.rmtree(
+                    compiler.output_path
+                    / "DR.dist/libs/fonts"
+                    / "HarmonyOS_Sans"
+                    / "HarmonyOS_Sans",
+                    ignore_errors=True,
+                )
+                os.remove(compiler.output_path / "DR.dist/libs/fonts" / "Monocraft.otf")
+                os.remove(
+                    compiler.output_path / "DR.dist/libs/fonts" / "SmileySans-Oblique.ttf"
+                )
             except Exception:
                 traceback.print_exc()
-            print('Remove Useless Files Done!')
+            print("Remove Useless Files Done!")
         else:
             dist_dir_size = 0
             dist_file_size: Dict[str, Tuple[int, float]] = {}
-            for path, sub_paths, sub_files in os.walk(compiler.output_path / 'DR.dist'):
+            for path, sub_paths, sub_files in os.walk(compiler.output_path / "DR.dist"):
                 for file in sub_files:
                     file_path = os.path.join(path, file)
                     dist_dir_size += os.path.getsize(file_path)
                     # 排除不需要记录的文件
-                    if any(x in file_path for x in ('config', 'libs', 'assets')):
+                    if any(x in file_path for x in ("config", "libs", "assets")):
                         continue
-                    dist_file_size[file_path] = (os.path.getsize(file_path), os.path.getsize(file_path) / 1024 / 1024)
-            compile_data = {'compile_time_ns': time.time_ns() - start_time,
-                            'compile_time_s': (time.time_ns() - start_time) / 1000_000_000,
-                            'dist_size': dist_dir_size,
-                            'dist_size_mb': dist_dir_size / 1024 / 1024,
-                            'compiler_data': compiler.str_option(),
-                            'dist_file_size': dist_file_size}
-            with open(compiler.output_path / f'../compile_data-{time.time()}.toml', 'w', encoding='utf-8') as compile_data_file:
+                    dist_file_size[file_path] = (
+                        os.path.getsize(file_path),
+                        os.path.getsize(file_path) / 1024 / 1024,
+                    )
+            compile_data = {
+                "compile_time_ns": time.time_ns() - start_time,
+                "compile_time_s": (time.time_ns() - start_time) / 1000_000_000,
+                "dist_size": dist_dir_size,
+                "dist_size_mb": dist_dir_size / 1024 / 1024,
+                "compiler_data": compiler.str_option(),
+                "dist_file_size": dist_file_size,
+            }
+            with open(
+                compiler.output_path / f"../compile_data-{time.time()}.toml",
+                "w",
+                encoding="utf-8",
+            ) as compile_data_file:
                 tomlkit.dump(compile_data, compile_data_file)
 
     sys.exit(0)

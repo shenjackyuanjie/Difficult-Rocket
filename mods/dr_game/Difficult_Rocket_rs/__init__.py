@@ -9,11 +9,11 @@ from .lib import *  # noqa: F403
 from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
 
 if TYPE_CHECKING:
+
     def test_call(py_obj) -> bool:
-        """ 这里展示的代码实际上就是实际的等效实现 """
+        """这里展示的代码实际上就是实际的等效实现"""
         py_obj.draw()
         return True
-
 
     def get_version_str() -> str:
         """
@@ -21,13 +21,13 @@ if TYPE_CHECKING:
         :return: 版本号
         """
 
-
-    def part_list_read_test(file_name: Optional[str] = "./assets/builtin/PartList.xml") -> None:
+    def part_list_read_test(
+        file_name: Optional[str] = "./assets/builtin/PartList.xml"
+    ) -> None:
         """
         PartList 读取测试
         :param file_name:
         """
-
 
     def read_ship_test(path: Optional[str] = "./assets/builtin/dock1.xml") -> None:
         """
@@ -36,14 +36,12 @@ if TYPE_CHECKING:
         :return:
         """
 
-
     def map_ptype_textures(part_type: str) -> str:
         """
         获取零件的贴图 (写死的)
         :param part_type:
         :return:
         """
-
 
     class SR1PartType_rs:  # NOQA
         """
@@ -54,51 +52,55 @@ if TYPE_CHECKING:
 
         @property
         def name(self) -> str:
-            """ 零件的名字 """
+            """零件的名字"""
 
         @property
         def description(self) -> str:
-            """ 零件的描述 """
+            """零件的描述"""
 
         @property
         def sprite(self) -> str:
-            """ 零件的贴图 """
+            """零件的贴图"""
 
         @property
         def mass(self) -> float:
-            """ 零件的质量 """
+            """零件的质量"""
 
         @property
         def width(self) -> int:
-            """ 零件的宽度 """
+            """零件的宽度"""
 
         @property
         def height(self) -> int:
-            """ 零件的高度 """
+            """零件的高度"""
 
         @property
         def friction(self) -> float:
-            """ 零件的摩擦系数 """
+            """零件的摩擦系数"""
 
         @property
         def hidden(self) -> bool:
-            """ 零件是否隐藏 """
+            """零件是否隐藏"""
 
         @property
         def type(self):
-            """ 零件的类型 """
-
+            """零件的类型"""
 
     class SR1PartList_rs:  # NOQA
-        """ 用于从 rust 中读取 SR1PartList """
+        """用于从 rust 中读取 SR1PartList"""
 
-        def __init__(self, file_name: Optional[str] = "./assets/builtin/PartList.xml",
-                     list_name: Optional[str] = 'NewPartList'): ...
+        def __init__(
+            self,
+            file_name: Optional[str] = "./assets/builtin/PartList.xml",
+            list_name: Optional[str] = "NewPartList",
+        ):
+            ...
 
-        def as_dict(self) -> Dict[str, SR1PartType_rs]: ...
+        def as_dict(self) -> Dict[str, SR1PartType_rs]:
+            ...
 
-        def get_part_type(self, name: str) -> SR1PartType_rs: ...
-
+        def get_part_type(self, name: str) -> SR1PartType_rs:
+            ...
 
     class SR1PartData_rs:  # NOQA
         """
@@ -106,53 +108,66 @@ if TYPE_CHECKING:
         """
 
         @property
-        def id(self) -> int: ...
+        def id(self) -> int:
+            ...
 
         @property
-        def part_type_id(self) -> str: ...
+        def part_type_id(self) -> str:
+            ...
 
         @property
-        def pos(self) -> Tuple[float, float]: ...
+        def pos(self) -> Tuple[float, float]:
+            ...
 
         @property
-        def x(self) -> float: ...
+        def x(self) -> float:
+            ...
 
         @property
-        def y(self) -> float: ...
+        def y(self) -> float:
+            ...
 
         @property
-        def activate(self) -> bool: ...
+        def activate(self) -> bool:
+            ...
 
         @property
-        def angle(self) -> float: ...
+        def angle(self) -> float:
+            ...
 
         @property
-        def angle_r(self) -> float: ...
+        def angle_r(self) -> float:
+            ...
 
         @property
-        def angle_v(self) -> float: ...
+        def angle_v(self) -> float:
+            ...
 
         @property
-        def explode(self) -> bool: ...
+        def explode(self) -> bool:
+            ...
 
         @property
-        def flip_x(self) -> bool: ...
+        def flip_x(self) -> bool:
+            ...
 
         @property
-        def flip_y(self) -> bool: ...
-
+        def flip_y(self) -> bool:
+            ...
 
     class SaveStatus_rs:  # NOQA
-        def __init__(self, save_default: Optional[bool] = False) -> None: ...
-
+        def __init__(self, save_default: Optional[bool] = False) -> None:
+            ...
 
     class SR1Ship_rs:  # NOQA
-        """ 用于高效且省内存的读取 SR1Ship """
+        """用于高效且省内存的读取 SR1Ship"""
 
-        def __init__(self,
-                     file_path: Optional[str] = './assets/builtin/dock1.xml',
-                     part_list: Optional[SR1PartList_rs] = None,
-                     ship_name: Optional[str] = 'NewShip'):
+        def __init__(
+            self,
+            file_path: Optional[str] = "./assets/builtin/dock1.xml",
+            part_list: Optional[SR1PartList_rs] = None,
+            ship_name: Optional[str] = "NewShip",
+        ):
             """
             读取 SR1Ship
             :raise ValueError: 读取失败
@@ -162,30 +177,36 @@ if TYPE_CHECKING:
             """
 
         @property
-        def name(self) -> str: ...
+        def name(self) -> str:
+            ...
 
         @property
-        def description(self) -> str: ...
+        def description(self) -> str:
+            ...
 
         @property
-        def lift_off(self) -> bool: ...
+        def lift_off(self) -> bool:
+            ...
 
         @property
-        def touch_ground(self) -> bool: ...
+        def touch_ground(self) -> bool:
+            ...
 
         @property
         def mass(self) -> float:
-            """ 获取整搜船的质量 """
+            """获取整搜船的质量"""
 
         @property
         def img_pos(self) -> Tuple[int, int, int, int]:
-            """ -x -y +x +y  左下右上 """
+            """-x -y +x +y  左下右上"""
 
         @property
         def connection(self) -> List[Tuple[int, int, int, int]]:
             """获取所有连接信息"""
 
-        def get_part_box(self, part_id: int) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]:
+        def get_part_box(
+            self, part_id: int
+        ) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]:
             """获取所有零件的盒子"""
 
         def as_list(self) -> List[Tuple[SR1PartType_rs, SR1PartData_rs]]:
@@ -194,16 +215,23 @@ if TYPE_CHECKING:
         def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData_rs]]]:
             """用于返回一个包含所有已连接零件的字典"""
 
-        def save(self, file_path: str, save_status: Optional[SaveStatus_rs] = None) -> None: ...
-
+        def save(
+            self, file_path: str, save_status: Optional[SaveStatus_rs] = None
+        ) -> None:
+            ...
 
     class Console_rs:  # NOQA
-        def __init__(self) -> None: ...
+        def __init__(self) -> None:
+            ...
 
-        def start(self) -> None: ...
+        def start(self) -> None:
+            ...
 
-        def stop(self) -> bool: ...
+        def stop(self) -> bool:
+            ...
 
-        def get_command(self) -> Optional[str]: ...
+        def get_command(self) -> Optional[str]:
+            ...
 
-        def new_command(self) -> bool: ...
+        def new_command(self) -> bool:
+            ...

@@ -1,4 +1,3 @@
-
 #  -------------------------------
 #  Difficult Rocket
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
@@ -20,6 +19,7 @@ from typing import Callable, Dict, List, TYPE_CHECKING, Type
 # third function
 import rtoml
 import pyglet
+
 # from pyglet import gl
 # from pyglet.gl import glClearColor
 # from pyglet.libs.win32 import _user32
@@ -44,7 +44,7 @@ from Difficult_Rocket.client.fps.fps_log import FpsLogger
 from Difficult_Rocket.exception.language import LanguageNotFound
 
 
-logger = logging.getLogger('client')
+logger = logging.getLogger("client")
 
 
 class ClientOption(Options):
@@ -59,14 +59,14 @@ class ClientOption(Options):
     caption: str = "Difficult Rocket v{DR_version}"
 
     def load_file(self) -> None:
-        file: dict = tools.load_file('./config/main.toml')
-        self.fps = int(file['runtime']['fps'])
-        self.width = int(file['window']['width'])
-        self.height = int(file['window']['height'])
-        self.fullscreen = tools.format_bool(file['window']['full_screen'])
-        self.resizeable = tools.format_bool(file['window']['resizable'])
-        self.gui_scale = float(file['window']['gui_scale'])
-        self.caption = DR_status.format(file['window']['caption'])
+        file: dict = tools.load_file("./config/main.toml")
+        self.fps = int(file["runtime"]["fps"])
+        self.width = int(file["window"]["width"])
+        self.height = int(file["window"]["height"])
+        self.fullscreen = tools.format_bool(file["window"]["full_screen"])
+        self.resizeable = tools.format_bool(file["window"]["resizable"])
+        self.gui_scale = float(file["window"]["gui_scale"])
+        self.caption = DR_status.format(file["window"]["caption"])
         self.caption = DR_runtime.format(self.caption)
 
 
@@ -74,27 +74,36 @@ class Client:
     """
     客户端
     """
-    def __init__(self, game: "Game", net_mode='local'):
+
+    def __init__(self, game: "Game", net_mode="local"):
         start_time = time.time_ns()
         # logging
-        self.logger = logging.getLogger('client')
+        self.logger = logging.getLogger("client")
         self.logger.info(tr().client.setup.start())
         # config
         self.config = ClientOption()
         # value
-        self.process_id = 'Client'
-        self.process_name = 'Client process'
+        self.process_id = "Client"
+        self.process_name = "Client process"
         self.process_pid = os.getpid()
         self.net_mode = net_mode
         self.game = game
-        self.window = ClientWindow(game=game, net_mode=self.net_mode,
-                                   width=self.config.width, height=self.config.height,
-                                   fullscreen=self.config.fullscreen, caption=self.config.caption,
-                                   resizable=self.config.resizeable, visible=self.config.visible,
-                                   file_drops=True)
+        self.window = ClientWindow(
+            game=game,
+            net_mode=self.net_mode,
+            width=self.config.width,
+            height=self.config.height,
+            fullscreen=self.config.fullscreen,
+            caption=self.config.caption,
+            resizable=self.config.resizeable,
+            visible=self.config.visible,
+            file_drops=True,
+        )
         end_time = time.time_ns()
         self.use_time = end_time - start_time
-        self.logger.info(tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000))
+        self.logger.info(
+            tr().client.setup.use_time().format(Decimal(self.use_time) / 1000000000)
+        )
         self.logger.debug(tr().client.setup.use_time_ns().format(self.use_time))
 
     def start(self):
@@ -106,7 +115,7 @@ class Client:
         # TODO 写一下服务端启动相关，还是需要服务端啊
 
     def __repr__(self):
-        return f'<Client {self.process_name} {self.process_pid}>'
+        return f"<Client {self.process_name} {self.process_pid}>"
 
 
 def pyglet_load_fonts_folder(folder) -> None:
@@ -125,12 +134,18 @@ def pyglet_load_fonts_folder(folder) -> None:
         dir_path = Path(dir_path)
         for file_name in file_names:
             file_name = Path(file_name)
-            if file_name.suffix in ('.ttf', '.otf'):
-                logger.debug(tr().client.load.font.file().format(str(dir_path / file_name)))
+            if file_name.suffix in (".ttf", ".otf"):
+                logger.debug(
+                    tr().client.load.font.file().format(str(dir_path / file_name))
+                )
                 try:
                     pyglet.font.add_file(str(dir_path / file_name))
                 except Exception:
-                    logger.error(tr().client.load.font.error().format(str(dir_path / file_name), traceback.format_exc()))
+                    logger.error(
+                        tr()
+                        .client.load.font.error()
+                        .format(str(dir_path / file_name), traceback.format_exc())
+                    )
     end_time = time.time_ns()
     use_time = end_time - start_time
     logger.info(tr().client.load.font.use_time().format(use_time / 1000000000))
@@ -147,13 +162,16 @@ def _call_back(call_back: Callable) -> Callable:
     :param call_back: 需要调用的函数
     :return: 包装后的函数
     """
+
     def wrapper(func):
         @functools.wraps(func)
         def warp(self: "ClientWindow", *args, **kwargs):
             result = func(self, *args, **kwargs)
             # call_back(self)
             return result
+
         return warp
+
     return wrapper
 
 
@@ -166,6 +184,7 @@ def _call_screen_after(func: Callable) -> Callable:
     :param func: 需要包装的函数
     :return: 包装后的函数
     """
+
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
         result = func(self, *args, **kwargs)
@@ -192,6 +211,7 @@ def _call_screen_before(func: Callable) -> Callable:
     :param func: 需要包装的函数
     :return: 包装后的函数
     """
+
     @functools.wraps(func)
     def warped(self: "ClientWindow", *args, **kwargs):
         for title, a_screen in self.screen_list.items():
@@ -210,8 +230,7 @@ def _call_screen_before(func: Callable) -> Callable:
 
 
 class ClientWindow(Window):
-
-    def __init__(self, game: "Game", net_mode='local', *args, **kwargs):
+    def __init__(self, game: "Game", net_mode="local", *args, **kwargs):
         """
 
         @param net_mode:
@@ -221,7 +240,7 @@ class ClientWindow(Window):
         start_time = time.time_ns()
         super().__init__(*args, **kwargs)
         # logging
-        self.logger = logging.getLogger('client')
+        self.logger = logging.getLogger("client")
         self.logger.info(tr().window.setup.start())
         # value
         self.game = game
@@ -229,11 +248,11 @@ class ClientWindow(Window):
         self.run_input = False
         self.command_list: List[str] = []
         # config
-        self.main_config = tools.load_file('./config/main.toml')
-        self.game_config = tools.load_file('./config/game.config')
+        self.main_config = tools.load_file("./config/main.toml")
+        self.game_config = tools.load_file("./config/game.config")
         # FPS
-        self.FPS = Decimal(int(self.main_config['runtime']['fps']))
-        self.SPF = Decimal('1') / self.FPS
+        self.FPS = Decimal(int(self.main_config["runtime"]["fps"]))
+        self.SPF = Decimal("1") / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS))
         # batch
         self.main_batch = Batch()
@@ -245,10 +264,16 @@ class ClientWindow(Window):
         # setup
         self.setup()
         # 命令显示
-        self.input_box = TextEntry(x=50, y=30, width=300,
-                                   batch=self.main_batch, text='', group=Group(1000, parent=self.main_group))  # 实例化
+        self.input_box = TextEntry(
+            x=50,
+            y=30,
+            width=300,
+            batch=self.main_batch,
+            text="",
+            group=Group(1000, parent=self.main_group),
+        )  # 实例化
         self.input_box.push_handlers(self)
-        self.input_box.set_handler('on_commit', self.on_input)
+        self.input_box.set_handler("on_commit", self.on_input)
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
@@ -263,19 +288,19 @@ class ClientWindow(Window):
         self.count = 0
 
     def setup(self):
-        self.set_icon(pyglet.image.load('assets/textures/icon.png'))
+        self.set_icon(pyglet.image.load("assets/textures/icon.png"))
         self.load_fonts()
-        self.screen_list['DR_debug'] = DRDEBUGScreen(self)
-        self.game.dispatch_mod_event('on_client_start', game=self.game, client=self)
+        self.screen_list["DR_debug"] = DRDEBUGScreen(self)
+        self.game.dispatch_mod_event("on_client_start", game=self.game, client=self)
 
     def load_fonts(self) -> None:
-        fonts_folder_path = self.main_config['runtime']['fonts_folder']
+        fonts_folder_path = self.main_config["runtime"]["fonts_folder"]
         # 加载字体路径
         # 淦，还写了个递归来处理
         pyglet_load_fonts_folder(fonts_folder_path)
 
     def start_game(self) -> None:
-        self.set_icon(pyglet.image.load('assets/textures/icon.png'))
+        self.set_icon(pyglet.image.load("assets/textures/icon.png"))
         try:
             # pyglet.clock.schedule_interval(self.on_draw, float(self.SPF))
             # pyglet.app.run()
@@ -284,18 +309,20 @@ class ClientWindow(Window):
         except KeyboardInterrupt:
             self.logger.warning("==========client stop. KeyboardInterrupt info==========")
             traceback.print_exc()
-            self.logger.warning("==========client stop. KeyboardInterrupt info end==========")
-            self.dispatch_event("on_close", 'input')
+            self.logger.warning(
+                "==========client stop. KeyboardInterrupt info end=========="
+            )
+            self.dispatch_event("on_close", "input")
             sys.exit(0)
 
-    @new_thread('window save_info')
+    @new_thread("window save_info")
     def save_info(self):
         self.logger.info(tr().client.config.save.start())
-        config_file: dict = tools.load_file('./config/main.toml')
-        config_file['window']['width'] = self.width
-        config_file['window']['height'] = self.height
-        config_file['runtime']['language'] = DR_runtime.language
-        rtoml.dump(config_file, open('./config/main.toml', 'w'))
+        config_file: dict = tools.load_file("./config/main.toml")
+        config_file["window"]["width"] = self.width
+        config_file["window"]["height"] = self.height
+        config_file["runtime"]["language"] = DR_runtime.language
+        rtoml.dump(config_file, open("./config/main.toml", "w"))
         self.logger.info(tr().client.config.save.done())
 
     """
@@ -323,7 +350,7 @@ class ClientWindow(Window):
     def on_draw(self):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
-        pyglet.gl.glClearColor(21/255, 22/255, 23/255, 0.0)
+        pyglet.gl.glClearColor(21 / 255, 22 / 255, 23 / 255, 0.0)
         self.clear()
         # self.draw_update(dt)  # TODO: wait for pyglet 2.1
         self.draw_update(float(self.SPF))
@@ -346,7 +373,7 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_hide(self):
         # self.set_location(*self.get_location())
-        print('on hide!')
+        print("on hide!")
 
     @_call_screen_before
     def draw_batch(self):
@@ -359,7 +386,7 @@ class ClientWindow(Window):
     def on_input(self, message: str) -> None:
         command_text = line.CommandText(message)
         self.on_command(command_text)
-        self.input_box.value = ''
+        self.input_box.value = ""
 
     def new_command(self):
         self.game.console.new_command()
@@ -367,38 +394,44 @@ class ClientWindow(Window):
     @_call_back(new_command)
     @_call_screen_after
     def on_command(self, command: line.CommandText):
-        command.text = command.text.rstrip('\n').rstrip(' ').strip('/')
+        command.text = command.text.rstrip("\n").rstrip(" ").strip("/")
         self.logger.info(tr().window.command.text().format(f"|{command.text}|"))
-        if command.find('stop'):
+        if command.find("stop"):
             self.logger.info("command stop!")
             # HUGE THANKS to Discord @nokiyasos for this fix!
             pyglet.app.exit()
-        elif command.find('fps'):
-            if command.find('log'):
+        elif command.find("fps"):
+            if command.find("log"):
                 self.logger.debug(self.fps_log.fps_list)
-            elif command.find('max'):
+            elif command.find("max"):
                 self.logger.info(self.fps_log.max_fps)
                 # self.command.push_line(self.fps_log.max_fps, block_line=True)
-            elif command.find('min'):
+            elif command.find("min"):
                 self.logger.info(self.fps_log.min_fps)
                 # self.command.push_line(self.fps_log.min_fps, block_line=True)
-        elif command.find('default'):
-            self.set_size(int(self.main_config['window_default']['width']),
-                          int(self.main_config['window_default']['height']))
-        elif command.find('lang'):
+        elif command.find("default"):
+            self.set_size(
+                int(self.main_config["window_default"]["width"]),
+                int(self.main_config["window_default"]["height"]),
+            )
+        elif command.find("lang"):
             try:
                 lang = command.text[5:]
                 tr._language = lang
                 self.logger.info(tr().language_set_to())
             except LanguageNotFound:
-                self.logger.info(tr().language_available().format(os.listdir('./config/lang')))
+                self.logger.info(
+                    tr().language_available().format(os.listdir("./config/lang"))
+                )
             self.save_info()
-        elif command.find('mods'):
-            if command.find('list'):
+        elif command.find("mods"):
+            if command.find("list"):
                 self.logger.info(tr().mod.list())
                 for mod in self.game.mod_manager.loaded_mod_modules.values():
-                    self.logger.info(f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}")
-            elif command.find('reload'):
+                    self.logger.info(
+                        f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}"
+                    )
+            elif command.find("reload"):
                 if not len(command.text) == 0:
                     print(f"reload mod: |{command.text}|")
                     self.game.mod_manager.reload_mod(command.text, game=self.game)
@@ -448,34 +481,40 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_mouse_press(self, x, y, button, modifiers) -> None:
         self.logger.debug(
-            tr().window.mouse.press().format(
-                [x, y], tr().window.mouse[mouse.buttons_string(button)]()
-            )
+            tr()
+            .window.mouse.press()
+            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]())
         )
 
     @_call_screen_after
     def on_mouse_release(self, x, y, button, modifiers) -> None:
         self.logger.debug(
-            tr().window.mouse.release().format(
-                [x, y], tr().window.mouse[mouse.buttons_string(button)]()
-            )
+            tr()
+            .window.mouse.release()
+            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]())
         )
 
     @_call_screen_after
     def on_key_press(self, symbol, modifiers) -> None:
-        if symbol == key.ESCAPE and not (modifiers & ~(key.MOD_NUMLOCK |
-                                                       key.MOD_CAPSLOCK |
-                                                       key.MOD_SCROLLLOCK)):
-            self.dispatch_event('on_close', 'window')
+        if symbol == key.ESCAPE and not (
+            modifiers & ~(key.MOD_NUMLOCK | key.MOD_CAPSLOCK | key.MOD_SCROLLLOCK)
+        ):
+            self.dispatch_event("on_close", "window")
         if symbol == key.SLASH:
             self.input_box._set_focus(True)
         self.logger.debug(
-            tr().window.key.press().format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+            tr()
+            .window.key.press()
+            .format(key.symbol_string(symbol), key.modifiers_string(modifiers))
+        )
 
     @_call_screen_after
     def on_key_release(self, symbol, modifiers) -> None:
         self.logger.debug(
-            tr().window.key.release().format(key.symbol_string(symbol), key.modifiers_string(modifiers)))
+            tr()
+            .window.key.release()
+            .format(key.symbol_string(symbol), key.modifiers_string(modifiers))
+        )
 
     @_call_screen_after
     def on_file_drop(self, x, y, paths):
@@ -483,11 +522,11 @@ class ClientWindow(Window):
 
     @_call_screen_after
     def on_text(self, text):
-        if text == '\r':
+        if text == "\r":
             self.logger.debug(tr().window.text.new_line())
         else:
             self.logger.debug(tr().window.text.input().format(text))
-            if text == 't':
+            if text == "t":
                 self.input_box.enabled = True
 
     @_call_screen_after
@@ -501,8 +540,10 @@ class ClientWindow(Window):
         self.logger.debug(tr().window.text.motion_select().format(motion_string))
 
     @_call_screen_before
-    def on_close(self, source: str = 'window') -> None:
-        self.game.dispatch_mod_event('on_close', game=self.game, client=self, source=source)
+    def on_close(self, source: str = "window") -> None:
+        self.game.dispatch_mod_event(
+            "on_close", game=self.game, client=self, source=source
+        )
         self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
         self.logger.info(tr().window.game.stop())
         # self.fps_log.check_list = False

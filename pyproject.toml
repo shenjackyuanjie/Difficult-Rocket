@@ -36,22 +36,78 @@ build = [
 [tool.ruff]
 
 target-version = "py38"
-line-length = 150
+line-length = 90
 src = ["Difficult_Rocket", "libs/utils", "mods"]
 exclude = [
     'libs/pyglet',
     'libs/pyperclip',
     'libs/lib_not_dr',
-    'libs/MCDR/serializer.py',
+    'libs/MCDR',
+    'libs/xmltodict',
     'libs/utils/logger-old.py', # 旧版日志, 忽略他就好
 ]
 
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "W", # pycodestyle
+]
+ignore = ["I001"]  # do not sort my imports
+
 [tool.lndl.nuitka]
+script = 'scripts/lndl-config.py'
+
+[tool.lndl.nuitka.cli]
+main = "DR.py"
 
 lto = "yes"
-main = "DR.py"
 clang = true
 msvc = "latest"
-standalone = true
-output-dir = "build"
+mingw64 = false
 
+standalone = true
+output-dir = "build/nuitka"
+
+run = false
+# auto run after build
+show-memory = false
+show-progress = false
+disable-console = false
+assume-yes-for-download = true
+
+company-name = 'tool-shenjack-workshop'
+product-name = 'Difficult Rocket'
+file-version = false  # require script
+product-version = false  # require script
+macos-app-version = false  # require script
+file-description = 'Difficult Rocket a rocket game'
+copyright = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'
+
+windows-icon-from-ico = 'assets/textures/icon.png'
+macos-app-icon = 'assets/textures/icon.png'
+linux-icon = 'assets/textures/icon.png'
+
+nofollow-import-to = [
+    'objprint',
+    'PIL',
+    'cffi',
+    'pydoc',
+    'numpy',
+    'email',
+    'win32con',
+    'smtplib',
+    'win32evtlog',
+    'win32evtlogutil',
+    'win32api'
+]
+
+include-data-dir = [
+    ['./config', './config'],
+    ['./assets', './assets']
+]
+include-package = ['Difficult_Rocket.api']
+# DR.api 没有直接 import, 所以需要手动添加
+
+disable-plugin = ['pyqt5', 'tk-inter']

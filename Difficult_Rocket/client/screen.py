@@ -23,12 +23,19 @@ class DRDEBUGScreen(BaseScreen):
         super().__init__(main_window)
         self.main_batch = Batch()
         self.main_group = Group(order=1)
-        self.fps_label = Label(x=10, y=main_window.height - 10,
-                               width=main_window.width - 20, height=20,
-                               anchor_x='left', anchor_y='top',
-                               font_name=Fonts.微软等宽无线, font_size=20,
-                               multiline=True,
-                               batch=self.main_batch, group=self.main_group)
+        self.fps_label = Label(
+            x=10,
+            y=main_window.height - 10,
+            width=main_window.width - 20,
+            height=20,
+            anchor_x="left",
+            anchor_y="top",
+            font_name=Fonts.微软等宽无线,
+            font_size=20,
+            multiline=True,
+            batch=self.main_batch,
+            group=self.main_group,
+        )
         self.fps_label.text = "11111114514"
 
     def draw_update(self, tick: float, window: "ClientWindow"):
@@ -37,10 +44,10 @@ class DRDEBUGScreen(BaseScreen):
     def update_label(self, window: "ClientWindow"):
         now_FPS = get_frequency()
         self.fps_label.text = (
-            f'FPS: {window.fps_log.fps: >5.1f}('
-            f'{window.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n '
-            f'{window.fps_log.max_fps: >7.1f} '
-            f'{window.fps_log.min_fps:>5.1f}'
+            f"FPS: {window.fps_log.fps: >5.1f}("
+            f"{window.fps_log.middle_fps: >5.1f})[{now_FPS: >.7f}]\n "
+            f"{window.fps_log.max_fps: >7.1f} "
+            f"{window.fps_log.min_fps:>5.1f}"
         )
 
     def on_resize(self, width, height, window: "ClientWindow"):

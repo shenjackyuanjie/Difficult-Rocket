@@ -13,12 +13,12 @@ gitee:  @shenjackyuanjie
 from Difficult_Rocket.exception import BaseError, BaseRuntimeError
 
 __all__ = [
-    'NoMoreJson5',
-    'Nope418ImATeapot',
-    'ThinkError',
-    'BrainError',
-    'BigBrainError',
-    'GrammarError'
+    "NoMoreJson5",
+    "Nope418ImATeapot",
+    "ThinkError",
+    "BrainError",
+    "BigBrainError",
+    "GrammarError",
 ]
 
 

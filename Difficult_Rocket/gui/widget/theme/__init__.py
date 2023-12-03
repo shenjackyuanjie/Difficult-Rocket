@@ -13,7 +13,8 @@ class BaseTheme(dict):
     """
     Base class of themes
     """
-    theme_name = 'BaseTheme'
+
+    theme_name = "BaseTheme"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -22,10 +23,8 @@ class BaseTheme(dict):
                 setattr(self, k, v)
 
     if TYPE_CHECKING:
-        def init(self,
-                 batch: Batch,
-                 group: Group,
-                 **kwargs) -> None:
+
+        def init(self, batch: Batch, group: Group, **kwargs) -> None:
             """
             Init theme
             :param batch: batch
@@ -39,12 +38,12 @@ class FontTheme(BaseTheme):
     """
     Base class of font themes
     """
-    theme_name = 'FontTheme'
-    font_name: Optional[str] = 'Times New Roman'
+
+    theme_name = "FontTheme"
+    font_name: Optional[str] = "Times New Roman"
     font_size: Optional[int] = 12
     bold: Optional[bool] = False
     italic: Optional[bool] = False
     stretch: Optional[bool] = False
     color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255)
-    align: Optional[str] = 'center'
-
+    align: Optional[str] = "center"
