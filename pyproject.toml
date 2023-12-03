@@ -39,15 +39,26 @@ build = [
 [tool.ruff]
 
 target-version = "py38"
-line-length = 150
+line-length = 90
 src = ["Difficult_Rocket", "libs/utils", "mods"]
 exclude = [
     'libs/pyglet',
     'libs/pyperclip',
     'libs/lib_not_dr',
-    'libs/MCDR/serializer.py',
+    'libs/MCDR',
+    'libs/xmltodict',
     'libs/utils/logger-old.py', # 旧版日志, 忽略他就好
 ]
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "W", # pycodestyle
+]
+ignore = ["I001"]  # do not sort my imports
+
 
 [tool.lndl]
 nuitka-script = 'nuitka-script.py'
