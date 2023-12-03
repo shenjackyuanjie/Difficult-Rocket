@@ -1,10 +1,5 @@
-[build-system]
-requires = ["setuptools>=42", "wheel", "nuitka", "toml"]
-build-backend = "nuitka.distutils.Build"
-
 [project]
 name = "difficult-rocket"
-version = "0.8.7.3"
 description = "A rocket game"
 authors = [{ name = "shenjackyuanjie", email = "3695888@qq.com" }]
 dependencies = [
@@ -18,11 +13,13 @@ dependencies = [
 requires-python = ">=3.8"
 license = { text = "CC-BY-NA-SA 4.0" }
 readme = "README.md"
-gui-scripts = { DR = "Difficult_Rocket.DR:main" }
+dynamic = ["version"]
 
 [tool.setuptools]
 packages = []
 
+[tool.setuptools.dynamic]
+version = { attr = "Difficult_Rocket.__version__" }
 
 [project.optional-dependencies]
 build = [
