@@ -6,7 +6,7 @@ if DR_mod_runtime.use_DR_rust:
 
 
 class RustConsole(Console):
-    name = 'Rust stdin Console'
+    name = "Rust stdin Console"
 
     running: bool = False
     console: Console_rs

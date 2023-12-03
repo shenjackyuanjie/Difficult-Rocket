@@ -18,7 +18,7 @@ from Difficult_Rocket.exception.command import (
     CommandQMarkConflict,
     CommandQMarkMissing,
     CommandQMarkPreMissing,
-    CommandQMarkSufMissing
+    CommandQMarkSufMissing,
 )
 
 __all__ = [
@@ -28,5 +28,5 @@ __all__ = [
     "CommandQMarkPosError",
     "CommandQMarkConflict",
     "CommandQMarkSufMissing",
-    "CommandQMarkPreMissing"
+    "CommandQMarkPreMissing",
 ]

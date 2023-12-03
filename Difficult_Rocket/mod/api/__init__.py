@@ -35,6 +35,7 @@ class ModInfo(Options):
     """
     加载mod时候的参数
     """
+
     """基本信息"""
     mod_id: str  # mod id
     name: str  # mod 名称
@@ -47,9 +48,17 @@ class ModInfo(Options):
     info: str = ""  # 其他信息 (可以很多很多)
 
     """版本相关信息"""
-    DR_version: RequireVersion = (DR_status.DR_version, DR_status.DR_version)  # DR SDK 兼容版本
-    DR_Api_version: RequireVersion = (DR_status.API_version, DR_status.API_version)  # DR Api版本
-    Mod_Require_version: List[Tuple[str, ForceRequire, RequireVersion]] = []  # mod 依赖版本
+    DR_version: RequireVersion = (
+        DR_status.DR_version,
+        DR_status.DR_version,
+    )  # DR SDK 兼容版本
+    DR_Api_version: RequireVersion = (
+        DR_status.API_version,
+        DR_status.API_version,
+    )  # DR Api版本
+    Mod_Require_version: List[
+        Tuple[str, ForceRequire, RequireVersion]
+    ] = []  # mod 依赖版本
 
     """mod 状态"""
     is_enable: bool = True  # 是否启用
@@ -61,34 +70,37 @@ class ModInfo(Options):
 
     def __init__(self, **kwargs):
         if not self.DR_version[0] <= DR_status.DR_version <= self.DR_version[1]:
-            warnings.warn(f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.DR_version}\n"
-                          f"DR {self.DR_version} is required")
+            warnings.warn(
+                f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.DR_version}\n"
+                f"DR {self.DR_version} is required"
+            )
         if not self.DR_Api_version[0] <= DR_status.API_version <= self.DR_Api_version[1]:
-            warnings.warn(f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.API_version}\n"
-                          f"DR {self.DR_Api_version} is required")
+            warnings.warn(
+                f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.API_version}\n"
+                f"DR {self.DR_Api_version} is required"
+            )
         super().__init__(**kwargs)
 
     def on_load(self, game: Game, old_self: Optional["ModInfo"] = None) -> bool:
-        """ 加载时调用 """
+        """加载时调用"""
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):
-        """ 客户端启动时调用 """
-        print(f'Mod {self.mod_id} client start')
+        """客户端启动时调用"""
+        print(f"Mod {self.mod_id} client start")
 
-    def on_client_stop(self, game: Game, client: ClientWindow, source: str = 'window'):
-        """ 客户端停止时调用 """
-        print(f'Mod {self.mod_id} client stop')
+    def on_client_stop(self, game: Game, client: ClientWindow, source: str = "window"):
+        """客户端停止时调用"""
+        print(f"Mod {self.mod_id} client stop")
 
     def on_server_start(self, game: Game):
-        """ 服务器启动时调用 """
-        print(f'Mod {self.mod_id} server start')
+        """服务器启动时调用"""
+        print(f"Mod {self.mod_id} server start")
 
     def on_server_stop(self, game: Game):
-        """ 服务器停止时调用 """
-        print(f'Mod {self.mod_id} server stop')
+        """服务器停止时调用"""
+        print(f"Mod {self.mod_id} server stop")
 
     def on_unload(self, game: Game):
-        """ 卸载时调用 """
-        print(f'Mod {self.mod_id} unloaded')
-
+        """卸载时调用"""
+        print(f"Mod {self.mod_id} unloaded")

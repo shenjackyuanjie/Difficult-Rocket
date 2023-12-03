@@ -6,6 +6,4 @@
 
 from Difficult_Rocket.gui.widget.button import PressTextButton
 
-__all__ = [
-    'PressTextButton'
-]
+__all__ = ["PressTextButton"]

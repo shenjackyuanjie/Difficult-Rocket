@@ -4,10 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-from Difficult_Rocket.exception.threading import (
-    LockTimeOutError
-)
+from Difficult_Rocket.exception.threading import LockTimeOutError
 
-__all__ = [
-    "LockTimeOutError"
-]
+__all__ = ["LockTimeOutError"]

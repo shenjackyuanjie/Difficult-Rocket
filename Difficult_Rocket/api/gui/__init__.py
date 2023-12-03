@@ -4,6 +4,4 @@
 #  All rights reserved
 #  -------------------------------
 
-__all__ = [
-    'widget'
-]
+__all__ = ["widget"]

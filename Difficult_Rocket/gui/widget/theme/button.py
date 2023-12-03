@@ -20,7 +20,8 @@ class ButtonBaseTheme(BaseTheme):
     按钮的基础主题
     继承了 BaseTheme 和 dict
     """
-    theme_name = 'Button Base Theme'
+
+    theme_name = "Button Base Theme"
 
     def init(self, batch: Batch, group: Group, **kwargs) -> None:
         """
@@ -39,10 +40,10 @@ class BlockTheme(ButtonBaseTheme):
     """
     button theme: Block like button
     """
-    theme_name = 'Block Theme(button)'
+
+    theme_name = "Block Theme(button)"
     main_color: _RGBA = (39, 73, 114, 255)
     touch_color: _RGBA = (66, 150, 250, 255)
     hit_color: _RGBA = (15, 135, 250, 255)
 
     font_theme: FontTheme = FontTheme()
-

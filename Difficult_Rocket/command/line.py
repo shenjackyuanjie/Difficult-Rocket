@@ -35,14 +35,28 @@ class CommandLineTextEntry(widgets.TextEntry):
     基于 Text Entry 重写的 Command Line
     """
 
-    def __init__(self, x: int, y: int, width: int,
-                 color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
-                 text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
-                 caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
-                 batch: Optional[Batch] = None, group: Optional[Group] = None):
-        super().__init__(x=x, y=y, width=width,
-                         color=color, text_color=text_color, caret_color=caret_color,
-                         batch=batch, group=group, text='')
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
+        text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
+        caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+    ):
+        super().__init__(
+            x=x,
+            y=y,
+            width=width,
+            color=color,
+            text_color=text_color,
+            caret_color=caret_color,
+            batch=batch,
+            group=group,
+            text="",
+        )
         ...
 
 
@@ -51,26 +65,28 @@ class CommandLine(widgets.WidgetBase):
     command line show
     """
 
-    def __init__(self,
-                 x: int,
-                 y: int,
-                 width: int,
-                 height: int,
-                 length: int,
-                 batch: Batch,
-                 group: Group = None,
-                 command_text: str = '/',
-                 font_size: int = 20):
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        length: int,
+        batch: Batch,
+        group: Group = None,
+        command_text: str = "/",
+        font_size: int = 20,
+    ):
         super().__init__(x, y, width, height)
 
         # normal values
         self.length = length
-        self._command_list = ['' for _ in range(length)]
+        self._command_list = ["" for _ in range(length)]
         self._command_text = command_text
         self._text_position = 0
         self._command_view = 0
         self._value = 0
-        self._text = ''
+        self._text = ""
         self.command_split = 25
         self.command_distance = 20
 
@@ -80,24 +96,45 @@ class CommandLine(widgets.WidgetBase):
         fg_group = Group(order=1, parent=group)
 
         # hidden value
-        self._text = ''
-        self._line = Label(x=x, y=y, batch=batch, text=self.text,
-                           color=(100, 255, 255, 255),
-                           anchor_x='left', anchor_y='bottom',
-                           font_size=font_size, font_name=translate.微软等宽,
-                           group=fg_group)
-        self._label = [Label(x=x + 10, y=y + self.command_distance + (line * self.command_split), batch=batch, text='a',
-                             anchor_x='left', anchor_y='bottom',
-                             font_size=font_size - 3, font_name=translate.鸿蒙简体,
-                             group=bg_group)
-                       for line in range(length)]
+        self._text = ""
+        self._line = Label(
+            x=x,
+            y=y,
+            batch=batch,
+            text=self.text,
+            color=(100, 255, 255, 255),
+            anchor_x="left",
+            anchor_y="bottom",
+            font_size=font_size,
+            font_name=translate.微软等宽,
+            group=fg_group,
+        )
+        self._label = [
+            Label(
+                x=x + 10,
+                y=y + self.command_distance + (line * self.command_split),
+                batch=batch,
+                text="a",
+                anchor_x="left",
+                anchor_y="bottom",
+                font_size=font_size - 3,
+                font_name=translate.鸿蒙简体,
+                group=bg_group,
+            )
+            for line in range(length)
+        ]
         # Rectangular outline with 5-pixel pad:
         color = (100, 100, 100, 100)
         self._pad = p = 5
-        self._outline = pyglet.shapes.Rectangle(x=x - p, y=y - p,
-                                                width=width + p, height=height + p,
-                                                color=color[:3],
-                                                batch=batch, group=fg_group)
+        self._outline = pyglet.shapes.Rectangle(
+            x=x - p,
+            y=y - p,
+            width=width + p,
+            height=height + p,
+            color=color[:3],
+            batch=batch,
+            group=fg_group,
+        )
         self._outline.opacity = color[3]
 
         self.editing = False
@@ -125,7 +162,7 @@ class CommandLine(widgets.WidgetBase):
 
     @text.setter
     def text(self, value):
-        assert isinstance(value, str), 'CommandLine\'s text must be string!'
+        assert isinstance(value, str), "CommandLine's text must be string!"
         self._text = value
         self._line.text = value
 
@@ -143,15 +180,19 @@ class CommandLine(widgets.WidgetBase):
         0 ~ (self.length-1) -> 切换视角到对应的行数
                                实际上还有一个限制
         """
-        assert isinstance(value, int), 'Command View must be integer'
-        assert -self.length < value < self.length, f'Command View must be bigger than {-self.length} and smaller than {self.length}'
+        assert isinstance(value, int), "Command View must be integer"
+        assert (
+            -self.length < value < self.length
+        ), f"Command View must be bigger than {-self.length} and smaller than {self.length}"
         if value == -1:  # flush command list
             self._label.insert(0, self._label[-1])
             self._label.pop(-1)
             for line in range(self.length):
-                self._label[line].y = self.y + self.command_distance + (line * self.command_split)
+                self._label[line].y = (
+                    self.y + self.command_distance + (line * self.command_split)
+                )
             self._label[0].text = self.text
-            self.text = ''
+            self.text = ""
             self._command_view = 0
             self._text_position = 0
         elif value == self._command_view:  # not doing anything
@@ -168,21 +209,25 @@ class CommandLine(widgets.WidgetBase):
 
     @editing.setter
     def editing(self, value):
-        assert isinstance(value, bool), 'Command editing must be bool!'
+        assert isinstance(value, bool), "Command editing must be bool!"
         self._editing = value
         self._line.visible = value
         self._outline.visible = value
         for label in self._label:
             label.visible = value
 
-    @new_thread('command wait', daemon=True, log_thread=False)
+    @new_thread("command wait", daemon=True, log_thread=False)
     def wait(self, wait: Union[float, int] = 0):
         this = self._label[0]
         self._label[0].visible = True
         time.sleep(wait)
         if self._label[0].visible and not self.editing:
-            while (self._label[0].opacity >= 30) and self._label[0].visible and (
-                    self._label[0] is this) and not self.editing:
+            while (
+                (self._label[0].opacity >= 30)
+                and self._label[0].visible
+                and (self._label[0] is this)
+                and not self.editing
+            ):
                 # (label 的透明度不是 0) and (label 还在显示) and (label 还是载入线程时候的那个label) and (现在不在输入新行)
                 self._label[0].opacity -= 2
                 time.sleep(0.01)
@@ -206,45 +251,57 @@ class CommandLine(widgets.WidgetBase):
         # 这里的大部分东西都会在最近被重写
         # TODO 重写成基于新的 InputBox 的解析
         if self.editing:
-            if text in ('\r', '\n'):  # goto a new line
+            if text in ("\r", "\n"):  # goto a new line
                 if not self.text:
                     pass
                 elif self.text[0] == self._command_text:
-                    self.dispatch_event('on_command', CommandText(self.text[1:]))
+                    self.dispatch_event("on_command", CommandText(self.text[1:]))
                 else:
-                    self.dispatch_event('on_message', CommandText(self.text))
+                    self.dispatch_event("on_message", CommandText(self.text))
                 # on_message 和 on_command 可能会覆盖 self.text 需要再次判定
                 if self.text:
                     self.command_view = -1
                 self.editing = False
                 self.wait()
             else:
-                self.text = f'{self.text[:self._text_position]}{text}{self.text[self._text_position:]}'  # 插入字符（简单粗暴）
+                self.text = f"{self.text[:self._text_position]}{text}{self.text[self._text_position:]}"  # 插入字符（简单粗暴）
                 self._text_position += 1
-        elif text == 't':  # open message line
+        elif text == "t":  # open message line
             self.editing = True
-        elif text == '/':  # open command line
+        elif text == "/":  # open command line
             self.editing = True
-            self.text = '/'
+            self.text = "/"
             self._text_position = 1
 
     def on_text_motion(self, motion):
         if self.editing:
             # edit motion
             if motion == key.MOTION_DELETE:  # 确保不越界
-                self.text = f'{self.text[:self._text_position]}{self.text[self._text_position + 1:]}'  # 简单粗暴的删除
-            elif motion == key.MOTION_BACKSPACE and self._text_position >= 1:  # 确保不越界
-                self.text = f'{self.text[:self._text_position - 1]}{self.text[self._text_position:]}'  # 简单粗暴的删除
+                self.text = f"{self.text[:self._text_position]}{self.text[self._text_position + 1:]}"  # 简单粗暴的删除
+            elif (
+                motion == key.MOTION_BACKSPACE and self._text_position >= 1
+            ):  # 确保不越界
+                self.text = f"{self.text[:self._text_position - 1]}{self.text[self._text_position:]}"  # 简单粗暴的删除
                 self._text_position -= 1  # 记得切换光标位置
 
             # move motion
             elif motion == key.MOTION_LEFT and self._text_position >= 0:  # 确保不越界
                 self._text_position -= 1
-            elif motion == key.MOTION_RIGHT and self._text_position <= len(self.text):  # 确保不越界
+            elif motion == key.MOTION_RIGHT and self._text_position <= len(
+                self.text
+            ):  # 确保不越界
                 self._text_position += 1
-            elif motion in (key.MOTION_BEGINNING_OF_LINE, key.MOTION_BEGINNING_OF_FILE, key.MOTION_PREVIOUS_PAGE):
+            elif motion in (
+                key.MOTION_BEGINNING_OF_LINE,
+                key.MOTION_BEGINNING_OF_FILE,
+                key.MOTION_PREVIOUS_PAGE,
+            ):
                 self._text_position = 0
-            elif motion in (key.MOTION_END_OF_LINE, key.MOTION_END_OF_FILE, key.MOTION_NEXT_PAGE):
+            elif motion in (
+                key.MOTION_END_OF_LINE,
+                key.MOTION_END_OF_FILE,
+                key.MOTION_NEXT_PAGE,
+            ):
                 self._text_position = len(self.text)
 
             # view move motion
@@ -288,5 +345,5 @@ class CommandLine(widgets.WidgetBase):
             self.text = _text
 
 
-CommandLine.register_event_type('on_command')
-CommandLine.register_event_type('on_message')
+CommandLine.register_event_type("on_command")
+CommandLine.register_event_type("on_message")

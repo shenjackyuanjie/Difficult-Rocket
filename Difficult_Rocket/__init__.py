@@ -18,19 +18,19 @@ __version__ = sdk_version
 
 __all__ = [
     # __init__
-    'DR_status',
+    "DR_status",
     # folder
-    'api',
-    'client',
-    'server',
-    'command',
-    'crash',
-    'exception',
-    'mod',
-    'utils',
+    "api",
+    "client",
+    "server",
+    "command",
+    "crash",
+    "exception",
+    "mod",
+    "utils",
     # file
-    'main',
-    'runtime',
+    "main",
+    "runtime",
 ]
 
 
@@ -38,23 +38,24 @@ class _DR_status(Options):
     """
     DR 的特性开关 / 基本状态
     """
-    name = 'DR Option'
+
+    name = "DR Option"
     # run status
     client_running: bool = False
     server_running: bool = False
 
     # feature switch
-    InputBox_use_TextEntry:     bool = True
-    record_threads:             bool = True
+    InputBox_use_TextEntry: bool = True
+    record_threads: bool = True
     report_translate_not_found: bool = True
-    use_multiprocess:           bool = False
-    use_cProfile:               bool = False
-    use_local_logging:          bool = False
-    
+    use_multiprocess: bool = False
+    use_cProfile: bool = False
+    use_local_logging: bool = False
+
     # tests
-    playing:                bool = False
-    debugging:              bool = False
-    crash_report_test:      bool = False
+    playing: bool = False
+    debugging: bool = False
+    crash_report_test: bool = False
 
     # game version status
     DR_version: Version = sdk_version  # DR SDK 版本
@@ -62,7 +63,7 @@ class _DR_status(Options):
     API_version: Version = Api_version  # DR SDK API 版本
 
     # game options
-    default_language: str = 'zh-CN'
+    default_language: str = "zh-CN"
 
     # window option
     gui_scale: float = 1.0  # default 1.0 2.0 -> 2x 3 -> 3x
@@ -76,14 +77,15 @@ DR_status = _DR_status()
 
 
 def load_logging():
-    with open('./config/logger.toml') as f:
+    with open("./config/logger.toml") as f:
         import rtoml
+
         logger_config = rtoml.load(f)
-    log_path = logger_config['handlers']['file']['filename']
+    log_path = logger_config["handlers"]["file"]["filename"]
     log_path = f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time_ns() / 1000_000_000)))}"
-    if not Path('logs/').is_dir():
-        Path('logs/').mkdir()
-    logger_config['handlers']['file']['filename'] = log_path
+    if not Path("logs/").is_dir():
+        Path("logs/").mkdir()
+    logger_config["handlers"]["file"]["filename"] = log_path
     logging.config.dictConfig(logger_config)
 
 
@@ -96,8 +98,7 @@ if DR_status.playing:
     def think_it(something):
         return something
 
-
-    @new_thread('think')
+    @new_thread("think")
     def think(some_thing_to_think):
         gotcha = think_it(some_thing_to_think)
         return gotcha

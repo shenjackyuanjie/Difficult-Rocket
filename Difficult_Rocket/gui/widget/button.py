@@ -11,8 +11,10 @@ import pyglet
 from pyglet.text import Label
 from pyglet.gui import widgets
 from pyglet.window import mouse
+
 # from pyglet.sprite import Sprite
 from pyglet.shapes import Rectangle
+
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
 
@@ -28,11 +30,10 @@ class ButtonDrawTheme:
     """
     直接绘制按钮的风格
     """
-    name = 'ButtonDrawTheme'
 
-    def __init__(self,
-                 batch: Batch,
-                 group: Group):
+    name = "ButtonDrawTheme"
+
+    def __init__(self, batch: Batch, group: Group):
         self.batch = batch
         self.group = group
         a = (72, 73, 74)
@@ -74,10 +75,10 @@ class ButtonDrawTheme:
         """
 
 
-
 class ButtonThemeOptions(Options):
-    """ 基于 Options 写的 ButtonTheme """
-    name = 'ButtonTheme'
+    """基于 Options 写的 ButtonTheme"""
+
+    name = "ButtonTheme"
     untouched_color: RGBA = (39, 73, 114, 255)
     touched_color: RGBA = (66, 150, 250, 255)
     hit_color: RGBA = (15, 135, 250, 255)
@@ -92,16 +93,17 @@ class PressTextButton(widgets.WidgetBase):
     自带 字符 + 材质 的按钮，就不用单独做材质了
     """
 
-    def __init__(self,
-                 x: int,
-                 y: int,
-                 width: int,
-                 height: int,
-                 text: str,
-                 batch: Optional[Batch] = None,
-                 group: Optional[Group] = None,
-                 theme: Optional[ButtonThemeOptions] = None,
-                 ):
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        text: str,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+        theme: Optional[ButtonThemeOptions] = None,
+    ):
         super().__init__(x, y, width, height)
         self.main_batch = batch or Batch()
         self.user_batch = batch is not None
@@ -117,20 +119,33 @@ class PressTextButton(widgets.WidgetBase):
         # from ImGui
 
         self.text = text
-        self.text_label = Label(font_name=self.theme.font_theme.font_name, font_size=self.theme.font_theme.font_size,
-                                batch=self.main_batch, group=self.front_group,
-                                x=self._x, y=self._y, width=self._width,
-                                height=self._height,)
-        self.font = pyglet.font.load(self.theme.font_theme.font_name,
-                                     self.theme.font_theme.font_size,
-                                     bold=self.theme.font_theme.bold,
-                                     italic=self.theme.font_theme.italic,
-                                     stretch=self.theme.font_theme.stretch)
+        self.text_label = Label(
+            font_name=self.theme.font_theme.font_name,
+            font_size=self.theme.font_theme.font_size,
+            batch=self.main_batch,
+            group=self.front_group,
+            x=self._x,
+            y=self._y,
+            width=self._width,
+            height=self._height,
+        )
+        self.font = pyglet.font.load(
+            self.theme.font_theme.font_name,
+            self.theme.font_theme.font_size,
+            bold=self.theme.font_theme.bold,
+            italic=self.theme.font_theme.italic,
+            stretch=self.theme.font_theme.stretch,
+        )
         self.font_height = self.font.ascent - self.font.descent
-        self.back_rec = Rectangle(x=self._x, y=self._y,
-                                  width=self._width, height=self._height,
-                                  color=self.untouched_color,  # ImGui color
-                                  batch=self.main_batch, group=self.back_ground_group)
+        self.back_rec = Rectangle(
+            x=self._x,
+            y=self._y,
+            width=self._width,
+            height=self._height,
+            color=self.untouched_color,  # ImGui color
+            batch=self.main_batch,
+            group=self.back_ground_group,
+        )
 
         self.value = text  # 重新分配一下高度和宽度的位置
 
@@ -144,7 +159,9 @@ class PressTextButton(widgets.WidgetBase):
         self.text_label.text = value
         text_width = self.text_label.content_width
         self.text_label.x = self._x + (self.width - text_width) // 2
-        self.text_label.y = self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)  # 修正一下位置
+        self.text_label.y = (
+            self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)
+        )  # 修正一下位置
 
     def __contains__(self, item):
         return item in self.back_rec
@@ -163,7 +180,7 @@ class PressTextButton(widgets.WidgetBase):
     def on_mouse_press(self, x, y, buttons, modifiers) -> bool:
         if (x, y) in self and buttons == mouse.LEFT:
             self.back_rec.color = self.hit_color
-            self.dispatch_event('on_press', x, y)
+            self.dispatch_event("on_press", x, y)
             self.pressed = True
             return True
         return False
@@ -180,4 +197,4 @@ class PressTextButton(widgets.WidgetBase):
         self.back_rec.height = self._height
 
 
-PressTextButton.register_event_type('on_press')
+PressTextButton.register_event_type("on_press")

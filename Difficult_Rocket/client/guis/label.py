@@ -21,5 +21,5 @@ class FontsLabel(DocumentLabel):
 
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height)
-        self._text = 'a'
-        self.formatted_text = 'a'
+        self._text = "a"
+        self.formatted_text = "a"

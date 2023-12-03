@@ -13,12 +13,12 @@ gitee:  @shenjackyuanjie
 
 
 __all__ = [
-    'exception',
+    "exception",
     # 错误类定义
-    'screen',
+    "screen",
     # screen api
-    'types',
+    "types",
     # 类型定义
-    'mod',
+    "mod",
     # mod api
 ]

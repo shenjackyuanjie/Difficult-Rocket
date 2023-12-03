@@ -18,11 +18,11 @@ from Difficult_Rocket.api.types import Options, Version
 
 DR_rust_version = Version("0.2.23.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
-logger = logging.getLogger('client.dr_game')
+logger = logging.getLogger("client.dr_game")
 
 
 class _DR_mod_runtime(Options):  # NOQA
-    name = 'DR mod runtime'
+    name = "DR mod runtime"
 
     use_DR_rust: bool = True
     DR_rust_available: bool = False
@@ -32,13 +32,17 @@ class _DR_mod_runtime(Options):  # NOQA
     def init(self) -> None:
         try:
             from .Difficult_Rocket_rs import get_version_str
+
             self.DR_rust_get_version = Version(get_version_str())
             self.DR_rust_available = True
             if self.DR_rust_get_version != self.DR_rust_version:
-                relationship = 'larger' if self.DR_rust_version > self.DR_rust_version else 'smaller'
+                relationship = (
+                    "larger" if self.DR_rust_version > self.DR_rust_version else "smaller"
+                )
                 warnings.warn(
-                    f'DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n'
-                    f'Builtin version {relationship} than true version')
+                    f"DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n"
+                    f"Builtin version {relationship} than true version"
+                )
             self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
         except Exception:
             traceback.print_exc()
@@ -77,6 +81,7 @@ class DR_mod(ModInfo):  # NOQA
 
         if old_self:
             from .sr1_ship import SR1ShipRender
+
             game.client.window.add_sub_screen("SR1_ship", SR1ShipRender)
         else:
             self.config.flush_option()
@@ -86,8 +91,9 @@ class DR_mod(ModInfo):  # NOQA
 
     def on_client_start(self, game: Game, client: ClientWindow):
         from .sr1_ship import SR1ShipRender
+
         client.add_sub_screen("SR1_ship", SR1ShipRender)
-        logger.info('on_client_start added sub screen')
+        logger.info("on_client_start added sub screen")
 
     def on_unload(self, game: Game):
         game.client.window.screen_list.pop("SR1_ship")

@@ -4,10 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-from Difficult_Rocket.exception.logger import (
-    LogFileLockTimeOutError
-)
+from Difficult_Rocket.exception.logger import LogFileLockTimeOutError
 
-__all__ = [
-    "LogFileLockTimeOutError"
-]
+__all__ = ["LogFileLockTimeOutError"]

@@ -6,6 +6,4 @@
 
 from Difficult_Rocket.mod.api import ModInfo
 
-__all__ = [
-    "ModInfo"
-]
+__all__ = ["ModInfo"]
