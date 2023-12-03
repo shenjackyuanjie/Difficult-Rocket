@@ -1,10 +1,14 @@
 # DR SDK 更新日志
 
 - 最新版本号
-  - DR sdk: 0.8.7.2
+  - DR sdk: 0.8.7.3
   - DR api: 0.1.1.0
 
 ## Draft DR sdk 0.9.0.0
+
+### Rename
+
+- `Api_version` -> `api_version`
 
 ### Add
 

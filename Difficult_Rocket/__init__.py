@@ -12,7 +12,7 @@ from Difficult_Rocket.api.types import Options, Version
 
 sdk_version = Version("0.8.7.3")  # SDK 版本
 build_version = Version("2.2.0.0")  # 编译文件版本(与游戏本体无关)
-Api_version = Version("0.1.1.0")  # API 版本
+api_version = Version("0.1.1.0")  # API 版本
 __version__ = sdk_version
 
 
@@ -31,6 +31,9 @@ __all__ = [
     # file
     "main",
     "runtime",
+    "sdk_version",
+    "build_version",
+    "api_version",
 ]
 
 
@@ -60,7 +63,7 @@ class _DR_status(Options):
     # game version status
     DR_version: Version = sdk_version  # DR SDK 版本
     Build_version: Version = build_version  # DR 构建 版本
-    API_version: Version = Api_version  # DR SDK API 版本
+    API_version: Version = api_version  # DR SDK API 版本
 
     # game options
     default_language: str = "zh-CN"
