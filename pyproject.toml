@@ -53,6 +53,9 @@ exclude = [
 nuitka-script = 'nuitka-script.py'
 
 [tool.lndl.nuitka]
+script = 'nuitka-config.py'
+
+[tool.lndl.nuitka.cli]
 main = "DR.py"
 
 lto = "yes"
@@ -62,8 +65,11 @@ mingw64 = false
 
 standalone = true
 output-dir = "build/nuitka"
-run = false
 
+run = false
+# auto run after build
+show-memory = false
+show-progress = false
 disable-console = false
 assume-yes-for-download = true
 
