@@ -55,6 +55,15 @@ def gen_pyglet_no_follow_import() -> list:
 def main(config: raw_config_type) -> nuitka_config_type:
     print("debug", config)
     config = config["cli"]
+    if platform.system() == "Darwin":
+        config.pop("windows-icon-from-ico")
+        config.pop("linux-icon")
+    elif platform.system() == "Linux":
+        config.pop("windows-icon-from-ico")
+        config.pop("macos-app-icon")
+    elif platform.system() == "Windows":
+        config.pop("linux-icon")
+        config.pop("macos-app-icon")
 
     config["file-version"] = str(build_version)
     config["product-version"] = str(sdk_version)
