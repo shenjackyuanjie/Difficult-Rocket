@@ -13,6 +13,13 @@
   - `name` = `DR Option` -> `DR Status`
   - 这毛病属实是没想到, 之前一直没发现
 
+### Rework
+
+- 将 `logging` 的依赖改为 `lib_not_dr.loggers`
+  - 以后都用 `lib_not_dr` 的 logger 了
+  - Change the dependency of `logging` to `lib_not_dr.loggers`
+  - Use `lib_not_dr` logger in the future
+
 ### Add
 
 - 添加内置依赖: `lib-not-dr`

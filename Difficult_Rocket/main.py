@@ -11,27 +11,17 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-# import time
-import logging
-
-# import traceback
-import logging.config
 import multiprocessing
 
-# from io import StringIO
-# from pathlib import Path
 from typing import List, Optional, Dict
 
-# from Difficult_Rocket.utils import tools
 from Difficult_Rocket.api.types import Options
-
-# from Difficult_Rocket.utils.translate import tr
-# from Difficult_Rocket.runtime import DR_runtime
 from Difficult_Rocket.mod.loader import ModManager
 from Difficult_Rocket.utils.thread import new_thread
-
-# from Difficult_Rocket.crash import write_info_to_cache
 from Difficult_Rocket import client, server, DR_status
+
+from lib_not_dr.loggers import config
+from lib_not_dr.loggers.logger import Logger
 
 
 class Console(Options):
@@ -75,7 +65,7 @@ class Game(Options):
     console_class: Console = Console
 
     main_config: Dict
-    logger: logging.Logger
+    logger: Logger
 
     mod_manager: ModManager
 
@@ -84,9 +74,6 @@ class Game(Options):
 
     def init_mods(self) -> None:
         """验证/加载 mod"""
-        from Difficult_Rocket.mod import loader as mod_loader
-
-        mod_loader.logger = logging.getLogger("mod_manager")
         self.mod_manager = ModManager()
         mod_class = self.mod_manager.load_mods()
         self.mod_manager.init_mods(mod_class)
@@ -120,7 +107,7 @@ class Game(Options):
         self.server = server.Server(net_mode="local")
 
     def init(self, **kwargs) -> bool:
-        self.logger = logging.getLogger("main")
+        self.logger = config.get_logger("main")
         self.load_file()
         self.setup()
         self.log_env()

@@ -4,7 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-import logging
 import warnings
 import traceback
 
@@ -16,9 +15,11 @@ from Difficult_Rocket.api.mod import ModInfo
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Options, Version
 
+from lib_not_dr import loggers
+
 DR_rust_version = Version("0.2.23.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
-logger = logging.getLogger("client.dr_game")
+logger = loggers.config.get_logger_from_old("client.dr_game", "client")
 
 
 class _DR_mod_runtime(Options):  # NOQA

@@ -52,7 +52,6 @@ class _DRStatus(Options):
     report_translate_not_found: bool = True
     use_multiprocess: bool = False
     use_cProfile: bool = False
-    use_local_logging: bool = False
 
     # tests
     playing: bool = False
@@ -78,7 +77,7 @@ class _DRStatus(Options):
 DR_status = _DRStatus()
 
 
-def load_logging():
+def load_logger():
     log_config_path = Path("./config/lndl-logger.toml")
 
     import rtoml
@@ -98,9 +97,8 @@ def load_logging():
         with open(log_config_path, encoding='utf-8') as f:
             logger_config = rtoml.load(f)
     # 输入 lndl 进行配置
-    from lib_not_dr.loggers.config import read_config
+    from lib_not_dr.loggers.config import read_config, get_logger
     read_config(logger_config)
-    from lib_not_dr.loggers.config import get_logger
     logger = get_logger("main")
     logger.info("Logger config loaded", tag='DR-init')
     logger.info(f"DR status:\n{DR_status.as_markdown()}", tag='DR-init')
@@ -110,7 +108,7 @@ def load_logging():
 
 # 读取日志配置
 # 也保证可以直接运行，不带日志 ( 因为有默认配置 )
-load_logging()
+load_logger()
 
 
 if DR_status.playing:
