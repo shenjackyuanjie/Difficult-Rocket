@@ -6,7 +6,6 @@
 
 import sys
 import time
-import logging
 import traceback
 import importlib
 from pathlib import Path
@@ -16,9 +15,11 @@ from Difficult_Rocket.mod.api import ModInfo
 from Difficult_Rocket.utils.translate import tr
 from Difficult_Rocket.api.types import Options
 
+from lib_not_dr.loggers import config
+
 Game = TypeVar("Game")
 
-logger = logging.getLogger("mod_manager")
+logger = config.get_logger_from_old("mod_manager", "client")
 ONE_FILE_SUFFIX = (".py", ".pyc", ".pyd")
 PACKAGE_SUFFIX = (".pyz", ".zip", ".dr_mod")
 
@@ -91,14 +92,14 @@ class ModManager(Options):
                 if not hasattr(loading_mod, "mod_class") or not issubclass(
                     loading_mod.mod_class, ModInfo
                 ):
-                    logger.warning(tr().mod.load.faild.no_mod_class().format(mod_path))
+                    logger.warn(tr().mod.load.faild.no_mod_class().format(mod_path))
                     return None
                 mod_class: type(ModInfo) = loading_mod.mod_class  # 获取 mod 类
                 if mod_class.mod_id not in self.find_mod_paths:
                     self.find_mod_paths[mod_class.mod_id] = mod_path
                 return mod_class
         except ImportError:
-            logger.warning(
+            logger.warn(
                 tr().mod.load.faild.error().format(mod_path, traceback.format_exc())
             )
         return None
@@ -193,7 +194,7 @@ class ModManager(Options):
             not (mod_class := self.loaded_mod_modules.get(mod_id))
             and (mod_class := self.get_mod_module(mod_id)) is None
         ):
-            logger.warning(tr().mod.unload.faild.not_find().format(mod_id))
+            logger.warn(tr().mod.unload.faild.not_find().format(mod_id))
             return None
         try:
             mod_class.on_unload(game=game)
@@ -218,7 +219,7 @@ class ModManager(Options):
             return
         mod_class: Optional[ModInfo] = None
         if unload.mod_id not in self.find_mod_paths:
-            logger.warning(tr().mod.reload.faild.not_find().format(unload.mod_id))
+            logger.warn(tr().mod.reload.faild.not_find().format(unload.mod_id))
             paths = self.find_mods_in_path()
             for path in paths:
                 mod_class = self.load_mod(path)
