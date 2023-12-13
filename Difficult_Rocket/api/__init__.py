@@ -11,7 +11,6 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
-
 __all__ = [
     "exception",
     # 错误类定义

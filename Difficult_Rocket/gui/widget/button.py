@@ -94,15 +94,15 @@ class PressTextButton(widgets.WidgetBase):
     """
 
     def __init__(
-        self,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        text: str,
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
-        theme: Optional[ButtonThemeOptions] = None,
+            self,
+            x: int,
+            y: int,
+            width: int,
+            height: int,
+            text: str,
+            batch: Optional[Batch] = None,
+            group: Optional[Group] = None,
+            theme: Optional[ButtonThemeOptions] = None,
     ):
         super().__init__(x, y, width, height)
         self.main_batch = batch or Batch()
@@ -160,7 +160,7 @@ class PressTextButton(widgets.WidgetBase):
         text_width = self.text_label.content_width
         self.text_label.x = self._x + (self.width - text_width) // 2
         self.text_label.y = (
-            self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)
+                self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)
         )  # 修正一下位置
 
     def __contains__(self, item):

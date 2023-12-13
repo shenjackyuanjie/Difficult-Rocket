@@ -23,7 +23,6 @@ class BaseTheme(dict):
                 setattr(self, k, v)
 
     if TYPE_CHECKING:
-
         def init(self, batch: Batch, group: Group, **kwargs) -> None:
             """
             Init theme

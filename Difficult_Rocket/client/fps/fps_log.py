@@ -36,9 +36,9 @@ class FpsLogger:
         else:
             self.fps_list.append(float(1 / tick))
         if len(self.fps_list) > self.count:
-            self.fps_list = self.fps_list[-self.count + 1 :]  # 整个列表往前挪一位
+            self.fps_list = self.fps_list[-self.count + 1:]  # 整个列表往前挪一位
         if len(self.get_fps_list) > self.count:
-            self.get_fps_list = self.get_fps_list[-self.count + 1 :]  # 整个列表往前挪一位
+            self.get_fps_list = self.get_fps_list[-self.count + 1:]  # 整个列表往前挪一位
         try:
             self._fps = statistics.geometric_mean(
                 self.fps_list[-100:]

@@ -61,10 +61,10 @@ def crash_info_handler(info: Optional[str] = None) -> str:
 
 
 def markdown_line_handler(
-    string: Optional[Union[str, bool, int, float]],
-    code: bool = False,
-    level: int = 1,
-    end: str = "\n",
+        string: Optional[Union[str, bool, int, float]],
+        code: bool = False,
+        level: int = 1,
+        end: str = "\n",
 ) -> str:
     lvl = "- " * level
     f_string = string

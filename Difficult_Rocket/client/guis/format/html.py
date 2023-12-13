@@ -20,8 +20,8 @@ from pyglet.text.formats import structured
 default_style = {
     "font_name": "Times New Roman",
     "font_size": 12,
-    "bold": False,
-    "italic": False,
+    "bold":      False,
+    "italic":    False,
 }
 
 
@@ -35,17 +35,17 @@ class SingleTextStyle:
     """
 
     def __init__(
-        self,
-        font_name: str = "",
-        font_size: int = 12,
-        bold: bool = False,
-        italic: bool = False,
-        color: str = "white",
-        text_tag: list = None,
-        show: bool = True,
-        prefix: str = "",
-        suffix: str = "",
-        text: str = "",
+            self,
+            font_name: str = "",
+            font_size: int = 12,
+            bold: bool = False,
+            italic: bool = False,
+            color: str = "white",
+            text_tag: list = None,
+            show: bool = True,
+            prefix: str = "",
+            suffix: str = "",
+            text: str = "",
     ):
         self.font_name = font_name
         self.font_size = font_size
@@ -142,10 +142,10 @@ class SingleTextStyle:
         """
         assert isinstance(other, SingleTextStyle)
         return (
-            self.font_name == other.font_name
-            and self.font_size == other.font_size
-            and self.color == other.color
-            and self.show == other.show
+                self.font_name == other.font_name
+                and self.font_size == other.font_size
+                and self.color == other.color
+                and self.show == other.show
         )
 
     def same_bold(self, other: "SingleTextStyle") -> bool:
@@ -215,9 +215,9 @@ class SingleTextStyle:
         """
         return (
             (
-                font_HTML_end
-                + (bold_HTML_end if self.bold else "")
-                + (italic_HTML_end if self.italic else "")
+                    font_HTML_end
+                    + (bold_HTML_end if self.bold else "")
+                    + (italic_HTML_end if self.italic else "")
             )
             if suffix
             else self.HTML_bold() + self.HTML_italic() + self.HTML_font()
@@ -248,7 +248,7 @@ default_fonts_config = [
         # Markdown 粗体语法规则匹配
         "match": re.compile(r"\*\*(.*?(?<!\s))\*\*"),
         "shown": re.compile(r"(?<=\*\*)(.*?(?<!\s))(?=\*\*)"),
-        "tag": {
+        "tag":   {
             # 为 match 匹配到的字符添加标签
             "match": re.compile(r"\*\*"),
             "style": SingleTextStyle(text_tag=["bold"]),
@@ -257,14 +257,14 @@ default_fonts_config = [
     },
     {
         # Markdown 斜体语法规则匹配
-        "match": re.compile(r"\*(.*?(?<!\s))\*"),
-        "shown": re.compile(r"(?<=\*)(.*?(?<!\s))(?=\*)"),
+        "match":  re.compile(r"\*(.*?(?<!\s))\*"),
+        "shown":  re.compile(r"(?<=\*)(.*?(?<!\s))(?=\*)"),
         "ignore": {
             # 如果匹配到的字符含有 tag 就忽略本次解析
             "match": re.compile(r"\*"),
-            "tag": SingleTextStyle(text_tag=["italic"]),
+            "tag":   SingleTextStyle(text_tag=["italic"]),
         },
-        "style": SingleTextStyle(italic=True),
+        "style":  SingleTextStyle(italic=True),
     },
     {
         # Markdown 链接规则匹配
@@ -308,11 +308,11 @@ def decode_text2HTML(text: str, configs=None, show_style: bool = False) -> str:
                     if ignore:  # 为了方便退出
                         break
                     for ignore_index in range(
-                        match_start + ignore_text.span()[0],
-                        match_start + ignore_text.span()[1],
+                            match_start + ignore_text.span()[0],
+                            match_start + ignore_text.span()[1],
                     ):  # 对每一个可能的字符进行检测
                         if style_list[ignore_index].have_tag(
-                            config["ignore"]["tag"]
+                                config["ignore"]["tag"]
                         ):  # 如果确实包含要忽略的
                             ignore = True  # 忽略为True
                             break
@@ -324,7 +324,7 @@ def decode_text2HTML(text: str, configs=None, show_style: bool = False) -> str:
                 )  # 根据配置的正则表达式匹配要添加tag的字符
                 for tag_text in tag_texts:  # 对每一个匹配到的~~~~~~
                     for tag_index in range(
-                        match_start + tag_text.span()[0], match_start + tag_text.span()[1]
+                            match_start + tag_text.span()[0], match_start + tag_text.span()[1]
                     ):  # 用于遍历匹配到的字符
                         style_list[tag_index] += config["tag"]["style"]
             # 为匹配到的字符添加样式
@@ -337,7 +337,7 @@ def decode_text2HTML(text: str, configs=None, show_style: bool = False) -> str:
             # 为每一个显示的字符设置显示属性
             for shown_text in shown_texts:  # 每一个显示的匹配项
                 for shown_index in range(
-                    match_start + shown_text.span()[0], match_start + shown_text.span()[1]
+                        match_start + shown_text.span()[0], match_start + shown_text.span()[1]
                 ):
                     style_list[shown_index].show = True
                     # 字体样式列表的 [shown_index] 设置显示属性变为 True
@@ -349,17 +349,17 @@ def decode_text2HTML(text: str, configs=None, show_style: bool = False) -> str:
                 if not style_list[style_index - 1].same_font(style_list[style_index]):
                     style_list[style_index - 1].suffix += style_list[
                         style_index - 1
-                    ].HTML_font(suffix=True)
+                        ].HTML_font(suffix=True)
                     style_list[style_index].prefix += style_list[style_index].HTML_font()
                 if not style_list[style_index - 1].same_bold(style_list[style_index]):
                     style_list[style_index - 1].suffix += style_list[
                         style_index - 1
-                    ].HTML_bold(suffix=True)
+                        ].HTML_bold(suffix=True)
                     style_list[style_index].prefix += style_list[style_index].HTML_bold()
                 if not style_list[style_index - 1].same_italic(style_list[style_index]):
                     style_list[style_index - 1].suffix += style_list[
                         style_index - 1
-                    ].HTML_italic(suffix=True)
+                        ].HTML_italic(suffix=True)
                     style_list[style_index].prefix += style_list[
                         style_index
                     ].HTML_italic()
