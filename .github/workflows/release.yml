@@ -74,7 +74,7 @@ jobs:
       - name: Build by nuitka
         shell: pwsh
         run: |
-          python nuitka_build.py --github
+          python -m lndl_nuitka . -y
           # 集成的构建脚本 好耶！
 
       # 编译 dr_rs
