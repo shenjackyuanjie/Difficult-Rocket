@@ -36,7 +36,7 @@ class TranslateConfig:
 
     def set(self, item: str, value: Union[bool, "Tr", "Translates"]) -> "TranslateConfig":
         assert (
-            getattr(self, item, None) is not None
+                getattr(self, item, None) is not None
         ), f"Config {item} is not in TranslateConfig"
         assert isinstance(value, bool)
         setattr(self, item, value)
@@ -62,10 +62,10 @@ key_type = Union[str, int, Hashable]
 
 class Translates:
     def __init__(
-        self,
-        value: Union[Dict[str, Any], list, tuple, str],
-        config: Optional[TranslateConfig] = None,
-        get_list: Optional[List[Tuple[bool, str]]] = None,
+            self,
+            value: Union[Dict[str, Any], list, tuple, str],
+            config: Optional[TranslateConfig] = None,
+            get_list: Optional[List[Tuple[bool, str]]] = None,
     ):
         """一个用于翻译的东西
         :param value: 翻译键节点
@@ -77,9 +77,9 @@ class Translates:
         self._get_list = get_list or []
 
     def set_conf_(
-        self,
-        option: Union[str, TranslateConfig],
-        value: Optional[Union[bool, List[str]]] = None,
+            self,
+            option: Union[str, TranslateConfig],
+            value: Optional[Union[bool, List[str]]] = None,
     ) -> "Translates":
         assert isinstance(option, (TranslateConfig, str))
         if isinstance(option, TranslateConfig):
@@ -117,7 +117,7 @@ class Translates:
             print(raise_info)
 
     def __getitem__(
-        self, item: Union[key_type, List[key_type], Tuple[key_type]]
+            self, item: Union[key_type, List[key_type], Tuple[key_type]]
     ) -> "Translates":
         try:
             if isinstance(item, (str, int, Hashable)):
@@ -127,11 +127,11 @@ class Translates:
                 for a_item in item:
                     cache_value = cache_value[a_item]
             if isinstance(
-                cache_value,
-                (
-                    int,
-                    str,
-                ),
+                    cache_value,
+                    (
+                            int,
+                            str,
+                    ),
             ):
                 self._config.is_final = True
             self._get_list.append((True, item))
@@ -158,7 +158,7 @@ class Translates:
 
     def __getattr__(self, item: key_type) -> "Translates":
         if (self._config.is_final or any(x[0] for x in self._get_list)) and hasattr(
-            self._value, item
+                self._value, item
         ):
             return getattr(self._value, item)
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
@@ -181,10 +181,10 @@ class Tr:
     """
 
     def __init__(
-        self,
-        language: str = None,
-        config: Optional[TranslateConfig] = None,
-        lang_path: Optional[Path] = None,
+            self,
+            language: str = None,
+            config: Optional[TranslateConfig] = None,
+            lang_path: Optional[Path] = None,
     ):
         """
         诶嘿，我抄的MCDR

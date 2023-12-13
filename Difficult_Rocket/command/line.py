@@ -36,15 +36,15 @@ class CommandLineTextEntry(widgets.TextEntry):
     """
 
     def __init__(
-        self,
-        x: int,
-        y: int,
-        width: int,
-        color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
-        text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
-        caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
+            self,
+            x: int,
+            y: int,
+            width: int,
+            color: Optional[Tuple[int, int, int, int]] = (255, 255, 255, 255),
+            text_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0, 255),
+            caret_color: Optional[Tuple[int, int, int, int]] = (0, 0, 0),
+            batch: Optional[Batch] = None,
+            group: Optional[Group] = None,
     ):
         super().__init__(
             x=x,
@@ -66,16 +66,16 @@ class CommandLine(widgets.WidgetBase):
     """
 
     def __init__(
-        self,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        length: int,
-        batch: Batch,
-        group: Group = None,
-        command_text: str = "/",
-        font_size: int = 20,
+            self,
+            x: int,
+            y: int,
+            width: int,
+            height: int,
+            length: int,
+            batch: Batch,
+            group: Group = None,
+            command_text: str = "/",
+            font_size: int = 20,
     ):
         super().__init__(x, y, width, height)
 
@@ -182,14 +182,14 @@ class CommandLine(widgets.WidgetBase):
         """
         assert isinstance(value, int), "Command View must be integer"
         assert (
-            -self.length < value < self.length
+                -self.length < value < self.length
         ), f"Command View must be bigger than {-self.length} and smaller than {self.length}"
         if value == -1:  # flush command list
             self._label.insert(0, self._label[-1])
             self._label.pop(-1)
             for line in range(self.length):
                 self._label[line].y = (
-                    self.y + self.command_distance + (line * self.command_split)
+                        self.y + self.command_distance + (line * self.command_split)
                 )
             self._label[0].text = self.text
             self.text = ""
@@ -223,10 +223,10 @@ class CommandLine(widgets.WidgetBase):
         time.sleep(wait)
         if self._label[0].visible and not self.editing:
             while (
-                (self._label[0].opacity >= 30)
-                and self._label[0].visible
-                and (self._label[0] is this)
-                and not self.editing
+                    (self._label[0].opacity >= 30)
+                    and self._label[0].visible
+                    and (self._label[0] is this)
+                    and not self.editing
             ):
                 # (label 的透明度不是 0) and (label 还在显示) and (label 还是载入线程时候的那个label) and (现在不在输入新行)
                 self._label[0].opacity -= 2
@@ -279,7 +279,7 @@ class CommandLine(widgets.WidgetBase):
             if motion == key.MOTION_DELETE:  # 确保不越界
                 self.text = f"{self.text[:self._text_position]}{self.text[self._text_position + 1:]}"  # 简单粗暴的删除
             elif (
-                motion == key.MOTION_BACKSPACE and self._text_position >= 1
+                    motion == key.MOTION_BACKSPACE and self._text_position >= 1
             ):  # 确保不越界
                 self.text = f"{self.text[:self._text_position - 1]}{self.text[self._text_position:]}"  # 简单粗暴的删除
                 self._text_position -= 1  # 记得切换光标位置
@@ -288,19 +288,19 @@ class CommandLine(widgets.WidgetBase):
             elif motion == key.MOTION_LEFT and self._text_position >= 0:  # 确保不越界
                 self._text_position -= 1
             elif motion == key.MOTION_RIGHT and self._text_position <= len(
-                self.text
+                    self.text
             ):  # 确保不越界
                 self._text_position += 1
             elif motion in (
-                key.MOTION_BEGINNING_OF_LINE,
-                key.MOTION_BEGINNING_OF_FILE,
-                key.MOTION_PREVIOUS_PAGE,
+                    key.MOTION_BEGINNING_OF_LINE,
+                    key.MOTION_BEGINNING_OF_FILE,
+                    key.MOTION_PREVIOUS_PAGE,
             ):
                 self._text_position = 0
             elif motion in (
-                key.MOTION_END_OF_LINE,
-                key.MOTION_END_OF_FILE,
-                key.MOTION_NEXT_PAGE,
+                    key.MOTION_END_OF_LINE,
+                    key.MOTION_END_OF_FILE,
+                    key.MOTION_NEXT_PAGE,
             ):
                 self._text_position = len(self.text)
 

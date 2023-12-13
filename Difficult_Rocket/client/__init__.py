@@ -44,7 +44,6 @@ from Difficult_Rocket.exception.language import LanguageNotFound
 
 from lib_not_dr import loggers
 
-
 logger = loggers.config.get_logger("client")
 
 
@@ -129,7 +128,7 @@ def pyglet_load_fonts_folder(folder) -> None:
     if not font_path.exists():
         font_path.mkdir(parents=True)
         return None
-    logger.info(tr().client.load.font.start().format(font_path), tag='font')
+    logger.info(tr().client.load.font.start().format(font_path), tag="font")
     start_time = time.time_ns()
     for dir_path, dir_names, file_names in os.walk(font_path):
         dir_path = Path(dir_path)
@@ -137,7 +136,8 @@ def pyglet_load_fonts_folder(folder) -> None:
             file_name = Path(file_name)
             if file_name.suffix in (".ttf", ".otf"):
                 logger.debug(
-                    tr().client.load.font.file().format(str(dir_path / file_name)), tag='font'
+                    tr().client.load.font.file().format(str(dir_path / file_name)),
+                    tag="font",
                 )
                 try:
                     pyglet.font.add_file(str(dir_path / file_name))
@@ -149,7 +149,9 @@ def pyglet_load_fonts_folder(folder) -> None:
                     )
     end_time = time.time_ns()
     use_time = end_time - start_time
-    logger.info(tr().client.load.font.use_time().format(use_time / 1000000000), tag='font')
+    logger.info(
+        tr().client.load.font.use_time().format(use_time / 1000000000), tag="font"
+    )
 
 
 def _call_back(call_back: Callable) -> Callable:
@@ -308,10 +310,13 @@ class ClientWindow(Window):
             # TODO: wait for pyglet 2.1
             pyglet.app.run(float(self.SPF))
         except KeyboardInterrupt:
-            self.logger.warn("==========client stop. KeyboardInterrupt info==========", tag="starter")
+            self.logger.warn(
+                "==========client stop. KeyboardInterrupt info==========", tag="starter"
+            )
             traceback.print_exc()
             self.logger.warn(
-                "==========client stop. KeyboardInterrupt info end==========", tag="starter"
+                "==========client stop. KeyboardInterrupt info end==========",
+                tag="starter",
             )
             self.dispatch_event("on_close", "input")
             sys.exit(0)
@@ -498,7 +503,7 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_key_press(self, symbol, modifiers) -> None:
         if symbol == key.ESCAPE and not (
-            modifiers & ~(key.MOD_NUMLOCK | key.MOD_CAPSLOCK | key.MOD_SCROLLLOCK)
+                modifiers & ~(key.MOD_NUMLOCK | key.MOD_CAPSLOCK | key.MOD_SCROLLLOCK)
         ):
             self.dispatch_event("on_close", "window")
         if symbol == key.SLASH:

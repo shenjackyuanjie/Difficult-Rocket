@@ -120,9 +120,9 @@ class FunctionThread(threading.Thread):
 
 
 def new_thread(
-    arg: Optional[Union[str, Callable]] = None,
-    daemon: bool = False,
-    log_thread: bool = True,
+        arg: Optional[Union[str, Callable]] = None,
+        daemon: bool = False,
+        log_thread: bool = True,
 ):
     """
     This is a one line solution to make your function executes in parallels.

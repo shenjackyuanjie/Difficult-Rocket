@@ -13,7 +13,6 @@ build_version = Version("2.2.0.0")  # 编译文件版本(与游戏本体无关)
 api_version = Version("0.1.1.0")  # API 版本
 __version__ = sdk_version
 
-
 __all__ = [
     # __init__
     "DR_status",
@@ -86,6 +85,7 @@ def load_logger():
     if not log_config_path.is_file():
         # 生成默认配置文件
         from Difficult_Rocket.data import log_config
+
         try:
             log_config_path.write_text(log_config.default_config)
         except (FileNotFoundError, OSError, PermissionError):
@@ -94,28 +94,30 @@ def load_logger():
         logger_config = rtoml.loads(log_config.default_config)
     else:
         # 读取配置文件
-        with open(log_config_path, encoding='utf-8') as f:
+        with open(log_config_path, encoding="utf-8") as f:
             logger_config = rtoml.load(f)
     # 输入 lndl 进行配置
     from lib_not_dr.loggers.config import read_config, get_logger
+
     read_config(logger_config)
     logger = get_logger("main")
-    logger.info("Logger config loaded", tag='DR-init')
-    logger.info(f"DR status:\n{DR_status.as_markdown()}", tag='DR-init')
+    logger.info("Logger config loaded", tag="DR-init")
+    logger.info(f"DR status:\n{DR_status.as_markdown()}", tag="DR-init")
     if warn_config:
-        logger.warn("Failed to load log config file, use default config", tag='DR-init')
+        logger.warn("Failed to load log config file, use default config", tag="DR-init")
 
 
 # 读取日志配置
 # 也保证可以直接运行，不带日志 ( 因为有默认配置 )
 load_logger()
 
-
 if DR_status.playing:
     from Difficult_Rocket.utils.thread import new_thread
 
+
     def think_it(something):
         return something
+
 
     @new_thread("think")
     def think(some_thing_to_think):

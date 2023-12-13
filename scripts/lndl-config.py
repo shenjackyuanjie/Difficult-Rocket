@@ -13,12 +13,8 @@ from lib_not_dr.nuitka import nuitka_config_type, raw_config_type
 
 def gen_pyglet_no_follow_import() -> list:
     no_follow_import = []
-    no_follow_import += [
-        f"pyglet.app.{x}" for x in ["win32", "xlib", "cocoa"]
-    ]
-    no_follow_import += [
-        f"pyglet.input.{x}" for x in ["win32", "linux", "macos"]
-    ]
+    no_follow_import += [f"pyglet.app.{x}" for x in ["win32", "xlib", "cocoa"]]
+    no_follow_import += [f"pyglet.input.{x}" for x in ["win32", "linux", "macos"]]
     no_follow_import += [
         f"pyglet.libs.{x}"
         for x in ["win32", "x11", "wayland", "darwin", "egl", "headless"]
@@ -36,9 +32,7 @@ def gen_pyglet_no_follow_import() -> list:
             "headless",
         )
     ]
-    no_follow_import += [
-        f"pyglet.gl.{x}" for x in ["win32", "xlib", "cocoa", "headless"]
-    ]
+    no_follow_import += [f"pyglet.gl.{x}" for x in ["win32", "xlib", "cocoa", "headless"]]
 
     mult_plat_libs = ["app", "input", "libs", "window", "canvas", "gl"]
     if platform.system() == "Windows":
@@ -59,15 +53,15 @@ def gen_pyglet_no_follow_import() -> list:
 
 
 def main(config: raw_config_type) -> nuitka_config_type:
-    print('debug', config)
-    config = config['cli']
+    print("debug", config)
+    config = config["cli"]
 
-    config['file-version'] = str(build_version)
-    config['product-version'] = str(sdk_version)
-    config['macos-app-version'] = str(sdk_version)
+    config["file-version"] = str(build_version)
+    config["product-version"] = str(sdk_version)
+    config["macos-app-version"] = str(sdk_version)
 
-    config['nofollow-import-to'] += gen_pyglet_no_follow_import()
-    config['output-dir'] = './build/nuitka-' + platform.system().lower()
+    config["nofollow-import-to"] += gen_pyglet_no_follow_import()
+    config["output-dir"] = "./build/nuitka-" + platform.system().lower()
 
-    print('done', config)
+    print("done", config)
     return config

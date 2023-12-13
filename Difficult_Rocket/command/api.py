@@ -50,9 +50,9 @@ class CommandText:
             if find != -1:
                 if not len(text) == len(self.text):
                     self.text = (
-                        self.text[find + len(text) :]
+                        self.text[find + len(text):]
                         if not self.text[find + len(text)] == " "
-                        else self.text[find + len(text) + 1 :]
+                        else self.text[find + len(text) + 1:]
                     )
                 return True
         return False
@@ -68,7 +68,7 @@ class CommandText:
                 # 20230122 我现在也不知道为啥这么写了
                 # 果然使用正则表达式就是让一个问题变成两个问题
             except IndexError:
-                self.text = self.text[finding.span()[1] + 1 :]
+                self.text = self.text[finding.span()[1] + 1:]
                 return True
             if next_find == " ":
                 return True
