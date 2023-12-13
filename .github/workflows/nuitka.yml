@@ -86,7 +86,7 @@ jobs:
       - name: Build by nuitka
         shell: pwsh
         run: |
-          python -m lndl_nuitka . -y
+          python -m lndl_nuitka . -y -github
           # 集成的构建脚本 好耶！
 
       # 获取短 sha
@@ -105,4 +105,4 @@ jobs:
         with:
           name: Difficult-Rocket_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}.zip
           path: |
-            build/github/DR.dist
+            build/DR.dist

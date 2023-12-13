@@ -74,7 +74,7 @@ jobs:
       - name: Build by nuitka
         shell: pwsh
         run: |
-          python -m lndl_nuitka . -y
+          python -m lndl_nuitka . -y -github
           # 集成的构建脚本 好耶！
 
       # 编译 dr_rs
@@ -94,7 +94,7 @@ jobs:
         with:
           name: DR_full_v${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}
           path: |
-            build/github/DR.dist
+            build/DR.dist
             mods/dr_game
 
   Zip-All:

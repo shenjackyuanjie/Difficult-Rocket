@@ -4,6 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
+import sys
 import platform
 
 from Difficult_Rocket import sdk_version, build_version
@@ -52,6 +53,9 @@ def gen_pyglet_no_follow_import() -> list:
     return no_follow_import
 
 
+is_github = "-github" in sys.argv
+
+
 def main(config: raw_config_type) -> nuitka_config_type:
     config = config["cli"]
     if platform.system() == "Darwin":
@@ -69,6 +73,9 @@ def main(config: raw_config_type) -> nuitka_config_type:
     config["macos-app-version"] = str(sdk_version)
 
     config["nofollow-import-to"] += gen_pyglet_no_follow_import()
-    config["output-dir"] = "./build/nuitka-" + platform.system().lower()
+    if is_github:
+        config["output-dir"] = "./build"
+    else:
+        config["output-dir"] = "./build/nuitka-" + platform.system().lower()
 
     return config
