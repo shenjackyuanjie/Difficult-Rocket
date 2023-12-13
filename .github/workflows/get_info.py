@@ -12,15 +12,19 @@ import io
 
 sys.path.append(os.path.abspath(os.curdir))
 
-try:
+is_github = "-github" in sys.argv
+
+if is_github:
     stdout = sys.stdout
     sys.stdout = io.StringIO()
+
+try:
     from Difficult_Rocket import DR_status
-    sys.stdout = stdout
 except ImportError:
     raise
 
-args = ["-env", "-github-dev"]
+if is_github:
+    sys.stdout = stdout
 
 
 if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并输出
@@ -33,10 +37,6 @@ if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并�
     config_file["window"]["height"] = 768
     rtoml.dump(config_file, open("./config/main.toml", "w"))
 
-elif os.path.abspath(os.curdir) in sys.path and "-env" in sys.argv:
-    with open("./.github/workflows/env.ps1", encoding="utf-8", mode="w") as env_file:
-        print(f'$env:DR_version = "{DR_status.DR_version}"', file=env_file)
-        print(f'$env:Build_version = "{DR_status.Build_version}"', file=env_file)
 elif os.path.abspath(os.curdir) in sys.path and "-github" in sys.argv:
     print(f"DR_version={DR_status.DR_version}")
     print(f"Build_version={DR_status.Build_version}")
