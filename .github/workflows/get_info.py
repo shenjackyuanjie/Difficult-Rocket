@@ -7,11 +7,16 @@
 import os
 import sys
 import rtoml
+import io
+
 
 sys.path.append(os.path.abspath(os.curdir))
 
 try:
+    stdout = sys.stdout
+    sys.stdout = io.StringIO()
     from Difficult_Rocket import DR_status
+    sys.stdout = stdout
 except ImportError:
     raise
 
