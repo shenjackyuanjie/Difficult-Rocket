@@ -53,7 +53,6 @@ def gen_pyglet_no_follow_import() -> list:
 
 
 def main(config: raw_config_type) -> nuitka_config_type:
-    print("debug", config)
     config = config["cli"]
     if platform.system() == "Darwin":
         config.pop("windows-icon-from-ico")
@@ -72,5 +71,4 @@ def main(config: raw_config_type) -> nuitka_config_type:
     config["nofollow-import-to"] += gen_pyglet_no_follow_import()
     config["output-dir"] = "./build/nuitka-" + platform.system().lower()
 
-    print("done", config)
     return config
