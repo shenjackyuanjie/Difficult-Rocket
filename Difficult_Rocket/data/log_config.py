@@ -1,3 +1,11 @@
+#  -------------------------------
+#  Difficult Rocket
+#  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
+#  All rights reserved
+#  -------------------------------
+
+
+default_config = """
 config_version = 1
 
 [Logger]
@@ -68,3 +76,11 @@ config_version = 1
     # or flush_time_limit = 0.5
     file_path = "./logs"
     file_name = "dr-{time}.log"
+"""
+
+# 整的跟 export 一样
+# fmt: off
+__all__ = [
+    "default_config"
+]
+# fmt: on

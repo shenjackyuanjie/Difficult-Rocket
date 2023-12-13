@@ -5,7 +5,7 @@
 #  -------------------------------
 
 import time
-import logging.config
+# import logging.config
 from pathlib import Path
 
 from Difficult_Rocket.api.types import Options, Version
@@ -21,11 +21,12 @@ __all__ = [
     "DR_status",
     # folder
     "api",
+    "data",
     "client",
-    "server",
     "command",
     "crash",
     "exception",
+    "server",
     "mod",
     "utils",
     # file
@@ -37,7 +38,7 @@ __all__ = [
 ]
 
 
-class _DR_status(Options):
+class _DRStatus(Options):
     """
     DR 的特性开关 / 基本状态
     """
@@ -76,20 +77,36 @@ class _DR_status(Options):
         return round(12 * self.gui_scale)
 
 
-DR_status = _DR_status()
+DR_status = _DRStatus()
 
 
 def load_logging():
-    with open("./config/logger.toml") as f:
-        import rtoml
+    # with open("./config/logger.toml") as f:
+    #     import rtoml
+    #
+    #     logger_config = rtoml.load(f)
+    # log_path = logger_config["handlers"]["file"]["filename"]
+    # log_path = f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time_ns() / 1000_000_000)))}"
+    # if not Path("logs/").is_dir():
+    #     Path("logs/").mkdir()
+    # logger_config["handlers"]["file"]["filename"] = log_path
+    # logging.config.dictConfig(logger_config)
+    log_config_path = Path("./config/lndl-logger.toml")
 
-        logger_config = rtoml.load(f)
-    log_path = logger_config["handlers"]["file"]["filename"]
-    log_path = f"logs/{log_path.format(time.strftime('%Y-%m-%d %H-%M-%S', time.gmtime(time.time_ns() / 1000_000_000)))}"
-    if not Path("logs/").is_dir():
-        Path("logs/").mkdir()
-    logger_config["handlers"]["file"]["filename"] = log_path
-    logging.config.dictConfig(logger_config)
+    import rtoml
+
+    if not log_config_path.is_file():
+        # 生成默认配置文件
+        from Difficult_Rocket.data import log_config
+        log_config_path.write_text(log_config.default_config)
+        logger_config = rtoml.loads(log_config.default_config)
+    else:
+        # 读取配置文件
+        with open(log_config_path, encoding='utf-8') as f:
+            logger_config = rtoml.load(f)
+    # 输入 lndl 进行配置
+    from lib_not_dr.loggers.config import read_config
+    read_config(logger_config)
 
 
 load_logging()
