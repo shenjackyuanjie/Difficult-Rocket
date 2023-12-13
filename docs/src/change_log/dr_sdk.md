@@ -9,6 +9,9 @@
 ### Rename
 
 - `Api_version` -> `api_version`
+- `_DR_Status` -> `_DRStatus`
+  - `name` = `DR Option` -> `DR Status`
+  - 这毛病属实是没想到, 之前一直没发现
 
 ### Add
 

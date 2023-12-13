@@ -5,8 +5,7 @@
 #  -------------------------------
 
 
-default_config = """
-config_version = 1
+default_config = """config_version = 1
 
 [Logger]
 
@@ -47,7 +46,7 @@ config_version = 1
     [Formatter.std_formatter]
     class = "StdFormatter"
     sub_formatter = ["main_formatter"]
-    default_template = "[{log_time}][{level}]|{logger_name}:{logger_tag}|{messages}"
+    default_template = "[${log_time}][${level}]|${logger_name}:${logger_tag}|${messages}"
 
 [Outstream]
 
@@ -76,6 +75,7 @@ config_version = 1
     # or flush_time_limit = 0.5
     file_path = "./logs"
     file_name = "dr-{time}.log"
+
 """
 
 # 整的跟 export 一样
