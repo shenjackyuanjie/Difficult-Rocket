@@ -83,6 +83,7 @@ def load_logging():
 
     import rtoml
 
+    warn_config = False
     if not log_config_path.is_file():
         # 生成默认配置文件
         from Difficult_Rocket.data import log_config
@@ -90,6 +91,7 @@ def load_logging():
             log_config_path.write_text(log_config.default_config)
         except (FileNotFoundError, OSError, PermissionError):
             print("\033[31mFailed to write default log config file\033[0m")
+        warn_config = True
         logger_config = rtoml.loads(log_config.default_config)
     else:
         # 读取配置文件
@@ -100,12 +102,10 @@ def load_logging():
     read_config(logger_config)
     from lib_not_dr.loggers.config import get_logger
     logger = get_logger("main")
-    print("Logger config loaded")
-    print(logger.as_markdown())
-    print(logger.outputs[0].as_markdown())
-    print(logger.outputs[0].formatter.as_markdown())
     logger.info("Logger config loaded", tag='DR-init')
-    logger.info(f"DR status: {DR_status}", tag='DR-init')
+    logger.info(f"DR status:\n{DR_status.as_markdown()}", tag='DR-init')
+    if warn_config:
+        logger.warn("Failed to load log config file, use default config", tag='DR-init')
 
 
 # 读取日志配置

@@ -38,6 +38,13 @@ config_version = 1
 
     [Formatter.std_formatter]
     class = "StdFormatter"
+    enable_color = true
+    sub_formatter = ["main_formatter"]
+    default_template = "[${log_time}][${level}]|${logger_name}:${logger_tag}|${messages}"
+
+    [Formatter.file_std_formatter]
+    class = "StdFormatter"
+    enable_color = false
     sub_formatter = ["main_formatter"]
     default_template = "[${log_time}][${level}]|${logger_name}:${logger_tag}|${messages}"
 
@@ -60,7 +67,7 @@ config_version = 1
     level = 10
     # or level_name = 'DEBUG'
     # or level_name = 'debug'
-    formatter = "std_formatter"
+    formatter = "file_std_formatter"
     flush_count_limit = 10
     # 5 条日志刷新一次
     flush_time_limit = 5
