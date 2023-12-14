@@ -427,7 +427,7 @@ class ClientWindow(Window):
                 self.logger.info(tr().language_set_to())
             except LanguageNotFound:
                 self.logger.info(
-                    tr().language_available().format(os.listdir("./config/lang"))
+                    tr().language_available().format(os.listdir("./config/lang")), tag="command"
                 )
             self.save_info()
         elif command.find("mods"):
@@ -435,18 +435,18 @@ class ClientWindow(Window):
                 self.logger.info(tr().mod.list())
                 for mod in self.game.mod_manager.loaded_mod_modules.values():
                     self.logger.info(
-                        f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}"
+                        f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}", tag="command"
                     )
             elif command.find("reload"):
                 if not len(command.text) == 0:
                     print(f"reload mod: |{command.text}|")
                     self.game.mod_manager.reload_mod(command.text, game=self.game)
                 else:
-                    logger.info(tr().window.command.mods.reload.no_mod_id())
+                    self.logger.info(tr().window.command.mods.reload.no_mod_id(), tag="command")
 
     @_call_screen_after
     def on_message(self, message: line.CommandText):
-        self.logger.info(tr().window.message.text().format(message))
+        self.logger.info(tr().window.message.text().format(message), tag="message")
 
     """
     keyboard and mouse input
@@ -489,7 +489,7 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.mouse.press()
-            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]())
+            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]()), tag="mouse"
         )
 
     @_call_screen_after
@@ -497,7 +497,7 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.mouse.release()
-            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]())
+            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]()), tag="mouse"
         )
 
     @_call_screen_after
@@ -511,7 +511,7 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.key.press()
-            .format(key.symbol_string(symbol), key.modifiers_string(modifiers))
+            .format(key.symbol_string(symbol), key.modifiers_string(modifiers)), tag="key"
         )
 
     @_call_screen_after
@@ -519,7 +519,7 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.key.release()
-            .format(key.symbol_string(symbol), key.modifiers_string(modifiers))
+            .format(key.symbol_string(symbol), key.modifiers_string(modifiers)), tag="key"
         )
 
     @_call_screen_after
@@ -529,36 +529,36 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_text(self, text):
         if text == "\r":
-            self.logger.debug(tr().window.text.new_line())
+            self.logger.debug(tr().window.text.new_line(), tag="text")
         else:
-            self.logger.debug(tr().window.text.input().format(text))
+            self.logger.debug(tr().window.text.input().format(text), tag="text")
             if text == "t":
                 self.input_box.enabled = True
 
     @_call_screen_after
     def on_text_motion(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion().format(motion_string))
+        self.logger.debug(tr().window.text.motion().format(motion_string), tag="text")
 
     @_call_screen_after
     def on_text_motion_select(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion_select().format(motion_string))
+        self.logger.debug(tr().window.text.motion_select().format(motion_string), tag="text")
 
     @_call_screen_before
     def on_close(self, source: str = "window") -> None:
         self.game.dispatch_mod_event(
             "on_close", game=self.game, client=self, source=source
         )
-        self.logger.info(tr().window.game.stop_get().format(tr().game[source]()))
-        self.logger.info(tr().window.game.stop())
+        self.logger.info(tr().window.game.stop_get().format(tr().game[source]()), tag="window")
+        self.logger.info(tr().window.game.stop(), tag="window")
         # self.fps_log.check_list = False
         DR_runtime.running = False
         if self.run_input:
             self.run_input = False
         self.save_info()
         super().on_close()
-        self.logger.info(tr().window.game.end())
+        self.logger.info(tr().window.game.end(), tag="window")
 
 
 ClientWindow.register_event_type("on_command")
