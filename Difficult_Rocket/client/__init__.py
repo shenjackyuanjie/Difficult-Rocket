@@ -78,7 +78,7 @@ class Client:
     def __init__(self, game: "Game", net_mode="local"):
         start_time = time.time_ns()
         # logging
-        self.logger = loggers.get_logger("client")
+        self.logger = loggers.get_logger("client").set_tag("client")
         self.logger.info(tr().client.setup.start())
         # config
         self.config = ClientOption()
@@ -243,7 +243,7 @@ class ClientWindow(Window):
         start_time = time.time_ns()
         super().__init__(*args, **kwargs)
         # logging
-        self.logger = loggers.get_logger("client")
+        self.logger = loggers.get_logger("client").set_tag("window")
         self.logger.info(tr().window.setup.start())
         # value
         self.game = game
