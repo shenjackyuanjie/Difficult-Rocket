@@ -3,6 +3,7 @@
 .vs/
 DR.code-workspace
 trytry/
+result.json
 
 #pdm files
 __pypackages__

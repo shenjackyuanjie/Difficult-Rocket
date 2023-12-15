@@ -56,6 +56,8 @@ class ClientOption(Options):
     resizeable: bool = True
     visible: bool = True
     gui_scale: float = 1.0
+    vsync: bool = False
+    background_color: List[float] = [21 / 255, 22 / 255, 23 / 255, 0.0]
     caption: str = "Difficult Rocket v{DR_version}"
 
     def load_file(self) -> None:
@@ -67,6 +69,10 @@ class ClientOption(Options):
         self.resizeable = tools.format_bool(file["window"]["resizable"])
         self.gui_scale = float(file["window"]["gui_scale"])
         self.caption = DR_status.format(file["window"]["caption"])
+        self.vsync = tools.format_bool(file["window"]["vsync"])
+        color = (i / 255 for i in file["window"]["background_color"][0:3])
+        alpha = file["window"]["background_color"][3]
+        self.background_color = [*color, alpha]
         self.caption = DR_runtime.format(self.caption)
 
 
@@ -98,7 +104,9 @@ class Client:
             resizable=self.config.resizeable,
             visible=self.config.visible,
             file_drops=True,
+            vsync=False,
         )
+        pyglet.gl.glClearColor(*self.config.background_color)
         end_time = time.time_ns()
         self.use_time = end_time - start_time
         self.logger.info(
@@ -118,6 +126,7 @@ class Client:
         return f"<Client {self.process_name} {self.process_pid}>"
 
 
+@new_thread("pyglet load fonts")
 def pyglet_load_fonts_folder(folder) -> None:
     """
     递归加载字体文件夹
@@ -288,7 +297,6 @@ class ClientWindow(Window):
         DR_runtime.client_setup_cause_ns = self.use_time
         self.logger.info(tr().window.setup.use_time().format(self.use_time / 1000000000))
         self.logger.debug(tr().window.setup.use_time_ns().format(self.use_time))
-        self.count = 0
 
     def setup(self):
         self.set_icon(pyglet.image.load("assets/textures/icon.png"))
@@ -305,10 +313,11 @@ class ClientWindow(Window):
     def start_game(self) -> None:
         self.set_icon(pyglet.image.load("assets/textures/icon.png"))
         try:
-            # pyglet.clock.schedule_interval(self.on_draw, float(self.SPF))
-            # pyglet.app.run()
+            pyglet.clock.schedule_interval(self.draw_call, float(self.SPF))
+            # pyglet.clock.schedule(self.draw_call)
+            pyglet.app.run(None)
             # TODO: wait for pyglet 2.1
-            pyglet.app.run(float(self.SPF))
+            # pyglet.app.run(float(self.SPF))
         except KeyboardInterrupt:
             self.logger.warn(
                 "==========client stop. KeyboardInterrupt info==========", tag="starter"
@@ -351,15 +360,21 @@ class ClientWindow(Window):
         now_FPS = pyglet.clock.get_frequency()
         self.fps_log.update_tick(now_FPS, decimal_tick)
 
+    def draw_call(self, dt: float):
+        self.switch_to()
+        # self.logger.debug(f"draw call {dt}")
+        self.on_draw(dt)
+        self.flip()
+
+
     @_call_screen_after
-    # def on_draw(self, dt: float):  # TODO: wait for pyglet 2.1
-    def on_draw(self):
+    def on_draw(self, dt: float):  # TODO: wait for pyglet 2.1
+    # def on_draw(self):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
-        pyglet.gl.glClearColor(21 / 255, 22 / 255, 23 / 255, 0.0)
         self.clear()
-        # self.draw_update(dt)  # TODO: wait for pyglet 2.1
-        self.draw_update(float(self.SPF))
+        self.draw_update(dt)  # TODO: wait for pyglet 2.1
+        # self.draw_update(float(self.SPF))
         self.draw_batch()
 
     @_call_screen_after

@@ -419,8 +419,8 @@ class SR1ShipRender(BaseScreen):
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
 
-    # def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
-    def on_draw(self, window: ClientWindow):
+    def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
+    # def on_draw(self, window: ClientWindow):
         if self.status.draw_call:
             self.render_ship()
 

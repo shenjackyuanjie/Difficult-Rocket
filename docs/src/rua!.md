@@ -21,3 +21,6 @@ pyglet 坐标轴原点是左上角 0, 0
 
 [背景候选1号](../../assets/textures/runtime/background.png)
 来自 @底层萌新 QQ：1744251171
+
+
+# gl.glClearColor(a / 255, b / 255, c / 255, d)

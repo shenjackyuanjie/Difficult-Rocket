@@ -2,9 +2,17 @@
 
 - 最新版本号
   - DR sdk: 0.8.7.3
-  - DR api: 0.1.1.0
+  - DR api: 0.1.2.0
 
 ## Draft DR sdk 0.9.0.0
+
+### Changes
+
+- `api.screen.BaseScreen`
+  - `on_draw`
+    - `self, window: ClientWindow` -> `self, dt: float, window: ClientWindow`
+    - `dt` 为上一帧到这一帧的时间间隔
+    - `dt` is the time interval from the last frame to this frame
 
 ### Rename
 
