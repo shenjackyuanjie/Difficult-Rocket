@@ -17,16 +17,18 @@ from Difficult_Rocket.api.types import Options, Version
 __all__ = ["DR_runtime"]
 
 
-class _DR_runtime(Options):
+class _DRRuntime(Options):
     """
     DR 的运行时配置 / 状态
     """
 
     name = "DR Runtime"
 
+    running: bool = False
     language: str = "zh-CN"
     mod_path: str = "./mods"
     DR_Mod_List: List[Tuple[str, Version]] = []  # DR Mod 列表 (name, version)
+    main_config: dict = {}  # main.toml
 
     # run status
     start_time_ns: Optional[int] = None
@@ -41,6 +43,7 @@ class _DR_runtime(Options):
                 config_file = rtoml.load(f)
                 self.language = config_file["runtime"]["language"]
                 self.mod_path = config_file["game"]["mods"]["path"]
+                self.main_config = config_file
                 return True
         return False
 
@@ -77,4 +80,4 @@ class _DR_runtime(Options):
         return mods
 
 
-DR_runtime = _DR_runtime()
+DR_runtime = _DRRuntime()

@@ -61,7 +61,7 @@ class ClientOption(Options):
     caption: str = "Difficult Rocket v{DR_version}"
 
     def load_file(self) -> None:
-        file: dict = tools.load_file("./config/main.toml")
+        file = DR_runtime.main_config
         self.fps = int(file["runtime"]["fps"])
         self.width = int(file["window"]["width"])
         self.height = int(file["window"]["height"])
@@ -126,7 +126,6 @@ class Client:
         return f"<Client {self.process_name} {self.process_pid}>"
 
 
-@new_thread("pyglet load fonts")
 def pyglet_load_fonts_folder(folder) -> None:
     """
     递归加载字体文件夹
@@ -210,7 +209,7 @@ def _call_screen_after(func: Callable) -> Callable:
                     traceback.print_exc()
         return result
 
-    warped.__signature__ = inspect.signature(func)
+    warped.__signature__ = inspect.signature(func) # type: ignore
     return warped
 
 
@@ -237,7 +236,7 @@ def _call_screen_before(func: Callable) -> Callable:
         result = func(self, *args, **kwargs)
         return result
 
-    warped.__signature__ = inspect.signature(func)
+    warped.__signature__ = inspect.signature(func) # type: ignore
     return warped
 
 
@@ -260,10 +259,9 @@ class ClientWindow(Window):
         self.run_input = False
         self.command_list: List[str] = []
         # config
-        self.main_config = tools.load_file("./config/main.toml")
         self.game_config = tools.load_file("./config/game.config")
         # FPS
-        self.FPS = Decimal(int(self.main_config["runtime"]["fps"]))
+        self.FPS = Decimal(int(DR_runtime.main_config["runtime"]["fps"]))
         self.SPF = Decimal("1") / self.FPS
         self.fps_log = FpsLogger(stable_fps=int(self.FPS))
         # batch
@@ -305,7 +303,7 @@ class ClientWindow(Window):
         self.game.dispatch_mod_event("on_client_start", game=self.game, client=self)
 
     def load_fonts(self) -> None:
-        fonts_folder_path = self.main_config["runtime"]["fonts_folder"]
+        fonts_folder_path = DR_runtime.main_config["runtime"]["fonts_folder"]
         # 加载字体路径
         # 淦，还写了个递归来处理
         pyglet_load_fonts_folder(fonts_folder_path)
@@ -314,10 +312,7 @@ class ClientWindow(Window):
         self.set_icon(pyglet.image.load("assets/textures/icon.png"))
         try:
             pyglet.clock.schedule_interval(self.draw_call, float(self.SPF))
-            # pyglet.clock.schedule(self.draw_call)
             pyglet.app.run(None)
-            # TODO: wait for pyglet 2.1
-            # pyglet.app.run(float(self.SPF))
         except KeyboardInterrupt:
             self.logger.warn(
                 "==========client stop. KeyboardInterrupt info==========", tag="starter"
@@ -333,7 +328,7 @@ class ClientWindow(Window):
     @new_thread("window save_info")
     def save_info(self):
         self.logger.info(tr().client.config.save.start())
-        config_file: dict = tools.load_file("./config/main.toml")
+        config_file = DR_runtime.main_config
         config_file["window"]["width"] = self.width
         config_file["window"]["height"] = self.height
         config_file["runtime"]["language"] = DR_runtime.language
@@ -366,15 +361,12 @@ class ClientWindow(Window):
         self.on_draw(dt)
         self.flip()
 
-
     @_call_screen_after
-    def on_draw(self, dt: float):  # TODO: wait for pyglet 2.1
-    # def on_draw(self):
+    def on_draw(self, dt: float):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
         self.clear()
-        self.draw_update(dt)  # TODO: wait for pyglet 2.1
-        # self.draw_update(float(self.SPF))
+        self.draw_update(dt)
         self.draw_batch()
 
     @_call_screen_after
@@ -432,8 +424,8 @@ class ClientWindow(Window):
                 # self.command.push_line(self.fps_log.min_fps, block_line=True)
         elif command.find("default"):
             self.set_size(
-                int(self.main_config["window_default"]["width"]),
-                int(self.main_config["window_default"]["height"]),
+                int(DR_runtime.main_config["window_default"]["width"]),
+                int(DR_runtime.main_config["window_default"]["height"]),
             )
         elif command.find("lang"):
             try:
