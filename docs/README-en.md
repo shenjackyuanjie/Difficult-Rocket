@@ -9,13 +9,13 @@
 
 ## Notice: This repo will only publish `DR SDK` updates, `DR game` updates will be published [here](https://github.com/shenjackyuanjie/DR-game)
 
-![demo](/src/demo.png)
+![demo](docs/src/demo.png)
 
-<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
-[![Generic badge](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
-[![Generic badge](https://img.shields.io/badge/Write_with_Python-3.8.10-blue.svg)](https://Python.org)
-[![Generic badge](https://img.shields.io/badge/Write_with_Pyglet-2.0.8-blue.svg)](https://pyglet.org)
-[![Generic badge](https://img.shields.io/badge/Python-_3.8_|_3.9_|_3.10_|_3.11_-blue.svg)](https://Python.org)
+[![996.icu](https://img.shields.io/badge/996.icu-996.icu-red.svg)](https://996.icu)
+[![semver](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
+[![python-3.8.10](https://img.shields.io/badge/编写于_Python_版本-3.8.10-blue.svg)](https://Python.org)
+[![pyglet-2.x](https://img.shields.io/badge/编写于_Pyglet_版本-2.x-blue.svg)](https://pyglet.org)
+[![support python 3.8~12](https://img.shields.io/badge/Python-_3.8_~_3.12_-blue.svg)](https://Python.org)
 
 ## Version
 
@@ -49,8 +49,6 @@
 
 ### clone
 
-### clone
-
 ```bash title="clone.sh"
 mkdir DR
 cd DR
@@ -76,7 +74,6 @@ python -m pip install .
 ```bash title="run.sh"
 python DR.py
 ```
-
 
 ## Environment (been tested / developed on)
 
