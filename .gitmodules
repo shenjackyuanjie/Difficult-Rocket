@@ -1,7 +1,7 @@
-[submodule "libs/lib_not_dr"]
+[submodule "lib_not_dr"]
 	path = libs/lib_not_dr
 	url = https://github.com/shenjackyuanjie/lib-not-dr.git
-[submodule "libs/pyglet"]
+[submodule "pyglet"]
 	path = libs/pyglet
 	url = https://github.com/shenjackyuanjie/pyglet.git
 	branch = local-main
