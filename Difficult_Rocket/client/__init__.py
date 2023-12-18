@@ -258,8 +258,6 @@ class ClientWindow(Window):
         self.net_mode = net_mode
         self.run_input = False
         self.command_list: List[str] = []
-        # config
-        self.game_config = tools.load_file("./config/game.config")
         # FPS
         self.FPS = Decimal(int(DR_runtime.main_config["runtime"]["fps"]))
         self.SPF = Decimal("1") / self.FPS
