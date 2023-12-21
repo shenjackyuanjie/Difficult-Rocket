@@ -12,14 +12,11 @@
 /// 插件加载
 ///
 
-#[allow(unused)]
-pub mod plugin_trait {
-    pub struct ModInfo {
-        pub name: String,
-        pub version: String,
-    }
+pub struct ModInfo {
+    pub name: String,
+    pub version: String,
+}
 
-    pub trait ModInfoTrait {
-        fn info() -> ModInfo;
-    }
+pub trait ModInfoTrait {
+    fn info() -> ModInfo;
 }

@@ -9,7 +9,6 @@
 use pyo3::prelude::*;
 use rapier2d_f64::prelude::*;
 
-#[allow(unused)]
 #[pyfunction]
 #[pyo3(name = "simulation")]
 pub fn simulation() -> () {

@@ -1,11 +1,9 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.2.23"
+version = "0.2.24"
 edition = "2021"
 license-file = '../../LICENSE'
-authors = [
-    "shenjackyuanjie <3695888@qq.com>"
-]
+authors = ["shenjackyuanjie <3695888@qq.com>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -14,31 +12,22 @@ name = 'difficult_rocket_rs'
 crate-type = ["cdylib"]
 
 [profile.dev.package.rapier2d-f64]
-opt-level = 3
+opt-level = 2
+
+[profile.dev]
+opt-level = 1
 
 [profile.release]
-strip = true
-opt-level = "s"
-# codegen-units = 1
+lto = "fat"
+# Abort panic info to rapidly terminate program instead of unwinding call stacks.
+# To check panic info, compile the program in dev mode.
+panic = "abort"
 
-[dependencies.quick-xml]
-version = "0.31.0"
-features = ["serialize"]
-
-[dependencies.serde]
-version = "1.0.190"
-features = ["derive"]
-
-[dependencies.xml-rs]
-version = "0.8.19"
-
-[dependencies.serde-xml-rs]
-version = "0.6.0"
-
-[dependencies.rapier2d-f64]
-version = "0.17.2"
-features = ["simd-stable"]
-
-[dependencies.pyo3]
-version = "0.20.0"
-features = ["extension-module", "macros"]
+[dependencies]
+fs-err = "2.11.0"
+quick-xml = { version = "0.31.0", features = ["serialize"] }
+serde = { version = "1.0.193", features = ["derive"] }
+xml-rs = "0.8.19"
+serde-xml-rs = "0.6.0"
+rapier2d-f64 = { version = "0.17.2", features = ["simd-stable"] }
+pyo3 = { version = "0.20.0", features = ["extension-module", "macros"] }

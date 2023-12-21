@@ -6,25 +6,27 @@
  * -------------------------------
  */
 
-mod plugin;
+mod data_type;
+mod plugin_loader;
 mod python;
 mod simulator;
 mod sr1_data;
-mod types;
+mod xml_reader;
 
 use pyo3::prelude::*;
 
-#[allow(unused)]
-enum LoadState {
-    Init,
-    WaitStart,
-    PreStart,
+enum LoadingState {
+    Initializing,
+    WaitingForStart,
+    PreStarting,
     Running,
-    Clean,
+    Cleaning,
 }
 
 #[pyfunction]
-fn get_version_str() -> String { "0.2.23.0".to_string() }
+fn get_version_str() -> String {
+    "0.2.23.0".to_string()
+}
 
 #[pyfunction]
 fn test_call(py_obj: &PyAny) -> PyResult<bool> {
