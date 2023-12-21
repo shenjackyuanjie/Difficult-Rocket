@@ -1,7 +1,6 @@
 use std::io;
 
 use fs_err as fs;
-use xml::reader::*;
 
 // Input the directory of the xml file.
 // If file does not exsit or not the XML file, return errors or return file handle.

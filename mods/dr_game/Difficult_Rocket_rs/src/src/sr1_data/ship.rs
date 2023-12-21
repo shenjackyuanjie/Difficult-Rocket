@@ -1,4 +1,3 @@
-use std::error::Error;
 use std::fs;
 
 use pyo3::prelude::*;
@@ -7,10 +6,8 @@ use serde::{Deserialize, Serialize};
 use serde_xml_rs::from_str;
 use serde_xml_rs::Error as XmlError;
 
-use super::part_list::SR1PartTypeEnum;
-
 use crate::data_type::sr1::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
-use crate::data_type::sr1::{SR1PartDataTrait, SR1PartTypeAttr, SR1ShipTrait};
+use crate::data_type::sr1::{SR1PartDataTrait, SR1ShipTrait};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "Ship")]

@@ -11,7 +11,7 @@ use rapier2d_f64::prelude::*;
 
 #[pyfunction]
 #[pyo3(name = "simulation")]
-pub fn simulation() -> () {
+pub fn simulation() {
     let mut rigid_body_set = RigidBodySet::new();
     let mut collider_set = ColliderSet::new();
 
