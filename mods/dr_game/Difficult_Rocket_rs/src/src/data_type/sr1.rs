@@ -7,8 +7,9 @@ use crate::sr1_data::part_list::Damage as RawDamage;
 use crate::sr1_data::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
 use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
 use crate::sr1_data::ship::{
-    Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart, DisconnectedParts as RawDisconnectedParts,
-    Engine as RawEngine, Part as RawPartData, Parts as RawParts, Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
+    Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
+    DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData, Parts as RawParts,
+    Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
 };
 
 use crate::data_type::math::{Point2D, Rotatable};
@@ -248,7 +249,11 @@ impl SR1PartTypeData for SR1PartType {
     fn to_raw_part_type(&self) -> RawPartType {
         let tank: Option<Tank> = match &self.attr {
             Some(attr) => match attr.to_owned() {
-                SR1PartTypeAttr::Tank { fuel, dry_mass, fuel_type } => Some(Tank {
+                SR1PartTypeAttr::Tank {
+                    fuel,
+                    dry_mass,
+                    fuel_type,
+                } => Some(Tank {
                     fuel,
                     dry_mass,
                     fuel_type: Some(fuel_type),
@@ -280,7 +285,15 @@ impl SR1PartTypeData for SR1PartType {
         };
         let rcs: Option<Rcs> = match &self.attr {
             Some(attr) => match attr.to_owned() {
-                SR1PartTypeAttr::Rcs { power, consumption, size } => Some(Rcs { power, consumption, size }),
+                SR1PartTypeAttr::Rcs {
+                    power,
+                    consumption,
+                    size,
+                } => Some(Rcs {
+                    power,
+                    consumption,
+                    size,
+                }),
                 _ => None,
             },
             _ => None,
@@ -770,7 +783,8 @@ impl SR1Ship {
                         writer.write_event(Event::Start(pod_elem.to_owned())).unwrap();
 
                         let mut stage_attr = BytesStart::new("Staging");
-                        stage_attr.push_attribute(("currentStage", part.attr.current_stage.unwrap().to_string().as_str()));
+                        stage_attr
+                            .push_attribute(("currentStage", part.attr.current_stage.unwrap().to_string().as_str()));
                         match &part.attr.steps {
                             Some(steps) => {
                                 writer.write_event(Event::Start(stage_attr)).unwrap();
@@ -779,7 +793,8 @@ impl SR1Ship {
                                     for activate in step.iter() {
                                         let mut activate_attr = BytesStart::new("Activate");
                                         activate_attr.push_attribute(("Id", activate.0.to_string().as_str()));
-                                        activate_attr.push_attribute(("moved", (activate.1 as i8).to_string().as_str()));
+                                        activate_attr
+                                            .push_attribute(("moved", (activate.1 as i8).to_string().as_str()));
                                         writer.write_event(Event::Empty(activate_attr)).unwrap();
                                     }
                                     writer.write_event(Event::End(BytesEnd::new("Step"))).unwrap();
@@ -805,7 +820,8 @@ impl SR1Ship {
                         part_attr.push_attribute(("chuteAngle", part.attr.chute_angle.unwrap().to_string().as_str()));
                         part_attr.push_attribute(("inflate", (part.attr.inflate.unwrap() as i8).to_string().as_str()));
                         part_attr.push_attribute(("inflation", part.attr.inflation.unwrap().to_string().as_str()));
-                        part_attr.push_attribute(("deployed", (part.attr.deployed.unwrap() as i8).to_string().as_str()));
+                        part_attr
+                            .push_attribute(("deployed", (part.attr.deployed.unwrap() as i8).to_string().as_str()));
                         part_attr.push_attribute(("rope", (part.attr.rope.unwrap() as i8).to_string().as_str()));
                         None
                     }
@@ -841,7 +857,11 @@ impl SR1Ship {
             writer.write_event(Event::End(BytesEnd::new("Connections"))).unwrap();
         }
 
-        fn write_disconnect(data: &Option<ConnectionType>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
+        fn write_disconnect(
+            data: &Option<ConnectionType>,
+            writer: &mut Writer<Cursor<Vec<u8>>>,
+            save_status: &SaveStatus,
+        ) {
             match data {
                 Some(data) => {
                     writer.write_event(Event::Start(BytesStart::new("DisconnectedParts"))).unwrap();

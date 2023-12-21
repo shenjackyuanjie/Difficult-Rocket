@@ -1,7 +1,7 @@
 # cargo fmt config
 
 # 最大行长
-max_width = 150
+max_width = 120
 # 链式调用的最大长度
 chain_width = 100
 # 数组的最大长度
@@ -11,7 +11,7 @@ attr_fn_like_width = 100
 # 函数调用参数的最大长度
 fn_call_width = 80
 # 简单函数格式化为单行
-fn_single_line = true
+fn_single_line = false
 
 # 自动对齐最大长度
 enum_discrim_align_threshold = 5

@@ -25,7 +25,7 @@ enum LoadingState {
 
 #[pyfunction]
 fn get_version_str() -> String {
-    "0.2.23.0".to_string()
+    "0.3.0".to_string()
 }
 
 #[pyfunction]

@@ -303,7 +303,8 @@ impl SR1PartTypeData for RawPartType {
             explosion_power: Some(0_f64),
             explosion_size: Some(0_f64),
         });
-        let attach_points: Option<Vec<AttachPoint>> = self.attach_points.as_ref().map(|attach_points| attach_points.unzip());
+        let attach_points: Option<Vec<AttachPoint>> =
+            self.attach_points.as_ref().map(|attach_points| attach_points.unzip());
         SR1PartType {
             id: self.id.clone(),
             name: self.name.clone(),
