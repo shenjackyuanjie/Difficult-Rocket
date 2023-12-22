@@ -9,3 +9,5 @@
 pub mod dr;
 pub mod math;
 pub mod sr1;
+
+pub type IdType = i128;

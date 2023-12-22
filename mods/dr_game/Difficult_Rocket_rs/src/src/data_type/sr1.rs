@@ -13,8 +13,8 @@ use crate::sr1_data::ship::{
 };
 
 use crate::data_type::math::{Point2D, Rotatable};
+use crate::data_type::IdType;
 
-pub type IdType = i64;
 pub type ConnectionType = Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>;
 
 pub fn radians_map_to_degrees(angle: f64) -> f64 {

@@ -4,9 +4,10 @@ use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
 use crate::data_type::math::{Point2D, Rotatable};
+use crate::data_type::sr1::SaveStatus;
 use crate::data_type::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
-use crate::data_type::sr1::{IdType, SaveStatus};
 use crate::data_type::sr1::{SR1PartList, SR1PartType, SR1Ship};
+use crate::data_type::IdType;
 use crate::sr1_data::part_list::RawPartList;
 
 #[pyclass]
@@ -308,21 +309,22 @@ impl PySR1Ship {
         parts
     }
 
-    fn get_part_box(&self, part_id: i64) -> Option<((f64, f64), (f64, f64))> {
+    fn get_part_box(&self, part_id: IdType) -> Option<((f64, f64), (f64, f64))> {
         let part_data = self.ship.parts.iter().find(|&x| x.id == part_id);
         if let Some(part_data) = part_data {
-            let part_type = self.part_list.get_part_type(&part_data.part_type_id).unwrap();
-            // rotate
-            let radius = part_data.angle;
-            let ((x1, y1), (x2, y2)) = part_type.get_box();
-            let mut p1 = Point2D::new(x1, y1);
-            let mut p2 = Point2D::new(x2, y2);
-            p1.rotate_radius_mut(radius);
-            p2.rotate_radius_mut(radius);
-            // transform
-            p1.add_mut(part_data.x * 2.0, part_data.y * 2.0);
-            p2.add_mut(part_data.x * 2.0, part_data.y * 2.0);
-            return Some(((p1.x, p1.y), (p2.x, p2.y)));
+            if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                // rotate
+                let radius = part_data.angle;
+                let ((x1, y1), (x2, y2)) = part_type.get_box();
+                let mut p1 = Point2D::new(x1, y1);
+                let mut p2 = Point2D::new(x2, y2);
+                p1.rotate_radius_mut(radius);
+                p2.rotate_radius_mut(radius);
+                // transform
+                p1.add_mut(part_data.x * 2.0, part_data.y * 2.0);
+                p2.add_mut(part_data.x * 2.0, part_data.y * 2.0);
+                return Some(((p1.x, p1.y), (p2.x, p2.y)));
+            }
         }
         None
     }

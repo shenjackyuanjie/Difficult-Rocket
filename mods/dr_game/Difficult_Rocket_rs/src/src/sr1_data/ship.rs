@@ -6,8 +6,9 @@ use serde::{Deserialize, Serialize};
 use serde_xml_rs::from_str;
 use serde_xml_rs::Error as XmlError;
 
-use crate::data_type::sr1::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
+use crate::data_type::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
 use crate::data_type::sr1::{SR1PartDataTrait, SR1ShipTrait};
+use crate::data_type::IdType;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "Ship")]
@@ -51,7 +52,7 @@ pub struct Part {
     pub pod: Option<Pod>,
     #[serde(rename = "partType")]
     pub part_type_id: String,
-    pub id: i64,
+    pub id: IdType,
     pub x: f64,
     pub y: f64,
     #[serde(rename = "editorAngle")]
@@ -119,7 +120,7 @@ pub struct Step {
 #[serde(rename = "Activate")]
 pub struct Activate {
     #[serde(rename = "Id")]
-    pub id: i64,
+    pub id: IdType,
     pub moved: i8, // 1 or 0
 }
 

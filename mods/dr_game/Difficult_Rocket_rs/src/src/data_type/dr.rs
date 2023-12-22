@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
 use nalgebra::Vector2;
-use rapier2d_f64::geometry::{SharedShape, TriMeshFlags};
-use rapier2d_f64::math::{Isometry, Point, Real};
+use rapier2d_f64::geometry::TriMeshFlags;
+use rapier2d_f64::math::{Point, Real};
 use rapier2d_f64::parry::transformation::vhacd::VHACDParameters;
 
 pub enum ConnectType {
@@ -43,7 +43,7 @@ pub struct DRObjectProps<'a> {
 use rapier2d_f64::geometry::ColliderBuilder;
 pub enum BoxColliderEnum {
     /// 组合
-    Compound(Vec<(Vector2<Real>, BoxColliderEnum)>), 
+    Compound(Vec<(Vector2<Real>, BoxColliderEnum)>),
     /// 球
     /// 半径
     Ball(Real),
