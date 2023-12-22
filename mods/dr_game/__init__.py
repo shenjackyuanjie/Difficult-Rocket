@@ -40,15 +40,16 @@ class _DR_mod_runtime(Options):  # NOQA
                 relationship = (
                     "larger" if self.DR_rust_version > self.DR_rust_version else "smaller"
                 )
-                warnings.warn(
+                logger.warn(
                     f"DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n"
-                    f"Builtin version {relationship} than true version"
+                    f"Builtin version {relationship} than true version", tag="load_dll"
                 )
             self.use_DR_rust = self.use_DR_rust and self.DR_rust_available
         except Exception:
             traceback.print_exc()
             self.DR_rust_available = False
             self.use_DR_rust = False
+            logger.warn(f"DR_rust load faild\n{traceback.format_exc()}", tag="load_dll")
         self.flush_option()
 
 
