@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use nalgebra::Vector2;
 use rapier2d_f64::geometry::{SharedShape, TriMeshFlags};
 use rapier2d_f64::math::{Isometry, Point, Real};
 use rapier2d_f64::parry::transformation::vhacd::VHACDParameters;
@@ -36,10 +37,13 @@ pub struct DRObjectProps<'a> {
 
 /// 为了保证能使用到 所有类型的 碰撞体
 /// 写了这么长一个玩意
+/// 形状参考
+/// https://rapier.rs/docs/user_guides/rust/colliders
 #[cfg(disable)]
 use rapier2d_f64::geometry::ColliderBuilder;
 pub enum BoxColliderEnum {
-    // rapier2d_f64::geometry::ColliderBuilder
+    /// 组合
+    Compound(Vec<(Vector2<Real>, BoxColliderEnum)>), 
     /// 球
     /// 半径
     Ball(Real),
@@ -94,9 +98,11 @@ pub enum BoxColliderEnum {
     Polyline(Vec<(Real, Real)>),
     /// 由一系列高度定义的某种东西，大概是地面之类的
     Heightfield(Vec<(Real, Real)>),
-    /// 凸分解的复合形状
-    /// 就是不知道能不能真用上
-    Compound(Vec<(Isometry<Real>, SharedShape)>), //凸分解，好像可以略微提升复杂刚体碰撞的性能
+    // 凸分解的复合形状
+    // 就是不知道能不能真用上
+    // 凸分解，好像可以略微提升复杂刚体碰撞的性能
+    // todo
+    // convex_decomposition
 }
 
 pub struct TankProps {
