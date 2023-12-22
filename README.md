@@ -66,8 +66,9 @@ git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
 ```bash title="install.sh"
 python -m pip install -r requirement.txt
 git submodule update --init --recursive
-cd libs/lib_not_dr
-python -m pip install .
+cd libs
+python -m pip install ./lib_not_dr
+python -m pip install ./pyglet
 ```
 
 ### 运行
