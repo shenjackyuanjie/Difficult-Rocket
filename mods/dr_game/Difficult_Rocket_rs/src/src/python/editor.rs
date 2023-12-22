@@ -77,7 +77,7 @@ impl EditorArea {
                     } else {
                         continue;
                     }
-                },
+                }
                 // 三角形
                 EditorShapeEnum::Triangle(dir1, dir2) => {
                     // 先平移坐标系
@@ -92,7 +92,7 @@ impl EditorArea {
                     } else {
                         continue;
                     }
-                },
+                }
                 EditorShapeEnum::Compound(shapes) => {
                     for shape in shapes {
                         match shape {
@@ -117,7 +117,7 @@ impl EditorArea {
                                 } else {
                                     continue;
                                 }
-                            },
+                            }
                             // 三角形
                             EditorShapeEnum::Triangle(dir1, dir2) => {
                                 // 先平移坐标系
@@ -132,10 +132,10 @@ impl EditorArea {
                                 } else {
                                     continue;
                                 }
-                            },
+                            }
                             EditorShapeEnum::Compound(_) => {
                                 panic!("Compound in Compound");
-                            },
+                            }
                         }
                     }
                 }
