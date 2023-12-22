@@ -11,23 +11,29 @@ authors = ["shenjackyuanjie <3695888@qq.com>"]
 name = 'difficult_rocket_rs'
 crate-type = ["cdylib"]
 
-[profile.dev.package.rapier2d-f64]
-opt-level = 2
+#[profile.dev.package.rapier2d-f64]
+#opt-level = 2
 
 [profile.dev]
-opt-level = 1
+opt-level = 0
 
 [profile.release]
 lto = "fat"
 # Abort panic info to rapidly terminate program instead of unwinding call stacks.
 # To check panic info, compile the program in dev mode.
 panic = "abort"
+opt-level = 2
 
 [dependencies]
 fs-err = "2.11.0"
 quick-xml = { version = "0.31.0", features = ["serialize"] }
-serde = { version = "1.0.193", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+
 xml-rs = "0.8.19"
 serde-xml-rs = "0.6.0"
+
+nalgebra = "0.32.3"
 rapier2d-f64 = { version = "0.17.2", features = ["simd-stable"] }
+
 pyo3 = { version = "0.20.0", features = ["extension-module", "macros"] }
+dict_derive = "0.5"

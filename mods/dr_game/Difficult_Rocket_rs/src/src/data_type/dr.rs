@@ -31,37 +31,39 @@ pub struct DRObjectProps<'a> {
     pub flip_y: bool,
     pub connections: Option<Vec<usize>>,
     pub box_collider_type: bool,
-    pub box_collider_data: BoxColliderType,
+    pub box_collider_data: BoxColliderEnum,
 }
 
 /// 为了保证能使用到 所有类型的 碰撞体
 /// 写了这么长一个玩意
-pub enum BoxColliderType {
+#[cfg(disable)]
+use rapier2d_f64::geometry::ColliderBuilder;
+pub enum BoxColliderEnum {
     // rapier2d_f64::geometry::ColliderBuilder
     /// 球
     /// 半径
-    Sphere(Real),
+    Ball(Real),
     /// 矩形
     /// 宽 高
-    Rectangle(Real, Real),
+    Cuboid(Real, Real),
     /// 圆角矩形
     /// 宽 高 圆角半径
-    CornerRoundedRectangle(Real, Real, Real),
+    RoundCuboid(Real, Real, Real),
     /// 三角形
     /// 三个点坐标
     Triangle(Point<Real>, Point<Real>, Point<Real>),
     /// 圆角三角形
     /// 三个点坐标 圆角半径
-    CornerRoundedTriangle(Point<Real>, Point<Real>, Point<Real>, Real),
+    RoundTriangle(Point<Real>, Point<Real>, Point<Real>, Real),
     /// 圆柱体 ( 横向 )
     /// 半径 高
-    HorizontalCylinder(Real, Real),
+    CapsuleX(Real, Real),
     /// 圆柱体 ( 纵向 )
     /// 半径 高
-    VerticalCylinder(Real, Real),
+    CapsuleY(Real, Real),
     /// 复合形状
     /// 给一堆坐标
-    CompoundedShape(Point<Real>, Point<Real>),
+    Segment(Point<Real>, Point<Real>),
     /// 三角形面定义的几何体（有限元？）
     /// 使用由顶点和索引缓冲区定义的三角形网格形状
     TriMesh(Vec<Point<Real>>, Vec<[u32; 3]>),
@@ -71,30 +73,30 @@ pub enum BoxColliderType {
     /// 给定一个多边形几何体，此方法将其分解为一系列凸多边形
     ConvexDecomposition(Vec<Point<Real>>, Vec<[u32; 2]>),
     /// 给定一个圆角的多边形几何体，此方法将其分解为一系列圆角的凸多边形，虽然不知道怎么分
-    CornerRoundedConvexDecomposition(Vec<Point<Real>>, Vec<[u32; 2]>, Real),
+    RoundConvexDecomposition(Vec<Point<Real>>, Vec<[u32; 2]>, Real),
     /// 给定一个多边形几何体，此方法将其分解为一系列凸多边形
     /// 由VHACDParameters指定算法的参数，这将影响分解的结果或质量
     ConvexDecompositionWithParams(Vec<Point<Real>>, Vec<[u32; 2]>, VHACDParameters),
     /// 给定一个圆角的多边形几何体，此方法将其分解为一系列圆角的凸多边形，虽然不知道怎么分
     /// 由VHACDParameters指定算法的参数，这将影响分解的结果或质量
-    CornerRoundedConvexDecompositionWithParams(Vec<Point<Real>>, Vec<[u32; 2]>, VHACDParameters, Real),
+    RoundConvexDecompositionWithParams(Vec<Point<Real>>, Vec<[u32; 2]>, VHACDParameters, Real),
     /// 给定一系列点，计算出对应的凸包络的多边形
     ConvexHull(Vec<Point<Real>>),
     /// 给定一系列点，计算出对应的凸包络的多边形，然后加上圆角
-    CornerRoundedConvexHull(Vec<Point<Real>>, Real),
+    RoundConvexHull(Vec<Point<Real>>, Real),
     /// 给定一系列点，按照凸多边形来计算碰撞箱，但不会算出这个凸多边形
     /// 如果实际上这些点并没有定义一个凸多边形，在计算过程可能导致bug
     ConvexPolyline(Vec<Point<Real>>),
     /// 给定一系列点，按照凸多边形加上圆角来计算碰撞箱，但不会算出这个凸多边形
     /// 如果实际上这些点并没有定义一个凸多边形，在计算过程可能导致bug
-    CornerRoundedConvexPolyline(Vec<Point<Real>>, Real),
+    RoundConvexPolyline(Vec<Point<Real>>, Real),
     /// 由顶点定义的多边形
     Polyline(Vec<(Real, Real)>),
     /// 由一系列高度定义的某种东西，大概是地面之类的
-    HeightDefined(Vec<(Real, Real)>),
+    Heightfield(Vec<(Real, Real)>),
     /// 凸分解的复合形状
     /// 就是不知道能不能真用上
-    ConvexCompoundedShape(Vec<(Isometry<Real>, SharedShape)>), //凸分解，好像可以略微提升复杂刚体碰撞的性能
+    Compound(Vec<(Isometry<Real>, SharedShape)>), //凸分解，好像可以略微提升复杂刚体碰撞的性能
 }
 
 pub struct TankProps {
@@ -137,7 +139,7 @@ pub struct DRComponentProps<'a, T> {
     /// shenjack: 折磨我的时候到了
     pub shape_can_be_customized: bool,
     /// 所有 raiper2d 支持的碰撞箱类型
-    pub box_collider_data: BoxColliderType,
+    pub box_collider_data: BoxColliderEnum,
     // 基本属性
     /// 名称
     pub name: &'a str,

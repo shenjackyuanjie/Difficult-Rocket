@@ -132,10 +132,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "dict_derive"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b46bc7c421493b2f684e78cee446c4537ad816ee452e7b0f2edb36ef4f29d5d6"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "difficult_rocket_rs"
 version = "0.3.0"
 dependencies = [
+ "dict_derive",
  "fs-err",
+ "nalgebra",
  "pyo3",
  "quick-xml",
  "rapier2d-f64",
