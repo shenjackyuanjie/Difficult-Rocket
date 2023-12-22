@@ -15,14 +15,6 @@ mod xml_reader;
 
 use pyo3::prelude::*;
 
-enum LoadingState {
-    Initializing,
-    WaitingForStart,
-    PreStarting,
-    Running,
-    Cleaning,
-}
-
 #[pyfunction]
 fn get_version_str() -> String {
     "0.3.0".to_string()
@@ -34,9 +26,6 @@ fn test_call(py_obj: &PyAny) -> PyResult<bool> {
     Ok(true)
 }
 
-/// A Python module implemented in Rust. The name of this function must match
-/// the `lib.name` setting in the `Cargo.toml`, else Python will not be able to
-/// import the module.
 #[pymodule]
 #[pyo3(name = "Difficult_Rocket_rs")]
 fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
@@ -54,7 +43,3 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     // m.add_class::<python::editor::EditorArea>()?;
     Ok(())
 }
-
-// pub fn run() {}
-
-// fn init() {}

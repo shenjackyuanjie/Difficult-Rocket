@@ -4,7 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-import warnings
 import traceback
 
 from typing import Optional

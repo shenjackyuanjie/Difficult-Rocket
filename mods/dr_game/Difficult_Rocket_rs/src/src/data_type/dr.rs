@@ -181,9 +181,3 @@ pub struct DRComponentProps<'a, T> {
     // 附加属性
     pub attr: HashMap<&'a str, T>,
 }
-
-impl<'a, T> DRComponentProps<'a, T> {
-    pub fn fetch_data(&self, name: &str) -> Option<&T> {
-        self.attr.get(name)
-    }
-}
