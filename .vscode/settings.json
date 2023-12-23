@@ -1,6 +1,5 @@
 {
-  "rust-analyzer.linkedProjects": [
-    "mods/dr_game/Difficult_Rocket_rs/src/Cargo.toml",
-    "libs/pyglet_rs/src/Cargo.toml",
-  ]
+    "rust-analyzer.linkedProjects": [
+        "mods/dr_game/Difficult_Rocket_rs/src/Cargo.toml"
+    ]
 }

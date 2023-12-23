@@ -33,8 +33,19 @@ build = [
     "imageio>=2.25.0",
 ]
 
-[tool.ruff]
+[tool.pyright]
+include = ["Difficult_Rocket", "libs/utils", "mods"]
+exclude = [
+    'libs/pyglet',
+    'libs/pyperclip',
+    'libs/lib_not_dr',
+    'libs/MCDR',
+    'libs/xmltodict',
+]
+pythonVersion = "3.8"
 
+
+[tool.ruff]
 target-version = "py38"
 line-length = 90
 src = ["Difficult_Rocket", "libs/utils", "mods"]
@@ -44,7 +55,6 @@ exclude = [
     'libs/lib_not_dr',
     'libs/MCDR',
     'libs/xmltodict',
-    'libs/utils/logger-old.py', # 旧版日志, 忽略他就好
 ]
 
 [tool.ruff.lint]
