@@ -2,12 +2,8 @@ mod data_structure;
 
 pub use self::data_structure::*;
 
-use std::cell::{Cell, RefCell};
-use std::collections::HashMap;
-use std::io::Cursor;
-use std::ops::Deref;
-
 use crate::dr_physics::math::{Edge, Shape};
+use crate::dr_physics::math::{Point2D, Rotate};
 use crate::sr1_parse::part_list::Damage as RawDamage;
 use crate::sr1_parse::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
 use crate::sr1_parse::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
@@ -16,9 +12,12 @@ use crate::sr1_parse::ship::{
     DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData, Parts as RawParts,
     Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
 };
-
-use crate::dr_physics::math::{Point2D, Rotate};
 use crate::IdType;
+
+use std::cell::{Cell, RefCell};
+use std::collections::HashMap;
+use std::io::Cursor;
+use std::ops::Deref;
 
 use fs_err as fs;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
@@ -49,6 +48,7 @@ pub enum SR1PartTypeAttr {
         consumption: f64,
         size: f64,
         turn: f64,
+        // 我觉得用枚举体表示燃料种类更好。
         /// 0 -> 普通燃料
         /// 1 -> Rcs
         /// 2 -> 电量
@@ -964,8 +964,18 @@ pub fn get_max_box(parts: &[SR1PartData], part_list: &SR1PartList) -> (f64, f64,
         let mut p2 = Point2D::new(x2, y2);
         p1.rotate_radius_mut(part.angle);
         p2.rotate_radius_mut(part.angle);
-        let p1 = p1.add(part.x * 2.0, part.y * 2.0);
-        let p2 = p2.add(part.x * 2.0, part.y * 2.0);
+        // let p1 = p1.add(part.x * 2.0, part.y * 2.0);
+        // let p2 = p2.add(part.x * 2.0, part.y * 2.0);
+        let p1 = p1
+            + Point2D {
+                x: part.x * 2.0,
+                y: part.y * 2.0,
+            };
+        let p2 = p2
+            + Point2D {
+                x: part.x * 2.0,
+                y: part.y * 2.0,
+            };
         let (x1, y1, x2, y2) = (p1.x, p1.y, p2.x, p2.y);
         // get max box
         max_box.0 = max_box.0.min(x1).min(part.x);

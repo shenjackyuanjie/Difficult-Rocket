@@ -371,8 +371,8 @@ impl RawPartList {
     }
 
     pub fn from_file(file_name: String) -> Option<RawPartList> {
-        let part_list_file = fs::read_to_string(file_name).unwrap();
-        let part_list: RawPartList = from_str(part_list_file.as_str()).unwrap();
+        let part_list_file = fs::read_to_string(file_name).ok()?;
+        let part_list: RawPartList = from_str(part_list_file.as_str()).ok()?;
         Some(part_list)
     }
 

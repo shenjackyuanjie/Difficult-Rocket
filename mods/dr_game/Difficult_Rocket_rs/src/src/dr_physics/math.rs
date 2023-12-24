@@ -1,3 +1,5 @@
+use std::ops::Add;
+
 pub const POINT_D: f64 = 1.0;
 
 pub trait Rotate {
@@ -9,7 +11,7 @@ pub trait Rotate {
     fn rotate_radius_mut(&mut self, radius: f64);
 }
 
-#[derive(Clone, Copy)]
+#[derive(Default, Clone, Copy)]
 pub struct Point2D {
     pub x: f64,
     pub y: f64,
@@ -20,10 +22,6 @@ impl Point2D {
         Self { x, y }
     }
 
-    pub fn new_default() -> Self {
-        Self { x: 0.0, y: 0.0 }
-    }
-
     pub fn distance(&self, other: &Point2D) -> f64 {
         let dx = (other.x - self.x).powf(2.0);
         let dy = (other.y - self.y).powf(2.0);
@@ -32,10 +30,6 @@ impl Point2D {
 
     pub fn distance_default(&self) -> f64 {
         self.distance(&Point2D::new(0.0, 0.0))
-    }
-
-    pub fn add(&self, x: f64, y: f64) -> Self {
-        Point2D::new(self.x + x, self.y + y)
     }
 
     pub fn add_mut(&mut self, x: f64, y: f64) {
@@ -64,6 +58,17 @@ impl Rotate for Point2D {
 
     fn rotate_mut(&mut self, angle: f64) {
         self.rotate_radius_mut(angle.to_radians())
+    }
+}
+
+impl Add for Point2D {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
     }
 }
 
@@ -129,6 +134,7 @@ impl Shape {
         let x = x.unwrap_or(0.0);
         let y = y.unwrap_or(0.0);
         let degree = degree.unwrap_or(0.0);
+
         Self {
             pos: Point2D::new(x, y),
             degree,
@@ -152,10 +158,12 @@ impl Shape {
                     Edge::OneTimeLine(line) => {
                         let start = line.start.rotate_radius(radius);
                         let end = line.end.rotate_radius(radius);
+
                         Edge::OneTimeLine(OneTimeLine::point_new(&start, &end))
                     }
                     Edge::CircularArc(arc) => {
                         let pos = arc.pos.rotate_radius(radius);
+
                         Edge::CircularArc(CircularArc {
                             r: arc.r,
                             pos,
@@ -166,8 +174,9 @@ impl Shape {
                 })
                 .collect();
         }
+
         Self {
-            pos: Point2D::new_default(),
+            pos: Default::default(),
             degree: 0.0,
             bounds: edges,
         }

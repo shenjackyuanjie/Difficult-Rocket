@@ -1,14 +1,13 @@
-use std::fs;
+use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
+use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
+use crate::IdType;
 
+use fs_err as fs;
 use pyo3::prelude::*;
 use quick_xml::de::from_str;
 use quick_xml::se::to_string;
 // use quick_xml::Error as XmlError;
 use serde::{Deserialize, Serialize};
-
-use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
-use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
-use crate::IdType;
 
 /// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
 /// using quick xml
@@ -175,11 +174,11 @@ impl SR1PartDataTrait for Part {
         let part_type = attr.get_part_type();
         SR1PartData {
             attr,
-            x: self.x.to_owned(),
-            y: self.y.to_owned(),
-            id: self.id.to_owned(),
-            angle: self.angle.to_owned(),
-            angle_v: self.angle_v.to_owned(),
+            x: self.x,
+            y: self.y,
+            id: self.id,
+            angle: self.angle,
+            angle_v: self.angle_v,
             flip_x: self.flip_x.unwrap_or(0_i8) != 0,
             flip_y: self.flip_y.unwrap_or(0_i8) != 0,
             editor_angle: self.editor_angle.unwrap_or(0_i32),
@@ -196,7 +195,6 @@ impl SR1PartDataTrait for Part {
 }
 
 impl SR1ShipTrait for RawShip {
-    #[inline]
     fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
         let mut parts = Vec::new();
         for part in &self.parts.parts {
@@ -235,14 +233,12 @@ impl SR1ShipTrait for RawShip {
         }
     }
 
-    #[inline]
     fn to_raw_ship(&self) -> RawShip {
         self.clone()
     }
 }
 
 impl RawShip {
-    #[inline]
     pub fn from_file(path: String) -> Option<RawShip> {
         let ship_file = fs::read_to_string(path); // for encoding error
         if let Err(e) = ship_file {
@@ -267,16 +263,15 @@ impl RawShip {
         }
     }
 
-    #[inline]
-    pub fn save(&self, file_name: String) -> Option<()> {
-        let part_list_file = to_string(self);
+    pub fn save(&self, file_name: String) -> Result<(), quick_xml::DeError> {
+        let part_list_file = to_string(self)?;
         print!("{:?}", part_list_file);
-        if let Ok(part_list_file) = part_list_file {
-            fs::write(file_name, part_list_file).unwrap();
-            Some(())
-        } else {
-            None
+        match fs::write(file_name, part_list_file) {
+            Ok(()) => (),
+            Err(_) => return Err(quick_xml::DeError::Custom("Failed to save file!".to_string())),
         }
+
+        Ok(())
     }
 }
 
@@ -284,7 +279,7 @@ impl RawShip {
 #[pyo3(name = "read_ship_test")]
 #[pyo3(signature = (path = "./assets/builtin/dock1.xml".to_string()))]
 pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
-    let file = fs::read_to_string(path).unwrap();
+    let file = fs::read_to_string(path)?;
     let raw_ship = from_str::<RawShip>(&file);
     match raw_ship {
         Ok(ship) => {

@@ -1,5 +1,6 @@
-use pyo3::prelude::*;
 use std::io::{self, Write};
+
+use pyo3::prelude::*;
 
 #[pyclass]
 #[pyo3(name = "Console_rs")]

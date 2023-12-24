@@ -9,7 +9,6 @@
 mod dr_physics;
 mod python;
 mod sr1_parse;
-mod xml_reader;
 
 use pyo3::prelude::*;
 

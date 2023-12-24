@@ -5,12 +5,15 @@ use rapier2d_f64::geometry::TriMeshFlags;
 use rapier2d_f64::math::{Point, Real};
 use rapier2d_f64::parry::transformation::vhacd::VHACDParameters;
 
+#[derive(Default)]
 pub enum ConnectType {
+    #[default]
     Stick,
     FixedPoint,
     RotatedPoint,
 }
 
+#[derive(Default)]
 pub struct Connect {
     pub c_type: ConnectType,
     pub d_pos: f64,
@@ -110,7 +113,6 @@ pub struct TankProps {
     pub fuel_volume: f64,
     /// 空油罐的质量，if p_type==tank
     pub mass: f64,
-    // Why the fuel type is an integer?
     /// 燃油种类，if p_type==tank
     pub fuel_type: i32,
 }
@@ -129,8 +131,8 @@ pub struct EngineProps {
     // pub throttle_exponential: f64,
 }
 
-// I regard this trait as the useless one at least so far.
-// Canceling commenting this trait and deleting this two-line comment when it is truly useful.
+// 至少目前而言，我认为这个trait没有任何用途。
+// 当它真正发挥作用是时再取消对它的注释并删除这两行注释。
 
 // pub trait DRComponentPropAttr<'a, T> {
 //     fn name() -> &'a str;
@@ -151,7 +153,7 @@ pub struct DRComponentProps<'a, T> {
     pub name: &'a str,
     /// 描述
     pub description: &'a str,
-    // Should this texture be a string instead of file?
+    // 纹理需要用字符串而非文件句柄来表示吗？
     /// 贴图
     pub texture: &'a str,
     /// pub r#type: SR1PartTypeEnum,

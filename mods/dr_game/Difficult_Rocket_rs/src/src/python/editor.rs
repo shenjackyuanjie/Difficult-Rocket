@@ -6,11 +6,11 @@
  * -------------------------------
  */
 
+use crate::IdType;
+
 use nalgebra::{Matrix2, Vector2};
 use pyo3::prelude::*;
 use rapier2d_f64::math::Real;
-
-use crate::IdType;
 
 /// Id 位置 碰撞体
 pub type BoundedShape = (IdType, Vector2<Real>, EditorShapeEnum);
