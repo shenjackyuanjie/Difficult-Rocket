@@ -3,13 +3,11 @@
 [中文](../README.md) | English
 
 - [GitHub](https://github.com/shenjackyuanjie/Difficult-Rocket)
-- [gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
-- [discord](https://discord.gg/kWzw2JrG6M)
-- [kook](https://kook.top/sRPjFG)
+- [Gitee](https://gitee.com/shenjackyuanjie/Difficult-Rocket)
+- [Discord](https://discord.gg/kWzw2JrG6M)
+- [Kook](https://kook.top/sRPjFG)
 
-## Notice: This repo will only publish `DR SDK` updates, `DR game` updates will be published [here](https://github.com/shenjackyuanjie/DR-game)
-
-![demo](docs/src/demo.png)
+>Note: This repo will only publish `DR SDK` updates, `DR game` updates will be published [here](https://github.com/shenjackyuanjie/DR-game).
 
 [![996.icu](https://img.shields.io/badge/996.icu-996.icu-red.svg)](https://996.icu)
 [![semver](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://Semver.org/)
@@ -31,23 +29,19 @@
 
 [DR rs latest Action build](https://nightly.link/shenjackyuanjie/Difficult-Rocket/workflows/dr_rs/main)
 
-## 中文README请移步 [这里](../README.md)
+## Introduction
 
-> Difficult-rocket is a Simple Rocket liked game build with Python (in short: rocket simulator)
+Difficult-rocket is a Simple Rocket liked game build with Python (shorten as "rocket simulator"). It is lighter than Vanilla SR.
 
-## Advantage
-
-> Lighter than Vanilla SR
-
-## [Plan feature list](src/plan_features/README.md)
+[Plan feature list](src/plan_features/README.md)
 
 [YouTrack](https://difficult-rocket.youtrack.cloud/projects/8dafd498-59c0-4ce7-9900-d9292e9ed1f0)
 
-## [Update logs](src/change_log/readme.md)
+[Update logs](src/change_log/readme.md)
 
-## How To Run
+## Run
 
-### clone
+### 1. Clone
 
 ```bash title="clone.sh"
 mkdir DR
@@ -59,7 +53,7 @@ git clone https://gitee.com/shenjackyuanjie/Difficult-Rocket.git
 git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
 ```
 
-### Install requirements
+### 2. Install requirements
 
 ```bash title="install.sh"
 python -m pip install -r requirements.txt
@@ -69,13 +63,15 @@ python -m pip install ./lib_not_dr
 python -m pip install ./pyglet
 ```
 
-### Run
+### 3. Run
 
 ```bash title="run.sh"
 python DR.py
 ```
 
-## Environment (been tested / developed on)
+## Environment
+
+>The developing environment used Python `3.8.10`, but `3.10.11` is also available.
 
 - `Develop platform 1 - Windows 10 x64 22H2`
   - Python `3.8.10` / `3.10.11`
@@ -96,7 +92,7 @@ python DR.py
   - `AMD R5 5600X`
   - `AMD RX 550 4G`
 
-## Required python modules
+## Required Python Modules
 
 - `pyglet` (pre-installed V2.0.8 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
@@ -106,7 +102,7 @@ python DR.py
 [requirement-build.txt](requirement-build.txt)
 [requirement-dev.txt](requirement-dev.txt)
 
-## thanks to
+## Credits
 
 - Open Source Projects
   - [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
@@ -122,9 +118,11 @@ python DR.py
   - [@Billchyi](https://github.com/Billchyi) : Check mistake in docs
   - [@MSDNicrosoft](https://github.com/MSDNicrosoft) : Optimize code
 
-## Other links
+## Other Links
 
-## About License
+>Pending to be completed.
+
+## License
 
 #### https://creativecommons.org/licenses/by-nc-sa/4.0/
 
