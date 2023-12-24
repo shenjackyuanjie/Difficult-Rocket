@@ -43,8 +43,6 @@ if DR_mod_runtime.use_DR_rust:
 
 
 logger = loggers.get_logger("client.dr_game_sr1_ship")
-# logger = logging.getLogger("client.dr_game_sr1_ship")
-# logger.level = logging.DEBUG
 sr_tr = Tr(lang_path=Path(__file__).parent / "lang")
 
 

@@ -27,7 +27,7 @@ from lib_not_dr import loggers
 class Server:
     def __init__(self, net_mode="local"):
         start_time = time.time()
-        # logging
+        # log
         self.logger = loggers.config.get_logger("server").set_tag("server")
         self.logger.info(tr().server.setup.start())
         # value
