@@ -1,6 +1,6 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 license-file = '../../LICENSE'
 authors = ["shenjackyuanjie <3695888@qq.com>"]
@@ -14,13 +14,10 @@ crate-type = ["cdylib"]
 #[profile.dev.package.rapier2d-f64]
 #opt-level = 2
 
-[profile.dev]
-opt-level = 0
-
 [profile.release]
 lto = "fat"
-# Abort panic info to rapidly terminate program instead of unwinding call stacks.
-# To check panic info, compile the program in dev mode.
+# 舍弃恐慌信息以快速终止程序，而非展开调用栈。
+# 请以开发模式编译程序以检查恐慌信息。
 panic = "abort"
 opt-level = 2
 
@@ -28,9 +25,7 @@ opt-level = 2
 fs-err = "2.11.0"
 quick-xml = { version = "0.31.0", features = ["serialize"] }
 serde = { version = "1.0", features = ["derive"] }
-
 nalgebra = "0.32.3"
 rapier2d-f64 = { version = "0.17.2", features = ["simd-stable"] }
-
 pyo3 = { version = "0.20.0", features = ["extension-module", "macros"] }
 dict_derive = "0.5"

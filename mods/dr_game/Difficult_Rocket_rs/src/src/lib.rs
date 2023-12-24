@@ -6,18 +6,18 @@
  * -------------------------------
  */
 
-mod data_type;
-mod plugin_loader;
+mod dr_physics;
 mod python;
-mod simulator;
-mod sr1_data;
+mod sr1_parse;
 mod xml_reader;
 
 use pyo3::prelude::*;
 
+pub type IdType = i64;
+
 #[pyfunction]
 fn get_version_str() -> String {
-    "0.3.0".to_string()
+    "0.3.1".to_string()
 }
 
 #[pyfunction]
@@ -31,8 +31,8 @@ fn test_call(py_obj: &PyAny) -> PyResult<bool> {
 fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_version_str, m)?)?;
     m.add_function(wrap_pyfunction!(test_call, m)?)?;
-    m.add_function(wrap_pyfunction!(sr1_data::part_list::read_part_list_py, m)?)?;
-    m.add_function(wrap_pyfunction!(sr1_data::ship::py_raw_ship_from_file, m)?)?;
+    m.add_function(wrap_pyfunction!(sr1_parse::part_list::read_part_list_py, m)?)?;
+    m.add_function(wrap_pyfunction!(sr1_parse::ship::py_raw_ship_from_file, m)?)?;
     m.add_function(wrap_pyfunction!(python::data::load_and_save_test, m)?)?;
     m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;

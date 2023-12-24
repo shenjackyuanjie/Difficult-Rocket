@@ -6,9 +6,9 @@ use quick_xml::se::to_string;
 // use quick_xml::Error as XmlError;
 use serde::{Deserialize, Serialize};
 
-use crate::data_type::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
-use crate::data_type::sr1::{SR1PartDataTrait, SR1ShipTrait};
-use crate::data_type::IdType;
+use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
+use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
+use crate::IdType;
 
 /// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
 /// using quick xml

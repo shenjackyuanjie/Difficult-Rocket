@@ -1,22 +1,26 @@
+mod data_structure;
+
+pub use self::data_structure::*;
+
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
-use std::fs;
 use std::io::Cursor;
 use std::ops::Deref;
 
-use super::math::{Edge, Shape};
-use crate::sr1_data::part_list::Damage as RawDamage;
-use crate::sr1_data::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
-use crate::sr1_data::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
-use crate::sr1_data::ship::{
+use crate::dr_physics::math::{Edge, Shape};
+use crate::sr1_parse::part_list::Damage as RawDamage;
+use crate::sr1_parse::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
+use crate::sr1_parse::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
+use crate::sr1_parse::ship::{
     Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
     DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData, Parts as RawParts,
     Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
 };
 
-use crate::data_type::math::{Point2D, Rotatable};
-use crate::data_type::IdType;
+use crate::dr_physics::math::{Point2D, Rotate};
+use crate::IdType;
 
+use fs_err as fs;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
@@ -45,11 +49,11 @@ pub enum SR1PartTypeAttr {
         consumption: f64,
         size: f64,
         turn: f64,
-        fuel_type: i32,
         /// 0 -> 普通燃料
         /// 1 -> Rcs
         /// 2 -> 电量
         /// 3 -> 固推
+        fuel_type: i32,
         throttle_exponential: bool,
     },
     Rcs {
@@ -161,7 +165,6 @@ pub struct SR1PartList {
 }
 
 impl SR1PartList {
-    #[inline]
     pub fn new(name: String, types: Vec<SR1PartType>) -> SR1PartList {
         SR1PartList {
             types,
@@ -170,7 +173,6 @@ impl SR1PartList {
         }
     }
 
-    #[inline]
     pub fn from_file(file_name: String) -> Option<SR1PartList> {
         if let Some(raw_list) = RawPartList::from_file(file_name) {
             let sr_list = raw_list.to_sr_part_list(None);
@@ -191,7 +193,6 @@ impl SR1PartList {
         self.cache.borrow().clone().unwrap()
     }
 
-    #[inline]
     pub fn get_part_type(&self, type_name: &String) -> Option<SR1PartType> {
         let cache = self.get_cache();
         cache.get(type_name).cloned()
@@ -373,12 +374,10 @@ impl SR1PartTypeData for SR1PartType {
 }
 
 impl SR1PartDataTrait for SR1PartData {
-    #[inline]
     fn to_sr_part_data(&self) -> SR1PartData {
         self.clone()
     }
 
-    #[inline]
     fn to_raw_part_data(&self) -> RawPartData {
         let (tank, engine) = if let Some(fuel) = &self.attr.fuel {
             match self.part_type {
@@ -600,7 +599,6 @@ impl SR1PartDataAttr {
                 Some(pod.throttle),
                 Some(pod.stages.current_stage),
                 Some({
-                    // The mother-fucking nests come out again!
                     let mut steps = Vec::new();
                     match &pod.stages.steps {
                         Some(step_vec) => {
@@ -697,7 +695,6 @@ impl SR1Ship {
                 part.part_type = SR1PartTypeEnum::strut;
             }
         }
-        // Why are you fucking nesting such this fucking loops?!
         for disconnects in self.disconnected.iter_mut() {
             for (parts, _) in disconnects.iter_mut() {
                 for part in parts.iter_mut() {

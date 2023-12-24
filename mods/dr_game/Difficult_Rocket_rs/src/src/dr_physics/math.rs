@@ -1,6 +1,6 @@
 pub const POINT_D: f64 = 1.0;
 
-pub trait Rotatable {
+pub trait Rotate {
     // 懒了，直接实现一个协议得了
     fn rotate(&self, angle: f64) -> Self;
     fn rotate_radius(&self, radius: f64) -> Self;
@@ -44,7 +44,7 @@ impl Point2D {
     }
 }
 
-impl Rotatable for Point2D {
+impl Rotate for Point2D {
     fn rotate_radius(&self, radius: f64) -> Self {
         let sin = radius.sin();
         let cos = radius.cos();
@@ -85,13 +85,14 @@ pub struct OneTimeLine {
     // pub b: f64,
     // y = kx + b
     // kx + b - y = 0
-    pub start: Point2D,
+
     // start point
-    pub end: Point2D,
+    pub start: Point2D,
     // end point
+    pub end: Point2D,
 }
 
-impl Rotatable for OneTimeLine {
+impl Rotate for OneTimeLine {
     fn rotate(&self, angle: f64) -> Self {
         self.rotate_radius(angle.to_radians())
     }

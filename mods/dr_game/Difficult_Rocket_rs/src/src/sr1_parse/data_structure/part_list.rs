@@ -1,10 +1,10 @@
-use crate::data_type::sr1::{SR1PartList, SR1PartType, SR1PartTypeAttr};
-use crate::data_type::sr1::{SR1PartListTrait, SR1PartTypeData};
+use crate::sr1_parse::{SR1PartList, SR1PartType, SR1PartTypeAttr};
+use crate::sr1_parse::{SR1PartListTrait, SR1PartTypeData};
 
 use fs_err as fs;
 use pyo3::prelude::*;
-use serde::{Deserialize, Serialize};
 use quick_xml::de::from_str;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RawPartList {
@@ -138,8 +138,8 @@ pub struct Damage {
 }
 
 impl Damage {
-    pub fn take_damage(&self) -> crate::data_type::sr1::Damage {
-        crate::data_type::sr1::Damage {
+    pub fn take_damage(&self) -> crate::sr1_parse::Damage {
+        crate::sr1_parse::Damage {
             disconnect: self.disconnect,
             explode: self.explode,
             explosion_power: self.explosion_power.unwrap_or(100_f64),
