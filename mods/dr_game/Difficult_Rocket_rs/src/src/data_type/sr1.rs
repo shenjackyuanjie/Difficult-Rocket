@@ -1,5 +1,7 @@
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
+use std::fs;
+use std::io::Cursor;
 use std::ops::Deref;
 
 use super::math::{Edge, Shape};
@@ -14,6 +16,9 @@ use crate::sr1_data::ship::{
 
 use crate::data_type::math::{Point2D, Rotatable};
 use crate::data_type::IdType;
+
+use quick_xml::events::{BytesEnd, BytesStart, Event};
+use quick_xml::writer::Writer;
 
 pub type ConnectionType = Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>;
 
@@ -722,11 +727,6 @@ impl SR1Ship {
     }
 
     pub fn save(&self, file_name: String, save_status: &SaveStatus) -> Option<()> {
-        use quick_xml::events::{BytesEnd, BytesStart, Event};
-        use quick_xml::writer::Writer;
-        use std::fs;
-        use std::io::Cursor;
-
         macro_rules! option_push_attr {
             ($elem: ident, $test_block: expr, $push: expr) => {
                 if ($test_block) {

@@ -102,38 +102,9 @@ python DR.py
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
 
-```text
-# this requirement is for
-#   DR basic running from source
-#   DR build (by nuitka)
-#   DR contributing
-
-# for images
-# not for pypy >= 3.10
-pillow >= 10.0.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
-
-# for sys info
-psutil >= 5.9.5
-
-# for files
-rtoml >= 0.9.0
-tomlkit >= 0.11.8
-defusedxml >= 0.7.1
-
-# for debug
-objprint >= 0.2.2
-viztracer >= 0.15.6; platform_python_implementation != "PyPy"
-vizplugins >= 0.1.3; platform_python_implementation != "PyPy"
-
-# for compile
-nuitka >= 1.7.5
-ordered-set >= 4.1.0
-imageio >= 2.31.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"
-wheel >= 0.40.0
-setuptools >= 67.8.0
-setuptools-rust >= 1.6.0
-
-```
+[requirement.txt](requirement.txt)
+[requirement-build.txt](requirement-build.txt)
+[requirement-dev.txt](requirement-dev.txt)
 
 ## thanks to
 

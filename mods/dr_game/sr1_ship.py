@@ -6,7 +6,6 @@
 
 import time
 import random
-import logging
 import traceback
 
 from pathlib import Path
@@ -32,6 +31,8 @@ from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.camera import CenterGroupCamera
 from Difficult_Rocket.api.gui.widget import PressTextButton
 
+from lib_not_dr import loggers
+
 if DR_mod_runtime.use_DR_rust:
     from .Difficult_Rocket_rs import (
         SR1PartList_rs,
@@ -40,8 +41,10 @@ if DR_mod_runtime.use_DR_rust:
         SR1PartType_rs,
     )
 
-logger = logging.getLogger("client.dr_game_sr1_ship")
-logger.level = logging.DEBUG
+
+logger = loggers.get_logger("client.dr_game_sr1_ship")
+# logger = logging.getLogger("client.dr_game_sr1_ship")
+# logger.level = logging.DEBUG
 sr_tr = Tr(lang_path=Path(__file__).parent / "lang")
 
 
@@ -578,14 +581,17 @@ class SR1ShipRender(BaseScreen):
 
             img.save(f"test{time.time()}.png", "PNG")
 
-        elif command.find("test"):
-            if command.find("save"):
-                if not self.status.draw_done:
-                    return
-                if not DR_mod_runtime.use_DR_rust:
-                    return
-                logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
-                self.rust_ship.save("./test-save.xml")
+        elif command.find("save"):
+            print("应该保存飞船的")
+            # if command.find("save"):
+            if not self.status.draw_done:
+                logger.warn('not draw done', tag='save ship')
+                return
+            if not DR_mod_runtime.use_DR_rust:
+                return
+            print('saving')
+            logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
+            self.rust_ship.save("./test-save.xml")
 
     def on_mouse_drag(
         self,

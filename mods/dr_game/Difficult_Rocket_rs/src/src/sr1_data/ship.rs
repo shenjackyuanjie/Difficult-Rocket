@@ -1,15 +1,17 @@
 use std::fs;
 
 use pyo3::prelude::*;
+use quick_xml::de::from_str;
+use quick_xml::se::to_string;
+// use quick_xml::Error as XmlError;
 use serde::{Deserialize, Serialize};
-// use quick_xml::de::from_str;
-use serde_xml_rs::from_str;
-use serde_xml_rs::Error as XmlError;
 
 use crate::data_type::sr1::{SR1PartData, SR1PartDataAttr, SR1Ship};
 use crate::data_type::sr1::{SR1PartDataTrait, SR1ShipTrait};
 use crate::data_type::IdType;
 
+/// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
+/// using quick xml
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "Ship")]
 pub struct RawShip {
@@ -17,12 +19,13 @@ pub struct RawShip {
     pub parts: Parts,
     #[serde(rename = "Connections")]
     pub connects: Connections,
+    #[serde(rename = "@version")]
     pub version: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48
     // SR1 says version is also optional, let them happy
     // it's always 1
-    #[serde(rename = "liftedOff")]
+    #[serde(rename = "@liftedOff")]
     pub lift_off: i8,
-    #[serde(rename = "touchingGround")]
+    #[serde(rename = "@touchingGround")]
     pub touch_ground: Option<i8>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49
     // SR1 says it's optional, let them happy
     // NOT always 0
@@ -50,47 +53,60 @@ pub struct Part {
     pub engine: Option<Engine>,
     #[serde(rename = "Pod")]
     pub pod: Option<Pod>,
-    #[serde(rename = "partType")]
+    #[serde(rename = "@partType")]
     pub part_type_id: String,
+    #[serde(rename = "@id")]
     pub id: IdType,
+    #[serde(rename = "@x")]
     pub x: f64,
+    #[serde(rename = "@y")]
     pub y: f64,
-    #[serde(rename = "editorAngle")]
-    pub editor_angle: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47
-    // SR1 says it's optional, let them happy
+    /// Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47
+    /// SR1 says it's optional, let them happy
+    #[serde(rename = "@editorAngle")]
+    pub editor_angle: Option<i32>,
+    #[serde(rename = "@angle")]
     pub angle: f64,
-    #[serde(rename = "angleV")]
+    #[serde(rename = "@angleV")]
     pub angle_v: f64,
-    #[serde(rename = "flippedX")]
+    #[serde(rename = "@flippedX")]
     pub flip_x: Option<i8>,
-    #[serde(rename = "flippedY")]
+    #[serde(rename = "@flippedY")]
     pub flip_y: Option<i8>,
     // 降落伞
-    #[serde(rename = "chuteX")]
+    #[serde(rename = "@chuteX")]
     pub chute_x: Option<f64>,
-    #[serde(rename = "chuteY")]
+    #[serde(rename = "@chuteY")]
     pub chute_y: Option<f64>,
-    #[serde(rename = "chuteAngle")]
+    #[serde(rename = "@chuteAngle")]
     pub chute_angle: Option<f64>,
-    #[serde(rename = "chuteHeight")]
+    #[serde(rename = "@chuteHeight")]
     pub chute_height: Option<f64>,
+    #[serde(rename = "@extension")]
     pub extension: Option<f64>,
+    #[serde(rename = "@inflation")]
     pub inflate: Option<i8>,
+    #[serde(rename = "@inflationTarget")]
     pub inflation: Option<f64>,
+    #[serde(rename = "@deployed")]
     pub exploded: Option<i8>,
+    #[serde(rename = "@rope")]
     pub rope: Option<i8>,
-    // ?
+    #[serde(rename = "@activated")]
     pub activated: Option<i8>,
+    #[serde(rename = "@deployed")]
     pub deployed: Option<i8>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Engine {
+    #[serde(rename = "@fuel")]
     pub fuel: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Tank {
+    #[serde(rename = "@fuel")]
     pub fuel: f64,
 }
 
@@ -98,13 +114,15 @@ pub struct Tank {
 pub struct Pod {
     #[serde(rename = "Staging")]
     pub stages: Staging,
+    #[serde(rename = "@name")]
     pub name: String,
+    #[serde(rename = "@throttle")]
     pub throttle: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Staging {
-    #[serde(rename = "currentStage")]
+    #[serde(rename = "@currentStage")]
     pub current_stage: i32,
     #[serde(rename = "Step")]
     pub steps: Option<Vec<Step>>,
@@ -119,8 +137,9 @@ pub struct Step {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename = "Activate")]
 pub struct Activate {
-    #[serde(rename = "Id")]
+    #[serde(rename = "@Id")]
     pub id: IdType,
+    #[serde(rename = "@moved")]
     pub moved: i8, // 1 or 0
 }
 
@@ -140,13 +159,13 @@ pub struct DisconnectedPart {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Connection {
-    #[serde(rename = "parentAttachPoint")]
+    #[serde(rename = "@parentAttachPoint")]
     pub parent_attach_point: i32,
-    #[serde(rename = "childAttachPoint")]
+    #[serde(rename = "@childAttachPoint")]
     pub child_attach_point: i32,
-    #[serde(rename = "parentPart")]
+    #[serde(rename = "@parentPart")]
     pub parent_part: IdType,
-    #[serde(rename = "childPart")]
+    #[serde(rename = "@childPart")]
     pub child_part: IdType,
 }
 
@@ -236,20 +255,21 @@ impl RawShip {
             Ok(ship) => Some(ship),
             Err(e) => {
                 println!("ERROR!\n{:?}\n----------", e);
-                match e {
-                    XmlError::ParseIntError { source } => {
-                        println!("ParseIntError: {:?}", source.kind());
-                        None
-                    }
-                    _ => None,
-                }
+                // match e {
+                //     XmlError::ParseIntError { source } => {
+                //         println!("ParseIntError: {:?}", source.kind());
+                //         None
+                //     }
+                //     _ => None,
+                // }
+                None
             }
         }
     }
 
     #[inline]
     pub fn save(&self, file_name: String) -> Option<()> {
-        let part_list_file = serde_xml_rs::to_string(self);
+        let part_list_file = to_string(self);
         print!("{:?}", part_list_file);
         if let Ok(part_list_file) = part_list_file {
             fs::write(file_name, part_list_file).unwrap();

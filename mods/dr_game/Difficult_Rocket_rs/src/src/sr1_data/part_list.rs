@@ -4,7 +4,7 @@ use crate::data_type::sr1::{SR1PartListTrait, SR1PartTypeData};
 use fs_err as fs;
 use pyo3::prelude::*;
 use serde::{Deserialize, Serialize};
-use serde_xml_rs::from_str;
+use quick_xml::de::from_str;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RawPartList {
@@ -72,7 +72,9 @@ pub enum Location {
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Vertex {
+    #[serde(rename = "@x")]
     pub x: Option<f64>,
+    #[serde(rename = "@y")]
     pub y: Option<f64>,
 }
 
@@ -87,19 +89,23 @@ pub struct Shape {
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct AttachPoint {
     pub location: Option<Location>,
+    #[serde(rename = "@x")]
     pub x: Option<f64>,
+    #[serde(rename = "@y")]
     pub y: Option<f64>,
-    #[serde(rename = "flipX")]
+    #[serde(rename = "@flipX")]
     pub flip_x: Option<bool>,
-    #[serde(rename = "flipY")]
+    #[serde(rename = "@flipY")]
     pub flip_y: Option<bool>,
-    #[serde(rename = "breakAngle")]
+    #[serde(rename = "@breakAngle")]
     pub break_angle: Option<i32>,
-    #[serde(rename = "breakForce")]
+    #[serde(rename = "@breakForce")]
     pub break_force: Option<f64>,
-    #[serde(rename = "fuelLine")]
+    #[serde(rename = "@fuelLine")]
     pub fuel_line: Option<bool>,
+    #[serde(rename = "@group")]
     pub group: Option<i32>,
+    #[serde(rename = "@order")]
     pub order: Option<i32>,
 }
 
@@ -121,11 +127,13 @@ impl AttachPoints {
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Damage {
+    #[serde(rename = "@disconnect")]
     pub disconnect: f64,
+    #[serde(rename = "@explode")]
     pub explode: f64,
-    #[serde(rename = "explosionPower")]
+    #[serde(rename = "@explosionPower")]
     pub explosion_power: Option<f64>,
-    #[serde(rename = "explosionSize")]
+    #[serde(rename = "@explosionSize")]
     pub explosion_size: Option<f64>,
 }
 
@@ -150,83 +158,105 @@ pub enum FuelType {
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Tank {
+    #[serde(rename = "@fuel")]
     pub fuel: f64,
-    #[serde(rename = "dryMass")]
+    #[serde(rename = "@dryMass")]
     pub dry_mass: f64,
     // 0 -> 普通燃料
     // 1 -> Rcs
     // 2 -> 电量
     // 3 -> 固推
-    #[serde(rename = "fuelType")]
+    #[serde(rename = "@fuelType")]
     pub fuel_type: Option<i32>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Engine {
+    #[serde(rename = "@power")]
     pub power: f64,
+    #[serde(rename = "@consumption")]
     pub consumption: f64,
+    #[serde(rename = "@size")]
     pub size: f64,
+    #[serde(rename = "@turn")]
     pub turn: f64,
-    #[serde(rename = "fuelType")]
+    #[serde(rename = "@fuelType")]
     pub fuel_type: Option<i32>,
-    #[serde(rename = "throttleExponential")]
+    #[serde(rename = "@throttleExponential")]
     pub throttle_exponential: Option<bool>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Rcs {
+    #[serde(rename = "@power")]
     pub power: f64,
+    #[serde(rename = "@consumption")]
     pub consumption: f64,
+    #[serde(rename = "@size")]
     pub size: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Solar {
-    #[serde(rename = "chargeRate")]
+    #[serde(rename = "@chargeRate")]
     pub charge_rate: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 pub struct Lander {
-    #[serde(rename = "maxAngle")]
+    #[serde(rename = "@maxAngle")]
     pub max_angle: f64,
-    #[serde(rename = "minLength")]
+    #[serde(rename = "@minLength")]
     pub min_length: f64,
-    #[serde(rename = "maxLength")]
+    #[serde(rename = "@maxLength")]
     pub max_length: f64,
-    #[serde(rename = "angleSpeed")]
+    #[serde(rename = "@angleSpeed")]
     pub angle_speed: Option<f64>,
-    #[serde(rename = "lengthSpeed")]
+    #[serde(rename = "@lengthSpeed")]
     pub length_speed: Option<f64>,
+    #[serde(rename = "@width")]
     pub width: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RawPartType {
     // 基本属性
+    #[serde(rename = "@id")]
     pub id: String,
+    #[serde(rename = "@name")]
     pub name: String,
+    #[serde(rename = "@description")]
     pub description: String,
+    #[serde(rename = "@sprite")]
     pub sprite: String,
+    #[serde(rename = "@type")]
     pub r#type: SR1PartTypeEnum,
+    #[serde(rename = "@mass")]
     pub mass: f64,
+    #[serde(rename = "@width")]
     pub width: u32,
+    #[serde(rename = "@height")]
     pub height: u32,
     // 可选属性
+    #[serde(rename = "@friction")]
     pub friction: Option<f64>,
+    #[serde(rename = "@category")]
     pub category: Option<String>,
-    #[serde(rename = "ignoreEditorIntersections")]
+    #[serde(rename = "@ignoreEditorIntersections")]
     pub ignore_editor_intersections: Option<bool>,
-    #[serde(rename = "disableEditorRotation")]
+    #[serde(rename = "@disableEditorRotation")]
     pub disable_editor_rotation: Option<bool>,
-    #[serde(rename = "canExplode")]
+    #[serde(rename = "@canExplode")]
     pub can_explode: Option<bool>,
-    #[serde(rename = "coverHeight")]
+    #[serde(rename = "@coverHeight")]
     pub cover_height: Option<u32>,
-    #[serde(rename = "sandboxOnly")]
+    #[serde(rename = "@sandboxOnly")]
     pub sandbox_only: Option<bool>,
+    #[serde(rename = "@drag")]
     pub drag: Option<f64>,
+    #[serde(rename = "@hidden")]
     pub hidden: Option<bool>,
+    #[serde(rename = "@buoyancy")]
     pub buoyancy: Option<f64>,
     // 通用属性子节点
     #[serde(rename = "Shape")]

@@ -9,6 +9,10 @@ use crate::data_type::sr1::{get_max_box, SR1PartData, SR1PartListTrait};
 use crate::data_type::sr1::{SR1PartList, SR1PartType, SR1Ship};
 use crate::data_type::IdType;
 use crate::sr1_data::part_list::RawPartList;
+use crate::sr1_data::ship::RawShip;
+
+// use serde_xml_rs::to_string;
+use quick_xml::se::to_string;
 
 #[pyclass]
 #[pyo3(name = "SaveStatus_rs")]
@@ -330,6 +334,7 @@ impl PySR1Ship {
     }
 
     fn save(&self, file_path: String, save_status: Option<PySaveStatus>) -> PyResult<()> {
+        println!("{:?}", save_status);
         self.ship.save(file_path, &save_status.unwrap_or_default().status).unwrap();
         Ok(())
     }
@@ -337,9 +342,10 @@ impl PySR1Ship {
 
 #[pyfunction]
 pub fn load_and_save_test(file_name: String) -> PyResult<()> {
-    use crate::sr1_data::ship::RawShip;
-    use serde_xml_rs::to_string;
     let ship = RawShip::from_file(file_name).unwrap();
-    let _save_string = to_string(&ship);
+    match to_string(&ship) {
+        Ok(s) => println!("{}", s),
+        Err(e) => println!("{}", e),
+    }
     Ok(())
 }
