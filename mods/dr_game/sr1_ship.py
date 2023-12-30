@@ -421,7 +421,7 @@ class SR1ShipRender(BaseScreen):
         gl.glDisable(gl.GL_SCISSOR_TEST)
 
     def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
-    # def on_draw(self, window: ClientWindow):
+        # def on_draw(self, window: ClientWindow):
         if self.status.draw_call:
             self.render_ship()
 
@@ -583,11 +583,11 @@ class SR1ShipRender(BaseScreen):
             print("应该保存飞船的")
             # if command.find("save"):
             if not self.status.draw_done:
-                logger.warn('not draw done', tag='save ship')
+                logger.warn("not draw done", tag="save ship")
                 return
             if not DR_mod_runtime.use_DR_rust:
                 return
-            print('saving')
+            print("saving")
             logger.info(sr_tr().sr1.ship.save.start().format(self.rust_ship))
             self.rust_ship.save("./test-save.xml")
 

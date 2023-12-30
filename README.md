@@ -71,42 +71,28 @@ python DR.py
 
 ## 环境需求
 
->开发环境使用的Python版本为`3.8.10`，但`3.10.11`同样可用。
+>开发环境使用的Python版本为`3.8.18`，但`3.8+`同样可用。
 
 - `开发平台 1 - Windows 10 x64 22H2`
-  - Python `3.8.10` / `3.10.11`
-    - pillow `10.0.0`
-    - psutil `5.9.5`
-    - rtoml `0.9.0`
-    - tomlkit `0.12.1`
-    - defusedxml `0.7.1`
-    - objprint `0.2.2`
-    - viztracer `0.15.6`
-    - vizplugins `0.1.3`
-    - nuitka `1.7.10`
-    - ordered-set `4.1.0`
-    - imageio `2.31.2`
-    - wheel `0.41.2`
-    - setuptools `68.1.2`
-    - setuptools-rust `1.7.0`
+  - Python `3.8.10+`
+    - `requirements`
   - `AMD R5 5600X`
-  - `AMD RX 550 4G`
+  - `AMD RX 580 8G`
 
 ## 需要的Python模块
 
-- `pyglet` (已经内置 V2.0.8 路径：`./libs/pyglet`)
+> python gen_require.py [-h] {0,1,2}
+> run / build / compile
+
+- `pyglet` (已经内置 V2.x 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
 - `pyperclip` (已经内置 V1.8.2 路径: `./libs/pyperclip`)
-
-[requirement.txt](requirement.txt)
-[requirement-build.txt](requirement-build.txt)
-[requirement-dev.txt](requirement-dev.txt)
 
 ## 鸣谢
 
 - 开源项目
   - [pyglet](https://github.com/pyglet/pyglet) : GUI 和画面渲染
-  - `tomlkit` / `rtoml` : toml 解析器
+  - `tomlkit` : toml 解析器
   - `xmltodict`: xml 与 dict 转换器
   - `pyperclip`: 剪贴板!
   - [rapier2d](https://rapier.rs/) : 物理模拟引擎
@@ -120,36 +106,8 @@ python DR.py
 
 ## 相关链接
 
->待完善。
+[官方文档](https://dr.shenjack.top)
 
 ## 许可
 
-#### https://creativecommons.org/licenses/by-nc-sa/4.0/
-
-#### 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)
-
-这是一份普通人可以理解的许可协议概要 (但不是替代) 。 免责声明.
-
-您可以自由地：
-
-共享 — 在任何媒介以任何形式复制、发行本作品
-
-演绎 — 修改、转换或以本作品为基础进行创作
-
-只要你遵守许可协议条款，许可人就无法收回你的这些权利。
-
-惟须遵守下列条件：
-
-署名 — 您必须给出地当的署名，提供指向本许可协议的链接，同时标明是否（对原始作品）作了修改。您可以用任何合理的方式来署名，但是不得以任何方式暗示许可人为您或您的使用背书。
-
-非商业性使用 — 您不得将本作品用于商业目的。
-
-相同方式共享 — 如果您再混合、转换或者基于本作品进行创作，您必须基于与原先许可协议地同的许可协议 分发您贡献的作品。
-
-没有附加限制 — 您不得适用法律术语或者 技术措施 从而限制其他人做许可协议允许的事情。
-
-声明：
-
-您不必因为公共领域的作品要素而遵守许可协议，或者您的使用被可适用的 例外或限制所允许。
-
-不提供担保。许可协议可能不会给与您意图使用的所必须的所有许可。例如，其他权利比如形象权、隐私权或人格权可能限制您如何使用作品。
+[MPL-2.0](LICENSE)

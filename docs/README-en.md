@@ -71,28 +71,18 @@ python DR.py
 
 ## Environment
 
->The developing environment used Python `3.8.10`, but `3.10.11` is also available.
+>The developing environment used Python `3.8.10`, but `3.8+` is also available.
 
 - `Develop platform 1 - Windows 10 x64 22H2`
-  - Python `3.8.10` / `3.10.11`
-    - pillow `10.0.0`
-    - psutil `5.9.5`
-    - rtoml `0.9.0`
-    - tomlkit `0.12.1`
-    - defusedxml `0.7.1`
-    - objprint `0.2.2`
-    - viztracer `0.15.6`
-    - vizplugins `0.1.3`
-    - nuitka `1.7.10`
-    - ordered-set `4.1.0`
-    - imageio `2.31.2`
-    - wheel `0.41.2`
-    - setuptools `68.1.2`
-    - setuptools-rust `1.7.0`
+  - Python `3.8.10+`
+    - `requirements`
   - `AMD R5 5600X`
-  - `AMD RX 550 4G`
+  - `AMD RX 558 8G`
 
 ## Required Python Modules
+
+> python gen_require.py [-h] {0,1,2}
+> run / build / compile
 
 - `pyglet` (pre-installed V2.0.8 path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
@@ -106,7 +96,7 @@ python DR.py
 
 - Open Source Projects
   - [pyglet](https://github.com/pyglet/pyglet): GUI and graphics
-  - `tomlkit` / `rtoml` toml parser
+  - `tomlkit` toml parser
   - `xmltodict`: translate data between xml and dict
   - `pyperclip`: paste board!
   - [rapier2d](https://rapier.rs/) : Phy simulate engine
@@ -120,43 +110,8 @@ python DR.py
 
 ## Other Links
 
->Pending to be completed.
+[Offical Document](https://dr.shenjack.top)
 
 ## License
 
-#### https://creativecommons.org/licenses/by-nc-sa/4.0/
-
-#### Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
-
-This is a human-readable summary of (and not a substitute for) the license. Disclaimer.
-
-You are free to:
-
-Share — copy and redistribute the material in any medium or format
-
-Adapt — remix, transform, and build upon the material
-
-The licensor cannot revoke these freedoms as long as you follow the license terms.
-
-Under the following terms:
-
-Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You
-may do so in any reasonable manner, but not in any way
-
-that suggests the licensor endorses you or your use.
-
-NonCommercial — You may not use the material for commercial purposes.
-
-ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same
-license as the original.
-
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from
-doing anything the license permits.
-
-Notices:
-
-You do not have to comply with the license for elements of the material in the public domain or where your use is
-permitted by an applicable exception or limitation.
-
-No warranties are given. The license may not give you all the permissions necessary for your intended use. For example,
-other rights such as publicity, privacy, or moral rights may limit how you use the material.
+[MPL-2.0](LICENSE)

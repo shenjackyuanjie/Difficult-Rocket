@@ -2,14 +2,6 @@
 name = "difficult-rocket"
 description = "A rocket game"
 authors = [{ name = "shenjackyuanjie", email = "3695888@qq.com" }]
-dependencies = [
-    "psutil<6.0.0,>=5.9.3",
-    "objprint<1.0.0,>=0.2.2",
-    "Pillow<10.0.0,>=9.2.0",
-    "tomlkit<1.0.0,>=0.11.6",
-    "rtoml<1.0.0,>=0.8.0",
-    "defusedxml>=0.7.1",
-]
 requires-python = ">=3.8"
 license = { text = "CC-BY-NA-SA 4.0" }
 readme = "README.md"
@@ -20,18 +12,6 @@ packages = []
 
 [tool.setuptools.dynamic]
 version = { attr = "Difficult_Rocket.__version__" }
-
-[project.optional-dependencies]
-build = [
-    "setuptools-rust>=1.5.2,<=1.6.0",
-    "wheel>=0.38.4,<1.0.0",
-    "nuitka>=1.8.6",
-    "setuptools>=65.5.0",
-    "viztracer<1.0.0,>=0.15.4",
-    "vizplugins<1.0.0,>=0.1.2",
-    "ordered-set>=4.1.0",
-    "imageio>=2.25.0",
-]
 
 [tool.pyright]
 include = ["Difficult_Rocket", "libs/utils", "mods"]
