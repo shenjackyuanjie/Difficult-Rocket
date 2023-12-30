@@ -56,7 +56,8 @@ git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
 ### 2. 安装依赖
 
 ```bash title="install.sh"
-python -m pip install -r requirement.txt
+python gen_require.py 0
+python -m pip install -r requirements.txt
 git submodule update --init --recursive
 cd libs
 python -m pip install ./lib_not_dr

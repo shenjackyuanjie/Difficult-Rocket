@@ -21,5 +21,6 @@ background_color = [21, 22, 23, 0]
 width = 1024
 height = 768
 gui_scale = 1
+
 [game.mods]
 path = "mods"

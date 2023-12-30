@@ -16,7 +16,8 @@ import sys
 import time
 import math
 import json
-import rtoml
+import tomli
+import tomlkit
 import configparser
 
 from pathlib import Path
@@ -62,8 +63,8 @@ def load_file(
             if stack:
                 get_file = get_file[stack]
         elif f_type == "toml":
-            with open(file_name, mode="r", encoding=encoding) as file:
-                get_file = rtoml.load(file)
+            with open(file_name, mode="rb") as file:
+                get_file = tomli.load(file)
             if stack is not None:
                 get_file = get_file[stack]
         elif f_type == "json":
@@ -102,7 +103,7 @@ def save_dict_file(file_name: str, data: dict, encoding: str = "utf-8") -> bool:
             return False
         elif f_type == "toml":
             with open(file_name, mode="w", encoding=encoding) as file:
-                rtoml.dump(data, file)
+                tomlkit.dump(data, file)
         elif f_type == "json":
             with open(file_name, mode="w", encoding=encoding) as file:
                 json.dump(data, file)

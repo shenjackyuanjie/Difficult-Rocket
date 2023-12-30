@@ -79,7 +79,7 @@ DR_status = _DRStatus()
 def load_logger():
     log_config_path = Path("./config/lndl-logger.toml")
 
-    import rtoml
+    import tomli
 
     warn_config = False
     if not log_config_path.is_file():
@@ -91,11 +91,11 @@ def load_logger():
         except (FileNotFoundError, OSError, PermissionError):
             print("\033[31mFailed to write default log config file\033[0m")
         warn_config = True
-        logger_config = rtoml.loads(log_config.default_config)
+        logger_config = tomli.loads(log_config.default_config)
     else:
         # 读取配置文件
-        with open(log_config_path, encoding="utf-8") as f:
-            logger_config = rtoml.load(f)
+        with open(log_config_path, 'rb') as f:
+            logger_config = tomli.load(f)
     # 输入 lndl 进行配置
     from lib_not_dr.loggers.config import read_config, get_logger
 

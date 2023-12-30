@@ -34,7 +34,7 @@ dev = {
     "debug": [
         "objprint >= 0.2.3",
         "viztracer >= 0.16.0; platform_python_implementation != \"PyPy\"",
-        "vizplugin >= 0.1.3; platform_python_implementation != \"PyPy\""
+        "vizplugins >= 0.1.3; platform_python_implementation != \"PyPy\""
     ]
 }
 # fmt: on

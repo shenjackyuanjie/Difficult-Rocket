@@ -37,10 +37,10 @@ class _DRRuntime(Options):
 
     def load_file(self) -> bool:
         with contextlib.suppress(FileNotFoundError):
-            with open("./config/main.toml", "r", encoding="utf-8") as f:
-                import rtoml
+            with open("./config/main.toml", "rb") as f:
+                import tomli
 
-                config_file = rtoml.load(f)
+                config_file = tomli.load(f)
                 self.language = config_file["runtime"]["language"]
                 self.mod_path = config_file["game"]["mods"]["path"]
                 self.main_config = config_file

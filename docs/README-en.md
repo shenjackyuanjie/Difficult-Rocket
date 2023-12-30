@@ -56,6 +56,7 @@ git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
 ### 2. Install requirements
 
 ```bash title="install.sh"
+python gen_require.py 0
 python -m pip install -r requirements.txt
 git submodule update --init --recursive
 cd libs
@@ -84,13 +85,9 @@ python DR.py
 > python gen_require.py [-h] {0,1,2}
 > run / build / compile
 
-- `pyglet` (pre-installed V2.0.8 path:`./libs/pyglet`)
+- `pyglet` (pre-installed V2.x path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)
 - `pyperclip` (pre-installed V1.8.2 path: `./libs/pyperclip`)
-
-[requirement.txt](requirement.txt)
-[requirement-build.txt](requirement-build.txt)
-[requirement-dev.txt](requirement-dev.txt)
 
 ## Credits
 
