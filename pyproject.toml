@@ -3,7 +3,7 @@ name = "difficult-rocket"
 description = "A rocket game"
 authors = [{ name = "shenjackyuanjie", email = "3695888@qq.com" }]
 requires-python = ">=3.8"
-license = { text = "CC-BY-NA-SA 4.0" }
+license = { text = "MPL-2.0" }
 readme = "README.md"
 dynamic = ["version"]
 
