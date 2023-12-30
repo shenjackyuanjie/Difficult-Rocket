@@ -13,6 +13,7 @@ __pypackages__
 # nuitka build
 build/
 .github/workflows/env.ps1
+nuitka-crash-report.xml
 
 # PyCharm file
 .idea/
