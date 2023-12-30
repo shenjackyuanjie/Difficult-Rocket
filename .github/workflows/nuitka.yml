@@ -63,6 +63,7 @@ jobs:
       # 安装依赖
       - name: Install env
         run: |
+          python gen_require.py 1
           pip install -r requirement-dev.txt
 
       # 使用 ruff 检查一遍仓库
