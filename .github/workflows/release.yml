@@ -60,7 +60,7 @@ jobs:
       - name: Install env
         run: |
           python gen_require.py 1
-          pip install -r requirement-dev.txt
+          pip install -r requirements.txt
 
       # 提取 DR 版本和其他信息
       - name: Display Difficult-Rocket info
