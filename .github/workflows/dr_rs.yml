@@ -74,7 +74,8 @@ jobs:
       # 安装依赖
       - name: Install env
         run: |
-          pip install -r requirement-dev.txt
+          python gen_require.py 1
+          pip install -r requirements.txt
           pip install libs/lib_not_dr
 
       # 提取 DR 版本和其他信息
