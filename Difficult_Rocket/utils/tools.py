@@ -17,7 +17,7 @@ import time
 import math
 import json
 import tomli
-import tomlkit
+import tomli_w
 import configparser
 
 from pathlib import Path
@@ -102,8 +102,8 @@ def save_dict_file(file_name: str, data: dict, encoding: str = "utf-8") -> bool:
         if (f_type == "config") or (f_type == "conf") or (f_type == "ini"):
             return False
         elif f_type == "toml":
-            with open(file_name, mode="w", encoding=encoding) as file:
-                tomlkit.dump(data, file)
+            with open(file_name, mode="wb") as file:
+                tomli_w.dump(data, file)
         elif f_type == "json":
             with open(file_name, mode="w", encoding=encoding) as file:
                 json.dump(data, file)

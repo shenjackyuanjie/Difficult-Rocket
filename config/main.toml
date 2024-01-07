@@ -15,7 +15,12 @@ caption = "Difficult Rocket v{DR_version}"
 resizable = true
 full_screen = false
 vsync = false
-background_color = [21, 22, 23, 0]
+background_color = [
+    21,
+    22,
+    23,
+    0,
+]
 
 [window.default]
 width = 1024

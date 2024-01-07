@@ -16,7 +16,8 @@ from decimal import Decimal
 from typing import Callable, Dict, List, TYPE_CHECKING, Type
 
 # third function
-import tomlkit
+import tomli
+import tomli_w
 import pyglet
 
 # from pyglet import gl
@@ -330,7 +331,7 @@ class ClientWindow(Window):
         config_file["window"]["width"] = self.width
         config_file["window"]["height"] = self.height
         config_file["runtime"]["language"] = DR_runtime.language
-        tomlkit.dump(config_file, open("./config/main.toml", "w"))
+        tomli_w.dump(config_file, open("./config/main.toml", "wb"))
         self.logger.info(tr().client.config.save.done())
 
     """
