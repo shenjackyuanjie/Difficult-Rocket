@@ -94,7 +94,7 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         touch_c = (71, 72, 72, 255)
         touch_d = (106, 107, 108, 255)  # 同上
         pad = 2  # 边框宽度 2 px
-        list_pad = 6  # 下巴 4px
+        list_pad = 4  # 下巴 4px
         # 主背景
         self.back_ground = Rectangle(x=x + (pad * 2), y=y + (pad * 2) + list_pad,
                                      width=width - (pad * 4), height=height - (pad * 4) - list_pad,
@@ -110,7 +110,7 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         # 下巴的框
         self.list_back = BorderedRectangle(x=x, y=y,
                                            width=width, height=height,
-                                           border=pad * 2, border_color=(0, 0, 0, 255),
+                                           border=pad, border_color=(0, 0, 0, 255),
                                            color=e, batch=batch, group=Group(order=0, parent=group))
         self.a = a
         self.b = b
@@ -123,6 +123,8 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         self.touch_d = touch_d
         self.pad = pad
         self.list_pad = list_pad
+        self.base_x = x
+        self.base_y = y
 
     def on_touch(self, x, y) -> None:
         """
@@ -148,6 +150,12 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         self.back_ground.color = self.touch_a
         self.cover_back.color = self.touch_b
         self.cover_back2.color = self.touch_c
+        self.back_ground.y = self.base_y + (self.pad * 2)
+        self.back_ground.height = self.height - (self.pad * 4)
+        self.cover_back.y = self.base_y + self.pad
+        self.cover_back.height = self.height - (self.pad * 2)
+        self.cover_back2.y = self.base_y + self.pad
+        self.cover_back2.height = self.height - (self.pad * 3)
 
     def on_release(self) -> None:
         """
@@ -157,6 +165,12 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         self.back_ground.color = self.a
         self.cover_back.color = self.b
         self.cover_back2.color = self.c
+        self.back_ground.y = self.base_y + (self.pad * 2) + self.list_pad
+        self.back_ground.height = self.height - (self.pad * 4) - self.list_pad
+        self.cover_back.y = self.base_y + self.pad + self.list_pad
+        self.cover_back.height = self.height - (self.pad * 2) - self.list_pad
+        self.cover_back2.y = self.base_y + self.pad + self.list_pad
+        self.cover_back2.height = self.height - (self.pad * 3) - self.list_pad
 
 
 class ButtonThemeOptions(Options):
