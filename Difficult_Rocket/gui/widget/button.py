@@ -13,7 +13,7 @@ from pyglet.gui import widgets
 from pyglet.window import mouse
 
 # from pyglet.sprite import Sprite
-from pyglet.shapes import Rectangle
+from pyglet.shapes import Rectangle, BorderedRectangle
 
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
@@ -94,23 +94,24 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         touch_c = (71, 72, 72, 255)
         touch_d = (106, 107, 108, 255)  # 同上
         pad = 2  # 边框宽度 2 px
-        list_pad = 4  # 下巴 4px
+        list_pad = 6  # 下巴 4px
         # 主背景
-        self.back_ground = Rectangle(x=x, y=y,
-                                     width=width, height=height,
-                                     color=a, batch=batch, group=Group(order=0, parent=group))
+        self.back_ground = Rectangle(x=x + (pad * 2), y=y + (pad * 2) + list_pad,
+                                     width=width - (pad * 4), height=height - (pad * 4) - list_pad,
+                                     color=a, batch=batch, group=Group(order=3, parent=group))
         # 左上方向的覆盖
-        self.cover_back = Rectangle(x=x, y=y + pad + list_pad,
-                                    width=width - pad, height=height - pad - list_pad,
+        self.cover_back = Rectangle(x=x + pad, y=y + pad + list_pad,
+                                    width=width - (pad * 2), height=height - (pad * 2) - list_pad,
                                     color=b, batch=batch, group=Group(order=1, parent=group))
         # 右下方向的覆盖
-        self.cover_back2 = Rectangle(x=x + pad, y=y + pad + list_pad,
-                                     width=width - (pad * 2), height=height - (pad * 2) - list_pad,
+        self.cover_back2 = Rectangle(x=x + (pad * 2), y=y + pad + list_pad,
+                                     width=width - (pad * 3), height=height - (pad * 3) - list_pad,
                                      color=c, batch=batch, group=Group(order=2, parent=group))
         # 下巴的框
-        self.list_back = Rectangle(x=x, y=y,
-                                   width=width, height=list_pad,
-                                   color=e, batch=batch, group=Group(order=1, parent=group))
+        self.list_back = BorderedRectangle(x=x, y=y,
+                                           width=width, height=height,
+                                           border=pad * 2, border_color=(0, 0, 0, 255),
+                                           color=e, batch=batch, group=Group(order=0, parent=group))
         self.a = a
         self.b = b
         self.c = c
