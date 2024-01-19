@@ -126,18 +126,6 @@ class SR1ShipRender(BaseScreen):
         )
         self.render_d_label.visible = self.status.draw_d_pos
 
-        self.test_button = PressTextButton(
-            x=100,
-            y=100,
-            width=150,
-            height=30,
-            text="test button",
-            batch=self.main_batch,
-            group=Group(5, parent=main_window.main_group),
-        )
-        # self.test_button.push_handlers(main_window)
-        main_window.push_handlers(self.test_button)
-
         # Optional data
         self.textures: SR1Textures = SR1Textures()
         self.gen_draw: Optional[Generator] = None
@@ -442,7 +430,6 @@ class SR1ShipRender(BaseScreen):
             return
         self.render_d_line.x2 = width // 2
         self.render_d_line.y2 = height // 2
-        self.test_button._update_position()
 
     def on_mouse_scroll(
         self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
