@@ -6,7 +6,7 @@
 
 import os
 import sys
-import tomlkit
+import tomli_w
 import io
 
 
@@ -35,7 +35,7 @@ if sys.argv == [__file__]:  # 没有输入参数，直接输出默认信息并�
     config_file = tools.load_file("./config/main.toml")
     config_file["window"]["width"] = 1024
     config_file["window"]["height"] = 768
-    tomlkit.dump(config_file, open("./config/main.toml", "w"))
+    tomli_w.dump(config_file, open("./config/main.toml", "wb"))
 
 elif os.path.abspath(os.curdir) in sys.path and "-github" in sys.argv:
     print(f"DR_version={DR_status.DR_version}")
