@@ -12,7 +12,7 @@ basic = {
         'pillow >= 10.2.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"',
     ],
     "sys info": [
-        "psutil >= 5.9.7"
+        "psutil >= 5.9.8"
     ],
     "file read": [
         "tomli >= 2.0.1",
@@ -23,7 +23,7 @@ basic = {
 
 build = {
     "compile": [
-        "nuitka >= 1.9.6",
+        "nuitka >= 2.0.0",
         "imageio >= 2.33.1",
         "setuptools >= 69",
         "setuptools-rust >= 1.8.1"
@@ -33,7 +33,7 @@ build = {
 dev = {
     "debug": [
         "objprint >= 0.2.3",
-        "viztracer >= 0.16.0; platform_python_implementation != \"PyPy\"",
+        "viztracer >= 0.16.1; platform_python_implementation != \"PyPy\"",
         "vizplugins >= 0.1.3; platform_python_implementation != \"PyPy\""
     ]
 }
@@ -66,6 +66,6 @@ if __name__ == "__main__":
             for p in package:
                 out.append(f"{p}\n")
     print("".join(out))
-    
+
     with open("requirements.txt", "w") as f:
         f.writelines(out)
