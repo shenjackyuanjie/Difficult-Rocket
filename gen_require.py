@@ -9,7 +9,8 @@ import argparse
 # fmt: off
 basic = {
     "images": [
-        'pillow >= 10.2.0; (platform_python_implementation == "PyPy" and python_version < "3.10") or platform_python_implementation == "CPython"',
+        'pillow >= 10.2.0; (platform_python_implementation == "PyPy" and '
+        'python_version < "3.10") or platform_python_implementation == "CPython"',
     ],
     "sys info": [
         "psutil >= 5.9.8"
@@ -41,7 +42,9 @@ dev = {
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("type", help="type of genrating require", default=0, type=int, choices=[0, 1, 2])
+    parser.add_argument(
+        "type", help="type of genrating require", default=0, type=int, choices=[0, 1, 2]
+    )
     args = parser.parse_args()
 
     out = []
