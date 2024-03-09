@@ -30,28 +30,64 @@ class Menu(BaseScreen):
         # 欸呀, 正好是 911 纪念日哦
         # 好, 高二 第一学期 期末都考完了, 我过来做测试了 (20240119)
 
-        self.main_button = PressTextButton(
+        self.wiki_button1 = PressTextButton(
             x=200,
             y=300,
             width=150,
             height=30,
-            text="test button",
+            text="wiki button1",
             batch=self.main_batch,
             group=self.main_group,
             draw_theme=MinecraftWikiButtonTheme,
+            dict_theme={"pop_out": True},
         )
-        self.button2 = PressTextButton(
+        self.wiki_button2 = PressTextButton(
+            x=400,
+            y=300,
+            width=150,
+            height=30,
+            text="wiki button2",
+            batch=self.main_batch,
+            group=self.main_group,
+            draw_theme=MinecraftWikiButtonTheme,
+            dict_theme={"pop_out": False},
+        )
+        self.wiki_button3 = PressTextButton(
+            x=200,
+            y=250,
+            width=150,
+            height=30,
+            text="wiki button3",
+            batch=self.main_batch,
+            group=self.main_group,
+            draw_theme=MinecraftWikiButtonTheme,
+            dict_theme={"pop_out": True, "drag_list": True},
+        )
+        self.wiki_button4 = PressTextButton(
+            x=400,
+            y=250,
+            width=150,
+            height=30,
+            text="wiki button4",
+            batch=self.main_batch,
+            group=self.main_group,
+            draw_theme=MinecraftWikiButtonTheme,
+            dict_theme={"pop_out": False, "drag_list": True},
+        )
+        self.button3 = PressTextButton(
             x=200,
             y=200,
             width=150,
             height=30,
-            text="test button",
+            text="imgui button",
             batch=self.main_batch,
             group=self.main_group,
         )
-        main_window.push_handlers(self.main_button)
-        main_window.push_handlers(self.button2)
+        main_window.push_handlers(self.wiki_button1)
+        main_window.push_handlers(self.wiki_button2)
+        main_window.push_handlers(self.wiki_button3)
+        main_window.push_handlers(self.wiki_button4)
+        main_window.push_handlers(self.button3)
 
     def on_draw(self, dt: float, window: ClientWindow):
         self.main_batch.draw()
-

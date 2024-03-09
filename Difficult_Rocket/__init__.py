@@ -94,7 +94,7 @@ def load_logger():
         logger_config = tomli.loads(log_config.default_config)
     else:
         # 读取配置文件
-        with open(log_config_path, 'rb') as f:
+        with open(log_config_path, "rb") as f:
             logger_config = tomli.load(f)
     # 输入 lndl 进行配置
     from lib_not_dr.loggers.config import read_config, get_logger
@@ -114,10 +114,8 @@ load_logger()
 if DR_status.playing:
     from Difficult_Rocket.utils.thread import new_thread
 
-
     def think_it(something):
         return something
-
 
     @new_thread("think")
     def think(some_thing_to_think):

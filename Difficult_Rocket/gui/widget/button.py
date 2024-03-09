@@ -41,39 +41,28 @@ class BaseButtonTheme:
         self.y = y
         self.width = width
         self.height = height
+        self.enable = False
 
-    def on_touch(self, x, y) -> None:
+    def on_enable(self, x: int, y: int, button):
         """
-        当鼠标在按钮上的时候
-        :param x: 鼠标绝对位置
-        :param y: 鼠标绝对位置
+        当按钮被启用的时候
+        :param x:
+        :param y:
+        :param button:
         :return:
         """
 
-    def on_move_away(self) -> None:
+    def on_disable(self, button):
         """
-        当鼠标移出按钮的时候
-        :return:
-        """
-
-    def on_hit(self, x: int, y: int) -> None:
-        """
-        当鼠标点击按钮的时候
-        :param x: 鼠标绝对位置
-        :param y: 鼠标绝对位置
-        :return:
-        """
-
-    def on_release(self) -> None:
-        """
-        当鼠标松开按钮的时候
+        当按钮被禁用的时候
+        :param button:
         :return:
         """
 
     def on_update(self, button) -> None:
         """
-        当按钮的位置发生变化的时候
-        :param button: 按钮
+        当按钮被更新的时候
+        :param button:
         :return:
         """
 
@@ -87,7 +76,8 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
 
     def __init__(self, x: int, y: int,
                  width: int, height: int,
-                 batch: Batch, group: Group):
+                 batch: Batch, group: Group,
+                 theme: dict = None):
         super().__init__(x, y, width, height, batch, group)
         self.batch = batch
         self.group = group
@@ -102,7 +92,9 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         touch_d = (106, 107, 108, 255)  # 同上
         pad = 2  # 边框宽度 2 px
         list_pad = 4  # 下巴 4px
-        pop_out = False
+        if theme is None:
+            theme = {}
+        pop_out = theme.get('pop_out', False)
         if pop_out:
             # 主背景
             self.back_ground = Rectangle(x=x + (pad * 2), y=y + (pad * 2) + list_pad,
@@ -122,13 +114,13 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
                                          width=width - (pad * 4), height=height - (pad * 4) - list_pad,
                                          color=c, batch=batch, group=Group(order=3, parent=group))
             # 左上方向的覆盖
-            self.cover_back = Rectangle(x=x + pad, y=y + (pad * 2) + list_pad,
-                                        width=width - (pad * 3), height=height - (pad * 3) - list_pad,
-                                        color=b, batch=batch, group=Group(order=2, parent=group))
+            self.cover_back = Rectangle(x=x + pad, y=y + pad + list_pad,
+                                        width=width - (pad * 2), height=height - (pad * 2) - list_pad,
+                                        color=a, batch=batch, group=Group(order=2, parent=group))
             # 右下方向的覆盖
-            self.cover_back2 = Rectangle(x=x + pad, y=y + pad + list_pad,
-                                         width=width - (pad * 2), height=height - (pad * 2) - list_pad,
-                                         color=a, batch=batch, group=Group(order=1, parent=group))
+            self.cover_back2 = Rectangle(x=x + pad, y=y + (pad * 2) + list_pad,
+                                         width=width - (pad * 3), height=height - (pad * 3) - list_pad,
+                                         color=b, batch=batch, group=Group(order=1, parent=group))
         # 下巴的框
         self.list_back = BorderedRectangle(x=x, y=y,
                                            width=width, height=height,
@@ -146,58 +138,40 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         self.pad = pad
         self.list_pad = list_pad
         self.pop_out = pop_out
-        self.drag_list = False
+        self.drag_list = theme.get('drag_list', False)
 
-    def on_touch(self, x, y) -> None:
-        """
-        当鼠标在按钮上的时候
-        :param x: 鼠标绝对位置
-        :param y: 鼠标绝对位置
-        :return:
-        """
-
-    def on_move_away(self) -> None:
-        """
-        当鼠标移出按钮的时候
-        :return:
-        """
-
-    def on_hit(self, x: int, y: int) -> None:
-        """
-        当鼠标点击按钮的时候
-        :param x: 鼠标绝对位置
-        :param y: 鼠标绝对位置
-        :return:
-        """
+    def on_enable(self, x: int, y: int, button):
         if self.pop_out:
             self.back_ground.color = self.touch_a
             self.cover_back.color = self.touch_b
             self.cover_back2.color = self.touch_c
         else:
             self.back_ground.color = self.touch_c
-            self.cover_back.color = self.touch_b
-            self.cover_back2.color = self.touch_a
+            self.cover_back.color = self.touch_a
+            self.cover_back2.color = self.touch_b
         if self.drag_list:
+            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2) +
+                                   (self.list_pad // 2))
             self.back_ground.y = self.y + (self.pad * 2)
             self.back_ground.height = self.height - (self.pad * 4)
             self.cover_back.y = self.y + self.pad
             self.cover_back.height = self.height - (self.pad * 2)
             self.cover_back2.y = self.y + self.pad
             self.cover_back2.height = self.height - (self.pad * 3)
+        else:
+            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
+                                   + self.list_pad)
+        self.enable = True
 
-    def on_release(self) -> None:
-        """
-        当鼠标松开按钮的时候
-        :return:
-        """
+    def on_disable(self, button) -> None:
         if self.pop_out:
             self.back_ground.color = self.a
             self.cover_back.color = self.b
             self.cover_back2.color = self.c
         else:
             self.back_ground.color = self.c
-            self.cover_back.color = self.b
-            self.cover_back2.color = self.a
+            self.cover_back.color = self.a
+            self.cover_back2.color = self.b
         if self.drag_list:
             self.back_ground.y = self.y + (self.pad * 2) + self.list_pad
             self.back_ground.height = self.height - (self.pad * 4) - self.list_pad
@@ -205,6 +179,32 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
             self.cover_back.height = self.height - (self.pad * 2) - self.list_pad
             self.cover_back2.y = self.y + self.pad + self.list_pad
             self.cover_back2.height = self.height - (self.pad * 3) - self.list_pad
+        button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
+                               + self.list_pad)
+        self.enable = False
+
+    def on_update(self, button) -> None:
+        super().on_update(button)
+        if self.enable and self.drag_list:
+            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
+                                   + self.list_pad // 2)
+            self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2)
+            self.back_ground.height = self.height - (self.pad * 4)
+            self.cover_back.position = self.x + self.pad, self.y + self.pad
+            self.cover_back.height = self.height - (self.pad * 2)
+            self.cover_back2.position = self.x + self.pad, self.y + self.pad
+            self.cover_back2.height = self.height - (self.pad * 3)
+        else:
+            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
+                                   + self.list_pad)
+            self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2) + self.list_pad
+            self.back_ground.height = self.height - (self.pad * 4) - self.list_pad
+            self.cover_back.position = self.x + self.pad, self.y + self.pad + self.list_pad
+            self.cover_back.height = self.height - (self.pad * 2) - self.list_pad
+            self.cover_back2.position = self.x + self.pad, self.y + self.pad + self.list_pad
+            self.cover_back2.height = self.height - (self.pad * 3) - self.list_pad
+        self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2) + self.list_pad
+        self.back_ground.height = self.height - (self.pad * 4) - self.list_pad
 
 
 class ButtonThemeOptions(Options):
@@ -236,6 +236,7 @@ class PressTextButton(widgets.WidgetBase):
             group: Optional[Group] = None,
             theme: Optional[ButtonThemeOptions] = None,
             draw_theme: Optional[type(BaseButtonTheme)] = None,
+            dict_theme: Optional[dict] = None,
     ):
         super().__init__(x, y, width, height)
         self.main_batch = batch or Batch()
@@ -245,6 +246,9 @@ class PressTextButton(widgets.WidgetBase):
         self.pressed = False
 
         self.theme = theme or ButtonThemeOptions()
+        if dict_theme is None:
+            dict_theme = {}
+        self.dict_theme = dict_theme
 
         self.untouched_color = self.theme.untouched_color
         self.touched_color = self.theme.touched_color
@@ -289,7 +293,9 @@ class PressTextButton(widgets.WidgetBase):
                 height=self._height,
                 batch=self.main_batch,
                 group=self.back_ground_group,
+                theme=self.dict_theme,
             )
+            self.draw_theme.on_update(self)
 
         self.value = text  # 重新分配一下高度和宽度的位置
 
@@ -304,7 +310,7 @@ class PressTextButton(widgets.WidgetBase):
         text_width = self.text_label.content_width
         self.text_label.x = self._x + (self.width - text_width) // 2
         self.text_label.y = (
-                self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2) + 4
+                self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)
         )  # 修正一下位置
 
     @property
@@ -338,8 +344,7 @@ class PressTextButton(widgets.WidgetBase):
         else:
             self.pressed = False
             if self.draw_theme:
-                self.draw_theme.on_move_away()
-                self.draw_theme.on_release()
+                self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.untouched_color
 
@@ -347,7 +352,7 @@ class PressTextButton(widgets.WidgetBase):
         if (x, y) in self:
             if buttons == mouse.LEFT:
                 if self.draw_theme:
-                    self.draw_theme.on_hit(x, y)
+                    self.draw_theme.on_enable(x, y, self)
                 else:
                     self.back_rec.color = self.hit_color
                 self.dispatch_event("on_press", x, y)
@@ -356,7 +361,7 @@ class PressTextButton(widgets.WidgetBase):
         else:
             self.pressed = False
             if self.draw_theme:
-                self.draw_theme.on_release()
+                self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.untouched_color
             self.dispatch_event("on_release", x, y)
@@ -365,7 +370,7 @@ class PressTextButton(widgets.WidgetBase):
     def on_mouse_release(self, x, y, buttons, modifiers):
         if self.pressed and (x, y) in self:
             if self.draw_theme:
-                self.draw_theme.on_release()
+                self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.touched_color
             self.pressed = False
