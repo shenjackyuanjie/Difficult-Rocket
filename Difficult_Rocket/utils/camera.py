@@ -38,11 +38,13 @@ class Camera:
             max_zoom: Optional[float] = 1.0,
     ) -> None:
         self.window = window
-        self.dx = dx
-        self.dy = dy
-        self.zoom = zoom
-        self.min_zoom = min_zoom
-        self.max_zoom = max_zoom
+        self.dx = dx or 1.0
+        self.dy = dy or 1.0
+
+        self.zoom = zoom or 1.0
+        self.min_zoom = min_zoom or 1.0
+        self.max_zoom = max_zoom or 1.0
+
         self._stored_view = window.view
 
     @property
@@ -140,11 +142,11 @@ class GroupCamera(Group):
         self._window = window
         self._previous_view = None
 
-        self._view_x = view_x
-        self._view_y = view_y
-        self._zoom = zoom
-        self.min_zoom = min_zoom
-        self.max_zoom = max_zoom
+        self._view_x = view_x or 0
+        self._view_y = view_y or 0
+        self._zoom = zoom or 1.0
+        self.min_zoom = min_zoom or 1.0
+        self.max_zoom = max_zoom or 1.0
 
     @property
     def view_x(self) -> int:
@@ -233,13 +235,15 @@ class CenterGroupFrame(Group):
     ):
         super().__init__(order=order, parent=parent)
         self.window = window
-        self.dx = dx
-        self.dy = dy
-        self._width = width
-        self._height = height
-        self._zoom = zoom
-        self.min_zoom = min_zoom
-        self.max_zoom = max_zoom
+        self.dx = dx or 0
+        self.dy = dy or 0
+
+        self._width = width or 0
+        self._height = height or 0
+
+        self._zoom = zoom or 1.0
+        self.min_zoom = min_zoom or 1.0
+        self.max_zoom = max_zoom or 1.0
 
     @property
     def zoom(self) -> float:
