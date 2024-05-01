@@ -23,9 +23,12 @@ opt-level = 2
 
 [dependencies]
 fs-err = "2.11.0"
+
 quick-xml = { version = "0.31.0", features = ["serialize"] }
 serde = { version = "1.0", features = ["derive"] }
-nalgebra = "0.32.3"
-rapier2d-f64 = { version = "0.17.2", features = ["simd-stable"] }
-pyo3 = { version = "0.20.0", features = ["extension-module", "macros"] }
+
+nalgebra = "0.32.5"
+rapier2d-f64 = { version = "0.18.0", features = ["simd-stable"] }
+pyo3 = { version = "0.21.2", features = ["extension-module", "macros"] }
+
 dict_derive = "0.5"
