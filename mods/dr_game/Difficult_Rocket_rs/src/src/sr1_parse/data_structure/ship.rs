@@ -242,7 +242,7 @@ impl RawShip {
     pub fn from_file(path: String) -> Option<RawShip> {
         let ship_file = fs::read_to_string(path); // for encoding error
         if let Err(e) = ship_file {
-            println!("ERROR!\n{:?}\n----------", e);
+            println!("ERROR!\n{}\n----------", e);
             return None;
         }
         let ship_file = ship_file.unwrap();
@@ -250,7 +250,7 @@ impl RawShip {
         match ship {
             Ok(ship) => Some(ship),
             Err(e) => {
-                println!("ERROR!\n{} {}\n----------", e, e.source());
+                println!("ERROR!\n{}", e);
                 None
             }
         }

@@ -16,7 +16,7 @@ pub type IdType = i64;
 
 #[pyfunction]
 fn get_version_str() -> String {
-    "0.3.1".to_string()
+    env!("CARGO_PKG_VERSION").to_string()
 }
 
 #[pyfunction]
