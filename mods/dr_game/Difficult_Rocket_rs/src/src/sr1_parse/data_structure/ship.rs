@@ -83,9 +83,9 @@ pub struct Part {
     pub chute_height: Option<f64>,
     #[serde(rename = "@extension")]
     pub extension: Option<f64>,
-    #[serde(rename = "@inflation")]
+    #[serde(rename = "@inflate")]
     pub inflate: Option<i8>,
-    #[serde(rename = "@inflationTarget")]
+    #[serde(rename = "@inflation")]
     pub inflation: Option<f64>,
     #[serde(rename = "@deployed")]
     pub exploded: Option<i8>,
