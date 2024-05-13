@@ -250,14 +250,7 @@ impl RawShip {
         match ship {
             Ok(ship) => Some(ship),
             Err(e) => {
-                println!("ERROR!\n{:?}\n----------", e);
-                // match e {
-                //     XmlError::ParseIntError { source } => {
-                //         println!("ParseIntError: {:?}", source.kind());
-                //         None
-                //     }
-                //     _ => None,
-                // }
+                println!("ERROR!\n{} {}\n----------", e, e.source());
                 None
             }
         }
