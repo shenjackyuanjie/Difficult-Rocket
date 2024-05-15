@@ -13,6 +13,11 @@ if __name__ == "__main__":
 
     # 移动到项目根目录
     os.chdir("./mods/dr_game/Difficult_Rocket_rs/src")
+    os.chdir("./src")
+
+    subprocess.run(["cargo", "fmt", "--all"])
+
+    os.chdir("../")
 
     if not args.py:
         if args.all:

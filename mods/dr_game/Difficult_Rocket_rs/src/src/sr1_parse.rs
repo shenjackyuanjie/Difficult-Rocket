@@ -6,7 +6,7 @@ use crate::dr_physics::math::{Edge, Shape};
 use crate::dr_physics::math::{Point2D, Rotate};
 use crate::sr1_parse::part_list::Damage as RawDamage;
 use crate::sr1_parse::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
-use crate::sr1_parse::part_list::{RawPartList, RawPartType, SR1PartTypeEnum, FuelType};
+use crate::sr1_parse::part_list::{FuelType, RawPartList, RawPartType, SR1PartTypeEnum};
 use crate::sr1_parse::ship::{
     Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
     DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData, Parts as RawParts,
@@ -19,7 +19,6 @@ use std::collections::HashMap;
 use std::io::Cursor;
 use std::ops::Deref;
 
-use fs_err as fs;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
@@ -174,7 +173,7 @@ impl SR1PartList {
     }
 
     pub fn from_file(file_name: String) -> Option<SR1PartList> {
-        if let Some(raw_list) = RawPartList::from_file(file_name) {
+        if let Ok(raw_list) = RawPartList::from_file(file_name) {
             let sr_list = raw_list.to_sr_part_list(None);
             return Some(sr_list);
         }
@@ -898,7 +897,7 @@ impl SR1Ship {
 
             String::from_utf8(writer.into_inner().into_inner()).unwrap()
         }
-        fs::write(file_name, write_data(self, save_status)).unwrap();
+        std::fs::write(file_name, write_data(self, save_status)).unwrap();
         Some(())
     }
 }

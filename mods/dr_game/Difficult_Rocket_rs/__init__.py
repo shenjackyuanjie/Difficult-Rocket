@@ -9,12 +9,6 @@ from .lib import *  # noqa: F403
 from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
 
 if TYPE_CHECKING:
-
-    def test_call(py_obj) -> bool:
-        """这里展示的代码实际上就是实际的等效实现"""
-        py_obj.draw()
-        return True
-
     def get_version_str() -> str:
         """
         获取版本号

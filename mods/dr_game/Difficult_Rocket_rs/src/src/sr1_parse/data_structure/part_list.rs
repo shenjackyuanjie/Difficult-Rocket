@@ -1,7 +1,7 @@
 use crate::sr1_parse::{SR1PartList, SR1PartType, SR1PartTypeAttr};
 use crate::sr1_parse::{SR1PartListTrait, SR1PartTypeData};
 
-use fs_err as fs;
+use anyhow::Result;
 use pyo3::prelude::*;
 use quick_xml::de::from_str;
 use serde::{Deserialize, Serialize};
@@ -153,12 +153,16 @@ impl Damage {
 pub enum FuelType {
     /// 就是液体燃料
     #[default]
+    #[serde(rename = "0")]
     Common = 0,
     /// RCS 推进剂
+    #[serde(rename = "1")]
     Rcs = 1,
     /// 电!!!!!
+    #[serde(rename = "2")]
     Battery = 2,
     /// 固推神教!
+    #[serde(rename = "3")]
     Soild = 3,
 }
 
@@ -376,10 +380,10 @@ impl RawPartList {
         RawPartList { part_types: parts }
     }
 
-    pub fn from_file(file_name: String) -> Option<RawPartList> {
-        let part_list_file = fs::read_to_string(file_name).ok()?;
-        let part_list: RawPartList = from_str(part_list_file.as_str()).ok()?;
-        Some(part_list)
+    pub fn from_file(file_name: String) -> Result<Self> {
+        let part_list_file = std::fs::read_to_string(file_name)?;
+        let part_list: RawPartList = from_str(part_list_file.as_str())?;
+        Ok(part_list)
     }
 
     pub fn list_print(&self) {
@@ -407,11 +411,12 @@ impl SR1PartListTrait for RawPartList {
 #[pyo3(name = "part_list_read_test", signature = (file_name = "./assets/builtin/PartList.xml".to_string()))]
 pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
     let file_name = file_name.unwrap_or("./assets/builtin/PartList.xml".to_string());
-    let _parts = RawPartList::from_file(file_name);
-    if let Some(parts) = _parts {
-        // println!("{:?}", parts)
-        parts.list_print();
-        let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
-    }
+    // let _parts = RawPartList::from_file(file_name);
+    // if let Some(parts) = _parts {
+    //     // println!("{:?}", parts)
+    //     parts.list_print();
+    //     let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
+    // }
+    println!("{:?}", RawPartList::from_file(file_name));
     Ok(())
 }

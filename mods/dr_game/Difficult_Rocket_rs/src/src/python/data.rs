@@ -109,7 +109,13 @@ impl PySR1PartList {
     #[new]
     #[pyo3(text_signature = "(file_path = './assets/builtin/PartList.xml', list_name = 'NewPartList')")]
     fn new(file_path: String, list_name: String) -> Self {
-        let raw_part_list: RawPartList = RawPartList::from_file(file_path).unwrap();
+        let raw_part_list: RawPartList = match RawPartList::from_file(file_path.clone()) {
+            Ok(raw_part_list) => raw_part_list,
+            Err(e) => {
+                println!("ERROR!\n{}\n----------", e);
+                panic!("Parse part list failed! {}\n{e}", file_path);
+            }
+        };
         let data = raw_part_list.to_sr_part_list(Some(list_name));
         Self { data }
     }

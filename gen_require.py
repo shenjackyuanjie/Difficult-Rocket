@@ -9,7 +9,7 @@ import argparse
 # fmt: off
 basic = {
     "images": [
-        'pillow >= 10.2.0; (platform_python_implementation == "PyPy" and '
+        'pillow >= 10.3.0; (platform_python_implementation == "PyPy" and '
         'python_version < "3.10") or platform_python_implementation == "CPython"',
     ],
     "sys info": [
@@ -24,17 +24,18 @@ basic = {
 
 build = {
     "compile": [
-        "nuitka >= 2.0.0",
-        "imageio >= 2.33.1",
+        "nuitka >= 2.2.2",
+        "imageio >= 2.34.1",
         "setuptools >= 69",
-        "setuptools-rust >= 1.8.1"
+        "setuptools-rust >= 1.9.0",
+        "wheel >= 0.37.0",
     ]
 }
 
 dev = {
     "debug": [
         "objprint >= 0.2.3",
-        "viztracer >= 0.16.1; platform_python_implementation != \"PyPy\"",
+        "viztracer >= 0.16.3; platform_python_implementation != \"PyPy\"",
         "vizplugins >= 0.1.3; platform_python_implementation != \"PyPy\""
     ]
 }

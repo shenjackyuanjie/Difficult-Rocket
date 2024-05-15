@@ -1,6 +1,6 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.3.2"
+version = "0.3.3"
 edition = "2021"
 license-file = '../../LICENSE'
 authors = ["shenjackyuanjie <3695888@qq.com>"]
@@ -22,7 +22,7 @@ panic = "abort"
 opt-level = 2
 
 [dependencies]
-fs-err = "2.11.0"
+anyhow = "1.0"
 
 quick-xml = { version = "0.31.0", features = ["serialize"] }
 serde = { version = "1.0", features = ["derive"] }

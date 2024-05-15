@@ -16,7 +16,7 @@ from Difficult_Rocket.api.types import Options, Version
 
 from lib_not_dr import loggers
 
-DR_rust_version = Version("0.3.2")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.3.3")  # DR_mod 的 Rust 编写部分的兼容版本
 
 logger = loggers.config.get_logger_from_old("client.dr_game", "client")
 
@@ -40,7 +40,8 @@ class _DR_mod_runtime(Options):  # NOQA
                     "larger" if self.DR_rust_version > self.DR_rust_version else "smaller"
                 )
                 logger.warn(
-                    f"DR_rust builtin version is {self.DR_rust_version} but true version is {get_version_str()}.\n"
+                    f"DR_rust builtin version is {self.DR_rust_version} "
+                    f"but true version is {get_version_str()}.\n"
                     f"Builtin version {relationship} than true version",
                     tag="load_dll",
                 )

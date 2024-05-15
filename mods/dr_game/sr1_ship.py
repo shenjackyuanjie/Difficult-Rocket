@@ -74,7 +74,7 @@ class SR1ShipRender(BaseScreen):
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
         self.logger = logger
-        logger.info(sr_tr().mod.info.setup.start())
+        logger.info(sr_tr().mod.info.setup.start(), tag="setup")
         load_start_time = time.time_ns()
         # status
         self.status = SR1ShipRenderStatus()
@@ -150,7 +150,8 @@ class SR1ShipRender(BaseScreen):
         logger.info(
             sr_tr()
             .mod.info.setup.use_time()
-            .format((load_end_time - load_start_time) / 1000000000)
+            .format((load_end_time - load_start_time) / 1000000000),
+            tag="setup",
         )
 
     @property
@@ -171,20 +172,21 @@ class SR1ShipRender(BaseScreen):
         """
         try:
             start_time = time.time_ns()
-            logger.info(sr_tr().sr1.ship.xml.loading().format(file_path))
+            logger.info(sr_tr().sr1.ship.xml.loading().format(file_path), tag="load_xml")
             self.ship_name = file_path.split("/")[-1].split(".")[0]
             if DR_mod_runtime.use_DR_rust:
                 self.rust_ship = SR1Ship_rs(file_path, self.part_list_rs, "a_new_ship")
-            logger.info(sr_tr().sr1.ship.xml.load_done())
+            logger.info(sr_tr().sr1.ship.xml.load_done(), tag="load_xml")
             logger.info(
                 sr_tr()
                 .sr1.ship.xml.load_time()
-                .format((time.time_ns() - start_time) / 1000000000)
+                .format((time.time_ns() - start_time) / 1000000000),
+                tag="load_xml",
             )
             return True
         except Exception:
             traceback.print_exc()
-            self.logger.error(traceback.format_exc())
+            self.logger.error(traceback.format_exc(), tag="load_xml")
             return False
 
     def gen_sprite(self, each_count: int = 100) -> Generator:
@@ -349,7 +351,7 @@ class SR1ShipRender(BaseScreen):
         渲染船
         """
         self.status.draw_done = False
-        logger.info(sr_tr().sr1.ship.ship.load().format(self.ship_name))
+        logger.info(sr_tr().sr1.ship.ship.load().format(self.ship_name), tag="ship")
         start_time = time.perf_counter_ns()
         self.parts_sprite: Dict[int, Sprite] = {}
         self.part_line_box = {}
@@ -369,7 +371,8 @@ class SR1ShipRender(BaseScreen):
         logger.info(
             sr_tr()
             .sr1.ship.ship.load_time()
-            .format((time.perf_counter_ns() - start_time) / 1000000000)
+            .format((time.perf_counter_ns() - start_time) / 1000000000),
+            tag="ship"
         )
         logger.info(
             sr_tr()
@@ -379,7 +382,8 @@ class SR1ShipRender(BaseScreen):
                 f"{full_mass}kg"
                 if DR_mod_runtime.use_DR_rust
                 else sr_tr().game.require_DR_rs(),
-            )
+            ),
+            tag="ship",
         )
 
     def draw_batch(self, window: ClientWindow):
@@ -430,6 +434,8 @@ class SR1ShipRender(BaseScreen):
             return
         self.render_d_line.x2 = width // 2
         self.render_d_line.y2 = height // 2
+        self.width = width
+        self.height = height
 
     def on_mouse_scroll(
         self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
