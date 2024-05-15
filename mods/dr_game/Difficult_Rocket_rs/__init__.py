@@ -20,6 +20,7 @@ if TYPE_CHECKING:
         获取版本号
         :return: 版本号
         """
+        ...
 
     def part_list_read_test(
         file_name: Optional[str] = "./assets/builtin/PartList.xml"
@@ -42,6 +43,7 @@ if TYPE_CHECKING:
         :param part_type:
         :return:
         """
+        ...
 
     class SR1PartType_rs:  # NOQA
         """
@@ -53,34 +55,42 @@ if TYPE_CHECKING:
         @property
         def name(self) -> str:
             """零件的名字"""
+            ...
 
         @property
         def description(self) -> str:
             """零件的描述"""
+            ...
 
         @property
         def sprite(self) -> str:
             """零件的贴图"""
+            ...
 
         @property
         def mass(self) -> float:
             """零件的质量"""
+            ...
 
         @property
         def width(self) -> int:
             """零件的宽度"""
+            ...
 
         @property
         def height(self) -> int:
             """零件的高度"""
+            ...
 
         @property
         def friction(self) -> float:
             """零件的摩擦系数"""
+            ...
 
         @property
         def hidden(self) -> bool:
             """零件是否隐藏"""
+            ...
 
         @property
         def type(self):
@@ -194,15 +204,18 @@ if TYPE_CHECKING:
 
         @property
         def mass(self) -> float:
-            """获取整搜船的质量"""
+            """获取整艘船的质量"""
+            ...
 
         @property
         def img_pos(self) -> Tuple[int, int, int, int]:
             """-x -y +x +y  左下右上"""
+            ...
 
         @property
         def connection(self) -> List[Tuple[int, int, int, int]]:
             """获取所有连接信息"""
+            ...
 
         def get_part_box(
             self, part_id: int
@@ -211,9 +224,11 @@ if TYPE_CHECKING:
 
         def as_list(self) -> List[Tuple[SR1PartType_rs, SR1PartData_rs]]:
             """用于返回一个包含所有已连接零件的列表"""
+            ...
 
         def as_dict(self) -> Dict[int, List[Tuple[SR1PartType_rs, SR1PartData_rs]]]:
             """用于返回一个包含所有已连接零件的字典"""
+            ...
 
         def save(
             self, file_path: str, save_status: Optional[SaveStatus_rs] = None
