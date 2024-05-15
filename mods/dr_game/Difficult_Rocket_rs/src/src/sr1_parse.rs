@@ -6,7 +6,7 @@ use crate::dr_physics::math::{Edge, Shape};
 use crate::dr_physics::math::{Point2D, Rotate};
 use crate::sr1_parse::part_list::Damage as RawDamage;
 use crate::sr1_parse::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
-use crate::sr1_parse::part_list::{RawPartList, RawPartType, SR1PartTypeEnum};
+use crate::sr1_parse::part_list::{RawPartList, RawPartType, SR1PartTypeEnum, FuelType};
 use crate::sr1_parse::ship::{
     Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
     DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData, Parts as RawParts,
@@ -41,7 +41,7 @@ pub enum SR1PartTypeAttr {
     Tank {
         fuel: f64,
         dry_mass: f64,
-        fuel_type: i32,
+        fuel_type: FuelType,
     },
     Engine {
         power: f64,
@@ -53,7 +53,7 @@ pub enum SR1PartTypeAttr {
         /// 1 -> Rcs
         /// 2 -> 电量
         /// 3 -> 固推
-        fuel_type: i32,
+        fuel_type: FuelType,
         throttle_exponential: bool,
     },
     Rcs {
@@ -219,11 +219,13 @@ pub trait SR1PartDataTrait {
 
 pub trait SR1PartListTrait {
     fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList;
+    #[allow(unused)]
     fn to_raw_part_list(&self) -> RawPartList;
 }
 
 pub trait SR1ShipTrait {
     fn to_sr_ship(&self, name: Option<String>) -> SR1Ship;
+    #[allow(unused)]
     fn to_raw_ship(&self) -> RawShip;
 }
 

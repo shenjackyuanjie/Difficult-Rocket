@@ -11,7 +11,6 @@ use crate::sr1_parse::{get_max_box, SR1PartData, SR1PartListTrait};
 use crate::sr1_parse::{SR1PartList, SR1PartType, SR1Ship};
 use crate::IdType;
 
-// use serde_xml_rs::to_string;
 use quick_xml::se::to_string;
 
 #[pyclass]

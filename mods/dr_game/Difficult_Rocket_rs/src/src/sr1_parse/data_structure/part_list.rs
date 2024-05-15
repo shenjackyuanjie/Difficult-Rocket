@@ -149,11 +149,17 @@ impl Damage {
 }
 
 // This enumeration can be considered to replace the integer-represented "fuel type".
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, Default)]
 pub enum FuelType {
-    Common,
-    Rcs,
-    Battery,
-    Soild,
+    /// 就是液体燃料
+    #[default]
+    Common = 0,
+    /// RCS 推进剂
+    Rcs = 1,
+    /// 电!!!!!
+    Battery = 2,
+    /// 固推神教!
+    Soild = 3,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -167,7 +173,7 @@ pub struct Tank {
     // 2 -> 电量
     // 3 -> 固推
     #[serde(rename = "@fuelType")]
-    pub fuel_type: Option<i32>,
+    pub fuel_type: Option<FuelType>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -181,7 +187,7 @@ pub struct Engine {
     #[serde(rename = "@turn")]
     pub turn: f64,
     #[serde(rename = "@fuelType")]
-    pub fuel_type: Option<i32>,
+    pub fuel_type: Option<FuelType>,
     #[serde(rename = "@throttleExponential")]
     pub throttle_exponential: Option<bool>,
 }
@@ -286,7 +292,7 @@ impl SR1PartTypeData for RawPartType {
                 Some(SR1PartTypeAttr::Tank {
                     fuel: tank.fuel,
                     dry_mass: tank.dry_mass,
-                    fuel_type: tank.fuel_type.unwrap_or(0),
+                    fuel_type: tank.fuel_type.unwrap_or_default(),
                 })
             }
             SR1PartTypeEnum::engine => {
@@ -296,7 +302,7 @@ impl SR1PartTypeData for RawPartType {
                     consumption: engine.consumption,
                     size: engine.size,
                     turn: engine.turn,
-                    fuel_type: engine.fuel_type.unwrap_or(0),
+                    fuel_type: engine.fuel_type.unwrap_or_default(),
                     throttle_exponential: engine.throttle_exponential.unwrap_or(false),
                 })
             }
