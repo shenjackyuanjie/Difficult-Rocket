@@ -93,14 +93,14 @@ class DR_mod(ModInfo):  # NOQA
         return True
 
     def on_client_start(self, game: Game, client: ClientWindow):
-        from .sr1_ship import SR1ShipRender
+        #from .sr1_ship import SR1ShipRender
         from .menu import Menu
 
         client.add_sub_screen("DR_game_menu", Menu)
         logger.info("added dr_game_menu screen", tag="dr_game")
 
-        client.add_sub_screen("SR1_ship", SR1ShipRender)
-        logger.info("added SR1_ship screen", tag="dr_game")
+        #client.add_sub_screen("SR1_ship", SR1ShipRender)
+        #logger.info("added SR1_ship screen", tag="dr_game")
 
     def on_unload(self, game: Game):
         game.client.window.screen_list.pop("SR1_ship")
