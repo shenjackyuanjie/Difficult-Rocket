@@ -21,7 +21,7 @@ fn get_version_str() -> String {
 
 #[pymodule]
 #[pyo3(name = "Difficult_Rocket_rs")]
-fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn module_init(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_version_str, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_parse::part_list::read_part_list_py, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_parse::ship::py_raw_ship_from_file, m)?)?;

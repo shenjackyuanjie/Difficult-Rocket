@@ -269,6 +269,7 @@ impl RawShip {
         }
     }
 
+    #[allow(unused)]
     pub fn save(&self, file_name: String) -> Result<()> {
         let part_list_file = to_string(self)?;
         print!("{:?}", part_list_file);

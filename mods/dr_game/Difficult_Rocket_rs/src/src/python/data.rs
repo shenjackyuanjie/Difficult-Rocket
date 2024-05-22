@@ -5,7 +5,7 @@ use pyo3::prelude::*;
 
 use crate::dr_physics::math::{Point2D, Rotate};
 use crate::sr1_parse::part_list::RawPartList;
-use crate::sr1_parse::ship::{Connection, Connections, RawConnectionData, RawShip};
+use crate::sr1_parse::ship::{Connection, RawConnectionData, RawShip};
 use crate::sr1_parse::SaveStatus;
 use crate::sr1_parse::{get_max_box, SR1PartData, SR1PartListTrait};
 use crate::sr1_parse::{SR1PartList, SR1PartType, SR1Ship};
@@ -233,7 +233,7 @@ impl PySR1Connections {
     }
     /// 通过父子双方 id 获取连接
     ///
-    /// 保险期间, 我还是返回一个 Vec
+    /// 保险起见, 我还是返回一个 Vec
     ///
     /// 万一真有 双/多 连接呢
     fn search_by_both_id(&self, parent_id: IdType, child_id: IdType) -> Vec<RawConnectionData> {

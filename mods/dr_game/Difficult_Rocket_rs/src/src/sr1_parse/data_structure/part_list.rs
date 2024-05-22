@@ -386,6 +386,7 @@ impl RawPartList {
         Ok(part_list)
     }
 
+    #[allow(unused)]
     pub fn list_print(&self) {
         for part_data in self.part_types.iter() {
             println!("{:?}\n", part_data);
