@@ -238,7 +238,10 @@ pub struct PySR1PartArray {
 #[pymethods]
 impl PySR1PartArray {
     fn __iter__(&self) -> PySR1PartDataIterator {
-        PySR1PartDataIterator { datas: self.datas.clone(), index: 0 }
+        PySR1PartDataIterator {
+            datas: self.datas.clone(),
+            index: 0,
+        }
     }
 }
 
@@ -278,7 +281,37 @@ impl PySR1Ship {
                 parts.push((part_type, py_part_data));
             }
         }
-        PySR1PartArray { datas: parts, part_list: self.part_list.clone() }
+        PySR1PartArray {
+            datas: parts,
+            part_list: self.part_list.clone(),
+        }
+    }
+
+    fn disconnected_parts(&self) -> Vec<PySR1PartArray> {
+        match self.ship.disconnected.as_ref() {
+            Some(parts) => {
+                if parts.is_empty() {
+                    return Vec::new();
+                }
+                let mut result = Vec::with_capacity(parts.len());
+                for (part_group, _) in parts.iter() {
+                    let mut part_list = Vec::with_capacity(part_group.len());
+                    for part_data in part_group.iter() {
+                        if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                            let part_type = PySR1PartType::new(part_type.clone());
+                            let py_part_data = PySR1PartData::new(part_data.clone());
+                            part_list.push((part_type, py_part_data));
+                        }
+                    }
+                    result.push(PySR1PartArray {
+                        datas: part_list,
+                        part_list: self.part_list.clone(),
+                    });
+                }
+                result
+            }
+            None => Vec::new(),
+        }
     }
 
     #[getter]
