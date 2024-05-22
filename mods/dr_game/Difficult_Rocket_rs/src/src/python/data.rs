@@ -208,6 +208,42 @@ impl PySR1PartData {
 
 #[pyclass]
 #[derive(Clone, Debug)]
+#[pyo3(name = "SR1PartTypeArrayIterator_rs")]
+pub struct PySR1PartDataIterator {
+    pub datas: Vec<(PySR1PartType, PySR1PartData)>,
+    pub index: usize,
+}
+
+#[pymethods]
+impl PySR1PartDataIterator {
+    fn __next__(mut slf: PyRefMut<'_, Self>) -> Option<(PySR1PartType, PySR1PartData)> {
+        if slf.index < slf.datas.len() {
+            slf.index += 1;
+            Some(slf.datas[slf.index - 1].clone())
+        } else {
+            None
+        }
+    }
+}
+
+/// 用来存一堆 PartData 的数组
+#[pyclass]
+#[derive(Clone, Debug)]
+#[pyo3(name = "SR1PartArray_rs")]
+pub struct PySR1PartArray {
+    pub datas: Vec<(PySR1PartType, PySR1PartData)>,
+    pub part_list: SR1PartList,
+}
+
+#[pymethods]
+impl PySR1PartArray {
+    fn __iter__(&self) -> PySR1PartDataIterator {
+        PySR1PartDataIterator { datas: self.datas.clone(), index: 0 }
+    }
+}
+
+#[pyclass]
+#[derive(Clone, Debug)]
 #[pyo3(name = "SR1Ship_rs")]
 pub struct PySR1Ship {
     pub ship: SR1Ship,
@@ -231,6 +267,18 @@ impl PySR1Ship {
             }
             None => Err(PyValueError::new_err(format!("Parse ship failed! {}", file_path))),
         }
+    }
+
+    fn parts(&self) -> PySR1PartArray {
+        let mut parts: Vec<(PySR1PartType, PySR1PartData)> = Vec::new();
+        for part_data in self.ship.parts.iter() {
+            if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                let part_type = PySR1PartType::new(part_type.clone());
+                let py_part_data = PySR1PartData::new(part_data.clone());
+                parts.push((part_type, py_part_data));
+            }
+        }
+        PySR1PartArray { datas: parts, part_list: self.part_list.clone() }
     }
 
     #[getter]

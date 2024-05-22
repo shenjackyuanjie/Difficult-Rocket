@@ -881,7 +881,6 @@ impl SR1Ship {
 
         fn write_data(data: &SR1Ship, save_status: &SaveStatus) -> String {
             let mut writer: Writer<Cursor<Vec<u8>>> = Writer::new(Cursor::new(Vec::new()));
-
             {
                 // ship attr
                 let mut ship_elem = BytesStart::new("Ship");
