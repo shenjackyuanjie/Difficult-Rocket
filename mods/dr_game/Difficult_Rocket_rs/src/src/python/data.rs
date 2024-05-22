@@ -5,7 +5,7 @@ use pyo3::prelude::*;
 
 use crate::dr_physics::math::{Point2D, Rotate};
 use crate::sr1_parse::part_list::RawPartList;
-use crate::sr1_parse::ship::RawShip;
+use crate::sr1_parse::ship::{Connection, Connections, RawConnectionData, RawShip};
 use crate::sr1_parse::SaveStatus;
 use crate::sr1_parse::{get_max_box, SR1PartData, SR1PartListTrait};
 use crate::sr1_parse::{SR1PartList, SR1PartType, SR1Ship};
@@ -207,41 +207,47 @@ impl PySR1PartData {
 }
 
 #[pyclass]
-#[derive(Clone, Debug)]
-#[pyo3(name = "SR1PartTypeArrayIterator_rs")]
-pub struct PySR1PartDataIterator {
-    pub datas: Vec<(PySR1PartType, PySR1PartData)>,
-    pub index: usize,
+#[derive(Debug, Clone)]
+#[pyo3(name = "SR1Connection_rs")]
+pub struct PySR1Connections {
+    pub datas: Vec<Connection>,
 }
 
 #[pymethods]
-impl PySR1PartDataIterator {
-    fn __next__(mut slf: PyRefMut<'_, Self>) -> Option<(PySR1PartType, PySR1PartData)> {
-        if slf.index < slf.datas.len() {
-            slf.index += 1;
-            Some(slf.datas[slf.index - 1].clone())
-        } else {
-            None
-        }
+impl PySR1Connections {
+    /// 通过父节点获取连接
+    fn search_connection_by_parent(&self, parent_id: IdType) -> Vec<RawConnectionData> {
+        self.datas.iter().filter(|x| x.parent_part == parent_id).map(|x| x.as_raw_data()).collect()
     }
-}
-
-/// 用来存一堆 PartData 的数组
-#[pyclass]
-#[derive(Clone, Debug)]
-#[pyo3(name = "SR1PartArray_rs")]
-pub struct PySR1PartArray {
-    pub datas: Vec<(PySR1PartType, PySR1PartData)>,
-    pub part_list: SR1PartList,
-}
-
-#[pymethods]
-impl PySR1PartArray {
-    fn __iter__(&self) -> PySR1PartDataIterator {
-        PySR1PartDataIterator {
-            datas: self.datas.clone(),
-            index: 0,
-        }
+    /// 通过子节点获取连接
+    fn search_by_child(&self, child_id: IdType) -> Vec<RawConnectionData> {
+        self.datas.iter().filter(|x| x.child_part == child_id).map(|x| x.as_raw_data()).collect()
+    }
+    /// 通过父子中任意一个 id 搜索连接
+    fn search_by_id(&self, any_id: IdType) -> Vec<RawConnectionData> {
+        self.datas
+            .iter()
+            .filter(|x| x.parent_part == any_id || x.child_part == any_id)
+            .map(|x| x.as_raw_data())
+            .collect()
+    }
+    /// 通过父子双方 id 获取连接
+    ///
+    /// 保险期间, 我还是返回一个 Vec
+    ///
+    /// 万一真有 双/多 连接呢
+    fn search_by_both_id(&self, parent_id: IdType, child_id: IdType) -> Vec<RawConnectionData> {
+        self.datas
+            .iter()
+            .filter(|x| x.parent_part == parent_id && x.child_part == child_id)
+            .map(|x| x.as_raw_data())
+            .collect()
+    }
+    /// 获取所有连接的原始数据
+    ///
+    /// 万一你确实需要吭哧吭哧去处理原始数据呢
+    fn get_raw_data(&self) -> Vec<RawConnectionData> {
+        self.datas.iter().map(|x| x.as_raw_data()).collect()
     }
 }
 
@@ -272,41 +278,28 @@ impl PySR1Ship {
         }
     }
 
-    fn parts(&self) -> PySR1PartArray {
-        let mut parts: Vec<(PySR1PartType, PySR1PartData)> = Vec::new();
-        for part_data in self.ship.parts.iter() {
-            if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
-                let part_type = PySR1PartType::new(part_type.clone());
-                let py_part_data = PySR1PartData::new(part_data.clone());
-                parts.push((part_type, py_part_data));
-            }
-        }
-        PySR1PartArray {
-            datas: parts,
-            part_list: self.part_list.clone(),
-        }
-    }
-
-    fn disconnected_parts(&self) -> Vec<PySR1PartArray> {
+    fn disconnected_parts(&self) -> Vec<(Vec<(PySR1PartType, PySR1PartData)>, PySR1Connections)> {
         match self.ship.disconnected.as_ref() {
             Some(parts) => {
                 if parts.is_empty() {
                     return Vec::new();
                 }
                 let mut result = Vec::with_capacity(parts.len());
-                for (part_group, _) in parts.iter() {
-                    let mut part_list = Vec::with_capacity(part_group.len());
+                for (part_group, connections) in parts.iter() {
+                    let mut group_parts = Vec::with_capacity(part_group.len());
                     for part_data in part_group.iter() {
                         if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
                             let part_type = PySR1PartType::new(part_type.clone());
                             let py_part_data = PySR1PartData::new(part_data.clone());
-                            part_list.push((part_type, py_part_data));
+                            group_parts.push((part_type, py_part_data));
                         }
                     }
-                    result.push(PySR1PartArray {
-                        datas: part_list,
-                        part_list: self.part_list.clone(),
-                    });
+                    result.push((
+                        group_parts,
+                        PySR1Connections {
+                            datas: connections.clone().unwrap_or_default(),
+                        },
+                    ));
                 }
                 result
             }
@@ -357,18 +350,10 @@ impl PySR1Ship {
         mass
     }
 
-    #[getter]
-    fn get_connection(&self) -> Vec<(i32, i32, IdType, IdType)> {
-        let mut connections = Vec::new();
-        for connect in self.ship.connections.iter() {
-            connections.push((
-                connect.parent_attach_point,
-                connect.child_attach_point,
-                connect.parent_part,
-                connect.child_part,
-            ));
+    fn connections(&self) -> PySR1Connections {
+        PySR1Connections {
+            datas: self.ship.connections.clone(),
         }
-        connections
     }
 
     fn as_list(&self) -> Vec<(PySR1PartType, PySR1PartData)> {

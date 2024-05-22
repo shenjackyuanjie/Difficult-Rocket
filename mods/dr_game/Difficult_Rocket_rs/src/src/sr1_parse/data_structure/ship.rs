@@ -155,6 +155,8 @@ pub struct DisconnectedPart {
     pub connects: Connections,
 }
 
+pub type RawConnectionData = (i32, i32, IdType, IdType);
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Connection {
     #[serde(rename = "@parentAttachPoint")]
@@ -165,6 +167,18 @@ pub struct Connection {
     pub parent_part: IdType,
     #[serde(rename = "@childPart")]
     pub child_part: IdType,
+}
+
+impl Connection {
+    /// 真有地方需要
+    pub fn as_raw_data(&self) -> RawConnectionData {
+        (
+            self.parent_attach_point,
+            self.child_attach_point,
+            self.parent_part,
+            self.child_part,
+        )
+    }
 }
 
 impl SR1PartDataTrait for Part {

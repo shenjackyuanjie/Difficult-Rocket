@@ -146,7 +146,7 @@ dependencies = [
 
 [[package]]
 name = "difficult_rocket_rs"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "anyhow",
  "dict_derive",

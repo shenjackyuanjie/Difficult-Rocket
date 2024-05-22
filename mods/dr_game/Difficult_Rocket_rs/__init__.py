@@ -9,6 +9,9 @@ from .lib import *  # noqa: F403
 from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
 
 if TYPE_CHECKING:
+    IdType = int
+    RawConnectionData = Tuple[int, int, IdType, IdType]
+
     def get_version_str() -> str:
         """
         获取版本号
@@ -163,6 +166,42 @@ if TYPE_CHECKING:
         def __init__(self, save_default: Optional[bool] = False) -> None:
             ...
 
+    class SR1Connection_rs:  # NOQA
+        """用于存储一堆连接的信息
+        同时提供了一些好用的 API
+        至少总比你在那里吭哧吭哧在 Python 里搜快
+        pub datas: Vec<Connection>"""
+
+        def search_connection_by_parent(
+            self, parent_id: IdType
+        ) -> List[RawConnectionData]:
+            """通过父节点搜索连接"""
+            ...
+
+        def search_connection_by_child(self, child_id: IdType) -> List[RawConnectionData]:
+            """通过子节点搜索连接"""
+            ...
+
+        def search_connection_by_id(self, any_id: IdType) -> List[RawConnectionData]:
+            """通过父子中任意一个 id 搜索连接"""
+            ...
+
+        def search_by_both_id(
+            self, parent_id: IdType, child_id: IdType
+        ) -> List[RawConnectionData]:
+            """通过父子双方 id 获取连接
+
+            保险起见, 我还是返回一个 Vec
+
+            万一真有 双/多 连接呢"""
+            ...
+
+        def get_raw_data(self) -> List[RawConnectionData]:
+            """获取原始数据
+
+            万一你确实需要吭哧吭哧去处理原始数据呢"""
+            ...
+
     class SR1Ship_rs:  # NOQA
         """用于高效且省内存的读取 SR1Ship"""
 
@@ -206,11 +245,6 @@ if TYPE_CHECKING:
             """-x -y +x +y  左下右上"""
             ...
 
-        @property
-        def connection(self) -> List[Tuple[int, int, int, int]]:
-            """获取所有连接信息"""
-            ...
-
         def get_part_box(
             self, part_id: int
         ) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]:
@@ -227,6 +261,10 @@ if TYPE_CHECKING:
         def save(
             self, file_path: str, save_status: Optional[SaveStatus_rs] = None
         ) -> None:
+            ...
+
+        def parts(self) -> SR1PartArray_rs:
+            """获取装在这个玩意里面的零件列表"""
             ...
 
     class Console_rs:  # NOQA
