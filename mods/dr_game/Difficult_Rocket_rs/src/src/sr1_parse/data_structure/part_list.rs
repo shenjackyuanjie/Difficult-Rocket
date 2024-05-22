@@ -157,7 +157,7 @@ pub enum FuelType {
     Common = 0,
     /// RCS 推进剂
     #[serde(rename = "1")]
-    Rcs = 1,
+    Rcs   = 1,
     /// 电!!!!!
     #[serde(rename = "2")]
     Battery = 2,
