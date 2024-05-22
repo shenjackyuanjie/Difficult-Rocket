@@ -29,7 +29,6 @@ from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.camera import CenterGroupCamera
-from Difficult_Rocket.api.gui.widget import PressTextButton
 
 from lib_not_dr import loggers
 
