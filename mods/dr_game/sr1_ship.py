@@ -38,6 +38,7 @@ if DR_mod_runtime.use_DR_rust:
         SR1Ship_rs,
         SR1PartData_rs,
         SR1PartType_rs,
+        # SR1Connection_rs
     )
 
 
@@ -291,7 +292,7 @@ class SR1ShipRender(BaseScreen):
                     count = 0
                     yield
             connect_line_group = Group(7, parent=self.part_group)
-            for connect in self.rust_ship.connection:
+            for connect in self.rust_ship.connections().get_raw_data:
                 # 连接线
                 parent_part_data = cache[connect[2]][0][1]
                 child_part_data = cache[connect[3]][0][1]
@@ -371,7 +372,7 @@ class SR1ShipRender(BaseScreen):
             sr_tr()
             .sr1.ship.ship.load_time()
             .format((time.perf_counter_ns() - start_time) / 1000000000),
-            tag="ship"
+            tag="ship",
         )
         logger.info(
             sr_tr()
@@ -538,7 +539,8 @@ class SR1ShipRender(BaseScreen):
                 for index, sprite in enumerate(sprites):
                     sprite_img = sprite.image
                     print(
-                        f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} {part_data[part][index][1].y * 60}"
+                        f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} "
+                        f"{part_data[part][index][1].y * 60}"
                     )
                     img_data = sprite_img.get_image_data()
                     fmt = img_data.format

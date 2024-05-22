@@ -263,8 +263,14 @@ if TYPE_CHECKING:
         ) -> None:
             ...
 
-        def parts(self) -> SR1PartArray_rs:
-            """获取装在这个玩意里面的零件列表"""
+        def connections(self) -> SR1Connection_rs:
+            """获取所有连接"""
+            ...
+
+        def disconnected_parts(
+            self
+        ) -> List[Tuple[List[Tuple[SR1PartType_rs, SR1PartData_rs]], SR1Connection_rs]]:
+            """获取所有未连接的零件"""
             ...
 
     class Console_rs:  # NOQA

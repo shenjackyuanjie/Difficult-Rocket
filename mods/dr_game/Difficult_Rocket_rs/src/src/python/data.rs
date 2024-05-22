@@ -332,12 +332,12 @@ impl PySR1Ship {
 
     #[getter]
     fn get_lift_off(&self) -> bool {
-        self.ship.lift_off.to_owned()
+        self.ship.lift_off
     }
 
     #[getter]
     fn get_touch_ground(&self) -> bool {
-        self.ship.touch_ground.to_owned()
+        self.ship.touch_ground
     }
 
     #[getter]

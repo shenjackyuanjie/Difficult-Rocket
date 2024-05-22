@@ -31,6 +31,7 @@ fn module_init(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<python::data::PySR1PartType>()?;
     m.add_class::<python::data::PySR1PartData>()?;
     m.add_class::<python::data::PySaveStatus>()?;
+    m.add_class::<python::data::PySR1Connections>()?;
     m.add_class::<python::console::PyConsole>()?;
     // m.add_class::<python::editor::EditorArea>()?;
     Ok(())
