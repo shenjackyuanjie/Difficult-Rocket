@@ -188,13 +188,14 @@ class SR1ShipRender(BaseScreen):
             traceback.print_exc()
             self.logger.error(traceback.format_exc(), tag="load_xml")
             return False
+
     def draw_parts(
-        self, 
-        cache: List[Tuple[SR1PartType_rs, SR1PartData_rs]], 
+        self,
+        cache: List[Tuple[SR1PartType_rs, SR1PartData_rs]],
         count: int,
         each_count: int,
         draw_part_box: bool,
-        draw_alpha: int
+        draw_alpha: int,
     ):
         # 渲染传入的parts
         part_group = Group(2, parent=self.part_group)
@@ -299,31 +300,26 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
-
-            
-            #渲染所有未连接零件
+            # 渲染所有未连接零件
             all_disconnected_groups = self.rust_ship.disconnected_parts()
             for parts_groups, connections in all_disconnected_groups:
                 draw_part_box = False
                 cache = []
                 for p_type, p_data in parts_groups:
-                    cache.append((p_data.id,parts_groups))
-                count=self.draw_parts(cache, count, each_count, draw_part_box, 128)
+                    cache.append((p_data.id, parts_groups))
+                count = self.draw_parts(cache, count, each_count, draw_part_box, 128)
                 if count >= each_count:
                     count = 0
                     yield
-            
-
-
 
             # 渲染所有已连接零件
             draw_part_box = False
             cache = self.rust_ship.as_dict()
-            count=self.draw_parts(cache.items(), count, each_count, draw_part_box, 255)
+            count = self.draw_parts(cache.items(), count, each_count, draw_part_box, 255)
             if count >= each_count:
                 count = 0
                 yield
-            
+
             connect_line_group = Group(7, parent=self.part_group)
             for connect in self.rust_ship.connections().get_raw_data():
                 # 连接线
