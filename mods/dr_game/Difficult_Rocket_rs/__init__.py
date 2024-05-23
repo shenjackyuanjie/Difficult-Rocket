@@ -162,6 +162,16 @@ if TYPE_CHECKING:
         def flip_y(self) -> bool:
             ...
 
+        def get_part_box_by_type(
+            self, part_type: SR1PartType_rs
+        ) -> Tuple[Tuple[float, float], Tuple[float, float]]:
+            """
+            当你同时已知一个部件的数据和类型的时候
+            为啥不直接获取呢
+            自: 0.3.6
+            """
+            ...
+
     class SaveStatus_rs:  # NOQA
         def __init__(self, save_default: Optional[bool] = False) -> None:
             ...
@@ -246,7 +256,7 @@ if TYPE_CHECKING:
             ...
 
         def get_part_box(
-            self, part_id: int
+            self, part_id: IdType
         ) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]:
             """获取所有零件的盒子"""
 
@@ -271,6 +281,14 @@ if TYPE_CHECKING:
             self
         ) -> List[Tuple[List[Tuple[SR1PartType_rs, SR1PartData_rs]], SR1Connection_rs]]:
             """获取所有未连接的零件"""
+            ...
+
+        def find_part_by_id(self, part_id: IdType) -> List[SR1PartData_rs]:
+            """
+            通过 id 获取零件
+            当然, 支持重叠 ID
+            自: 0.3.6
+            """
             ...
 
     class Console_rs:  # NOQA

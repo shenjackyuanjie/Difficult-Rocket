@@ -189,107 +189,90 @@ class SR1ShipRender(BaseScreen):
             self.logger.error(traceback.format_exc(), tag="load_xml")
             return False
 
-    def draw_parts(
+    def part_render_init(
         self,
-        cache: List[Tuple[SR1PartType_rs, SR1PartData_rs]],
-        count: int,
-        each_count: int,
-        draw_part_box: bool,
-        draw_alpha: int,
-    ):
-        # 渲染传入的parts
-        part_group = Group(2, parent=self.part_group)
-        line_box_group = Group(6, parent=self.part_group)
-        for p_id, parts in cache:
-            p_id: int
-            parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
-            batch = []
-            for p_type, p_data in parts:
-                sprite_name = self.part_list_rs.get_part_type(p_data.part_type_id).sprite
-                part_sprite = Sprite(
-                    img=self.textures.get_texture(sprite_name),
-                    x=p_data.x * 60,
-                    y=p_data.y * 60,
-                    z=random.random(),
-                    batch=self.main_batch,
-                    group=part_group,
-                )
-                part_sprite.opacity = draw_alpha
-                part_sprite.rotation = p_data.angle_r
-                part_sprite.scale_x = -1 if p_data.flip_x else 1
-                part_sprite.scale_y = -1 if p_data.flip_y else 1
+        part_data: SR1PartData_rs,
+        part_type: SR1PartType_rs,
+        part_group: Group,
+        line_group: Group,
+        batch: Batch,
+    ) -> Tuple[Sprite, List[Line]]:
+        """
+        还是重写一下渲染逻辑
+        把渲染单个部件的逻辑提取出来放到这里
+        """
+        texture = self.textures.get_texture(part_type.sprite)
+        part_sprite = Sprite(
+            img=texture,
+            x=part_data.x * 60,
+            y=part_data.y * 60,
+            z=random.random(),
+            batch=batch,
+            group=part_group,
+        )
+        part_sprite.rotation = part_data.angle_r
+        part_sprite.scale_x = -1 if part_data.flip_x else 1
+        part_sprite.scale_y = -1 if part_data.flip_y else 1
+        line_colors = (
+            random.randrange(0, 255),
+            random.randrange(0, 255),
+            random.randrange(0, 255),
+            200,
+        )
+        part_line_box = []
+        width = 4
+        (x, y), (x2, y2) = part_data.get_part_box_by_type(part_type)
+        part_line_box.append(
+            Line(
+                x=x * 30,
+                y=y * 30,
+                x2=x * 30,
+                y2=y2 * 30,
+                batch=batch,
+                width=width,
+                color=line_colors,
+                group=line_group,
+            )
+        )
+        part_line_box.append(
+            Line(
+                x=x * 30,
+                y=y2 * 30,
+                x2=x2 * 30,
+                y2=y2 * 30,
+                batch=batch,
+                width=width,
+                color=line_colors,
+                group=line_group,
+            )
+        )
+        part_line_box.append(
+            Line(
+                x=x2 * 30,
+                y=y2 * 30,
+                x2=x2 * 30,
+                y2=y * 30,
+                batch=batch,
+                width=width,
+                color=line_colors,
+                group=line_group,
+            )
+        )
+        part_line_box.append(
+            Line(
+                x=x2 * 30,
+                y=y * 30,
+                x2=x * 30,
+                y2=y * 30,
+                batch=batch,
+                width=width,
+                color=line_colors,
+                group=line_group,
+            )
+        )
+        return part_sprite, part_line_box
 
-                batch.append(part_sprite)
-            part_box = self.rust_ship.get_part_box(p_id)
-            if part_box and draw_part_box:
-                # 线框
-                part_line_box = []
-                width = 4
-                color = (
-                    random.randrange(0, 255),
-                    random.randrange(0, 255),
-                    random.randrange(0, 255),
-                    random.randrange(100, 200),
-                )
-                (x, y), (x2, y2) = part_box
-                part_line_box.append(
-                    Line(
-                        x=x * 30,
-                        y=y * 30,
-                        x2=x * 30,
-                        y2=y2 * 30,
-                        batch=self.main_batch,
-                        width=width,
-                        color=color,
-                        group=line_box_group,
-                    )
-                )
-                part_line_box.append(
-                    Line(
-                        x=x * 30,
-                        y=y2 * 30,
-                        x2=x2 * 30,
-                        y2=y2 * 30,
-                        batch=self.main_batch,
-                        width=width,
-                        color=color,
-                        group=line_box_group,
-                    )
-                )
-                part_line_box.append(
-                    Line(
-                        x=x2 * 30,
-                        y=y2 * 30,
-                        x2=x2 * 30,
-                        y2=y * 30,
-                        batch=self.main_batch,
-                        width=width,
-                        color=color,
-                        group=line_box_group,
-                    )
-                )
-                part_line_box.append(
-                    Line(
-                        x=x2 * 30,
-                        y=y * 30,
-                        x2=x * 30,
-                        y2=y * 30,
-                        batch=self.main_batch,
-                        width=width,
-                        color=color,
-                        group=line_box_group,
-                    )
-                )
-                # 直接用循环得了
-                self.part_line_box[p_id] = part_line_box
-            self.parts_sprite[p_id] = batch
-            count += 1
-            if count >= each_count:
-                count = 0
-                return count
-        return count
-
-    def gen_sprite(self, each_count: int = 100) -> Generator:
+    def sprite_batch(self, draw_batch: int = 100) -> Generator:
         """
         生成 sprite
         通过生成器减少一次性渲染的压力
@@ -300,51 +283,37 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
-            # 渲染所有未连接零件
-            all_disconnected_groups = self.rust_ship.disconnected_parts()
-            for parts_groups, connections in all_disconnected_groups:
-                draw_part_box = False
-                cache = []
-                for p_type, p_data in parts_groups:
-                    cache.append((p_data.id, parts_groups))
-                count = self.draw_parts(cache, count, each_count, draw_part_box, 128)
-                if count >= each_count:
-                    count = 0
-                    yield
+            # 渲染连接的部件
+            part_group = Group(6, parent=self.part_group)
+            line_group = Group(5, parent=self.part_group)
 
-            # 渲染所有已连接零件
-            draw_part_box = False
-            cache = self.rust_ship.as_dict()
-            count = self.draw_parts(cache.items(), count, each_count, draw_part_box, 255)
-            if count >= each_count:
-                count = 0
-                yield
+            # 渲染未连接的部件
 
             connect_line_group = Group(7, parent=self.part_group)
             for connect in self.rust_ship.connections().get_raw_data():
                 # 连接线
-                parent_part_data = cache[connect[2]][0][1]
-                child_part_data = cache[connect[3]][0][1]
-                color = (
-                    random.randrange(100, 255),
-                    random.randrange(0, 255),
-                    random.randrange(0, 255),
-                    255,
-                )
-                self.part_line_list.append(
-                    Line(
-                        x=parent_part_data.x * 60,
-                        y=parent_part_data.y * 60,
-                        x2=child_part_data.x * 60,
-                        y2=child_part_data.y * 60,
-                        batch=self.main_batch,
-                        group=connect_line_group,
-                        width=1,
-                        color=color,
-                    )
-                )
+                # parent_part_data = cache[connect[2]][0][1]
+                # child_part_data = cache[connect[3]][0][1]
+                # color = (
+                #     random.randrange(100, 255),
+                #     random.randrange(0, 255),
+                #     random.randrange(0, 255),
+                #     255,
+                # )
+                # self.part_line_list.append(
+                #     Line(
+                #         x=parent_part_data.x * 60,
+                #         y=parent_part_data.y * 60,
+                #         x2=child_part_data.x * 60,
+                #         y2=child_part_data.y * 60,
+                #         batch=self.main_batch,
+                #         group=connect_line_group,
+                #         width=1,
+                #         color=color,
+                #     )
+                # )
                 count += 1
-                if count >= each_count * 3:
+                if count >= draw_batch * 3:
                     count = 0
                     yield count
 
@@ -364,7 +333,7 @@ class SR1ShipRender(BaseScreen):
         self.group_camera.reset()
         # 调用生成器 减少卡顿
         try:
-            self.gen_draw = self.gen_sprite()
+            self.gen_draw = self.sprite_batch()
             if not self.status.draw_done:
                 next(self.gen_draw)
         except (GeneratorExit, StopIteration):
