@@ -196,7 +196,6 @@ class SR1ShipRender(BaseScreen):
         #渲染传入的parts
         part_group = Group(2, parent=self.part_group)
         line_box_group = Group(6, parent=self.part_group)
-        logger.info()
         for p_id, parts in cache:
             p_id: int
             parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
@@ -299,19 +298,31 @@ class SR1ShipRender(BaseScreen):
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
 
-            '''
+            
             #渲染所有未连接零件
             all_disconnected_groups = self.rust_ship.disconnected_parts()
+            logger.info(type(all_disconnected_groups))
             for cache, connections in all_disconnected_groups:
-            '''
+                
+                logger.info(type(cache))
+                
+                logger.info(type(connections))
+            
+                draw_part_box = False
+                count=self.draw_parts(cache, 
+                                count,
+                                each_count,
+                                draw_part_box)
+                if count >= each_count:
+                    count = 0
+                    yield
 
 
 
 
             #渲染所有已连接零件
-            draw_part_box = True
+            draw_part_box = False
             cache = self.rust_ship.as_dict()
-            logger.info(cache)
             count=self.draw_parts(cache.items(), 
                             count,
                             each_count,
@@ -349,30 +360,6 @@ class SR1ShipRender(BaseScreen):
                     count = 0
                     yield count
 
-        # python 渲染
-        # for part_id, part in part_datas.items():
-        #     # 下面就是调用 pyglet 去渲染的部分
-        #     # render_scale = DR_status.gui_scale  # 这个是 DR 的缩放比例 可以调节的
-        #     # 在不缩放的情况下，XML的1个单位长度对应60个像素
-        #     # render_x = part.x * 60
-        #     # render_y = part.y * 60
-        #     # cache_sprite = Sprite(img=self.textures.get_texture(part.textures),
-        #     #                       x=render_x, y=render_y, z=random.random(),
-        #     #                       batch=self.main_batch, group=self.part_group)
-        #     # # 你得帮我换算一下 XML 里的 x y 和这里的屏幕像素的关系
-        #     # # 旋转啥的不是大问题, 我找你要那个渲染代码就是要 x y 的换算逻辑
-        #     # cache_sprite.rotation = SR1Rotation.get_rotation(part.angle)
-        #     # if part.flip_x:
-        #     #     cache_sprite.scale_x = -1
-        #     # if part.flip_y:
-        #     #     cache_sprite.scale_y = -1
-        #     # self.parts_sprite[part.id] = cache_sprite
-        #
-        #     if DR_mod_runtime.use_DR_rust:
-        #     count += 1
-        #     if count >= each_count:
-        #         count = 0
-        #         yield count
         self.status.draw_done = True
         raise GeneratorExit
 
