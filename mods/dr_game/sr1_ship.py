@@ -133,10 +133,10 @@ class SR1ShipRender(BaseScreen):
         self.ship_name: Optional[str] = None
 
         # List/Dict data
-        self.parts_sprite: Dict[int, List[Sprite]] = {}
+        self.part_sprites: Dict[int, List[Sprite]] = {}
         self.part_box_dict: Dict[int, Rectangle] = {}
-        self.part_line_box: Dict[int, List[Line]] = {}
-        self.part_line_list: List[Line] = []
+        self.part_outlines: Dict[int, List[Line]] = {}
+        self.connection_lines: List[Line] = []
 
         if DR_mod_runtime.use_DR_rust:
             self.rust_parts = None
@@ -283,39 +283,69 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
+            # 2 先渲染
+            # 6 后渲染
+            # 保证部件不会遮盖住连接线
+            part_group = Group(2, parent=self.part_group)
+            line_group = Group(6, parent=self.part_group)
+
             # 渲染连接的部件
-            part_group = Group(6, parent=self.part_group)
-            line_group = Group(5, parent=self.part_group)
+            for part_type, part_data in self.rust_ship.as_list():
+                # 渲染部件
+                part_sprite, part_line_box = self.part_render_init(
+                    part_data, part_type, part_group, line_group, self.main_batch
+                )
+                self.part_sprites[part_data.id] = part_sprite
+                self.part_outlines[part_data.id] = part_line_box
+                # TODO: 连接线渲染
+                count += 2
+                if count >= draw_batch:
+                    yield count
+                    count = 0
 
             # 渲染未连接的部件
-
-            connect_line_group = Group(7, parent=self.part_group)
-            for connect in self.rust_ship.connections().get_raw_data():
-                # 连接线
-                # parent_part_data = cache[connect[2]][0][1]
-                # child_part_data = cache[connect[3]][0][1]
-                # color = (
-                #     random.randrange(100, 255),
-                #     random.randrange(0, 255),
-                #     random.randrange(0, 255),
-                #     255,
-                # )
-                # self.part_line_list.append(
-                #     Line(
-                #         x=parent_part_data.x * 60,
-                #         y=parent_part_data.y * 60,
-                #         x2=child_part_data.x * 60,
-                #         y2=child_part_data.y * 60,
-                #         batch=self.main_batch,
-                #         group=connect_line_group,
-                #         width=1,
-                #         color=color,
-                #     )
-                # )
-                count += 1
-                if count >= draw_batch * 3:
-                    count = 0
+            for part_group, part_connections in self.rust_ship.disconnected_parts():
+                for part_type, part_data in part_group[0]:
+                    # 未连接的需要同时把连接线也给渲染了
+                    # TODO: 连接线渲染
+                    part_sprite, part_line_box = self.part_render_init(
+                        part_data, part_type, part_group, line_group, self.main_batch
+                    )
+                    # 未连接的部件透明度降低
+                    part_sprite.opacity = 100
+                    self.part_sprites[part_data.id] = part_sprite
+                    self.part_outlines[part_data.id] = part_line_box
+                count += 2
+                if count >= draw_batch:
                     yield count
+                    count = 0
+
+            # for connect in self.rust_ship.connections().get_raw_data():
+            #     # 连接线
+            #     # parent_part_data = cache[connect[2]][0][1]
+            #     # child_part_data = cache[connect[3]][0][1]
+            #     # color = (
+            #     #     random.randrange(100, 255),
+            #     #     random.randrange(0, 255),
+            #     #     random.randrange(0, 255),
+            #     #     255,
+            #     # )
+            #     # self.part_line_list.append(
+            #     #     Line(
+            #     #         x=parent_part_data.x * 60,
+            #     #         y=parent_part_data.y * 60,
+            #     #         x2=child_part_data.x * 60,
+            #     #         y2=child_part_data.y * 60,
+            #     #         batch=self.main_batch,
+            #     #         group=connect_line_group,
+            #     #         width=1,
+            #     #         color=color,
+            #     #     )
+            #     # )
+            #     count += 1
+            #     if count >= draw_batch * 3:
+            #         count = 0
+            #         yield count
 
         self.status.draw_done = True
         raise GeneratorExit
@@ -327,9 +357,9 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         logger.info(sr_tr().sr1.ship.ship.load().format(self.ship_name), tag="ship")
         start_time = time.perf_counter_ns()
-        self.parts_sprite: Dict[int, Sprite] = {}
-        self.part_line_box = {}
-        self.part_line_list = []
+        self.part_sprites: Dict[int, Sprite] = {}
+        self.part_outlines: Dict[int, List[Line]] = {}
+        self.connection_lines: List[Line] = []
         self.group_camera.reset()
         # 调用生成器 减少卡顿
         try:
@@ -467,7 +497,7 @@ class SR1ShipRender(BaseScreen):
                 self.logger.info(f"sr1 mouse {self.status.draw_mouse_d_pos}")
             elif command.find("ship"):
                 if self.status.draw_done:
-                    for index, sprite in self.parts_sprite.items():
+                    for index, sprite in self.part_sprites.items():
                         sprite.visible = not sprite.visible
 
         elif command.find("get_buf"):
@@ -510,7 +540,7 @@ class SR1ShipRender(BaseScreen):
                 return
             img = Image.new("RGBA", img_size)
             part_data = self.rust_ship.as_dict()
-            for part, sprites in self.parts_sprite.items():
+            for part, sprites in self.part_sprites.items():
                 for index, sprite in enumerate(sprites):
                     sprite_img = sprite.image
                     print(

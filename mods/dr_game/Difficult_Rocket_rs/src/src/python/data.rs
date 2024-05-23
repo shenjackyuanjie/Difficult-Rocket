@@ -397,7 +397,7 @@ impl PySR1Ship {
     }
 
     /// 待会直接加一个在 SR1 PartData上获取的API得了，现在这样太费劲了
-    /// 
+    ///
     /// 加好了
     fn get_part_box(&self, part_id: IdType) -> Option<((f64, f64), (f64, f64))> {
         let part_data = self.ship.parts.iter().find(|&x| x.id == part_id);
@@ -420,20 +420,23 @@ impl PySR1Ship {
     }
 
     /// 通过 part_id 获取 part_data
-    /// 
+    ///
     /// 当然, 支持重叠 ID
-    fn find_part_by_id(&self, part_id: IdType) -> Vec<SR1PartData> {
+    fn find_part_by_id(&self, part_id: IdType) -> Vec<PySR1PartData> {
         // 先搜链接到的部件
         // 这里的代码是 GitHub Copilot 帮我优化的
         // 赞美 GitHub Copilot !()
         let unconnected = self.ship.disconnected.as_ref().map_or(vec![], |disconnected| {
-            disconnected.iter()
-                .flat_map(|(group, _)| group.iter())
-                .filter(|part| part.id == part_id)
-                .collect()
+            disconnected.iter().flat_map(|(group, _)| group.iter()).filter(|part| part.id == part_id).collect()
         });
         // 然后通过一个 chain 直接把他链接到这边
-        self.ship.parts.iter().filter(|x| x.id == part_id).chain(unconnected).cloned().collect()
+        self.ship
+            .parts
+            .iter()
+            .filter(|x| x.id == part_id)
+            .chain(unconnected)
+            .map(|raw_data| PySR1PartData { data: raw_data.clone() })
+            .collect()
     }
 
     fn save(&self, file_path: String, save_status: Option<PySaveStatus>) -> PyResult<()> {
