@@ -188,12 +188,15 @@ class SR1ShipRender(BaseScreen):
             traceback.print_exc()
             self.logger.error(traceback.format_exc(), tag="load_xml")
             return False
-    def draw_parts(self, 
-                   cache: List[Tuple[SR1PartType_rs, SR1PartData_rs]], 
-                   count: int,
-                   each_count: int,
-                   draw_part_box: bool):
-        #渲染传入的parts
+    def draw_parts(
+        self, 
+        cache: List[Tuple[SR1PartType_rs, SR1PartData_rs]], 
+        count: int,
+        each_count: int,
+        draw_part_box: bool,
+        draw_alpha: int
+    ):
+        # 渲染传入的parts
         part_group = Group(2, parent=self.part_group)
         line_box_group = Group(6, parent=self.part_group)
         for p_id, parts in cache:
@@ -201,9 +204,7 @@ class SR1ShipRender(BaseScreen):
             parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
             batch = []
             for p_type, p_data in parts:
-                sprite_name = self.part_list_rs.get_part_type(
-                    p_data.part_type_id
-                ).sprite
+                sprite_name = self.part_list_rs.get_part_type(p_data.part_type_id).sprite
                 part_sprite = Sprite(
                     img=self.textures.get_texture(sprite_name),
                     x=p_data.x * 60,
@@ -212,6 +213,7 @@ class SR1ShipRender(BaseScreen):
                     batch=self.main_batch,
                     group=part_group,
                 )
+                part_sprite.opacity = draw_alpha
                 part_sprite.rotation = p_data.angle_r
                 part_sprite.scale_x = -1 if p_data.flip_x else 1
                 part_sprite.scale_y = -1 if p_data.flip_y else 1
@@ -301,36 +303,26 @@ class SR1ShipRender(BaseScreen):
             
             #渲染所有未连接零件
             all_disconnected_groups = self.rust_ship.disconnected_parts()
-            logger.info(type(all_disconnected_groups))
-            for cache, connections in all_disconnected_groups:
-                
-                logger.info(type(cache))
-                
-                logger.info(type(connections))
-            
+            for parts_groups, connections in all_disconnected_groups:
                 draw_part_box = False
-                count=self.draw_parts(cache, 
-                                count,
-                                each_count,
-                                draw_part_box)
+                cache = []
+                for p_type, p_data in parts_groups:
+                    cache.append((p_data.id,parts_groups))
+                count=self.draw_parts(cache, count, each_count, draw_part_box, 128)
                 if count >= each_count:
                     count = 0
                     yield
+            
 
 
 
-
-            #渲染所有已连接零件
+            # 渲染所有已连接零件
             draw_part_box = False
             cache = self.rust_ship.as_dict()
-            count=self.draw_parts(cache.items(), 
-                            count,
-                            each_count,
-                            draw_part_box)
+            count=self.draw_parts(cache.items(), count, each_count, draw_part_box, 255)
             if count >= each_count:
                 count = 0
                 yield
-            
             
             connect_line_group = Group(7, parent=self.part_group)
             for connect in self.rust_ship.connections().get_raw_data():
