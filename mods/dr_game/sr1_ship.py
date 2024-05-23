@@ -404,6 +404,7 @@ class SR1ShipRender(BaseScreen):
             self.render_d_line.x2 = self.group_camera.view_x
             self.render_d_line.y2 = self.group_camera.view_y
 
+        # 外面这一层 gl 是用来实现子窗口的
         gl.glEnable(gl.GL_SCISSOR_TEST)
         gl.glScissor(int(self.dx), int(self.dy), int(self.width), int(self.height))
         gl.glViewport(
