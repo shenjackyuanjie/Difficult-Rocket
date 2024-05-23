@@ -295,6 +295,8 @@ class SR1ShipRender(BaseScreen):
                 part_sprite, part_line_box = self.part_render_init(
                     part_data, part_type, part_group, line_group, self.main_batch
                 )
+                for line in part_line_box:
+                    line.opacity = 100
                 self.part_sprites[part_data.id] = part_sprite
                 self.part_outlines[part_data.id] = part_line_box
                 # TODO: 连接线渲染
@@ -311,6 +313,8 @@ class SR1ShipRender(BaseScreen):
                     part_sprite, part_line_box = self.part_render_init(
                         part_data, part_type, part_group, line_group, self.main_batch
                     )
+                    for line in part_line_box:
+                        line.opacity = 100
                     # 未连接的部件透明度降低
                     part_sprite.opacity = 100
                     self.part_sprites[part_data.id] = part_sprite
@@ -445,8 +449,6 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_scroll(
         self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
     ):
-        if not self.status.draw_done:
-            return
         if self.status.focus:
             mouse_dx = x - (self.width / 2) + self.dx
             mouse_dy = y - (self.height / 2) + self.dy
