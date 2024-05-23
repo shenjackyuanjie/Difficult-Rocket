@@ -189,12 +189,15 @@ class SR1ShipRender(BaseScreen):
             self.logger.error(traceback.format_exc(), tag="load_xml")
             return False
     def draw_parts(self, 
-                   cache: Dict[int, List[Tuple[SR1PartType_rs, SR1PartData_rs]]], 
-                   part_group: Group(2),
-                   line_box_group: Group(6),
+                   cache: List[Tuple[SR1PartType_rs, SR1PartData_rs]], 
+                   count: int,
                    each_count: int,
                    draw_part_box: bool):
-        for p_id, parts in cache.items():
+        #渲染传入的parts
+        part_group = Group(2, parent=self.part_group)
+        line_box_group = Group(6, parent=self.part_group)
+        logger.info()
+        for p_id, parts in cache:
             p_id: int
             parts: List[Tuple[SR1PartType_rs, SR1PartData_rs]]
             batch = []
@@ -281,7 +284,8 @@ class SR1ShipRender(BaseScreen):
             count += 1
             if count >= each_count:
                 count = 0
-                yield
+                return count
+        return count
 
     def gen_sprite(self, each_count: int = 100) -> Generator:
         """
@@ -294,8 +298,6 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
-            part_group = Group(2, parent=self.part_group)
-            line_box_group = Group(6, parent=self.part_group)
 
             '''
             #渲染所有未连接零件
@@ -307,15 +309,20 @@ class SR1ShipRender(BaseScreen):
 
 
             #渲染所有已连接零件
-            draw_part_box = False
+            draw_part_box = True
             cache = self.rust_ship.as_dict()
-            self.draw_parts(cache, 
-                            part_group,
-                            line_box_group,
+            logger.info(cache)
+            count=self.draw_parts(cache.items(), 
+                            count,
                             each_count,
                             draw_part_box)
+            if count >= each_count:
+                count = 0
+                yield
+            
+            
             connect_line_group = Group(7, parent=self.part_group)
-            for connect in self.rust_ship.connections().get_raw_data:
+            for connect in self.rust_ship.connections().get_raw_data():
                 # 连接线
                 parent_part_data = cache[connect[2]][0][1]
                 child_part_data = cache[connect[3]][0][1]
