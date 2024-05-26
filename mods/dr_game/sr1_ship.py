@@ -16,7 +16,7 @@ from pyglet.math import Mat4
 from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
-from pyglet.shapes import Line, Rectangle
+from pyglet.shapes import Line, Box
 
 from . import DR_mod_runtime
 from .types import SR1Textures, SR1Rotation
@@ -121,8 +121,8 @@ class SR1ShipRender(BaseScreen):
         self.render_d_label = Label(
             "debug label NODATA",
             font_name=Fonts.微软等宽无线,
-            x=main_window.width / 2,
-            y=main_window.height / 2,
+            x=main_window.width // 2,
+            y=main_window.height // 2,
         )
         self.render_d_label.visible = self.status.draw_d_pos
 
@@ -133,8 +133,7 @@ class SR1ShipRender(BaseScreen):
         self.ship_name: Optional[str] = None
 
         # List/Dict data
-        self.part_sprites: Dict[int, List[Sprite]] = {}
-        self.part_box_dict: Dict[int, Rectangle] = {}
+        self.part_sprites: Dict[int, Tuple[Sprite, Box]] = {}
         self.part_outlines: Dict[int, List[Line]] = {}
         self.connection_lines: List[Line] = []
 
@@ -196,7 +195,7 @@ class SR1ShipRender(BaseScreen):
         part_group: Group,
         line_group: Group,
         batch: Batch,
-    ) -> Tuple[Sprite, List[Line]]:
+    ) -> Tuple[Sprite, Box]:
         """
         还是重写一下渲染逻辑
         把渲染单个部件的逻辑提取出来放到这里
@@ -219,58 +218,20 @@ class SR1ShipRender(BaseScreen):
             random.randrange(0, 255),
             200,
         )
-        part_line_box = []
         width = 4
         (x, y), (x2, y2) = part_data.get_part_box_by_type(part_type)
-        part_line_box.append(
-            Line(
-                x=x * 30,
-                y=y * 30,
-                x2=x * 30,
-                y2=y2 * 30,
-                batch=batch,
-                width=width,
-                color=line_colors,
-                group=line_group,
-            )
+        box = Box(
+            x=x * 30,
+            y=y * 30,
+            width=part_type.width * 30,
+            height=part_type.height * 30,
+            thickness=width,
+            color=line_colors,
+            batch=batch,
+            group=line_group,
         )
-        part_line_box.append(
-            Line(
-                x=x * 30,
-                y=y2 * 30,
-                x2=x2 * 30,
-                y2=y2 * 30,
-                batch=batch,
-                width=width,
-                color=line_colors,
-                group=line_group,
-            )
-        )
-        part_line_box.append(
-            Line(
-                x=x2 * 30,
-                y=y2 * 30,
-                x2=x2 * 30,
-                y2=y * 30,
-                batch=batch,
-                width=width,
-                color=line_colors,
-                group=line_group,
-            )
-        )
-        part_line_box.append(
-            Line(
-                x=x2 * 30,
-                y=y * 30,
-                x2=x * 30,
-                y2=y * 30,
-                batch=batch,
-                width=width,
-                color=line_colors,
-                group=line_group,
-            )
-        )
-        return part_sprite, part_line_box
+        box.rotation = part_data.angle_r
+        return part_sprite, box
 
     def sprite_batch(self, draw_batch: int = 100) -> Generator:
         """
@@ -283,6 +244,7 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         # rust 渲染
         if DR_mod_runtime.use_DR_rust:
+            self.rust_ship: SR1Ship_rs
             # 2 先渲染
             # 6 后渲染
             # 保证部件不会遮盖住连接线
@@ -292,13 +254,11 @@ class SR1ShipRender(BaseScreen):
             # 渲染连接的部件
             for part_type, part_data in self.rust_ship.as_list():
                 # 渲染部件
-                part_sprite, part_line_box = self.part_render_init(
+                part_sprite, part_box = self.part_render_init(
                     part_data, part_type, part_group, line_group, self.main_batch
                 )
-                for line in part_line_box:
-                    line.opacity = 100
-                self.part_sprites[part_data.id] = part_sprite
-                self.part_outlines[part_data.id] = part_line_box
+                part_box.opacity = 100
+                self.part_sprites[part_data.id] = (part_sprite, part_box)
                 # TODO: 连接线渲染
                 count += 2
                 if count >= draw_batch:
@@ -306,19 +266,17 @@ class SR1ShipRender(BaseScreen):
                     count = 0
 
             # 渲染未连接的部件
-            for part_group, part_connections in self.rust_ship.disconnected_parts():
-                for part_type, part_data in part_group[0]:
+            for part_groups, part_connections in self.rust_ship.disconnected_parts():
+                for part_type, part_data in part_groups[0]:
                     # 未连接的需要同时把连接线也给渲染了
                     # TODO: 连接线渲染
-                    part_sprite, part_line_box = self.part_render_init(
+                    part_sprite, part_box = self.part_render_init(
                         part_data, part_type, part_group, line_group, self.main_batch
                     )
-                    for line in part_line_box:
-                        line.opacity = 100
+                    part_box.opacity = 100
                     # 未连接的部件透明度降低
                     part_sprite.opacity = 100
-                    self.part_sprites[part_data.id] = part_sprite
-                    self.part_outlines[part_data.id] = part_line_box
+                    self.part_sprites[part_data.id] = (part_sprite, part_box)
                 count += 2
                 if count >= draw_batch:
                     yield count
@@ -361,8 +319,7 @@ class SR1ShipRender(BaseScreen):
         self.status.draw_done = False
         logger.info(sr_tr().sr1.ship.ship.load().format(self.ship_name), tag="ship")
         start_time = time.perf_counter_ns()
-        self.part_sprites: Dict[int, Sprite] = {}
-        self.part_outlines: Dict[int, List[Line]] = {}
+        self.part_sprites = {}
         self.connection_lines: List[Line] = []
         self.group_camera.reset()
         # 调用生成器 减少卡顿
