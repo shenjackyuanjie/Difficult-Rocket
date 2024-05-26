@@ -28,7 +28,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        # os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         python-version: ["3.8"]  # 3.11 still not support by nuitka   3.10 就不构建了 少消耗一些时间
 
     runs-on:  ${{ matrix.os }}
