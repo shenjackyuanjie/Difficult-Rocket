@@ -4,13 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-
 # system function
 import warnings
 from typing import Tuple, List, Optional, TypeVar, TYPE_CHECKING
@@ -71,12 +64,14 @@ class ModInfo(Options):
     def __init__(self, **kwargs):
         if not self.DR_version[0] <= DR_status.DR_version <= self.DR_version[1]:
             warnings.warn(
-                f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.DR_version}\n"
+                f"mod {self.mod_id} version {self.version} "
+                f"is not support by DR {DR_status.DR_version}\n"
                 f"DR {self.DR_version} is required"
             )
         if not self.DR_Api_version[0] <= DR_status.API_version <= self.DR_Api_version[1]:
             warnings.warn(
-                f"mod {self.mod_id} version {self.version} is not support by DR {DR_status.API_version}\n"
+                f"mod {self.mod_id} version {self.version} "
+                f"is not support by DR {DR_status.API_version}\n"
                 f"DR {self.DR_Api_version} is required"
             )
         super().__init__(**kwargs)

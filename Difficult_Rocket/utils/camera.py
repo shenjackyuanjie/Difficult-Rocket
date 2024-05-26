@@ -29,13 +29,13 @@ class Camera:
     """
 
     def __init__(
-            self,
-            window,
-            zoom: Optional[float] = 1.0,
-            dx: Optional[float] = 1.0,
-            dy: Optional[float] = 1.0,
-            min_zoom: Optional[float] = 1.0,
-            max_zoom: Optional[float] = 1.0,
+        self,
+        window,
+        zoom: Optional[float] = 1.0,
+        dx: Optional[float] = 1.0,
+        dy: Optional[float] = 1.0,
+        min_zoom: Optional[float] = 1.0,
+        max_zoom: Optional[float] = 1.0,
     ) -> None:
         self.window = window
         self.dx = dx or 1.0
@@ -128,15 +128,15 @@ class GroupCamera(Group):
     """
 
     def __init__(
-            self,
-            window,
-            order: int = 0,
-            parent: Optional[Group] = None,
-            view_x: Optional[int] = 0,
-            view_y: Optional[int] = 0,
-            zoom: Optional[float] = 1.0,
-            min_zoom: Optional[float] = 1.0,
-            max_zoom: Optional[float] = 1.0,
+        self,
+        window,
+        order: int = 0,
+        parent: Optional[Group] = None,
+        view_x: Optional[int] = 0,
+        view_y: Optional[int] = 0,
+        zoom: Optional[float] = 1.0,
+        min_zoom: Optional[float] = 1.0,
+        max_zoom: Optional[float] = 1.0,
     ):
         super().__init__(order=order, parent=parent)
         self._window = window
@@ -221,17 +221,17 @@ class CenterGroupFrame(Group):
     """
 
     def __init__(
-            self,
-            window,
-            order: int = 0,
-            parent: Optional[Group] = None,
-            dx: Optional[int] = 0,
-            dy: Optional[int] = 0,
-            width: Optional[int] = 0,
-            height: Optional[int] = 0,
-            zoom: Optional[float] = 1.0,
-            min_zoom: Optional[float] = 1.0,
-            max_zoom: Optional[float] = 1.0,
+        self,
+        window,
+        order: int = 0,
+        parent: Optional[Group] = None,
+        dx: Optional[int] = 0,
+        dy: Optional[int] = 0,
+        width: Optional[int] = 0,
+        height: Optional[int] = 0,
+        zoom: Optional[float] = 1.0,
+        min_zoom: Optional[float] = 1.0,
+        max_zoom: Optional[float] = 1.0,
     ):
         super().__init__(order=order, parent=parent)
         self.window = window

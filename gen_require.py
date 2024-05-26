@@ -24,11 +24,11 @@ basic = {
 
 build = {
     "compile": [
-        "nuitka >= 2.2.2",
+        "nuitka >= 2.2.3",
         "imageio >= 2.34.1",
         "setuptools >= 69",
         "setuptools-rust >= 1.9.0",
-        "wheel >= 0.37.0",
+        "wheel >= 0.43.0",
     ]
 }
 

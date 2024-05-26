@@ -30,11 +30,12 @@ class BaseButtonTheme:
     """
     按钮的风格
     """
+
     name = "BaseButtonTheme"
 
-    def __init__(self, x: int, y: int,
-                 width: int, height: int,
-                 batch: Batch, group: Group):
+    def __init__(
+        self, x: int, y: int, width: int, height: int, batch: Batch, group: Group
+    ):
         self.batch = batch
         self.group = group
         self.x = x
@@ -74,10 +75,16 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
 
     name = "MinecraftWikiButtonTheme"
 
-    def __init__(self, x: int, y: int,
-                 width: int, height: int,
-                 batch: Batch, group: Group,
-                 theme: dict = None):
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        batch: Batch,
+        group: Group,
+        theme: dict = None,
+    ):
         super().__init__(x, y, width, height, batch, group)
         self.batch = batch
         self.group = group
@@ -94,38 +101,81 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         list_pad = 4  # 下巴 4px
         if theme is None:
             theme = {}
-        pop_out = theme.get('pop_out', False)
+        pop_out = theme.get("pop_out", False)
         if pop_out:
             # 主背景
-            self.back_ground = Rectangle(x=x + (pad * 2), y=y + (pad * 2) + list_pad,
-                                         width=width - (pad * 4), height=height - (pad * 4) - list_pad,
-                                         color=a, batch=batch, group=Group(order=3, parent=group))
+            self.back_ground = Rectangle(
+                x=x + (pad * 2),
+                y=y + (pad * 2) + list_pad,
+                width=width - (pad * 4),
+                height=height - (pad * 4) - list_pad,
+                color=a,
+                batch=batch,
+                group=Group(order=3, parent=group),
+            )
             # 左上方向的覆盖
-            self.cover_back = Rectangle(x=x + pad, y=y + pad + list_pad,
-                                        width=width - (pad * 2), height=height - (pad * 2) - list_pad,
-                                        color=b, batch=batch, group=Group(order=1, parent=group))
+            self.cover_back = Rectangle(
+                x=x + pad,
+                y=y + pad + list_pad,
+                width=width - (pad * 2),
+                height=height - (pad * 2) - list_pad,
+                color=b,
+                batch=batch,
+                group=Group(order=1, parent=group),
+            )
             # 右下方向的覆盖
-            self.cover_back2 = Rectangle(x=x + (pad * 2), y=y + pad + list_pad,
-                                         width=width - (pad * 3), height=height - (pad * 3) - list_pad,
-                                         color=c, batch=batch, group=Group(order=2, parent=group))
+            self.cover_back2 = Rectangle(
+                x=x + (pad * 2),
+                y=y + pad + list_pad,
+                width=width - (pad * 3),
+                height=height - (pad * 3) - list_pad,
+                color=c,
+                batch=batch,
+                group=Group(order=2, parent=group),
+            )
         else:
             # 主背景
-            self.back_ground = Rectangle(x=x + (pad * 2), y=y + (pad * 2) + list_pad,
-                                         width=width - (pad * 4), height=height - (pad * 4) - list_pad,
-                                         color=c, batch=batch, group=Group(order=3, parent=group))
+            self.back_ground = Rectangle(
+                x=x + (pad * 2),
+                y=y + (pad * 2) + list_pad,
+                width=width - (pad * 4),
+                height=height - (pad * 4) - list_pad,
+                color=c,
+                batch=batch,
+                group=Group(order=3, parent=group),
+            )
             # 左上方向的覆盖
-            self.cover_back = Rectangle(x=x + pad, y=y + pad + list_pad,
-                                        width=width - (pad * 2), height=height - (pad * 2) - list_pad,
-                                        color=a, batch=batch, group=Group(order=2, parent=group))
+            self.cover_back = Rectangle(
+                x=x + pad,
+                y=y + pad + list_pad,
+                width=width - (pad * 2),
+                height=height - (pad * 2) - list_pad,
+                color=a,
+                batch=batch,
+                group=Group(order=2, parent=group),
+            )
             # 右下方向的覆盖
-            self.cover_back2 = Rectangle(x=x + pad, y=y + (pad * 2) + list_pad,
-                                         width=width - (pad * 3), height=height - (pad * 3) - list_pad,
-                                         color=b, batch=batch, group=Group(order=1, parent=group))
+            self.cover_back2 = Rectangle(
+                x=x + pad,
+                y=y + (pad * 2) + list_pad,
+                width=width - (pad * 3),
+                height=height - (pad * 3) - list_pad,
+                color=b,
+                batch=batch,
+                group=Group(order=1, parent=group),
+            )
         # 下巴的框
-        self.list_back = BorderedRectangle(x=x, y=y,
-                                           width=width, height=height,
-                                           border=pad, border_color=(0, 0, 0, 255),
-                                           color=e, batch=batch, group=Group(order=0, parent=group))
+        self.list_back = BorderedRectangle(
+            x=x,
+            y=y,
+            width=width,
+            height=height,
+            border=pad,
+            border_color=(0, 0, 0, 255),
+            color=e,
+            batch=batch,
+            group=Group(order=0, parent=group),
+        )
         self.a = a
         self.b = b
         self.c = c
@@ -138,7 +188,7 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         self.pad = pad
         self.list_pad = list_pad
         self.pop_out = pop_out
-        self.drag_list = theme.get('drag_list', False)
+        self.drag_list = theme.get("drag_list", False)
 
     def on_enable(self, x: int, y: int, button):
         if self.pop_out:
@@ -150,8 +200,12 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
             self.cover_back.color = self.touch_a
             self.cover_back2.color = self.touch_b
         if self.drag_list:
-            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2) +
-                                   (self.list_pad // 2))
+            button.text_label.y = (
+                self.y
+                + (self.height - button.font_height) // 2
+                + (button.font_height * 0.2)
+                + (self.list_pad // 2)
+            )
             self.back_ground.y = self.y + (self.pad * 2)
             self.back_ground.height = self.height - (self.pad * 4)
             self.cover_back.y = self.y + self.pad
@@ -159,8 +213,12 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
             self.cover_back2.y = self.y + self.pad
             self.cover_back2.height = self.height - (self.pad * 3)
         else:
-            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
-                                   + self.list_pad)
+            button.text_label.y = (
+                self.y
+                + (self.height - button.font_height) // 2
+                + (button.font_height * 0.2)
+                + self.list_pad
+            )
         self.enable = True
 
     def on_disable(self, button) -> None:
@@ -179,15 +237,23 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
             self.cover_back.height = self.height - (self.pad * 2) - self.list_pad
             self.cover_back2.y = self.y + self.pad + self.list_pad
             self.cover_back2.height = self.height - (self.pad * 3) - self.list_pad
-        button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
-                               + self.list_pad)
+        button.text_label.y = (
+            self.y
+            + (self.height - button.font_height) // 2
+            + (button.font_height * 0.2)
+            + self.list_pad
+        )
         self.enable = False
 
     def on_update(self, button) -> None:
         super().on_update(button)
         if self.enable and self.drag_list:
-            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
-                                   + self.list_pad // 2)
+            button.text_label.y = (
+                self.y
+                + (self.height - button.font_height) // 2
+                + (button.font_height * 0.2)
+                + self.list_pad // 2
+            )
             self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2)
             self.back_ground.height = self.height - (self.pad * 4)
             self.cover_back.position = self.x + self.pad, self.y + self.pad
@@ -195,15 +261,31 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
             self.cover_back2.position = self.x + self.pad, self.y + self.pad
             self.cover_back2.height = self.height - (self.pad * 3)
         else:
-            button.text_label.y = (self.y + (self.height - button.font_height) // 2 + (button.font_height * 0.2)
-                                   + self.list_pad)
-            self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2) + self.list_pad
+            button.text_label.y = (
+                self.y
+                + (self.height - button.font_height) // 2
+                + (button.font_height * 0.2)
+                + self.list_pad
+            )
+            self.back_ground.position = (
+                self.x + (self.pad * 2),
+                self.y + (self.pad * 2) + self.list_pad,
+            )
             self.back_ground.height = self.height - (self.pad * 4) - self.list_pad
-            self.cover_back.position = self.x + self.pad, self.y + self.pad + self.list_pad
+            self.cover_back.position = (
+                self.x + self.pad,
+                self.y + self.pad + self.list_pad,
+            )
             self.cover_back.height = self.height - (self.pad * 2) - self.list_pad
-            self.cover_back2.position = self.x + self.pad, self.y + self.pad + self.list_pad
+            self.cover_back2.position = (
+                self.x + self.pad,
+                self.y + self.pad + self.list_pad,
+            )
             self.cover_back2.height = self.height - (self.pad * 3) - self.list_pad
-        self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2) + self.list_pad
+        self.back_ground.position = (
+            self.x + (self.pad * 2),
+            self.y + (self.pad * 2) + self.list_pad,
+        )
         self.back_ground.height = self.height - (self.pad * 4) - self.list_pad
 
 
@@ -226,17 +308,17 @@ class PressTextButton(widgets.WidgetBase):
     """
 
     def __init__(
-            self,
-            x: int,
-            y: int,
-            width: int,
-            height: int,
-            text: str,
-            batch: Optional[Batch] = None,
-            group: Optional[Group] = None,
-            theme: Optional[ButtonThemeOptions] = None,
-            draw_theme: Optional[type(BaseButtonTheme)] = None,
-            dict_theme: Optional[dict] = None,
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        text: str,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+        theme: Optional[ButtonThemeOptions] = None,
+        draw_theme: Optional[type(BaseButtonTheme)] = None,
+        dict_theme: Optional[dict] = None,
     ):
         super().__init__(x, y, width, height)
         self.main_batch = batch or Batch()
@@ -310,7 +392,7 @@ class PressTextButton(widgets.WidgetBase):
         text_width = self.text_label.content_width
         self.text_label.x = self._x + (self.width - text_width) // 2
         self.text_label.y = (
-                self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)
+            self._y + (self.height - self.font_height) // 2 + (self.font_height * 0.2)
         )  # 修正一下位置
 
     @property

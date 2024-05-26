@@ -37,20 +37,20 @@ file config
 
 file_error = {
     FileNotFoundError: "no {filetype} file was founded!:\n file name: {filename}\n file_type: {filetype}\n stack: {stack}",
-    KeyError:          "no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}",
-    Exception:         "get some {error_type} when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}",
+    KeyError: "no stack in {filetype} file {filename} was found! \n file type: {} \n file name: {} \n stack: {stack}",
+    Exception: "get some {error_type} when read {filetype} file {filename}! \n file type: {} \n file name: {} \n stack: {stack}",
 }
 
 
 def load_file(
-        file_name: Union[str, Path],
-        stack: Optional[Union[str, list, dict]] = None,
-        raise_error: Optional[bool] = True,
-        encoding: Optional[str] = "utf-8",
+    file_name: Union[str, Path],
+    stack: Optional[Union[str, list, dict]] = None,
+    raise_error: Optional[bool] = True,
+    encoding: Optional[str] = "utf-8",
 ) -> Union[dict, ElementTree.ElementTree]:
     if isinstance(file_name, Path):
         file_name = str(file_name)
-    f_type = file_name[file_name.rfind(".") + 1:]  # 从最后一个.到末尾 (截取文件格式)
+    f_type = file_name[file_name.rfind(".") + 1 :]  # 从最后一个.到末尾 (截取文件格式)
     get_file = NotImplementedError("解析失败，请检查文件类型/文件内容/文件是否存在！")
     try:
         if f_type == "xml":
@@ -97,7 +97,7 @@ def load_file(
 
 
 def save_dict_file(file_name: str, data: dict, encoding: str = "utf-8") -> bool:
-    f_type = file_name[file_name.rfind(".") + 1:]  # 从最后一个.到末尾 (截取文件格式)
+    f_type = file_name[file_name.rfind(".") + 1 :]  # 从最后一个.到末尾 (截取文件格式)
     try:
         if (f_type == "config") or (f_type == "conf") or (f_type == "ini"):
             return False

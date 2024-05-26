@@ -16,7 +16,6 @@ from decimal import Decimal
 from typing import Callable, Dict, List, TYPE_CHECKING, Type
 
 # third function
-import tomli
 import tomli_w
 import pyglet
 
@@ -210,7 +209,7 @@ def _call_screen_after(func: Callable) -> Callable:
                     traceback.print_exc()
         return result
 
-    warped.__signature__ = inspect.signature(func) # type: ignore
+    warped.__signature__ = inspect.signature(func)  # type: ignore
     return warped
 
 
@@ -237,7 +236,7 @@ def _call_screen_before(func: Callable) -> Callable:
         result = func(self, *args, **kwargs)
         return result
 
-    warped.__signature__ = inspect.signature(func) # type: ignore
+    warped.__signature__ = inspect.signature(func)  # type: ignore
     return warped
 
 
@@ -359,7 +358,6 @@ class ClientWindow(Window):
 
     def draw_call(self, dt: float):
         self.switch_to()
-        # self.logger.debug(f"draw call {dt}")
         self.on_draw(dt)
         self.flip()
 
@@ -436,7 +434,8 @@ class ClientWindow(Window):
                 self.logger.info(tr().language_set_to())
             except LanguageNotFound:
                 self.logger.info(
-                    tr().language_available().format(os.listdir("./config/lang")), tag="command"
+                    tr().language_available().format(os.listdir("./config/lang")),
+                    tag="command",
                 )
             self.save_info()
         elif command.find("mods"):
@@ -444,14 +443,17 @@ class ClientWindow(Window):
                 self.logger.info(tr().mod.list())
                 for mod in self.game.mod_manager.loaded_mod_modules.values():
                     self.logger.info(
-                        f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}", tag="command"
+                        f"mod: {mod.name} id: {mod.mod_id} version: {mod.version}",
+                        tag="command",
                     )
             elif command.find("reload"):
                 if not len(command.text) == 0:
                     print(f"reload mod: |{command.text}|")
                     self.game.mod_manager.reload_mod(command.text, game=self.game)
                 else:
-                    self.logger.info(tr().window.command.mods.reload.no_mod_id(), tag="command")
+                    self.logger.info(
+                        tr().window.command.mods.reload.no_mod_id(), tag="command"
+                    )
 
     @_call_screen_after
     def on_message(self, message: line.CommandText):
@@ -498,7 +500,8 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.mouse.press()
-            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]()), tag="mouse"
+            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]()),
+            tag="mouse",
         )
 
     @_call_screen_after
@@ -506,13 +509,14 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.mouse.release()
-            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]()), tag="mouse"
+            .format([x, y], tr().window.mouse[mouse.buttons_string(button)]()),
+            tag="mouse",
         )
 
     @_call_screen_after
     def on_key_press(self, symbol, modifiers) -> None:
         if symbol == key.ESCAPE and not (
-                modifiers & ~(key.MOD_NUMLOCK | key.MOD_CAPSLOCK | key.MOD_SCROLLLOCK)
+            modifiers & ~(key.MOD_NUMLOCK | key.MOD_CAPSLOCK | key.MOD_SCROLLLOCK)
         ):
             self.dispatch_event("on_close", "window")
         if symbol == key.SLASH:
@@ -520,7 +524,8 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.key.press()
-            .format(key.symbol_string(symbol), key.modifiers_string(modifiers)), tag="key"
+            .format(key.symbol_string(symbol), key.modifiers_string(modifiers)),
+            tag="key",
         )
 
     @_call_screen_after
@@ -528,7 +533,8 @@ class ClientWindow(Window):
         self.logger.debug(
             tr()
             .window.key.release()
-            .format(key.symbol_string(symbol), key.modifiers_string(modifiers)), tag="key"
+            .format(key.symbol_string(symbol), key.modifiers_string(modifiers)),
+            tag="key",
         )
 
     @_call_screen_after
@@ -552,14 +558,18 @@ class ClientWindow(Window):
     @_call_screen_after
     def on_text_motion_select(self, motion):
         motion_string = key.motion_string(motion)
-        self.logger.debug(tr().window.text.motion_select().format(motion_string), tag="text")
+        self.logger.debug(
+            tr().window.text.motion_select().format(motion_string), tag="text"
+        )
 
     @_call_screen_before
     def on_close(self, source: str = "window") -> None:
         self.game.dispatch_mod_event(
             "on_close", game=self.game, client=self, source=source
         )
-        self.logger.info(tr().window.game.stop_get().format(tr().game[source]()), tag="window")
+        self.logger.info(
+            tr().window.game.stop_get().format(tr().game[source]()), tag="window"
+        )
         self.logger.info(tr().window.game.stop(), tag="window")
         # self.fps_log.check_list = False
         DR_runtime.running = False

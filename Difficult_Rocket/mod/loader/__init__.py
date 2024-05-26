@@ -87,14 +87,14 @@ class ModManager(Options):
                 return None
             logger.info(tr().mod.load.loading().format(mod_path), tag="load")
             if (
-                    mod_path.is_dir()
-                    or mod_path.suffix in PACKAGE_SUFFIX
-                    or mod_path.suffix in ONE_FILE_SUFFIX
+                mod_path.is_dir()
+                or mod_path.suffix in PACKAGE_SUFFIX
+                or mod_path.suffix in ONE_FILE_SUFFIX
             ):
                 # 文件夹 mod
                 loading_mod = importlib.import_module(mod_path.name)
                 if not hasattr(loading_mod, "mod_class") or not issubclass(
-                        loading_mod.mod_class, ModInfo
+                    loading_mod.mod_class, ModInfo
                 ):
                     logger.warn(
                         tr().mod.load.faild.no_mod_class().format(mod_path), tag="load"
@@ -112,7 +112,7 @@ class ModManager(Options):
         return None
 
     def find_mods_in_path(
-            self, extra_mods_path: Optional[List[Path]] = None
+        self, extra_mods_path: Optional[List[Path]] = None
     ) -> List[Path]:
         """
         查找所有 mod 路径
@@ -132,9 +132,9 @@ class ModManager(Options):
                     # 忽略 __pycache__ 文件夹 (Python 编译文件)
                     continue
                 if (
-                        mod.is_dir()
-                        or mod.suffix in PACKAGE_SUFFIX
-                        or mod.suffix in ONE_FILE_SUFFIX
+                    mod.is_dir()
+                    or mod.suffix in PACKAGE_SUFFIX
+                    or mod.suffix in ONE_FILE_SUFFIX
                 ):
                     # 文件夹 mod
                     mods_path.append(mod)
@@ -144,9 +144,9 @@ class ModManager(Options):
         return mods_path
 
     def load_mods(
-            self,
-            extra_path: Optional[List[Path]] = None,
-            extra_mod_path: Optional[List[Path]] = None,
+        self,
+        extra_path: Optional[List[Path]] = None,
+        extra_mod_path: Optional[List[Path]] = None,
     ) -> List[type(ModInfo)]:
         """
         加载所有 mod  (可提供额外的 mod 路径)
@@ -170,7 +170,9 @@ class ModManager(Options):
             for path in extra_mod_path:
                 if (cache := self.load_mod(path)) is not None:
                     mods.append(cache)
-        self.logger.info(tr().mod.load.use_time().format(time.time() - start_time), tag="load")
+        self.logger.info(
+            tr().mod.load.use_time().format(time.time() - start_time), tag="load"
+        )
         return mods
 
     def init_mods(self, mods: List[type(ModInfo)]):
@@ -193,7 +195,9 @@ class ModManager(Options):
                     tag="init",
                 )
                 continue
-        self.logger.info(tr().mod.init.use_time().format(time.time() - start_time), tag="init")
+        self.logger.info(
+            tr().mod.init.use_time().format(time.time() - start_time), tag="init"
+        )
 
     def unload_mod(self, mod_id: str, game: Game) -> Optional[ModInfo]:
         """
@@ -203,10 +207,12 @@ class ModManager(Options):
         :return: 卸载的 mod 的 ModInfo 类
         """
         if (
-                not (mod_class := self.loaded_mod_modules.get(mod_id))
-                and (mod_class := self.get_mod_module(mod_id)) is None
+            not (mod_class := self.loaded_mod_modules.get(mod_id))
+            and (mod_class := self.get_mod_module(mod_id)) is None
         ):
-            self.logger.warn(tr().mod.unload.faild.not_find().format(mod_id), tag="unload")
+            self.logger.warn(
+                tr().mod.unload.faild.not_find().format(mod_id), tag="unload"
+            )
             return None
         try:
             mod_class.on_unload(game=game)

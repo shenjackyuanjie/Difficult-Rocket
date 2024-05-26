@@ -4,13 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-
 import os
 import time
 # import multiprocessing
@@ -21,7 +14,7 @@ from Difficult_Rocket.utils.translate import tr
 from lib_not_dr import loggers
 
 
-# TODO 改变服务端启动逻辑 0.6.0(划掉 0.8.0)会写完的（
+# TODO 改变服务端启动逻辑 0.6.0(划掉 0.8.0)(划掉 0.10.0)会写完的（
 
 
 class Server:
