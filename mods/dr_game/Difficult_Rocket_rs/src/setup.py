@@ -19,7 +19,8 @@ setup(
         RustExtension(
             target="Difficult_Rocket_rs.Difficult_Rocket_rs",
             binding=Binding.PyO3,
-            strip=Strip.All,
+            rustc_flags=["-Ctarget-cpu=native"],
+            strip=Strip.No,
         )
     ],
     zip_safe=False,
