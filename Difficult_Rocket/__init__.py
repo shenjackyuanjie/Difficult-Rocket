@@ -8,7 +8,7 @@ from pathlib import Path
 
 from Difficult_Rocket.api.types import Options, Version
 
-sdk_version = Version("0.9.0.1")  # SDK 版本
+sdk_version = Version("0.9.1.0")  # SDK 版本
 build_version = Version("3.0.0.0")  # 编译文件版本(与游戏本体无关)
 api_version = Version("0.1.2.1")  # API 版本
 __version__ = sdk_version

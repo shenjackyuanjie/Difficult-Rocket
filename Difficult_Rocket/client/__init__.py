@@ -341,8 +341,11 @@ class ClientWindow(Window):
     def add_sub_screen(self, title: str, sub_screen: Type[BaseScreen]):
         self.screen_list[title] = sub_screen(self)
 
-    def remove_sub_screen(self, title: str):
-        self.screen_list.pop(title)
+    def remove_sub_screen(self, title: str) -> BaseScreen:
+        """
+        去除一个页面, 返回被去掉的页面
+        """
+        return self.screen_list.pop(title)
 
     """
     draws and some event

@@ -38,6 +38,7 @@ class Menu(BaseScreen):
         # 占位, 高二看看能不能咕出来点啥 (20230911)
         # 欸呀, 正好是 911 纪念日哦
         # 好, 高二 第一学期 期末都考完了, 我过来做测试了 (20240119)
+        # 高二, 马上要研学了, 似乎做了点啥, 但似乎又没做点啥 (20240526)
 
         # self.wiki_button1 = PressTextButton(
         #     x=200,
@@ -126,7 +127,7 @@ class PressEnterShipEditorButton(PressTextButton):
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
         theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[type(BaseButtonTheme)] = None,
+        draw_theme: Optional[BaseButtonTheme] = None,
         dict_theme: Optional[dict] = None,
     ):
         super().__init__(
