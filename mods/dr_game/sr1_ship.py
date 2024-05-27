@@ -126,33 +126,6 @@ class SR1ShipRender(BaseScreen):
         )
         self.render_d_label.visible = self.status.draw_d_pos
 
-        # Buttons
-        self.enter_game_button = PressEnterGameButton(
-            window=main_window,
-            x=500,
-            y=100,
-            width=150,
-            height=30,
-            text="进入游戏",
-            batch=self.main_batch,
-            group=main_window.main_group,
-            draw_theme=MinecraftWikiButtonTheme
-        )
-        self.select_ship_button = PressSelectShipButton(
-            window=main_window,
-            x=100,
-            y=100,
-            width=150,
-            height=30,
-            text="加载飞船",
-            batch=self.main_batch,
-            group=main_window.main_group,
-            draw_theme=MinecraftWikiButtonTheme
-        )
-        
-        main_window.push_handlers(self.enter_game_button)
-        main_window.push_handlers(self.select_ship_button)
-
         # Optional data
         self.textures: SR1Textures = SR1Textures()
         self.gen_draw: Optional[Generator] = None
@@ -179,6 +152,34 @@ class SR1ShipRender(BaseScreen):
             .format((load_end_time - load_start_time) / 1000000000),
             tag="setup",
         )
+
+        # Buttons
+        self.enter_game_button = PressEnterGameButton(
+            window=main_window,
+            x=500,
+            y=100,
+            width=150,
+            height=30,
+            text="进入游戏",
+            batch=self.main_batch,
+            group=main_window.main_group,
+            draw_theme=MinecraftWikiButtonTheme
+        )
+        
+        self.select_ship_button = PressSelectShipButton(
+            window=main_window,
+            x=100,
+            y=100,
+            width=150,
+            height=30,
+            text="加载飞船",
+            batch=self.main_batch,
+            group=main_window.main_group,
+            draw_theme=MinecraftWikiButtonTheme,
+        )
+        
+        main_window.push_handlers(self.enter_game_button)
+        main_window.push_handlers((self.select_ship_button, self.begin_ship_render_from_path(self.select_ship_button.get_ship_path())))
 
 
         
@@ -598,6 +599,16 @@ class SR1ShipRender(BaseScreen):
             self.dx += dx
             self.dy += dy
 
+    def begin_ship_render_from_path(self, ship_path: str):
+        if Path(ship_path).is_dir():
+            for path in Path(ship_path).glob("*.xml"):
+                try:
+                    self.load_xml(str(path))
+                except ValueError:
+                    traceback.print_exc()
+        if self.load_xml(ship_path):
+            self.render_ship()
+
     def on_file_drop(self, x: int, y: int, paths: List[str], window: ClientWindow):
         if len(paths) > 1:
             for path in paths:
@@ -606,14 +617,7 @@ class SR1ShipRender(BaseScreen):
                 except Exception:
                     traceback.print_exc()
         else:
-            if Path(paths[0]).is_dir():
-                for path in Path(paths[0]).glob("*.xml"):
-                    try:
-                        self.load_xml(str(path))
-                    except ValueError:
-                        traceback.print_exc()
-            if self.load_xml(paths[0]):
-                self.render_ship()
+            self.begin_ship_render_from_path(paths[0])
         # for path in paths:
         #     if self.load_xml(path):  # 加载成功一个就停下
         #         break
@@ -667,6 +671,7 @@ class PressEnterGameButton(PressTextButton):
 from tkinter import Tk
 from tkinter import filedialog
 class PressSelectShipButton(PressTextButton):
+    path_var = "./assets/builtin/dock1.xml"
     def __init__(
         self,
         window: ClientWindow,
@@ -701,8 +706,12 @@ class PressSelectShipButton(PressTextButton):
             file_name= filedialog.askopenfilename(title='选择一个飞船存档',
                                         initialdir='./'           # 打开当前程序工作目录
                                                     )
-            self.path_var=file_name
+            self.path_var = file_name
             logger.info("加载飞船from "+self.path_var)
+    
+    def get_ship_path(self):
+        logger.info("加载飞船from "+self.path_var)
+        return self.path_var
 
 if __name__ == "__main__":
     from objprint import op
