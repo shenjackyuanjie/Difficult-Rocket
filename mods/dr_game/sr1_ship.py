@@ -126,9 +126,10 @@ class SR1ShipRender(BaseScreen):
         )
         self.render_d_label.visible = self.status.draw_d_pos
 
+        # Buttons
         self.enter_game_button = PressEnterGameButton(
             window=main_window,
-            x=100,
+            x=500,
             y=100,
             width=150,
             height=30,
@@ -137,7 +138,20 @@ class SR1ShipRender(BaseScreen):
             group=main_window.main_group,
             draw_theme=MinecraftWikiButtonTheme
         )
+        self.select_ship_button = PressSelectShipButton(
+            window=main_window,
+            x=100,
+            y=100,
+            width=150,
+            height=30,
+            text="加载飞船",
+            batch=self.main_batch,
+            group=main_window.main_group,
+            draw_theme=MinecraftWikiButtonTheme
+        )
+        
         main_window.push_handlers(self.enter_game_button)
+        main_window.push_handlers(self.select_ship_button)
 
         # Optional data
         self.textures: SR1Textures = SR1Textures()
@@ -650,7 +664,45 @@ class PressEnterGameButton(PressTextButton):
 
             logger.info("进入游戏")
 
+from tkinter import Tk
+from tkinter import filedialog
+class PressSelectShipButton(PressTextButton):
+    def __init__(
+        self,
+        window: ClientWindow,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        text: str,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+        theme: Optional[ButtonThemeOptions] = None,
+        draw_theme: Optional[BaseButtonTheme] = None,
+        dict_theme: Optional[dict] = None,
+    ):
+        super().__init__(
+            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+        )
+        self.window = window
 
+
+    def on_mouse_release(self, x, y, buttons, modifiers):
+        if self.pressed and (x, y) in self:
+            if self.draw_theme:
+                self.draw_theme.on_disable(self)
+            else:
+                self.back_rec.color = self.touched_color
+            self.pressed = False
+
+            
+            root = Tk()   # 创建一个Tkinter.Tk()实例
+            root.withdraw()  # 将Tkinter.Tk()实例隐藏
+            file_name= filedialog.askopenfilename(title='选择一个飞船存档',
+                                        initialdir='./'           # 打开当前程序工作目录
+                                                    )
+            self.path_var=file_name
+            logger.info("加载飞船from "+self.path_var)
 
 if __name__ == "__main__":
     from objprint import op
