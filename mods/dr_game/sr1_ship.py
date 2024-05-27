@@ -126,6 +126,19 @@ class SR1ShipRender(BaseScreen):
         )
         self.render_d_label.visible = self.status.draw_d_pos
 
+        self.enter_game_button = PressEnterGameButton(
+            window=main_window,
+            x=100,
+            y=100,
+            width=150,
+            height=30,
+            text="进入游戏",
+            batch=self.main_batch,
+            group=main_window.main_group,
+            draw_theme=MinecraftWikiButtonTheme
+        )
+        main_window.push_handlers(self.enter_game_button)
+
         # Optional data
         self.textures: SR1Textures = SR1Textures()
         self.gen_draw: Optional[Generator] = None
@@ -152,6 +165,9 @@ class SR1ShipRender(BaseScreen):
             .format((load_end_time - load_start_time) / 1000000000),
             tag="setup",
         )
+
+
+        
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -596,6 +612,44 @@ class SR1ShipRender(BaseScreen):
     @view.setter
     def view(self, value: Mat4):
         self.window_pointer.view = value
+
+from Difficult_Rocket.gui.widget.button import (
+    PressTextButton,
+    MinecraftWikiButtonTheme,
+    ButtonThemeOptions,
+    BaseButtonTheme,
+)
+class PressEnterGameButton(PressTextButton):
+    def __init__(
+        self,
+        window: ClientWindow,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        text: str,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+        theme: Optional[ButtonThemeOptions] = None,
+        draw_theme: Optional[BaseButtonTheme] = None,
+        dict_theme: Optional[dict] = None,
+    ):
+        super().__init__(
+            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+        )
+        self.window = window
+
+
+    def on_mouse_release(self, x, y, buttons, modifiers):
+        if self.pressed and (x, y) in self:
+            if self.draw_theme:
+                self.draw_theme.on_disable(self)
+            else:
+                self.back_rec.color = self.touched_color
+            self.pressed = False
+
+            logger.info("进入游戏")
+
 
 
 if __name__ == "__main__":
