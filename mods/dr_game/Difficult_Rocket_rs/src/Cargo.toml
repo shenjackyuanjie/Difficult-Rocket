@@ -32,3 +32,5 @@ rapier2d-f64 = { version = "0.19.0", features = ["simd-stable"] }
 pyo3 = { version = "0.21.2", features = ["extension-module", "macros"] }
 
 dict_derive = "0.5"
+
+rapier2d = "0.19.0"
