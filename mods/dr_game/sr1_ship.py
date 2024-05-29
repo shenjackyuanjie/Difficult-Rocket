@@ -168,6 +168,7 @@ class SR1ShipRender(BaseScreen):
         
         self.select_ship_button = PressSelectShipButton(
             window=main_window,
+            parent_window = self,
             x=100,
             y=100,
             width=150,
@@ -179,8 +180,8 @@ class SR1ShipRender(BaseScreen):
         )
         
         main_window.push_handlers(self.enter_game_button)
-        main_window.push_handlers((self.select_ship_button, self.begin_ship_render_from_path(self.select_ship_button.get_ship_path())))
-
+        main_window.push_handlers(self.select_ship_button)
+    
 
         
 
@@ -672,9 +673,11 @@ from tkinter import Tk
 from tkinter import filedialog
 class PressSelectShipButton(PressTextButton):
     path_var = "./assets/builtin/dock1.xml"
+    
     def __init__(
         self,
         window: ClientWindow,
+        parent_window,
         x: int,
         y: int,
         width: int,
@@ -690,6 +693,7 @@ class PressSelectShipButton(PressTextButton):
             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
         )
         self.window = window
+        self.parent_window = parent_window
 
 
     def on_mouse_release(self, x, y, buttons, modifiers):
@@ -707,6 +711,7 @@ class PressSelectShipButton(PressTextButton):
                                         initialdir='./'           # 打开当前程序工作目录
                                                     )
             self.path_var = file_name
+            self.parent_window.begin_ship_render_from_path(file_name)
             logger.info("加载飞船from "+self.path_var)
     
     def get_ship_path(self):
