@@ -182,7 +182,7 @@ class SR1ShipRender(BaseScreen):
         main_window.push_handlers(self.enter_game_button)
         main_window.push_handlers(self.select_ship_button)
         
-        main_window.add_sub_screen(ScrollableLayout)
+        main_window.add_sub_screen("ship_list", ScrollableLayout)
 
         
 
