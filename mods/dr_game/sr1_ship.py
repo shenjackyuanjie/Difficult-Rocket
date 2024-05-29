@@ -181,7 +181,8 @@ class SR1ShipRender(BaseScreen):
         
         main_window.push_handlers(self.enter_game_button)
         main_window.push_handlers(self.select_ship_button)
-    
+        
+        main_window.add_sub_screen(ScrollableLayout)
 
         
 
@@ -717,6 +718,50 @@ class PressSelectShipButton(PressTextButton):
     def get_ship_path(self):
         logger.info("加载飞船from "+self.path_var)
         return self.path_var
+    
+class ScrollableLayout(BaseScreen):
+    """一个可以上下滑动的Layout"""
+
+    name = "ScrollableLayout"
+
+    def __init__(self, main_window: ClientWindow):
+        super().__init__(main_window)
+        self.logger = logger
+        logger.info(sr_tr().mod.info.setup.start(), tag="setup")
+        load_start_time = time.time_ns()
+
+        self.dx = 0
+        self.dy = 0
+        self.width = main_window.width
+        self.height = main_window.height
+
+        self.main_batch = Batch()
+        self.group_camera = CenterGroupCamera(
+            window=main_window,
+            order=10,
+            parent=main_window.main_group,
+            min_zoom=1,
+            max_zoom=1,
+        )
+        
+    def add_new_button(self, main_window: ClientWindow, button_x, button_y, button_w, button_h, button_text):
+        self.new_button = PressSelectShipButton(
+            window=main_window,
+            parent_window = self,
+            x=button_x,
+            y=button_y,
+            width=button_w,
+            height=button_h,
+            text=button_text,
+            batch=self.main_batch,
+            group=main_window.main_group,
+            draw_theme=MinecraftWikiButtonTheme,
+        )
+        
+        main_window.push_handlers(self.new_button)
+    
+
+    
 
 if __name__ == "__main__":
     from objprint import op
