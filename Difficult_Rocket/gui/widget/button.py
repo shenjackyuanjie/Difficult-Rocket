@@ -254,12 +254,21 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
                 + (button.font_height * 0.2)
                 + self.list_pad // 2
             )
+            
+            self.back_ground.x = self.x + (self.pad * 2)
+            self.back_ground.y = self.y + (self.pad * 2)
             self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2)
             self.back_ground.height = self.height - (self.pad * 4)
+            self.cover_back.x = self.x + self.pad
+            self.cover_back.y = self.y + self.pad
             self.cover_back.position = self.x + self.pad, self.y + self.pad
             self.cover_back.height = self.height - (self.pad * 2)
+            self.cover_back2.x = self.x + self.pad
+            self.cover_back2.y = self.y + self.pad
             self.cover_back2.position = self.x + self.pad, self.y + self.pad
             self.cover_back2.height = self.height - (self.pad * 3)
+            self.list_back.x = self.x
+            self.list_back.y = self.y
         else:
             button.text_label.y = (
                 self.y
@@ -380,6 +389,28 @@ class PressTextButton(widgets.WidgetBase):
             self.draw_theme.on_update(self)
 
         self.value = text  # 重新分配一下高度和宽度的位置
+    
+    @property
+    def x(self) -> int:
+        return self._x
+
+    @x.setter
+    def x(self, value: int) -> None:
+        self._x = value
+        self.text_label.x = value
+        self.draw_theme.x = value
+        self.draw_theme.on_update(self)
+
+    @property
+    def y(self) -> int:
+        return self._y
+
+    @y.setter
+    def y(self, value: int) -> None:
+        self._y = value
+        self.text_label.y = value + 4
+        self.draw_theme.y = value
+        self.draw_theme.on_update(self)
 
     @property
     def value(self):

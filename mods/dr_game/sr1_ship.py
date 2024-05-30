@@ -510,8 +510,22 @@ class SR1ShipRender(BaseScreen):
             and x <= self.ships_buttons_end_x \
             and y >= self.ships_buttons_begin_y \
             and y <= self.ships_buttons_end_y:
+            min_y = 9999999
+            max_y = 0
             for ship_button in self.ships_buttons:
-                ship_button.back_rec.position = ship_button.back_rec.position[0], ship_button.back_rec.position[1] + scroll_y
+                min_y = min(min_y, ship_button.y)
+                max_y = max(max_y, ship_button.y)
+                
+            if max_y + scroll_y * 50 <= self.height:
+                scroll_y = (self.height - max_y) / 50
+            
+            if min_y + scroll_y * 50 >= 10:
+                scroll_y = (10 - min_y) / 50
+                
+
+
+            for ship_button in self.ships_buttons:
+                ship_button.y = ship_button.y + scroll_y * 50
 
 
 
@@ -800,7 +814,6 @@ class PressOpenShipButton(PressTextButton):
     
     def get_y(self):
             return self.y
-
 
     def on_mouse_release(self, x, y, buttons, modifiers):
         if self.pressed and (x, y) in self:
