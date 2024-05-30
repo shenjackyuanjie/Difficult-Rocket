@@ -203,7 +203,7 @@ class SR1ShipRender(BaseScreen):
                 y=self.ships_buttons_end_y - i * self.ships_buttons_h,
                 width=self.ships_buttons_w,
                 height=self.ships_buttons_h,
-                text=ships_files[i],
+                text=ships_files[i][8:],
                 batch=self.main_batch,
                 group=main_window.main_group,
                 draw_theme=MinecraftWikiButtonTheme,
