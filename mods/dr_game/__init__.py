@@ -76,7 +76,7 @@ DR_mod_runtime = _DR_mod_runtime()
 class DR_mod(ModInfo):  # NOQA
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
-    version = Version("0.3.5")
+    version = Version("0.3.6")
 
     writer = "shenjackyuanjie"
     link = "shenjack.top"

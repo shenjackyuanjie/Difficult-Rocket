@@ -169,6 +169,18 @@ pub struct Connection {
     pub child_part: IdType,
 }
 
+pub type RawDockConnectionData = (IdType, IdType, IdType);
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct DockConnection {
+    #[serde(rename = "@dockPart")]
+    pub dock_part: IdType,
+    #[serde(rename = "@parentPart")]
+    pub parent_part: IdType,
+    #[serde(rename = "@childPart")]
+    pub child_part: IdType,
+}
+
 impl Connection {
     /// 真有地方需要
     pub fn as_raw_data(&self) -> RawConnectionData {

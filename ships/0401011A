@@ -1,1 +1,805 @@
-<Ship version="1" liftedOff="0" touchingGround="0"><DisconnectedParts><DisconnectedPart><Parts><Part partType="strut-1" id="1145168" x="20.500000" y="-4.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145169" x="25.000000" y="-1.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145187" x="22.000000" y="0.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="detacher-1" id="1145170" x="23.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="dock-1" id="1145171" x="23.500000" y="-3.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-2" id="1145172" x="23.500000" y="23.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="3000.000000"/></Part><Part partType="detacher-1" id="1145173" x="23.500000" y="26.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="port-1" id="1145174" x="23.500000" y="26.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="dock-1" id="1145175" x="23.500000" y="25.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-3" id="1145193" x="23.500000" y="17.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-3" id="1145194" x="23.500000" y="9.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-2" id="1145195" x="23.500000" y="3.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="3000.000000"/></Part><Part partType="engine-3" id="1145176" x="23.500000" y="-1.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part></Parts><Connections><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145168" childPart="1145169"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="1145168" childPart="1145187"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145168" childPart="1145170"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145170" childPart="1145171"/><DockConnection dockPart="1145171" parentPart="1145171" childPart="1145172"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145172" childPart="1145173"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145173" childPart="1145174"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145172" childPart="1145175"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145172" childPart="1145193"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145193" childPart="1145194"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145194" childPart="1145195"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145195" childPart="1145176"/></Connections></DisconnectedPart><DisconnectedPart><Parts><Part partType="parachute-1" id="1145220" x="16.500000" y="39.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="16.500000" chuteY="39.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/></Parts><Connections/></DisconnectedPart></DisconnectedParts><Parts><Part partType="pod-1" id="1" x="-7.500000" y="12.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Pod throttle="0.000000" name=""><Staging currentStage="0"><Step><Activate Id="1145230" moved="0"/><Activate Id="1145264" moved="0"/></Step><Step><Activate Id="1145236" moved="0"/><Activate Id="1145265" moved="0"/></Step><Step><Activate Id="1145235" moved="0"/><Activate Id="1145266" moved="0"/></Step><Step><Activate Id="1145250" moved="0"/><Activate Id="1145274" moved="0"/><Activate Id="1145310" moved="0"/><Activate Id="1145316" moved="0"/></Step><Step><Activate Id="1145309" moved="0"/><Activate Id="1145315" moved="0"/></Step><Step><Activate Id="1145311" moved="0"/><Activate Id="1145312" moved="0"/></Step><Step><Activate Id="1145297" moved="0"/><Activate Id="1145298" moved="0"/><Activate Id="1145307" moved="0"/><Activate Id="1145321" moved="0"/></Step><Step><Activate Id="1145281" moved="0"/><Activate Id="1145282" moved="0"/><Activate Id="1145300" moved="0"/><Activate Id="1145301" moved="0"/><Activate Id="1145333" moved="0"/><Activate Id="1145334" moved="0"/></Step><Step><Activate Id="1145163" moved="1"/><Activate Id="175623" moved="1"/></Step><Step><Activate Id="175590" moved="1"/><Activate Id="175596" moved="1"/><Activate Id="175346" moved="1"/><Activate Id="175353" moved="1"/><Activate Id="175294" moved="1"/><Activate Id="175299" moved="1"/></Step><Step><Activate Id="1145152" moved="1"/><Activate Id="1145145" moved="1"/><Activate Id="175622" moved="1"/></Step><Step><Activate Id="175621" moved="1"/></Step><Step><Activate Id="1145160" moved="1"/><Activate Id="1145157" moved="1"/><Activate Id="1145162" moved="1"/></Step><Step><Activate Id="1145154" moved="1"/></Step><Step><Activate Id="175591" moved="1"/><Activate Id="175597" moved="1"/><Activate Id="175570" moved="1"/><Activate Id="175571" moved="1"/><Activate Id="175592" moved="1"/><Activate Id="175593" moved="1"/><Activate Id="175588" moved="1"/><Activate Id="175600" moved="1"/><Activate Id="175582" moved="1"/><Activate Id="175564" moved="1"/><Activate Id="175468" moved="1"/><Activate Id="175469" moved="1"/><Activate Id="175347" moved="1"/><Activate Id="175349" moved="1"/><Activate Id="175348" moved="1"/><Activate Id="175354" moved="1"/><Activate Id="175350" moved="1"/><Activate Id="175304" moved="1"/><Activate Id="175301" moved="1"/><Activate Id="175302" moved="1"/><Activate Id="175303" moved="1"/><Activate Id="175300" moved="1"/></Step></Staging></Pod></Part><Part partType="strut-1" id="175112" x="-7.500000" y="11.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175150" x="-3.000000" y="11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145202" x="0.500000" y="6.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175562" x="-3.000000" y="2.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145207" x="1.500000" y="4.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175563" x="-3.000000" y="-6.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175565" x="-3.000000" y="-14.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175566" x="-3.000000" y="-22.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175569" x="1.500000" y="-19.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="parachute-1" id="175570" x="-0.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175571" x="3.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="175567" x="1.500000" y="-25.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="parachute-1" id="175582" x="-2.250000" y="-13.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175564" x="-2.250000" y="-11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="175583" x="1.500000" y="-2.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-3" id="175584" x="1.500000" y="-7.000000" angle="3.141593" angleV="0.000000" editorAngle="2"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-2" id="175585" x="1.500000" y="-13.000000" angle="3.141593" angleV="0.000000" editorAngle="2"><Tank fuel="3000.000000"/></Part><Part partType="fueltank-1" id="175586" x="1.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-1" id="175587" x="-0.500000" y="-5.000000" angle="4.712389" angleV="0.000000" editorAngle="3"><Tank fuel="1500.000000"/></Part><Part partType="parachute-1" id="175588" x="-0.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-3" id="175589" x="-0.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="engine-3" id="175590" x="-0.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="175591" x="-0.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175592" x="-1.750000" y="-11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175593" x="-1.750000" y="-13.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-1" id="175594" x="3.500000" y="-5.000000" angle="1.570796" angleV="0.000000" editorAngle="1"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-3" id="175595" x="3.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="engine-3" id="175596" x="3.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="175597" x="3.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-5" id="175598" x="4.750000" y="-13.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="175599" x="4.750000" y="-11.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145283" x="4.750000" y="-10.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145284" x="4.750000" y="-8.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="parachute-1" id="175600" x="3.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="1145278" x="6.000000" y="1.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145205" x="2.500000" y="5.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145280" x="6.000000" y="-7.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145279" x="6.000000" y="-15.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145287" x="5.250000" y="-12.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145288" x="5.250000" y="-13.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="strut-1" id="1145289" x="6.000000" y="-23.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145290" x="1.500000" y="-26.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145291" x="1.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145285" x="5.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145286" x="5.250000" y="-10.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="parachute-1" id="1145281" x="-0.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145282" x="3.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="175149" x="-11.000000" y="16.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175366" x="-12.000000" y="19.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175367" x="-12.000000" y="27.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145201" x="-16.500000" y="29.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175368" x="-15.500000" y="31.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175369" x="-12.000000" y="36.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175427" x="-7.500000" y="32.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175371" x="-10.000000" y="28.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175285" x="-5.000000" y="28.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175426" x="-7.500000" y="34.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145275" x="-15.500000" y="40.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145277" x="-20.000000" y="44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145276" x="-12.000000" y="45.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175342" x="-16.500000" y="15.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-3" id="175343" x="-16.500000" y="20.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="parachute-1" id="175350" x="-16.500000" y="24.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-16.500000" chuteY="24.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-1" id="175344" x="-14.500000" y="22.500000" angle="1.570796" angleV="0.000000" editorAngle="1"><Tank fuel="1500.000000"/></Part><Part partType="parachute-1" id="175349" x="-13.250000" y="22.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="22.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-1" id="175345" x="-14.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="engine-2" id="175346" x="-14.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="175347" x="-13.250000" y="20.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="20.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175348" x="-14.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-1" id="175351" x="-18.500000" y="22.500000" angle="4.712389" angleV="0.000000" editorAngle="3"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-1" id="175352" x="-18.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-5" id="175516" x="-19.750000" y="20.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="engine-2" id="175353" x="-18.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="175354" x="-18.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-5" id="175515" x="-19.750000" y="22.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="strut-1" id="1145198" x="-21.000000" y="19.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145199" x="-21.000000" y="27.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145200" x="-16.500000" y="30.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175527" x="-7.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-4" id="175528" x="-7.500000" y="19.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="750.000000"/></Part><Part partType="fueltank-4" id="175529" x="-7.500000" y="18.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="750.000000"/></Part><Part partType="fueltank-5" id="175530" x="-8.750000" y="18.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="175531" x="-6.250000" y="18.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="strut-1" id="175546" x="-11.000000" y="25.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175547" x="-4.000000" y="25.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175190" x="-4.000000" y="16.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175274" x="-3.000000" y="19.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175276" x="-3.000000" y="27.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175281" x="0.500000" y="31.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175277" x="-3.000000" y="36.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175428" x="-7.500000" y="35.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175488" x="-11.000000" y="40.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175489" x="-11.000000" y="48.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="detacher-2" id="175622" x="-10.250000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="lander-1" id="175623" x="-9.750000" y="47.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/><Part partType="strut-1" id="1145249" x="-12.000000" y="53.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="parachute-1" id="1145250" x="-12.750000" y="52.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145274" x="-12.750000" y="49.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="1145251" x="-15.500000" y="57.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-3" id="1145260" x="-16.500000" y="53.000000" angle="3.141593" angleV="0.000000" editorAngle="2"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-2" id="1145267" x="-16.500000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="3000.000000"/></Part><Part partType="fueltank-5" id="1145268" x="-17.750000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145269" x="-17.750000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-1" id="1145261" x="-14.500000" y="55.500000" angle="1.570796" angleV="0.000000" editorAngle="1"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-2" id="1145262" x="-14.500000" y="52.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="3000.000000"/></Part><Part partType="fueltank-1" id="1145263" x="-14.500000" y="49.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="engine-3" id="1145264" x="-14.500000" y="46.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="1145265" x="-13.250000" y="49.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145266" x="-13.250000" y="52.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-5" id="1145270" x="-17.750000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145271" x="-17.750000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145272" x="-17.750000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145273" x="-17.750000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="strut-1" id="1145252" x="-19.000000" y="53.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145253" x="-19.000000" y="45.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145254" x="-18.250000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145255" x="-18.250000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145256" x="-18.250000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145257" x="-18.250000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145258" x="-18.250000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145259" x="-18.250000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175490" x="-4.000000" y="40.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175491" x="-4.000000" y="48.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="detacher-2" id="1145162" x="-4.750000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="lander-1" id="1145163" x="-5.250000" y="47.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/><Part partType="strut-1" id="175440" x="-3.000000" y="53.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="parachute-1" id="175468" x="-2.250000" y="52.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="1145223" x="0.500000" y="57.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145222" x="4.000000" y="53.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145208" x="4.000000" y="45.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145246" x="3.250000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145248" x="3.250000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145237" x="3.250000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145238" x="3.250000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145239" x="3.250000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="rcs-1" id="1145240" x="3.250000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/><Part partType="fueltank-3" id="1145232" x="1.500000" y="53.000000" angle="3.141593" angleV="0.000000" editorAngle="2"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-1" id="1145226" x="-0.500000" y="55.500000" angle="4.712389" angleV="0.000000" editorAngle="3"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-2" id="1145231" x="-0.500000" y="52.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="3000.000000"/></Part><Part partType="fueltank-1" id="1145234" x="-0.500000" y="49.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="engine-3" id="1145230" x="-0.500000" y="46.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="1145236" x="-1.750000" y="49.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145235" x="-1.750000" y="52.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-2" id="1145233" x="1.500000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="3000.000000"/></Part><Part partType="fueltank-5" id="1145245" x="2.750000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145247" x="2.750000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145241" x="2.750000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145242" x="2.750000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145243" x="2.750000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145244" x="2.750000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="parachute-1" id="175469" x="-2.250000" y="49.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="detacher-1" id="175621" x="-9.500000" y="36.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="dock-1" id="1145141" x="-9.500000" y="36.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-1" id="114514" x="-9.500000" y="42.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="detacher-1" id="1145145" x="-9.500000" y="44.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="port-1" id="1145146" x="-9.500000" y="44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="dock-1" id="1145147" x="-9.500000" y="43.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="engine-3" id="1145152" x="-9.500000" y="39.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="strut-1" id="1145161" x="-7.500000" y="40.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="detacher-1" id="1145154" x="-5.500000" y="36.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="dock-1" id="1145155" x="-5.500000" y="36.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-1" id="1145156" x="-5.500000" y="42.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="detacher-1" id="1145157" x="-5.500000" y="44.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="port-1" id="1145158" x="-5.500000" y="44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="dock-1" id="1145159" x="-5.500000" y="43.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="engine-3" id="1145160" x="-5.500000" y="39.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="strut-1" id="175429" x="-7.500000" y="33.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175416" x="0.500000" y="40.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175279" x="-3.000000" y="45.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145224" x="5.000000" y="44.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175284" x="1.500000" y="29.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175289" x="1.500000" y="15.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-3" id="175291" x="1.500000" y="20.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-1" id="175293" x="-0.500000" y="22.500000" angle="4.712389" angleV="0.000000" editorAngle="3"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-1" id="175295" x="-0.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="engine-2" id="175294" x="-0.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="175304" x="-1.750000" y="20.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="20.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175301" x="-0.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175303" x="-1.750000" y="22.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="22.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="175300" x="1.500000" y="24.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="1.500000" chuteY="24.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-1" id="175297" x="3.500000" y="22.500000" angle="1.570796" angleV="0.000000" editorAngle="1"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-1" id="175298" x="3.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="engine-2" id="175299" x="3.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="fueltank-5" id="175518" x="4.750000" y="20.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="parachute-1" id="175302" x="3.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-5" id="175517" x="4.750000" y="22.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="strut-1" id="175273" x="6.000000" y="19.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175283" x="6.000000" y="27.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145197" x="1.500000" y="30.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175187" x="-12.000000" y="11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145203" x="-15.500000" y="6.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175306" x="-12.000000" y="2.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145292" x="-16.500000" y="4.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145293" x="-12.000000" y="-6.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145294" x="-12.000000" y="-14.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="parachute-1" id="1145300" x="-12.750000" y="-13.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145301" x="-12.750000" y="-11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="1145295" x="-12.000000" y="-22.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145296" x="-16.500000" y="-19.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="parachute-1" id="1145297" x="-14.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145298" x="-18.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="1145299" x="-16.500000" y="-25.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145338" x="-7.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145339" x="-7.500000" y="-22.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145302" x="-16.500000" y="-2.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-3" id="1145303" x="-16.500000" y="-7.000000" angle="3.141593" angleV="0.000000" editorAngle="2"><Tank fuel="6000.000000"/></Part><Part partType="fueltank-2" id="1145304" x="-16.500000" y="-13.000000" angle="3.141593" angleV="0.000000" editorAngle="2"><Tank fuel="3000.000000"/></Part><Part partType="fueltank-1" id="1145305" x="-16.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-1" id="1145306" x="-14.500000" y="-5.000000" angle="1.570796" angleV="0.000000" editorAngle="1"><Tank fuel="1500.000000"/></Part><Part partType="parachute-1" id="1145307" x="-14.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-3" id="1145308" x="-14.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="engine-3" id="1145309" x="-14.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="1145310" x="-14.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145311" x="-13.250000" y="-11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145312" x="-13.250000" y="-13.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-1" id="1145313" x="-18.500000" y="-5.000000" angle="4.712389" angleV="0.000000" editorAngle="3"><Tank fuel="1500.000000"/></Part><Part partType="fueltank-3" id="1145314" x="-18.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="6000.000000"/></Part><Part partType="engine-3" id="1145315" x="-18.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"><Engine fuel="0.000000"/></Part><Part partType="parachute-1" id="1145316" x="-18.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="fueltank-5" id="1145317" x="-19.750000" y="-13.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145318" x="-19.750000" y="-11.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145319" x="-19.750000" y="-10.250000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="1145320" x="-19.750000" y="-8.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="parachute-1" id="1145321" x="-18.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145333" x="-14.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="parachute-1" id="1145334" x="-18.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0"/><Part partType="strut-1" id="1145322" x="-21.000000" y="1.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145323" x="-17.500000" y="5.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145324" x="-21.000000" y="-7.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145325" x="-21.000000" y="-15.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145326" x="-20.250000" y="-12.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145327" x="-20.250000" y="-13.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145328" x="-21.000000" y="-23.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145329" x="-16.500000" y="-26.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145330" x="-16.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145331" x="-20.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="rcs-1" id="1145332" x="-20.250000" y="-10.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175601" x="-7.500000" y="2.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="175603" x="-11.000000" y="-2.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145336" x="-11.000000" y="-10.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145335" x="-4.000000" y="-2.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="strut-1" id="1145337" x="-4.000000" y="-10.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/><Part partType="fueltank-4" id="175532" x="-7.500000" y="10.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="750.000000"/></Part><Part partType="fueltank-4" id="175533" x="-7.500000" y="9.500000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="750.000000"/></Part><Part partType="fueltank-5" id="175534" x="-8.750000" y="9.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part><Part partType="fueltank-5" id="175535" x="-6.250000" y="9.750000" angle="0.000000" angleV="0.000000" editorAngle="0"><Tank fuel="275.000000"/></Part></Parts><Connections><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1" childPart="175112"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175112" childPart="175150"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175150" childPart="1145202"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145202" childPart="175562"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175562" childPart="1145207"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175562" childPart="175563"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175563" childPart="175565"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175565" childPart="175566"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175566" childPart="175569"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175569" childPart="175570"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175569" childPart="175571"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175566" childPart="175567"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175565" childPart="175582"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175565" childPart="175564"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175563" childPart="175583"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="175583" childPart="175584"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175584" childPart="175585"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175585" childPart="175586"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175584" childPart="175587"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175587" childPart="175588"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175587" childPart="175589"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175589" childPart="175590"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175590" childPart="175591"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175589" childPart="175592"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175589" childPart="175593"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175584" childPart="175594"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175594" childPart="175595"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175595" childPart="175596"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175596" childPart="175597"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="175598"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="175599"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="1145283"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="1145284"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175594" childPart="175600"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175583" childPart="1145278"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145278" childPart="1145205"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145278" childPart="1145280"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145280" childPart="1145279"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145279" childPart="1145287"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145279" childPart="1145288"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145279" childPart="1145289"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145289" childPart="1145290"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145289" childPart="1145291"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145280" childPart="1145285"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145280" childPart="1145286"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175583" childPart="1145281"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175583" childPart="1145282"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175112" childPart="175149"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="175149" childPart="175366"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175366" childPart="175367"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175367" childPart="1145201"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175367" childPart="175368"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175368" childPart="175369"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175369" childPart="175427"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175427" childPart="175371"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175427" childPart="175285"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175369" childPart="175426"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175369" childPart="1145275"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145275" childPart="1145277"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="1145275" childPart="1145276"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175366" childPart="175342"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175342" childPart="175343"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175343" childPart="175350"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175343" childPart="175344"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175344" childPart="175349"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175344" childPart="175345"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175345" childPart="175346"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175345" childPart="175347"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175344" childPart="175348"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175343" childPart="175351"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175351" childPart="175352"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175352" childPart="175516"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175352" childPart="175353"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175351" childPart="175354"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175351" childPart="175515"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175342" childPart="1145198"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145198" childPart="1145199"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145199" childPart="1145200"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175149" childPart="175527"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175527" childPart="175528"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175528" childPart="175529"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175529" childPart="175530"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175529" childPart="175531"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175527" childPart="175546"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175527" childPart="175547"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175112" childPart="175190"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175190" childPart="175274"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175274" childPart="175276"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175276" childPart="175281"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175281" childPart="175277"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175277" childPart="175428"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175428" childPart="175488"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175488" childPart="175489"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175489" childPart="175622"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175622" childPart="175623"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175489" childPart="1145249"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145249" childPart="1145250"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145249" childPart="1145274"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145249" childPart="1145251"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145251" childPart="1145260"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145260" childPart="1145267"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145267" childPart="1145268"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145267" childPart="1145269"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145260" childPart="1145261"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145261" childPart="1145262"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145262" childPart="1145263"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145263" childPart="1145264"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145263" childPart="1145265"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145262" childPart="1145266"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145270"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145271"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145272"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145273"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145251" childPart="1145252"/><Connection parentAttachPoint="3" childAttachPoint="3" parentPart="1145252" childPart="1145253"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145253" childPart="1145254"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145253" childPart="1145255"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145256"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145257"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145258"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145259"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175428" childPart="175490"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175490" childPart="175491"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175491" childPart="1145162"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145162" childPart="1145163"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175491" childPart="175440"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175440" childPart="175468"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175440" childPart="1145223"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145223" childPart="1145222"/><Connection parentAttachPoint="4" childAttachPoint="4" parentPart="1145222" childPart="1145208"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145208" childPart="1145246"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145208" childPart="1145248"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145237"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145238"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145239"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145240"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145223" childPart="1145232"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145232" childPart="1145226"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145226" childPart="1145231"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145231" childPart="1145234"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145234" childPart="1145230"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145234" childPart="1145236"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145231" childPart="1145235"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145232" childPart="1145233"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145233" childPart="1145245"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145233" childPart="1145247"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145241"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145242"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145243"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145244"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175440" childPart="175469"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175428" childPart="175621"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175621" childPart="1145141"/><DockConnection dockPart="1145141" parentPart="1145141" childPart="114514"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="114514" childPart="1145145"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145145" childPart="1145146"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="114514" childPart="1145147"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="114514" childPart="1145152"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175428" childPart="1145161"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175428" childPart="1145154"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145154" childPart="1145155"/><DockConnection dockPart="1145155" parentPart="1145155" childPart="1145156"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145156" childPart="1145157"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145157" childPart="1145158"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145156" childPart="1145159"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145156" childPart="1145160"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175277" childPart="175429"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175277" childPart="175416"/><Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175416" childPart="175279"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175416" childPart="1145224"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175276" childPart="175284"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175274" childPart="175289"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175289" childPart="175291"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175291" childPart="175293"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175293" childPart="175295"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175295" childPart="175294"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175295" childPart="175304"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175293" childPart="175301"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175293" childPart="175303"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175291" childPart="175300"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175291" childPart="175297"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175297" childPart="175298"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175298" childPart="175299"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175298" childPart="175518"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175297" childPart="175302"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="175297" childPart="175517"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175289" childPart="175273"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175273" childPart="175283"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175283" childPart="1145197"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175112" childPart="175187"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175187" childPart="1145203"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145203" childPart="175306"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175306" childPart="1145292"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175306" childPart="1145293"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145293" childPart="1145294"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145294" childPart="1145300"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145294" childPart="1145301"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145294" childPart="1145295"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145295" childPart="1145296"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145296" childPart="1145297"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145296" childPart="1145298"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145295" childPart="1145299"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="1145295" childPart="1145338"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="1145295" childPart="1145339"/><Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145293" childPart="1145302"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145302" childPart="1145303"/><Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145303" childPart="1145304"/><Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145304" childPart="1145305"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145303" childPart="1145306"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145306" childPart="1145307"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145306" childPart="1145308"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145308" childPart="1145309"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145309" childPart="1145310"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145308" childPart="1145311"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145308" childPart="1145312"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145303" childPart="1145313"/><Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145313" childPart="1145314"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145314" childPart="1145315"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145315" childPart="1145316"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145317"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145318"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145319"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145320"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145313" childPart="1145321"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145302" childPart="1145333"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145302" childPart="1145334"/><Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145302" childPart="1145322"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145322" childPart="1145323"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="1145322" childPart="1145324"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="1145324" childPart="1145325"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145325" childPart="1145326"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145325" childPart="1145327"/><Connection parentAttachPoint="3" childAttachPoint="4" parentPart="1145325" childPart="1145328"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145328" childPart="1145329"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145328" childPart="1145330"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145324" childPart="1145331"/><Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145324" childPart="1145332"/><Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175306" childPart="175601"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175601" childPart="175603"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175603" childPart="1145336"/><Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175601" childPart="1145335"/><Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145335" childPart="1145337"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175112" childPart="175532"/><Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175532" childPart="175533"/><Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175533" childPart="175534"/><Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175533" childPart="175535"/></Connections></Ship>
+<Ship version="1" liftedOff="0" touchingGround="0">
+	<DisconnectedParts>
+		<DisconnectedPart>
+			<Parts>
+				<Part partType="strut-1" id="1145168" x="20.500000" y="-4.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="strut-1" id="1145169" x="25.000000" y="-1.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="strut-1" id="1145187" x="22.000000" y="0.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="detacher-1" id="1145170" x="23.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="dock-1" id="1145171" x="23.500000" y="-3.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="fueltank-2" id="1145172" x="23.500000" y="23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+					<Tank fuel="3000.000000" />
+				</Part>
+				<Part partType="detacher-1" id="1145173" x="23.500000" y="26.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="port-1" id="1145174" x="23.500000" y="26.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="dock-1" id="1145175" x="23.500000" y="25.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+				<Part partType="fueltank-3" id="1145193" x="23.500000" y="17.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+					<Tank fuel="6000.000000" />
+				</Part>
+				<Part partType="fueltank-3" id="1145194" x="23.500000" y="9.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+					<Tank fuel="6000.000000" />
+				</Part>
+				<Part partType="fueltank-2" id="1145195" x="23.500000" y="3.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+					<Tank fuel="3000.000000" />
+				</Part>
+				<Part partType="engine-3" id="1145176" x="23.500000" y="-1.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+					<Engine fuel="0.000000" />
+				</Part>
+			</Parts>
+			<Connections>
+				<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145168" childPart="1145169" />
+				<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="1145168" childPart="1145187" />
+				<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145168" childPart="1145170" />
+				<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145170" childPart="1145171" />
+				<DockConnection dockPart="1145171" parentPart="1145171" childPart="1145172" />
+				<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145172" childPart="1145173" />
+				<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145173" childPart="1145174" />
+				<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145172" childPart="1145175" />
+				<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145172" childPart="1145193" />
+				<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145193" childPart="1145194" />
+				<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145194" childPart="1145195" />
+				<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145195" childPart="1145176" />
+			</Connections>
+		</DisconnectedPart>
+		<DisconnectedPart>
+			<Parts>
+				<Part partType="parachute-1" id="1145220" x="16.500000" y="39.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="16.500000" chuteY="39.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+			</Parts>
+			<Connections />
+		</DisconnectedPart>
+	</DisconnectedParts>
+	<Parts>
+		<Part partType="pod-1" id="1" x="-7.500000" y="12.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Pod throttle="0.000000" name="">
+				<Staging currentStage="0">
+					<Step>
+						<Activate Id="1145230" moved="0" />
+						<Activate Id="1145264" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145236" moved="0" />
+						<Activate Id="1145265" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145235" moved="0" />
+						<Activate Id="1145266" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145250" moved="0" />
+						<Activate Id="1145274" moved="0" />
+						<Activate Id="1145310" moved="0" />
+						<Activate Id="1145316" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145309" moved="0" />
+						<Activate Id="1145315" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145311" moved="0" />
+						<Activate Id="1145312" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145297" moved="0" />
+						<Activate Id="1145298" moved="0" />
+						<Activate Id="1145307" moved="0" />
+						<Activate Id="1145321" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145281" moved="0" />
+						<Activate Id="1145282" moved="0" />
+						<Activate Id="1145300" moved="0" />
+						<Activate Id="1145301" moved="0" />
+						<Activate Id="1145333" moved="0" />
+						<Activate Id="1145334" moved="0" />
+					</Step>
+					<Step>
+						<Activate Id="1145163" moved="1" />
+						<Activate Id="175623" moved="1" />
+					</Step>
+					<Step>
+						<Activate Id="175590" moved="1" />
+						<Activate Id="175596" moved="1" />
+						<Activate Id="175346" moved="1" />
+						<Activate Id="175353" moved="1" />
+						<Activate Id="175294" moved="1" />
+						<Activate Id="175299" moved="1" />
+					</Step>
+					<Step>
+						<Activate Id="1145152" moved="1" />
+						<Activate Id="1145145" moved="1" />
+						<Activate Id="175622" moved="1" />
+					</Step>
+					<Step>
+						<Activate Id="175621" moved="1" />
+					</Step>
+					<Step>
+						<Activate Id="1145160" moved="1" />
+						<Activate Id="1145157" moved="1" />
+						<Activate Id="1145162" moved="1" />
+					</Step>
+					<Step>
+						<Activate Id="1145154" moved="1" />
+					</Step>
+					<Step>
+						<Activate Id="175591" moved="1" />
+						<Activate Id="175597" moved="1" />
+						<Activate Id="175570" moved="1" />
+						<Activate Id="175571" moved="1" />
+						<Activate Id="175592" moved="1" />
+						<Activate Id="175593" moved="1" />
+						<Activate Id="175588" moved="1" />
+						<Activate Id="175600" moved="1" />
+						<Activate Id="175582" moved="1" />
+						<Activate Id="175564" moved="1" />
+						<Activate Id="175468" moved="1" />
+						<Activate Id="175469" moved="1" />
+						<Activate Id="175347" moved="1" />
+						<Activate Id="175349" moved="1" />
+						<Activate Id="175348" moved="1" />
+						<Activate Id="175354" moved="1" />
+						<Activate Id="175350" moved="1" />
+						<Activate Id="175304" moved="1" />
+						<Activate Id="175301" moved="1" />
+						<Activate Id="175302" moved="1" />
+						<Activate Id="175303" moved="1" />
+						<Activate Id="175300" moved="1" />
+					</Step>
+				</Staging>
+			</Pod>
+		</Part>
+		<Part partType="strut-1" id="175112" x="-7.500000" y="11.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175150" x="-3.000000" y="11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145202" x="0.500000" y="6.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175562" x="-3.000000" y="2.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145207" x="1.500000" y="4.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175563" x="-3.000000" y="-6.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175565" x="-3.000000" y="-14.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175566" x="-3.000000" y="-22.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175569" x="1.500000" y="-19.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="parachute-1" id="175570" x="-0.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175571" x="3.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="175567" x="1.500000" y="-25.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="parachute-1" id="175582" x="-2.250000" y="-13.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175564" x="-2.250000" y="-11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="175583" x="1.500000" y="-2.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-3" id="175584" x="1.500000" y="-7.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="fueltank-2" id="175585" x="1.500000" y="-13.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+			<Tank fuel="3000.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="175586" x="1.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="175587" x="-0.500000" y="-5.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175588" x="-0.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-3" id="175589" x="-0.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="engine-3" id="175590" x="-0.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175591" x="-0.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175592" x="-1.750000" y="-11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175593" x="-1.750000" y="-13.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-1" id="175594" x="3.500000" y="-5.000000" angle="1.570796" angleV="0.000000" editorAngle="1">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-3" id="175595" x="3.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="engine-3" id="175596" x="3.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175597" x="3.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-5" id="175598" x="4.750000" y="-13.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175599" x="4.750000" y="-11.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145283" x="4.750000" y="-10.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145284" x="4.750000" y="-8.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175600" x="3.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="1145278" x="6.000000" y="1.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145205" x="2.500000" y="5.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145280" x="6.000000" y="-7.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145279" x="6.000000" y="-15.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145287" x="5.250000" y="-12.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145288" x="5.250000" y="-13.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="strut-1" id="1145289" x="6.000000" y="-23.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145290" x="1.500000" y="-26.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145291" x="1.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145285" x="5.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145286" x="5.250000" y="-10.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="parachute-1" id="1145281" x="-0.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145282" x="3.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="175149" x="-11.000000" y="16.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175366" x="-12.000000" y="19.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175367" x="-12.000000" y="27.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145201" x="-16.500000" y="29.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175368" x="-15.500000" y="31.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175369" x="-12.000000" y="36.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175427" x="-7.500000" y="32.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175371" x="-10.000000" y="28.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175285" x="-5.000000" y="28.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175426" x="-7.500000" y="34.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145275" x="-15.500000" y="40.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145277" x="-20.000000" y="44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145276" x="-12.000000" y="45.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175342" x="-16.500000" y="15.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-3" id="175343" x="-16.500000" y="20.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175350" x="-16.500000" y="24.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-16.500000" chuteY="24.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-1" id="175344" x="-14.500000" y="22.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175349" x="-13.250000" y="22.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="22.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-1" id="175345" x="-14.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="engine-2" id="175346" x="-14.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175347" x="-13.250000" y="20.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="20.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175348" x="-14.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-1" id="175351" x="-18.500000" y="22.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="175352" x="-18.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175516" x="-19.750000" y="20.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="engine-2" id="175353" x="-18.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175354" x="-18.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-5" id="175515" x="-19.750000" y="22.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="strut-1" id="1145198" x="-21.000000" y="19.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145199" x="-21.000000" y="27.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145200" x="-16.500000" y="30.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175527" x="-7.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-4" id="175528" x="-7.500000" y="19.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="750.000000" />
+		</Part>
+		<Part partType="fueltank-4" id="175529" x="-7.500000" y="18.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="750.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175530" x="-8.750000" y="18.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175531" x="-6.250000" y="18.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="strut-1" id="175546" x="-11.000000" y="25.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175547" x="-4.000000" y="25.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175190" x="-4.000000" y="16.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175274" x="-3.000000" y="19.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175276" x="-3.000000" y="27.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175281" x="0.500000" y="31.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175277" x="-3.000000" y="36.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175428" x="-7.500000" y="35.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175488" x="-11.000000" y="40.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175489" x="-11.000000" y="48.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="detacher-2" id="175622" x="-10.250000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="lander-1" id="175623" x="-9.750000" y="47.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000" />
+		<Part partType="strut-1" id="1145249" x="-12.000000" y="53.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="parachute-1" id="1145250" x="-12.750000" y="52.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145274" x="-12.750000" y="49.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="1145251" x="-15.500000" y="57.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-3" id="1145260" x="-16.500000" y="53.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="fueltank-2" id="1145267" x="-16.500000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="3000.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145268" x="-17.750000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145269" x="-17.750000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="1145261" x="-14.500000" y="55.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-2" id="1145262" x="-14.500000" y="52.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="3000.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="1145263" x="-14.500000" y="49.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="engine-3" id="1145264" x="-14.500000" y="46.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="1145265" x="-13.250000" y="49.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145266" x="-13.250000" y="52.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-5" id="1145270" x="-17.750000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145271" x="-17.750000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145272" x="-17.750000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145273" x="-17.750000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="strut-1" id="1145252" x="-19.000000" y="53.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145253" x="-19.000000" y="45.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145254" x="-18.250000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145255" x="-18.250000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145256" x="-18.250000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145257" x="-18.250000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145258" x="-18.250000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145259" x="-18.250000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175490" x="-4.000000" y="40.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175491" x="-4.000000" y="48.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="detacher-2" id="1145162" x="-4.750000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="lander-1" id="1145163" x="-5.250000" y="47.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000" />
+		<Part partType="strut-1" id="175440" x="-3.000000" y="53.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="parachute-1" id="175468" x="-2.250000" y="52.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="1145223" x="0.500000" y="57.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145222" x="4.000000" y="53.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145208" x="4.000000" y="45.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145246" x="3.250000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145248" x="3.250000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145237" x="3.250000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145238" x="3.250000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145239" x="3.250000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="rcs-1" id="1145240" x="3.250000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" />
+		<Part partType="fueltank-3" id="1145232" x="1.500000" y="53.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="1145226" x="-0.500000" y="55.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-2" id="1145231" x="-0.500000" y="52.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="3000.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="1145234" x="-0.500000" y="49.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="engine-3" id="1145230" x="-0.500000" y="46.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="1145236" x="-1.750000" y="49.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145235" x="-1.750000" y="52.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="52.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-2" id="1145233" x="1.500000" y="47.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="3000.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145245" x="2.750000" y="47.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145247" x="2.750000" y="46.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145241" x="2.750000" y="55.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145242" x="2.750000" y="54.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145243" x="2.750000" y="52.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145244" x="2.750000" y="51.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175469" x="-2.250000" y="49.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-2.250000" chuteY="49.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="detacher-1" id="175621" x="-9.500000" y="36.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="dock-1" id="1145141" x="-9.500000" y="36.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-1" id="114514" x="-9.500000" y="42.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="detacher-1" id="1145145" x="-9.500000" y="44.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="port-1" id="1145146" x="-9.500000" y="44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="dock-1" id="1145147" x="-9.500000" y="43.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="engine-3" id="1145152" x="-9.500000" y="39.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="strut-1" id="1145161" x="-7.500000" y="40.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="detacher-1" id="1145154" x="-5.500000" y="36.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="dock-1" id="1145155" x="-5.500000" y="36.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-1" id="1145156" x="-5.500000" y="42.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="detacher-1" id="1145157" x="-5.500000" y="44.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="port-1" id="1145158" x="-5.500000" y="44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="dock-1" id="1145159" x="-5.500000" y="43.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="engine-3" id="1145160" x="-5.500000" y="39.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="strut-1" id="175429" x="-7.500000" y="33.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175416" x="0.500000" y="40.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175279" x="-3.000000" y="45.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145224" x="5.000000" y="44.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175284" x="1.500000" y="29.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175289" x="1.500000" y="15.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-3" id="175291" x="1.500000" y="20.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="175293" x="-0.500000" y="22.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="175295" x="-0.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="engine-2" id="175294" x="-0.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175304" x="-1.750000" y="20.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="20.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175301" x="-0.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-0.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175303" x="-1.750000" y="22.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-1.750000" chuteY="22.500000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="175300" x="1.500000" y="24.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="1.500000" chuteY="24.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-1" id="175297" x="3.500000" y="22.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="175298" x="3.500000" y="20.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="engine-2" id="175299" x="3.500000" y="18.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175518" x="4.750000" y="20.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="parachute-1" id="175302" x="3.500000" y="23.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="3.500000" chuteY="23.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-5" id="175517" x="4.750000" y="22.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="strut-1" id="175273" x="6.000000" y="19.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175283" x="6.000000" y="27.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145197" x="1.500000" y="30.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175187" x="-12.000000" y="11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145203" x="-15.500000" y="6.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175306" x="-12.000000" y="2.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145292" x="-16.500000" y="4.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145293" x="-12.000000" y="-6.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145294" x="-12.000000" y="-14.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="parachute-1" id="1145300" x="-12.750000" y="-13.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145301" x="-12.750000" y="-11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-12.750000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="1145295" x="-12.000000" y="-22.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145296" x="-16.500000" y="-19.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="parachute-1" id="1145297" x="-14.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145298" x="-18.500000" y="-18.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-18.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="1145299" x="-16.500000" y="-25.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145338" x="-7.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145339" x="-7.500000" y="-22.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145302" x="-16.500000" y="-2.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-3" id="1145303" x="-16.500000" y="-7.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="fueltank-2" id="1145304" x="-16.500000" y="-13.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+			<Tank fuel="3000.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="1145305" x="-16.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-1" id="1145306" x="-14.500000" y="-5.000000" angle="1.570796" angleV="0.000000" editorAngle="1">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="parachute-1" id="1145307" x="-14.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-3" id="1145308" x="-14.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="engine-3" id="1145309" x="-14.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="1145310" x="-14.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145311" x="-13.250000" y="-11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="-11.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145312" x="-13.250000" y="-13.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-13.250000" chuteY="-13.000000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-1" id="1145313" x="-18.500000" y="-5.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+			<Tank fuel="1500.000000" />
+		</Part>
+		<Part partType="fueltank-3" id="1145314" x="-18.500000" y="-10.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="6000.000000" />
+		</Part>
+		<Part partType="engine-3" id="1145315" x="-18.500000" y="-16.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+			<Engine fuel="0.000000" />
+		</Part>
+		<Part partType="parachute-1" id="1145316" x="-18.500000" y="-18.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-18.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="fueltank-5" id="1145317" x="-19.750000" y="-13.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145318" x="-19.750000" y="-11.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145319" x="-19.750000" y="-10.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="1145320" x="-19.750000" y="-8.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="parachute-1" id="1145321" x="-18.500000" y="-3.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-3.750000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145333" x="-14.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-14.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="parachute-1" id="1145334" x="-18.500000" y="-3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" chuteX="-18.500000" chuteY="-3.250000" chuteAngle="0.000000" chuteHeight="0.000000" inflation="0.100000" inflate="0" deployed="0" rope="0" />
+		<Part partType="strut-1" id="1145322" x="-21.000000" y="1.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145323" x="-17.500000" y="5.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145324" x="-21.000000" y="-7.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145325" x="-21.000000" y="-15.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145326" x="-20.250000" y="-12.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145327" x="-20.250000" y="-13.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145328" x="-21.000000" y="-23.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145329" x="-16.500000" y="-26.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145330" x="-16.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145331" x="-20.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="rcs-1" id="1145332" x="-20.250000" y="-10.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175601" x="-7.500000" y="2.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="175603" x="-11.000000" y="-2.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145336" x="-11.000000" y="-10.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145335" x="-4.000000" y="-2.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="strut-1" id="1145337" x="-4.000000" y="-10.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" />
+		<Part partType="fueltank-4" id="175532" x="-7.500000" y="10.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="750.000000" />
+		</Part>
+		<Part partType="fueltank-4" id="175533" x="-7.500000" y="9.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="750.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175534" x="-8.750000" y="9.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+		<Part partType="fueltank-5" id="175535" x="-6.250000" y="9.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+			<Tank fuel="275.000000" />
+		</Part>
+	</Parts>
+	<Connections>
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1" childPart="175112" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175112" childPart="175150" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175150" childPart="1145202" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145202" childPart="175562" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175562" childPart="1145207" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175562" childPart="175563" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175563" childPart="175565" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175565" childPart="175566" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175566" childPart="175569" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175569" childPart="175570" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175569" childPart="175571" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175566" childPart="175567" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175565" childPart="175582" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175565" childPart="175564" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175563" childPart="175583" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="175583" childPart="175584" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175584" childPart="175585" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175585" childPart="175586" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175584" childPart="175587" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175587" childPart="175588" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175587" childPart="175589" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175589" childPart="175590" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175590" childPart="175591" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175589" childPart="175592" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175589" childPart="175593" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175584" childPart="175594" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175594" childPart="175595" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175595" childPart="175596" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175596" childPart="175597" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="175598" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="175599" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="1145283" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175595" childPart="1145284" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175594" childPart="175600" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175583" childPart="1145278" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145278" childPart="1145205" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145278" childPart="1145280" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145280" childPart="1145279" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145279" childPart="1145287" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145279" childPart="1145288" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145279" childPart="1145289" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145289" childPart="1145290" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145289" childPart="1145291" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145280" childPart="1145285" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145280" childPart="1145286" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175583" childPart="1145281" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175583" childPart="1145282" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175112" childPart="175149" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="175149" childPart="175366" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175366" childPart="175367" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175367" childPart="1145201" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175367" childPart="175368" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175368" childPart="175369" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175369" childPart="175427" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175427" childPart="175371" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175427" childPart="175285" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175369" childPart="175426" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175369" childPart="1145275" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145275" childPart="1145277" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="1145275" childPart="1145276" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175366" childPart="175342" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175342" childPart="175343" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175343" childPart="175350" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175343" childPart="175344" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175344" childPart="175349" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175344" childPart="175345" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175345" childPart="175346" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175345" childPart="175347" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175344" childPart="175348" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175343" childPart="175351" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175351" childPart="175352" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175352" childPart="175516" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175352" childPart="175353" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175351" childPart="175354" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175351" childPart="175515" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175342" childPart="1145198" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145198" childPart="1145199" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145199" childPart="1145200" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175149" childPart="175527" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175527" childPart="175528" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175528" childPart="175529" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175529" childPart="175530" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175529" childPart="175531" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175527" childPart="175546" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175527" childPart="175547" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175112" childPart="175190" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175190" childPart="175274" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175274" childPart="175276" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175276" childPart="175281" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175281" childPart="175277" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175277" childPart="175428" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175428" childPart="175488" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175488" childPart="175489" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175489" childPart="175622" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175622" childPart="175623" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175489" childPart="1145249" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145249" childPart="1145250" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145249" childPart="1145274" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145249" childPart="1145251" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145251" childPart="1145260" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145260" childPart="1145267" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145267" childPart="1145268" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145267" childPart="1145269" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145260" childPart="1145261" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145261" childPart="1145262" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145262" childPart="1145263" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145263" childPart="1145264" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145263" childPart="1145265" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145262" childPart="1145266" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145270" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145271" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145272" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145260" childPart="1145273" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145251" childPart="1145252" />
+		<Connection parentAttachPoint="3" childAttachPoint="3" parentPart="1145252" childPart="1145253" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145253" childPart="1145254" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145253" childPart="1145255" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145256" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145257" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145258" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145252" childPart="1145259" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175428" childPart="175490" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175490" childPart="175491" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175491" childPart="1145162" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145162" childPart="1145163" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175491" childPart="175440" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175440" childPart="175468" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175440" childPart="1145223" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145223" childPart="1145222" />
+		<Connection parentAttachPoint="4" childAttachPoint="4" parentPart="1145222" childPart="1145208" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145208" childPart="1145246" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145208" childPart="1145248" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145237" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145238" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145239" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145222" childPart="1145240" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145223" childPart="1145232" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145232" childPart="1145226" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145226" childPart="1145231" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145231" childPart="1145234" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145234" childPart="1145230" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145234" childPart="1145236" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145231" childPart="1145235" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145232" childPart="1145233" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145233" childPart="1145245" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145233" childPart="1145247" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145241" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145242" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145243" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145232" childPart="1145244" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175440" childPart="175469" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175428" childPart="175621" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175621" childPart="1145141" />
+		<DockConnection dockPart="1145141" parentPart="1145141" childPart="114514" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="114514" childPart="1145145" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145145" childPart="1145146" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="114514" childPart="1145147" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="114514" childPart="1145152" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175428" childPart="1145161" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175428" childPart="1145154" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145154" childPart="1145155" />
+		<DockConnection dockPart="1145155" parentPart="1145155" childPart="1145156" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145156" childPart="1145157" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145157" childPart="1145158" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145156" childPart="1145159" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145156" childPart="1145160" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175277" childPart="175429" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175277" childPart="175416" />
+		<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="175416" childPart="175279" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175416" childPart="1145224" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175276" childPart="175284" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175274" childPart="175289" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="175289" childPart="175291" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175291" childPart="175293" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175293" childPart="175295" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175295" childPart="175294" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175295" childPart="175304" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175293" childPart="175301" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175293" childPart="175303" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="175291" childPart="175300" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175291" childPart="175297" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175297" childPart="175298" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175298" childPart="175299" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175298" childPart="175518" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="175297" childPart="175302" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="175297" childPart="175517" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175289" childPart="175273" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="175273" childPart="175283" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175283" childPart="1145197" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="175112" childPart="175187" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175187" childPart="1145203" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145203" childPart="175306" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="175306" childPart="1145292" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175306" childPart="1145293" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145293" childPart="1145294" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145294" childPart="1145300" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145294" childPart="1145301" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145294" childPart="1145295" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145295" childPart="1145296" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145296" childPart="1145297" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145296" childPart="1145298" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145295" childPart="1145299" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="1145295" childPart="1145338" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="1145295" childPart="1145339" />
+		<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="1145293" childPart="1145302" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145302" childPart="1145303" />
+		<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1145303" childPart="1145304" />
+		<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1145304" childPart="1145305" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145303" childPart="1145306" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145306" childPart="1145307" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145306" childPart="1145308" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145308" childPart="1145309" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145309" childPart="1145310" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145308" childPart="1145311" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145308" childPart="1145312" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145303" childPart="1145313" />
+		<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1145313" childPart="1145314" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145314" childPart="1145315" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145315" childPart="1145316" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145317" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145318" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145319" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145314" childPart="1145320" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1145313" childPart="1145321" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145302" childPart="1145333" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1145302" childPart="1145334" />
+		<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="1145302" childPart="1145322" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="1145322" childPart="1145323" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="1145322" childPart="1145324" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="1145324" childPart="1145325" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145325" childPart="1145326" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145325" childPart="1145327" />
+		<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="1145325" childPart="1145328" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145328" childPart="1145329" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1145328" childPart="1145330" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145324" childPart="1145331" />
+		<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1145324" childPart="1145332" />
+		<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="175306" childPart="175601" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175601" childPart="175603" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="175603" childPart="1145336" />
+		<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="175601" childPart="1145335" />
+		<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1145335" childPart="1145337" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175112" childPart="175532" />
+		<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="175532" childPart="175533" />
+		<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="175533" childPart="175534" />
+		<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="175533" childPart="175535" />
+	</Connections>
+</Ship>

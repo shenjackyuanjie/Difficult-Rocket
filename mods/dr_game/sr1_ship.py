@@ -299,12 +299,13 @@ class SR1ShipRender(BaseScreen):
         还是重写一下渲染逻辑
         把渲染单个部件的逻辑提取出来放到这里
         """
+        randomer = random.Random(part_data.id)
         texture = self.textures.get_texture(part_type.sprite)
         part_sprite = Sprite(
             img=texture,
             x=part_data.x * 60,
             y=part_data.y * 60,
-            z=random.random(),
+            z=randomer.random(),
             batch=batch,
             group=part_group,
         )
@@ -312,9 +313,9 @@ class SR1ShipRender(BaseScreen):
         part_sprite.scale_x = -1 if part_data.flip_x else 1
         part_sprite.scale_y = -1 if part_data.flip_y else 1
         line_colors = (
-            random.randrange(0, 255),
-            random.randrange(0, 255),
-            random.randrange(0, 255),
+            randomer.randrange(0, 255),
+            randomer.randrange(0, 255),
+            randomer.randrange(0, 255),
             200,
         )
         width = 4
