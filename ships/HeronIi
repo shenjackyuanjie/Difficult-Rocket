@@ -1,0 +1,2273 @@
+<?xml version="1.0" encoding="UTF-8"?><Ship version="1" liftedOff="0" touchingGround="0">
+<DisconnectedParts>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DisconnectedParts>
+<Parts>
+<Part partType="pod-1" id="1" x="-14.500000" y="-32.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="Heron">
+<Staging currentStage="0">
+<Step>
+<Activate Id="1942578828576448" moved="1"/>
+<Activate Id="1977961368667678" moved="1"/>
+<Activate Id="6566828345641487" moved="1"/>
+<Activate Id="3348899379966455" moved="1"/>
+<Activate Id="9689947811228448" moved="1"/>
+<Activate Id="9988363678184657" moved="1"/>
+<Activate Id="8318269886656789" moved="1"/>
+<Activate Id="1246995864362381" moved="1"/>
+<Activate Id="5639176249458351" moved="1"/>
+<Activate Id="2931914867791595" moved="1"/>
+<Activate Id="6474252933424212" moved="1"/>
+<Activate Id="6654235516464523" moved="1"/>
+<Activate Id="4186699956221258" moved="1"/>
+<Activate Id="6123537328996337" moved="1"/>
+<Activate Id="4147132793413328" moved="1"/>
+<Activate Id="1618472336683297" moved="1"/>
+<Activate Id="2633217218585144" moved="1"/>
+<Activate Id="1523229538563571" moved="1"/>
+<Activate Id="1687442612232283" moved="1"/>
+<Activate Id="8242561555555985" moved="1"/>
+<Activate Id="8387137729794534" moved="1"/>
+<Activate Id="8938673677814586" moved="1"/>
+<Activate Id="3476629536242953" moved="1"/>
+<Activate Id="9797181831727615" moved="1"/>
+<Activate Id="4581742781423829" moved="1"/>
+<Activate Id="1242342141884562" moved="1"/>
+<Activate Id="4493379982116863" moved="1"/>
+<Activate Id="1244625994562523" moved="1"/>
+<Activate Id="8454133794778635" moved="1"/>
+<Activate Id="8944615182641228" moved="1"/>
+<Activate Id="1617324168534674" moved="1"/>
+<Activate Id="7557824274596872" moved="1"/>
+<Activate Id="3416626556528846" moved="1"/>
+<Activate Id="6219772545238197" moved="1"/>
+<Activate Id="4516145799347851" moved="1"/>
+<Activate Id="4873878685773241" moved="1"/>
+<Activate Id="8757859896473358" moved="1"/>
+<Activate Id="3429936284742454" moved="1"/>
+<Activate Id="4731184788286535" moved="1"/>
+<Activate Id="3115646386826569" moved="1"/>
+<Activate Id="5759442721248792" moved="1"/>
+<Activate Id="2798233646148618" moved="1"/>
+<Activate Id="8382556315749643" moved="1"/>
+<Activate Id="5597613235412311" moved="1"/>
+<Activate Id="1715582923999769" moved="1"/>
+<Activate Id="4849594763658829" moved="1"/>
+<Activate Id="5168577776686171" moved="1"/>
+<Activate Id="6279653671772743" moved="1"/>
+<Activate Id="9361153326727929" moved="1"/>
+<Activate Id="8911991721739798" moved="1"/>
+<Activate Id="9287696114524896" moved="1"/>
+<Activate Id="7773986469525597" moved="1"/>
+<Activate Id="5128789913262327" moved="1"/>
+<Activate Id="5668868761667643" moved="1"/>
+<Activate Id="3992814615628144" moved="1"/>
+<Activate Id="9175843828372256" moved="1"/>
+<Activate Id="3453761787991144" moved="1"/>
+<Activate Id="2312219687361265" moved="1"/>
+<Activate Id="3178548915226793" moved="1"/>
+<Activate Id="3985567689542712" moved="1"/>
+<Activate Id="4343184688113472" moved="1"/>
+<Activate Id="7163691325175131" moved="1"/>
+<Activate Id="8974537374653761" moved="1"/>
+<Activate Id="2418471984966448" moved="1"/>
+<Activate Id="4412983482577941" moved="1"/>
+<Activate Id="9485447689814287" moved="1"/>
+<Activate Id="8389345674161625" moved="1"/>
+<Activate Id="7327849387823956" moved="1"/>
+<Activate Id="4998564785617575" moved="1"/>
+<Activate Id="2351627816975621" moved="1"/>
+<Activate Id="7476975867253816" moved="1"/>
+<Activate Id="2629452626662434" moved="1"/>
+<Activate Id="2615453171693552" moved="1"/>
+<Activate Id="1341394964364573" moved="1"/>
+<Activate Id="7236512125443445" moved="1"/>
+<Activate Id="9827421852574111" moved="1"/>
+<Activate Id="3579372626139831" moved="1"/>
+<Activate Id="9528936499648486" moved="1"/>
+<Activate Id="3422399367666364" moved="1"/>
+<Activate Id="9357677327383871" moved="1"/>
+<Activate Id="6887769424923652" moved="1"/>
+<Activate Id="8488894793364431" moved="1"/>
+<Activate Id="1763582688426449" moved="1"/>
+<Activate Id="1433396489572389" moved="1"/>
+<Activate Id="3128751381264874" moved="1"/>
+<Activate Id="3629518224522445" moved="1"/>
+<Activate Id="9156554734698464" moved="1"/>
+<Activate Id="7782288768211597" moved="1"/>
+<Activate Id="4839557828478926" moved="1"/>
+<Activate Id="2515433486166154" moved="1"/>
+<Activate Id="2693616859479838" moved="1"/>
+<Activate Id="2773867293149995" moved="1"/>
+<Activate Id="3964467867458146" moved="1"/>
+<Activate Id="1266814451756221" moved="1"/>
+<Activate Id="3681873492965596" moved="1"/>
+<Activate Id="9814886351443265" moved="1"/>
+</Step>
+<Step>
+<Activate Id="3639242885995546" moved="1"/>
+<Activate Id="4479356226164797" moved="1"/>
+<Activate Id="1444948293299519" moved="1"/>
+<Activate Id="4217251329153544" moved="1"/>
+<Activate Id="6637756952198676" moved="1"/>
+<Activate Id="4164195791895528" moved="1"/>
+</Step>
+<Step>
+<Activate Id="1338471633278526" moved="1"/>
+<Activate Id="6147999717997839" moved="1"/>
+</Step>
+<Step>
+<Activate Id="7856364991341482" moved="1"/>
+<Activate Id="5728763872363124" moved="1"/>
+</Step>
+<Step>
+<Activate Id="9533175864998677" moved="1"/>
+<Activate Id="2935952877123171" moved="1"/>
+<Activate Id="2983657267428936" moved="1"/>
+<Activate Id="1697228513258958" moved="1"/>
+<Activate Id="9788149866748987" moved="1"/>
+<Activate Id="6831755496524222" moved="1"/>
+<Activate Id="8933788235613754" moved="1"/>
+<Activate Id="4336762924954678" moved="1"/>
+<Activate Id="9271778831673365" moved="1"/>
+<Activate Id="9619459959817322" moved="1"/>
+<Activate Id="1494244412437657" moved="1"/>
+<Activate Id="5927517694611396" moved="1"/>
+<Activate Id="2387166944913651" moved="1"/>
+<Activate Id="2364793627684696" moved="1"/>
+<Activate Id="5225519153438853" moved="1"/>
+<Activate Id="5457811678971858" moved="1"/>
+<Activate Id="9848121817958883" moved="1"/>
+<Activate Id="5465185682365839" moved="1"/>
+<Activate Id="5226391526973373" moved="1"/>
+<Activate Id="8852577843473373" moved="1"/>
+<Activate Id="1356726884465378" moved="1"/>
+<Activate Id="9589384518591911" moved="1"/>
+<Activate Id="3777719166565441" moved="1"/>
+<Activate Id="5176984799327545" moved="1"/>
+<Activate Id="4199353319135722" moved="1"/>
+<Activate Id="1647897937938639" moved="1"/>
+<Activate Id="9375891963114935" moved="1"/>
+<Activate Id="4832754428787287" moved="1"/>
+<Activate Id="5496287959634777" moved="1"/>
+<Activate Id="2746755388555669" moved="1"/>
+<Activate Id="9296146163633683" moved="1"/>
+<Activate Id="1716756518526727" moved="1"/>
+<Activate Id="7339877451755142" moved="1"/>
+<Activate Id="8822925153341417" moved="1"/>
+<Activate Id="8413994372338769" moved="1"/>
+<Activate Id="7633496714817586" moved="1"/>
+<Activate Id="5923427465269699" moved="1"/>
+<Activate Id="1431939795842597" moved="1"/>
+<Activate Id="4151972923143598" moved="1"/>
+<Activate Id="5571796574824176" moved="1"/>
+<Activate Id="5477794185342676" moved="1"/>
+<Activate Id="3413193599898492" moved="1"/>
+<Activate Id="4528541668436676" moved="1"/>
+<Activate Id="4262193223817856" moved="1"/>
+<Activate Id="3598669475794634" moved="1"/>
+<Activate Id="8817795193671869" moved="1"/>
+<Activate Id="4887588916695178" moved="1"/>
+<Activate Id="2893831881134869" moved="1"/>
+<Activate Id="4784375297979797" moved="1"/>
+<Activate Id="8771278533783474" moved="1"/>
+<Activate Id="6612141616785176" moved="1"/>
+<Activate Id="8716273751418379" moved="1"/>
+</Step>
+<Step>
+<Activate Id="1878189236273399" moved="1"/>
+<Activate Id="9376735829551813" moved="1"/>
+<Activate Id="2213927335478378" moved="1"/>
+<Activate Id="9628839724439537" moved="1"/>
+</Step>
+<Step>
+<Activate Id="9829881175689881" moved="1"/>
+<Activate Id="1657436713173134" moved="1"/>
+<Activate Id="7829484239187769" moved="1"/>
+<Activate Id="4711767789967862" moved="1"/>
+</Step>
+<Step>
+<Activate Id="5753422544226325" moved="1"/>
+<Activate Id="2915737771133624" moved="1"/>
+<Activate Id="1726879721851664" moved="1"/>
+<Activate Id="6889275735237226" moved="1"/>
+<Activate Id="6481785131674289" moved="1"/>
+<Activate Id="3918729429237271" moved="1"/>
+<Activate Id="7766512961156792" moved="1"/>
+<Activate Id="6157247133443468" moved="1"/>
+</Step>
+<Step>
+<Activate Id="2269917136739871" moved="1"/>
+<Activate Id="7511229188572262" moved="1"/>
+<Activate Id="7217593545462923" moved="1"/>
+<Activate Id="5159526412431251" moved="1"/>
+<Activate Id="8159891274194662" moved="1"/>
+<Activate Id="9826759519519497" moved="1"/>
+<Activate Id="6944466475155844" moved="1"/>
+<Activate Id="6876489661257148" moved="1"/>
+<Activate Id="9369661884826387" moved="1"/>
+<Activate Id="9774923347878783" moved="1"/>
+<Activate Id="8585359665278169" moved="1"/>
+<Activate Id="1534273268918132" moved="1"/>
+<Activate Id="9797731264337836" moved="1"/>
+<Activate Id="3812734583217641" moved="1"/>
+<Activate Id="9641155146284414" moved="1"/>
+<Activate Id="7425968748711528" moved="1"/>
+<Activate Id="3735229617942561" moved="1"/>
+<Activate Id="1842744851738683" moved="1"/>
+<Activate Id="3457922123222283" moved="1"/>
+<Activate Id="3497733789329853" moved="1"/>
+<Activate Id="9794157619253859" moved="1"/>
+<Activate Id="8699994694633152" moved="1"/>
+<Activate Id="9713452778518262" moved="1"/>
+<Activate Id="5924574284595665" moved="1"/>
+<Activate Id="6447763676893829" moved="1"/>
+<Activate Id="8923212697515924" moved="1"/>
+<Activate Id="8374747748689596" moved="1"/>
+<Activate Id="5433722918588435" moved="1"/>
+<Activate Id="3272239111121131" moved="1"/>
+<Activate Id="5567785797982621" moved="1"/>
+<Activate Id="3699649925934583" moved="1"/>
+<Activate Id="9333926975662783" moved="1"/>
+<Activate Id="2894713265355298" moved="1"/>
+<Activate Id="5447458517382718" moved="1"/>
+<Activate Id="5758536378628121" moved="1"/>
+<Activate Id="2783662332921574" moved="1"/>
+<Activate Id="7498521311843736" moved="1"/>
+<Activate Id="8387267153512766" moved="1"/>
+<Activate Id="4616792174318746" moved="1"/>
+<Activate Id="7117448317438224" moved="1"/>
+<Activate Id="9192682772212441" moved="1"/>
+<Activate Id="1783267254115223" moved="1"/>
+<Activate Id="4233454682773491" moved="1"/>
+<Activate Id="3532148342969593" moved="1"/>
+<Activate Id="7888665154731794" moved="1"/>
+<Activate Id="2978868977125158" moved="1"/>
+<Activate Id="1744275112481457" moved="1"/>
+<Activate Id="7543745358383687" moved="1"/>
+<Activate Id="6533217593332526" moved="1"/>
+<Activate Id="2838476523988942" moved="1"/>
+<Activate Id="5916234134238149" moved="1"/>
+<Activate Id="9961336989457867" moved="1"/>
+<Activate Id="5399624455389562" moved="1"/>
+<Activate Id="2874613638324899" moved="1"/>
+<Activate Id="4622225938636375" moved="1"/>
+<Activate Id="5653681398127351" moved="1"/>
+<Activate Id="8466562941867951" moved="1"/>
+<Activate Id="3937653573671872" moved="1"/>
+<Activate Id="2686173248146342" moved="1"/>
+<Activate Id="6243594882668716" moved="1"/>
+<Activate Id="6496928153687118" moved="1"/>
+<Activate Id="5455597335295776" moved="1"/>
+<Activate Id="3444213143963578" moved="1"/>
+<Activate Id="2862425712218426" moved="1"/>
+<Activate Id="7588324332948488" moved="1"/>
+<Activate Id="9984546256428446" moved="1"/>
+<Activate Id="1893781556189841" moved="1"/>
+<Activate Id="2217315134787777" moved="1"/>
+<Activate Id="5292231736494687" moved="1"/>
+<Activate Id="8393319789746519" moved="1"/>
+<Activate Id="8558171987225463" moved="1"/>
+<Activate Id="1798537928998296" moved="1"/>
+<Activate Id="3826926915599255" moved="1"/>
+<Activate Id="4919278634518321" moved="1"/>
+<Activate Id="6961441377871767" moved="1"/>
+<Activate Id="2552417149937378" moved="1"/>
+<Activate Id="1128561934153749" moved="1"/>
+<Activate Id="2872286646463483" moved="1"/>
+<Activate Id="7322529975787198" moved="1"/>
+<Activate Id="6245788585383968" moved="1"/>
+<Activate Id="8553784997539697" moved="1"/>
+<Activate Id="5682727337175494" moved="1"/>
+<Activate Id="4484515922659131" moved="1"/>
+<Activate Id="9155338655159862" moved="1"/>
+<Activate Id="9357679562315635" moved="1"/>
+<Activate Id="2732237851722575" moved="1"/>
+<Activate Id="7614735395532975" moved="1"/>
+<Activate Id="9681281911461921" moved="1"/>
+<Activate Id="5388584484795992" moved="1"/>
+<Activate Id="8212967312355231" moved="1"/>
+<Activate Id="7163143537269291" moved="1"/>
+<Activate Id="1753998563382189" moved="1"/>
+<Activate Id="3672446278993738" moved="1"/>
+<Activate Id="3987447188243863" moved="1"/>
+<Activate Id="5777483836622518" moved="1"/>
+<Activate Id="9539284114773579" moved="1"/>
+<Activate Id="5764484724893625" moved="1"/>
+<Activate Id="7579937225721475" moved="1"/>
+<Activate Id="1136378238171862" moved="1"/>
+<Activate Id="9439433959255944" moved="1"/>
+<Activate Id="6288351465964617" moved="1"/>
+<Activate Id="4572616968169611" moved="1"/>
+<Activate Id="4153494787662457" moved="1"/>
+<Activate Id="3125222466254282" moved="1"/>
+<Activate Id="1136263259991439" moved="1"/>
+<Activate Id="4429943624196431" moved="1"/>
+<Activate Id="6163711394147183" moved="1"/>
+<Activate Id="2539194213662475" moved="1"/>
+</Step>
+</Staging>
+</Pod>
+</Part>
+<Part partType="strut-1" id="4519393747675368" x="-17.000000" y="-31.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="3417661852157661" x="-25.000000" y="-31.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="6784369745115469" x="-21.500000" y="-36.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="7178593985912215" x="-21.500000" y="-44.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="8574945987417775" x="-23.000000" y="-45.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4147132793413328" x="-23.000000" y="-46.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5286185935859443" x="-23.000000" y="-43.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1715582923999769" x="-23.000000" y="-44.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="2724131615358215" x="-23.000000" y="-41.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="5597613235412311" x="-23.000000" y="-42.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="9239889261718828" x="-17.000000" y="-34.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="9714561635342549" x="-14.000000" y="-39.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="2615453171693552" x="-14.000000" y="-45.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9299773349255756" x="-12.000000" y="-41.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4849594763658829" x="-12.000000" y="-42.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="6937598962795973" x="-20.000000" y="-39.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="1341394964364573" x="-20.000000" y="-45.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-4" id="2574862583516189" x="-19.500000" y="-33.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3775621132827894" x="-18.000000" y="-39.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3523811324659737" x="-16.000000" y="-39.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="6315377814723278" x="-23.000000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3948419982645782" x="-27.000000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="2536855169268584" x="-25.000000" y="-37.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1687442612232283" x="-25.000000" y="-38.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="6635982927378966" x="-25.000000" y="-33.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="8757859896473358" x="-25.000000" y="-34.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="3465335468279546" x="-25.000000" y="-35.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4873878685773241" x="-25.000000" y="-36.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="strut-1" id="9867826854343831" x="-30.500000" y="-30.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="4959941724739191" x="-30.000000" y="-35.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="3394788828156744" x="-30.000000" y="-43.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="9286598877961549" x="-26.500000" y="-47.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="5829348595359792" x="-21.500000" y="-48.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="2182895124653364" x="-17.000000" y="-49.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-3" id="6344257725391638" x="-12.500000" y="-50.000000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3721996214532127" x="-13.500000" y="-55.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5288885293648717" x="-13.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="8389345674161625" x="-13.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="6247644547821894" x="-9.500000" y="-55.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="2438719249356557" x="-9.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="7327849387823956" x="-9.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="2157832849793943" x="-21.500000" y="-50.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="6981272134717328" x="-20.500000" y="-55.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5649884749962669" x="-20.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="4998564785617575" x="-20.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3585925238368126" x="-24.500000" y="-55.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="4799816852724955" x="-24.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="2351627816975621" x="-24.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="7328221792361397" x="-29.500000" y="-48.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="9797181831727615" x="-29.500000" y="-49.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8953666879692187" x="-29.500000" y="-50.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1242342141884562" x="-29.500000" y="-51.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8881345271547845" x="-29.500000" y="-52.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="6219772545238197" x="-29.500000" y="-53.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3876958584843429" x="-25.000000" y="-43.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5791569872224755" x="-27.000000" y="-41.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="8382556315749643" x="-27.000000" y="-42.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8294125687555879" x="-27.000000" y="-43.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1618472336683297" x="-27.000000" y="-44.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="4535227432161337" x="-27.000000" y="-45.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="2633217218585144" x="-27.000000" y="-46.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="strut-1" id="9381727986944995" x="-26.000000" y="-52.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="2532499227224696" x="-26.000000" y="-60.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="solar-1" id="9528936499648486" x="-26.750000" y="-57.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0" extension="0.000000"/>
+<Part partType="fueltank-3" id="7566159684269833" x="-30.500000" y="-59.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-0" id="5668868761667643" x="-27.500000" y="-61.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="engine-0" id="5128789913262327" x="-33.500000" y="-61.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="4445316917322799" x="-33.500000" y="-62.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="9175843828372256" x="-33.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="6643564332885197" x="-33.500000" y="-64.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3985567689542712" x="-33.500000" y="-65.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="rcs-1" id="9399511969551865" x="-34.750000" y="-64.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-0" id="9796186799241325" x="-31.500000" y="-61.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="7773986469525597" x="-31.500000" y="-62.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="8165594923615526" x="-29.500000" y="-62.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="fueltank-1" id="6635991943438791" x="-27.500000" y="-62.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="engine-2" id="7163691325175131" x="-27.500000" y="-65.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="1582246663487625" x="-31.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3992814615628144" x="-31.500000" y="-64.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9537269157546938" x="-31.500000" y="-65.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3178548915226793" x="-31.500000" y="-66.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="detacher-1" id="5728763872363124" x="-29.500000" y="-64.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="8339951987518699" x="-29.500000" y="-65.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="anti air II">
+<Staging currentStage="0">
+<Step>
+<Activate Id="9375891963114935" moved="1"/>
+<Activate Id="4832754428787287" moved="1"/>
+<Activate Id="5496287959634777" moved="1"/>
+<Activate Id="2746755388555669" moved="1"/>
+<Activate Id="9296146163633683" moved="1"/>
+<Activate Id="1716756518526727" moved="1"/>
+<Activate Id="7339877451755142" moved="1"/>
+<Activate Id="8822925153341417" moved="1"/>
+<Activate Id="8413994372338769" moved="1"/>
+<Activate Id="7633496714817586" moved="1"/>
+<Activate Id="5923427465269699" moved="1"/>
+<Activate Id="1431939795842597" moved="1"/>
+<Activate Id="4151972923143598" moved="1"/>
+<Activate Id="5571796574824176" moved="1"/>
+<Activate Id="5477794185342676" moved="1"/>
+<Activate Id="3413193599898492" moved="1"/>
+<Activate Id="4528541668436676" moved="1"/>
+<Activate Id="4262193223817856" moved="1"/>
+<Activate Id="3598669475794634" moved="1"/>
+<Activate Id="8817795193671869" moved="1"/>
+<Activate Id="4887588916695178" moved="1"/>
+<Activate Id="2893831881134869" moved="1"/>
+<Activate Id="4784375297979797" moved="1"/>
+<Activate Id="8771278533783474" moved="1"/>
+<Activate Id="6612141616785176" moved="1"/>
+<Activate Id="8716273751418379" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step>
+<Activate Id="7856364991341482" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-3" id="7856364991341482" x="-29.500000" y="-68.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-1" id="1574959345776223" x="-29.500000" y="-71.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="fueltank-4" id="2953778649666731" x="-29.500000" y="-73.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="lander-1" id="9375891963114935" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4832754428787287" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5496287959634777" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2746755388555669" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9296146163633683" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1716756518526727" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7339877451755142" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8822925153341417" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8413994372338769" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7633496714817586" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5923427465269699" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1431939795842597" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4151972923143598" x="-29.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5571796574824176" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5477794185342676" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3413193599898492" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4528541668436676" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4262193223817856" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3598669475794634" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8817795193671869" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4887588916695178" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2893831881134869" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4784375297979797" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8771278533783474" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6612141616785176" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8716273751418379" x="-29.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="rcs-1" id="9742594419941465" x="-28.750000" y="-73.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="5463937288764785" x="-30.250000" y="-73.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="strut-1" id="1315921546258431" x="-26.000000" y="-68.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="9872725627928679" x="-27.500000" y="-70.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3453761787991144" x="-27.500000" y="-71.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="solar-1" id="3422399367666364" x="-27.500000" y="-72.250000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0" extension="0.000000"/>
+<Part partType="rcs-1" id="8681943324254276" x="-26.750000" y="-69.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="rcs-1" id="2433181759622117" x="-26.750000" y="-67.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="strut-1" id="6274163151113736" x="-21.500000" y="-71.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="engine-3" id="9485447689814287" x="-18.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="1912344214858425" x="-18.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="9986462915178244" x="-18.500000" y="-55.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="4412983482577941" x="-22.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="2929443587546294" x="-22.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="6157613426587583" x="-22.500000" y="-55.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="port-1" id="8241481712956763" x="-23.500000" y="-72.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="6679534212957755" x="-16.000000" y="-72.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="ion-0" id="7557824274596872" x="-13.000000" y="-73.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="ion-0" id="3416626556528846" x="-15.000000" y="-73.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="port-1" id="7279713486187194" x="-17.000000" y="-73.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="ion-0" id="8938673677814586" x="-19.000000" y="-73.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="ion-0" id="8318269886656789" x="-21.000000" y="-72.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="1361524876622348" x="-27.500000" y="-54.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1244625994562523" x="-27.500000" y="-55.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="2795319173826837" x="-27.500000" y="-52.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3348899379966455" x="-27.500000" y="-53.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="2619986896981952" x="-27.500000" y="-49.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="6566828345641487" x="-27.500000" y="-50.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="ion-0" id="9988363678184657" x="-27.500000" y="-51.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="wheel-2" id="3964467867458146" x="-30.750000" y="-40.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="4525175626826758" x="-31.500000" y="-40.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="1266814451756221" x="-30.750000" y="-42.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="9394167227297641" x="-31.500000" y="-42.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="3681873492965596" x="-30.750000" y="-44.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="2623348192775561" x="-31.500000" y="-44.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="9814886351443265" x="-30.750000" y="-46.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="9829161257233885" x="-31.500000" y="-46.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="3629518224522445" x="-30.750000" y="-34.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="4762792544763441" x="-31.500000" y="-34.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="9156554734698464" x="-30.750000" y="-36.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="3382886129266823" x="-31.500000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="7782288768211597" x="-30.750000" y="-38.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="4171754438418637" x="-31.500000" y="-38.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="9453253381118624" x="-26.000000" y="-27.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="4661187396395527" x="-27.500000" y="-23.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="2931914867791595" x="-27.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="detacher-1" id="9628839724439537" x="-30.000000" y="-29.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="1382935224714345" x="-30.000000" y="-28.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="SAM 2">
+<Staging currentStage="0">
+<Step>
+<Activate Id="9376735829551813" moved="1"/>
+</Step>
+<Step>
+<Activate Id="3812734583217641" moved="1"/>
+<Activate Id="9797731264337836" moved="1"/>
+</Step>
+<Step>
+<Activate Id="8585359665278169" moved="1"/>
+<Activate Id="1534273268918132" moved="1"/>
+</Step>
+<Step>
+<Activate Id="3735229617942561" moved="1"/>
+<Activate Id="1842744851738683" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-2" id="9376735829551813" x="-30.000000" y="-26.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="9646166566117811" x="-30.000000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="detacher-1" id="8585359665278169" x="-28.750000" y="-24.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="1534273268918132" x="-31.250000" y="-24.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="9797731264337836" x="-28.750000" y="-22.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="3812734583217641" x="-31.250000" y="-22.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="6858837164294453" x="-30.000000" y="-20.000000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="detacher-1" id="3735229617942561" x="-30.750000" y="-20.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="5531391881766892" x="-31.250000" y="-19.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="detacher-1" id="1842744851738683" x="-29.250000" y="-20.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="6393954319399137" x="-28.750000" y="-19.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-5" id="2192649296917926" x="-30.000000" y="-18.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="strut-1" id="9238732429925733" x="-9.000000" y="-31.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="4585513111371287" x="-12.500000" y="-36.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-3" id="8461174574887526" x="-11.000000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9792553657775441" x="-9.000000" y="-37.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1523229538563571" x="-9.000000" y="-38.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8761872627841971" x="-9.000000" y="-33.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3429936284742454" x="-9.000000" y="-34.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9694984381486875" x="-9.000000" y="-35.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4516145799347851" x="-9.000000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="1866744734667121" x="-7.000000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="strut-1" id="8831174231486269" x="-3.500000" y="-30.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="9888373325941241" x="-4.000000" y="-35.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="1589269613718888" x="-4.000000" y="-43.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="2171418833361814" x="-7.500000" y="-47.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="5822928616518267" x="-12.500000" y="-48.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="2859264182987455" x="-8.000000" y="-52.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="1985783241111422" x="-8.000000" y="-60.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="6768651274158633" x="-8.000000" y="-68.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="8692228936418616" x="-6.500000" y="-70.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4343184688113472" x="-6.500000" y="-71.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="solar-1" id="9357677327383871" x="-6.500000" y="-72.250000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="1" flippedY="0" extension="0.000000"/>
+<Part partType="rcs-1" id="9754916362138184" x="-7.250000" y="-69.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="7119443732165328" x="-7.250000" y="-67.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="2949168957138682" x="-12.500000" y="-71.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="engine-3" id="8974537374653761" x="-15.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="1276758762584513" x="-15.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="6839876271525486" x="-15.500000" y="-55.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="2418471984966448" x="-11.500000" y="-69.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="4192926999384939" x="-11.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5639345591447346" x="-11.500000" y="-55.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="battery-0" id="2752988712481859" x="-10.500000" y="-72.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="250.000000"/>
+</Part>
+<Part partType="wheel-2" id="8488894793364431" x="-9.500000" y="-72.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="wheel-2" id="6887769424923652" x="-11.500000" y="-72.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="3483914619399615" x="-10.500000" y="-73.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="solar-1" id="3579372626139831" x="-7.250000" y="-57.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" extension="0.000000"/>
+<Part partType="fueltank-3" id="3347132473964189" x="-3.500000" y="-59.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-2" id="1825884128846857" x="-4.500000" y="-62.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="fueltank-1" id="3188669233878363" x="-6.500000" y="-62.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="engine-2" id="8911991721739798" x="-6.500000" y="-65.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5333733232917878" x="-2.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="6279653671772743" x="-2.500000" y="-64.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5981523948879685" x="-2.500000" y="-65.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="2312219687361265" x="-2.500000" y="-66.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="detacher-1" id="6147999717997839" x="-4.500000" y="-64.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="6771264678275582" x="-4.500000" y="-65.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="anti air II">
+<Staging currentStage="0">
+<Step>
+<Activate Id="9533175864998677" moved="1"/>
+<Activate Id="2935952877123171" moved="1"/>
+<Activate Id="2983657267428936" moved="1"/>
+<Activate Id="1697228513258958" moved="1"/>
+<Activate Id="9788149866748987" moved="1"/>
+<Activate Id="6831755496524222" moved="1"/>
+<Activate Id="8933788235613754" moved="1"/>
+<Activate Id="4336762924954678" moved="1"/>
+<Activate Id="9271778831673365" moved="1"/>
+<Activate Id="9619459959817322" moved="1"/>
+<Activate Id="1494244412437657" moved="1"/>
+<Activate Id="5927517694611396" moved="1"/>
+<Activate Id="2387166944913651" moved="1"/>
+<Activate Id="2364793627684696" moved="1"/>
+<Activate Id="5225519153438853" moved="1"/>
+<Activate Id="5457811678971858" moved="1"/>
+<Activate Id="9848121817958883" moved="1"/>
+<Activate Id="5465185682365839" moved="1"/>
+<Activate Id="5226391526973373" moved="1"/>
+<Activate Id="8852577843473373" moved="1"/>
+<Activate Id="1356726884465378" moved="1"/>
+<Activate Id="9589384518591911" moved="1"/>
+<Activate Id="3777719166565441" moved="1"/>
+<Activate Id="5176984799327545" moved="1"/>
+<Activate Id="4199353319135722" moved="1"/>
+<Activate Id="1647897937938639" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step>
+<Activate Id="1338471633278526" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-3" id="1338471633278526" x="-4.500000" y="-68.500000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-1" id="8816199352453125" x="-4.500000" y="-71.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="fueltank-4" id="9922858223733189" x="-4.500000" y="-73.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="lander-1" id="9533175864998677" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2935952877123171" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2983657267428936" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1697228513258958" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9788149866748987" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6831755496524222" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8933788235613754" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4336762924954678" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9271778831673365" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9619459959817322" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1494244412437657" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5927517694611396" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2387166944913651" x="-4.750000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2364793627684696" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5225519153438853" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5457811678971858" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9848121817958883" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5465185682365839" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5226391526973373" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8852577843473373" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1356726884465378" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9589384518591911" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3777719166565441" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5176984799327545" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4199353319135722" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1647897937938639" x="-4.250000" y="-74.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="rcs-1" id="2832261788875622" x="-3.750000" y="-73.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="6145495528345861" x="-5.250000" y="-73.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="engine-0" id="9361153326727929" x="-6.500000" y="-61.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="engine-0" id="6474252933424212" x="-0.500000" y="-61.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="6847376622911592" x="-0.500000" y="-62.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1246995864362381" x="-0.500000" y="-63.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9657232149587599" x="-0.500000" y="-64.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="9287696114524896" x="-0.500000" y="-65.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="rcs-1" id="2413338366668945" x="0.750000" y="-64.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="7168747666627785" x="-2.500000" y="-61.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="8387137729794534" x="-2.500000" y="-62.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9368115126441228" x="-6.500000" y="-54.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4493379982116863" x="-6.500000" y="-55.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="2362588569478157" x="-6.500000" y="-52.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1942578828576448" x="-6.500000" y="-53.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="6649234262815348" x="-6.500000" y="-49.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1977961368667678" x="-6.500000" y="-50.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="ion-0" id="9689947811228448" x="-6.500000" y="-51.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="3858482691437711" x="-9.000000" y="-43.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8392558659676752" x="-7.000000" y="-41.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="8242561555555985" x="-7.000000" y="-42.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="4334836618853889" x="-7.000000" y="-43.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="6123537328996337" x="-7.000000" y="-44.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="6326191958963225" x="-7.000000" y="-45.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4186699956221258" x="-7.000000" y="-46.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8914157522956696" x="-11.000000" y="-43.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="5168577776686171" x="-11.000000" y="-44.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5913824356558522" x="-11.000000" y="-45.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="6654235516464523" x="-11.000000" y="-46.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9579937252947797" x="-4.500000" y="-48.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="3476629536242953" x="-4.500000" y="-49.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="2239781396346791" x="-4.500000" y="-50.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="4581742781423829" x="-4.500000" y="-51.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-0" id="9666667417957181" x="-4.500000" y="-52.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="1617324168534674" x="-4.500000" y="-53.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="wheel-2" id="4839557828478926" x="-3.250000" y="-40.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="4122156664133831" x="-2.500000" y="-40.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="wheel-2" id="2515433486166154" x="-3.250000" y="-42.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="1933566799347745" x="-2.500000" y="-42.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="wheel-2" id="2693616859479838" x="-3.250000" y="-44.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="6335464873276234" x="-2.500000" y="-44.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="wheel-2" id="2773867293149995" x="-3.250000" y="-46.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="5685173984478486" x="-2.500000" y="-46.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="wheel-2" id="1763582688426449" x="-3.250000" y="-34.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="8647474956446652" x="-2.500000" y="-34.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="wheel-2" id="1433396489572389" x="-3.250000" y="-36.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="9545889835839839" x="-2.500000" y="-36.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="wheel-2" id="3128751381264874" x="-3.250000" y="-38.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="port-1" id="8972318476482613" x="-2.500000" y="-38.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="strut-1" id="8616543131158179" x="-8.000000" y="-27.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="6921144928415287" x="-6.500000" y="-23.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="engine-0" id="5639176249458351" x="-6.500000" y="-24.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="detacher-1" id="2213927335478378" x="-4.000000" y="-29.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="1773334719617715" x="-4.000000" y="-28.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="SAM 2">
+<Staging currentStage="0">
+<Step>
+<Activate Id="1878189236273399" moved="1"/>
+</Step>
+<Step>
+<Activate Id="9774923347878783" moved="1"/>
+<Activate Id="9369661884826387" moved="1"/>
+</Step>
+<Step>
+<Activate Id="6944466475155844" moved="1"/>
+<Activate Id="6876489661257148" moved="1"/>
+</Step>
+<Step>
+<Activate Id="9641155146284414" moved="1"/>
+<Activate Id="7425968748711528" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-2" id="1878189236273399" x="-4.000000" y="-26.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="7388441134798337" x="-4.000000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="1918575955841515" x="-4.000000" y="-20.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="fueltank-5" id="6318351919219949" x="-4.000000" y="-18.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="detacher-1" id="9641155146284414" x="-3.250000" y="-20.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="6639852722828711" x="-2.750000" y="-19.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="7425968748711528" x="-4.750000" y="-20.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="2553169889542362" x="-5.250000" y="-19.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="detacher-1" id="6944466475155844" x="-5.250000" y="-24.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="6876489661257148" x="-2.750000" y="-24.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="9369661884826387" x="-5.250000" y="-22.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="9774923347878783" x="-2.750000" y="-22.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="6571817443131129" x="-17.000000" y="-27.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="8951791526124764" x="-17.000000" y="-19.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="3797251169914872" x="-17.000000" y="-11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="5959464534599798" x="-21.500000" y="-7.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="7685631464133885" x="-26.000000" y="-11.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="6163835935174519" x="-26.750000" y="-8.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="strut-1" id="2244898369827577" x="-26.000000" y="-19.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-3" id="3922563458477944" x="-24.500000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="3115646386826569" x="-24.500000" y="-29.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5162476716185373" x="-24.500000" y="-15.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="rcs-1" id="9458731692644872" x="-25.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-3" id="2823146649876775" x="-22.500000" y="-12.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="9969461351354684" x="-22.500000" y="-20.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="4731184788286535" x="-22.500000" y="-26.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="strut-1" id="1288639828373537" x="-26.500000" y="-6.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="2649189813281239" x="-30.750000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="detacher-1" id="3918729429237271" x="-29.000000" y="-7.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="5589452261572146" x="-29.000000" y="-8.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="">
+<Staging currentStage="0"/>
+</Pod>
+</Part>
+<Part partType="fueltank-0" id="4595466148959926" x="-29.000000" y="-9.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="fueltank-2" id="3474395273614682" x="-29.000000" y="-12.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="engine-2" id="6889275735237226" x="-29.000000" y="-15.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-5" id="9522914523511274" x="-29.000000" y="-17.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="rcs-1" id="1126221848179812" x="-30.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="rcs-1" id="8681782229543323" x="-27.750000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="4711767789967862" x="-24.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="6145923942978812" x="-24.000000" y="-4.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="SAM 2">
+<Staging currentStage="0">
+<Step>
+<Activate Id="1657436713173134" moved="1"/>
+</Step>
+<Step>
+<Activate Id="8699994694633152" moved="1"/>
+<Activate Id="9794157619253859" moved="1"/>
+</Step>
+<Step>
+<Activate Id="3457922123222283" moved="1"/>
+<Activate Id="3497733789329853" moved="1"/>
+</Step>
+<Step>
+<Activate Id="9713452778518262" moved="1"/>
+<Activate Id="5924574284595665" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-2" id="1657436713173134" x="-24.000000" y="-2.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="6189926277291515" x="-24.000000" y="1.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="detacher-1" id="3457922123222283" x="-22.750000" y="-0.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="3497733789329853" x="-25.250000" y="-0.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="9794157619253859" x="-22.750000" y="1.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="8699994694633152" x="-25.250000" y="1.500000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-0" id="2263653434243389" x="-24.000000" y="4.000000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="detacher-1" id="9713452778518262" x="-24.750000" y="4.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="4645554453278512" x="-25.250000" y="4.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="detacher-1" id="5924574284595665" x="-23.250000" y="4.000000" angle="1.570796" angleV="0.000000" editorAngle="1" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="6644671599367142" x="-22.750000" y="4.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="fueltank-5" id="1591932753892484" x="-24.000000" y="5.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="solar-1" id="9827421852574111" x="-29.500000" y="-5.750000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="1" flippedY="0" extension="0.000000"/>
+<Part partType="detacher-1" id="4164195791895528" x="-19.000000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="6754585178899134" x="-19.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="anti air">
+<Staging currentStage="0">
+<Step>
+<Activate Id="8553784997539697" moved="1"/>
+<Activate Id="5682727337175494" moved="1"/>
+<Activate Id="4484515922659131" moved="1"/>
+<Activate Id="9155338655159862" moved="1"/>
+<Activate Id="9357679562315635" moved="1"/>
+<Activate Id="2732237851722575" moved="1"/>
+<Activate Id="7614735395532975" moved="1"/>
+<Activate Id="9681281911461921" moved="1"/>
+<Activate Id="5388584484795992" moved="1"/>
+<Activate Id="8212967312355231" moved="1"/>
+<Activate Id="7163143537269291" moved="1"/>
+<Activate Id="1753998563382189" moved="1"/>
+<Activate Id="3672446278993738" moved="1"/>
+<Activate Id="3987447188243863" moved="1"/>
+<Activate Id="5777483836622518" moved="1"/>
+<Activate Id="9539284114773579" moved="1"/>
+<Activate Id="5764484724893625" moved="1"/>
+<Activate Id="7579937225721475" moved="1"/>
+<Activate Id="1136378238171862" moved="1"/>
+<Activate Id="9439433959255944" moved="1"/>
+<Activate Id="6288351465964617" moved="1"/>
+<Activate Id="4572616968169611" moved="1"/>
+<Activate Id="4153494787662457" moved="1"/>
+<Activate Id="3125222466254282" moved="1"/>
+<Activate Id="1136263259991439" moved="1"/>
+<Activate Id="4429943624196431" moved="1"/>
+<Activate Id="6163711394147183" moved="1"/>
+<Activate Id="2539194213662475" moved="1"/>
+</Step>
+<Step>
+<Activate Id="1444948293299519" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-3" id="1444948293299519" x="-19.000000" y="-3.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-1" id="6791933414854984" x="-19.000000" y="0.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5471212489814559" x="-19.000000" y="2.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="rcs-1" id="3739936357764296" x="-18.250000" y="2.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="5262538899985359" x="-19.750000" y="2.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-5" id="7787651764764952" x="-19.000000" y="3.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="lander-1" id="8553784997539697" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5682727337175494" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4484515922659131" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9155338655159862" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9357679562315635" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2732237851722575" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7614735395532975" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9681281911461921" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5388584484795992" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8212967312355231" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7163143537269291" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1753998563382189" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3672446278993738" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3987447188243863" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5777483836622518" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9539284114773579" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5764484724893625" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7579937225721475" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1136378238171862" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9439433959255944" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6288351465964617" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4572616968169611" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4153494787662457" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3125222466254282" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1136263259991439" x="-19.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4429943624196431" x="-18.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6163711394147183" x="-18.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2539194213662475" x="-19.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="detacher-1" id="6157247133443468" x="-21.000000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="7689484781535265" x="-21.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="">
+<Staging currentStage="0"/>
+</Pod>
+</Part>
+<Part partType="engine-2" id="5753422544226325" x="-21.000000" y="-3.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="7971499635879497" x="-21.000000" y="0.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5355965769427638" x="-21.000000" y="3.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="rcs-1" id="8732297528765511" x="-20.250000" y="3.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="9828178952886611" x="-21.750000" y="3.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-5" id="9522665378313686" x="-21.000000" y="4.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="strut-1" id="3639991569294965" x="-12.500000" y="-7.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="5652111341931448" x="-8.000000" y="-11.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="strut-1" id="8567979381155384" x="-8.000000" y="-19.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="7419131334566766" x="-7.250000" y="-8.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="7681837171131421" x="-8.750000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-3" id="8389494864523647" x="-11.500000" y="-12.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5564524272514458" x="-11.500000" y="-20.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="8454133794778635" x="-11.500000" y="-26.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="1649733844581625" x="-9.500000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="8944615182641228" x="-9.500000" y="-29.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="9988542414486171" x="-9.500000" y="-15.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="detacher-1" id="6637756952198676" x="-15.000000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="9828478447467442" x="-15.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="anti air">
+<Staging currentStage="0">
+<Step>
+<Activate Id="5399624455389562" moved="1"/>
+<Activate Id="2874613638324899" moved="1"/>
+<Activate Id="4622225938636375" moved="1"/>
+<Activate Id="5653681398127351" moved="1"/>
+<Activate Id="8466562941867951" moved="1"/>
+<Activate Id="3937653573671872" moved="1"/>
+<Activate Id="2686173248146342" moved="1"/>
+<Activate Id="6243594882668716" moved="1"/>
+<Activate Id="6496928153687118" moved="1"/>
+<Activate Id="5455597335295776" moved="1"/>
+<Activate Id="3444213143963578" moved="1"/>
+<Activate Id="2862425712218426" moved="1"/>
+<Activate Id="7588324332948488" moved="1"/>
+<Activate Id="9984546256428446" moved="1"/>
+<Activate Id="1893781556189841" moved="1"/>
+<Activate Id="2217315134787777" moved="1"/>
+<Activate Id="5292231736494687" moved="1"/>
+<Activate Id="8393319789746519" moved="1"/>
+<Activate Id="8558171987225463" moved="1"/>
+<Activate Id="1798537928998296" moved="1"/>
+<Activate Id="3826926915599255" moved="1"/>
+<Activate Id="4919278634518321" moved="1"/>
+<Activate Id="6961441377871767" moved="1"/>
+<Activate Id="2552417149937378" moved="1"/>
+<Activate Id="1128561934153749" moved="1"/>
+<Activate Id="2872286646463483" moved="1"/>
+<Activate Id="7322529975787198" moved="1"/>
+<Activate Id="6245788585383968" moved="1"/>
+</Step>
+<Step>
+<Activate Id="4479356226164797" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-3" id="4479356226164797" x="-15.000000" y="-3.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-1" id="4422376992491735" x="-15.000000" y="0.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8275475438135812" x="-15.000000" y="2.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="rcs-1" id="9552884797396743" x="-14.250000" y="2.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="3751236717272179" x="-15.750000" y="2.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-5" id="2387455515423422" x="-15.000000" y="3.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="lander-1" id="5399624455389562" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2874613638324899" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4622225938636375" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5653681398127351" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8466562941867951" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3937653573671872" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2686173248146342" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6243594882668716" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6496928153687118" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5455597335295776" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3444213143963578" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2862425712218426" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7588324332948488" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9984546256428446" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1893781556189841" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2217315134787777" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5292231736494687" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8393319789746519" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8558171987225463" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1798537928998296" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3826926915599255" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4919278634518321" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6961441377871767" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2552417149937378" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1128561934153749" x="-15.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2872286646463483" x="-14.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7322529975787198" x="-14.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6245788585383968" x="-15.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="strut-1" id="7432144979192664" x="-7.500000" y="-6.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="4146345657153377" x="-3.250000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="6481785131674289" x="-5.000000" y="-7.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="8815848137339936" x="-5.000000" y="-8.250000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="">
+<Staging currentStage="0"/>
+</Pod>
+</Part>
+<Part partType="fueltank-0" id="7927373599441955" x="-5.000000" y="-9.500000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="fueltank-2" id="5746669584986393" x="-5.000000" y="-12.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="engine-2" id="1726879721851664" x="-5.000000" y="-15.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-5" id="1133666879973688" x="-5.000000" y="-17.500000" angle="1.570796" angleV="0.000000" editorAngle="1">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="rcs-1" id="5811795182581663" x="-3.750000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="2524736667919481" x="-6.250000" y="-9.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="detacher-1" id="7829484239187769" x="-10.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="2628847124311657" x="-10.000000" y="-4.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="SAM 2">
+<Staging currentStage="0">
+<Step>
+<Activate Id="9829881175689881" moved="1"/>
+</Step>
+<Step>
+<Activate Id="2269917136739871" moved="1"/>
+<Activate Id="7511229188572262" moved="1"/>
+</Step>
+<Step>
+<Activate Id="7217593545462923" moved="1"/>
+<Activate Id="5159526412431251" moved="1"/>
+</Step>
+<Step>
+<Activate Id="8159891274194662" moved="1"/>
+<Activate Id="9826759519519497" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-2" id="9829881175689881" x="-10.000000" y="-2.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="7495243532762559" x="-10.000000" y="1.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="6273239431842717" x="-10.000000" y="4.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="fueltank-5" id="5645543367497919" x="-10.000000" y="5.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="detacher-1" id="8159891274194662" x="-9.250000" y="4.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="5912593979928751" x="-8.750000" y="4.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="9826759519519497" x="-10.750000" y="4.000000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="8112553181658343" x="-11.250000" y="4.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="detacher-1" id="7217593545462923" x="-11.250000" y="-0.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="5159526412431251" x="-8.750000" y="-0.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="7511229188572262" x="-11.250000" y="1.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="detacher-1" id="2269917136739871" x="-8.750000" y="1.500000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="solar-1" id="7236512125443445" x="-4.500000" y="-5.750000" angle="4.712389" angleV="0.000000" editorAngle="3" activated="0" exploded="0" flippedX="1" flippedY="0" extension="0.000000"/>
+<Part partType="detacher-1" id="7766512961156792" x="-13.000000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="4884771832298118" x="-13.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="">
+<Staging currentStage="0"/>
+</Pod>
+</Part>
+<Part partType="engine-2" id="2915737771133624" x="-13.000000" y="-3.500000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-2" id="5598577483573634" x="-13.000000" y="0.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="3000.000000"/>
+</Part>
+<Part partType="fueltank-0" id="8121366696324965" x="-13.000000" y="3.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="rcs-1" id="4429618568428126" x="-12.250000" y="3.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="8383166331864998" x="-13.750000" y="3.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-5" id="8559462717562588" x="-13.000000" y="4.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="detacher-1" id="4217251329153544" x="-17.000000" y="-6.750000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="pod-1" id="9639439718464162" x="-17.000000" y="-5.750000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Pod throttle="0.000000" name="anti air">
+<Staging currentStage="0">
+<Step>
+<Activate Id="6447763676893829" moved="1"/>
+<Activate Id="8923212697515924" moved="1"/>
+<Activate Id="8374747748689596" moved="1"/>
+<Activate Id="5433722918588435" moved="1"/>
+<Activate Id="3272239111121131" moved="1"/>
+<Activate Id="5567785797982621" moved="1"/>
+<Activate Id="3699649925934583" moved="1"/>
+<Activate Id="9333926975662783" moved="1"/>
+<Activate Id="2894713265355298" moved="1"/>
+<Activate Id="5447458517382718" moved="1"/>
+<Activate Id="5758536378628121" moved="1"/>
+<Activate Id="2783662332921574" moved="1"/>
+<Activate Id="7498521311843736" moved="1"/>
+<Activate Id="8387267153512766" moved="1"/>
+<Activate Id="4616792174318746" moved="1"/>
+<Activate Id="7117448317438224" moved="1"/>
+<Activate Id="9192682772212441" moved="1"/>
+<Activate Id="1783267254115223" moved="1"/>
+<Activate Id="4233454682773491" moved="1"/>
+<Activate Id="3532148342969593" moved="1"/>
+<Activate Id="7888665154731794" moved="1"/>
+<Activate Id="2978868977125158" moved="1"/>
+<Activate Id="1744275112481457" moved="1"/>
+<Activate Id="7543745358383687" moved="1"/>
+<Activate Id="6533217593332526" moved="1"/>
+<Activate Id="2838476523988942" moved="1"/>
+<Activate Id="5916234134238149" moved="1"/>
+<Activate Id="9961336989457867" moved="1"/>
+</Step>
+<Step>
+<Activate Id="3639242885995546" moved="1"/>
+</Step>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+<Step/>
+</Staging>
+</Pod>
+</Part>
+<Part partType="engine-3" id="3639242885995546" x="-17.000000" y="-3.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-1" id="7894247695485667" x="-17.000000" y="0.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="1500.000000"/>
+</Part>
+<Part partType="fueltank-0" id="5446624394194398" x="-17.000000" y="2.000000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="750.000000"/>
+</Part>
+<Part partType="rcs-1" id="8987715351225765" x="-16.250000" y="2.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0"/>
+<Part partType="rcs-1" id="2472917978556799" x="-17.750000" y="2.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="1" flippedY="0"/>
+<Part partType="fueltank-5" id="2928677922778863" x="-17.000000" y="3.500000" angle="4.712389" angleV="0.000000" editorAngle="3">
+<Tank fuel="275.000000"/>
+</Part>
+<Part partType="lander-1" id="6447763676893829" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8923212697515924" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8374747748689596" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5433722918588435" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3272239111121131" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5567785797982621" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3699649925934583" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9333926975662783" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2894713265355298" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5447458517382718" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5758536378628121" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2783662332921574" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7498521311843736" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="8387267153512766" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4616792174318746" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7117448317438224" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9192682772212441" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1783267254115223" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="4233454682773491" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="3532148342969593" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7888665154731794" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2978868977125158" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="1744275112481457" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="7543745358383687" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="6533217593332526" x="-17.250000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="2838476523988942" x="-16.750000" y="1.250000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="5916234134238149" x="-16.750000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="lander-1" id="9961336989457867" x="-17.250000" y="3.250000" angle="3.141593" angleV="0.000000" editorAngle="2" activated="0" exploded="0" flippedX="0" flippedY="0" lower="0" raise="0" length="2.260000" legAngle="0.000000"/>
+<Part partType="engine-3" id="7476975867253816" x="-13.500000" y="-29.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5723915284637922" x="-13.500000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="7262429624844696" x="-13.500000" y="-15.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="8764132671295947" x="-15.500000" y="-15.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="2658258191417345" x="-15.500000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="2629452626662434" x="-15.500000" y="-29.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="engine-3" id="5759442721248792" x="-20.500000" y="-29.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5331742145149352" x="-20.500000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5761188267596512" x="-20.500000" y="-15.000000" angle="3.141593" angleV="0.000000" editorAngle="2">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="2492711218739972" x="-18.500000" y="-15.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="fueltank-3" id="5482977914935333" x="-18.500000" y="-23.000000" angle="0.000000" angleV="0.000000" editorAngle="0">
+<Tank fuel="6000.000000"/>
+</Part>
+<Part partType="engine-3" id="2798233646148618" x="-18.500000" y="-29.000000" angle="0.000000" angleV="0.000000" editorAngle="0" activated="0" exploded="0" flippedX="0" flippedY="0">
+<Engine fuel="0.000000"/>
+</Part>
+</Parts>
+<Connections>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1" childPart="4519393747675368"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="4519393747675368" childPart="3417661852157661"/>
+<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="3417661852157661" childPart="6784369745115469"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="6784369745115469" childPart="7178593985912215"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7178593985912215" childPart="8574945987417775"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8574945987417775" childPart="4147132793413328"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7178593985912215" childPart="5286185935859443"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5286185935859443" childPart="1715582923999769"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7178593985912215" childPart="2724131615358215"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2724131615358215" childPart="5597613235412311"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6784369745115469" childPart="9239889261718828"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="9239889261718828" childPart="9714561635342549"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9714561635342549" childPart="2615453171693552"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="9714561635342549" childPart="9299773349255756"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9299773349255756" childPart="4849594763658829"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="9239889261718828" childPart="6937598962795973"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6937598962795973" childPart="1341394964364573"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9239889261718828" childPart="2574862583516189"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="9239889261718828" childPart="3775621132827894"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="9239889261718828" childPart="3523811324659737"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3417661852157661" childPart="6315377814723278"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3417661852157661" childPart="3948419982645782"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="3948419982645782" childPart="2536855169268584"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2536855169268584" childPart="1687442612232283"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="3948419982645782" childPart="6635982927378966"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6635982927378966" childPart="8757859896473358"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8757859896473358" childPart="3465335468279546"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3465335468279546" childPart="4873878685773241"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="3417661852157661" childPart="9867826854343831"/>
+<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="9867826854343831" childPart="4959941724739191"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="4959941724739191" childPart="3394788828156744"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="3394788828156744" childPart="9286598877961549"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9286598877961549" childPart="5829348595359792"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5829348595359792" childPart="2182895124653364"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2182895124653364" childPart="6344257725391638"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="6344257725391638" childPart="3721996214532127"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3721996214532127" childPart="5288885293648717"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5288885293648717" childPart="8389345674161625"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="6344257725391638" childPart="6247644547821894"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6247644547821894" childPart="2438719249356557"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2438719249356557" childPart="7327849387823956"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2182895124653364" childPart="2157832849793943"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2157832849793943" childPart="6981272134717328"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6981272134717328" childPart="5649884749962669"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5649884749962669" childPart="4998564785617575"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2157832849793943" childPart="3585925238368126"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3585925238368126" childPart="4799816852724955"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4799816852724955" childPart="2351627816975621"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9286598877961549" childPart="7328221792361397"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="7328221792361397" childPart="9797181831727615"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9797181831727615" childPart="8953666879692187"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8953666879692187" childPart="1242342141884562"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1242342141884562" childPart="8881345271547845"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8881345271547845" childPart="6219772545238197"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9286598877961549" childPart="3876958584843429"/>
+<Connection parentAttachPoint="4" childAttachPoint="4" parentPart="3876958584843429" childPart="5791569872224755"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5791569872224755" childPart="8382556315749643"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8382556315749643" childPart="8294125687555879"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8294125687555879" childPart="1618472336683297"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1618472336683297" childPart="4535227432161337"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4535227432161337" childPart="2633217218585144"/>
+<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="9286598877961549" childPart="9381727986944995"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="9381727986944995" childPart="2532499227224696"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2532499227224696" childPart="9528936499648486"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2532499227224696" childPart="7566159684269833"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="7566159684269833" childPart="5668868761667643"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="7566159684269833" childPart="5128789913262327"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5128789913262327" childPart="4445316917322799"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4445316917322799" childPart="9175843828372256"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9175843828372256" childPart="6643564332885197"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6643564332885197" childPart="3985567689542712"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="6643564332885197" childPart="9399511969551865"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="7566159684269833" childPart="9796186799241325"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9796186799241325" childPart="7773986469525597"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="7566159684269833" childPart="8165594923615526"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8165594923615526" childPart="6635991943438791"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="6635991943438791" childPart="7163691325175131"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="8165594923615526" childPart="1582246663487625"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1582246663487625" childPart="3992814615628144"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3992814615628144" childPart="9537269157546938"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9537269157546938" childPart="3178548915226793"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8165594923615526" childPart="5728763872363124"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5728763872363124" childPart="8339951987518699"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="8339951987518699" childPart="7856364991341482"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="7856364991341482" childPart="1574959345776223"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1574959345776223" childPart="2953778649666731"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="9375891963114935"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="4832754428787287"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="5496287959634777"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="2746755388555669"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="9296146163633683"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="1716756518526727"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="7339877451755142"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="8822925153341417"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="8413994372338769"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="7633496714817586"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="5923427465269699"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="1431939795842597"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2953778649666731" childPart="4151972923143598"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="5571796574824176"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="5477794185342676"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="3413193599898492"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="4528541668436676"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="4262193223817856"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="3598669475794634"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="8817795193671869"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="4887588916695178"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="2893831881134869"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="4784375297979797"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="8771278533783474"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="6612141616785176"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2953778649666731" childPart="8716273751418379"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2953778649666731" childPart="9742594419941465"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2953778649666731" childPart="5463937288764785"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="2532499227224696" childPart="1315921546258431"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="1315921546258431" childPart="9872725627928679"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9872725627928679" childPart="3453761787991144"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="3453761787991144" childPart="3422399367666364"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1315921546258431" childPart="8681943324254276"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1315921546258431" childPart="2433181759622117"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="1315921546258431" childPart="6274163151113736"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6274163151113736" childPart="9485447689814287"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9485447689814287" childPart="1912344214858425"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1912344214858425" childPart="9986462915178244"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6274163151113736" childPart="4412983482577941"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4412983482577941" childPart="2929443587546294"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2929443587546294" childPart="6157613426587583"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6274163151113736" childPart="8241481712956763"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6274163151113736" childPart="6679534212957755"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6679534212957755" childPart="7557824274596872"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6679534212957755" childPart="3416626556528846"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6679534212957755" childPart="7279713486187194"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6679534212957755" childPart="8938673677814586"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6274163151113736" childPart="8318269886656789"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="9381727986944995" childPart="1361524876622348"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1361524876622348" childPart="1244625994562523"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="9381727986944995" childPart="2795319173826837"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2795319173826837" childPart="3348899379966455"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="9381727986944995" childPart="2619986896981952"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2619986896981952" childPart="6566828345641487"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6566828345641487" childPart="9988363678184657"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3394788828156744" childPart="3964467867458146"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3964467867458146" childPart="4525175626826758"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3394788828156744" childPart="1266814451756221"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1266814451756221" childPart="9394167227297641"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3394788828156744" childPart="3681873492965596"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3681873492965596" childPart="2623348192775561"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3394788828156744" childPart="9814886351443265"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9814886351443265" childPart="9829161257233885"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="4959941724739191" childPart="3629518224522445"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3629518224522445" childPart="4762792544763441"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="4959941724739191" childPart="9156554734698464"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9156554734698464" childPart="3382886129266823"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="4959941724739191" childPart="7782288768211597"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="7782288768211597" childPart="4171754438418637"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9867826854343831" childPart="9453253381118624"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="9453253381118624" childPart="4661187396395527"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4661187396395527" childPart="2931914867791595"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9867826854343831" childPart="9628839724439537"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9628839724439537" childPart="1382935224714345"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1382935224714345" childPart="9376735829551813"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9376735829551813" childPart="9646166566117811"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9646166566117811" childPart="8585359665278169"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="9646166566117811" childPart="1534273268918132"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9646166566117811" childPart="9797731264337836"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="9646166566117811" childPart="3812734583217641"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="9646166566117811" childPart="6858837164294453"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6858837164294453" childPart="3735229617942561"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3735229617942561" childPart="5531391881766892"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6858837164294453" childPart="1842744851738683"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="1842744851738683" childPart="6393954319399137"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="6858837164294453" childPart="2192649296917926"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="4519393747675368" childPart="9238732429925733"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="9238732429925733" childPart="4585513111371287"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9238732429925733" childPart="8461174574887526"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="8461174574887526" childPart="9792553657775441"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9792553657775441" childPart="1523229538563571"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="8461174574887526" childPart="8761872627841971"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8761872627841971" childPart="3429936284742454"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3429936284742454" childPart="9694984381486875"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9694984381486875" childPart="4516145799347851"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9238732429925733" childPart="1866744734667121"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9238732429925733" childPart="8831174231486269"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="8831174231486269" childPart="9888373325941241"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="9888373325941241" childPart="1589269613718888"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="1589269613718888" childPart="2171418833361814"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2171418833361814" childPart="5822928616518267"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5822928616518267" childPart="2859264182987455"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="2859264182987455" childPart="1985783241111422"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1985783241111422" childPart="6768651274158633"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="6768651274158633" childPart="8692228936418616"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8692228936418616" childPart="4343184688113472"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4343184688113472" childPart="9357677327383871"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6768651274158633" childPart="9754916362138184"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6768651274158633" childPart="7119443732165328"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="6768651274158633" childPart="2949168957138682"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="2949168957138682" childPart="8974537374653761"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="8974537374653761" childPart="1276758762584513"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1276758762584513" childPart="6839876271525486"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="2949168957138682" childPart="2418471984966448"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2418471984966448" childPart="4192926999384939"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="4192926999384939" childPart="5639345591447346"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2949168957138682" childPart="2752988712481859"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="2752988712481859" childPart="8488894793364431"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="2752988712481859" childPart="6887769424923652"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2752988712481859" childPart="3483914619399615"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1985783241111422" childPart="3579372626139831"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1985783241111422" childPart="3347132473964189"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="3347132473964189" childPart="1825884128846857"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1825884128846857" childPart="3188669233878363"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="3188669233878363" childPart="8911991721739798"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="1825884128846857" childPart="5333733232917878"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5333733232917878" childPart="6279653671772743"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6279653671772743" childPart="5981523948879685"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5981523948879685" childPart="2312219687361265"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1825884128846857" childPart="6147999717997839"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6147999717997839" childPart="6771264678275582"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="6771264678275582" childPart="1338471633278526"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1338471633278526" childPart="8816199352453125"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="8816199352453125" childPart="9922858223733189"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="9533175864998677"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="2935952877123171"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="2983657267428936"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="1697228513258958"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="9788149866748987"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="6831755496524222"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="8933788235613754"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="4336762924954678"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="9271778831673365"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="9619459959817322"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="1494244412437657"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="5927517694611396"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9922858223733189" childPart="2387166944913651"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="2364793627684696"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="5225519153438853"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="5457811678971858"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="9848121817958883"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="5465185682365839"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="5226391526973373"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="8852577843473373"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="1356726884465378"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="9589384518591911"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="3777719166565441"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="5176984799327545"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="4199353319135722"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="9922858223733189" childPart="1647897937938639"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9922858223733189" childPart="2832261788875622"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9922858223733189" childPart="6145495528345861"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="3347132473964189" childPart="9361153326727929"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="3347132473964189" childPart="6474252933424212"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6474252933424212" childPart="6847376622911592"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6847376622911592" childPart="1246995864362381"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1246995864362381" childPart="9657232149587599"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9657232149587599" childPart="9287696114524896"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="9657232149587599" childPart="2413338366668945"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="3347132473964189" childPart="7168747666627785"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="7168747666627785" childPart="8387137729794534"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="2859264182987455" childPart="9368115126441228"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9368115126441228" childPart="4493379982116863"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="2859264182987455" childPart="2362588569478157"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2362588569478157" childPart="1942578828576448"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="2859264182987455" childPart="6649234262815348"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6649234262815348" childPart="1977961368667678"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1977961368667678" childPart="9689947811228448"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2171418833361814" childPart="3858482691437711"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="3858482691437711" childPart="8392558659676752"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="8392558659676752" childPart="8242561555555985"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8242561555555985" childPart="4334836618853889"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4334836618853889" childPart="6123537328996337"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6123537328996337" childPart="6326191958963225"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6326191958963225" childPart="4186699956221258"/>
+<Connection parentAttachPoint="4" childAttachPoint="4" parentPart="3858482691437711" childPart="8914157522956696"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8914157522956696" childPart="5168577776686171"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5168577776686171" childPart="5913824356558522"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5913824356558522" childPart="6654235516464523"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2171418833361814" childPart="9579937252947797"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9579937252947797" childPart="3476629536242953"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3476629536242953" childPart="2239781396346791"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2239781396346791" childPart="4581742781423829"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4581742781423829" childPart="9666667417957181"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9666667417957181" childPart="1617324168534674"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1589269613718888" childPart="4839557828478926"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4839557828478926" childPart="4122156664133831"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1589269613718888" childPart="2515433486166154"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2515433486166154" childPart="1933566799347745"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1589269613718888" childPart="2693616859479838"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2693616859479838" childPart="6335464873276234"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1589269613718888" childPart="2773867293149995"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2773867293149995" childPart="5685173984478486"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9888373325941241" childPart="1763582688426449"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1763582688426449" childPart="8647474956446652"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9888373325941241" childPart="1433396489572389"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1433396489572389" childPart="9545889835839839"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9888373325941241" childPart="3128751381264874"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="3128751381264874" childPart="8972318476482613"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8831174231486269" childPart="8616543131158179"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="8616543131158179" childPart="6921144928415287"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6921144928415287" childPart="5639176249458351"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="8831174231486269" childPart="2213927335478378"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2213927335478378" childPart="1773334719617715"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1773334719617715" childPart="1878189236273399"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1878189236273399" childPart="7388441134798337"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7388441134798337" childPart="1918575955841515"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1918575955841515" childPart="6318351919219949"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1918575955841515" childPart="9641155146284414"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9641155146284414" childPart="6639852722828711"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1918575955841515" childPart="7425968748711528"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="7425968748711528" childPart="2553169889542362"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="7388441134798337" childPart="6944466475155844"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="7388441134798337" childPart="6876489661257148"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="7388441134798337" childPart="9369661884826387"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="7388441134798337" childPart="9774923347878783"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="4519393747675368" childPart="6571817443131129"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="6571817443131129" childPart="8951791526124764"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="8951791526124764" childPart="3797251169914872"/>
+<Connection parentAttachPoint="2" childAttachPoint="4" parentPart="3797251169914872" childPart="5959464534599798"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5959464534599798" childPart="7685631464133885"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="7685631464133885" childPart="6163835935174519"/>
+<Connection parentAttachPoint="3" childAttachPoint="4" parentPart="7685631464133885" childPart="2244898369827577"/>
+<Connection parentAttachPoint="2" childAttachPoint="3" parentPart="2244898369827577" childPart="3922563458477944"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3922563458477944" childPart="3115646386826569"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="3922563458477944" childPart="5162476716185373"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="7685631464133885" childPart="9458731692644872"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="5959464534599798" childPart="2823146649876775"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="2823146649876775" childPart="9969461351354684"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9969461351354684" childPart="4731184788286535"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5959464534599798" childPart="1288639828373537"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="1288639828373537" childPart="2649189813281239"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1288639828373537" childPart="3918729429237271"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3918729429237271" childPart="5589452261572146"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5589452261572146" childPart="4595466148959926"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="4595466148959926" childPart="3474395273614682"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="3474395273614682" childPart="6889275735237226"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="6889275735237226" childPart="9522914523511274"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="4595466148959926" childPart="1126221848179812"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="4595466148959926" childPart="8681782229543323"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1288639828373537" childPart="4711767789967862"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4711767789967862" childPart="6145923942978812"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6145923942978812" childPart="1657436713173134"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1657436713173134" childPart="6189926277291515"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="6189926277291515" childPart="3457922123222283"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="6189926277291515" childPart="3497733789329853"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="6189926277291515" childPart="9794157619253859"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="6189926277291515" childPart="8699994694633152"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="6189926277291515" childPart="2263653434243389"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2263653434243389" childPart="9713452778518262"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="9713452778518262" childPart="4645554453278512"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2263653434243389" childPart="5924574284595665"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="5924574284595665" childPart="6644671599367142"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="2263653434243389" childPart="1591932753892484"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1288639828373537" childPart="9827421852574111"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5959464534599798" childPart="4164195791895528"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4164195791895528" childPart="6754585178899134"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6754585178899134" childPart="1444948293299519"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="1444948293299519" childPart="6791933414854984"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="6791933414854984" childPart="5471212489814559"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5471212489814559" childPart="3739936357764296"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5471212489814559" childPart="5262538899985359"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="7787651764764952"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="8553784997539697"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="5682727337175494"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="4484515922659131"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="9155338655159862"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="9357679562315635"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="2732237851722575"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="7614735395532975"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="9681281911461921"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="5388584484795992"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="8212967312355231"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="7163143537269291"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="1753998563382189"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="3672446278993738"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="3987447188243863"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="5777483836622518"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="9539284114773579"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="5764484724893625"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="7579937225721475"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="1136378238171862"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="9439433959255944"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="6288351465964617"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="4572616968169611"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="4153494787662457"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="3125222466254282"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5471212489814559" childPart="1136263259991439"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5471212489814559" childPart="4429943624196431"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5471212489814559" childPart="6163711394147183"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5471212489814559" childPart="2539194213662475"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5959464534599798" childPart="6157247133443468"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6157247133443468" childPart="7689484781535265"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="7689484781535265" childPart="5753422544226325"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5753422544226325" childPart="7971499635879497"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7971499635879497" childPart="5355965769427638"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5355965769427638" childPart="8732297528765511"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5355965769427638" childPart="9828178952886611"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5355965769427638" childPart="9522665378313686"/>
+<Connection parentAttachPoint="1" childAttachPoint="3" parentPart="3797251169914872" childPart="3639991569294965"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="3639991569294965" childPart="5652111341931448"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="5652111341931448" childPart="8567979381155384"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5652111341931448" childPart="7419131334566766"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5652111341931448" childPart="7681837171131421"/>
+<Connection parentAttachPoint="2" childAttachPoint="2" parentPart="3639991569294965" childPart="8389494864523647"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="8389494864523647" childPart="5564524272514458"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5564524272514458" childPart="8454133794778635"/>
+<Connection parentAttachPoint="4" childAttachPoint="3" parentPart="5564524272514458" childPart="1649733844581625"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1649733844581625" childPart="8944615182641228"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="1649733844581625" childPart="9988542414486171"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="3639991569294965" childPart="6637756952198676"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6637756952198676" childPart="9828478447467442"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9828478447467442" childPart="4479356226164797"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4479356226164797" childPart="4422376992491735"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="4422376992491735" childPart="8275475438135812"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="8275475438135812" childPart="9552884797396743"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8275475438135812" childPart="3751236717272179"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="2387455515423422"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="5399624455389562"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="2874613638324899"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="4622225938636375"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="5653681398127351"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="8466562941867951"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="3937653573671872"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="2686173248146342"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="6243594882668716"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="6496928153687118"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="5455597335295776"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="3444213143963578"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="2862425712218426"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="7588324332948488"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="9984546256428446"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="1893781556189841"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="2217315134787777"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="5292231736494687"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="8393319789746519"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="8558171987225463"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="1798537928998296"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="3826926915599255"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="4919278634518321"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="6961441377871767"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="2552417149937378"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="8275475438135812" childPart="1128561934153749"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="8275475438135812" childPart="2872286646463483"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="8275475438135812" childPart="7322529975787198"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8275475438135812" childPart="6245788585383968"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="3639991569294965" childPart="7432144979192664"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="7432144979192664" childPart="4146345657153377"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="7432144979192664" childPart="6481785131674289"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6481785131674289" childPart="8815848137339936"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8815848137339936" childPart="7927373599441955"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="7927373599441955" childPart="5746669584986393"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5746669584986393" childPart="1726879721851664"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="1726879721851664" childPart="1133666879973688"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="7927373599441955" childPart="5811795182581663"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="7927373599441955" childPart="2524736667919481"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="7432144979192664" childPart="7829484239187769"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="7829484239187769" childPart="2628847124311657"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2628847124311657" childPart="9829881175689881"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9829881175689881" childPart="7495243532762559"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7495243532762559" childPart="6273239431842717"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="6273239431842717" childPart="5645543367497919"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="6273239431842717" childPart="8159891274194662"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="8159891274194662" childPart="5912593979928751"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="6273239431842717" childPart="9826759519519497"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="9826759519519497" childPart="8112553181658343"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="7495243532762559" childPart="7217593545462923"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="7495243532762559" childPart="5159526412431251"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="7495243532762559" childPart="7511229188572262"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="7495243532762559" childPart="2269917136739871"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="7432144979192664" childPart="7236512125443445"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="3639991569294965" childPart="7766512961156792"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="7766512961156792" childPart="4884771832298118"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4884771832298118" childPart="2915737771133624"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="2915737771133624" childPart="5598577483573634"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="5598577483573634" childPart="8121366696324965"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="8121366696324965" childPart="4429618568428126"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8121366696324965" childPart="8383166331864998"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="8121366696324965" childPart="8559462717562588"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="3797251169914872" childPart="4217251329153544"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4217251329153544" childPart="9639439718464162"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="9639439718464162" childPart="3639242885995546"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="3639242885995546" childPart="7894247695485667"/>
+<Connection parentAttachPoint="1" childAttachPoint="4" parentPart="7894247695485667" childPart="5446624394194398"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5446624394194398" childPart="8987715351225765"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5446624394194398" childPart="2472917978556799"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="2928677922778863"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="6447763676893829"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="8923212697515924"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="8374747748689596"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="5433722918588435"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="3272239111121131"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="5567785797982621"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="3699649925934583"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="9333926975662783"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="2894713265355298"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="5447458517382718"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="5758536378628121"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="2783662332921574"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="7498521311843736"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="8387267153512766"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="4616792174318746"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="7117448317438224"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="9192682772212441"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="1783267254115223"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="4233454682773491"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="3532148342969593"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="7888665154731794"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="2978868977125158"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="1744275112481457"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="7543745358383687"/>
+<Connection parentAttachPoint="4" childAttachPoint="2" parentPart="5446624394194398" childPart="6533217593332526"/>
+<Connection parentAttachPoint="4" childAttachPoint="1" parentPart="5446624394194398" childPart="2838476523988942"/>
+<Connection parentAttachPoint="3" childAttachPoint="2" parentPart="5446624394194398" childPart="5916234134238149"/>
+<Connection parentAttachPoint="3" childAttachPoint="1" parentPart="5446624394194398" childPart="9961336989457867"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4519393747675368" childPart="7476975867253816"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="7476975867253816" childPart="5723915284637922"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="5723915284637922" childPart="7262429624844696"/>
+<Connection parentAttachPoint="4" childAttachPoint="4" parentPart="7262429624844696" childPart="8764132671295947"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="8764132671295947" childPart="2658258191417345"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2658258191417345" childPart="2629452626662434"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="4519393747675368" childPart="5759442721248792"/>
+<Connection parentAttachPoint="1" childAttachPoint="2" parentPart="5759442721248792" childPart="5331742145149352"/>
+<Connection parentAttachPoint="1" childAttachPoint="1" parentPart="5331742145149352" childPart="5761188267596512"/>
+<Connection parentAttachPoint="3" childAttachPoint="3" parentPart="5761188267596512" childPart="2492711218739972"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="2492711218739972" childPart="5482977914935333"/>
+<Connection parentAttachPoint="2" childAttachPoint="1" parentPart="5482977914935333" childPart="2798233646148618"/>
+</Connections>
+</Ship>

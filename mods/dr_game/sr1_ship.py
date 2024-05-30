@@ -3,7 +3,7 @@
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-
+import os
 import time
 import random
 import traceback
@@ -613,6 +613,15 @@ class SR1ShipRender(BaseScreen):
             # 如果是在移动整体渲染位置
             self.dx += dx
             self.dy += dy
+    
+    def scan_all_ships_list(self, ships_path: str):
+        # 当前目录
+        base_dir = ships_path
+
+        # 获取当前目录下的所有文件
+        files = [os.path.join(base_dir, file) for file in os.listdir(base_dir)]
+
+        return files
 
     def begin_ship_render_from_path(self, ship_path: str):
         if Path(ship_path).is_dir():
