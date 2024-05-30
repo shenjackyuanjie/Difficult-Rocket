@@ -183,21 +183,26 @@ class SR1ShipRender(BaseScreen):
         main_window.push_handlers(self.select_ship_button)
 
         # 扫描所有飞船
-        ships_path = "./ships"
+        self.show_ships_buttons = True
+        self.ships_buttons_w = 150
+        self.ships_buttons_h = 30
+        self.ships_buttons_begin_x = self.width - self.ships_buttons_w
+        self.ships_buttons_begin_y = 0
+        self.ships_buttons_end_x = self.width
+        self.ships_buttons_end_y = self.height
+        
+        ships_path = "./ships/"
         ships_files=self.scan_all_ships_list(ships_path)
-        button_x = 600
-        button_y = 0
-        button_w = 150
-        button_h = 30
+
         for i in range(len(ships_files)):
             self.ships_buttons.append(PressOpenShipButton(
                 window=main_window,
                 ship_path = ships_files[i],
                 parent_window = self,
-                x=button_x,
-                y=button_y + i * button_h,
-                width=button_w,
-                height=button_h,
+                x=self.ships_buttons_begin_x,
+                y=self.ships_buttons_end_y - i * self.ships_buttons_h,
+                width=self.ships_buttons_w,
+                height=self.ships_buttons_h,
                 text=ships_files[i],
                 batch=self.main_batch,
                 group=main_window.main_group,
@@ -461,7 +466,14 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_scroll(
         self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
     ):
-        if self.status.focus:
+        logger.info(x,y,self.ships_buttons_begin_x,self.ships_buttons_end_x,self.ships_buttons_begin_y,self.ships_buttons_end_y)
+        if self.status.focus and \
+            (self.show_ships_buttons == False or \
+            (not (self.show_ships_buttons == True \
+            and x >= self.ships_buttons_begin_x \
+            and x <= self.ships_buttons_end_x \
+            and y >= self.ships_buttons_begin_y \
+            and y <= self.ships_buttons_end_y))):
             mouse_dx = x - (self.width / 2) + self.dx
             mouse_dy = y - (self.height / 2) + self.dy
             # 鼠标缩放位置相对于屏幕中心的位置
@@ -493,6 +505,15 @@ class SR1ShipRender(BaseScreen):
             if size_y < 10:
                 size_y = 10
             self.size = size_x, size_y
+        elif self.show_ships_buttons == True \
+            and x >= self.ships_buttons_begin_x \
+            and x <= self.ships_buttons_end_x \
+            and y >= self.ships_buttons_begin_y \
+            and y <= self.ships_buttons_end_y:
+            for ship_button in self.ships_buttons:
+                ship_button.back_rec.position = ship_button.back_rec.position[0], ship_button.back_rec.position[1] + scroll_y
+
+
 
     def on_command(self, command: CommandText, window: ClientWindow):
         """解析命令"""
@@ -774,6 +795,11 @@ class PressOpenShipButton(PressTextButton):
         self.window = window
         self.parent_window = parent_window
         self.ship_path = ship_path
+    def set_y(self, y):
+        self.y = y
+    
+    def get_y(self):
+            return self.y
 
 
     def on_mouse_release(self, x, y, buttons, modifiers):
