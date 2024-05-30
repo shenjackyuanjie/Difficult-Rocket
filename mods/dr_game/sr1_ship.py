@@ -70,7 +70,7 @@ class SR1ShipRender(BaseScreen):
     """用于渲染 sr1 船的类"""
 
     name = "DR_game_sr1_ship_render"
-
+    ships_buttons = []
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
         self.logger = logger
@@ -182,20 +182,29 @@ class SR1ShipRender(BaseScreen):
         main_window.push_handlers(self.enter_game_button)
         main_window.push_handlers(self.select_ship_button)
 
-        self.new_button = PressSelectShipButton(
-            window=main_window,
-            parent_window = self,
-            x=button_x,
-            y=button_y,
-            width=button_w,
-            height=button_h,
-            text=button_text,
-            batch=self.main_batch,
-            group=main_window.main_group,
-            draw_theme=MinecraftWikiButtonTheme,
-        )
-        
-        main_window.push_handlers(self.new_button)
+        # 扫描所有飞船
+        ships_path = "./ships"
+        ships_files=self.scan_all_ships_list(ships_path)
+        button_x = 600
+        button_y = 0
+        button_w = 150
+        button_h = 30
+        for i in range(len(ships_files)):
+            self.ships_buttons.append(PressOpenShipButton(
+                window=main_window,
+                ship_path = ships_files[i],
+                parent_window = self,
+                x=button_x,
+                y=button_y + i * button_h,
+                width=button_w,
+                height=button_h,
+                text=ships_files[i],
+                batch=self.main_batch,
+                group=main_window.main_group,
+                draw_theme=MinecraftWikiButtonTheme,
+            ))
+            
+            main_window.push_handlers(self.ships_buttons[-1])
         
         
 
@@ -740,6 +749,43 @@ class PressSelectShipButton(PressTextButton):
     def get_ship_path(self):
         logger.info("加载飞船from "+self.path_var)
         return self.path_var
+
+class PressOpenShipButton(PressTextButton):
+
+    def __init__(
+        self,
+        window: ClientWindow,
+        ship_path,
+        parent_window,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        text: str,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+        theme: Optional[ButtonThemeOptions] = None,
+        draw_theme: Optional[BaseButtonTheme] = None,
+        dict_theme: Optional[dict] = None,
+    ):
+        super().__init__(
+            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+        )
+        self.window = window
+        self.parent_window = parent_window
+        self.ship_path = ship_path
+
+
+    def on_mouse_release(self, x, y, buttons, modifiers):
+        if self.pressed and (x, y) in self:
+            if self.draw_theme:
+                self.draw_theme.on_disable(self)
+            else:
+                self.back_rec.color = self.touched_color
+            self.pressed = False
+
+            self.parent_window.begin_ship_render_from_path(self.ship_path)
+            logger.info("加载飞船from "+self.ship_path)
     
 
     
