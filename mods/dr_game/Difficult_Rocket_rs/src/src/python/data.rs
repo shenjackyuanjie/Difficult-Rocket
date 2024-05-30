@@ -356,8 +356,7 @@ impl PySR1Ship {
     fn get_mass(&self) -> f64 {
         let mut mass = 0_f64;
         for part_data in self.ship.parts.iter() {
-            let part_type = self.part_list.get_part_type(&part_data.part_type_id).unwrap();
-            mass += part_type.mass
+            self.part_list.get_part_type(&part_data.part_type_id).map(|part_type| mass += part_type.mass);
         }
         mass
     }
