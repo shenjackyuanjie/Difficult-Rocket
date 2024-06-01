@@ -6,7 +6,7 @@
 
 import traceback
 
-from typing import Optional
+from typing import Optional, Type
 
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
@@ -16,7 +16,7 @@ from Difficult_Rocket.api.types import Options, Version
 
 from lib_not_dr import loggers
 
-DR_rust_version = Version("0.3.7")  # DR_mod 的 Rust 编写部分的兼容版本
+DR_rust_version = Version("0.4.0")  # DR_mod 的 Rust 编写部分的兼容版本
 
 logger = loggers.config.get_logger_from_old("client.dr_game", "client")
 
@@ -41,7 +41,7 @@ class _DR_mod_runtime(Options):  # NOQA
     DR_rust_version: Version = DR_rust_version
     DR_rust_get_version: Optional[Version] = None
 
-    def init(self) -> None:
+    def init(self, **kwargs) -> bool:
         try:
             from .Difficult_Rocket_rs import get_version_str
 
@@ -68,6 +68,7 @@ class _DR_mod_runtime(Options):  # NOQA
             self.use_DR_rust = False
             logger.warn(f"DR_rust load faild\n{traceback.format_exc()}", tag="load_dll")
         self.flush_option()
+        return True
 
 
 DR_mod_runtime = _DR_mod_runtime()

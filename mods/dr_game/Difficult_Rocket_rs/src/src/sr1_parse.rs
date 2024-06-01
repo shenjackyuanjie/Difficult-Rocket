@@ -8,10 +8,10 @@ use crate::sr1_parse::part_list::Damage as RawDamage;
 use crate::sr1_parse::part_list::{AttachPoint, AttachPoints, Engine, Lander, Rcs, Shape as RawShape, Solar, Tank};
 use crate::sr1_parse::part_list::{FuelType, RawPartList, RawPartType, SR1PartTypeEnum};
 use crate::sr1_parse::ship::{
-    Activate as RawActivate, Connection, Connections, DisconnectedPart as RawDisconnectedPart,
-    DisconnectedParts as RawDisconnectedParts, Engine as RawEngine, Part as RawPartData, Parts as RawParts,
-    Pod as RawPod, RawShip, Staging as RawStaging, Step as RawStep, Tank as RawTank,
+    Activate as RawActivate, Connection, Engine as RawEngine, Part as RawPartData, Pod as RawPod, RawShip,
+    Staging as RawStaging, Step as RawStep, Tank as RawTank,
 };
+use crate::sr1_parse::ship::{Connections as RawConnections, DisconnectedParts, Parts as RawParts};
 use crate::IdType;
 
 use std::cell::{Cell, RefCell};
@@ -22,7 +22,7 @@ use std::ops::Deref;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
-pub type ConnectionType = Vec<(Vec<SR1PartData>, Option<Vec<Connection>>)>;
+pub type PartsWithConnections = Vec<(Vec<SR1PartData>, Vec<Connection>)>;
 
 pub fn radians_map_to_degrees(angle: f64) -> f64 {
     let angle_string = angle.to_string();
@@ -400,11 +400,11 @@ impl SR1PartDataTrait for SR1PartData {
                             moved: active.1.to_owned() as i8,
                         });
                     }
-                    actives.push(RawStep { activates: Some(steps) });
+                    actives.push(RawStep { activates: steps });
                 }
                 let stages = RawStaging {
                     current_stage: current_stage.to_owned(),
-                    steps: Some(actives),
+                    steps: actives,
                 };
                 RawPod {
                     name: name.clone(),
@@ -600,22 +600,11 @@ impl SR1PartDataAttr {
                 Some(pod.throttle),
                 Some(pod.stages.current_stage),
                 Some({
-                    let mut steps = Vec::new();
-                    match &pod.stages.steps {
-                        Some(step_vec) => {
-                            for step in step_vec {
-                                let mut step_vec = Vec::new();
-                                if let Some(active) = &step.activates {
-                                    for act in active {
-                                        step_vec.push((act.id, act.moved != 0));
-                                    }
-                                }
-                                steps.push(step_vec);
-                            }
-                        }
-                        None => {}
-                    }
-                    steps
+                    pod.stages
+                        .steps
+                        .iter()
+                        .map(|step| step.activates.iter().map(|act| (act.id, act.moved != 0)).collect())
+                        .collect()
                 }),
             )
         } else {
@@ -655,7 +644,7 @@ pub struct SR1Ship {
     pub touch_ground: bool,
     pub parts: Vec<SR1PartData>,
     pub connections: Vec<Connection>,
-    pub disconnected: Option<ConnectionType>,
+    pub disconnected: Vec<(Vec<SR1PartData>, Vec<Connection>)>,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -696,17 +685,23 @@ impl SR1Ship {
                 part.part_type = SR1PartTypeEnum::strut;
             }
         }
-        for disconnects in self.disconnected.iter_mut() {
-            for (parts, _) in disconnects.iter_mut() {
-                for part in parts.iter_mut() {
-                    if let Some(part_type) = part_list.get_part_type(&part.part_type_id) {
-                        part.part_type = part_type.p_type;
-                    } else {
-                        part.part_type = SR1PartTypeEnum::strut;
-                    }
-                }
-            }
-        }
+        self.disconnected.iter_mut().for_each(|(disconnected_parts, _)| {
+            disconnected_parts.iter_mut().for_each(|part| match part_list.get_part_type(&part.part_type_id) {
+                Some(part_type) => part.part_type = part_type.p_type,
+                None => part.part_type = SR1PartTypeEnum::strut,
+            });
+        })
+        // for disconnects in self.disconnected.iter_mut() {
+        //     for (parts, _) in disconnects.iter_mut() {
+        //         for part in parts.iter_mut() {
+        //             if let Some(part_type) = part_list.get_part_type(&part.part_type_id) {
+        //                 part.part_type = part_type.p_type;
+        //             } else {
+        //                 part.part_type = SR1PartTypeEnum::strut;
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     pub fn part_as_hashmap(&self) -> HashMap<IdType, Vec<SR1PartData>> {
@@ -733,7 +728,7 @@ impl SR1Ship {
             };
         }
 
-        fn write_parts(parts: &[SR1PartData], writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
+        fn write_parts(parts: &Vec<SR1PartData>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
             writer.write_event(Event::Start(BytesStart::new("Parts"))).unwrap();
             for part in parts.iter() {
                 let mut part_attr = BytesStart::new("Part");
@@ -844,39 +839,49 @@ impl SR1Ship {
         fn write_connections(connects: &[Connection], writer: &mut Writer<Cursor<Vec<u8>>>) {
             writer.write_event(Event::Start(BytesStart::new("Connections"))).unwrap();
             for connect in connects.iter() {
-                let mut connect_elem = BytesStart::new("Connection");
-                connect_elem.push_attribute(("parentAttachPoint", connect.parent_attach_point.to_string().as_str()));
-                connect_elem.push_attribute(("childAttachPoint", connect.child_attach_point.to_string().as_str()));
-                connect_elem.push_attribute(("parentPart", connect.parent_part.to_string().as_str()));
-                connect_elem.push_attribute(("childPart", connect.child_part.to_string().as_str()));
-                writer.write_event(Event::Empty(connect_elem)).unwrap();
+                match connect {
+                    Connection::Dock {
+                        dock_part,
+                        parent_part,
+                        child_part,
+                    } => {
+                        let mut dock_elem = BytesStart::new("DockConnection");
+                        dock_elem.push_attribute(("dockPart", dock_part.to_string().as_str()));
+                        dock_elem.push_attribute(("parentPart", parent_part.to_string().as_str()));
+                        dock_elem.push_attribute(("childPart", child_part.to_string().as_str()));
+                        writer.write_event(Event::Empty(dock_elem)).unwrap();
+                    }
+                    Connection::Normal {
+                        parent_attach_point,
+                        child_attach_point,
+                        parent_part,
+                        child_part,
+                    } => {
+                        let mut connect_elem = BytesStart::new("Connection");
+                        connect_elem.push_attribute(("parentAttachPoint", parent_attach_point.to_string().as_str()));
+                        connect_elem.push_attribute(("childAttachPoint", child_attach_point.to_string().as_str()));
+                        connect_elem.push_attribute(("parentPart", parent_part.to_string().as_str()));
+                        connect_elem.push_attribute(("childPart", child_part.to_string().as_str()));
+                        writer.write_event(Event::Empty(connect_elem)).unwrap();
+                    }
+                }
             }
             writer.write_event(Event::End(BytesEnd::new("Connections"))).unwrap();
         }
 
         fn write_disconnect(
-            data: &Option<ConnectionType>,
+            data: &PartsWithConnections,
             writer: &mut Writer<Cursor<Vec<u8>>>,
             save_status: &SaveStatus,
         ) {
-            match data {
-                Some(data) => {
-                    writer.write_event(Event::Start(BytesStart::new("DisconnectedParts"))).unwrap();
-                    for (parts, connects) in data.iter() {
-                        writer.write_event(Event::Start(BytesStart::new("DisconnectedPart"))).unwrap();
-                        write_parts(parts, writer, save_status);
-                        match connects {
-                            Some(connects) => write_connections(connects, writer),
-                            None => {
-                                writer.write_event(Event::Empty(BytesStart::new("Connections"))).unwrap();
-                            }
-                        }
-                        writer.write_event(Event::End(BytesEnd::new("DisconnectedPart"))).unwrap();
-                    }
-                    writer.write_event(Event::End(BytesEnd::new("DisconnectedParts"))).unwrap();
-                }
-                None => {}
+            writer.write_event(Event::Start(BytesStart::new("DisconnectedParts"))).unwrap();
+            for (parts, connects) in data.iter() {
+                writer.write_event(Event::Start(BytesStart::new("DisconnectedPart"))).unwrap();
+                write_parts(parts, writer, save_status);
+                write_connections(connects, writer);
+                writer.write_event(Event::End(BytesEnd::new("DisconnectedPart"))).unwrap();
             }
+            writer.write_event(Event::End(BytesEnd::new("DisconnectedParts"))).unwrap();
         }
 
         fn write_data(data: &SR1Ship, save_status: &SaveStatus) -> String {
@@ -915,41 +920,13 @@ impl SR1ShipTrait for SR1Ship {
 
     #[inline]
     fn to_raw_ship(&self) -> RawShip {
-        let mut parts = Vec::new();
-        for part in &self.parts {
-            parts.push(part.to_raw_part_data());
-        }
-        let connections = Connections {
-            connects: Some(self.connections.clone()),
-        };
-        let disconnected = match &self.disconnected {
-            Some(disconnected) => {
-                let mut disconnected_vec: Vec<RawDisconnectedPart> = Vec::new();
-                for (parts, connections) in disconnected {
-                    let mut raw_parts = Vec::new();
-                    for part in parts {
-                        raw_parts.push(part.to_raw_part_data());
-                    }
-                    disconnected_vec.push(RawDisconnectedPart {
-                        parts: RawParts { parts: raw_parts },
-                        connects: Connections {
-                            connects: connections.clone(),
-                        },
-                    });
-                }
-                Some(RawDisconnectedParts {
-                    parts: Some(disconnected_vec),
-                })
-            }
-            _ => None,
-        };
         RawShip {
-            parts: RawParts { parts },
-            connects: connections,
+            parts: RawParts::from_vec_sr1(self.parts.clone()),
+            connects: RawConnections::from_vec(self.connections.clone()),
             version: Some(self.version),
             lift_off: self.lift_off as i8,
             touch_ground: Some(self.touch_ground as i8),
-            disconnected,
+            disconnected: DisconnectedParts::from_vec_sr1(self.disconnected.clone()),
         }
     }
 }

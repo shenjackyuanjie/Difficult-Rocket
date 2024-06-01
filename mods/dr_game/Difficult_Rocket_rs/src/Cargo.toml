@@ -1,6 +1,6 @@
 [package]
 name = "difficult_rocket_rs"
-version = "0.3.7"
+version = "0.4.0"
 edition = "2021"
 license-file = '../../LICENSE'
 authors = ["shenjackyuanjie <3695888@qq.com>"]

@@ -217,23 +217,23 @@ impl OneTimeLine {
     }
 
     pub fn point1_k_b_new(point: &Point2D, k: Option<f64>, b: Option<f64>) -> Self {
-        let k_: f64;
+        let _k: f64;
         let b_: f64;
         match (k, b) {
             (Some(k), None) => {
-                k_ = k;
+                _k = k;
                 b_ = point.y - (k * point.x)
             }
             (None, Some(b)) => {
                 b_ = b;
-                k_ = (point.y - b) / point.x;
+                _k = (point.y - b) / point.x;
             }
             (Some(k), Some(b)) => {
-                k_ = k;
+                _k = k;
                 b_ = b;
             }
             _ => {
-                k_ = point.y / point.x;
+                _k = point.y / point.x;
                 b_ = 0.0;
             }
         }

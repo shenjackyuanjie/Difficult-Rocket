@@ -366,8 +366,9 @@ class SR1ShipRender(BaseScreen):
                     count = 0
 
             # 渲染未连接的部件
-            for part_groups, part_connections in self.rust_ship.disconnected_parts():
-                for part_type, part_data in part_groups[0]:
+            for (part_groups, part_connections) in self.rust_ship.disconnected_parts():
+                self.logger.info(part_groups[0], tag="sprite_batch")
+                for (part_type, part_data) in part_groups[0]:
                     # 未连接的需要同时把连接线也给渲染了
                     # TODO: 连接线渲染
                     part_sprite, part_box = self.part_render_init(

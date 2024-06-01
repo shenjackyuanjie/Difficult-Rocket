@@ -13,12 +13,12 @@ gitee:  @shenjackyuanjie
 
 import multiprocessing
 
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Type
 
 from Difficult_Rocket.api.types import Options
 from Difficult_Rocket.mod.loader import ModManager
 from Difficult_Rocket.utils.thread import new_thread
-from Difficult_Rocket import client, server, DR_status
+from Difficult_Rocket import client as client_class, server as server_class, DR_status
 
 from lib_not_dr.loggers import config
 from lib_not_dr.loggers.logger import Logger
@@ -59,10 +59,10 @@ class Console(Options):
 class Game(Options):
     name = "MainGame"
 
-    client: client.Client
-    server: server.Server
+    client: client_class.Client
+    server: server_class.Server
     console: Console
-    console_class: Console = Console
+    console_class: Type[Console] = Console
 
     main_config: Dict
     logger: Logger
@@ -103,8 +103,8 @@ class Game(Options):
         self.logger.info(f"\n{self.as_markdown()}")
 
     def setup(self) -> None:
-        self.client = client.Client(game=self, net_mode="local")
-        self.server = server.Server(net_mode="local")
+        self.client = client_class.Client(game=self, net_mode="local")
+        self.server = server_class.Server(net_mode="local")
 
     def init(self, **kwargs) -> bool:
         self.logger = config.get_logger("main")

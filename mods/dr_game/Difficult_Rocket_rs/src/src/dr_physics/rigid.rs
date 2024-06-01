@@ -42,8 +42,7 @@ pub struct DRObjectProps<'a> {
 /// 写了这么长一个玩意
 /// 形状参考
 /// https://rapier.rs/docs/user_guides/rust/colliders
-#[cfg(disable)]
-use rapier2d_f64::geometry::ColliderBuilder;
+// use rapier2d_f64::geometry::ColliderBuilder;
 pub enum BoxColliderEnum {
     /// 组合
     Compound(Vec<(Vector2<Real>, BoxColliderEnum)>),

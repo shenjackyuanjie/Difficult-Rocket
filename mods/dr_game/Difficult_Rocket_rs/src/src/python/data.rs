@@ -229,18 +229,26 @@ pub struct PySR1Connections {
 impl PySR1Connections {
     /// 通过父节点获取连接
     fn search_connection_by_parent(&self, parent_id: IdType) -> Vec<RawConnectionData> {
-        self.datas.iter().filter(|x| x.parent_part == parent_id).map(|x| x.as_raw_data()).collect()
+        self.datas
+            .iter()
+            .filter(|x| x.get_parent() == parent_id && x.is_normal())
+            .map(|x| x.as_normal_raw().unwrap())
+            .collect()
     }
     /// 通过子节点获取连接
     fn search_by_child(&self, child_id: IdType) -> Vec<RawConnectionData> {
-        self.datas.iter().filter(|x| x.child_part == child_id).map(|x| x.as_raw_data()).collect()
+        self.datas
+            .iter()
+            .filter(|x| x.get_child() == child_id && x.is_normal())
+            .map(|x| x.as_normal_raw().unwrap())
+            .collect()
     }
     /// 通过父子中任意一个 id 搜索连接
     fn search_by_id(&self, any_id: IdType) -> Vec<RawConnectionData> {
         self.datas
             .iter()
-            .filter(|x| x.parent_part == any_id || x.child_part == any_id)
-            .map(|x| x.as_raw_data())
+            .filter(|x| (x.get_parent() == any_id || x.get_child() == any_id) && x.is_normal())
+            .map(|x| x.as_normal_raw().unwrap())
             .collect()
     }
     /// 通过父子双方 id 获取连接
@@ -251,15 +259,15 @@ impl PySR1Connections {
     fn search_by_both_id(&self, parent_id: IdType, child_id: IdType) -> Vec<RawConnectionData> {
         self.datas
             .iter()
-            .filter(|x| x.parent_part == parent_id && x.child_part == child_id)
-            .map(|x| x.as_raw_data())
+            .filter(|x| x.get_parent() == parent_id && x.get_child() == child_id && x.is_normal())
+            .map(|x| x.as_normal_raw().unwrap())
             .collect()
     }
     /// 获取所有连接的原始数据
     ///
     /// 万一你确实需要吭哧吭哧去处理原始数据呢
     fn get_raw_data(&self) -> Vec<RawConnectionData> {
-        self.datas.iter().map(|x| x.as_raw_data()).collect()
+        self.datas.iter().filter(|x| x.is_normal()).map(|x| x.as_normal_raw().unwrap()).collect()
     }
 }
 
@@ -291,32 +299,27 @@ impl PySR1Ship {
     }
 
     fn disconnected_parts(&self) -> Vec<(Vec<(PySR1PartType, PySR1PartData)>, PySR1Connections)> {
-        match self.ship.disconnected.as_ref() {
-            Some(parts) => {
-                if parts.is_empty() {
-                    return Vec::new();
-                }
-                let mut result = Vec::with_capacity(parts.len());
-                for (part_group, connections) in parts.iter() {
-                    let mut group_parts = Vec::with_capacity(part_group.len());
-                    for part_data in part_group.iter() {
-                        if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
-                            let part_type = PySR1PartType::new(part_type.clone());
-                            let py_part_data = PySR1PartData::new(part_data.clone());
-                            group_parts.push((part_type, py_part_data));
-                        }
-                    }
-                    result.push((
-                        group_parts,
-                        PySR1Connections {
-                            datas: connections.clone().unwrap_or_default(),
-                        },
-                    ));
-                }
-                result
-            }
-            None => Vec::new(),
+        if self.ship.disconnected.is_empty() {
+            return Vec::new();
         }
+        let mut result = Vec::with_capacity(self.ship.disconnected.len());
+        for (part_group, connections) in self.ship.disconnected.iter() {
+            let mut group_parts = Vec::with_capacity(part_group.len());
+            for part_data in part_group.iter() {
+                if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                    let part_type = PySR1PartType::new(part_type.clone());
+                    let py_part_data = PySR1PartData::new(part_data.clone());
+                    group_parts.push((part_type, py_part_data));
+                }
+            }
+            result.push((
+                group_parts,
+                PySR1Connections {
+                    datas: connections.clone(),
+                },
+            ));
+        }
+        result
     }
 
     #[getter]
@@ -425,9 +428,8 @@ impl PySR1Ship {
         // 先搜链接到的部件
         // 这里的代码是 GitHub Copilot 帮我优化的
         // 赞美 GitHub Copilot !()
-        let unconnected = self.ship.disconnected.as_ref().map_or(vec![], |disconnected| {
-            disconnected.iter().flat_map(|(group, _)| group.iter()).filter(|part| part.id == part_id).collect()
-        });
+        let unconnected =
+            self.ship.disconnected.iter().flat_map(|(group, _)| group.iter()).filter(|part| part.id == part_id);
         // 然后通过一个 chain 直接把他链接到这边
         self.ship
             .parts

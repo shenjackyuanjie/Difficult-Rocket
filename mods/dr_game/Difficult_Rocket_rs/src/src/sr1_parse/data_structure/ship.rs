@@ -28,19 +28,7 @@ pub struct RawShip {
     // SR1 says it's optional, let them happy
     // NOT always 0
     #[serde(rename = "DisconnectedParts")]
-    pub disconnected: Option<DisconnectedParts>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Parts {
-    #[serde(rename = "Part")]
-    pub parts: Vec<Part>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Connections {
-    #[serde(rename = "Connection")]
-    pub connects: Option<Vec<Connection>>,
+    pub disconnected: DisconnectedParts,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -97,6 +85,58 @@ pub struct Part {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Parts {
+    #[serde(rename = "Part", default)]
+    pub parts: Vec<Part>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Connections {
+    #[serde(rename = "$value", default)]
+    pub connections: Vec<Connection>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct DisconnectedParts {
+    #[serde(rename = "DisconnectedPart", default)]
+    pub parts: Vec<DisconnectedPart>,
+}
+
+impl Parts {
+    pub fn as_sr1_vec(&self) -> Vec<SR1PartData> {
+        self.parts.iter().map(|x| x.to_sr_part_data()).collect()
+    }
+    pub fn from_vec_sr1(parts: Vec<SR1PartData>) -> Self {
+        Parts {
+            parts: parts.iter().map(|x| x.to_raw_part_data()).collect(),
+        }
+    }
+}
+
+impl Connections {
+    pub fn as_vec(&self) -> Vec<Connection> {
+        self.connections.clone()
+    }
+    pub fn from_vec(connections: Vec<Connection>) -> Self {
+        Connections { connections }
+    }
+}
+
+impl DisconnectedParts {
+    pub fn as_sr1_vec(&self) -> Vec<(Vec<SR1PartData>, Vec<Connection>)> {
+        self.parts.iter().map(|x| x.into_sr_part()).collect()
+    }
+    pub fn from_vec_sr1(parts_list: Vec<(Vec<SR1PartData>, Vec<Connection>)>) -> Self {
+        DisconnectedParts {
+            parts: parts_list
+                .iter()
+                .map(|(part, connects)| DisconnectedPart::from_sr_part(part.to_vec(), connects.to_vec()))
+                .collect(),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Engine {
     #[serde(rename = "@fuel")]
     pub fuel: f64,
@@ -122,14 +162,16 @@ pub struct Pod {
 pub struct Staging {
     #[serde(rename = "@currentStage")]
     pub current_stage: i32,
-    #[serde(rename = "Step")]
-    pub steps: Option<Vec<Step>>,
+    #[serde(rename = "Step", default)]
+    pub steps: Vec<Step>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Step {
-    #[serde(rename = "Activate")]
-    pub activates: Option<Vec<Activate>>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/21
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/21~~
+    /// Now is (default)
+    #[serde(rename = "Activate", default)]
+    pub activates: Vec<Activate>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -142,12 +184,6 @@ pub struct Activate {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct DisconnectedParts {
-    #[serde(rename = "DisconnectedPart")]
-    pub parts: Option<Vec<DisconnectedPart>>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DisconnectedPart {
     #[serde(rename = "Parts")]
     pub parts: Parts,
@@ -155,41 +191,96 @@ pub struct DisconnectedPart {
     pub connects: Connections,
 }
 
+impl DisconnectedPart {
+    pub fn into_sr_part(&self) -> (Vec<SR1PartData>, Vec<Connection>) {
+        (self.parts.as_sr1_vec(), self.connects.as_vec())
+    }
+
+    pub fn from_sr_part(parts: Vec<SR1PartData>, connects: Vec<Connection>) -> Self {
+        Self {
+            parts: Parts::from_vec_sr1(parts),
+            connects: Connections::from_vec(connects),
+        }
+    }
+}
+
 pub type RawConnectionData = (i32, i32, IdType, IdType);
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Connection {
-    #[serde(rename = "@parentAttachPoint")]
-    pub parent_attach_point: i32,
-    #[serde(rename = "@childAttachPoint")]
-    pub child_attach_point: i32,
-    #[serde(rename = "@parentPart")]
-    pub parent_part: IdType,
-    #[serde(rename = "@childPart")]
-    pub child_part: IdType,
+pub enum Connection {
+    #[serde(rename = "Connection")]
+    Normal {
+        #[serde(rename = "@parentAttachPoint")]
+        parent_attach_point: i32,
+        #[serde(rename = "@childAttachPoint")]
+        child_attach_point: i32,
+        #[serde(rename = "@parentPart")]
+        parent_part: IdType,
+        #[serde(rename = "@childPart")]
+        child_part: IdType,
+    },
+    #[serde(rename = "DockConnection")]
+    Dock {
+        #[serde(rename = "@dockPart")]
+        dock_part: IdType,
+        #[serde(rename = "@parentPart")]
+        parent_part: IdType,
+        #[serde(rename = "@childPart")]
+        child_part: IdType,
+    },
 }
 
 pub type RawDockConnectionData = (IdType, IdType, IdType);
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct DockConnection {
-    #[serde(rename = "@dockPart")]
-    pub dock_part: IdType,
-    #[serde(rename = "@parentPart")]
-    pub parent_part: IdType,
-    #[serde(rename = "@childPart")]
-    pub child_part: IdType,
-}
-
 impl Connection {
-    /// 真有地方需要
-    pub fn as_raw_data(&self) -> RawConnectionData {
-        (
-            self.parent_attach_point,
-            self.child_attach_point,
-            self.parent_part,
-            self.child_part,
-        )
+    pub fn as_normal_raw(&self) -> Option<RawConnectionData> {
+        match self {
+            Connection::Normal {
+                parent_attach_point,
+                child_attach_point,
+                parent_part,
+                child_part,
+            } => Some((*parent_attach_point, *child_attach_point, *parent_part, *child_part)),
+            _ => None,
+        }
+    }
+    pub fn as_dock_raw(&self) -> Option<RawDockConnectionData> {
+        match self {
+            Connection::Dock {
+                dock_part,
+                parent_part,
+                child_part,
+            } => Some((*dock_part, *parent_part, *child_part)),
+            _ => None,
+        }
+    }
+    /// 通用的获取父节点
+    pub fn get_parent(&self) -> IdType {
+        match self {
+            Connection::Normal { parent_part, .. } => *parent_part,
+            Connection::Dock { parent_part, .. } => *parent_part,
+        }
+    }
+    /// 通用的获取子节点
+    pub fn get_child(&self) -> IdType {
+        match self {
+            Connection::Normal { child_part, .. } => *child_part,
+            Connection::Dock { child_part, .. } => *child_part,
+        }
+    }
+    /// 是否为 Dock 类型
+    pub fn is_dock(&self) -> bool {
+        match self {
+            Connection::Dock { .. } => true,
+            _ => false,
+        }
+    }
+    /// 是否为 Normal 类型
+    pub fn is_normal(&self) -> bool {
+        match self {
+            Connection::Normal { .. } => true,
+            _ => false,
+        }
     }
 }
 
@@ -221,40 +312,15 @@ impl SR1PartDataTrait for Part {
 
 impl SR1ShipTrait for RawShip {
     fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
-        let mut parts = Vec::new();
-        for part in &self.parts.parts {
-            parts.push(part.to_sr_part_data());
-        }
-        let disconnected = match &self.disconnected {
-            Some(disconnect) => match &disconnect.parts {
-                Some(disconnected_parts) => {
-                    let mut disconnected_parts_vec = Vec::new();
-                    for disconnected_part in disconnected_parts {
-                        let mut parts_vec = Vec::new();
-                        for part in &disconnected_part.parts.parts {
-                            parts_vec.push(part.to_sr_part_data());
-                        }
-                        disconnected_parts_vec.push((parts_vec, disconnected_part.connects.connects.clone()));
-                    }
-                    Some(disconnected_parts_vec)
-                }
-                None => None,
-            },
-            _ => None,
-        };
-        let connections = match &self.connects.connects {
-            Some(connections) => connections.clone(),
-            _ => Vec::new(),
-        };
         SR1Ship {
             name: name.unwrap_or("NewShip".to_string()),
             description: "".to_string(),
             version: self.version.unwrap_or(1_i32),
-            parts,
-            connections,
+            parts: self.parts.as_sr1_vec(),
+            connections: self.connects.as_vec(),
             lift_off: self.lift_off != 0,
             touch_ground: self.touch_ground.to_owned().map(|i| i != 0).unwrap_or(true),
-            disconnected,
+            disconnected: self.disconnected.as_sr1_vec(),
         }
     }
 
@@ -267,7 +333,7 @@ impl RawShip {
     pub fn from_file(path: String) -> Option<RawShip> {
         let ship_file = std::fs::read_to_string(path); // for encoding error
         if let Err(e) = ship_file {
-            println!("ERROR!\n{}\n----------", e);
+            println!("ERROR while reading file!\n{}\n----------", e);
             return None;
         }
         let ship_file = ship_file.unwrap();
@@ -275,7 +341,7 @@ impl RawShip {
         match ship {
             Ok(ship) => Some(ship),
             Err(e) => {
-                println!("ERROR!\n{}", e);
+                println!("ERROR in serde!\n{}", e);
                 None
             }
         }
