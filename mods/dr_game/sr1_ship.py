@@ -808,31 +808,22 @@ class PressSelectShipButton(PressTextButton):
         self.parent_window = parent_window
 
     def on_mouse_release(self, x, y, buttons, modifiers):
-        logger.info(self.parent_window.ships_buttons_begin_y,self.parent_window.ships_buttons_end_y,x,y)
-        logger.info(y >= self.parent_window.ships_buttons_begin_y and y <= self.parent_window.ships_buttons_end_y)
-        if (
-            self.parent_window.show_ships_buttons
-            and x >= self.parent_window.ships_buttons_begin_x
-            and x <= self.parent_window.ships_buttons_end_x
-            and y >= self.parent_window.ships_buttons_begin_y
-            and y <= self.parent_window.ships_buttons_end_y
-        ):
-            if self.pressed and (x, y) in self:
-                if self.draw_theme:
-                    self.draw_theme.on_disable(self)
-                else:
-                    self.back_rec.color = self.touched_color
-                self.pressed = False
+        if self.pressed and (x, y) in self:
+            if self.draw_theme:
+                self.draw_theme.on_disable(self)
+            else:
+                self.back_rec.color = self.touched_color
+            self.pressed = False
 
-                root = Tk()  # 创建一个Tkinter.Tk()实例
-                root.withdraw()  # 将Tkinter.Tk()实例隐藏
-                file_name = filedialog.askopenfilename(
-                    title="选择一个飞船存档",
-                    initialdir="./",  # 打开当前程序工作目录
-                )
-                self.path_var = file_name
-                self.parent_window.begin_ship_render_from_path(file_name)
-                logger.info("加载飞船from " + self.path_var)
+            root = Tk()  # 创建一个Tkinter.Tk()实例
+            root.withdraw()  # 将Tkinter.Tk()实例隐藏
+            file_name = filedialog.askopenfilename(
+                title="选择一个飞船存档",
+                initialdir="./",  # 打开当前程序工作目录
+            )
+            self.path_var = file_name
+            self.parent_window.begin_ship_render_from_path(file_name)
+            logger.info("加载飞船from " + self.path_var)
 
     def get_ship_path(self):
         logger.info("加载飞船from " + self.path_var)
@@ -870,12 +861,19 @@ class PressOpenShipButton(PressTextButton):
         return self.y
 
     def on_mouse_release(self, x, y, buttons, modifiers):
-        if self.pressed and (x, y) in self:
-            if self.draw_theme:
-                self.draw_theme.on_disable(self)
-            else:
-                self.back_rec.color = self.touched_color
-            self.pressed = False
+        if (
+            self.parent_window.show_ships_buttons
+            and x >= self.parent_window.ships_buttons_begin_x
+            and x <= self.parent_window.ships_buttons_end_x
+            and y >= self.parent_window.ships_buttons_begin_y
+            and y <= self.parent_window.ships_buttons_end_y
+        ):
+            if self.pressed and (x, y) in self:
+                if self.draw_theme:
+                    self.draw_theme.on_disable(self)
+                else:
+                    self.back_rec.color = self.touched_color
+                self.pressed = False
 
-            self.parent_window.begin_ship_render_from_path(self.ship_path)
-            logger.info("加载飞船from " + self.ship_path)
+                self.parent_window.begin_ship_render_from_path(self.ship_path)
+                logger.info("加载飞船from " + self.ship_path)
