@@ -95,6 +95,7 @@ class SR1ShipRender(BaseScreen):
         self.height = main_window.height
 
         self.main_batch = Batch()
+        self.ships_buttons_batch = Batch()
         self.group_camera = CenterGroupCamera(
             window=main_window,
             order=10,
@@ -196,13 +197,13 @@ class SR1ShipRender(BaseScreen):
         main_window.push_handlers(self.select_ship_button)
 
         # 扫描所有飞船
-        self.show_ships_buttons = True
+        self.show_ships_buttons = False
         self.ships_buttons_w = 150
         self.ships_buttons_h = 30
         self.ships_buttons_begin_x = self.width - self.ships_buttons_w
         self.ships_buttons_begin_y = 0
         self.ships_buttons_end_x = self.width
-        self.ships_buttons_end_y = self.height
+        self.ships_buttons_end_y = self.height - self.ships_buttons_h * 5
 
         ships_path = "./ships/"
         ships_files = self.scan_all_ships_list(ships_path)
@@ -218,7 +219,7 @@ class SR1ShipRender(BaseScreen):
                     width=self.ships_buttons_w,
                     height=self.ships_buttons_h,
                     text=ships_files[i][8:],
-                    batch=self.main_batch,
+                    batch=self.ships_buttons_batch,
                     group=self.ships_buttons_group,
                     draw_theme=MinecraftWikiButtonTheme,
                 )
@@ -233,7 +234,7 @@ class SR1ShipRender(BaseScreen):
             self.ships_buttons_end_y,
             width=5,
             color=(100, 100, 100, 255),
-            batch=self.main_batch,
+            batch=self.ships_buttons_batch,
             group=self.ships_buttons_group,
         )
 
@@ -246,11 +247,12 @@ class SR1ShipRender(BaseScreen):
             y2=self.ships_buttons_end_y,
             width=20,
             color=(200, 200, 200, 255),
-            batch=self.main_batch,
+            batch=self.ships_buttons_batch,
             group=self.ships_buttons_group,
         )
 
-        self.ships_buttons_group.visible = False
+        # self.ships_buttons_group.visible = False
+        self.show_ships_buttons = True
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -475,6 +477,8 @@ class SR1ShipRender(BaseScreen):
             self.window_pointer.height,
         )
         self.main_batch.draw()  # use group camera, no need to with
+        if self.show_ships_buttons:
+            self.ships_buttons_batch.draw()
         gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
@@ -563,8 +567,8 @@ class SR1ShipRender(BaseScreen):
                 min_y = min(min_y, ship_button.y)
                 max_y = max(max_y, ship_button.y)
 
-            if max_y + scroll_y * 50 <= self.height - self.ships_buttons_h:
-                scroll_y = (self.height - self.ships_buttons_h - max_y) / 50
+            if max_y + scroll_y * 50 <= self.ships_buttons_end_y - self.ships_buttons_h:
+                scroll_y = (self.ships_buttons_end_y - self.ships_buttons_h - max_y) / 50
 
             if min_y + scroll_y * 50 >= 0:
                 scroll_y = (0 - min_y) / 50
@@ -804,22 +808,31 @@ class PressSelectShipButton(PressTextButton):
         self.parent_window = parent_window
 
     def on_mouse_release(self, x, y, buttons, modifiers):
-        if self.pressed and (x, y) in self:
-            if self.draw_theme:
-                self.draw_theme.on_disable(self)
-            else:
-                self.back_rec.color = self.touched_color
-            self.pressed = False
+        logger.info(self.parent_window.ships_buttons_begin_y,self.parent_window.ships_buttons_end_y,x,y)
+        logger.info(y >= self.parent_window.ships_buttons_begin_y and y <= self.parent_window.ships_buttons_end_y)
+        if (
+            self.parent_window.show_ships_buttons
+            and x >= self.parent_window.ships_buttons_begin_x
+            and x <= self.parent_window.ships_buttons_end_x
+            and y >= self.parent_window.ships_buttons_begin_y
+            and y <= self.parent_window.ships_buttons_end_y
+        ):
+            if self.pressed and (x, y) in self:
+                if self.draw_theme:
+                    self.draw_theme.on_disable(self)
+                else:
+                    self.back_rec.color = self.touched_color
+                self.pressed = False
 
-            root = Tk()  # 创建一个Tkinter.Tk()实例
-            root.withdraw()  # 将Tkinter.Tk()实例隐藏
-            file_name = filedialog.askopenfilename(
-                title="选择一个飞船存档",
-                initialdir="./",  # 打开当前程序工作目录
-            )
-            self.path_var = file_name
-            self.parent_window.begin_ship_render_from_path(file_name)
-            logger.info("加载飞船from " + self.path_var)
+                root = Tk()  # 创建一个Tkinter.Tk()实例
+                root.withdraw()  # 将Tkinter.Tk()实例隐藏
+                file_name = filedialog.askopenfilename(
+                    title="选择一个飞船存档",
+                    initialdir="./",  # 打开当前程序工作目录
+                )
+                self.path_var = file_name
+                self.parent_window.begin_ship_render_from_path(file_name)
+                logger.info("加载飞船from " + self.path_var)
 
     def get_ship_path(self):
         logger.info("加载飞船from " + self.path_var)
