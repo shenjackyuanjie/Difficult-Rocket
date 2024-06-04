@@ -9,12 +9,10 @@ from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.screen import BaseScreen
-from Difficult_Rocket.main import Game
+# from Difficult_Rocket.main import Game
 from Difficult_Rocket.gui.widget.button import (
     PressTextButton,
     MinecraftWikiButtonTheme,
-    ButtonThemeOptions,
-    BaseButtonTheme,
 )
 
 from lib_not_dr import loggers
@@ -106,7 +104,6 @@ class Menu(BaseScreen):
         )
 
         def on_release(button: PressTextButton, x, y):
-            logger.info("on_mouse_release", x, y, button, tag="dr_game")
             from .sr1_ship import SR1ShipRender
             main_window.remove_sub_screen("DR_game_menu")
             main_window.add_sub_screen("SR1_ship", SR1ShipRender)
@@ -122,39 +119,3 @@ class Menu(BaseScreen):
 
     def on_draw(self, dt: float, window: ClientWindow):
         self.main_batch.draw()
-
-
-# class PressEnterShipEditorButton(PressTextButton):
-#     def __init__(
-#         self,
-#         window: ClientWindow,
-#         x: int,
-#         y: int,
-#         width: int,
-#         height: int,
-#         text: str,
-#         batch: Optional[Batch] = None,
-#         group: Optional[Group] = None,
-#         theme: Optional[ButtonThemeOptions] = None,
-#         draw_theme: Optional[BaseButtonTheme] = None,
-#         dict_theme: Optional[dict] = None,
-#     ):
-#         super().__init__(
-#             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
-#         )
-#         self.window = window
-
-
-#     def on_mouse_release(self, x, y, buttons, modifiers):
-#         if self.pressed and (x, y) in self:
-#             if self.draw_theme:
-#                 self.draw_theme.on_disable(self)
-#             else:
-#                 self.back_rec.color = self.touched_color
-#             self.pressed = False
-
-#             from .sr1_ship import SR1ShipRender
-
-#             self.window.remove_sub_screen("DR_game_menu")
-#             self.window.add_sub_screen("SR1_ship", SR1ShipRender)
-#             logger.info("added SR1_ship screen", tag="dr_game")
