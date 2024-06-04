@@ -93,8 +93,7 @@ class Menu(BaseScreen):
         #     batch=self.main_batch,
         #     group=self.main_group,
         # )
-        self.enter_ship_editor_button = PressEnterShipEditorButton(
-            window=main_window,
+        self.enter_ship_editor_button = PressTextButton(
             x=100,
             y=100,
             width=150,
@@ -102,8 +101,18 @@ class Menu(BaseScreen):
             text="进入编辑器",
             batch=self.main_batch,
             group=self.main_group,
-            draw_theme=MinecraftWikiButtonTheme
+            draw_theme=MinecraftWikiButtonTheme,
+            dict_theme={"pop_out": True}
         )
+
+        def on_release(button: PressTextButton, x, y):
+            logger.info("on_mouse_release", x, y, button, tag="dr_game")
+            from .sr1_ship import SR1ShipRender
+            main_window.remove_sub_screen("DR_game_menu")
+            main_window.add_sub_screen("SR1_ship", SR1ShipRender)
+            logger.info("added SR1_ship screen", tag="dr_game")
+
+        self.enter_ship_editor_button.set_handler("on_release", on_release)
         # main_window.push_handlers(self.wiki_button1)
         # main_window.push_handlers(self.wiki_button2)
         # main_window.push_handlers(self.wiki_button3)
@@ -115,37 +124,37 @@ class Menu(BaseScreen):
         self.main_batch.draw()
 
 
-class PressEnterShipEditorButton(PressTextButton):
-    def __init__(
-        self,
-        window: ClientWindow,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        text: str,
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
-        theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[BaseButtonTheme] = None,
-        dict_theme: Optional[dict] = None,
-    ):
-        super().__init__(
-            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
-        )
-        self.window = window
+# class PressEnterShipEditorButton(PressTextButton):
+#     def __init__(
+#         self,
+#         window: ClientWindow,
+#         x: int,
+#         y: int,
+#         width: int,
+#         height: int,
+#         text: str,
+#         batch: Optional[Batch] = None,
+#         group: Optional[Group] = None,
+#         theme: Optional[ButtonThemeOptions] = None,
+#         draw_theme: Optional[BaseButtonTheme] = None,
+#         dict_theme: Optional[dict] = None,
+#     ):
+#         super().__init__(
+#             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+#         )
+#         self.window = window
 
 
-    def on_mouse_release(self, x, y, buttons, modifiers):
-        if self.pressed and (x, y) in self:
-            if self.draw_theme:
-                self.draw_theme.on_disable(self)
-            else:
-                self.back_rec.color = self.touched_color
-            self.pressed = False
+#     def on_mouse_release(self, x, y, buttons, modifiers):
+#         if self.pressed and (x, y) in self:
+#             if self.draw_theme:
+#                 self.draw_theme.on_disable(self)
+#             else:
+#                 self.back_rec.color = self.touched_color
+#             self.pressed = False
 
-            from .sr1_ship import SR1ShipRender
+#             from .sr1_ship import SR1ShipRender
 
-            self.window.remove_sub_screen("DR_game_menu")
-            self.window.add_sub_screen("SR1_ship", SR1ShipRender)
-            logger.info("added SR1_ship screen", tag="dr_game")
+#             self.window.remove_sub_screen("DR_game_menu")
+#             self.window.add_sub_screen("SR1_ship", SR1ShipRender)
+#             logger.info("added SR1_ship screen", tag="dr_game")

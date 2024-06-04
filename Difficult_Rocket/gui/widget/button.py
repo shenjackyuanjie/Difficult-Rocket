@@ -254,7 +254,7 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
                 + (button.font_height * 0.2)
                 + self.list_pad // 2
             )
-            
+
             self.back_ground.x = self.x + (self.pad * 2)
             self.back_ground.y = self.y + (self.pad * 2)
             self.back_ground.position = self.x + (self.pad * 2), self.y + (self.pad * 2)
@@ -389,7 +389,7 @@ class PressTextButton(widgets.WidgetBase):
             self.draw_theme.on_update(self)
 
         self.value = text  # 重新分配一下高度和宽度的位置
-    
+
     @property
     def x(self) -> int:
         return self._x
@@ -477,7 +477,6 @@ class PressTextButton(widgets.WidgetBase):
                 self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.untouched_color
-            self.dispatch_event("on_release", x, y)
         return False
 
     def on_mouse_release(self, x, y, buttons, modifiers):
@@ -487,6 +486,7 @@ class PressTextButton(widgets.WidgetBase):
             else:
                 self.back_rec.color = self.touched_color
             self.pressed = False
+            self.dispatch_event("on_release", self, x, y)
 
     def _update_position(self):
         self.text_label.position = self._x, self._y, 0

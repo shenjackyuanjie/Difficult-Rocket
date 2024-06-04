@@ -728,7 +728,7 @@ impl SR1Ship {
             };
         }
 
-        fn write_parts(parts: &Vec<SR1PartData>, writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
+        fn write_parts(parts: &[SR1PartData], writer: &mut Writer<Cursor<Vec<u8>>>, save_status: &SaveStatus) {
             writer.write_event(Event::Start(BytesStart::new("Parts"))).unwrap();
             for part in parts.iter() {
                 let mut part_attr = BytesStart::new("Part");
