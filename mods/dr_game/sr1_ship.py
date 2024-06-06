@@ -19,6 +19,7 @@ from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Box
+from pyglet.window import mouse
 
 from . import DR_mod_runtime
 from .types import SR1Textures, SR1Rotation
@@ -95,6 +96,7 @@ class SR1ShipRender(BaseScreen):
         self.height = main_window.height
 
         self.main_batch = Batch()
+        self.buttons_batch = Batch()
         self.ships_buttons_batch = Batch()
         self.group_camera = CenterGroupCamera(
             window=main_window,
@@ -175,7 +177,7 @@ class SR1ShipRender(BaseScreen):
             width=150,
             height=30,
             text="进入游戏",
-            batch=self.main_batch,
+            batch=self.buttons_batch,
             group=self.buttons_group,
             draw_theme=MinecraftWikiButtonTheme,
         )
@@ -188,11 +190,11 @@ class SR1ShipRender(BaseScreen):
             width=150,
             height=30,
             text="加载飞船",
-            batch=self.main_batch,
+            batch=self.buttons_batch,
             group=self.buttons_group,
             draw_theme=MinecraftWikiButtonTheme,
         )
-
+        
         main_window.push_handlers(self.enter_game_button)
         main_window.push_handlers(self.select_ship_button)
 
@@ -203,8 +205,22 @@ class SR1ShipRender(BaseScreen):
         self.ships_buttons_begin_x = self.width - self.ships_buttons_w
         self.ships_buttons_begin_y = 0
         self.ships_buttons_end_x = self.width
-        self.ships_buttons_end_y = self.height - self.ships_buttons_h * 5
+        self.ships_buttons_end_y = self.height - self.ships_buttons_h * 1
 
+        self.control_ships_list_button = PressControlShipsListButton(
+            window=main_window,
+            parent_window=self,
+            x=self.ships_buttons_begin_x,
+            y=self.ships_buttons_end_y,
+            width=self.ships_buttons_w,
+            height=self.ships_buttons_h,
+            text="飞船列表",
+            batch=self.buttons_batch,
+            group=self.buttons_group,
+            draw_theme=MinecraftWikiButtonTheme,
+        )
+        main_window.push_handlers(self.control_ships_list_button)
+        
         ships_path = "./ships/"
         ships_files = self.scan_all_ships_list(ships_path)
 
@@ -215,7 +231,7 @@ class SR1ShipRender(BaseScreen):
                     ship_path=ships_files[i],
                     parent_window=self,
                     x=self.ships_buttons_begin_x,
-                    y=self.ships_buttons_end_y - i * self.ships_buttons_h,
+                    y=self.ships_buttons_end_y - (i + 1) * self.ships_buttons_h,
                     width=self.ships_buttons_w,
                     height=self.ships_buttons_h,
                     text=ships_files[i][8:],
@@ -252,7 +268,7 @@ class SR1ShipRender(BaseScreen):
         )
 
         # self.ships_buttons_group.visible = False
-        self.show_ships_buttons = True
+        # self.show_ships_buttons = True
 
     @property
     def size(self) -> Tuple[int, int]:
@@ -479,6 +495,7 @@ class SR1ShipRender(BaseScreen):
         self.main_batch.draw()  # use group camera, no need to with
         if self.show_ships_buttons:
             self.ships_buttons_batch.draw()
+        self.buttons_batch.draw()  # use group camera, no need to with
         gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
@@ -575,6 +592,12 @@ class SR1ShipRender(BaseScreen):
 
             for ship_button in self.ships_buttons:
                 ship_button.y = ship_button.y + scroll_y * 50
+                """
+                if ship_button.y >= self.ships_buttons_begin_y and ship_button.y <= self.ships_buttons_end_y - self.ships_buttons_h:
+                    ship_button.x = self.ships_buttons_begin_x
+                else:
+                    ship_button.x = self.width + self.ships_buttons_w
+                """
 
             self.ship_list_line.y = self.ship_list_line.y - scroll_y * 50 * (
                 self.ships_buttons_end_y - self.ships_buttons_begin_y
@@ -781,8 +804,6 @@ class PressEnterGameButton(PressTextButton):
 
             logger.info("进入游戏")
 
-
-
 class PressSelectShipButton(PressTextButton):
     path_var = "./assets/builtin/dock1.xml"
 
@@ -828,6 +849,41 @@ class PressSelectShipButton(PressTextButton):
     def get_ship_path(self):
         logger.info("加载飞船from " + self.path_var)
         return self.path_var
+
+class PressControlShipsListButton(PressTextButton):
+    def __init__(
+        self,
+        window: ClientWindow,
+        parent_window,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        text: str,
+        batch: Optional[Batch] = None,
+        group: Optional[Group] = None,
+        theme: Optional[ButtonThemeOptions] = None,
+        draw_theme: Optional[BaseButtonTheme] = None,
+        dict_theme: Optional[dict] = None,
+    ):
+        super().__init__(
+            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+        )
+        self.window = window
+        self.parent_window = parent_window
+    
+    def on_mouse_release(self, x, y, buttons, modifiers):
+        logger.info(x,y,self.x,self.y)
+        logger.info(self.pressed)
+        logger.info((x, y) in self)
+        if self.pressed and (x, y) in self:
+            if self.draw_theme:
+                self.draw_theme.on_disable(self)
+            else:
+                self.back_rec.color = self.touched_color
+            self.pressed = False
+            self.parent_window.show_ships_buttons = not(self.parent_window.show_ships_buttons)
+            logger.info("显示飞船列表")
 
 
 class PressOpenShipButton(PressTextButton):
