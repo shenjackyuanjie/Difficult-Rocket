@@ -247,6 +247,8 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
 
     def on_update(self, button) -> None:
         super().on_update(button)
+        self.list_back.x = self.x
+        self.list_back.y = self.y
         if self.enable and self.drag_list:
             button.text_label.y = (
                 self.y
@@ -267,8 +269,6 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
             self.cover_back2.y = self.y + self.pad
             self.cover_back2.position = self.x + self.pad, self.y + self.pad
             self.cover_back2.height = self.height - (self.pad * 3)
-            self.list_back.x = self.x
-            self.list_back.y = self.y
         else:
             button.text_label.y = (
                 self.y
