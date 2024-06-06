@@ -167,7 +167,7 @@ class SR1ShipRender(BaseScreen):
         )
 
         # Buttons
-        self.buttons_group = Group(100, parent=main_window.main_group)
+        self.buttons_group = Group(110, parent=main_window.main_group)
         self.ships_buttons_group = Group(100, parent=main_window.main_group)
 
         self.enter_game_button = PressEnterGameButton(
@@ -235,7 +235,7 @@ class SR1ShipRender(BaseScreen):
                     width=self.ships_buttons_w,
                     height=self.ships_buttons_h,
                     text=ships_files[i][8:],
-                    batch=self.ships_buttons_batch,
+                    batch=self.buttons_batch,
                     group=self.ships_buttons_group,
                     draw_theme=MinecraftWikiButtonTheme,
                 )
@@ -494,8 +494,13 @@ class SR1ShipRender(BaseScreen):
         )
         self.main_batch.draw()  # use group camera, no need to with
         if self.show_ships_buttons:
+            for ship_button in self.ships_buttons:
+                ship_button.x = self.ships_buttons_begin_x
             self.ships_buttons_batch.draw()
-        self.buttons_batch.draw()  # use group camera, no need to with
+        else:
+            for ship_button in self.ships_buttons:
+                ship_button.x = self.width + self.ships_buttons_w * 2
+        self.buttons_batch.draw()
         gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
