@@ -873,9 +873,6 @@ class PressControlShipsListButton(PressTextButton):
         self.parent_window = parent_window
     
     def on_mouse_release(self, x, y, buttons, modifiers):
-        logger.info(x,y,self.x,self.y)
-        logger.info(self.pressed)
-        logger.info((x, y) in self)
         if self.pressed and (x, y) in self:
             if self.draw_theme:
                 self.draw_theme.on_disable(self)
