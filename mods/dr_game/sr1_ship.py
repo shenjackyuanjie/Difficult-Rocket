@@ -172,6 +172,7 @@ class SR1ShipRender(BaseScreen):
 
         self.enter_game_button = PressEnterGameButton(
             window=main_window,
+            parent_window=main_window,
             x=500,
             y=100,
             width=150,
@@ -778,6 +779,7 @@ class PressEnterGameButton(PressTextButton):
     def __init__(
         self,
         window: ClientWindow,
+        parent_window,
         x: int,
         y: int,
         width: int,
@@ -793,6 +795,7 @@ class PressEnterGameButton(PressTextButton):
             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
         )
         self.window = window
+        self.parent_window = parent_window
 
     def on_mouse_release(self, x, y, buttons, modifiers):
         if self.pressed and (x, y) in self:
@@ -801,6 +804,11 @@ class PressEnterGameButton(PressTextButton):
             else:
                 self.back_rec.color = self.touched_color
             self.pressed = False
+            
+            from .game_layout import GameLayout
+            self.parent_window.remove_sub_screen("SR1_ship")
+            self.parent_window.add_sub_screen("Dr_game_layout", GameLayout)
+            logger.info("added Dr_game_layout screen", tag="dr_game")
 
             logger.info("进入游戏")
 
