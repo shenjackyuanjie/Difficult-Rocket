@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Type
 
 # from libs import pyglet
 import pyglet
@@ -326,7 +326,7 @@ class PressTextButton(widgets.WidgetBase):
         batch: Optional[Batch] = None,
         group: Optional[Group] = None,
         theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[type(BaseButtonTheme)] = None,
+        draw_theme: Optional[Type[BaseButtonTheme]] = None,
         dict_theme: Optional[dict] = None,
     ):
         super().__init__(x, y, width, height)
@@ -384,7 +384,6 @@ class PressTextButton(widgets.WidgetBase):
                 height=self._height,
                 batch=self.main_batch,
                 group=self.back_ground_group,
-                theme=self.dict_theme,
             )
             self.draw_theme.on_update(self)
 
