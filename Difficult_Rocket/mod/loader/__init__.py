@@ -9,7 +9,7 @@ import time
 import traceback
 import importlib
 from pathlib import Path
-from typing import List, Dict, Optional, TypeVar
+from typing import List, Dict, Optional, TypeVar, Type
 
 from Difficult_Rocket.mod.api import ModInfo
 from Difficult_Rocket.utils.translate import tr
@@ -71,7 +71,7 @@ class ModManager(Options):
                         .format(mod, event_name, e, traceback.format_exc())
                     )
 
-    def load_mod(self, mod_path: Path) -> Optional[type(ModInfo)]:
+    def load_mod(self, mod_path: Path) -> Optional[Type[ModInfo]]:
         """
         加载指定路径下的 mod
         :param mod_path: mod 的路径
@@ -101,7 +101,7 @@ class ModManager(Options):
                         tr().mod.load.faild.no_mod_class().format(mod_path), tag="load"
                     )
                     return None
-                mod_class: type(ModInfo) = loading_mod.mod_class  # 获取 mod 类
+                mod_class: Type[ModInfo] = loading_mod.mod_class  # 获取 mod 类
                 if mod_class.mod_id not in self.find_mod_paths:
                     self.find_mod_paths[mod_class.mod_id] = mod_path
                 return mod_class
@@ -148,7 +148,7 @@ class ModManager(Options):
         self,
         extra_path: Optional[List[Path]] = None,
         extra_mod_path: Optional[List[Path]] = None,
-    ) -> List[type(ModInfo)]:
+    ) -> List[Type[ModInfo]]:
         """
         加载所有 mod  (可提供额外的 mod 路径)
         :param extra_path: 额外的 mod 路径
@@ -176,7 +176,7 @@ class ModManager(Options):
         )
         return mods
 
-    def init_mods(self, mods: List[type(ModInfo)]):
+    def init_mods(self, mods: List[Type[ModInfo]]):
         """
         加载 mod
         :param mods: 要加载的 mod 的 ModInfo 类

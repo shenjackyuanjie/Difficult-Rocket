@@ -575,8 +575,8 @@ class SR1ShipEditor(BaseScreen):
                     self.group_camera.zoom *= zoom_d
                 mouse_dx_d *= 1 - zoom_d
                 mouse_dy_d *= 1 - zoom_d
-                self.group_camera.view_x += mouse_dx_d
-                self.group_camera.view_y += mouse_dy_d
+                self.group_camera.view_x += int(mouse_dx_d)
+                self.group_camera.view_y += int(mouse_dy_d)
         elif self.status.moving:
             # 如果是在移动整体渲染位置
             size_x, size_y = self.size
