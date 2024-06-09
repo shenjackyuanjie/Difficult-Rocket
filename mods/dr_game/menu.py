@@ -104,9 +104,9 @@ class Menu(BaseScreen):
         )
 
         def on_release(button: PressTextButton, x, y):
-            from .sr1_ship import SR1ShipRender
+            from .sr1_ship import SR1ShipEditor
             main_window.remove_sub_screen("DR_game_menu")
-            main_window.add_sub_screen("SR1_ship", SR1ShipRender)
+            main_window.add_sub_screen("SR1_ship", SR1ShipEditor)
             logger.info("added SR1_ship screen", tag="dr_game")
 
         self.enter_ship_editor_button.set_handler("on_release", on_release)

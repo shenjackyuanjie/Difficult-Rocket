@@ -19,7 +19,7 @@ from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Box
-from pyglet.window import mouse
+# from pyglet.window import mouse
 
 from . import DR_mod_runtime
 from .types import SR1Textures, SR1Rotation
@@ -76,11 +76,20 @@ class SR1ShipRenderStatus(Options):  # NOQA
     draw_mouse_d_pos: bool = False
 
 
-class SR1ShipRender(BaseScreen):
-    """用于渲染 sr1 船的类"""
+class SR1ShipSelecter(BaseScreen):
+    """
+    SR1 飞船选择器
+    考虑到 sss 写的那一大堆东西实在有点离谱
+    所以单独拿出来写个screen
+    我估计以后还得有一堆类似重构(瘫倒)
+    """
+    name = "DR_game_sr1_ship_selecter"
 
-    name = "DR_game_sr1_ship_render"
-    ships_buttons = []
+
+class SR1ShipEditor(BaseScreen):
+    """SR1 飞船编辑器"""
+
+    name = "DR_game_sr1_ship_editor"
 
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
@@ -170,103 +179,103 @@ class SR1ShipRender(BaseScreen):
         self.buttons_group = Group(100, parent=main_window.main_group)
         self.ships_buttons_group = Group(100, parent=main_window.main_group)
 
-        self.enter_game_button = PressEnterGameButton(
-            window=main_window,
-            parent_window=main_window,
-            x=500,
-            y=100,
-            width=150,
-            height=30,
-            text="进入游戏",
-            batch=self.buttons_batch,
-            group=self.buttons_group,
-            draw_theme=MinecraftWikiButtonTheme,
-        )
+        # self.enter_game_button = PressEnterGameButton(
+        #     window=main_window,
+        #     parent_window=main_window,
+        #     x=500,
+        #     y=100,
+        #     width=150,
+        #     height=30,
+        #     text="进入游戏",
+        #     batch=self.buttons_batch,
+        #     group=self.buttons_group,
+        #     draw_theme=MinecraftWikiButtonTheme,
+        # )
 
-        self.select_ship_button = PressSelectShipButton(
-            window=main_window,
-            parent_window=self,
-            x=100,
-            y=100,
-            width=150,
-            height=30,
-            text="加载飞船",
-            batch=self.buttons_batch,
-            group=self.buttons_group,
-            draw_theme=MinecraftWikiButtonTheme,
-        )
-        
-        main_window.push_handlers(self.enter_game_button)
-        main_window.push_handlers(self.select_ship_button)
+        # self.select_ship_button = PressSelectShipButton(
+        #     window=main_window,
+        #     parent_window=self,
+        #     x=100,
+        #     y=100,
+        #     width=150,
+        #     height=30,
+        #     text="加载飞船",
+        #     batch=self.buttons_batch,
+        #     group=self.buttons_group,
+        #     draw_theme=MinecraftWikiButtonTheme,
+        # )
+
+        # main_window.push_handlers(self.enter_game_button)
+        # main_window.push_handlers(self.select_ship_button)
 
         # 扫描所有飞船
-        self.show_ships_buttons = False
-        self.ships_buttons_w = 150
-        self.ships_buttons_h = 30
-        self.ships_buttons_begin_x = self.width - self.ships_buttons_w
-        self.ships_buttons_begin_y = 0
-        self.ships_buttons_end_x = self.width
-        self.ships_buttons_end_y = self.height - self.ships_buttons_h * 1
+        # self.show_ships_buttons = False
+        # self.ships_buttons_w = 150
+        # self.ships_buttons_h = 30
+        # self.ships_buttons_begin_x = self.width - self.ships_buttons_w
+        # self.ships_buttons_begin_y = 0
+        # self.ships_buttons_end_x = self.width
+        # self.ships_buttons_end_y = self.height - self.ships_buttons_h * 1
 
-        self.control_ships_list_button = PressControlShipsListButton(
-            window=main_window,
-            parent_window=self,
-            x=self.ships_buttons_begin_x,
-            y=self.ships_buttons_end_y,
-            width=self.ships_buttons_w,
-            height=self.ships_buttons_h,
-            text="飞船列表",
-            batch=self.buttons_batch,
-            group=self.buttons_group,
-            draw_theme=MinecraftWikiButtonTheme,
-        )
-        main_window.push_handlers(self.control_ships_list_button)
-        
-        ships_path = "./ships/"
-        ships_files = self.scan_all_ships_list(ships_path)
+        # self.control_ships_list_button = PressControlShipsListButton(
+        #     window=main_window,
+        #     parent_window=self,
+        #     x=self.ships_buttons_begin_x,
+        #     y=self.ships_buttons_end_y,
+        #     width=self.ships_buttons_w,
+        #     height=self.ships_buttons_h,
+        #     text="飞船列表",
+        #     batch=self.buttons_batch,
+        #     group=self.buttons_group,
+        #     draw_theme=MinecraftWikiButtonTheme,
+        # )
+        # main_window.push_handlers(self.control_ships_list_button)
 
-        for i in range(len(ships_files)):
-            self.ships_buttons.append(
-                PressOpenShipButton(
-                    window=main_window,
-                    ship_path=ships_files[i],
-                    parent_window=self,
-                    x=self.ships_buttons_begin_x,
-                    y=self.ships_buttons_end_y - (i + 1) * self.ships_buttons_h,
-                    width=self.ships_buttons_w,
-                    height=self.ships_buttons_h,
-                    text=ships_files[i][8:],
-                    batch=self.ships_buttons_batch,
-                    group=self.ships_buttons_group,
-                    draw_theme=MinecraftWikiButtonTheme,
-                )
-            )
+        # ships_path = "./ships/"
+        # ships_files = self.scan_all_ships_list(ships_path)
 
-            main_window.push_handlers(self.ships_buttons[-1])
+        # for i in range(len(ships_files)):
+        #     self.ships_buttons.append(
+        #         PressOpenShipButton(
+        #             window=main_window,
+        #             ship_path=ships_files[i],
+        #             parent_window=self,
+        #             x=self.ships_buttons_begin_x,
+        #             y=self.ships_buttons_end_y - (i + 1) * self.ships_buttons_h,
+        #             width=self.ships_buttons_w,
+        #             height=self.ships_buttons_h,
+        #             text=ships_files[i][8:],
+        #             batch=self.ships_buttons_batch,
+        #             group=self.ships_buttons_group,
+        #             draw_theme=MinecraftWikiButtonTheme,
+        #         )
+        #     )
 
-        self.ship_list_line_back = Line(
-            self.ships_buttons_begin_x - 4,
-            self.ships_buttons_begin_y,
-            self.ships_buttons_begin_x - 4,
-            self.ships_buttons_end_y,
-            width=5,
-            color=(100, 100, 100, 255),
-            batch=self.ships_buttons_batch,
-            group=self.ships_buttons_group,
-        )
+        #     main_window.push_handlers(self.ships_buttons[-1])
 
-        self.ship_list_line = Line(
-            x=self.ships_buttons_begin_x,
-            y=self.ships_buttons_end_y
-            - (self.ships_buttons_end_y - self.ships_buttons_begin_y) ** 2
-            / ((len(ships_files) + 1) * self.ships_buttons_h),
-            x2=self.ships_buttons_begin_x,
-            y2=self.ships_buttons_end_y,
-            width=20,
-            color=(200, 200, 200, 255),
-            batch=self.ships_buttons_batch,
-            group=self.ships_buttons_group,
-        )
+        # self.ship_list_line_back = Line(
+        #     self.ships_buttons_begin_x - 4,
+        #     self.ships_buttons_begin_y,
+        #     self.ships_buttons_begin_x - 4,
+        #     self.ships_buttons_end_y,
+        #     width=5,
+        #     color=(100, 100, 100, 255),
+        #     batch=self.ships_buttons_batch,
+        #     group=self.ships_buttons_group,
+        # )
+
+        # self.ship_list_line = Line(
+        #     x=self.ships_buttons_begin_x,
+        #     y=self.ships_buttons_end_y
+        #     - (self.ships_buttons_end_y - self.ships_buttons_begin_y) ** 2
+        #     / ((len(ships_files) + 1) * self.ships_buttons_h),
+        #     x2=self.ships_buttons_begin_x,
+        #     y2=self.ships_buttons_end_y,
+        #     width=20,
+        #     color=(200, 200, 200, 255),
+        #     batch=self.ships_buttons_batch,
+        #     group=self.ships_buttons_group,
+        # )
 
         # self.ships_buttons_group.visible = False
         # self.show_ships_buttons = True
@@ -322,9 +331,9 @@ class SR1ShipRender(BaseScreen):
         texture = self.textures.get_texture(part_type.sprite)
         part_sprite = Sprite(
             img=texture,
-            x=part_data.x * 60,
-            y=part_data.y * 60,
-            z=randomer.random(),
+            x=int(part_data.x * 60),
+            y=int(part_data.y * 60),
+            z=randomer.randint(-100, 100),
             batch=batch,
             group=part_group,
         )
@@ -385,15 +394,18 @@ class SR1ShipRender(BaseScreen):
                     count = 0
 
             # 渲染未连接的部件
-            for (part_groups, part_connections) in self.rust_ship.disconnected_parts():
-                self.logger.info(part_groups[0], tag="sprite_batch")
-                for (part_type, part_data) in part_groups[0]:
+            for part_groups, part_connections in self.rust_ship.disconnected_parts():
+                for part_type, part_data in part_groups:
+                    # 出于一些魔法原因, 这玩意居然能跑, part_groups 不需要加 [0]
                     # 未连接的需要同时把连接线也给渲染了
                     # TODO: 连接线渲染
                     part_sprite, part_box = self.part_render_init(
                         part_data, part_type, part_group, line_group, self.main_batch
                     )
                     part_box.opacity = 100
+                    part_box._thickness = 2
+                    part_box._update_vertices()
+                    # ignore, pyglet 没写这个的 @property, 等我 issue + pr
                     # 未连接的部件透明度降低
                     part_sprite.opacity = 100
                     self.part_sprites[part_data.id] = (part_sprite, part_box)
@@ -494,8 +506,8 @@ class SR1ShipRender(BaseScreen):
             self.window_pointer.height,
         )
         self.main_batch.draw()  # use group camera, no need to with
-        if self.show_ships_buttons:
-            self.ships_buttons_batch.draw()
+        # if self.show_ships_buttons:
+        #     self.ships_buttons_batch.draw()
         self.buttons_batch.draw()  # use group camera, no need to with
         gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
@@ -508,6 +520,8 @@ class SR1ShipRender(BaseScreen):
 
         if not self.status.draw_done:
             try:
+                assert isinstance(self.gen_draw, Generator), \
+                    f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
                 next(self.gen_draw)
             except (GeneratorExit, StopIteration):
                 self.status.draw_done = True
@@ -529,18 +543,19 @@ class SR1ShipRender(BaseScreen):
     def on_mouse_scroll(
         self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
     ):
-        if self.status.focus and (
-            not self.show_ships_buttons
-            or (
-                not (
-                    self.show_ships_buttons
-                    and x >= self.ships_buttons_begin_x
-                    and x <= self.ships_buttons_end_x
-                    and y >= self.ships_buttons_begin_y
-                    and y <= self.ships_buttons_end_y
-                )
-            )
-        ):
+        # if self.status.focus and (
+        #     not self.show_ships_buttons
+        #     or (
+        #         not (
+        #             self.show_ships_buttons
+        #             and x >= self.ships_buttons_begin_x
+        #             and x <= self.ships_buttons_end_x
+        #             and y >= self.ships_buttons_begin_y
+        #             and y <= self.ships_buttons_end_y
+        #         )
+        #     )
+        # ):
+        if self.status.focus:
             mouse_dx = x - (self.width / 2) + self.dx
             mouse_dy = y - (self.height / 2) + self.dy
             # 鼠标缩放位置相对于屏幕中心的位置
@@ -572,37 +587,37 @@ class SR1ShipRender(BaseScreen):
             if size_y < 10:
                 size_y = 10
             self.size = size_x, size_y
-        elif (
-            self.show_ships_buttons
-            and x >= self.ships_buttons_begin_x
-            and x <= self.ships_buttons_end_x
-            and y >= self.ships_buttons_begin_y
-            and y <= self.ships_buttons_end_y
-        ):
-            min_y = 9999999
-            max_y = 0
-            for ship_button in self.ships_buttons:
-                min_y = min(min_y, ship_button.y)
-                max_y = max(max_y, ship_button.y)
+        # elif (
+        #     self.show_ships_buttons
+        #     and x >= self.ships_buttons_begin_x
+        #     and x <= self.ships_buttons_end_x
+        #     and y >= self.ships_buttons_begin_y
+        #     and y <= self.ships_buttons_end_y
+        # ):
+        #     min_y = 9999999
+        #     max_y = 0
+        #     for ship_button in self.ships_buttons:
+        #         min_y = min(min_y, ship_button.y)
+        #         max_y = max(max_y, ship_button.y)
 
-            if max_y + scroll_y * 50 <= self.ships_buttons_end_y - self.ships_buttons_h:
-                scroll_y = (self.ships_buttons_end_y - self.ships_buttons_h - max_y) / 50
+        #     if max_y + scroll_y * 50 <= self.ships_buttons_end_y - self.ships_buttons_h:
+        #         scroll_y = (self.ships_buttons_end_y - self.ships_buttons_h - max_y) / 50
 
-            if min_y + scroll_y * 50 >= 0:
-                scroll_y = (0 - min_y) / 50
+        #     if min_y + scroll_y * 50 >= 0:
+        #         scroll_y = (0 - min_y) / 50
 
-            for ship_button in self.ships_buttons:
-                ship_button.y = ship_button.y + scroll_y * 50
-                """
-                if ship_button.y >= self.ships_buttons_begin_y and ship_button.y <= self.ships_buttons_end_y - self.ships_buttons_h:
-                    ship_button.x = self.ships_buttons_begin_x
-                else:
-                    ship_button.x = self.width + self.ships_buttons_w
-                """
+        #     for ship_button in self.ships_buttons:
+        #         ship_button.y = ship_button.y + scroll_y * 50
+        #         """
+        #         if ship_button.y >= self.ships_buttons_begin_y and ship_button.y <= self.ships_buttons_end_y - self.ships_buttons_h:
+        #             ship_button.x = self.ships_buttons_begin_x
+        #         else:
+        #             ship_button.x = self.width + self.ships_buttons_w
+        #         """
 
-            self.ship_list_line.y = self.ship_list_line.y - scroll_y * 50 * (
-                self.ships_buttons_end_y - self.ships_buttons_begin_y
-            ) / ((len(self.ships_buttons) + 1) * self.ships_buttons_h)
+        #     self.ship_list_line.y = self.ship_list_line.y - scroll_y * 50 * (
+        #         self.ships_buttons_end_y - self.ships_buttons_begin_y
+        #     ) / ((len(self.ships_buttons) + 1) * self.ships_buttons_h)
 
     def on_command(self, command: CommandText, window: ClientWindow):
         """解析命令"""
@@ -621,7 +636,7 @@ class SR1ShipRender(BaseScreen):
                 self.logger.info(f"sr1 mouse {self.status.draw_mouse_d_pos}")
             elif command.find("ship"):
                 if self.status.draw_done:
-                    for index, sprite in self.part_sprites.items():
+                    for index, sprite in self.part_sprites.values():
                         sprite.visible = not sprite.visible
 
         elif command.find("get_buf"):
@@ -646,61 +661,61 @@ class SR1ShipRender(BaseScreen):
 
             image_data = screenshot(self.window_pointer)
             image_data.save("test.png")
-        elif command.find("gen_img"):
-            if not self.status.draw_done:
-                return
-            if not DR_mod_runtime.use_DR_rust:
-                # 这个功能依赖于 DR rs (简称,我懒得在Python端实现)
-                return
-            img_box = self.rust_ship.img_pos
-            img_size = (img_box[2] - img_box[0], img_box[3] - img_box[1])
-            # 中心点是左上角坐标
-            img_center = (abs(img_box[0]), abs(img_box[3]))
-            try:
-                from PIL import Image
-            except ImportError:
-                traceback.print_exc()
-                print("PIL not found")
-                return
-            img = Image.new("RGBA", img_size)
-            part_data = self.rust_ship.as_dict()
-            for part, sprites in self.part_sprites.items():
-                for index, sprite in enumerate(sprites):
-                    sprite_img = sprite.image
-                    print(
-                        f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} "
-                        f"{part_data[part][index][1].y * 60}"
-                    )
-                    img_data = sprite_img.get_image_data()
-                    fmt = img_data.format
-                    if fmt != "RGB":
-                        fmt = "RGBA"
-                    pitch = -(img_data.width * len(fmt))
-                    pil_image = Image.frombytes(
-                        fmt,
-                        (img_data.width, img_data.height),
-                        img_data.get_data(fmt, pitch),
-                    )
+        # elif command.find("gen_img"):
+        #     if not self.status.draw_done:
+        #         return
+        #     if not DR_mod_runtime.use_DR_rust:
+        #         # 这个功能依赖于 DR rs (简称,我懒得在Python端实现)
+        #         return
+        #     img_box = self.rust_ship.img_pos
+        #     img_size = (img_box[2] - img_box[0], img_box[3] - img_box[1])
+        #     # 中心点是左上角坐标
+        #     img_center = (abs(img_box[0]), abs(img_box[3]))
+        #     try:
+        #         from PIL import Image
+        #     except ImportError:
+        #         traceback.print_exc()
+        #         print("PIL not found")
+        #         return
+        #     img = Image.new("RGBA", img_size)
+        #     part_data = self.rust_ship.as_dict()
+        #     for sprites, box in self.part_sprites.values():
+        #         for index, sprite in enumerate(sprites):
+        #             sprite_img = sprite.image
+        #             print(
+        #                 f"sprite_img: {sprite_img} {part_data[part][index][1].x * 60} "
+        #                 f"{part_data[part][index][1].y * 60}"
+        #             )
+        #             img_data = sprite_img.get_image_data()
+        #             fmt = img_data.format
+        #             if fmt != "RGB":
+        #                 fmt = "RGBA"
+        #             pitch = -(img_data.width * len(fmt))
+        #             pil_image = Image.frombytes(
+        #                 fmt,
+        #                 (img_data.width, img_data.height),
+        #                 img_data.get_data(fmt, pitch),
+        #             )
 
-                    pil_image = pil_image.rotate(
-                        -SR1Rotation.get_rotation(part_data[part][index][1].angle),
-                        expand=True,
-                    )
+        #             pil_image = pil_image.rotate(
+        #                 -SR1Rotation.get_rotation(part_data[part][index][1].angle),
+        #                 expand=True,
+        #             )
 
-                    if part_data[part][index][1].flip_y:
-                        pil_image.transpose(Image.FLIP_TOP_BOTTOM)
-                    if part_data[part][index][1].flip_x:
-                        pil_image.transpose(Image.FLIP_LEFT_RIGHT)
+        #             if part_data[part][index][1].flip_y:
+        #                 pil_image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+        #             if part_data[part][index][1].flip_x:
+        #                 pil_image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
-                    img.paste(
-                        pil_image,
-                        (
-                            int(part_data[part][index][1].x * 60 + img_center[0]),
-                            int(-part_data[part][index][1].y * 60 + img_center[1]),
-                        ),
-                    )
+        #             img.paste(
+        #                 pil_image,
+        #                 (
+        #                     int(part_data[part][index][1].x * 60 + img_center[0]),
+        #                     int(-part_data[part][index][1].y * 60 + img_center[1]),
+        #                 ),
+        #             )
 
-            img.save(f"test{time.time()}.png", "PNG")
+        #     img.save(f"test{time.time()}.png", "PNG")
 
         elif command.find("save"):
             print("应该保存飞船的")
@@ -733,34 +748,30 @@ class SR1ShipRender(BaseScreen):
             self.dx += dx
             self.dy += dy
 
-    def scan_all_ships_list(self, ships_path: str):
-        # 当前目录
-        base_dir = ships_path
-
-        # 获取当前目录下的所有文件
-        files = [os.path.join(base_dir, file) for file in os.listdir(base_dir)]
-
-        return files
-
-    def begin_ship_render_from_path(self, ship_path: str):
-        if Path(ship_path).is_dir():
-            for path in Path(ship_path).glob("*.xml"):
-                try:
-                    self.load_xml(str(path))
-                except ValueError:
-                    traceback.print_exc()
-        if self.load_xml(ship_path):
-            self.render_ship()
+    # def begin_ship_render_from_path(self, ship_path: str):
+    #     if Path(ship_path).is_dir():
+    #         for path in Path(ship_path).glob("*.xml"):
+    #             try:
+    #                 self.load_xml(str(path))
+    #             except ValueError:
+    #                 traceback.print_exc()
+    #     if self.load_xml(ship_path):
+    #         self.render_ship()
 
     def on_file_drop(self, x: int, y: int, paths: List[str], window: ClientWindow):
-        if len(paths) > 1:
-            for path in paths:
-                try:
-                    self.load_xml(path)
-                except Exception:
-                    traceback.print_exc()
+        if len(paths) == 1:
+            # only file/path
+            ...
         else:
-            self.begin_ship_render_from_path(paths[0])
+            ...
+        # if len(paths) > 1:
+        #     for path in paths:
+        #         try:
+        #             self.load_xml(path)
+        #         except Exception:
+        #             traceback.print_exc()
+        # else:
+        #     self.begin_ship_render_from_path(paths[0])
         # for path in paths:
         #     if self.load_xml(path):  # 加载成功一个就停下
         #         break
@@ -775,166 +786,166 @@ class SR1ShipRender(BaseScreen):
         self.window_pointer.view = value
 
 
-class PressEnterGameButton(PressTextButton):
-    def __init__(
-        self,
-        window: ClientWindow,
-        parent_window,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        text: str,
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
-        theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[BaseButtonTheme] = None,
-        dict_theme: Optional[dict] = None,
-    ):
-        super().__init__(
-            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
-        )
-        self.window = window
-        self.parent_window = parent_window
+# class PressEnterGameButton(PressTextButton):
+#     def __init__(
+#         self,
+#         window: ClientWindow,
+#         parent_window,
+#         x: int,
+#         y: int,
+#         width: int,
+#         height: int,
+#         text: str,
+#         batch: Optional[Batch] = None,
+#         group: Optional[Group] = None,
+#         theme: Optional[ButtonThemeOptions] = None,
+#         draw_theme: Optional[BaseButtonTheme] = None,
+#         dict_theme: Optional[dict] = None,
+#     ):
+#         super().__init__(
+#             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+#         )
+#         self.window = window
+#         self.parent_window = parent_window
 
-    def on_mouse_release(self, x, y, buttons, modifiers):
-        if self.pressed and (x, y) in self:
-            if self.draw_theme:
-                self.draw_theme.on_disable(self)
-            else:
-                self.back_rec.color = self.touched_color
-            self.pressed = False
-            
-            from .game_layout import GameLayout
-            self.parent_window.remove_sub_screen("SR1_ship")
-            self.parent_window.add_sub_screen("Dr_game_layout", GameLayout)
-            logger.info("added Dr_game_layout screen", tag="dr_game")
+#     def on_mouse_release(self, x, y, buttons, modifiers):
+#         if self.pressed and (x, y) in self:
+#             if self.draw_theme:
+#                 self.draw_theme.on_disable(self)
+#             else:
+#                 self.back_rec.color = self.touched_color
+#             self.pressed = False
 
-            logger.info("进入游戏")
+#             from .game_layout import GameLayout
+#             self.parent_window.remove_sub_screen("SR1_ship")
+#             self.parent_window.add_sub_screen("Dr_game_layout", GameLayout)
+#             logger.info("added Dr_game_layout screen", tag="dr_game")
 
-class PressSelectShipButton(PressTextButton):
-    path_var = "./assets/builtin/dock1.xml"
+#             logger.info("进入游戏")
 
-    def __init__(
-        self,
-        window: ClientWindow,
-        parent_window,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        text: str,
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
-        theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[BaseButtonTheme] = None,
-        dict_theme: Optional[dict] = None,
-    ):
-        super().__init__(
-            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
-        )
-        self.window = window
-        self.parent_window = parent_window
+# class PressSelectShipButton(PressTextButton):
+#     path_var = "./assets/builtin/dock1.xml"
 
-    def on_mouse_release(self, x, y, buttons, modifiers):
-        if self.pressed and (x, y) in self:
-            if self.draw_theme:
-                self.draw_theme.on_disable(self)
-            else:
-                self.back_rec.color = self.touched_color
-            self.pressed = False
+#     def __init__(
+#         self,
+#         window: ClientWindow,
+#         parent_window,
+#         x: int,
+#         y: int,
+#         width: int,
+#         height: int,
+#         text: str,
+#         batch: Optional[Batch] = None,
+#         group: Optional[Group] = None,
+#         theme: Optional[ButtonThemeOptions] = None,
+#         draw_theme: Optional[BaseButtonTheme] = None,
+#         dict_theme: Optional[dict] = None,
+#     ):
+#         super().__init__(
+#             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+#         )
+#         self.window = window
+#         self.parent_window = parent_window
 
-            root = Tk()  # 创建一个Tkinter.Tk()实例
-            root.withdraw()  # 将Tkinter.Tk()实例隐藏
-            file_name = filedialog.askopenfilename(
-                title="选择一个飞船存档",
-                initialdir="./",  # 打开当前程序工作目录
-            )
-            self.path_var = file_name
-            self.parent_window.begin_ship_render_from_path(file_name)
-            logger.info("加载飞船from " + self.path_var)
+#     def on_mouse_release(self, x, y, buttons, modifiers):
+#         if self.pressed and (x, y) in self:
+#             if self.draw_theme:
+#                 self.draw_theme.on_disable(self)
+#             else:
+#                 self.back_rec.color = self.touched_color
+#             self.pressed = False
 
-    def get_ship_path(self):
-        logger.info("加载飞船from " + self.path_var)
-        return self.path_var
+#             root = Tk()  # 创建一个Tkinter.Tk()实例
+#             root.withdraw()  # 将Tkinter.Tk()实例隐藏
+#             file_name = filedialog.askopenfilename(
+#                 title="选择一个飞船存档",
+#                 initialdir="./",  # 打开当前程序工作目录
+#             )
+#             self.path_var = file_name
+#             self.parent_window.begin_ship_render_from_path(file_name)
+#             logger.info("加载飞船from " + self.path_var)
 
-class PressControlShipsListButton(PressTextButton):
-    def __init__(
-        self,
-        window: ClientWindow,
-        parent_window,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        text: str,
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
-        theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[BaseButtonTheme] = None,
-        dict_theme: Optional[dict] = None,
-    ):
-        super().__init__(
-            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
-        )
-        self.window = window
-        self.parent_window = parent_window
-    
-    def on_mouse_release(self, x, y, buttons, modifiers):
-        if self.pressed and (x, y) in self:
-            if self.draw_theme:
-                self.draw_theme.on_disable(self)
-            else:
-                self.back_rec.color = self.touched_color
-            self.pressed = False
-            self.parent_window.show_ships_buttons = not(self.parent_window.show_ships_buttons)
-            logger.info("显示飞船列表")
+#     def get_ship_path(self):
+#         logger.info("加载飞船from " + self.path_var)
+#         return self.path_var
+
+# class PressControlShipsListButton(PressTextButton):
+#     def __init__(
+#         self,
+#         window: ClientWindow,
+#         parent_window,
+#         x: int,
+#         y: int,
+#         width: int,
+#         height: int,
+#         text: str,
+#         batch: Optional[Batch] = None,
+#         group: Optional[Group] = None,
+#         theme: Optional[ButtonThemeOptions] = None,
+#         draw_theme: Optional[BaseButtonTheme] = None,
+#         dict_theme: Optional[dict] = None,
+#     ):
+#         super().__init__(
+#             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+#         )
+#         self.window = window
+#         self.parent_window = parent_window
+
+#     def on_mouse_release(self, x, y, buttons, modifiers):
+#         if self.pressed and (x, y) in self:
+#             if self.draw_theme:
+#                 self.draw_theme.on_disable(self)
+#             else:
+#                 self.back_rec.color = self.touched_color
+#             self.pressed = False
+#             self.parent_window.show_ships_buttons = not(self.parent_window.show_ships_buttons)
+#             logger.info("显示飞船列表")
 
 
-class PressOpenShipButton(PressTextButton):
-    def __init__(
-        self,
-        window: ClientWindow,
-        ship_path,
-        parent_window,
-        x: int,
-        y: int,
-        width: int,
-        height: int,
-        text: str,
-        batch: Optional[Batch] = None,
-        group: Optional[Group] = None,
-        theme: Optional[ButtonThemeOptions] = None,
-        draw_theme: Optional[BaseButtonTheme] = None,
-        dict_theme: Optional[dict] = None,
-    ):
-        super().__init__(
-            x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
-        )
-        self.window = window
-        self.parent_window = parent_window
-        self.ship_path = ship_path
+# class PressOpenShipButton(PressTextButton):
+#     def __init__(
+#         self,
+#         window: ClientWindow,
+#         ship_path,
+#         parent_window,
+#         x: int,
+#         y: int,
+#         width: int,
+#         height: int,
+#         text: str,
+#         batch: Optional[Batch] = None,
+#         group: Optional[Group] = None,
+#         theme: Optional[ButtonThemeOptions] = None,
+#         draw_theme: Optional[BaseButtonTheme] = None,
+#         dict_theme: Optional[dict] = None,
+#     ):
+#         super().__init__(
+#             x, y, width, height, text, batch, group, theme, draw_theme, dict_theme
+#         )
+#         self.window = window
+#         self.parent_window = parent_window
+#         self.ship_path = ship_path
 
-    def set_y(self, y):
-        self.y = y
+#     def set_y(self, y):
+#         self.y = y
 
-    def get_y(self):
-        return self.y
+#     def get_y(self):
+#         return self.y
 
-    def on_mouse_release(self, x, y, buttons, modifiers):
-        if (
-            self.parent_window.show_ships_buttons
-            and x >= self.parent_window.ships_buttons_begin_x
-            and x <= self.parent_window.ships_buttons_end_x
-            and y >= self.parent_window.ships_buttons_begin_y
-            and y <= self.parent_window.ships_buttons_end_y
-        ):
-            if self.pressed and (x, y) in self:
-                if self.draw_theme:
-                    self.draw_theme.on_disable(self)
-                else:
-                    self.back_rec.color = self.touched_color
-                self.pressed = False
+#     def on_mouse_release(self, x, y, buttons, modifiers):
+#         if (
+#             self.parent_window.show_ships_buttons
+#             and x >= self.parent_window.ships_buttons_begin_x
+#             and x <= self.parent_window.ships_buttons_end_x
+#             and y >= self.parent_window.ships_buttons_begin_y
+#             and y <= self.parent_window.ships_buttons_end_y
+#         ):
+#             if self.pressed and (x, y) in self:
+#                 if self.draw_theme:
+#                     self.draw_theme.on_disable(self)
+#                 else:
+#                     self.back_rec.color = self.touched_color
+#                 self.pressed = False
 
-                self.parent_window.begin_ship_render_from_path(self.ship_path)
-                logger.info("加载飞船from " + self.ship_path)
+#                 self.parent_window.begin_ship_render_from_path(self.ship_path)
+#                 logger.info("加载飞船from " + self.ship_path)
