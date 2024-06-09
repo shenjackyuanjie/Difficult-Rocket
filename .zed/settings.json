@@ -1,0 +1,13 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#folder-specific-settings
+{
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "linkedProjects": ["./mods/dr_game/Difficult_Rocket_rs/src/Cargo.toml"]
+      }
+    }
+  }
+}
