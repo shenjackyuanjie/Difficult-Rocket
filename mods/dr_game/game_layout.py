@@ -26,7 +26,7 @@ class GameLayout(BaseScreen):
     DR game 的 菜单
     """
 
-    name = "Dr_game_layout"
+    name = "DR_game_layout"
 
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)

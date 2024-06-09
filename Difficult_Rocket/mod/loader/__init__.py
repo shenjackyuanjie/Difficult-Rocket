@@ -37,8 +37,9 @@ class ModManager(Options):
     find_mod_paths: Dict[str, Path] = {}
     loaded_mod_modules: Dict[str, ModInfo] = {}
 
-    def init(self, **kwargs) -> bool:
+    def init(self, **kwargs) -> None:
         self.logger = config.get_logger_from_old("mod_manager", "client")
+        return None
 
     def get_mod_module(self, mod_name: str) -> Optional[ModInfo]:
         """

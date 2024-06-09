@@ -21,7 +21,7 @@ class RustConsole(Console):
         self.console = Console_rs()
 
     def get_command(self) -> str:
-        return self.console.get_command()
+        return self.console.get_command()  # ignore: noqa
 
     def new_command(self) -> None:
         self.console.new_command()
