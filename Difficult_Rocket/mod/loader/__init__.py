@@ -9,7 +9,7 @@ import time
 import traceback
 import importlib
 from pathlib import Path
-from typing import List, Dict, Optional, TypeVar, Type
+from typing import List, Dict, Optional, TypeVar, Type, TYPE_CHECKING
 
 from Difficult_Rocket.mod.api import ModInfo
 from Difficult_Rocket.utils.translate import tr
@@ -17,7 +17,10 @@ from Difficult_Rocket.api.types import Options
 
 from lib_not_dr.loggers import config
 
-Game = TypeVar("Game")
+if TYPE_CHECKING:
+    from Difficult_Rocket.main import Game
+else:
+    Game = TypeVar("Game")
 
 logger = config.get_logger_from_old("mod_manager", "client")
 ONE_FILE_SUFFIX = (".py", ".pyc", ".pyd")
@@ -237,7 +240,7 @@ class ModManager(Options):
         unload = self.unload_mod(mod_id, game)
         if unload is None:
             return
-        mod_class: Optional[ModInfo] = None
+        mod_class: Optional[Type[ModInfo]] = None
         if unload.mod_id not in self.find_mod_paths:
             self.logger.warn(
                 tr().mod.reload.faild.not_find().format(unload.mod_id), tag="reload"
@@ -253,5 +256,7 @@ class ModManager(Options):
             if mod_class is not None:
                 self.init_mods([mod_class])
         if mod_id in self.loaded_mod_modules and mod_class is not None:
-            self.loaded_mod_modules[mod_id].on_load(game=game, old_self=mod_class)
+            self.loaded_mod_modules[mod_id].on_load(
+                game=game, old_self=self.loaded_mod_modules[mod_id]
+            )
             self.logger.info(tr().mod.reload.success().format(mod_id), tag="reload")
