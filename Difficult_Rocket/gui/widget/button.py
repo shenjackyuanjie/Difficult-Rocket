@@ -398,8 +398,10 @@ class PressTextButton(widgets.WidgetBase):
     def x(self, value: int) -> None:
         self._x = value
         self.text_label.x = value
-        self.draw_theme.x = value
-        self.draw_theme.on_update(self)
+        if self.draw_theme:
+            assert isinstance(self.draw_theme, BaseButtonTheme)
+            self.draw_theme.x = value
+            self.draw_theme.on_update(self)
 
     @property
     def y(self) -> int:
@@ -409,8 +411,10 @@ class PressTextButton(widgets.WidgetBase):
     def y(self, value: int) -> None:
         self._y = value
         self.text_label.y = value + 4
-        self.draw_theme.y = value
-        self.draw_theme.on_update(self)
+        if self.draw_theme:
+            assert isinstance(self.draw_theme, BaseButtonTheme)
+            self.draw_theme.y = value
+            self.draw_theme.on_update(self)
 
     @property
     def value(self):
@@ -457,6 +461,7 @@ class PressTextButton(widgets.WidgetBase):
         else:
             self.pressed = False
             if self.draw_theme:
+                assert isinstance(self.draw_theme, BaseButtonTheme)
                 self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.untouched_color
@@ -465,6 +470,7 @@ class PressTextButton(widgets.WidgetBase):
         if (x, y) in self:
             if buttons == mouse.LEFT:
                 if self.draw_theme:
+                    assert isinstance(self.draw_theme, BaseButtonTheme)
                     self.draw_theme.on_enable(x, y, self)
                 else:
                     self.back_rec.color = self.hit_color
@@ -474,6 +480,7 @@ class PressTextButton(widgets.WidgetBase):
         else:
             self.pressed = False
             if self.draw_theme:
+                assert isinstance(self.draw_theme, BaseButtonTheme)
                 self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.untouched_color
@@ -482,6 +489,7 @@ class PressTextButton(widgets.WidgetBase):
     def on_mouse_release(self, x, y, buttons, modifiers):
         if self.pressed and (x, y) in self:
             if self.draw_theme:
+                assert isinstance(self.draw_theme, BaseButtonTheme)
                 self.draw_theme.on_disable(self)
             else:
                 self.back_rec.color = self.touched_color
