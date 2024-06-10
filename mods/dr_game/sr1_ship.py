@@ -85,6 +85,11 @@ class SR1ShipSelecter(BaseScreen):
     """
     name = "DR_game_sr1_ship_selecter"
 
+    def __init__(self, main_window: ClientWindow):
+        super().__init__(main_window)
+        self.main_batch = Batch()
+        self.main_group = Group()
+
 
 class SR1ShipEditor(BaseScreen):
     """SR1 飞船编辑器"""
