@@ -89,6 +89,8 @@ class SR1ShipSelecter(BaseScreen):
         super().__init__(main_window)
         self.main_batch = Batch()
         self.main_group = Group()
+        self.folder_path: Path = Path("ships")
+
 
 
 class SR1ShipEditor(BaseScreen):
