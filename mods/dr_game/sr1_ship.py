@@ -19,6 +19,7 @@ from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
 from pyglet.shapes import Line, Box
+
 # from pyglet.window import mouse
 
 from . import DR_mod_runtime
@@ -31,7 +32,7 @@ from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
-from Difficult_Rocket.api.camera import CenterGroupCamera
+from Difficult_Rocket.api.camera import CenterGroupCamera, GroupCamera
 
 from Difficult_Rocket.gui.widget.button import (
     PressTextButton,
@@ -88,8 +89,18 @@ class SR1ShipSelecter(BaseScreen):
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
         self.main_batch = Batch()
-        self.main_group = Group()
+        self.main_group = GroupCamera(window=main_window)
         self.folder_path: Path = Path("ships")
+
+    def set_folder(self, path: Path):
+        if not path.is_dir():
+            logger.warn(sr_tr().sr1.ship.folder.invalid().format(path), tag="ship explorer")
+            return
+        for file in path.iterdir():
+            if not file.is_file:
+                continue
+            # 尝试加载一下
+            
 
 
 

@@ -135,7 +135,7 @@ checksum = "22ec99545bb0ed0ea7bb9b8e1e9122ea386ff8a48c0922e43f36d45ab09e0e80"
 
 [[package]]
 name = "difficult_rocket_rs"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "anyhow",
  "nalgebra",
@@ -454,9 +454,9 @@ dependencies = [
 
 [[package]]
 name = "quick-xml"
-version = "0.31.0"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1004a344b30a54e2ee58d66a71b32d2db2feb0a31f9a2d302bf0536f15de2a33"
+checksum = "1d3a6e5838b60e0e8fa7a43f22ade549a37d61f8bdbe636d0d7816191de969c2"
 dependencies = [
  "memchr",
  "serde",
@@ -473,9 +473,9 @@ dependencies = [
 
 [[package]]
 name = "rapier2d-f64"
-version = "0.19.0"
+version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7445a5148251f0e1d31e5bd798b8d5aed07984beb44a89ad0af13e99a7804748"
+checksum = "569c367a5f266a20e4253d798d3b9115d07c7c085b7be3258de104af3557f38f"
 dependencies = [
  "approx",
  "arrayvec",
@@ -491,6 +491,7 @@ dependencies = [
  "parry2d-f64",
  "rustc-hash",
  "simba",
+ "thiserror",
  "vec_map",
 ]
 
@@ -623,6 +624,26 @@ name = "target-lexicon"
 version = "0.12.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1fc403891a21bcfb7c37834ba66a547a8f402146eba7265b5a6d88059c9ff2f"
+
+[[package]]
+name = "thiserror"
+version = "1.0.61"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c546c80d6be4bc6a00c0f01730c08df82eaa7a7a61f11d656526506112cc1709"
+dependencies = [
+ "thiserror-impl",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "1.0.61"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "46c3384250002a6d5af4d114f2845d37b57521033f30d5c3f46c4d70e1197533"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.66",
+]
 
 [[package]]
 name = "typenum"

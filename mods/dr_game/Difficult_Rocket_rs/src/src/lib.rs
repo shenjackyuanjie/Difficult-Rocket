@@ -26,6 +26,7 @@ fn module_init(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sr1_parse::part_list::read_part_list_py, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_parse::ship::py_raw_ship_from_file, m)?)?;
     m.add_function(wrap_pyfunction!(python::data::load_and_save_test, m)?)?;
+    m.add_function(wrap_pyfunction!(sr1_parse::ship::py_assert_ship, m)?)?;
     m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;
     m.add_class::<python::data::PySR1PartType>()?;
