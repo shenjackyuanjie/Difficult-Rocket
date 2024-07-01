@@ -413,10 +413,9 @@ pub fn py_assert_ship(path: String) -> bool {
                 if !(founds.0 && founds.1 && founds.2) {
                     println!(
                         "warning: {}{}{} not found",
-                            if founds.0 { "" } else { "version " },
-                            if founds.1 { "" } else { "liftedOff " },
-                            if founds.2 { "" } else { "touchingGround " }
-                        
+                        if founds.0 { "" } else { "version " },
+                        if founds.1 { "" } else { "liftedOff " },
+                        if founds.2 { "" } else { "touchingGround " }
                     );
                     return false;
                 }
@@ -425,7 +424,7 @@ pub fn py_assert_ship(path: String) -> bool {
         x => {
             println!("ERROR while using xml to parse the file!\n{:?}\n----------", x);
             return false;
-        },
+        }
     }
     true
 }

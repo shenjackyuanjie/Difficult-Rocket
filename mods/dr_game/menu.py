@@ -17,6 +17,8 @@ from Difficult_Rocket.gui.widget.button import (
 
 from lib_not_dr import loggers
 
+from pyglet.text import Label
+
 # from . import DR_mod_runtime
 
 logger = loggers.config.get_logger_from_old("client.dr_game_menu", "client")
@@ -91,6 +93,19 @@ class Menu(BaseScreen):
         #     batch=self.main_batch,
         #     group=self.main_group,
         # )
+
+        # 16、20、24、32、40、48 64
+        # self.test_label = Label(
+        #     x=20, y=200,
+        #     font_name="Segoe Fluent Icons",
+        #     font_size=32,
+        #     text="\uE003 \uE005 \uE0A2
+        # \uE88B \uE88C \uE88D \uE985 \uE97E \uF7B5
+        # \uE971 \uE972 \uE973 \uE974",
+        #     batch=self.main_batch,
+        #     group=self.main_group,
+        # )
+
         self.enter_ship_editor_button = PressTextButton(
             x=100,
             y=100,
