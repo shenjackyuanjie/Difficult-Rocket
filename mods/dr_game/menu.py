@@ -4,7 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-from typing import Optional, Tuple
+# from typing import Optional, Tuple
 from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.client import ClientWindow
@@ -17,7 +17,7 @@ from Difficult_Rocket.gui.widget.button import (
 
 from lib_not_dr import loggers
 
-from pyglet.text import Label
+# from pyglet.text import Label
 
 # from . import DR_mod_runtime
 
