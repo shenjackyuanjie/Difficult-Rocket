@@ -124,7 +124,7 @@ impl Connections {
 
 impl DisconnectedParts {
     pub fn as_sr1_vec(&self) -> Vec<(Vec<SR1PartData>, Vec<Connection>)> {
-        self.parts.iter().map(|x| x.into_sr_part()).collect()
+        self.parts.iter().map(|x| x.as_sr_part()).collect()
     }
     pub fn from_vec_sr1(parts_list: Vec<(Vec<SR1PartData>, Vec<Connection>)>) -> Self {
         DisconnectedParts {
@@ -192,7 +192,7 @@ pub struct DisconnectedPart {
 }
 
 impl DisconnectedPart {
-    pub fn into_sr_part(&self) -> (Vec<SR1PartData>, Vec<Connection>) {
+    pub fn as_sr_part(&self) -> (Vec<SR1PartData>, Vec<Connection>) {
         (self.parts.as_sr1_vec(), self.connects.as_vec())
     }
 
@@ -270,17 +270,11 @@ impl Connection {
     }
     /// 是否为 Dock 类型
     pub fn is_dock(&self) -> bool {
-        match self {
-            Connection::Dock { .. } => true,
-            _ => false,
-        }
+        matches!(self, Connection::Dock { .. })
     }
     /// 是否为 Normal 类型
     pub fn is_normal(&self) -> bool {
-        match self {
-            Connection::Normal { .. } => true,
-            _ => false,
-        }
+        matches!(self, Connection::Normal { .. })
     }
 }
 
@@ -395,20 +389,21 @@ pub fn py_assert_ship(path: String) -> bool {
             if e.name().as_ref() == b"Ship" {
                 // 再验证一下 version, liftedOff, touchingGround
                 let mut founds = (false, false, false);
-                let _ = e.attributes().map(|attr| match attr {
-                    Ok(attr) => match attr.value.as_ref() {
-                        b"version" => {
-                            founds.0 = true;
+                let _ = e.attributes().map(|attr| {
+                    if let Ok(attr) = attr {
+                        match attr.value.as_ref() {
+                            b"version" => {
+                                founds.0 = true;
+                            }
+                            b"liftedOff" => {
+                                founds.1 = true;
+                            }
+                            b"touchingGround" => {
+                                founds.2 = true;
+                            }
+                            _ => (),
                         }
-                        b"liftedOff" => {
-                            founds.1 = true;
-                        }
-                        b"touchingGround" => {
-                            founds.2 = true;
-                        }
-                        _ => (),
-                    },
-                    _ => (),
+                    }
                 });
                 if !(founds.0 && founds.1 && founds.2) {
                     println!(

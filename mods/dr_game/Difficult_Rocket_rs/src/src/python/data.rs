@@ -283,6 +283,7 @@ pub struct PySR1Ship {
 impl PySR1Ship {
     #[new]
     #[pyo3(text_signature = "(file_path = './assets/builtin/dock1.xml', part_list = None, ship_name = 'NewShip')")]
+    #[pyo3(signature = (file_path, part_list=None, ship_name=None))]
     fn new(file_path: String, part_list: Option<PySR1PartList>, ship_name: Option<String>) -> PyResult<Self> {
         let ship = SR1Ship::from_file(file_path.clone(), Some(ship_name.unwrap_or("new ship".to_string())));
         match ship {
@@ -359,7 +360,9 @@ impl PySR1Ship {
     fn get_mass(&self) -> f64 {
         let mut mass = 0_f64;
         for part_data in self.ship.parts.iter() {
-            self.part_list.get_part_type(&part_data.part_type_id).map(|part_type| mass += part_type.mass);
+            if let Some(part_type) = self.part_list.get_part_type(&part_data.part_type_id) {
+                mass += part_type.mass;
+            }
         }
         mass
     }
@@ -440,6 +443,7 @@ impl PySR1Ship {
             .collect()
     }
 
+    #[pyo3(signature = (file_path, save_status=None))]
     fn save(&self, file_path: String, save_status: Option<PySaveStatus>) -> PyResult<()> {
         println!("{:?}", save_status);
         self.ship.save(file_path, &save_status.unwrap_or_default().status).unwrap();

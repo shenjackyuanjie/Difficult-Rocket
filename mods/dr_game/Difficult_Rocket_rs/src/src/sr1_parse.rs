@@ -553,6 +553,7 @@ impl SR1PartDataAttr {
         }
         self.guess_type()
     }
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         fuel: Option<f64>,
         name: Option<String>,
