@@ -5,7 +5,8 @@
 #  -------------------------------
 
 from __future__ import annotations
-from typing import Optional, Tuple, Type
+import math
+from typing import Optional, Tuple, Type, Sequence
 
 # from libs import pyglet
 import pyglet
@@ -16,7 +17,7 @@ from pyglet.gui import widgets
 from pyglet.window import mouse
 
 # from pyglet.sprite import Sprite
-from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase
+from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase, _rotate_point
 
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
@@ -27,9 +28,123 @@ from Difficult_Rocket.api.types import Options, FontData
 
 RGBA = Tuple[int, int, int, int]
 
+
 class 拐角(ShapeBase):
-    def __init__(self, vertex_count: int, blend_src: int = ..., blend_dest: int = ..., batch: Batch | None = None, group: Group | None = None, program: ShaderProgram | None = None) -> None:
-        super().__init__(vertex_count, blend_src, blend_dest, batch, group, program)
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        width: float,
+        height: float,
+        thick1: float = 1.0,
+        thick2: float = 1.0,
+        color: tuple[int, int, int, int] = (255, 255, 255, 255),
+        clockwise: bool = True,
+        blend_src: int = GL_SRC_ALPHA,
+        blend_dest: int = GL_ONE_MINUS_SRC_ALPHA,
+        batch: Batch | None = None,
+        group: Group | None = None,
+        program: ShaderProgram | None = None,
+    ) -> None:
+        self._x = x
+        self._y = y
+        self._width = width
+        self._height = height
+        self._thick1 = thick1
+        self._thick2 = thick2
+        self._clockwise = clockwise
+
+        self._rgba = color
+        super().__init__(6, blend_src, blend_dest, batch, group, program)
+
+    def __contains__(self, point: tuple[float, float]) -> bool:
+        assert len(point) == 2
+        # 先大框
+        point = _rotate_point((self._x, self._y), point, math.radians(self._rotation))
+        x, y = self._x - self._anchor_x, self._y - self._anchor_y
+        return (x < point[0] < x + self._width and y < point[1] < y + self._height) and (
+            (
+                (point[1] > y + self._height - self._thick2)
+                or (point[0] < x + self._thick1)
+            )
+            if self._clockwise
+            else (
+                (point[1] < y + self._thick1)
+                or (point[0] > x + self._width - self._thick2)
+            )
+        )
+
+    def _get_vertices(self) -> Sequence[float]:
+        if not self.visible:
+            return (0, 0) * self._num_verts
+
+        t1, t2 = self._thick1, self._thick2
+        left = -self._anchor_x
+        bottom = -self._anchor_y
+        right = left + self._width
+        top = bottom + self._height
+
+        x1 = left
+        x2 = left + t1
+        x3 = right - t1
+        x4 = right
+        y1 = bottom
+        y2 = bottom + t1
+        y3 = top - t2
+        y4 = top
+
+        # fmt: off
+        return ((
+                x1, y1,
+                x1, y4,
+                x4, y4,
+                x4, y3,
+                x2, y3,
+                x2, y1
+            ) if self._clockwise else(
+                x1, y1,
+                x4, y1,
+                x4, y4,
+                x3, y4,
+                x2, y3,
+                x1, y2
+            ))
+        # fmt: on
+
+    def _create_vertex_list(self) -> None:
+        # 1   2
+        #   4 3
+        # 0 5
+        # or
+        #   3 2
+        # 5 4
+        # 0   1
+        # fmt: off
+        groups = [
+            1, 2, 3,
+            1, 3, 4,
+            1, 4, 5,
+            1, 5, 0,
+        ]
+        # fmt: on
+        self._vertex_list = self._program.vertex_list_indexed(
+            self._num_verts,
+            self._draw_mode,
+            groups,
+            self._batch, # pyright: ignore reportArgumentType
+            self._group, # pyright: ignore reportArgumentType
+            position=("f", self._get_vertices()),
+            colors=("Bn", self._rgba * self._num_verts),
+            translation=("f", (self._x, self._y) * self._num_verts),
+        )
+
+    @property
+    def thick1(self) -> float:
+        return self._thick1
+
+    @property
+    def thick2(self) -> float:
+        return self.thick2
 
 
 class BaseButtonTheme:
