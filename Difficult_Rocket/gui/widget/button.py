@@ -131,8 +131,8 @@ class 拐角(ShapeBase):
             self._num_verts,
             self._draw_mode,
             groups,
-            self._batch, # pyright: ignore reportArgumentType
-            self._group, # pyright: ignore reportArgumentType
+            self._batch,  # pyright: ignore reportArgumentType
+            self._group,  # pyright: ignore reportArgumentType
             position=("f", self._get_vertices()),
             colors=("Bn", self._rgba * self._num_verts),
             translation=("f", (self._x, self._y) * self._num_verts),
@@ -145,6 +145,34 @@ class 拐角(ShapeBase):
     @property
     def thick2(self) -> float:
         return self.thick2
+
+    @property
+    def width(self) -> float:
+        return self._width
+
+    @property
+    def height(self) -> float:
+        return self.height
+
+    @thick1.setter
+    def thick1(self, value: float):
+        self._thick1 = value
+        self._update_vertices()
+
+    @thick2.setter
+    def thick2(self, value: float):
+        self._thick2 = value
+        self._update_vertices()
+
+    @width.setter
+    def width(self, value: float):
+        self._width = value
+        self._update_vertices()
+
+    @height.setter
+    def height(self, value: float):
+        self._height = value
+        self._update_vertices()
 
 
 class BaseButtonTheme:
