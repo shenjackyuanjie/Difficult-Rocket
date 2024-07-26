@@ -1,16 +1,3 @@
-#  -------------------------------
-#  Difficult Rocket
-#  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
-#  All rights reserved
-#  -------------------------------
-
-"""
-writen by shenjackyuanjie
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
-
 import functools
 import inspect
 import threading
@@ -76,7 +63,7 @@ class FunctionThread(threading.Thread):
             target=target, args=args, kwargs=kwargs, name=name, daemon=daemon
         )
         self.__return_value = self.__NONE
-        self.__error = None
+        self.__error: Optional[Exception] = None
 
         def wrapped_target(*args_, **kwargs_):
             try:
@@ -123,7 +110,7 @@ def new_thread(
     arg: Optional[Union[str, Callable]] = None,
     daemon: bool = False,
     log_thread: bool = True,
-):
+) -> Callable:
     """
     This is a one line solution to make your function executes in parallels.
     When decorated with this decorator, functions will be executed in a new daemon thread
@@ -178,7 +165,7 @@ def new_thread(
         # bring the signature of the func to the wrap function
         # so inspect.getfullargspec(func) works correctly
         copy_signature(wrap, func)
-        wrap.original = func  # access this field to get the original function
+        wrap.original = func  # access this field to get the original function # pyright: ignore reportAttributeAccessIssue
         return wrap
 
     # Directly use @new_thread without ending brackets case, e.g. @new_thread

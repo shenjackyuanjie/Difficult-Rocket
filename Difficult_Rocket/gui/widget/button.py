@@ -83,7 +83,7 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         height: int,
         batch: Batch,
         group: Group,
-        theme: dict = None,
+        theme: Optional[dict] = None,
     ):
         super().__init__(x, y, width, height, batch, group)
         self.batch = batch

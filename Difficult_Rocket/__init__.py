@@ -4,7 +4,9 @@
 #  All rights reserved
 #  -------------------------------
 
+from __future__ import annotations
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from Difficult_Rocket.api.types import Options, Version
 
@@ -12,6 +14,21 @@ sdk_version = Version("0.9.1.0")  # SDK 版本
 build_version = Version("3.0.0.0")  # 编译文件版本(与游戏本体无关)
 api_version = Version("0.1.2.2")  # API 版本
 __version__ = sdk_version
+
+if TYPE_CHECKING:
+    from Difficult_Rocket import (
+        api,
+        data,
+        client,
+        command,
+        crash,
+        exception,
+        server,
+        mod,
+        utils,
+        main,
+        runtime
+    )
 
 __all__ = [
     # __init__
