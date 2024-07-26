@@ -111,6 +111,9 @@ class 拐角(ShapeBase):
             ))
         # fmt: on
 
+    def _update_vertices(self) -> None:
+        self._vertex_list.position[:] = self._get_vertices()  # pyright: ignore reportAttributeAccessIssue
+
     def _create_vertex_list(self) -> None:
         # 1   2
         #   4 3
@@ -154,6 +157,10 @@ class 拐角(ShapeBase):
     def height(self) -> float:
         return self.height
 
+    @property
+    def clockwise(self) -> bool:
+        return self._clockwise
+
     @thick1.setter
     def thick1(self, value: float):
         self._thick1 = value
@@ -172,6 +179,11 @@ class 拐角(ShapeBase):
     @height.setter
     def height(self, value: float):
         self._height = value
+        self._update_vertices()
+
+    @clockwise.setter
+    def clockwise(self, value: bool):
+        self._clockwise = bool(value)
         self._update_vertices()
 
 
