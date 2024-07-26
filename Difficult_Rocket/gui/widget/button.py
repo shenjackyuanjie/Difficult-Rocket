@@ -4,16 +4,19 @@
 #  All rights reserved
 #  -------------------------------
 
+from __future__ import annotations
 from typing import Optional, Tuple, Type
 
 # from libs import pyglet
 import pyglet
+from pyglet.gl import GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA
+from pyglet.graphics.shader import ShaderProgram
 from pyglet.text import Label
 from pyglet.gui import widgets
 from pyglet.window import mouse
 
 # from pyglet.sprite import Sprite
-from pyglet.shapes import Rectangle, BorderedRectangle
+from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase
 
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
@@ -22,8 +25,11 @@ from Difficult_Rocket.api.types import Options, FontData
 
 # from Difficult_Rocket import DR_status
 
-
 RGBA = Tuple[int, int, int, int]
+
+class 拐角(ShapeBase):
+    def __init__(self, vertex_count: int, blend_src: int = ..., blend_dest: int = ..., batch: Batch | None = None, group: Group | None = None, program: ShaderProgram | None = None) -> None:
+        super().__init__(vertex_count, blend_src, blend_dest, batch, group, program)
 
 
 class BaseButtonTheme:

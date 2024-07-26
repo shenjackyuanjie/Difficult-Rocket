@@ -285,7 +285,6 @@ class ClientWindow(Window):
         self.push_handlers(self.input_box)
         self.input_box.enabled = True
         # 设置刷新率
-        # pyglet.clock.schedule_interval(self.draw_update, float(self.SPF))
         # 完成设置后的信息输出
         self.logger.info(tr().window.os.pid_is().format(os.getpid(), os.getppid()))
         end_time = time.time_ns()
@@ -295,7 +294,7 @@ class ClientWindow(Window):
         self.logger.debug(tr().window.setup.use_time_ns().format(self.use_time))
 
     def setup(self):
-        self.set_icon(pyglet.image.load("assets/textures/icon.png"))
+        self.set_icon(pyglet.image.load("assets/textures/icon.ico"))
         self.load_fonts()
         self.screen_list["DR_debug"] = DRDEBUGScreen(self)
         self.game.dispatch_mod_event("on_client_start", game=self.game, client=self)
@@ -307,10 +306,9 @@ class ClientWindow(Window):
         pyglet_load_fonts_folder(fonts_folder_path)
 
     def start_game(self) -> None:
-        self.set_icon(pyglet.image.load("assets/textures/icon.png"))
         try:
-            pyglet.clock.schedule_interval(self.draw_call, float(self.SPF))
-            pyglet.app.run(None)
+            # pyglet.clock.schedule(self.draw_call)
+            pyglet.app.run(0)
         except KeyboardInterrupt:
             self.logger.warn(
                 "==========client stop. KeyboardInterrupt info==========", tag="starter"
@@ -356,17 +354,17 @@ class ClientWindow(Window):
         now_FPS = pyglet.clock.get_frequency()
         self.fps_log.update_tick(now_FPS, decimal_tick)
 
-    def draw_call(self, dt: float):
+    def draw_call(self):
         self.switch_to()
-        self.on_draw(dt)
+        self.on_draw()
         self.flip()
 
     @_call_screen_after
-    def on_draw(self, dt: float):
+    def on_draw(self, *dt: float):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
         self.clear()
-        self.draw_update(dt)
+        self.draw_update(float(self.SPF))
         self.draw_batch()
 
     @_call_screen_after

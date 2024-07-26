@@ -132,5 +132,6 @@ class Menu(BaseScreen):
         # main_window.push_handlers(self.button3)
         main_window.push_handlers(self.enter_ship_editor_button)
 
-    def on_draw(self, dt: float, window: ClientWindow):
+    # def on_draw(self, dt: float, window: ClientWindow): # TODO: wait for pyglet 2.1
+    def on_draw(self, window: ClientWindow):
         self.main_batch.draw()

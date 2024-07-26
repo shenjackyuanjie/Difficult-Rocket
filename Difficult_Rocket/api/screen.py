@@ -116,8 +116,8 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_draw(self, dt: float, window: ClientWindow):  # TODO: wait for pyglet 2.1
-        # def on_draw(self, window: ClientWindow):
+        # def on_draw(self, dt: float, window: ClientWindow):  # TODO: wait for pyglet 2.1
+        def on_draw(self, window: ClientWindow):
             """The window contents must be redrawn.
 
             The `EventLoop` will dispatch this event when the window
