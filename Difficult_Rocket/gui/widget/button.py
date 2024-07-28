@@ -18,6 +18,7 @@ from pyglet.window import mouse
 
 # from pyglet.sprite import Sprite
 from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase, _rotate_point
+from pyglet.gui.widgets import WidgetBase
 
 # from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
@@ -106,7 +107,7 @@ class 拐角(ShapeBase):
                 x4, y1,
                 x4, y4,
                 x3, y4,
-                x2, y3,
+                x3, y2,
                 x1, y2
             ))
         # fmt: on
@@ -150,6 +151,16 @@ class 拐角(ShapeBase):
         return self.thick2
 
     @property
+    def thickness(self) -> float:
+        return self._thick1
+
+    @thickness.setter
+    def thickness(self, value: float):
+        self._thick1 = value
+        self._thick2 = value
+        self._update_vertices()
+
+    @property
     def width(self) -> float:
         return self._width
 
@@ -185,6 +196,68 @@ class 拐角(ShapeBase):
     def clockwise(self, value: bool):
         self._clockwise = bool(value)
         self._update_vertices()
+
+
+class WikiButton(WidgetBase):
+    # 左上角的普通状态下颜色
+    upper_normal = (109, 109, 110, 255)
+    upper_press = (90, 91, 92, 255)
+    # 右下角的
+    down_normal = (90, 91, 92, 255)
+    down_press = (70, 71, 71, 255)
+    # 左下角方块
+    corner_normal = (124, 124, 125, 255)
+    corner_press = (106, 107, 108, 255)
+    def __init__(
+        self, x: int, y: int, width: int, height: int, batch: Batch, group: Group
+    ) -> None:
+        super().__init__(x, y, width, height)
+        self.enabled = False
+        pad = 2
+        # 覆盖式
+        self.main_batch = batch or Batch()
+        self.main_group = group or Group()
+
+        # 背景的黑框
+        self.background_group = Group(order=10, parent=self.main_group)
+        # 左上右下两组
+        self.border_group = Group(order=20, parent=self.main_group)
+        # 左下右上两个小方块
+        self.corner_group = Group(order=32, parent=self.main_group)
+
+        self.upper_border = 拐角(
+            x=self.x,
+            y=self.y,
+            width=width,
+            height=height,
+            thick1=pad,
+            thick2=pad,
+            color=self.upper_normal
+        )
+        self.down_border = 拐角(
+            x=self.x,
+            y=self.y,
+            width=width,
+            height=height,
+            thick1=pad,
+            thick2=pad,
+            clockwise=False,
+            color=self.down_normal
+        )
+        self.left_down = Rectangle(
+            x=self.x,
+            y=self.y,
+            width=pad,
+            height=pad,
+            color=self.corner_normal
+        )
+
+    def __contains__(self, pos: tuple[float, float]) -> bool:
+        box = self.aabb()
+        return box[0] < pos[0] < box[2] and box[1] < pos[1] < box[3]
+
+    def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
+        ...
 
 
 class BaseButtonTheme:
@@ -247,6 +320,7 @@ class MinecraftWikiButtonTheme(BaseButtonTheme):
         theme: Optional[dict] = None,
     ):
         super().__init__(x, y, width, height, batch, group)
+        self.enable = False
         self.batch = batch
         self.group = group
         a = (72, 73, 74, 255)

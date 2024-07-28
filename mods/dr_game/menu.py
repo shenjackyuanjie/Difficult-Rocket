@@ -13,6 +13,7 @@ from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.gui.widget.button import (
     PressTextButton,
     MinecraftWikiButtonTheme,
+    WikiButton,
 )
 
 from lib_not_dr import loggers
@@ -118,11 +119,18 @@ class Menu(BaseScreen):
             dict_theme={"pop_out": True}
         )
 
+        self.tester = WikiButton(
+            x=50, y=50, width=100, height=100, batch=self.main_batch,
+            group=self.main_group
+        )
+
         def on_release(button: PressTextButton, x, y):
-            from .sr1_ship import SR1ShipEditor
-            main_window.remove_sub_screen("DR_game_menu")
-            main_window.add_sub_screen("SR1_ship", SR1ShipEditor)
-            logger.info("added SR1_ship screen", tag="dr_game")
+            ...
+            # self.tester.clockwise = not self.tester.clockwise
+            # from .sr1_ship import SR1ShipEditor
+            # main_window.remove_sub_screen("DR_game_menu")
+            # main_window.add_sub_screen("SR1_ship", SR1ShipEditor)
+            # logger.info("added SR1_ship screen", tag="dr_game")
 
         self.enter_ship_editor_button.set_handler("on_release", on_release)
         # main_window.push_handlers(self.wiki_button1)
