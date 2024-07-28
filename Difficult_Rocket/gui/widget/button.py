@@ -199,6 +199,11 @@ class 拐角(ShapeBase):
 
 
 class WikiButton(WidgetBase):
+    # 背景的颜色
+    backgroud_color = (0, 0, 0, 255)
+    # 内部填充的颜色
+    inner_normal = (72, 73, 74, 255)
+    inner_press = (49, 50, 51, 255)
     # 左上角的普通状态下颜色
     upper_normal = (109, 109, 110, 255)
     upper_press = (90, 91, 92, 255)
@@ -208,12 +213,17 @@ class WikiButton(WidgetBase):
     # 左下角方块
     corner_normal = (124, 124, 125, 255)
     corner_press = (106, 107, 108, 255)
+    # 下巴的颜色
+    down_pad_color = (49, 50, 51, 255)
     def __init__(
         self, x: int, y: int, width: int, height: int, batch: Batch, group: Group
     ) -> None:
         super().__init__(x, y, width, height)
         self.enabled = False
         pad = 2
+        down_pad = 5
+        self.pad = pad
+        self.down_pad = down_pad
         # 覆盖式
         self.main_batch = batch or Batch()
         self.main_group = group or Group()
@@ -223,41 +233,85 @@ class WikiButton(WidgetBase):
         # 左上右下两组
         self.border_group = Group(order=20, parent=self.main_group)
         # 左下右上两个小方块
-        self.corner_group = Group(order=32, parent=self.main_group)
+        self.corner_group = Group(order=30, parent=self.main_group)
+        # 内部填充
+        self.inner_group = Group(order=40, parent=self.main_group)
 
-        self.upper_border = 拐角(
+        self.backgroud = Rectangle(
             x=self.x,
             y=self.y,
             width=width,
             height=height,
+            color=self.backgroud_color,
+            batch=self.main_batch,
+            group=self.background_group
+        )
+        self.upper_border = 拐角(
+            x=self.x + pad,
+            y=self.y + pad + down_pad,
+            width=width - (pad * 2),
+            height=height - (pad * 2) - down_pad,
             thick1=pad,
             thick2=pad,
-            color=self.upper_normal
+            color=self.upper_normal,
+            batch=self.main_batch,
+            group=self.border_group
         )
         self.down_border = 拐角(
-            x=self.x,
-            y=self.y,
-            width=width,
-            height=height,
+            x=self.x + pad,
+            y=self.y + pad + down_pad,
+            width=width - (pad * 2),
+            height=height - (pad * 2) - down_pad,
             thick1=pad,
             thick2=pad,
             clockwise=False,
-            color=self.down_normal
+            color=self.down_normal,
+            batch=self.main_batch,
+            group=self.border_group
         )
         self.left_down = Rectangle(
-            x=self.x,
-            y=self.y,
+            x=self.x + pad,
+            y=self.y + pad + down_pad,
             width=pad,
             height=pad,
-            color=self.corner_normal
+            color=self.corner_normal,
+            batch=self.main_batch,
+            group=self.corner_group
+        )
+        self.right_up = Rectangle(
+            x=self.x + self.width - (pad * 2),
+            y=self.y + self.height - (pad * 2),
+            width=pad,
+            height=pad,
+            color=self.corner_normal,
+            batch=self.main_batch,
+            group=self.corner_group
+        )
+        self.inner_fill = Rectangle(
+            x=self.x + pad + pad,
+            y=self.y + pad + pad + down_pad,
+            width=self.width - (pad * 4),
+            height=self.height - (pad * 4) - down_pad,
+            color=self.inner_normal,
+            batch=self.main_batch,
+            group=self.inner_group
+        )
+        self.down_fill = Rectangle(
+            x=self.x + pad,
+            y=self.y + pad,
+            width=width - (pad * 2),
+            height=down_pad,
+            color=self.down_pad_color,
+            batch=self.main_batch,
+            group=self.border_group
         )
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
-        box = self.aabb()
-        return box[0] < pos[0] < box[2] and box[1] < pos[1] < box[3]
+        return self._check_hit()
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
-        ...
+        if (x, y) in self:
+            ...
 
 
 class BaseButtonTheme:
