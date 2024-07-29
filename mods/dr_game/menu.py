@@ -154,9 +154,11 @@ class Menu(BaseScreen):
         )
 
         def on_release(button: PressTextButton, x, y):
+            self.wiki_shape1.y += 10
             self.wiki_shape1.highlight = not self.wiki_shape1.highlight
             self.wiki_shape2.highlight = not self.wiki_shape2.highlight
-            print(self.wiki_shape1._vertex_list.colors, self.wiki_shape2.highlight)
+            print(self.wiki_shape1._vertex_list.position[:], self.wiki_shape2.highlight)
+            self.wiki_shape1.visible = not self.wiki_shape1.visible
             # self.tester.clockwise = not self.tester.clockwise
             # from .sr1_ship import SR1ShipEditor
             # main_window.remove_sub_screen("DR_game_menu")
@@ -175,6 +177,7 @@ class Menu(BaseScreen):
         self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
     ):
         if (x, y) in self.wiki_shape1:
+            self.wiki_shape1.y -= 10
             self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
         if (x, y) in self.wiki_shape2:
             self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out

@@ -81,10 +81,8 @@ class WikiButtonShape(ShapeBase):
         self._highlight = highlight
         self._colors = colors or WikiShapeColors()
 
-        vertex = 28
+        vertex = 32
         if pop_out:
-            vertex += 4
-        if highlight:
             vertex += 4
         super().__init__(vertex, blend_src, blend_dest, batch, group, program)
 
@@ -140,11 +138,12 @@ class WikiButtonShape(ShapeBase):
             + self._colors.right_down * 6
             + self._colors.left_up * 6
             + self._colors.inner * 4
+            + self._colors.highlight * 4
         )
         if self._pop_out:
             colors = self._colors.border * 4 + colors
-        if self._highlight:
-            colors += self._colors.highlight * 4
+        # if self._highlight:
+        #     colors += self._colors.highlight * 4
         self._vertex_list.colors[:] = colors
 
     def __contains__(self, point: tuple[float, float]) -> bool:
@@ -197,6 +196,7 @@ class WikiButtonShape(ShapeBase):
             right, top,    # 2
             left,  top,    # 3
         ]
+        # if self._highlight:
         highlight = [
             left - pad,  bottom - pad, # max+1
             right + pad, bottom - pad, # max+2
@@ -257,19 +257,12 @@ class WikiButtonShape(ShapeBase):
                 i_right - pad, inner_top - pad, # 30
                 in_left + pad, inner_top - pad, # 31
             ]
-            if self._highlight:
-                return (out_border +
-                        down_part +
-                        left_down + right_up +
-                        left_up + right_down +
-                        inner_box +
-                        highlight)
-            else:
-                return (out_border +
-                        down_part +
-                        left_down + right_up +
-                        left_up + right_down +
-                        inner_box)
+            return (out_border +
+                    down_part +
+                    left_down + right_up +
+                    left_up + right_down +
+                    inner_box +
+                    highlight)
         else:
             # 左下角的小方块
             left_down = [
@@ -316,17 +309,11 @@ class WikiButtonShape(ShapeBase):
                 i_right - pad, inner_top - pad,  # 26
                 in_left + pad, inner_top - pad,  # 27
             ]
-            if self._highlight:
-                return (out_border +
-                        left_down + right_up +
-                        left_up + right_down +
-                        inner_box +
-                        highlight)
-            else:
-                return (out_border +
-                        left_down + right_up +
-                        left_up + right_down +
-                        inner_box)
+            return (out_border +
+                    left_down + right_up +
+                    left_up + right_down +
+                    inner_box +
+                    highlight)
         # fmt: on
 
     def _create_vertex_list(self) -> None:
@@ -345,16 +332,20 @@ class WikiButtonShape(ShapeBase):
             indices += [22, 23, 26, 22, 26, 27,
                         23, 24, 26, 24, 25, 26]  # 右下拐弯
             indices += [28, 29, 30, 28, 30, 31]  # 中间的方块
-            if self._highlight:
-                indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
+            # if self._highlight:
+            #     indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
+            # else:
+            #     indices = [32, 3, 34, 32, 5, 2] + indices  # 高光
+            indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
             colors += (
                 self._colors.down_pad * 4
                 + self._colors.corner * 8
                 + self._colors.right_down * 6
                 + self._colors.left_up * 6
                 + self._colors.inner * 4
+                + ((self._colors.highlight * 4) if self._highlight else (0, 0, 0, 0) * 4)
             )
-            self._num_verts = 32
+            self._num_verts = 36
         else:
             indices += [4, 5, 6, 4, 6, 7]  # 左下角
             indices += [8, 9, 10, 8, 10, 11]  # 右上角
@@ -370,11 +361,9 @@ class WikiButtonShape(ShapeBase):
                 + self._colors.right_down * 6
                 + self._colors.left_up * 6
                 + self._colors.inner * 4
+                + self._colors.highlight * 4
             )
-            self._num_verts = 28
-        if self._highlight:
-            self._num_verts += 4
-            colors += self._colors.highlight * 4
+            self._num_verts = 32
         # fmt: on
         self._vertex_list = self._program.vertex_list_indexed(
             self._num_verts,
