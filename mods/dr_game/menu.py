@@ -9,6 +9,7 @@ from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.screen import BaseScreen
+
 # from Difficult_Rocket.main import Game
 from Difficult_Rocket.gui.widget.button import (
     PressTextButton,
@@ -24,6 +25,7 @@ from lib_not_dr import loggers
 # from . import DR_mod_runtime
 
 logger = loggers.config.get_logger_from_old("client.dr_game_menu", "client")
+
 
 class Menu(BaseScreen):
     """
@@ -117,23 +119,38 @@ class Menu(BaseScreen):
             batch=self.main_batch,
             group=self.main_group,
             draw_theme=MinecraftWikiButtonTheme,
-            dict_theme={"pop_out": True}
+            dict_theme={"pop_out": True},
         )
 
         self.tester = WikiButton(
-            x=100, y=150, width=150, height=30, batch=self.main_batch,
-            group=self.main_group
+            x=100,
+            y=150,
+            width=150,
+            height=30,
+            batch=self.main_batch,
+            group=self.main_group,
         )
 
         self.wiki_shape1 = WikiButtonShape(
-            x=100, y=200,
-            width=150, height=100, pad=10, down_pad=15,
-            batch=self.main_batch, group=self.main_group
+            x=100,
+            y=200,
+            width=150,
+            height=100,
+            pad=10,
+            down_pad=15,
+            batch=self.main_batch,
+            group=self.main_group,
         )
         self.wiki_shape2 = WikiButtonShape(
-            x=300, y=200, pop_out=False,
-            width=150, height=100, pad=10, down_pad=15,
-            batch=self.main_batch, group=self.main_group
+            x=300,
+            y=200,
+            pop_out=False,
+            width=150,
+            height=100,
+            pad=2,
+            down_pad=5,
+            batch=self.main_batch,
+            group=self.main_group,
         )
 
         def on_release(button: PressTextButton, x, y):
@@ -151,6 +168,14 @@ class Menu(BaseScreen):
         # main_window.push_handlers(self.wiki_button4)
         # main_window.push_handlers(self.button3)
         main_window.push_handlers(self.enter_ship_editor_button)
+
+    def on_mouse_press(
+        self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
+    ):
+        if (x, y) in self.wiki_shape1:
+            self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
+        if (x, y) in self.wiki_shape2:
+            self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out
 
     # def on_draw(self, dt: float, window: ClientWindow): # TODO: wait for pyglet 2.1
     def on_draw(self, window: ClientWindow):

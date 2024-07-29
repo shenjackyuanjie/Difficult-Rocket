@@ -7,6 +7,7 @@
 from __future__ import annotations
 import math
 from typing import Optional, Tuple, Type, Sequence
+from dataclasses import dataclass
 
 # from libs import pyglet
 import pyglet
@@ -16,11 +17,9 @@ from pyglet.text import Label
 from pyglet.gui import widgets
 from pyglet.window import mouse
 
-# from pyglet.sprite import Sprite
 from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase, _rotate_point
 from pyglet.gui.widgets import WidgetBase
 
-# from pyglet.image import AbstractImage
 from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.api.types import Options, FontData
@@ -28,6 +27,23 @@ from Difficult_Rocket.api.types import Options, FontData
 # from Difficult_Rocket import DR_status
 
 RGBA = Tuple[int, int, int, int]
+
+
+@dataclass
+class WikiShapeColors:
+    # 这里都是 未按下的颜色
+    # 边框
+    border: RGBA = (0, 0, 0, 255)
+    # 下巴
+    down_pad: RGBA = (49, 50, 51, 255)
+    # 左下角和右上角的重叠点
+    corner: RGBA = (124, 124, 125, 255)
+    # 左上拐角
+    left_up: RGBA = (109, 109, 110, 255)
+    # 右下拐角
+    right_down: RGBA = (90, 91, 92, 255)
+    # 内部填充
+    inner: RGBA = (72, 73, 74, 255)
 
 
 class WikiButtonShape(ShapeBase):
@@ -40,6 +56,7 @@ class WikiButtonShape(ShapeBase):
         pad: float = 2,
         down_pad: float = 5.0,
         pop_out: bool = True,
+        colors: WikiShapeColors = WikiShapeColors(),
         blend_src: int = GL_SRC_ALPHA,
         blend_dest: int = GL_ONE_MINUS_SRC_ALPHA,
         batch: Batch | None = None,
@@ -51,12 +68,68 @@ class WikiButtonShape(ShapeBase):
         self._width = width
         self._height = height
         self._pad = pad
-        self._pop_out = pop_out
         self._down_pad = down_pad
+        self._pop_out = pop_out
+        self._colors = colors
 
         super().__init__(
             32 if pop_out else 28, blend_src, blend_dest, batch, group, program
         )
+
+    @property
+    def pop_out(self) -> bool:
+        return self._pop_out
+
+    @property
+    def pad(self) -> float:
+        return self._pad
+
+    @property
+    def down_pad(self) -> float:
+        return self._down_pad
+
+    @property
+    def colors(self) -> WikiShapeColors:
+        return self._colors
+
+    @pop_out.setter
+    def pop_out(self, value: bool) -> None:
+        self._pop_out = value
+        self._create_vertex_list()
+
+    @pad.setter
+    def pad(self, value: float) -> None:
+        self._pad = value
+        self._update_vertices()
+
+    @down_pad.setter
+    def down_pad(self, value: float) -> None:
+        self._down_pad = value
+        self._update_vertices()
+
+    @colors.setter
+    def colors(self, value: WikiShapeColors) -> None:
+        self._colors = value
+        self._update_color()
+
+    def _update_color(self) -> None:
+        if self._pop_out:
+            self._vertex_list.colors[:] = (
+                self._colors.border * 4
+                + self._colors.down_pad * 4
+                + self._colors.corner * 8
+                + self._colors.right_down * 6
+                + self._colors.left_up * 6
+                + self._colors.inner * 4
+            )
+        else:
+            self._vertex_list.colors[:] = (
+                self._colors.border * 4
+                + self._colors.corner * 8
+                + self._colors.right_down * 6
+                + self._colors.left_up * 6
+                + self._colors.inner * 4
+            )
 
     def __contains__(self, point: tuple[float, float]) -> bool:
         assert len(point) == 2
@@ -220,14 +293,7 @@ class WikiButtonShape(ShapeBase):
         # fmt: on
 
     def _create_vertex_list(self) -> None:
-        black = [10, 10, 10, 255]
-        green = [0, 200, 0, 255]
-        red = [200, 0, 0, 255]
-        orange = [200, 100, 0, 255]
-        blue = [0, 0, 200, 255]
-        purple = [200, 0, 200, 255]
-        gray = [100, 100, 100, 255]
-        colors = green * 4
+        colors = self._colors.border * 4
         # fmt: off
         indices = [
             0, 1, 2, # 最基本的两个三角形
@@ -242,12 +308,14 @@ class WikiButtonShape(ShapeBase):
             indices += [22, 23, 26, 22, 26, 27,
                         23, 24, 26, 24, 25, 26]  # 右下拐弯
             indices += [28, 29, 30, 28, 30, 31]  # 中间的方块
-            colors += black * 4  # 下巴
-            colors += red * 4  # 左下角
-            colors += orange * 4 # 右上角
-            colors += blue * 6 # 左上拐弯
-            colors += purple * 6 # 右下拐弯
-            colors += gray * 4 # 中间的方块
+            colors += (
+                self._colors.down_pad * 4
+                + self._colors.corner * 8
+                + self._colors.right_down * 6
+                + self._colors.left_up * 6
+                + self._colors.inner * 4
+            )
+            self._num_verts = 32
         else:
             indices += [4, 5, 6, 4, 6, 7]  # 左下角
             indices += [8, 9, 10, 8, 10, 11]  # 右上角
@@ -256,11 +324,13 @@ class WikiButtonShape(ShapeBase):
             indices += [18, 22, 23, 18, 19, 22,
                         20, 21, 22, 20, 19, 22]  # 右下拐弯
             indices += [24, 25, 26, 24, 26, 27]
-            colors += red * 4  # 左下角
-            colors += orange * 4  # 右上角
-            colors += blue * 6 # 左上拐弯
-            colors += purple * 6 # 右下拐弯
-            colors += gray * 4 # 中间的方块
+            colors += (
+                self._colors.corner * 8
+                + self._colors.right_down * 6
+                + self._colors.left_up * 6
+                + self._colors.inner * 4
+            )
+            self._num_verts = 28
         # fmt: on
         self._vertex_list = self._program.vertex_list_indexed(
             self._num_verts,
