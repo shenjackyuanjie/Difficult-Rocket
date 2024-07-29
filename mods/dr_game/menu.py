@@ -14,6 +14,7 @@ from Difficult_Rocket.gui.widget.button import (
     PressTextButton,
     MinecraftWikiButtonTheme,
     WikiButton,
+    WikiButtonShape,
 )
 
 from lib_not_dr import loggers
@@ -120,8 +121,19 @@ class Menu(BaseScreen):
         )
 
         self.tester = WikiButton(
-            x=50, y=50, width=150, height=30, batch=self.main_batch,
+            x=100, y=150, width=150, height=30, batch=self.main_batch,
             group=self.main_group
+        )
+
+        self.wiki_shape1 = WikiButtonShape(
+            x=100, y=200,
+            width=150, height=100, pad=10, down_pad=15,
+            batch=self.main_batch, group=self.main_group
+        )
+        self.wiki_shape2 = WikiButtonShape(
+            x=300, y=200, pop_out=False,
+            width=150, height=100, pad=10, down_pad=15,
+            batch=self.main_batch, group=self.main_group
         )
 
         def on_release(button: PressTextButton, x, y):

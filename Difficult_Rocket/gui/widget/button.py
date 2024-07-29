@@ -30,6 +30,253 @@ from Difficult_Rocket.api.types import Options, FontData
 RGBA = Tuple[int, int, int, int]
 
 
+class WikiButtonShape(ShapeBase):
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        width: float,
+        height: float,
+        pad: float = 2,
+        down_pad: float = 5.0,
+        pop_out: bool = True,
+        blend_src: int = GL_SRC_ALPHA,
+        blend_dest: int = GL_ONE_MINUS_SRC_ALPHA,
+        batch: Batch | None = None,
+        group: Group | None = None,
+        program: ShaderProgram | None = None,
+    ):
+        self._x = x
+        self._y = y
+        self._width = width
+        self._height = height
+        self._pad = pad
+        self._pop_out = pop_out
+        self._down_pad = down_pad
+
+        super().__init__(
+            32 if pop_out else 28, blend_src, blend_dest, batch, group, program
+        )
+
+    def __contains__(self, point: tuple[float, float]) -> bool:
+        assert len(point) == 2
+        point = _rotate_point((self._x, self._y), point, math.radians(self._rotation))
+        x, y = self._x - self._anchor_x, self._y - self._anchor_y
+        return x < point[0] < x + self._width and y < point[1] < y + self._height
+
+    def _get_vertices(self) -> Sequence[float]:
+        if not self._visible:
+            return (0, 0) * self._num_verts
+
+        left = -self._anchor_x
+        right = left + self._width
+        bottom = -self.anchor_y
+        top = bottom + self._height
+
+        pad = self._pad
+        down_pad = self._down_pad
+
+        in_left = left + pad
+        i_right = right - pad
+        in_bottom = bottom + pad
+        inner_top = top - pad
+        """
+        pop out ( 默认的弹出状态 )
+        20 顶点
+        3                        2
+            18          15   14
+                 19     16   17
+
+            11   10     13
+            7    9           6
+            4                5
+        0                        1
+        unpop
+        16 顶点
+        3                       2
+            7          15   6
+                13     12   14
+
+            10   9     11
+            4    8          5
+        0                       1
+        """
+        # fmt: off
+        out_border = [
+            left,  bottom, # 0
+            right, bottom, # 1
+            right, top,    # 2
+            left,  top,    # 3
+        ]
+        if self._pop_out:
+            down_top = in_bottom + down_pad
+            # 底下那个下巴
+            down_part = [
+                in_left, in_bottom, # 4
+                i_right, in_bottom, # 5
+                i_right, down_top,  # 6
+                in_left, down_top,  # 7
+            ]
+            # 左下角的小方块
+            left_down = [
+                in_left,       down_top,       # 8
+                in_left + pad, down_top,       # 9
+                in_left + pad, down_top + pad, # 10
+                in_left,       down_top + pad, # 11
+            ]
+            # 右上角的小方块
+            right_up = [
+                i_right - pad, inner_top - pad, # 12
+                i_right,       inner_top - pad, # 13
+                i_right,       inner_top,       # 14
+                i_right - pad, inner_top,       # 15
+            ]
+            # 左上的拐弯条
+            # 1   2
+            #   4 3
+            # 0 5
+            left_up = [
+                in_left,       down_top + pad,  # 16
+                in_left,       inner_top,       # 17
+                i_right - pad, inner_top,       # 18
+                i_right - pad, inner_top - pad, # 19
+                in_left + pad, inner_top - pad, # 20
+                in_left + pad, down_top + pad,  # 21
+            ]
+            # 右下的拐弯条
+            #   3 2
+            # 5 4
+            # 0   1
+            right_down = [
+                in_left + pad, down_top,        # 22
+                i_right,       down_top,        # 23
+                i_right,       inner_top - pad, # 24
+                i_right - pad, inner_top - pad, # 25
+                i_right - pad, down_top + pad,  # 26
+                in_left + pad, down_top + pad,  # 27
+            ]
+            # 中间的方块
+            inner_box = [
+                in_left + pad, down_top + pad,  # 28
+                i_right - pad, down_top + pad,  # 29
+                i_right - pad, inner_top - pad, # 30
+                in_left + pad, inner_top - pad, # 31
+            ]
+            return (out_border +
+                    down_part +
+                    left_down + right_up +
+                    left_up + right_down +
+                    inner_box)
+        else:
+            # 左下角的小方块
+            left_down = [
+                in_left,       in_bottom,       # 4
+                in_left + pad, in_bottom,       # 5
+                in_left + pad, in_bottom + pad, # 6
+                in_left,       in_bottom + pad, # 7
+            ]
+            # 右上角的小方块
+            right_up = [
+                i_right - pad, inner_top - pad, # 8
+                i_right,       inner_top - pad, # 9
+                i_right,       inner_top,       # 10
+                i_right - pad, inner_top,       # 11
+            ]
+            # 左上的拐弯条
+            # 1   2
+            #   4 3
+            # 0 5
+            left_up = [
+                in_left,       in_bottom + pad,  # 12
+                in_left,       inner_top,        # 13
+                i_right - pad, inner_top,        # 14
+                i_right - pad, inner_top - pad,  # 15
+                in_left + pad, inner_top - pad,  # 16
+                in_left + pad, in_bottom + pad,  # 17
+            ]
+            # 右下的拐弯条
+            #   3 2
+            # 5 4
+            # 0   1
+            right_down = [
+                in_left + pad, in_bottom,        # 18
+                i_right,       in_bottom,        # 19
+                i_right,       inner_top - pad,  # 20
+                i_right - pad, inner_top - pad,  # 21
+                i_right - pad, in_bottom + pad,  # 22
+                in_left + pad, in_bottom + pad,  # 23
+            ]
+            # 中间的方块
+            inner_box = [
+                in_left + pad, in_bottom + pad,  # 24
+                i_right - pad, in_bottom + pad,  # 25
+                i_right - pad, inner_top - pad,  # 26
+                in_left + pad, inner_top - pad,  # 27
+            ]
+            return (out_border +
+                    left_down + right_up +
+                    left_up + right_down +
+                    inner_box)
+        # fmt: on
+
+    def _create_vertex_list(self) -> None:
+        black = [10, 10, 10, 255]
+        green = [0, 200, 0, 255]
+        red = [200, 0, 0, 255]
+        orange = [200, 100, 0, 255]
+        blue = [0, 0, 200, 255]
+        purple = [200, 0, 200, 255]
+        gray = [100, 100, 100, 255]
+        colors = green * 4
+        # fmt: off
+        indices = [
+            0, 1, 2, # 最基本的两个三角形
+            0, 2, 3, # 用来画黑色边框
+        ]
+        if self._pop_out:
+            indices += [4, 5, 6, 4, 6, 7]  # 下巴
+            indices += [8, 9, 10, 8, 10, 11]  # 左下角
+            indices += [12, 13, 14, 12, 14, 15]  # 右上角
+            indices += [16, 17, 20, 16, 20, 21,
+                        18, 19, 20, 18, 17, 20]  # 左上拐弯
+            indices += [22, 23, 26, 22, 26, 27,
+                        23, 24, 26, 24, 25, 26]  # 右下拐弯
+            indices += [28, 29, 30, 28, 30, 31]  # 中间的方块
+            colors += black * 4  # 下巴
+            colors += red * 4  # 左下角
+            colors += orange * 4 # 右上角
+            colors += blue * 6 # 左上拐弯
+            colors += purple * 6 # 右下拐弯
+            colors += gray * 4 # 中间的方块
+        else:
+            indices += [4, 5, 6, 4, 6, 7]  # 左下角
+            indices += [8, 9, 10, 8, 10, 11]  # 右上角
+            indices += [12, 16, 17, 12, 13, 16,
+                        14, 15, 16, 14, 13, 16]  # 左上拐弯
+            indices += [18, 22, 23, 18, 19, 22,
+                        20, 21, 22, 20, 19, 22]  # 右下拐弯
+            indices += [24, 25, 26, 24, 26, 27]
+            colors += red * 4  # 左下角
+            colors += orange * 4  # 右上角
+            colors += blue * 6 # 左上拐弯
+            colors += purple * 6 # 右下拐弯
+            colors += gray * 4 # 中间的方块
+        # fmt: on
+        self._vertex_list = self._program.vertex_list_indexed(
+            self._num_verts,
+            self._draw_mode,
+            indices,
+            self._batch,
+            self._group,
+            position=("f", self._get_vertices()),
+            colors=("Bn", colors),
+            translation=("f", (self._x, self._y) * self._num_verts),
+        )
+
+    def _update_vertices(self) -> None:
+        self._vertex_list.position[:] = self._get_vertices()
+
+
 class 拐角(ShapeBase):
     def __init__(
         self,
@@ -95,22 +342,25 @@ class 拐角(ShapeBase):
         y4 = top
 
         # fmt: off
-        return ((
+        return ([
                 x1, y1,
                 x1, y4,
                 x4, y4,
                 x4, y3,
                 x2, y3,
                 x2, y1
-            ) if self._clockwise else(
+            ] if self._clockwise else[
                 x1, y1,
                 x4, y1,
                 x4, y4,
                 x3, y4,
                 x3, y2,
                 x1, y2
-            ))
+            ])
         # fmt: on
+
+    def _update_color(self) -> None:
+        self._vertex_list.colors[:] = self._rgba * self._num_verts
 
     def _update_vertices(self) -> None:
         self._vertex_list.position[:] = self._get_vertices()  # pyright: ignore reportAttributeAccessIssue
@@ -215,6 +465,7 @@ class WikiButton(WidgetBase):
     corner_press = (106, 107, 108, 255)
     # 下巴的颜色
     down_pad_color = (49, 50, 51, 255)
+
     def __init__(
         self, x: int, y: int, width: int, height: int, batch: Batch, group: Group
     ) -> None:
@@ -244,7 +495,7 @@ class WikiButton(WidgetBase):
             height=height,
             color=self.backgroud_color,
             batch=self.main_batch,
-            group=self.background_group
+            group=self.background_group,
         )
         self.upper_border = 拐角(
             x=self.x + pad,
@@ -255,7 +506,7 @@ class WikiButton(WidgetBase):
             thick2=pad,
             color=self.upper_normal,
             batch=self.main_batch,
-            group=self.border_group
+            group=self.border_group,
         )
         self.down_border = 拐角(
             x=self.x + pad,
@@ -267,7 +518,7 @@ class WikiButton(WidgetBase):
             clockwise=False,
             color=self.down_normal,
             batch=self.main_batch,
-            group=self.border_group
+            group=self.border_group,
         )
         self.left_down = Rectangle(
             x=self.x + pad,
@@ -276,7 +527,7 @@ class WikiButton(WidgetBase):
             height=pad,
             color=self.corner_normal,
             batch=self.main_batch,
-            group=self.corner_group
+            group=self.corner_group,
         )
         self.right_up = Rectangle(
             x=self.x + self.width - (pad * 2),
@@ -285,7 +536,7 @@ class WikiButton(WidgetBase):
             height=pad,
             color=self.corner_normal,
             batch=self.main_batch,
-            group=self.corner_group
+            group=self.corner_group,
         )
         self.inner_fill = Rectangle(
             x=self.x + pad + pad,
@@ -294,7 +545,7 @@ class WikiButton(WidgetBase):
             height=self.height - (pad * 4) - down_pad,
             color=self.inner_normal,
             batch=self.main_batch,
-            group=self.inner_group
+            group=self.inner_group,
         )
         self.down_fill = Rectangle(
             x=self.x + pad,
@@ -303,7 +554,7 @@ class WikiButton(WidgetBase):
             height=down_pad,
             color=self.down_pad_color,
             batch=self.main_batch,
-            group=self.border_group
+            group=self.border_group,
         )
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
