@@ -154,7 +154,9 @@ class Menu(BaseScreen):
         )
 
         def on_release(button: PressTextButton, x, y):
-            ...
+            self.wiki_shape1.highlight = not self.wiki_shape1.highlight
+            self.wiki_shape2.highlight = not self.wiki_shape2.highlight
+            print(self.wiki_shape1._vertex_list.colors, self.wiki_shape2.highlight)
             # self.tester.clockwise = not self.tester.clockwise
             # from .sr1_ship import SR1ShipEditor
             # main_window.remove_sub_screen("DR_game_menu")

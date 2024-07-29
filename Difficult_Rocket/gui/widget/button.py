@@ -8,6 +8,7 @@ from __future__ import annotations
 import math
 from typing import Optional, Tuple, Type, Sequence
 from dataclasses import dataclass
+from enum import Enum
 
 # from libs import pyglet
 import pyglet
@@ -32,6 +33,8 @@ RGBA = Tuple[int, int, int, int]
 @dataclass
 class WikiShapeColors:
     # 这里都是 未按下的颜色
+    # 外面一圈高光
+    highlight: RGBA = (255, 255, 255, 255)
     # 边框
     border: RGBA = (0, 0, 0, 255)
     # 下巴
@@ -46,6 +49,10 @@ class WikiShapeColors:
     inner: RGBA = (72, 73, 74, 255)
 
 
+class WikiButtonStyles(Enum):
+    ...
+
+
 class WikiButtonShape(ShapeBase):
     def __init__(
         self,
@@ -56,7 +63,8 @@ class WikiButtonShape(ShapeBase):
         pad: float = 2,
         down_pad: float = 5.0,
         pop_out: bool = True,
-        colors: WikiShapeColors = WikiShapeColors(),
+        highlight: bool = False,
+        colors: WikiShapeColors | None = None,
         blend_src: int = GL_SRC_ALPHA,
         blend_dest: int = GL_ONE_MINUS_SRC_ALPHA,
         batch: Batch | None = None,
@@ -70,11 +78,15 @@ class WikiButtonShape(ShapeBase):
         self._pad = pad
         self._down_pad = down_pad
         self._pop_out = pop_out
-        self._colors = colors
+        self._highlight = highlight
+        self._colors = colors or WikiShapeColors()
 
-        super().__init__(
-            32 if pop_out else 28, blend_src, blend_dest, batch, group, program
-        )
+        vertex = 28
+        if pop_out:
+            vertex += 4
+        if highlight:
+            vertex += 4
+        super().__init__(vertex, blend_src, blend_dest, batch, group, program)
 
     @property
     def pop_out(self) -> bool:
@@ -91,6 +103,10 @@ class WikiButtonShape(ShapeBase):
     @property
     def colors(self) -> WikiShapeColors:
         return self._colors
+
+    @property
+    def highlight(self) -> bool:
+        return self._highlight
 
     @pop_out.setter
     def pop_out(self, value: bool) -> None:
@@ -112,24 +128,24 @@ class WikiButtonShape(ShapeBase):
         self._colors = value
         self._update_color()
 
+    @highlight.setter
+    def highlight(self, value: bool) -> None:
+        self._highlight = value
+        self._create_vertex_list()
+
     def _update_color(self) -> None:
+        colors = (
+            self._colors.down_pad * 4
+            + self._colors.corner * 8
+            + self._colors.right_down * 6
+            + self._colors.left_up * 6
+            + self._colors.inner * 4
+        )
         if self._pop_out:
-            self._vertex_list.colors[:] = (
-                self._colors.border * 4
-                + self._colors.down_pad * 4
-                + self._colors.corner * 8
-                + self._colors.right_down * 6
-                + self._colors.left_up * 6
-                + self._colors.inner * 4
-            )
-        else:
-            self._vertex_list.colors[:] = (
-                self._colors.border * 4
-                + self._colors.corner * 8
-                + self._colors.right_down * 6
-                + self._colors.left_up * 6
-                + self._colors.inner * 4
-            )
+            colors = self._colors.border * 4 + colors
+        if self._highlight:
+            colors += self._colors.highlight * 4
+        self._vertex_list.colors[:] = colors
 
     def __contains__(self, point: tuple[float, float]) -> bool:
         assert len(point) == 2
@@ -155,7 +171,7 @@ class WikiButtonShape(ShapeBase):
         inner_top = top - pad
         """
         pop out ( 默认的弹出状态 )
-        20 顶点
+        20 顶点 (还有外面一圈高光)
         3                        2
             18          15   14
                  19     16   17
@@ -180,6 +196,12 @@ class WikiButtonShape(ShapeBase):
             right, bottom, # 1
             right, top,    # 2
             left,  top,    # 3
+        ]
+        highlight = [
+            left - pad,  bottom - pad, # max+1
+            right + pad, bottom - pad, # max+2
+            right + pad, top + pad,    # max+3
+            left - pad,  top + pad,    # max+4
         ]
         if self._pop_out:
             down_top = in_bottom + down_pad
@@ -235,11 +257,19 @@ class WikiButtonShape(ShapeBase):
                 i_right - pad, inner_top - pad, # 30
                 in_left + pad, inner_top - pad, # 31
             ]
-            return (out_border +
-                    down_part +
-                    left_down + right_up +
-                    left_up + right_down +
-                    inner_box)
+            if self._highlight:
+                return (out_border +
+                        down_part +
+                        left_down + right_up +
+                        left_up + right_down +
+                        inner_box +
+                        highlight)
+            else:
+                return (out_border +
+                        down_part +
+                        left_down + right_up +
+                        left_up + right_down +
+                        inner_box)
         else:
             # 左下角的小方块
             left_down = [
@@ -286,10 +316,17 @@ class WikiButtonShape(ShapeBase):
                 i_right - pad, inner_top - pad,  # 26
                 in_left + pad, inner_top - pad,  # 27
             ]
-            return (out_border +
-                    left_down + right_up +
-                    left_up + right_down +
-                    inner_box)
+            if self._highlight:
+                return (out_border +
+                        left_down + right_up +
+                        left_up + right_down +
+                        inner_box +
+                        highlight)
+            else:
+                return (out_border +
+                        left_down + right_up +
+                        left_up + right_down +
+                        inner_box)
         # fmt: on
 
     def _create_vertex_list(self) -> None:
@@ -308,6 +345,8 @@ class WikiButtonShape(ShapeBase):
             indices += [22, 23, 26, 22, 26, 27,
                         23, 24, 26, 24, 25, 26]  # 右下拐弯
             indices += [28, 29, 30, 28, 30, 31]  # 中间的方块
+            if self._highlight:
+                indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
             colors += (
                 self._colors.down_pad * 4
                 + self._colors.corner * 8
@@ -324,6 +363,8 @@ class WikiButtonShape(ShapeBase):
             indices += [18, 22, 23, 18, 19, 22,
                         20, 21, 22, 20, 19, 22]  # 右下拐弯
             indices += [24, 25, 26, 24, 26, 27]
+            if self._highlight:
+                indices = [28, 29, 30, 28, 30, 31] + indices  # 高光
             colors += (
                 self._colors.corner * 8
                 + self._colors.right_down * 6
@@ -331,6 +372,9 @@ class WikiButtonShape(ShapeBase):
                 + self._colors.inner * 4
             )
             self._num_verts = 28
+        if self._highlight:
+            self._num_verts += 4
+            colors += self._colors.highlight * 4
         # fmt: on
         self._vertex_list = self._program.vertex_list_indexed(
             self._num_verts,
