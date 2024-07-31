@@ -85,8 +85,12 @@ class WikiButtonStyles(Enum):
 
 
 @dataclass
-class WikiButtonInfo:
-    ...
+class WikiButtonStatus:
+    popout: bool = False
+    highlight: bool = False
+    pad: float = 2
+    down_pad: float = 5
+    colors: WikiShapeColors = WikiShapeColors()
 
 class WikiButtonShape(ShapeBase):
     def __init__(
@@ -134,6 +138,10 @@ class WikiButtonShape(ShapeBase):
         return self._down_pad
 
     @property
+    def color(self) -> WikiShapeColors:
+        return self._colors
+
+    @property
     def colors(self) -> WikiShapeColors:
         return self._colors
 
@@ -155,6 +163,11 @@ class WikiButtonShape(ShapeBase):
     def down_pad(self, value: float) -> None:
         self._down_pad = value
         self._update_vertices()
+
+    @color.setter
+    def color(self, value: WikiShapeColors) -> None:
+        self._colors = value
+        self._update_color()
 
     @colors.setter
     def colors(self, value: WikiShapeColors) -> None:
