@@ -64,7 +64,7 @@ class WikiButtonStyles(Enum):
         down_pad=(88, 88, 90, 255),
         left_up=(251, 251, 253, 255),
         right_down=(248, 250, 251, 255),
-        inner=(244, 246, 249, 255)
+        inner=(244, 246, 249, 255),
     )
     game1_select = WikiShapeColors(
         border=(30, 30, 31, 255),
@@ -72,7 +72,7 @@ class WikiButtonStyles(Enum):
         down_pad=(88, 88, 90, 255),
         left_up=(236, 237, 238, 255),
         right_down=(227, 227, 229, 255),
-        inner=(208, 209, 212, 255)
+        inner=(208, 209, 212, 255),
     )
     game1_press = WikiShapeColors(
         border=(30, 30, 31, 255),
@@ -80,7 +80,7 @@ class WikiButtonStyles(Enum):
         down_pad=(110, 111, 114, 255),
         left_up=(224, 224, 225, 255),
         right_down=(208, 209, 211, 255),
-        inner=(177, 178, 181, 255)
+        inner=(177, 178, 181, 255),
     )
     game2_normal = WikiShapeColors(
         border=(30, 30, 31, 255),
@@ -88,7 +88,7 @@ class WikiButtonStyles(Enum):
         down_pad=(29, 77, 19, 255),
         left_up=(1117, 183, 93, 255),
         right_down=(99, 174, 73, 255),
-        inner=(82, 165, 53, 255)
+        inner=(82, 165, 53, 255),
     )
     game2_select = WikiShapeColors(
         border=(30, 30, 31, 255),
@@ -96,7 +96,7 @@ class WikiButtonStyles(Enum):
         down_pad=(29, 77, 19, 255),
         left_up=(99, 157, 82, 255),
         right_down=(79, 145, 60, 255),
-        inner=(60, 133, 39, 255)
+        inner=(60, 133, 39, 255),
     )
     game2_press = WikiShapeColors(
         border=(30, 30, 31, 255),
@@ -104,7 +104,7 @@ class WikiButtonStyles(Enum):
         down_pad=(14, 77, 3, 255),
         left_up=(85, 131, 73, 255),
         right_down=(63, 115, 50, 255),
-        inner=(42, 100, 28, 255)
+        inner=(42, 100, 28, 255),
     )
 
 
@@ -115,6 +115,7 @@ class WikiButtonStatus:
     pad: float = 2
     down_pad: float = 5
     colors: WikiShapeColors = WikiShapeColors()
+
 
 class WikiButtonShape(ShapeBase):
     def __init__(
@@ -295,10 +296,10 @@ class WikiButtonShape(ShapeBase):
             ]
             # 左下角的小方块
             left_down = [
-                in_left,       down_top,       # 8
-                in_left + pad, down_top,       # 9
-                in_left + pad, down_top + pad, # 10
-                in_left,       down_top + pad, # 11
+                in_left,       down_top,        # 8
+                in_left + pad, down_top,        # 9
+                in_left + pad, down_top + pad,  # 10
+                in_left,       down_top + pad,  # 11
             ]
             # 右上角的小方块
             right_up = [

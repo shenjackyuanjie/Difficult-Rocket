@@ -3,15 +3,12 @@
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
-import os
 import time
 import random
 import traceback
 
 from pathlib import Path
 from typing import List, Dict, Optional, Generator, Tuple
-from tkinter import Tk
-from tkinter import filedialog
 
 from pyglet.gl import gl
 from pyglet.math import Mat4
@@ -23,7 +20,7 @@ from pyglet.shapes import Line, Box
 # from pyglet.window import mouse
 
 from . import DR_mod_runtime
-from .types import SR1Textures, SR1Rotation
+from .types import SR1Textures
 
 # Difficult Rocket
 from Difficult_Rocket import DR_status
@@ -34,12 +31,6 @@ from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.camera import CenterGroupCamera, GroupCamera
 
-from Difficult_Rocket.gui.widget.button import (
-    PressTextButton,
-    MinecraftWikiButtonTheme,
-    ButtonThemeOptions,
-    BaseButtonTheme,
-)
 
 from lib_not_dr import loggers
 
@@ -100,8 +91,6 @@ class SR1ShipSelecter(BaseScreen):
             if not file.is_file:
                 continue
             # 尝试加载一下
-            
-
 
 
 class SR1ShipEditor(BaseScreen):

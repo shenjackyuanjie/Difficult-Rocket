@@ -58,7 +58,7 @@ msvc = "latest"
 mingw64 = false
 
 standalone = true
-output-dir = "build/nuitka"
+output-dir = "build\\nuitka"
 
 run = false
 # auto run after build
@@ -75,9 +75,9 @@ macos-app-version = false  # require script
 file-description = 'Difficult Rocket a rocket game'
 copyright = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'
 
-windows-icon-from-ico = 'assets/textures/icon.png'
-macos-app-icon = 'assets/textures/icon.png'
-linux-icon = 'assets/textures/icon.png'
+windows-icon-from-ico = 'assets\textures\icon.png'
+macos-app-icon = 'assets\textures\icon.png'
+linux-icon = 'assets\textures\icon.png'
 
 nofollow-import-to = [
     'objprint',
@@ -94,8 +94,8 @@ nofollow-import-to = [
 ]
 
 include-data-dir = [
-    ['./config', './config'],
-    ['./assets', './assets']
+    ['.\config', '.\config'],
+    ['.\assets', '.\assets']
 ]
 include-package = ['Difficult_Rocket.api']
 # DR.api 没有直接 import, 所以需要手动添加

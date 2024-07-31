@@ -4,22 +4,18 @@
 #  All rights reserved
 #  -------------------------------
 
-from typing import Optional, Tuple
 from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.screen import BaseScreen
 # from Difficult_Rocket.main import Game
-from Difficult_Rocket.gui.widget.button import (
-    PressTextButton,
-    MinecraftWikiButtonTheme,
-)
 
 from lib_not_dr import loggers
 
 # from . import DR_mod_runtime
 
 logger = loggers.config.get_logger_from_old("client.dr_game_layout", "client")
+
 
 class GameLayout(BaseScreen):
     """
