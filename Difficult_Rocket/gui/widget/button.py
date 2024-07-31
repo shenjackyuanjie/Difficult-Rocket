@@ -50,8 +50,43 @@ class WikiShapeColors:
 
 
 class WikiButtonStyles(Enum):
-    ...
+    wiki_normal = WikiShapeColors()
+    wiki_press = WikiShapeColors(
+        corner=(106, 107, 108, 255),
+        down_pad=(35, 35, 36, 255),
+        left_up=(90, 91, 92, 255),
+        right_down=(70, 71, 71, 255),
+        inner=(49, 50, 51, 255),
+    )
+    game_normal = WikiShapeColors(
+        border=(30, 30, 31, 255),
+        corner=(253, 253, 254, 255),
+        down_pad=(88, 88, 90, 255),
+        left_up=(251, 251, 253, 255),
+        right_down=(248, 250, 251, 255),
+        inner=(244, 246, 249, 255)
+    )
+    game_select = WikiShapeColors(
+        border=(30, 30, 31, 255),
+        corner=(244, 244, 245, 255),
+        down_pad=(88, 88, 90, 255),
+        left_up=(236, 237, 238, 255),
+        right_down=(227, 227, 229, 255),
+        inner=(208, 209, 212, 255)
+    )
+    game_press = WikiShapeColors(
+        border=(30, 30, 31, 255),
+        corner=(236, 236, 237, 255),
+        down_pad=(88, 88, 90, 255),
+        left_up=(224, 224, 225, 255),
+        right_down=(208, 209, 211, 255),
+        inner=(177, 178, 181, 255)
+    )
 
+
+@dataclass
+class WikiButtonInfo:
+    ...
 
 class WikiButtonShape(ShapeBase):
     def __init__(
@@ -79,7 +114,7 @@ class WikiButtonShape(ShapeBase):
         self._down_pad = down_pad
         self._pop_out = pop_out
         self._highlight = highlight
-        self._colors = colors or WikiShapeColors()
+        self._colors = colors or WikiButtonStyles.wiki_normal.value
 
         vertex = 32
         if pop_out:
@@ -132,18 +167,25 @@ class WikiButtonShape(ShapeBase):
         self._create_vertex_list()
 
     def _update_color(self) -> None:
-        colors = (
-            self._colors.down_pad * 4
-            + self._colors.corner * 8
-            + self._colors.right_down * 6
-            + self._colors.left_up * 6
-            + self._colors.inner * 4
-            + self._colors.highlight * 4
-        )
         if self._pop_out:
-            colors = self._colors.border * 4 + colors
-        # if self._highlight:
-        #     colors += self._colors.highlight * 4
+            colors = (
+                self._colors.border * 4
+                + self._colors.down_pad * 4
+                + self._colors.corner * 8
+                + self._colors.right_down * 6
+                + self._colors.left_up * 6
+                + self._colors.inner * 4
+                + self._colors.highlight * 4
+            )
+        else:
+            colors = (
+                self._colors.border * 4
+                + self._colors.corner * 8
+                + self._colors.right_down * 6
+                + self._colors.left_up * 6
+                + self._colors.inner * 4
+                + self._colors.highlight * 4
+            )
         self._vertex_list.colors[:] = colors
 
     def __contains__(self, point: tuple[float, float]) -> bool:
@@ -196,13 +238,15 @@ class WikiButtonShape(ShapeBase):
             right, top,    # 2
             left,  top,    # 3
         ]
-        # if self._highlight:
-        highlight = [
-            left - pad,  bottom - pad, # max+1
-            right + pad, bottom - pad, # max+2
-            right + pad, top + pad,    # max+3
-            left - pad,  top + pad,    # max+4
-        ]
+        if self._highlight:
+            highlight = [
+                left - pad,  bottom - pad, # max+1
+                right + pad, bottom - pad, # max+2
+                right + pad, top + pad,    # max+3
+                left - pad,  top + pad,    # max+4
+            ]
+        else:
+            highlight = [0, 0, 0, 0, 0, 0, 0, 0]
         if self._pop_out:
             down_top = in_bottom + down_pad
             # 底下那个下巴
@@ -317,6 +361,8 @@ class WikiButtonShape(ShapeBase):
         # fmt: on
 
     def _create_vertex_list(self) -> None:
+        if self._vertex_list:
+            self._vertex_list.delete()
         colors = self._colors.border * 4
         # fmt: off
         indices = [
@@ -332,18 +378,15 @@ class WikiButtonShape(ShapeBase):
             indices += [22, 23, 26, 22, 26, 27,
                         23, 24, 26, 24, 25, 26]  # 右下拐弯
             indices += [28, 29, 30, 28, 30, 31]  # 中间的方块
-            # if self._highlight:
-            #     indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
-            # else:
-            #     indices = [32, 3, 34, 32, 5, 2] + indices  # 高光
-            indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
+            if self._highlight:
+                indices = [32, 33, 34, 32, 34, 35] + indices  # 高光
             colors += (
                 self._colors.down_pad * 4
                 + self._colors.corner * 8
                 + self._colors.right_down * 6
                 + self._colors.left_up * 6
                 + self._colors.inner * 4
-                + ((self._colors.highlight * 4) if self._highlight else (0, 0, 0, 0) * 4)
+                + self._colors.highlight * 4
             )
             self._num_verts = 36
         else:
@@ -552,23 +595,6 @@ class 拐角(ShapeBase):
 
 
 class WikiButton(WidgetBase):
-    # 背景的颜色
-    backgroud_color = (0, 0, 0, 255)
-    # 内部填充的颜色
-    inner_normal = (72, 73, 74, 255)
-    inner_press = (49, 50, 51, 255)
-    # 左上角的普通状态下颜色
-    upper_normal = (109, 109, 110, 255)
-    upper_press = (90, 91, 92, 255)
-    # 右下角的
-    down_normal = (90, 91, 92, 255)
-    down_press = (70, 71, 71, 255)
-    # 左下角方块
-    corner_normal = (124, 124, 125, 255)
-    corner_press = (106, 107, 108, 255)
-    # 下巴的颜色
-    down_pad_color = (49, 50, 51, 255)
-
     def __init__(
         self, x: int, y: int, width: int, height: int, batch: Batch, group: Group
     ) -> None:
@@ -581,84 +607,6 @@ class WikiButton(WidgetBase):
         # 覆盖式
         self.main_batch = batch or Batch()
         self.main_group = group or Group()
-
-        # 背景的黑框
-        self.background_group = Group(order=10, parent=self.main_group)
-        # 左上右下两组
-        self.border_group = Group(order=20, parent=self.main_group)
-        # 左下右上两个小方块
-        self.corner_group = Group(order=30, parent=self.main_group)
-        # 内部填充
-        self.inner_group = Group(order=40, parent=self.main_group)
-
-        self.backgroud = Rectangle(
-            x=self.x,
-            y=self.y,
-            width=width,
-            height=height,
-            color=self.backgroud_color,
-            batch=self.main_batch,
-            group=self.background_group,
-        )
-        self.upper_border = 拐角(
-            x=self.x + pad,
-            y=self.y + pad + down_pad,
-            width=width - (pad * 2),
-            height=height - (pad * 2) - down_pad,
-            thick1=pad,
-            thick2=pad,
-            color=self.upper_normal,
-            batch=self.main_batch,
-            group=self.border_group,
-        )
-        self.down_border = 拐角(
-            x=self.x + pad,
-            y=self.y + pad + down_pad,
-            width=width - (pad * 2),
-            height=height - (pad * 2) - down_pad,
-            thick1=pad,
-            thick2=pad,
-            clockwise=False,
-            color=self.down_normal,
-            batch=self.main_batch,
-            group=self.border_group,
-        )
-        self.left_down = Rectangle(
-            x=self.x + pad,
-            y=self.y + pad + down_pad,
-            width=pad,
-            height=pad,
-            color=self.corner_normal,
-            batch=self.main_batch,
-            group=self.corner_group,
-        )
-        self.right_up = Rectangle(
-            x=self.x + self.width - (pad * 2),
-            y=self.y + self.height - (pad * 2),
-            width=pad,
-            height=pad,
-            color=self.corner_normal,
-            batch=self.main_batch,
-            group=self.corner_group,
-        )
-        self.inner_fill = Rectangle(
-            x=self.x + pad + pad,
-            y=self.y + pad + pad + down_pad,
-            width=self.width - (pad * 4),
-            height=self.height - (pad * 4) - down_pad,
-            color=self.inner_normal,
-            batch=self.main_batch,
-            group=self.inner_group,
-        )
-        self.down_fill = Rectangle(
-            x=self.x + pad,
-            y=self.y + pad,
-            width=width - (pad * 2),
-            height=down_pad,
-            color=self.down_pad_color,
-            batch=self.main_batch,
-            group=self.border_group,
-        )
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
         return self._check_hit()

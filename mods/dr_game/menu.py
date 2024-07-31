@@ -16,6 +16,7 @@ from Difficult_Rocket.gui.widget.button import (
     MinecraftWikiButtonTheme,
     WikiButton,
     WikiButtonShape,
+    WikiButtonStyles,
 )
 
 from lib_not_dr import loggers
@@ -135,30 +136,27 @@ class Menu(BaseScreen):
             x=100,
             y=200,
             width=150,
-            height=100,
-            pad=10,
-            down_pad=15,
+            height=70,
+            pad=5,
+            down_pad=7,
             batch=self.main_batch,
             group=self.main_group,
         )
         self.wiki_shape2 = WikiButtonShape(
             x=300,
             y=200,
-            pop_out=False,
             width=150,
-            height=100,
-            pad=2,
-            down_pad=5,
+            height=70,
+            pad=5,
+            down_pad=7,
+            colors=WikiButtonStyles.wiki_press.value,
             batch=self.main_batch,
             group=self.main_group,
         )
 
         def on_release(button: PressTextButton, x, y):
-            self.wiki_shape1.y += 10
             self.wiki_shape1.highlight = not self.wiki_shape1.highlight
             self.wiki_shape2.highlight = not self.wiki_shape2.highlight
-            print(self.wiki_shape1._vertex_list.position[:], self.wiki_shape2.highlight)
-            self.wiki_shape1.visible = not self.wiki_shape1.visible
             # self.tester.clockwise = not self.tester.clockwise
             # from .sr1_ship import SR1ShipEditor
             # main_window.remove_sub_screen("DR_game_menu")
@@ -177,10 +175,18 @@ class Menu(BaseScreen):
         self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
     ):
         if (x, y) in self.wiki_shape1:
-            self.wiki_shape1.y -= 10
             self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
+
+        if self.wiki_shape1.pop_out:
+            self.wiki_shape1.colors = WikiButtonStyles.wiki_normal.value
+        else:
+            self.wiki_shape1.colors = WikiButtonStyles.wiki_press.value
         if (x, y) in self.wiki_shape2:
             self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out
+
+    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow):
+        self.wiki_shape1.highlight = (x, y) in self.wiki_shape1
+        self.wiki_shape2.highlight = (x, y) in self.wiki_shape2
 
     # def on_draw(self, dt: float, window: ClientWindow): # TODO: wait for pyglet 2.1
     def on_draw(self, window: ClientWindow):
