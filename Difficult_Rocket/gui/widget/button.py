@@ -58,7 +58,7 @@ class WikiButtonStyles(Enum):
         right_down=(70, 71, 71, 255),
         inner=(49, 50, 51, 255),
     )
-    game_normal = WikiShapeColors(
+    game1_normal = WikiShapeColors(
         border=(30, 30, 31, 255),
         corner=(253, 253, 254, 255),
         down_pad=(88, 88, 90, 255),
@@ -66,7 +66,7 @@ class WikiButtonStyles(Enum):
         right_down=(248, 250, 251, 255),
         inner=(244, 246, 249, 255)
     )
-    game_select = WikiShapeColors(
+    game1_select = WikiShapeColors(
         border=(30, 30, 31, 255),
         corner=(244, 244, 245, 255),
         down_pad=(88, 88, 90, 255),
@@ -74,13 +74,37 @@ class WikiButtonStyles(Enum):
         right_down=(227, 227, 229, 255),
         inner=(208, 209, 212, 255)
     )
-    game_press = WikiShapeColors(
+    game1_press = WikiShapeColors(
         border=(30, 30, 31, 255),
         corner=(236, 236, 237, 255),
-        down_pad=(88, 88, 90, 255),
+        down_pad=(110, 111, 114, 255),
         left_up=(224, 224, 225, 255),
         right_down=(208, 209, 211, 255),
         inner=(177, 178, 181, 255)
+    )
+    game2_normal = WikiShapeColors(
+        border=(30, 30, 31, 255),
+        corner=(131, 190, 109, 255),
+        down_pad=(29, 77, 19, 255),
+        left_up=(1117, 183, 93, 255),
+        right_down=(99, 174, 73, 255),
+        inner=(82, 165, 53, 255)
+    )
+    game2_select = WikiShapeColors(
+        border=(30, 30, 31, 255),
+        corner=(114, 167, 99, 255),
+        down_pad=(29, 77, 19, 255),
+        left_up=(99, 157, 82, 255),
+        right_down=(79, 145, 60, 255),
+        inner=(60, 133, 39, 255)
+    )
+    game2_press = WikiShapeColors(
+        border=(30, 30, 31, 255),
+        corner=(102, 143, 91, 255),
+        down_pad=(14, 77, 3, 255),
+        left_up=(85, 131, 73, 255),
+        right_down=(63, 115, 50, 255),
+        inner=(42, 100, 28, 255)
     )
 
 

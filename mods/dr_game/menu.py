@@ -178,9 +178,9 @@ class Menu(BaseScreen):
             self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
 
         if self.wiki_shape1.pop_out:
-            self.wiki_shape1.colors = WikiButtonStyles.wiki_normal.value
+            self.wiki_shape1.colors = WikiButtonStyles.game1_normal.value
         else:
-            self.wiki_shape1.colors = WikiButtonStyles.wiki_press.value
+            self.wiki_shape1.colors = WikiButtonStyles.game1_press.value
         if (x, y) in self.wiki_shape2:
             self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out
 
