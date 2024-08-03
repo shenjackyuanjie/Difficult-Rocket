@@ -113,45 +113,40 @@ class Menu(BaseScreen):
             y=100,
             width=150,
             height=30,
-            text="进入编辑器",
+            text="进入编辑器aaaa",
+            toggle_mode=True,
+            auto_release=True,
             batch=self.main_batch,
             group=self.main_group,
-            draw_theme=MinecraftWikiButtonTheme,
-            dict_theme={"pop_out": True},
         )
 
-        def on_release(button: OreuiButton, x, y):
+        def on_release(x, y):
+            print("on_release", x, y)
             ...
-            # self.tester.clockwise = not self.tester.clockwise
             # from .sr1_ship import SR1ShipEditor
             # main_window.remove_sub_screen("DR_game_menu")
             # main_window.add_sub_screen("SR1_ship", SR1ShipEditor)
             # logger.info("added SR1_ship screen", tag="dr_game")
 
         self.enter_ship_editor_button.set_handler("on_release", on_release)
-        # main_window.push_handlers(self.wiki_button1)
-        # main_window.push_handlers(self.wiki_button2)
-        # main_window.push_handlers(self.wiki_button3)
-        # main_window.push_handlers(self.wiki_button4)
-        # main_window.push_handlers(self.button3)
         main_window.push_handlers(self.enter_ship_editor_button)
 
-    def on_mouse_press(
-        self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
-    ):
-        if (x, y) in self.wiki_shape1:
-            self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
+    # def on_mouse_press(
+    #     self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
+    # ):
+    #     if (x, y) in self.wiki_shape1:
+    #         self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
 
-        if self.wiki_shape1.pop_out:
-            self.wiki_shape1.colors = OreuiButtonStyles.game1_normal.value
-        else:
-            self.wiki_shape1.colors = OreuiButtonStyles.game1_press.value
-        if (x, y) in self.wiki_shape2:
-            self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out
+    #     if self.wiki_shape1.pop_out:
+    #         self.wiki_shape1.colors = OreuiButtonStyles.game1_normal.value
+    #     else:
+    #         self.wiki_shape1.colors = OreuiButtonStyles.game1_press.value
+    #     if (x, y) in self.wiki_shape2:
+    #         self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out
 
-    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow):
-        self.wiki_shape1.highlight = (x, y) in self.wiki_shape1
-        self.wiki_shape2.highlight = (x, y) in self.wiki_shape2
+    # def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow):
+    #     self.wiki_shape1.highlight = (x, y) in self.wiki_shape1
+    #     self.wiki_shape2.highlight = (x, y) in self.wiki_shape2
 
     # def on_draw(self, dt: float, window: ClientWindow): # TODO: wait for pyglet 2.1
     def on_draw(self, window: ClientWindow):

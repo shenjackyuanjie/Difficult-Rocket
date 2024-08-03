@@ -18,6 +18,7 @@ from pyglet.graphics.shader import ShaderProgram
 from pyglet.text import Label
 from pyglet.gui import widgets
 from pyglet.window import mouse
+from pyglet.font import load as load_font
 
 from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase, _rotate_point
 from pyglet.gui.widgets import WidgetBase
@@ -725,7 +726,7 @@ class OreuiButton(WidgetBase):
         self.main_batch = batch or Batch()
         self.main_group = group or Group()
         self._normal_status = normal or OreuiButtonStatus(popout=True)
-        self._select_status = select or OreuiButtonStatus(highlight=True)
+        self._select_status = select or OreuiButtonStatus(highlight=True, popout=True)
         self._press_status = press or OreuiButtonStatus(popout=False, highlight=True)
         self._shape = OreuiButtonShape(
             x=self._x,
@@ -741,11 +742,15 @@ class OreuiButton(WidgetBase):
         self._text = text
         self._label = Label(
             text=text,
-            x=x + (self.current_status.pad2x),
-            y=y + (self.current_status.pad2x + self.current_status.real_down_pad()),
+            x=round(x + self._width / 2),
+            y=self._y + self.current_status.pad2x + self.current_status.real_down_pad(),
             width=width,
-            height=height,
+            height=height
+            + 3
+            - self.current_status.pad2x * 2
+            - self.current_status.real_down_pad(),
             anchor_x="center",
+            anchor_y="bottom",
             font_size=12,
             batch=self.main_batch,
             group=self.main_group,
@@ -768,10 +773,6 @@ class OreuiButton(WidgetBase):
             return self._select_status
         return self._normal_status
 
-    @property
-    def value(self) -> str:
-        return self._text
-
     @current_status.setter
     def current_status(self, value: OreuiButtonStatus) -> None:
         self._shape.update_with_status(value)
@@ -783,16 +784,54 @@ class OreuiButton(WidgetBase):
         else:
             self._normal_status = value
 
+    @property
+    def value(self) -> str:
+        return self._text
+
     @value.setter
     def value(self, value: str) -> None:
         self._text = value
         self._label.text = value
 
+    @property
+    def label(self) -> Label:
+        return self._label
+
+    @property
+    def shape(self) -> OreuiButtonShape:
+        return self._shape
+
+    @property
+    def width(self) -> int:
+        return self._width
+
+    @width.setter
+    def width(self, value: int) -> None:
+        self._width = value
+        self._shape.width = value
+        self._label.width = value
+
+    @property
+    def height(self) -> int:
+        return self._height
+
+    @height.setter
+    def height(self, value: int) -> None:
+        self._height = value
+        self._shape.height = (
+            value
+            + 3
+            - self.current_status.pad2x * 2
+            - self.current_status.real_down_pad()
+        )
+        self._label.height = value
+
     def _update_position(self) -> None:
         self._shape.position = (self._x, self._y)
         self._label.position = (
-            self._x + (self.current_status.pad2x),
-            self._y + (self.current_status.pad2x + self.current_status.real_down_pad()),
+            round(self._x + self._width / 2),
+            self._y + self.current_status.pad2x + self.current_status.real_down_pad(),
+            0,
         )
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
@@ -801,14 +840,16 @@ class OreuiButton(WidgetBase):
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int) -> None:
         if not self._enabled or self._pressed:
             return
-        if (x, y) in self and not self._selected:
-            self._selected = True
-            self._shape.update_with_status(self._select_status)
-            self.dispatch_event("on_select", x, y)
-        elif not self._selected:
+        if (x, y) in self:
+            if not self._selected:  # 没抬手/没选中
+                self._selected = True
+                self._shape.update_with_status(self._select_status)
+                self.dispatch_event("on_select", x, y)
+        elif self._selected:
             self._selected = False
             self._shape.update_with_status(self._normal_status)
             self.dispatch_event("on_deselect", x, y)
+        self._update_position()
 
     def on_mouse_leave(self, x: int, y: int) -> None:
         if not self._enabled or self._pressed:
@@ -839,6 +880,7 @@ class OreuiButton(WidgetBase):
                 self._selected = True  # 顺便用来标记有没有抬手
                 self._shape.update_with_status(self._press_status)
                 self.dispatch_event("on_press", x, y, buttons, modifiers)
+        self._update_position()
 
     def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> None:
         if not self._enabled:
@@ -853,6 +895,7 @@ class OreuiButton(WidgetBase):
                 else:
                     self._shape.update_with_status(self._normal_status)
                 self.dispatch_event("on_release", x, y)
+        self._update_position()
 
 
 OreuiButton.register_event_type("on_press")
