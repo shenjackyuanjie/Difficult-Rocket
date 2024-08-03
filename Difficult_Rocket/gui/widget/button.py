@@ -732,17 +732,17 @@ class OreuiButton(WidgetBase):
             y=self._y,
             width=self._width,
             height=self._height,
-            pop_out=self._normal_status.popout,
-            highlight=self._normal_status.highlight,
-            colors=self._normal_status.colors,
+            pop_out=self.current_status.popout,
+            highlight=self.current_status.highlight,
+            colors=self.current_status.colors,
             batch=self.main_batch,
             group=self.main_group,
         )
         self._text = text
         self._label = Label(
             text=text,
-            x=x + (self._normal_status.pad2x),
-            y=y + (self._normal_status.pad2x + self._normal_status.real_down_pad()),
+            x=x + (self.current_status.pad2x),
+            y=y + (self.current_status.pad2x + self.current_status.real_down_pad()),
             width=width,
             height=height,
             anchor_x="center",
@@ -760,8 +760,40 @@ class OreuiButton(WidgetBase):
         self._visible = value
         self._shape.visible = value
 
+    @property
+    def current_status(self) -> OreuiButtonStatus:
+        if self._pressed:
+            return self._press_status
+        if self._selected:
+            return self._select_status
+        return self._normal_status
+
+    @property
+    def value(self) -> str:
+        return self._text
+
+    @current_status.setter
+    def current_status(self, value: OreuiButtonStatus) -> None:
+        self._shape.update_with_status(value)
+        # 然后替换对应的状态
+        if self._pressed:
+            self._press_status = value
+        elif self._selected:
+            self._select_status = value
+        else:
+            self._normal_status = value
+
+    @value.setter
+    def value(self, value: str) -> None:
+        self._text = value
+        self._label.text = value
+
     def _update_position(self) -> None:
         self._shape.position = (self._x, self._y)
+        self._label.position = (
+            self._x + (self.current_status.pad2x),
+            self._y + (self.current_status.pad2x + self.current_status.real_down_pad()),
+        )
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
         return self._check_hit(pos[0], pos[1])
