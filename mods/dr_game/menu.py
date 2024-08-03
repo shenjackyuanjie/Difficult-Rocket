@@ -14,9 +14,9 @@ from Difficult_Rocket.api.screen import BaseScreen
 from Difficult_Rocket.gui.widget.button import (
     PressTextButton,
     MinecraftWikiButtonTheme,
-    WikiButton,
-    WikiButtonShape,
-    WikiButtonStyles,
+    OreuiButton,
+    OreuiButtonShape,
+    OreuiButtonStyles,
 )
 
 from lib_not_dr import loggers
@@ -123,7 +123,7 @@ class Menu(BaseScreen):
             dict_theme={"pop_out": True},
         )
 
-        self.tester = WikiButton(
+        self.tester = OreuiButton(
             x=100,
             y=150,
             width=150,
@@ -132,7 +132,7 @@ class Menu(BaseScreen):
             group=self.main_group,
         )
 
-        self.wiki_shape1 = WikiButtonShape(
+        self.wiki_shape1 = OreuiButtonShape(
             x=100,
             y=200,
             width=150,
@@ -142,14 +142,14 @@ class Menu(BaseScreen):
             batch=self.main_batch,
             group=self.main_group,
         )
-        self.wiki_shape2 = WikiButtonShape(
+        self.wiki_shape2 = OreuiButtonShape(
             x=300,
             y=200,
             width=150,
             height=70,
             pad=5,
             down_pad=7,
-            colors=WikiButtonStyles.wiki_press.value,
+            colors=OreuiButtonStyles.wiki_press.value,
             batch=self.main_batch,
             group=self.main_group,
         )
@@ -178,9 +178,9 @@ class Menu(BaseScreen):
             self.wiki_shape1.pop_out = not self.wiki_shape1.pop_out
 
         if self.wiki_shape1.pop_out:
-            self.wiki_shape1.colors = WikiButtonStyles.game1_normal.value
+            self.wiki_shape1.colors = OreuiButtonStyles.game1_normal.value
         else:
-            self.wiki_shape1.colors = WikiButtonStyles.game1_press.value
+            self.wiki_shape1.colors = OreuiButtonStyles.game1_press.value
         if (x, y) in self.wiki_shape2:
             self.wiki_shape2.pop_out = not self.wiki_shape2.pop_out
 

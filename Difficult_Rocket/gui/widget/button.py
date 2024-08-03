@@ -3,6 +3,7 @@
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
+# ruff: noqa: E241, E261
 
 from __future__ import annotations
 import math
@@ -31,7 +32,7 @@ RGBA = Tuple[int, int, int, int]
 
 
 @dataclass
-class WikiShapeColors:
+class OreuiShapeColors:
     # 这里都是 未按下的颜色
     # 外面一圈高光
     highlight: RGBA = (255, 255, 255, 255)
@@ -48,17 +49,29 @@ class WikiShapeColors:
     # 内部填充
     inner: RGBA = (72, 73, 74, 255)
 
+    def __eq__(self, other: object) -> bool:
+        return (
+            self.__class__ == other.__class__ and
+            self.highlight == other.highlight and
+            self.border == other.border and
+            self.down_pad == other.down_pad and
+            self.corner == other.corner and
+            self.left_up == other.left_up and
+            self.right_down == other.right_down and
+            self.inner == other.inner
+        )
 
-class WikiButtonStyles(Enum):
-    wiki_normal = WikiShapeColors()
-    wiki_press = WikiShapeColors(
+
+class OreuiButtonStyles(Enum):
+    wiki_normal = OreuiShapeColors()
+    wiki_press = OreuiShapeColors(
         corner=(106, 107, 108, 255),
         down_pad=(35, 35, 36, 255),
         left_up=(90, 91, 92, 255),
         right_down=(70, 71, 71, 255),
         inner=(49, 50, 51, 255),
     )
-    game1_normal = WikiShapeColors(
+    game1_normal = OreuiShapeColors(
         border=(30, 30, 31, 255),
         corner=(253, 253, 254, 255),
         down_pad=(88, 88, 90, 255),
@@ -66,7 +79,7 @@ class WikiButtonStyles(Enum):
         right_down=(248, 250, 251, 255),
         inner=(244, 246, 249, 255),
     )
-    game1_select = WikiShapeColors(
+    game1_select = OreuiShapeColors(
         border=(30, 30, 31, 255),
         corner=(244, 244, 245, 255),
         down_pad=(88, 88, 90, 255),
@@ -74,7 +87,7 @@ class WikiButtonStyles(Enum):
         right_down=(227, 227, 229, 255),
         inner=(208, 209, 212, 255),
     )
-    game1_press = WikiShapeColors(
+    game1_press = OreuiShapeColors(
         border=(30, 30, 31, 255),
         corner=(236, 236, 237, 255),
         down_pad=(110, 111, 114, 255),
@@ -82,7 +95,7 @@ class WikiButtonStyles(Enum):
         right_down=(208, 209, 211, 255),
         inner=(177, 178, 181, 255),
     )
-    game2_normal = WikiShapeColors(
+    game2_normal = OreuiShapeColors(
         border=(30, 30, 31, 255),
         corner=(131, 190, 109, 255),
         down_pad=(29, 77, 19, 255),
@@ -90,7 +103,7 @@ class WikiButtonStyles(Enum):
         right_down=(99, 174, 73, 255),
         inner=(82, 165, 53, 255),
     )
-    game2_select = WikiShapeColors(
+    game2_select = OreuiShapeColors(
         border=(30, 30, 31, 255),
         corner=(114, 167, 99, 255),
         down_pad=(29, 77, 19, 255),
@@ -98,7 +111,7 @@ class WikiButtonStyles(Enum):
         right_down=(79, 145, 60, 255),
         inner=(60, 133, 39, 255),
     )
-    game2_press = WikiShapeColors(
+    game2_press = OreuiShapeColors(
         border=(30, 30, 31, 255),
         corner=(102, 143, 91, 255),
         down_pad=(14, 77, 3, 255),
@@ -109,15 +122,25 @@ class WikiButtonStyles(Enum):
 
 
 @dataclass
-class WikiButtonStatus:
+class OreuiButtonStatus:
     popout: bool = False
     highlight: bool = False
     pad: float = 2
     down_pad: float = 5
-    colors: WikiShapeColors = WikiShapeColors()
+    colors: OreuiShapeColors = OreuiShapeColors()
+
+    def __eq__(self, value: object) -> bool:
+        return (
+            self.__class__ == value.__class__
+            and self.popout == value.popout
+            and self.highlight == value.highlight
+            and self.pad == value.pad
+            and self.down_pad == value.down_pad
+            and self.colors == value.colors
+        )
 
 
-class WikiButtonShape(ShapeBase):
+class OreuiButtonShape(ShapeBase):
     def __init__(
         self,
         x: float,
@@ -128,7 +151,7 @@ class WikiButtonShape(ShapeBase):
         down_pad: float = 5.0,
         pop_out: bool = True,
         highlight: bool = False,
-        colors: WikiShapeColors | None = None,
+        colors: OreuiShapeColors | None = None,
         blend_src: int = GL_SRC_ALPHA,
         blend_dest: int = GL_ONE_MINUS_SRC_ALPHA,
         batch: Batch | None = None,
@@ -143,7 +166,7 @@ class WikiButtonShape(ShapeBase):
         self._down_pad = down_pad
         self._pop_out = pop_out
         self._highlight = highlight
-        self._colors = colors or WikiButtonStyles.wiki_normal.value
+        self._colors = colors or OreuiButtonStyles.wiki_normal.value
 
         vertex = 32
         if pop_out:
@@ -163,11 +186,11 @@ class WikiButtonShape(ShapeBase):
         return self._down_pad
 
     @property
-    def color(self) -> WikiShapeColors:
+    def color(self) -> OreuiShapeColors:
         return self._colors
 
     @property
-    def colors(self) -> WikiShapeColors:
+    def colors(self) -> OreuiShapeColors:
         return self._colors
 
     @property
@@ -190,12 +213,12 @@ class WikiButtonShape(ShapeBase):
         self._update_vertices()
 
     @color.setter
-    def color(self, value: WikiShapeColors) -> None:
+    def color(self, value: OreuiShapeColors) -> None:
         self._colors = value
         self._update_color()
 
     @colors.setter
-    def colors(self, value: WikiShapeColors) -> None:
+    def colors(self, value: OreuiShapeColors) -> None:
         self._colors = value
         self._update_color()
 
@@ -203,6 +226,26 @@ class WikiButtonShape(ShapeBase):
     def highlight(self, value: bool) -> None:
         self._highlight = value
         self._create_vertex_list()
+
+    def update_with_status(self, status: OreuiButtonStatus):
+        assert isinstance(status, OreuiButtonStatus)
+        update_vertex = False
+        if status.popout != self._pop_out:
+            self._pop_out = status.popout
+            update_vertex = True
+        if status.highlight != self._highlight:
+            self._highlight = status.highlight
+            update_vertex = True
+        if status.pad != self._pad:
+            self._pad = status.pad
+            update_vertex = True
+        if status.down_pad != self._down_pad:
+            self._down_pad = status.down_pad
+            update_vertex = True
+        if status.colors != self._colors:
+            self._colors = status.colors
+        if update_vertex:
+            self._create_vertex_list()
 
     def _update_color(self) -> None:
         if self._pop_out:
@@ -533,7 +576,7 @@ class 拐角(ShapeBase):
                 x4, y3,
                 x2, y3,
                 x2, y1
-            ] if self._clockwise else[
+            ] if self._clockwise else [
                 x1, y1,
                 x4, y1,
                 x4, y4,
@@ -632,22 +675,48 @@ class 拐角(ShapeBase):
         self._update_vertices()
 
 
-class WikiButton(WidgetBase):
+class OreuiButton(WidgetBase):
     def __init__(
-        self, x: int, y: int, width: int, height: int, batch: Batch, group: Group
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        normal: OreuiButtonStatus | None = None,
+        select: OreuiButtonStatus | None = None,
+        press: OreuiButtonStatus | None = None,
+        auto_release: bool = False,
+        batch: Batch | None = None,
+        group: Group | None = None,
     ) -> None:
         super().__init__(x, y, width, height)
-        self.enabled = False
-        pad = 2
-        down_pad = 5
-        self.pad = pad
-        self.down_pad = down_pad
-        # 覆盖式
+        self.enabled = True
+        self.pressed = False
+        self.selected = False
+        self.auto_release = auto_release
         self.main_batch = batch or Batch()
         self.main_group = group or Group()
+        self._normal_status = normal or OreuiButtonStatus(popout=True)
+        self._select_status = select or OreuiButtonStatus(highlight=True)
+        self._press_status = press or OreuiButtonStatus(popout=False, highlight=True)
+        self._shape = OreuiButtonShape(
+            x=self._x,
+            y=self._y,
+            width=self._width,
+            height=self._height,
+            pop_out=self._normal_status.popout,
+            highlight=self._normal_status.highlight,
+            colors=self._normal_status.colors,
+            batch=self.main_batch,
+            group=self.main_group,
+        )
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
-        return self._check_hit()
+        return self._check_hit(pos[0], pos[1])
+
+    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int) -> None:
+        if (x, y) in self:
+            ...
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
         if (x, y) in self:
