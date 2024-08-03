@@ -6,25 +6,21 @@
 # ruff: noqa: E241, E261
 
 from __future__ import annotations
+
 import math
-from typing import Optional, Tuple, Type, Sequence
+from typing import Tuple, Sequence
 from dataclasses import dataclass
 from enum import Enum
 
 # from libs import pyglet
-import pyglet
 from pyglet.gl import GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA
 from pyglet.graphics.shader import ShaderProgram
 from pyglet.text import Label
-from pyglet.gui import widgets
-from pyglet.window import mouse
 
-from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase, _rotate_point
+from pyglet.shapes import ShapeBase, _rotate_point
 from pyglet.gui.widgets import WidgetBase
 
 from pyglet.graphics import Batch, Group
-
-from Difficult_Rocket.api.types import Options, FontData
 
 # from Difficult_Rocket import DR_status
 

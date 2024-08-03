@@ -6,7 +6,7 @@
 
 import traceback
 
-from typing import Optional, Type
+from typing import Optional
 
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
@@ -33,7 +33,7 @@ class DRrsNotMatch(ModLoadFaildError):
     """
 
 
-class _DR_mod_runtime(Options):  # NOQA
+class _DR_mod_runtime(Options):
     name = "DR mod runtime"
 
     use_DR_rust: bool = True
@@ -74,7 +74,7 @@ class _DR_mod_runtime(Options):  # NOQA
 DR_mod_runtime = _DR_mod_runtime()
 
 
-class DR_mod(ModInfo):  # NOQA
+class DR_mod(ModInfo):
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
     version = Version("0.3.7")
