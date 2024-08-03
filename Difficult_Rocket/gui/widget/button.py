@@ -243,7 +243,7 @@ class OreuiButtonShape(ShapeBase):
             self._down_pad = status.down_pad
             update_vertex = True
         if status.colors != self._colors:
-            self._colors = status.colors
+            self.colors = status.colors
         if update_vertex:
             self._create_vertex_list()
 
@@ -685,7 +685,8 @@ class OreuiButton(WidgetBase):
         normal: OreuiButtonStatus | None = None,
         select: OreuiButtonStatus | None = None,
         press: OreuiButtonStatus | None = None,
-        auto_release: bool = False,
+        auto_release: bool = True,
+
         batch: Batch | None = None,
         group: Group | None = None,
     ) -> None:
@@ -716,11 +717,40 @@ class OreuiButton(WidgetBase):
 
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int) -> None:
         if (x, y) in self:
+            if not self.pressed and not self.selected:
+                self.selected = True
+                self._shape.update_with_status(self._select_status)
+        else:
             ...
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
         if (x, y) in self:
-            ...
+            self._shape.update_with_status(self._press_status)
+            self.pressed = True
+            self.selected = False
+            self.dispatch_event("on_press", x, y, buttons, modifiers)
+
+    def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> None:
+        if self.auto_release and self.pressed:
+            # 释放
+            if (x, y) in self:
+                self.pressed = False
+                self.selected = True
+                self._shape.update_with_status(self._select_status)
+                self.dispatch_event("on_release", x, y, buttons, modifiers)
+            else:
+                self.pressed = False
+                self.selected = False
+                self._shape.update_with_status(self._normal_status)
+                self.dispatch_event("on_release", x, y, buttons, modifiers)
+
+    # def on_mouse
+
+
+OreuiButton.register_event_type("on_press")
+OreuiButton.register_event_type("on_release")
+OreuiButton.register_event_type("on_select")
+OreuiButton.register_event_type("on_deselect")
 
 
 class BaseButtonTheme:
