@@ -523,22 +523,21 @@ class SR1ShipEditor(BaseScreen):
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
 
-    # def on_draw(self, dt: float, window):  # TODO: wait for pyglet 2.1
     def on_draw(self, window: ClientWindow):
-        if self.status.draw_call:
-            self.render_ship()
+        # if self.status.draw_call:
+        #     self.render_ship()
 
-        if not self.status.draw_done:
-            try:
-                assert isinstance(
-                    self.gen_draw, Generator
-                ), f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
-                next(self.gen_draw)
-            except (GeneratorExit, StopIteration):
-                self.status.draw_done = True
-                self.logger.info(sr_tr().sr1.ship.ship.render.done())
-            except TypeError:
-                pass
+        # if not self.status.draw_done:
+        #     try:
+        #         assert isinstance(
+        #             self.gen_draw, Generator
+        #         ), f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
+        #         next(self.gen_draw)
+        #     except (GeneratorExit, StopIteration):
+        #         self.status.draw_done = True
+        #         self.logger.info(sr_tr().sr1.ship.ship.render.done())
+        #     except TypeError:
+        #         pass
 
         self.debug_label.draw()
 

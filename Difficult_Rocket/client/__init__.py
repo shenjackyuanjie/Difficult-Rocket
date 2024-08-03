@@ -336,7 +336,13 @@ class ClientWindow(Window):
     """
 
     def add_sub_screen(self, title: str, sub_screen: Type[BaseScreen]):
+        """添加一个页面, 指定页面的名字"""
         self.screen_list[title] = sub_screen(self)
+
+    def add_sub_screen_without_name(self, sub_screen: Type[BaseScreen]):
+        """添加一个页面, 但直接使用页面的名字作为键
+        添加自: 0.9.2.0"""
+        self.screen_list[sub_screen.name] = sub_screen(self)
 
     def remove_sub_screen(self, title: str) -> BaseScreen:
         """
