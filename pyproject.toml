@@ -77,7 +77,7 @@ copyright = 'Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com'
 
 windows-icon-from-ico = '.\assets\textures\icon.png'
 macos-app-icon = '.\assets\textures\icon.png'
-linux-icon = '.\assets\textures\icon.png'
+linux-icon = 'assets\textures\icon.png'
 
 nofollow-import-to = [
     'objprint',

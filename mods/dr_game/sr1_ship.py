@@ -75,6 +75,7 @@ class SR1ShipSelecter(BaseScreen):
     所以单独拿出来写个screen
     我估计以后还得有一堆类似重构(瘫倒)
     """
+
     name = "DR_game_sr1_ship_selecter"
 
     def __init__(self, main_window: ClientWindow):
@@ -85,7 +86,9 @@ class SR1ShipSelecter(BaseScreen):
 
     def set_folder(self, path: Path):
         if not path.is_dir():
-            logger.warn(sr_tr().sr1.ship.folder.invalid().format(path), tag="ship explorer")
+            logger.warn(
+                sr_tr().sr1.ship.folder.invalid().format(path), tag="ship explorer"
+            )
             return
         for file in path.iterdir():
             if not file.is_file:
@@ -527,8 +530,9 @@ class SR1ShipEditor(BaseScreen):
 
         if not self.status.draw_done:
             try:
-                assert isinstance(self.gen_draw, Generator), \
-                    f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
+                assert isinstance(
+                    self.gen_draw, Generator
+                ), f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
                 next(self.gen_draw)
             except (GeneratorExit, StopIteration):
                 self.status.draw_done = True

@@ -691,7 +691,6 @@ class OreuiButton(WidgetBase):
         group: Group | None = None,
     ) -> None:
         super().__init__(x, y, width, height)
-        self.enabled = True
         self.pressed = False
         self.selected = False
         self.auto_release = auto_release
