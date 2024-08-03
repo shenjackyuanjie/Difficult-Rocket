@@ -4,12 +4,7 @@
 #  All rights reserved
 #  -------------------------------
 
-"""
-writen by shenjackyuanjie <3695888@qq.com>
-mail:   3695888@qq.com
-github: @shenjackyuanjie
-gitee:  @shenjackyuanjie
-"""
+from __future__ import annotations
 
 import os
 import inspect
@@ -32,11 +27,11 @@ class TranslateConfig:
     is_final: bool = False  # 是否为最终内容
     keep_get: bool = True  # 引用错误后是否继续引用
     always_copy: bool = False  # 是否一直新建 Translate (为 True 会降低性能)
-    source: Optional[Union["Tr", "Translates"]] = None  # 翻译来源 (用于默认翻译)
+    source: Tr | Translates | None = None  # 翻译来源 (用于默认翻译)
 
-    def set(self, item: str, value: Union[bool, "Tr", "Translates"]) -> "TranslateConfig":
+    def set(self, item: str, value: bool | Tr | Translates) -> "TranslateConfig":
         assert (
-                getattr(self, item, None) is not None
+            getattr(self, item, None) is not None
         ), f"Config {item} is not in TranslateConfig"
         assert isinstance(value, bool)
         setattr(self, item, value)
@@ -62,10 +57,10 @@ key_type = Union[str, int, Hashable]
 
 class Translates:
     def __init__(
-            self,
-            value: Union[Dict[str, Any], list, tuple, str],
-            config: Optional[TranslateConfig] = None,
-            get_list: Optional[List[Tuple[bool, str]]] = None,
+        self,
+        value: dict[str, Any] | list | tuple | str,
+        config: TranslateKeyNotFound | None = None,
+        get_list: Optional[list[tuple[bool, str]]] = None,
     ):
         """一个用于翻译的东西
         :param value: 翻译键节点
@@ -77,9 +72,9 @@ class Translates:
         self._get_list = get_list or []
 
     def set_conf_(
-            self,
-            option: Union[str, TranslateConfig],
-            value: Optional[Union[bool, List[str]]] = None,
+        self,
+        option: Union[str, TranslateConfig],
+        value: Optional[Union[bool, List[str]]] = None,
     ) -> "Translates":
         assert isinstance(option, (TranslateConfig, str))
         if isinstance(option, TranslateConfig):
@@ -113,11 +108,11 @@ class Translates:
                 frame = f"call at {frame.f_code.co_filename}:{frame.f_lineno}"
             else:
                 frame = "but No Frame environment"
-            raise_info = f"{self.name} Cause a error when getting {item} {frame}"
+            raise_info = f"Translates Cause a error when getting {item} {frame}"
             print(raise_info)
 
     def __getitem__(
-            self, item: Union[key_type, List[key_type], Tuple[key_type]]
+        self, item: Union[key_type, List[key_type], Tuple[key_type]]
     ) -> "Translates":
         try:
             if isinstance(item, (str, int, Hashable)):
@@ -127,11 +122,11 @@ class Translates:
                 for a_item in item:
                     cache_value = cache_value[a_item]
             if isinstance(
-                    cache_value,
-                    (
-                            int,
-                            str,
-                    ),
+                cache_value,
+                (
+                    int,
+                    str,
+                ),
             ):
                 self._config.is_final = True
             self._get_list.append((True, item))
@@ -158,7 +153,7 @@ class Translates:
 
     def __getattr__(self, item: key_type) -> "Translates":
         if (self._config.is_final or any(x[0] for x in self._get_list)) and hasattr(
-                self._value, item
+            self._value, item
         ):
             return getattr(self._value, item)
         # 实际上我这里完全不需要处理正常需求，因为 __getattribute__ 已经帮我处理过了
@@ -181,10 +176,10 @@ class Tr:
     """
 
     def __init__(
-            self,
-            language: str = None,
-            config: Optional[TranslateConfig] = None,
-            lang_path: Optional[Path] = None,
+        self,
+        language: str = None,
+        config: TranslateConfig | None = None,
+        lang_path: Path | None = None,
     ):
         """
         诶嘿，我抄的MCDR
@@ -194,7 +189,7 @@ class Tr:
         """
         self.language_name = language if language is not None else DR_runtime.language
         self.language_path = lang_path if lang_path is not None else Path("assets/lang")
-        self.translates: Dict[str, Union[str, Dict]] = tools.load_file(
+        self.translates: dict[str, str | dict] = tools.load_file(
             self.language_path / f"{self.language_name}.toml"
         )
         self.default_translate: Dict = tools.load_file(
@@ -217,7 +212,7 @@ class Tr:
     def _language(self, value: str):
         self.init_translate(value)
 
-    def init_translate(self, lang: Optional[str] = None) -> bool:
+    def init_translate(self, lang: str | None = None) -> bool:
         """
         初始化语言文件
         :param lang: 要初始化的语言
@@ -254,7 +249,7 @@ class Tr:
             return True
         return False
 
-    def default(self, items: Union[str, List[str]]) -> Translates:
+    def default(self, items: str | list[str]) -> Translates:
         if isinstance(items, list):
             cache_translate = self.default_translate
             for item in items:
@@ -269,7 +264,7 @@ class Tr:
             cache = cache[item]
         return cache
 
-    def __getitem__(self, item: Union[str, int]) -> Translates:
+    def __getitem__(self, item: str | int) -> Translates:
         return self.translates_cache.copy()[item]
 
     def __call__(self, *args, **kwargs) -> Translates:

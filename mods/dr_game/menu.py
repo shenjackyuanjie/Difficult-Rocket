@@ -10,11 +10,7 @@ from pyglet.graphics import Batch, Group
 from Difficult_Rocket.client import ClientWindow
 from Difficult_Rocket.api.screen import BaseScreen
 
-# from Difficult_Rocket.main import Game
-from Difficult_Rocket.gui.widget.button import (
-    OreuiButton,
-    OreuiButtonStyles,
-)
+from Difficult_Rocket.gui.widget.button import OreuiButton
 
 from lib_not_dr import loggers
 
@@ -57,6 +53,7 @@ class Menu(BaseScreen):
 
         def on_release(x, y):
             from .sr1_ship import SR1ShipEditor, SR1ShipSelecter
+
             main_window.remove_sub_screen("DR_game_menu")
             main_window.add_sub_screen(SR1ShipEditor.name, SR1ShipEditor)
             main_window.add_sub_screen(SR1ShipSelecter.name, SR1ShipSelecter)

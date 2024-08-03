@@ -4,9 +4,9 @@
 #  All rights reserved
 #  -------------------------------
 
-import traceback
+from __future__ import annotations
 
-from typing import Optional
+import traceback
 
 from Difficult_Rocket import DR_status
 from Difficult_Rocket.main import Game
@@ -39,7 +39,7 @@ class _DR_mod_runtime(Options):
     use_DR_rust: bool = True
     DR_rust_available: bool = False
     DR_rust_version: Version = DR_rust_version
-    DR_rust_get_version: Optional[Version] = None
+    DR_rust_get_version: Version | None = None
 
     def init(self, **kwargs) -> bool:
         try:
@@ -92,7 +92,7 @@ class DR_mod(ModInfo):
     # DR_Api_version =   # DR Api版本
     # 同理 不管 API 版本   这东西要是不兼容了才是大问题
 
-    def on_load(self, game: Game, old_self: Optional["DR_mod"] = None) -> bool:
+    def on_load(self, game: Game, old_self: DR_mod | None = None) -> bool:
         if not DR_mod_runtime.DR_rust_available:
             return False
         from .console import RustConsole

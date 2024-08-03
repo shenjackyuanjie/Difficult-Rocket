@@ -4,6 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
+from __future__ import annotations
+
 from .lib import *  # noqa: F403
 
 from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
@@ -11,6 +13,14 @@ from typing import TYPE_CHECKING, Dict, Tuple, Optional, List
 if TYPE_CHECKING:
     IdType = int
     RawConnectionData = Tuple[int, int, IdType, IdType]
+
+    def assert_ship(path: str) -> bool:
+        """
+        检查飞船存档是否可用
+        :param path: 飞船存档路径
+        :return: 是否可用
+        """
+        ...
 
     def get_version_str() -> str:
         """
@@ -20,14 +30,14 @@ if TYPE_CHECKING:
         ...
 
     def part_list_read_test(
-        file_name: Optional[str] = "./assets/builtin/PartList.xml"
+        file_name: str | None = "./assets/builtin/PartList.xml"
     ) -> None:
         """
         PartList 读取测试
         :param file_name:
         """
 
-    def read_ship_test(path: Optional[str] = "./assets/builtin/dock1.xml") -> None:
+    def read_ship_test(path: str | None = "./assets/builtin/dock1.xml") -> None:
         """
         飞船存档读取测试
         :param path:
@@ -98,12 +108,12 @@ if TYPE_CHECKING:
 
         def __init__(
             self,
-            file_name: Optional[str] = "./assets/builtin/PartList.xml",
-            list_name: Optional[str] = "NewPartList",
+            file_name: str | None = "./assets/builtin/PartList.xml",
+            list_name: str | None = "NewPartList",
         ):
             ...
 
-        def as_dict(self) -> Dict[str, SR1PartType_rs]:
+        def as_dict(self) -> dict[str, SR1PartType_rs]:
             ...
 
         def get_part_type(self, name: str) -> SR1PartType_rs:
@@ -123,7 +133,7 @@ if TYPE_CHECKING:
             ...
 
         @property
-        def pos(self) -> Tuple[float, float]:
+        def pos(self) -> tuple[float, float]:
             ...
 
         @property
@@ -164,7 +174,7 @@ if TYPE_CHECKING:
 
         def get_part_box_by_type(
             self, part_type: SR1PartType_rs
-        ) -> Tuple[Tuple[float, float], Tuple[float, float]]:
+        ) -> tuple[tuple[float, float], tuple[float, float]]:
             """
             当你同时已知一个部件的数据和类型的时候
             为啥不直接获取呢
