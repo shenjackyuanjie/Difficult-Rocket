@@ -28,8 +28,8 @@ def print_path() -> None:
 
 
 def modify_path() -> None:
-    os.chdir(Path(__file__).parent)  # 将运行路径切换到文件位置 防止bug
-    sys.path.append("./libs")  # 添加 libs path
+    os.chdir(Path(sys.argv[0]).parent)  # 将运行路径切换到文件位置 防止bug
+    # sys.path.append("./libs")  # 添加 libs path
 
 
 def start(start_time_ns: int) -> None:
