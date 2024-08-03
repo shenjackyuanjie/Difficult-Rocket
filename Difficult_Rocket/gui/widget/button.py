@@ -685,15 +685,29 @@ class OreuiButton(WidgetBase):
         normal: OreuiButtonStatus | None = None,
         select: OreuiButtonStatus | None = None,
         press: OreuiButtonStatus | None = None,
+        toggle_mode: bool = True,
         auto_release: bool = True,
-
         batch: Batch | None = None,
         group: Group | None = None,
     ) -> None:
+        """
+        :param x: x 坐标
+        :param y: y 坐标
+        :param width: 宽度
+        :param height: 高度
+        :param normal: 正常状态
+        :param select: 选中状态
+        :param press: 按下状态
+        :param toggle_mode: 是否为切换模式
+        :param auto_release: 是否自动释放(如果你只是用来显示一个状态, 那就改成 False)
+        :param batch: Batch
+        :param group: Group
+        """
         super().__init__(x, y, width, height)
-        self.pressed = False
-        self.selected = False
-        self.auto_release = auto_release
+        self._pressed = False
+        self._selected = False
+        self._auto_release = auto_release
+        self.toggle_mode = toggle_mode
         self.main_batch = batch or Batch()
         self.main_group = group or Group()
         self._normal_status = normal or OreuiButtonStatus(popout=True)
@@ -715,39 +729,65 @@ class OreuiButton(WidgetBase):
         return self._check_hit(pos[0], pos[1])
 
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int) -> None:
-        if (x, y) in self:
-            if not self.pressed and not self.selected:
-                self.selected = True
-                self._shape.update_with_status(self._select_status)
-        else:
-            ...
+        if not self._enabled or self._pressed:
+            return
+        if (x, y) in self and not self._selected:
+            self._selected = True
+            self._shape.update_with_status(self._select_status)
+            self.dispatch_event("on_select", x, y)
+        elif not self._selected:
+            self._selected = False
+            self._shape.update_with_status(self._normal_status)
+            self.dispatch_event("on_deselect", x, y)
+
+    def on_mouse_leave(self, x: int, y: int) -> None:
+        if not self._enabled or self._pressed:
+            return
+        if self._selected:
+            # 没抬手, 但是鼠标跑了
+            self._selected = False
+            if not self.toggle_mode and self._auto_release:
+                self._shape.update_with_status(self._normal_status)
+                self.dispatch_event("on_release", x, y)
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
+        if not self._enabled:
+            return
         if (x, y) in self:
-            self._shape.update_with_status(self._press_status)
-            self.pressed = True
-            self.selected = False
-            self.dispatch_event("on_press", x, y, buttons, modifiers)
+            if self.toggle_mode:
+                self._pressed = not self._pressed
+                self._selected = True  # 顺便用来标记有没有抬手
+                if self._pressed:
+                    self._shape.update_with_status(self._press_status)
+                    self.dispatch_event("on_press", x, y, buttons, modifiers)
+                else:
+                    self._shape.update_with_status(self._select_status)
+                    self.dispatch_event("on_release", x, y)
+                self.dispatch_event("on_toggle", x, y, buttons, modifiers)
+            else:
+                self._pressed = True
+                self._selected = True  # 顺便用来标记有没有抬手
+                self._shape.update_with_status(self._press_status)
+                self.dispatch_event("on_press", x, y, buttons, modifiers)
 
     def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> None:
-        if self.auto_release and self.pressed:
-            # 释放
-            if (x, y) in self:
-                self.pressed = False
-                self.selected = True
-                self._shape.update_with_status(self._select_status)
-                self.dispatch_event("on_release", x, y, buttons, modifiers)
-            else:
-                self.pressed = False
-                self.selected = False
-                self._shape.update_with_status(self._normal_status)
-                self.dispatch_event("on_release", x, y, buttons, modifiers)
-
-    # def on_mouse
+        if not self._enabled:
+            return
+        if self._pressed:
+            self._selected = False  # 抬手了
+            if not self.toggle_mode and self._auto_release:
+                # 非切换模式, 自动释放
+                self._pressed = False
+                if (x, y) in self:
+                    self._shape.update_with_status(self._select_status)
+                else:
+                    self._shape.update_with_status(self._normal_status)
+                self.dispatch_event("on_release", x, y)
 
 
 OreuiButton.register_event_type("on_press")
 OreuiButton.register_event_type("on_release")
+OreuiButton.register_event_type("on_toggle")
 OreuiButton.register_event_type("on_select")
 OreuiButton.register_event_type("on_deselect")
 
