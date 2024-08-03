@@ -94,8 +94,8 @@ nofollow-import-to = [
 ]
 
 include-data-dir = [
-    ['.\config', '.\config'],
-    ['.\assets', '.\assets']
+    ['config', 'config'],
+    ['assets', 'assets']
 ]
 include-package = ['Difficult_Rocket.api']
 # DR.api 没有直接 import, 所以需要手动添加
