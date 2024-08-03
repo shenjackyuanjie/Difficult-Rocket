@@ -12,10 +12,7 @@ from Difficult_Rocket.api.screen import BaseScreen
 
 # from Difficult_Rocket.main import Game
 from Difficult_Rocket.gui.widget.button import (
-    PressTextButton,
-    MinecraftWikiButtonTheme,
     OreuiButton,
-    OreuiButtonShape,
     OreuiButtonStyles,
 )
 
@@ -111,7 +108,7 @@ class Menu(BaseScreen):
         #     group=self.main_group,
         # )
 
-        self.enter_ship_editor_button = PressTextButton(
+        self.enter_ship_editor_button = OreuiButton(
             x=100,
             y=100,
             width=150,
@@ -123,40 +120,8 @@ class Menu(BaseScreen):
             dict_theme={"pop_out": True},
         )
 
-        self.tester = OreuiButton(
-            x=100,
-            y=150,
-            width=150,
-            height=30,
-            batch=self.main_batch,
-            group=self.main_group,
-        )
-
-        self.wiki_shape1 = OreuiButtonShape(
-            x=100,
-            y=200,
-            width=150,
-            height=70,
-            pad=5,
-            down_pad=7,
-            batch=self.main_batch,
-            group=self.main_group,
-        )
-        self.wiki_shape2 = OreuiButtonShape(
-            x=300,
-            y=200,
-            width=150,
-            height=70,
-            pad=5,
-            down_pad=7,
-            colors=OreuiButtonStyles.wiki_press.value,
-            batch=self.main_batch,
-            group=self.main_group,
-        )
-
-        def on_release(button: PressTextButton, x, y):
-            self.wiki_shape1.highlight = not self.wiki_shape1.highlight
-            self.wiki_shape2.highlight = not self.wiki_shape2.highlight
+        def on_release(button: OreuiButton, x, y):
+            ...
             # self.tester.clockwise = not self.tester.clockwise
             # from .sr1_ship import SR1ShipEditor
             # main_window.remove_sub_screen("DR_game_menu")

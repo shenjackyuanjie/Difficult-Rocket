@@ -51,14 +51,14 @@ class OreuiShapeColors:
 
     def __eq__(self, other: object) -> bool:
         return (
-            self.__class__ == other.__class__ and
-            self.highlight == other.highlight and
-            self.border == other.border and
-            self.down_pad == other.down_pad and
-            self.corner == other.corner and
-            self.left_up == other.left_up and
-            self.right_down == other.right_down and
-            self.inner == other.inner
+            self.__class__ == other.__class__
+            and self.highlight == other.highlight
+            and self.border == other.border
+            and self.down_pad == other.down_pad
+            and self.corner == other.corner
+            and self.left_up == other.left_up
+            and self.right_down == other.right_down
+            and self.inner == other.inner
         )
 
 
@@ -138,6 +138,17 @@ class OreuiButtonStatus:
             and self.down_pad == value.down_pad
             and self.colors == value.colors
         )
+
+    @property
+    def pad2x(self) -> float:
+        return self.pad * 2
+
+    @pad2x.setter
+    def pad2x(self, value: float) -> None:
+        self.pad = value / 2
+
+    def real_down_pad(self) -> float:
+        return self.down_pad if self.popout else 0.0
 
 
 class OreuiButtonShape(ShapeBase):
@@ -682,6 +693,7 @@ class OreuiButton(WidgetBase):
         y: int,
         width: int,
         height: int,
+        text: str = "",
         normal: OreuiButtonStatus | None = None,
         select: OreuiButtonStatus | None = None,
         press: OreuiButtonStatus | None = None,
@@ -695,6 +707,7 @@ class OreuiButton(WidgetBase):
         :param y: y 坐标
         :param width: 宽度
         :param height: 高度
+        :param text: 按钮上的文字
         :param normal: 正常状态
         :param select: 选中状态
         :param press: 按下状态
@@ -704,6 +717,7 @@ class OreuiButton(WidgetBase):
         :param group: Group
         """
         super().__init__(x, y, width, height)
+        self._visible = True
         self._pressed = False
         self._selected = False
         self._auto_release = auto_release
@@ -724,6 +738,30 @@ class OreuiButton(WidgetBase):
             batch=self.main_batch,
             group=self.main_group,
         )
+        self._text = text
+        self._label = Label(
+            text=text,
+            x=x + (self._normal_status.pad2x),
+            y=y + (self._normal_status.pad2x + self._normal_status.real_down_pad()),
+            width=width,
+            height=height,
+            anchor_x="center",
+            font_size=12,
+            batch=self.main_batch,
+            group=self.main_group,
+        )
+
+    @property
+    def visible(self) -> bool:
+        return self._visible
+
+    @visible.setter
+    def visible(self, value: bool) -> None:
+        self._visible = value
+        self._shape.visible = value
+
+    def _update_position(self) -> None:
+        self._shape.position = (self._x, self._y)
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
         return self._check_hit(pos[0], pos[1])
