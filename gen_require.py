@@ -9,11 +9,11 @@ import argparse
 # fmt: off
 basic = {
     "images": [
-        'pillow >= 10.3.0; (platform_python_implementation == "PyPy" and '
+        'pillow >= 10.4.0; (platform_python_implementation == "PyPy" and '
         'python_version < "3.10") or platform_python_implementation == "CPython"',
     ],
     "sys info": [
-        "psutil >= 5.9.8"
+        "psutil >= 6.0.0"
     ],
     "file read": [
         "tomli >= 2.0.1",
@@ -24,10 +24,10 @@ basic = {
 
 build = {
     "compile": [
-        "nuitka >= 2.2.3",
-        "imageio >= 2.34.1",
+        "nuitka >= 2.4",
+        "imageio >= 2.34.2",
         "setuptools >= 69",
-        "setuptools-rust >= 1.9.0",
+        "setuptools-rust >= 1.10.0",
         "wheel >= 0.43.0",
     ]
 }
