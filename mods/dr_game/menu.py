@@ -41,72 +41,7 @@ class Menu(BaseScreen):
         # 欸呀, 正好是 911 纪念日哦
         # 好, 高二 第一学期 期末都考完了, 我过来做测试了 (20240119)
         # 高二, 马上要研学了, 似乎做了点啥, 但似乎又没做点啥 (20240526)
-
-        # self.wiki_button1 = PressTextButton(
-        #     x=200,
-        #     y=300,
-        #     width=150,
-        #     height=30,
-        #     text="wiki button1",
-        #     batch=self.main_batch,
-        #     group=self.main_group,
-        #     draw_theme=MinecraftWikiButtonTheme,
-        #     dict_theme={"pop_out": True},
-        # )
-        # self.wiki_button2 = PressTextButton(
-        #     x=400,
-        #     y=300,
-        #     width=150,
-        #     height=30,
-        #     text="wiki button2",
-        #     batch=self.main_batch,
-        #     group=self.main_group,
-        #     draw_theme=MinecraftWikiButtonTheme,
-        #     dict_theme={"pop_out": False},
-        # )
-        # self.wiki_button3 = PressTextButton(
-        #     x=200,
-        #     y=250,
-        #     width=150,
-        #     height=30,
-        #     text="wiki button3",
-        #     batch=self.main_batch,
-        #     group=self.main_group,
-        #     draw_theme=MinecraftWikiButtonTheme,
-        #     dict_theme={"pop_out": True, "drag_list": True},
-        # )
-        # self.wiki_button4 = PressTextButton(
-        #     x=400,
-        #     y=250,
-        #     width=150,
-        #     height=30,
-        #     text="wiki button4",
-        #     batch=self.main_batch,
-        #     group=self.main_group,
-        #     draw_theme=MinecraftWikiButtonTheme,
-        #     dict_theme={"pop_out": False, "drag_list": True},
-        # )
-        # self.button3 = PressTextButton(
-        #     x=200,
-        #     y=200,
-        #     width=150,
-        #     height=30,
-        #     text="imgui button",
-        #     batch=self.main_batch,
-        #     group=self.main_group,
-        # )
-
-        # 16、20、24、32、40、48 64
-        # self.test_label = Label(
-        #     x=20, y=200,
-        #     font_name="Segoe Fluent Icons",
-        #     font_size=32,
-        #     text="\uE003 \uE005 \uE0A2
-        # \uE88B \uE88C \uE88D \uE985 \uE97E \uF7B5
-        # \uE971 \uE972 \uE973 \uE974",
-        #     batch=self.main_batch,
-        #     group=self.main_group,
-        # )
+        # 高二最后一个暑假都过了一半了, 可算把按钮好歹写完了 (20240804)
 
         self.enter_ship_editor_button = OreuiButton(
             x=100,

@@ -18,7 +18,6 @@ from pyglet.graphics.shader import ShaderProgram
 from pyglet.text import Label
 from pyglet.gui import widgets
 from pyglet.window import mouse
-from pyglet.font import load as load_font
 
 from pyglet.shapes import Rectangle, BorderedRectangle, ShapeBase, _rotate_point
 from pyglet.gui.widgets import WidgetBase
@@ -826,13 +825,22 @@ class OreuiButton(WidgetBase):
         )
         self._label.height = value
 
-    def _update_position(self) -> None:
-        self._shape.position = (self._x, self._y)
+    def _update_label_position(self) -> None:
         self._label.position = (
             round(self._x + self._width / 2),
             self._y + self.current_status.pad2x + self.current_status.real_down_pad(),
             0,
         )
+
+    def _update_position(self) -> None:
+        self._shape.position = (self._x, self._y)
+        self._update_label_position()
+
+    def _update_shape_status(self, status: OreuiButtonStatus) -> None:
+        current_pop_out = self._shape._pop_out
+        self._shape.update_with_status(status)
+        if current_pop_out != self._shape._pop_out:
+            self._update_label_position()
 
     def __contains__(self, pos: tuple[float, float]) -> bool:
         return self._check_hit(pos[0], pos[1])
@@ -843,13 +851,12 @@ class OreuiButton(WidgetBase):
         if (x, y) in self:
             if not self._selected:  # 没抬手/没选中
                 self._selected = True
-                self._shape.update_with_status(self._select_status)
+                self._update_shape_status(self._select_status)
                 self.dispatch_event("on_select", x, y)
         elif self._selected:
             self._selected = False
-            self._shape.update_with_status(self._normal_status)
+            self._update_shape_status(self._normal_status)
             self.dispatch_event("on_deselect", x, y)
-        self._update_position()
 
     def on_mouse_leave(self, x: int, y: int) -> None:
         if not self._enabled or self._pressed:
@@ -858,7 +865,7 @@ class OreuiButton(WidgetBase):
             # 没抬手, 但是鼠标跑了
             self._selected = False
             if not self.toggle_mode and self._auto_release:
-                self._shape.update_with_status(self._normal_status)
+                self._update_shape_status(self._normal_status)
                 self.dispatch_event("on_release", x, y)
 
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
@@ -869,18 +876,17 @@ class OreuiButton(WidgetBase):
                 self._pressed = not self._pressed
                 self._selected = True  # 顺便用来标记有没有抬手
                 if self._pressed:
-                    self._shape.update_with_status(self._press_status)
+                    self._update_shape_status(self._press_status)
                     self.dispatch_event("on_press", x, y, buttons, modifiers)
                 else:
-                    self._shape.update_with_status(self._select_status)
+                    self._update_shape_status(self._select_status)
                     self.dispatch_event("on_release", x, y)
                 self.dispatch_event("on_toggle", x, y, buttons, modifiers)
             else:
                 self._pressed = True
                 self._selected = True  # 顺便用来标记有没有抬手
-                self._shape.update_with_status(self._press_status)
+                self._update_shape_status(self._press_status)
                 self.dispatch_event("on_press", x, y, buttons, modifiers)
-        self._update_position()
 
     def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> None:
         if not self._enabled:
@@ -891,11 +897,10 @@ class OreuiButton(WidgetBase):
                 # 非切换模式, 自动释放
                 self._pressed = False
                 if (x, y) in self:
-                    self._shape.update_with_status(self._select_status)
+                    self._update_shape_status(self._select_status)
                 else:
-                    self._shape.update_with_status(self._normal_status)
+                    self._update_shape_status(self._normal_status)
                 self.dispatch_event("on_release", x, y)
-        self._update_position()
 
 
 OreuiButton.register_event_type("on_press")
