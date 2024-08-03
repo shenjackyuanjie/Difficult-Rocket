@@ -4,7 +4,9 @@
 #  All rights reserved
 #  -------------------------------
 
-from typing import List, TYPE_CHECKING, TypeVar
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, TypeVar
 from os import PathLike
 
 # from pyglet.window import Window
@@ -33,6 +35,7 @@ class BaseScreen(EventDispatcher, Options):
         self.window_pointer = main_window
 
     if TYPE_CHECKING:
+
         def on_command(self, command: CommandText, window: ClientWindow):
             """
             命令输入事件
@@ -153,7 +156,7 @@ class BaseScreen(EventDispatcher, Options):
             """
 
         def on_file_drop(
-                self, x: int, y: int, paths: List[PathLike], window: ClientWindow
+            self, x: int, y: int, paths: list[PathLike], window: ClientWindow
         ):
             """File(s) were dropped into the window, will return the position of the cursor and
             a list of paths to the files that were dropped.
@@ -216,14 +219,14 @@ class BaseScreen(EventDispatcher, Options):
             """
 
         def on_mouse_drag(
-                self,
-                x: int,
-                y: int,
-                dx: int,
-                dy: int,
-                buttons: int,
-                modifiers: int,
-                window: ClientWindow,
+            self,
+            x: int,
+            y: int,
+            dx: int,
+            dy: int,
+            buttons: int,
+            modifiers: int,
+            window: ClientWindow,
         ):
             """The mouse was moved with one or more mouse buttons pressed.
 
@@ -249,7 +252,7 @@ class BaseScreen(EventDispatcher, Options):
             """
 
         def on_mouse_press(
-                self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
+            self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
         ):
             """A mouse button was pressed (and held down).
 
@@ -268,7 +271,7 @@ class BaseScreen(EventDispatcher, Options):
             """
 
         def on_mouse_release(
-                self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
+            self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
         ):
             """A mouse button was released.
 
@@ -287,7 +290,7 @@ class BaseScreen(EventDispatcher, Options):
             """
 
         def on_mouse_scroll(
-                self, x: int, y: int, scroll_x: float, scroll_y: float, window: ClientWindow
+            self, x: int, y: int, scroll_x: float, scroll_y: float, window: ClientWindow
         ):
             """The mouse wheel was scrolled.
 
