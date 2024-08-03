@@ -384,42 +384,50 @@ pub fn py_assert_ship(path: String) -> bool {
     };
     let mut reader = Reader::from_str(&file_data);
     // 读取第一个
-    match reader.read_event() {
-        Ok(Event::Start(e)) => {
-            if e.name().as_ref() == b"Ship" {
-                // 再验证一下 version, liftedOff, touchingGround
-                let mut founds = (false, false, false);
-                let _ = e.attributes().map(|attr| {
-                    if let Ok(attr) = attr {
-                        match attr.value.as_ref() {
-                            b"version" => {
-                                founds.0 = true;
+    loop {
+        match reader.read_event() {
+            Ok(Event::Start(e)) => {
+                if e.name().as_ref() == b"Ship" {
+                    // 再验证一下 version, liftedOff, touchingGround
+                    let mut founds = (false, false, false);
+                    for attr in e.attributes() {
+                        if let Ok(attr) = attr {
+                            match attr.key.as_ref() {
+                                b"version" => {
+                                    founds.0 = true;
+                                }
+                                b"liftedOff" => {
+                                    founds.1 = true;
+                                }
+                                b"touchingGround" => {
+                                    founds.2 = true;
+                                }
+                                _ => (),
                             }
-                            b"liftedOff" => {
-                                founds.1 = true;
-                            }
-                            b"touchingGround" => {
-                                founds.2 = true;
-                            }
-                            _ => (),
                         }
                     }
-                });
-                if !(founds.0 && founds.1 && founds.2) {
-                    println!(
-                        "warning: {}{}{} not found",
-                        if founds.0 { "" } else { "version " },
-                        if founds.1 { "" } else { "liftedOff " },
-                        if founds.2 { "" } else { "touchingGround " }
-                    );
-                    return false;
+                    if !(founds.0 && founds.1 && founds.2) {
+                        println!(
+                            "warning: {}{}{} not found",
+                            if founds.0 { "" } else { "version " },
+                            if founds.1 { "" } else { "liftedOff " },
+                            if founds.2 { "" } else { "touchingGround " }
+                        );
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
-        }
-        x => {
-            println!("ERROR while using xml to parse the file!\n{:?}\n----------", x);
-            return false;
+            Ok(Event::Eof) => {
+                println!("EOF");
+                return false;
+            }
+            Err(e) => {
+                println!("ERROR while using xml to parse the file!\n{:?}\n----------", e);
+                return false;
+            }
+            _ => (),
         }
     }
-    true
 }
