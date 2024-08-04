@@ -29,7 +29,10 @@ if TYPE_CHECKING:
         main,
         runtime
     )
-
+"""
+width = 1003
+height = 715
+"""
 __all__ = [
     # __init__
     "DR_status",

@@ -869,7 +869,8 @@ class OreuiButton(WidgetBase):
                 self._update_shape_status(self._normal_status)
                 self.dispatch_event("on_release", x, y)
 
-    def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> None:
+    def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> bool:
+        """返回是否点击到了按钮"""
         if not self._enabled:
             return
         if (x, y) in self:
@@ -883,13 +884,17 @@ class OreuiButton(WidgetBase):
                     self._update_shape_status(self._select_status)
                     self.dispatch_event("on_release", x, y)
                 self.dispatch_event("on_toggle", x, y, buttons, modifiers)
+                return True
             else:
                 self._pressed = True
                 self._selected = True  # 顺便用来标记有没有抬手
                 self._update_shape_status(self._press_status)
                 self.dispatch_event("on_press", x, y, buttons, modifiers)
+                return True
+        return False
 
-    def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> None:
+    def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> bool:
+        """返回是否点击到了按钮"""
         if not self._enabled:
             return
         if self._pressed:
@@ -902,6 +907,8 @@ class OreuiButton(WidgetBase):
                 else:
                     self._update_shape_status(self._normal_status)
                 self.dispatch_event("on_release", x, y)
+            return True
+        return False
 
 
 OreuiButton.register_event_type("on_press")

@@ -206,7 +206,9 @@ def _call_screen_after(func: Callable) -> Callable:
             # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
                 try:
-                    getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
+                    if getattr(a_screen, func.__name__)(*args, **kwargs, window=self):
+                        # 他返回了一个 True
+                        break
                 except Exception:
                     traceback.print_exc()
         return result
@@ -232,7 +234,9 @@ def _call_screen_before(func: Callable) -> Callable:
             # 提前帮子窗口设置好指针
             if hasattr(a_screen, func.__name__):
                 try:
-                    getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
+                    if getattr(a_screen, func.__name__)(*args, **kwargs, window=self):
+                        # 他返回了一个 True
+                        break
                 except Exception:
                     traceback.print_exc()
         result = func(self, *args, **kwargs)
@@ -345,6 +349,12 @@ class ClientWindow(Window):
         """添加一个页面, 但直接使用页面的名字作为键
         添加自: 0.9.2.0"""
         self.screen_list[sub_screen.name] = sub_screen(self)
+
+    def get_sub_screen(self, title: str) -> BaseScreen | None:
+        """获取一个页面
+        添加自: 0.9.2.0"""
+        self.screen_list.setdefault(title, None)
+        return self.screen_list.get(title)
 
     def remove_sub_screen(self, title: str) -> BaseScreen | None:
         """

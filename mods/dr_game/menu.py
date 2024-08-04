@@ -4,7 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-# from typing import Optional, Tuple
 from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.client import ClientWindow
@@ -54,9 +53,10 @@ class Menu(BaseScreen):
         def on_release(x, y):
             from .sr1_ship import SR1ShipEditor, SR1ShipSelecter
 
+            main_window.remove_handlers(self.enter_ship_editor_button)
             main_window.remove_sub_screen("DR_game_menu")
-            main_window.add_sub_screen(SR1ShipEditor.name, SR1ShipEditor)
             main_window.add_sub_screen(SR1ShipSelecter.name, SR1ShipSelecter)
+            main_window.add_sub_screen(SR1ShipEditor.name, SR1ShipEditor)
             logger.info("added SR1_ship screen", tag="dr_game")
 
         self.enter_ship_editor_button.set_handler("on_release", on_release)

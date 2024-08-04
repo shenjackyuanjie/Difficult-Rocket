@@ -89,8 +89,7 @@ class SR1ShipSelecter(BaseScreen):
         self.main_group = GroupCamera(window=main_window)
         self.width = 200
         self.height = main_window.height - 100
-        self.slide_y = 0
-        self.dx = 50
+        self.dx = 10
         self.dy = 0
         self.folder_path: Path = Path("assets/ships")
         self.buttons: dict[Path, OreuiButton] = {}
@@ -104,6 +103,7 @@ class SR1ShipSelecter(BaseScreen):
             return
         self.folder_path = path
         self.buttons.clear()
+
         for file in path.iterdir():
             if not file.is_file:
                 continue
@@ -131,19 +131,42 @@ class SR1ShipSelecter(BaseScreen):
 
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow):
         for btn in self.buttons.values():
-            btn.on_mouse_motion(x - self.dx, y - self.dy - self.slide_y, dx, dy)
+            btn.on_mouse_motion(x - self.dx, y - self.dy - self.main_group.view_y, dx, dy)
 
     def on_mouse_press(
         self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
     ):
-        for btn in self.buttons.values():
-            btn.on_mouse_press(x - self.dx, y - self.dy - self.slide_y, button, modifiers)
+        # for btn in self.buttons.values():
+        #     btn.on_mouse_press(
+        #         x - self.dx, y - self.dy - self.main_group.view_y, button, modifiers
+        #     )
+        return any(
+            btn.on_mouse_press(
+                x - self.dx, y - self.dy - self.main_group.view_y, button, modifiers
+            )
+            for btn in self.buttons.values()
+        )
 
     def on_mouse_release(
         self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
     ):
-        for btn in self.buttons.values():
-            btn.on_mouse_release(x - self.dx, y - self.dy - self.slide_y, button, modifiers)
+        for file_path, btn in self.buttons.items():
+            if btn.on_mouse_release(
+                x - self.dx, y - self.dy - self.main_group.view_y, button, modifiers
+            ):
+                logger.info(f"选到了 {file_path}", tag="ship explorer")
+                self.dispatch_event("select_ship", self, file_path)
+
+    def on_mouse_scroll(
+        self, x: int, y: int, scroll_x: float, scroll_y: float, window: ClientWindow
+    ):
+        if self.dx < x < self.dx + self.width and self.dy < y < self.dy + self.height:
+            self.main_group.view_y -= int(scroll_y * 50)
+            if self.main_group.view_y < 0:
+                self.main_group.view_y = 0
+            if self.main_group.view_y > len(self.buttons) * (30 + 5) - self.height:
+                self.main_group.view_y = len(self.buttons) * (30 + 5) - self.height
+            return True
 
     def on_mouse_drag(
         self,
@@ -161,6 +184,7 @@ class SR1ShipSelecter(BaseScreen):
                 self.main_group.view_y = 0
             if self.main_group.view_y > len(self.buttons) * (30 + 5) - self.height:
                 self.main_group.view_y = len(self.buttons) * (30 + 5) - self.height
+            return True
 
     def draw_batch(self, window: ClientWindow):
         gl.glEnable(gl.GL_SCISSOR_TEST)
@@ -184,6 +208,9 @@ class SR1ShipSelecter(BaseScreen):
         del self.buttons
 
 
+SR1ShipSelecter.register_event_type("select_ship")
+
+
 class SR1ShipEditor(BaseScreen):
     """SR1 飞船编辑器"""
 
@@ -196,6 +223,17 @@ class SR1ShipEditor(BaseScreen):
         load_start_time = time.time_ns()
         # status
         self.status = SR1ShipRenderStatus()
+
+        selecter = main_window.get_sub_screen(SR1ShipSelecter.name)
+        if selecter is None:
+            self.logger.error("selecter not found")
+        else:
+
+            def select(explorer: SR1ShipSelecter, file_path: Path):
+                self.load_xml(file_path)
+                self.render_ship()
+
+            selecter.set_handler("select_ship", select)
 
         self.dx = 0
         self.dy = 0
@@ -263,7 +301,7 @@ class SR1ShipEditor(BaseScreen):
                 "assets/builtin/PartList.xml", "builtin_part_list"
             )
 
-        self.load_xml("assets/builtin/dock1.xml")
+        # self.load_xml("assets/builtin/dock1.xml")
 
         load_end_time = time.time_ns()
         logger.info(
@@ -277,35 +315,6 @@ class SR1ShipEditor(BaseScreen):
         self.buttons_group = Group(100, parent=main_window.main_group)
         self.ships_buttons_group = Group(100, parent=main_window.main_group)
 
-        # self.enter_game_button = PressEnterGameButton(
-        #     window=main_window,
-        #     parent_window=main_window,
-        #     x=500,
-        #     y=100,
-        #     width=150,
-        #     height=30,
-        #     text="进入游戏",
-        #     batch=self.buttons_batch,
-        #     group=self.buttons_group,
-        #     draw_theme=MinecraftWikiButtonTheme,
-        # )
-
-        # self.select_ship_button = PressSelectShipButton(
-        #     window=main_window,
-        #     parent_window=self,
-        #     x=100,
-        #     y=100,
-        #     width=150,
-        #     height=30,
-        #     text="加载飞船",
-        #     batch=self.buttons_batch,
-        #     group=self.buttons_group,
-        #     draw_theme=MinecraftWikiButtonTheme,
-        # )
-
-        # main_window.push_handlers(self.enter_game_button)
-        # main_window.push_handlers(self.select_ship_button)
-
     @property
     def size(self) -> tuple[int, int]:
         """渲染器的渲染大小"""
@@ -316,7 +325,7 @@ class SR1ShipEditor(BaseScreen):
         if not self.width == value[0] or not self.height == value[1]:
             self.width, self.height = value
 
-    def load_xml(self, file_path: str) -> bool:
+    def load_xml(self, file_path: Path) -> bool:
         """
         加载 xml 文件
         :param file_path:
@@ -325,9 +334,11 @@ class SR1ShipEditor(BaseScreen):
         try:
             start_time = time.time_ns()
             logger.info(sr_tr().sr1.ship.xml.loading().format(file_path), tag="load_xml")
-            self.ship_name = file_path.split("/")[-1].split(".")[0]
+            self.ship_name = file_path.stem
             if DR_mod_runtime.use_DR_rust:
-                self.rust_ship = SR1Ship_rs(file_path, self.part_list_rs, "a_new_ship")
+                self.rust_ship = SR1Ship_rs(
+                    str(file_path), self.part_list_rs, "a_new_ship"
+                )
             logger.info(sr_tr().sr1.ship.xml.load_done(), tag="load_xml")
             logger.info(
                 sr_tr()
@@ -387,7 +398,7 @@ class SR1ShipEditor(BaseScreen):
         box.rotation = part_data.angle_r
         return part_sprite, box
 
-    def sprite_batch(self, draw_batch: int = 100) -> Generator:
+    def sprite_batch(self, draw_batch: int = 500) -> Generator:
         """
         生成 sprite
         通过生成器减少一次性渲染的压力
@@ -532,31 +543,26 @@ class SR1ShipEditor(BaseScreen):
             self.window_pointer.height,
         )
         self.main_batch.draw()  # use group camera, no need to with
-        # if self.show_ships_buttons:
-        #     self.ships_buttons_batch.draw()
         self.buttons_batch.draw()  # use group camera, no need to with
         gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
 
-    # def on_draw(self, window: ClientWindow):
-    # self.draw_batch(window)
-    # if self.status.draw_call:
-    #     self.render_ship()
+    def on_draw(self, window: ClientWindow):
+        if self.status.draw_call:
+            self.render_ship()
+        if not self.status.draw_done:
+            try:
+                if not isinstance(self.gen_draw, Generator):
+                    return
+                next(self.gen_draw)
+            except (GeneratorExit, StopIteration):
+                self.status.draw_done = True
+                self.logger.info(sr_tr().sr1.ship.ship.render.done())
+            except TypeError:
+                pass
 
-    # if not self.status.draw_done:
-    #     try:
-    #         assert isinstance(
-    #             self.gen_draw, Generator
-    #         ), f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
-    #         next(self.gen_draw)
-    #     except (GeneratorExit, StopIteration):
-    #         self.status.draw_done = True
-    #         self.logger.info(sr_tr().sr1.ship.ship.render.done())
-    #     except TypeError:
-    #         pass
-
-    # self.debug_label.draw()
+        # self.debug_label.draw()
 
     def on_resize(self, width: int, height: int, window: ClientWindow):
         self.debug_label.y = height - 100
@@ -570,18 +576,6 @@ class SR1ShipEditor(BaseScreen):
     def on_mouse_scroll(
         self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
     ):
-        # if self.status.focus and (
-        #     not self.show_ships_buttons
-        #     or (
-        #         not (
-        #             self.show_ships_buttons
-        #             and x >= self.ships_buttons_begin_x
-        #             and x <= self.ships_buttons_end_x
-        #             and y >= self.ships_buttons_begin_y
-        #             and y <= self.ships_buttons_end_y
-        #         )
-        #     )
-        # ):
         if self.status.focus:
             mouse_dx = x - (self.width / 2) + self.dx
             mouse_dy = y - (self.height / 2) + self.dy
@@ -614,37 +608,6 @@ class SR1ShipEditor(BaseScreen):
             if size_y < 10:
                 size_y = 10
             self.size = size_x, size_y
-        # elif (
-        #     self.show_ships_buttons
-        #     and x >= self.ships_buttons_begin_x
-        #     and x <= self.ships_buttons_end_x
-        #     and y >= self.ships_buttons_begin_y
-        #     and y <= self.ships_buttons_end_y
-        # ):
-        #     min_y = 9999999
-        #     max_y = 0
-        #     for ship_button in self.ships_buttons:
-        #         min_y = min(min_y, ship_button.y)
-        #         max_y = max(max_y, ship_button.y)
-
-        #     if max_y + scroll_y * 50 <= self.ships_buttons_end_y - self.ships_buttons_h:
-        #         scroll_y = (self.ships_buttons_end_y - self.ships_buttons_h - max_y) / 50
-
-        #     if min_y + scroll_y * 50 >= 0:
-        #         scroll_y = (0 - min_y) / 50
-
-        #     for ship_button in self.ships_buttons:
-        #         ship_button.y = ship_button.y + scroll_y * 50
-        #         """
-        #         if ship_button.y >= self.ships_buttons_begin_y and ship_button.y <= self.ships_buttons_end_y - self.ships_buttons_h:
-        #             ship_button.x = self.ships_buttons_begin_x
-        #         else:
-        #             ship_button.x = self.width + self.ships_buttons_w
-        #         """
-
-        #     self.ship_list_line.y = self.ship_list_line.y - scroll_y * 50 * (
-        #         self.ships_buttons_end_y - self.ships_buttons_begin_y
-        #     ) / ((len(self.ships_buttons) + 1) * self.ships_buttons_h)
 
     def on_command(self, command: CommandText, window: ClientWindow):
         """解析命令"""
@@ -775,34 +738,12 @@ class SR1ShipEditor(BaseScreen):
             self.dx += dx
             self.dy += dy
 
-    # def begin_ship_render_from_path(self, ship_path: str):
-    #     if Path(ship_path).is_dir():
-    #         for path in Path(ship_path).glob("*.xml"):
-    #             try:
-    #                 self.load_xml(str(path))
-    #             except ValueError:
-    #                 traceback.print_exc()
-    #     if self.load_xml(ship_path):
-    #         self.render_ship()
-
     def on_file_drop(self, x: int, y: int, paths: list[str], window: ClientWindow):
         if len(paths) == 1:
             # only file/path
-            ...
+            self.load_xml(Path(paths[0]))
         else:
             ...
-        # if len(paths) > 1:
-        #     for path in paths:
-        #         try:
-        #             self.load_xml(path)
-        #         except Exception:
-        #             traceback.print_exc()
-        # else:
-        #     self.begin_ship_render_from_path(paths[0])
-        # for path in paths:
-        #     if self.load_xml(path):  # 加载成功一个就停下
-        #         break
-        # self.render_ship()
 
     @property
     def view(self):
