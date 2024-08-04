@@ -30,9 +30,9 @@ Readme please check out [dr.shenjack.top](https://dr.shenjack.top/main/readme-en
 
 [关于版本号的说明](./docs/src/version.md)
 
-[![release version](https://img.shields.io/badge/Release-0.9.1.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![pre version](https://img.shields.io/badge/Pre_Release-0.9.1.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![devlo version](https://img.shields.io/badge/Devloping-0.9.2-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![release version](https://img.shields.io/badge/Release-0.9.2.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![pre version](https://img.shields.io/badge/Pre_Release-0.9.2.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![devlo version](https://img.shields.io/badge/Devloping-0.9.3-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 

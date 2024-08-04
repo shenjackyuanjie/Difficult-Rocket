@@ -113,7 +113,7 @@ class SR1ShipSelecter(BaseScreen):
                     sr_tr().sr1.ship.ship.valid().format(file), tag="ship explorer"
                 )
                 button = OreuiButton(
-                    x=0,
+                    x=2,
                     y=len(self.buttons) * -(30 + 5) + self.height,
                     width=150,
                     height=30,
@@ -742,6 +742,7 @@ class SR1ShipEditor(BaseScreen):
         if len(paths) == 1:
             # only file/path
             self.load_xml(Path(paths[0]))
+            self.render_ship()
         else:
             ...
 

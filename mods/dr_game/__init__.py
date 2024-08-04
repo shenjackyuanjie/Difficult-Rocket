@@ -77,7 +77,7 @@ DR_mod_runtime = _DR_mod_runtime()
 class DR_mod(ModInfo):
     mod_id = "difficult_rocket_mod"
     name = "Difficult Rocket mod"
-    version = Version("0.3.7")
+    version = Version("0.4.0")
 
     writer = "shenjackyuanjie"
     link = "shenjack.top"
