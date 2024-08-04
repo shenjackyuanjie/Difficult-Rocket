@@ -33,6 +33,7 @@ from Difficult_Rocket.api.types import Fonts, Options
 from Difficult_Rocket.command.line import CommandText
 from Difficult_Rocket.client.screen import BaseScreen
 from Difficult_Rocket.api.camera import CenterGroupCamera, GroupCamera
+from Difficult_Rocket.gui.widget.button import OreuiButton
 
 
 from lib_not_dr import loggers
@@ -88,7 +89,11 @@ class SR1ShipSelecter(BaseScreen):
         self.main_group = GroupCamera(window=main_window)
         self.width = 200
         self.height = main_window.height - 100
+        self.slide_y = 0
+        self.dx = 50
+        self.dy = 0
         self.folder_path: Path = Path("assets/ships")
+        self.buttons: dict[Path, OreuiButton] = {}
         self.set_folder(self.folder_path)
 
     def set_folder(self, path: Path):
@@ -98,6 +103,7 @@ class SR1ShipSelecter(BaseScreen):
             )
             return
         self.folder_path = path
+        self.buttons.clear()
         for file in path.iterdir():
             if not file.is_file:
                 continue
@@ -106,10 +112,76 @@ class SR1ShipSelecter(BaseScreen):
                 logger.info(
                     sr_tr().sr1.ship.ship.valid().format(file), tag="ship explorer"
                 )
+                button = OreuiButton(
+                    x=0,
+                    y=len(self.buttons) * -(30 + 5) + self.height,
+                    width=150,
+                    height=30,
+                    text=file.stem,
+                    toggle_mode=False,
+                    auto_release=True,
+                    batch=self.main_batch,
+                    group=self.main_group,
+                )
+                self.buttons[file] = button
             else:
                 logger.warn(
                     sr_tr().sr1.ship.ship.invaild().format(file), tag="ship explorer"
                 )
+
+    def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow):
+        for btn in self.buttons.values():
+            btn.on_mouse_motion(x - self.dx, y - self.dy - self.slide_y, dx, dy)
+
+    def on_mouse_press(
+        self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
+    ):
+        for btn in self.buttons.values():
+            btn.on_mouse_press(x - self.dx, y - self.dy - self.slide_y, button, modifiers)
+
+    def on_mouse_release(
+        self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
+    ):
+        for btn in self.buttons.values():
+            btn.on_mouse_release(x - self.dx, y - self.dy - self.slide_y, button, modifiers)
+
+    def on_mouse_drag(
+        self,
+        x: int,
+        y: int,
+        dx: int,
+        dy: int,
+        buttons: int,
+        modifiers: int,
+        window: ClientWindow,
+    ):
+        if self.dx < x < self.dx + self.width and self.dy < y < self.dy + self.height:
+            self.main_group.view_y += dy
+            if self.main_group.view_y < 0:
+                self.main_group.view_y = 0
+            if self.main_group.view_y > len(self.buttons) * (30 + 5) - self.height:
+                self.main_group.view_y = len(self.buttons) * (30 + 5) - self.height
+
+    def draw_batch(self, window: ClientWindow):
+        gl.glEnable(gl.GL_SCISSOR_TEST)
+        gl.glScissor(int(self.dx), int(self.dy), int(self.width), int(self.height))
+        gl.glViewport(
+            int(self.dx),
+            int(self.dy),
+            window.width,
+            window.height,
+        )
+        self.main_batch.draw()
+        gl.glViewport(0, 0, window.width, window.height)
+        gl.glScissor(0, 0, window.width, window.height)
+        gl.glDisable(gl.GL_SCISSOR_TEST)
+
+    def on_resize(self, width: int, height: int, window: ClientWindow):
+        self.height = height - 100
+        self.width = min(200, width)
+
+    def on_cleanup(self, window: ClientWindow):
+        del self.buttons
 
 
 class SR1ShipEditor(BaseScreen):
@@ -233,7 +305,6 @@ class SR1ShipEditor(BaseScreen):
 
         # main_window.push_handlers(self.enter_game_button)
         # main_window.push_handlers(self.select_ship_button)
-
 
     @property
     def size(self) -> tuple[int, int]:
@@ -469,23 +540,23 @@ class SR1ShipEditor(BaseScreen):
         gl.glDisable(gl.GL_SCISSOR_TEST)
 
     # def on_draw(self, window: ClientWindow):
-        # self.draw_batch(window)
-        # if self.status.draw_call:
-        #     self.render_ship()
+    # self.draw_batch(window)
+    # if self.status.draw_call:
+    #     self.render_ship()
 
-        # if not self.status.draw_done:
-        #     try:
-        #         assert isinstance(
-        #             self.gen_draw, Generator
-        #         ), f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
-        #         next(self.gen_draw)
-        #     except (GeneratorExit, StopIteration):
-        #         self.status.draw_done = True
-        #         self.logger.info(sr_tr().sr1.ship.ship.render.done())
-        #     except TypeError:
-        #         pass
+    # if not self.status.draw_done:
+    #     try:
+    #         assert isinstance(
+    #             self.gen_draw, Generator
+    #         ), f"self.gen_graw is not a Generator, but a {type(self.gen_draw)}"
+    #         next(self.gen_draw)
+    #     except (GeneratorExit, StopIteration):
+    #         self.status.draw_done = True
+    #         self.logger.info(sr_tr().sr1.ship.ship.render.done())
+    #     except TypeError:
+    #         pass
 
-        # self.debug_label.draw()
+    # self.debug_label.draw()
 
     def on_resize(self, width: int, height: int, window: ClientWindow):
         self.debug_label.y = height - 100

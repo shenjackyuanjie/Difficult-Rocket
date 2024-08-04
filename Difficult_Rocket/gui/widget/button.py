@@ -147,7 +147,7 @@ class OreuiButtonStatus:
         return self.down_pad if self.popout else 0.0
 
 
-class OreuiButtonShape(ShapeBase):
+class OreuiShape(ShapeBase):
     def __init__(
         self,
         x: float,
@@ -682,13 +682,18 @@ class 拐角(ShapeBase):
         self._update_vertices()
 
 
+class OreuiSlider(WidgetBase):
+    """Oreui 的滑条"""
+
+
 class OreuiButton(WidgetBase):
+    """Oreui 的按钮!"""
     def __init__(
         self,
         x: int,
         y: int,
         width: int,
-        height: int,
+        height: int = 30,
         text: str = "",
         normal: OreuiButtonStatus | None = None,
         select: OreuiButtonStatus | None = None,
@@ -723,7 +728,7 @@ class OreuiButton(WidgetBase):
         self._normal_status = normal or OreuiButtonStatus(popout=True)
         self._select_status = select or OreuiButtonStatus(highlight=True, popout=True)
         self._press_status = press or OreuiButtonStatus(popout=False, highlight=True)
-        self._shape = OreuiButtonShape(
+        self._shape = OreuiShape(
             x=self._x,
             y=self._y,
             width=self._width,
@@ -793,7 +798,7 @@ class OreuiButton(WidgetBase):
         return self._label
 
     @property
-    def shape(self) -> OreuiButtonShape:
+    def shape(self) -> OreuiShape:
         return self._shape
 
     @property

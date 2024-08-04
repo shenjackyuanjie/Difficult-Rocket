@@ -34,6 +34,13 @@ class BaseScreen(EventDispatcher, Options):
         self.focus = False
         self.window_pointer = main_window
 
+    def on_cleanup(self, window: ClientWindow):
+        """
+        页面清理
+        会在被移除的时候调用
+        添加自: 0.9.2.0
+        """
+
     if TYPE_CHECKING:
 
         def on_command(self, command: CommandText, window: ClientWindow):

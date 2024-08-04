@@ -4,6 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
+from __future__ import annotations
+
 import os
 import sys
 import time
@@ -344,11 +346,22 @@ class ClientWindow(Window):
         添加自: 0.9.2.0"""
         self.screen_list[sub_screen.name] = sub_screen(self)
 
-    def remove_sub_screen(self, title: str) -> BaseScreen:
+    def remove_sub_screen(self, title: str) -> BaseScreen | None:
         """
         去除一个页面, 返回被去掉的页面
         """
-        return self.screen_list.pop(title)
+        if title in self.screen_list:
+            screen = self.screen_list.pop(title)
+            try:
+                screen.on_cleanup(self)
+            except Exception:
+                trace = traceback.format_exc()
+                self.logger.warn(
+                    tr().window.screen.remove.error().format(title, trace), tag="screen"
+                )
+            return screen
+        else:
+            return None
 
     """
     draws and some event
