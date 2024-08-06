@@ -18,7 +18,7 @@ from pyglet.math import Mat4
 from pyglet.text import Label
 from pyglet.sprite import Sprite
 from pyglet.graphics import Batch, Group
-from pyglet.shapes import Line, Box
+from pyglet.shapes import Line, Box, Rectangle
 
 # from pyglet.window import mouse
 
@@ -87,12 +87,21 @@ class SR1ShipSelecter(BaseScreen):
         super().__init__(main_window)
         self.main_batch = Batch()
         self.main_group = GroupCamera(window=main_window)
-        self.width = 200
-        self.height = main_window.height - 100
+        self.width = 178
+        self.height = main_window.height - 150
         self.dx = 10
-        self.dy = 0
+        self.dy = 70
         self.folder_path: Path = Path("assets/ships")
         self.buttons: dict[Path, OreuiButton] = {}
+        self.background = Rectangle(
+            x=0,
+            y=0,
+            color=(174, 129, 255, 100),
+            width=self.width,
+            height=self.height,
+            batch=self.main_batch,
+            group=Group(10, parent=main_window.main_group),
+        )
         self.set_folder(self.folder_path)
 
     def set_folder(self, path: Path):
@@ -103,6 +112,7 @@ class SR1ShipSelecter(BaseScreen):
             return
         self.folder_path = path
         self.buttons.clear()
+        group = Group(20, parent=self.main_group)
 
         for file in path.iterdir():
             if not file.is_file:
@@ -113,15 +123,15 @@ class SR1ShipSelecter(BaseScreen):
                     sr_tr().sr1.ship.ship.valid().format(file), tag="ship explorer"
                 )
                 button = OreuiButton(
-                    x=2,
+                    x=4,
                     y=len(self.buttons) * -(30 + 5) + self.height,
-                    width=150,
+                    width=170,
                     height=30,
                     text=file.stem,
                     toggle_mode=False,
                     auto_release=True,
                     batch=self.main_batch,
-                    group=self.main_group,
+                    group=group,
                 )
                 self.buttons[file] = button
             else:
@@ -136,10 +146,6 @@ class SR1ShipSelecter(BaseScreen):
     def on_mouse_press(
         self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
     ):
-        # for btn in self.buttons.values():
-        #     btn.on_mouse_press(
-        #         x - self.dx, y - self.dy - self.main_group.view_y, button, modifiers
-        #     )
         return any(
             btn.on_mouse_press(
                 x - self.dx, y - self.dy - self.main_group.view_y, button, modifiers
@@ -186,7 +192,7 @@ class SR1ShipSelecter(BaseScreen):
                 self.main_group.view_y = len(self.buttons) * (30 + 5) - self.height
             return True
 
-    def draw_batch(self, window: ClientWindow):
+    def draw_batch_(self, window: ClientWindow):
         gl.glEnable(gl.GL_SCISSOR_TEST)
         gl.glScissor(int(self.dx), int(self.dy), int(self.width), int(self.height))
         gl.glViewport(
@@ -547,6 +553,10 @@ class SR1ShipEditor(BaseScreen):
         gl.glViewport(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glScissor(0, 0, self.window_pointer.width, self.window_pointer.height)
         gl.glDisable(gl.GL_SCISSOR_TEST)
+
+        explorer = window.get_sub_screen(SR1ShipSelecter.name)
+        if explorer is not None:
+            explorer.draw_batch_(window)
 
     def on_draw(self, window: ClientWindow):
         if self.status.draw_call:
