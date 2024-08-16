@@ -5,6 +5,8 @@ use crate::IdType;
 use anyhow::Result;
 use pyo3::prelude::*;
 use quick_xml::de::from_str;
+use quick_xml::events::Event;
+use quick_xml::reader::Reader;
 use quick_xml::se::to_string;
 use serde::{Deserialize, Serialize};
 
@@ -367,9 +369,6 @@ pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
         }
     }
 }
-
-use quick_xml::events::Event;
-use quick_xml::reader::Reader;
 
 #[pyfunction]
 #[pyo3(name = "assert_ship")]
