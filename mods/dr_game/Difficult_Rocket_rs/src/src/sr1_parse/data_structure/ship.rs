@@ -389,8 +389,7 @@ pub fn py_assert_ship(path: String) -> bool {
                 if e.name().as_ref() == b"Ship" {
                     // 再验证一下 version, liftedOff, touchingGround
                     let mut founds = (false, false, false);
-                    for attr in e.attributes() {
-                        if let Ok(attr) = attr {
+                    for attr in e.attributes().flatten() {
                             match attr.key.as_ref() {
                                 b"version" => {
                                     founds.0 = true;
@@ -402,7 +401,6 @@ pub fn py_assert_ship(path: String) -> bool {
                                     founds.2 = true;
                                 }
                                 _ => (),
-                            }
                         }
                     }
                     if !(founds.0 && founds.1 && founds.2) {
