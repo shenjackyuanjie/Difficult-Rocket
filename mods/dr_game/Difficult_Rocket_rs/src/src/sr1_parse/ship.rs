@@ -3,8 +3,6 @@ use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
 use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
 
 use quick_xml::de::from_str;
-use quick_xml::events::Event;
-use quick_xml::reader::Reader;
 use quick_xml::se::to_string;
 use serde::{Deserialize, Serialize};
 

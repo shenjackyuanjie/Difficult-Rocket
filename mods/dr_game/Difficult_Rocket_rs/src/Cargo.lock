@@ -340,6 +340,7 @@ dependencies = [
  "quick-xml 0.37.0",
  "rapier2d-f64",
  "serde",
+ "windows-sys 0.59.0",
  "winit",
 ]
 

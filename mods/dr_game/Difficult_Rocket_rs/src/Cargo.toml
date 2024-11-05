@@ -14,13 +14,6 @@ crate-type = ["cdylib"]
 #[profile.dev.package.rapier2d-f64]
 #opt-level = 2
 
-[profile.release]
-lto = "fat"
-# 舍弃恐慌信息以快速终止程序，而非展开调用栈。
-# 请以开发模式编译程序以检查恐慌信息。
-panic = "abort"
-opt-level = 2
-
 [dependencies]
 anyhow = "1.0"
 
@@ -38,4 +31,9 @@ pyo3 = { version = "0.22", features = [
 winit = "0.30.5"
 
 rapier2d-f64 = { version = "0.22", features = ["simd-stable"] }
+windows-sys = { version = "0.59.0", features = [
+    "Win32_Foundation",
+    "Win32_System_Threading",
+    "Win32_UI_WindowsAndMessaging",
+] }
 # 虽然但是, raiper在这里!

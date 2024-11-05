@@ -1,6 +1,10 @@
 use pyo3::pyfunction;
 use winit::{application::ApplicationHandler, event_loop::EventLoop, window::Window};
 
+use windows_sys::Win32::Foundation::HWND;
+use windows_sys::Win32::System::Threading::GetCurrentProcessId;
+use windows_sys::Win32::UI::WindowsAndMessaging::{EnumWindows, GetWindowThreadProcessId};
+
 #[pyfunction]
 pub fn render_hack() {
     println!("render_hacking_start");
@@ -28,11 +32,26 @@ impl ApplicationHandler for App {
     }
 }
 
-fn render_main() -> anyhow::Result<()> {
-    let event_loop = EventLoop::new()?;
-    let mut app = App::default();
+unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {
+    let mut process_id = 0;
+    GetWindowThreadProcessId(hwnd, &mut process_id);
+    if process_id == GetCurrentProcessId() {
+        // 这里就是我们要找的窗口
+        println!("Find window: {:?}", hwnd);
+        return 0;
+    }
+    1
+}
 
-    event_loop.run_app(&mut app);
+fn render_main() -> anyhow::Result<()> {
+    unsafe {
+        EnumWindows(Some(enum_windows_proc), 0);
+    }
+
+    // let event_loop = EventLoop::new()?;
+    // let mut app = App::default();
+
+    // event_loop.run_app(&mut app);
 
     Ok(())
 }
