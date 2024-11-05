@@ -1,4 +1,4 @@
-use std::io::{self, Write};
+use std::io::Write;
 
 use pyo3::prelude::*;
 
@@ -24,7 +24,7 @@ impl PyConsole {
         let (stop_sender, stop_receiver) = std::sync::mpsc::channel();
         let (keyboard_input_sender, keyboard_input_receiver) = std::sync::mpsc::channel();
         std::thread::spawn(move || {
-            let std_in = io::stdin();
+            let std_in = std::io::stdin();
             loop {
                 if let Ok(()) = stop_receiver.try_recv() {
                     break;
@@ -39,7 +39,7 @@ impl PyConsole {
             }
         });
         print!("rs>");
-        io::stdout().flush().unwrap();
+        std::io::stdout().flush().unwrap();
         self.stop_sender = Some(stop_sender);
         self.keyboard_input_receiver = Some(keyboard_input_receiver);
     }
@@ -54,7 +54,7 @@ impl PyConsole {
 
     fn new_command(&self) -> bool {
         print!("rs>");
-        io::stdout().flush().unwrap();
+        std::io::stdout().flush().unwrap();
         true
     }
 

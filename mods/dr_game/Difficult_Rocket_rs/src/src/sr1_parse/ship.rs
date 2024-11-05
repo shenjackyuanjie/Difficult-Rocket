@@ -1,9 +1,7 @@
+use crate::sr1_parse::IdType;
 use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
 use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
-use crate::IdType;
 
-use anyhow::Result;
-use pyo3::prelude::*;
 use quick_xml::de::from_str;
 use quick_xml::events::Event;
 use quick_xml::reader::Reader;
@@ -344,87 +342,10 @@ impl RawShip {
     }
 
     #[allow(unused)]
-    pub fn save(&self, file_name: String) -> Result<()> {
+    pub fn save(&self, file_name: String) -> anyhow::Result<()> {
         let part_list_file = to_string(self)?;
         print!("{:?}", part_list_file);
         std::fs::write(file_name, part_list_file)?;
         Ok(())
-    }
-}
-
-#[pyfunction]
-#[pyo3(name = "read_ship_test")]
-#[pyo3(signature = (path = "./assets/builtin/dock1.xml".to_string()))]
-pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
-    let file = std::fs::read_to_string(path)?;
-    let raw_ship = from_str::<RawShip>(&file);
-    match raw_ship {
-        Ok(ship) => {
-            println!("{:?}", ship);
-            Ok(true)
-        }
-        Err(e) => {
-            println!("{:?}", e);
-            Ok(false)
-        }
-    }
-}
-
-#[pyfunction]
-#[pyo3(name = "assert_ship")]
-/// 校验这玩意是不是个船
-pub fn py_assert_ship(path: String) -> bool {
-    let file_data = match std::fs::read_to_string(path) {
-        Ok(data) => data,
-        Err(e) => {
-            println!("ERROR while reading file!\n{}\n----------", e);
-            return false;
-        }
-    };
-    let mut reader = Reader::from_str(&file_data);
-    // 读取第一个
-    loop {
-        match reader.read_event() {
-            Ok(Event::Start(e)) => {
-                if e.name().as_ref() == b"Ship" {
-                    // 再验证一下 version, liftedOff, touchingGround
-                    let mut founds = (false, false, false);
-                    for attr in e.attributes().flatten() {
-                        match attr.key.as_ref() {
-                            b"version" => {
-                                founds.0 = true;
-                            }
-                            b"liftedOff" => {
-                                founds.1 = true;
-                            }
-                            b"touchingGround" => {
-                                founds.2 = true;
-                            }
-                            _ => (),
-                        }
-                    }
-                    if !(founds.0 && founds.1 && founds.2) {
-                        println!(
-                            "warning: {}{}{} not found",
-                            if founds.0 { "" } else { "version " },
-                            if founds.1 { "" } else { "liftedOff " },
-                            if founds.2 { "" } else { "touchingGround " }
-                        );
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-            Ok(Event::Eof) => {
-                println!("EOF");
-                return false;
-            }
-            Err(e) => {
-                println!("ERROR while using xml to parse the file!\n{:?}\n----------", e);
-                return false;
-            }
-            _ => (),
-        }
     }
 }

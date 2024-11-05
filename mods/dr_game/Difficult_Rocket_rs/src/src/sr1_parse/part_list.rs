@@ -2,7 +2,6 @@ use crate::sr1_parse::{SR1PartList, SR1PartType, SR1PartTypeAttr};
 use crate::sr1_parse::{SR1PartListTrait, SR1PartTypeData};
 
 use anyhow::Result;
-use pyo3::prelude::*;
 use quick_xml::de::from_str;
 use serde::{Deserialize, Serialize};
 
@@ -406,18 +405,4 @@ impl SR1PartListTrait for RawPartList {
     fn to_raw_part_list(&self) -> RawPartList {
         self.clone()
     }
-}
-
-#[pyfunction]
-#[pyo3(name = "part_list_read_test", signature = (file_name = "./assets/builtin/PartList.xml".to_string()))]
-pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
-    let file_name = file_name.unwrap_or("./assets/builtin/PartList.xml".to_string());
-    // let _parts = RawPartList::from_file(file_name);
-    // if let Some(parts) = _parts {
-    //     // println!("{:?}", parts)
-    //     parts.list_print();
-    //     let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
-    // }
-    println!("{:?}", RawPartList::from_file(file_name));
-    Ok(())
 }

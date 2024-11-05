@@ -1,6 +1,9 @@
-mod data_structure;
+pub mod part_list;
+/// 所有的 Python 相关交互都应该在这里
+pub mod py;
+pub mod ship;
 
-pub use self::data_structure::*;
+pub type IdType = i64;
 
 use crate::dr_physics::math::{Edge, Shape};
 use crate::dr_physics::math::{Point2D, Rotate};
@@ -12,7 +15,6 @@ use crate::sr1_parse::ship::{
     Staging as RawStaging, Step as RawStep, Tank as RawTank,
 };
 use crate::sr1_parse::ship::{Connections as RawConnections, DisconnectedParts, Parts as RawParts};
-use crate::IdType;
 
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
