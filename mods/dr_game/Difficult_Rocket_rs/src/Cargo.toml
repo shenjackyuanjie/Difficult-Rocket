@@ -31,9 +31,17 @@ pyo3 = { version = "0.22", features = [
 winit = "0.30.5"
 
 rapier2d-f64 = { version = "0.22", features = ["simd-stable"] }
+# 虽然但是, raiper在这里!
+
+raw-window-handle = "0.6.2"
+
+[target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.59.0", features = [
     "Win32_Foundation",
     "Win32_System_Threading",
     "Win32_UI_WindowsAndMessaging",
 ] }
-# 虽然但是, raiper在这里!
+
+# windows = { version = "0.58" , features = [
+#     "UI_Core"
+# ]}
