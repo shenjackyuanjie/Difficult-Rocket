@@ -10,7 +10,8 @@ import argparse
 basic = {
     "images": [
         'pillow >= 10.4.0; (platform_python_implementation == "PyPy" and '
-        'python_version < "3.10") or platform_python_implementation == "CPython"',
+        'python_version < "3.13" and python_version > "3.8") or '
+        'platform_python_implementation == "CPython"',
     ],
     "sys info": [
         "psutil >= 6.0.0"
