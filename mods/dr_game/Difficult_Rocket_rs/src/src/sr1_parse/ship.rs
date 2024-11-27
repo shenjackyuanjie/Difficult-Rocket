@@ -6,6 +6,12 @@ use quick_xml::de::from_str;
 use quick_xml::se::to_string;
 use serde::{Deserialize, Serialize};
 
+fn default_version() -> i32 { 1 }
+
+fn default_lift_off() -> i8 { 0 }
+
+fn default_touch_ground() -> i8 { 1 }
+
 /// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
 /// using quick xml
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -15,19 +21,28 @@ pub struct RawShip {
     pub parts: Parts,
     #[serde(rename = "Connections")]
     pub connects: Connections,
-    #[serde(rename = "@version")]
-    pub version: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48
-    // SR1 says version is also optional, let them happy
-    // it's always 1
-    #[serde(rename = "@liftedOff")]
+    ///
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48~~
+    ///
+    /// ~~SR1 says version is also optional, let them happy~~
+    ///
+    /// it's always 1, if not found, just give a 1
+    #[serde(rename = "@version", default = "default_version")]
+    pub version: i32,
+    #[serde(rename = "@liftedOff", default = "default_lift_off")]
     pub lift_off: i8,
-    #[serde(rename = "@touchingGround")]
-    pub touch_ground: Option<i8>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49
-    // SR1 says it's optional, let them happy
-    // NOT always 0
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49~~
+    /// 
+    /// ~~SR1 says it's optional, let them happy~~
+    /// 
+    /// NOT always 0, default will give a 1
+    #[serde(rename = "@touchingGround", default = "default_touch_ground")]
+    pub touch_ground: i8, 
     #[serde(rename = "DisconnectedParts")]
     pub disconnected: DisconnectedParts,
 }
+
+fn default_editor_angle() -> i32 { 0 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Part {
@@ -45,10 +60,13 @@ pub struct Part {
     pub x: f64,
     #[serde(rename = "@y")]
     pub y: f64,
-    /// Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47
-    /// SR1 says it's optional, let them happy
-    #[serde(rename = "@editorAngle")]
-    pub editor_angle: Option<i32>,
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47~~
+    /// 
+    /// ~~SR1 says it's optional, let them happy~~
+    /// 
+    /// just set to 0 if not found
+    #[serde(rename = "@editorAngle", default = "default_editor_angle")]
+    pub editor_angle: i32,
     #[serde(rename = "@angle")]
     pub angle: f64,
     #[serde(rename = "@angleV")]
@@ -104,7 +122,7 @@ impl Parts {
     pub fn as_sr1_vec(&self) -> Vec<SR1PartData> {
         self.parts.iter().map(|x| x.to_sr_part_data()).collect()
     }
-    pub fn from_vec_sr1(parts: Vec<SR1PartData>) -> Self {
+    pub fn from_vec_sr1(parts: &Vec<SR1PartData>) -> Self {
         Parts {
             parts: parts.iter().map(|x| x.to_raw_part_data()).collect(),
         }
@@ -128,7 +146,7 @@ impl DisconnectedParts {
         DisconnectedParts {
             parts: parts_list
                 .iter()
-                .map(|(part, connects)| DisconnectedPart::from_sr_part(part.to_vec(), connects.to_vec()))
+                .map(|(part, connects)| DisconnectedPart::from_sr_part(part, connects.clone()))
                 .collect(),
         }
     }
@@ -194,7 +212,7 @@ impl DisconnectedPart {
         (self.parts.as_sr1_vec(), self.connects.as_vec())
     }
 
-    pub fn from_sr_part(parts: Vec<SR1PartData>, connects: Vec<Connection>) -> Self {
+    pub fn from_sr_part(parts: &Vec<SR1PartData>, connects: Vec<Connection>) -> Self {
         Self {
             parts: Parts::from_vec_sr1(parts),
             connects: Connections::from_vec(connects),
