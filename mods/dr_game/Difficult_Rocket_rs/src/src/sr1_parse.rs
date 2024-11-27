@@ -424,7 +424,7 @@ impl SR1PartDataTrait for SR1PartData {
             id: self.id,
             x: self.x,
             y: self.y,
-            editor_angle: Some(self.editor_angle),
+            editor_angle: self.editor_angle,
             angle: self.angle,
             angle_v: self.angle_v,
             flip_x: Some(self.flip_x as i8),
@@ -924,11 +924,11 @@ impl SR1ShipTrait for SR1Ship {
     #[inline]
     fn to_raw_ship(&self) -> RawShip {
         RawShip {
-            parts: RawParts::from_vec_sr1(self.parts.clone()),
+            parts: RawParts::from_vec_sr1(&self.parts),
             connects: RawConnections::from_vec(self.connections.clone()),
-            version: Some(self.version),
+            version: self.version,
             lift_off: self.lift_off as i8,
-            touch_ground: Some(self.touch_ground as i8),
+            touch_ground: self.touch_ground as i8,
             disconnected: DisconnectedParts::from_vec_sr1(self.disconnected.clone()),
         }
     }

@@ -6,11 +6,17 @@ use quick_xml::de::from_str;
 use quick_xml::se::to_string;
 use serde::{Deserialize, Serialize};
 
-fn default_version() -> i32 { 1 }
+fn default_version() -> i32 {
+    1
+}
 
-fn default_lift_off() -> i8 { 0 }
+fn default_lift_off() -> i8 {
+    0
+}
 
-fn default_touch_ground() -> i8 { 1 }
+fn default_touch_ground() -> i8 {
+    1
+}
 
 /// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
 /// using quick xml
@@ -32,17 +38,19 @@ pub struct RawShip {
     #[serde(rename = "@liftedOff", default = "default_lift_off")]
     pub lift_off: i8,
     /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49~~
-    /// 
+    ///
     /// ~~SR1 says it's optional, let them happy~~
-    /// 
+    ///
     /// NOT always 0, default will give a 1
     #[serde(rename = "@touchingGround", default = "default_touch_ground")]
-    pub touch_ground: i8, 
+    pub touch_ground: i8,
     #[serde(rename = "DisconnectedParts")]
     pub disconnected: DisconnectedParts,
 }
 
-fn default_editor_angle() -> i32 { 0 }
+fn default_editor_angle() -> i32 {
+    0
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Part {
@@ -61,9 +69,9 @@ pub struct Part {
     #[serde(rename = "@y")]
     pub y: f64,
     /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47~~
-    /// 
+    ///
     /// ~~SR1 says it's optional, let them happy~~
-    /// 
+    ///
     /// just set to 0 if not found
     #[serde(rename = "@editorAngle", default = "default_editor_angle")]
     pub editor_angle: i32,
@@ -178,6 +186,7 @@ pub struct Pod {
 pub struct Staging {
     #[serde(rename = "@currentStage")]
     pub current_stage: i32,
+    /// if sr says just an empty steps, just give a empty vec
     #[serde(rename = "Step", default)]
     pub steps: Vec<Step>,
 }
@@ -185,6 +194,7 @@ pub struct Staging {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Step {
     /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/21~~
+    ///
     /// Now is (default)
     #[serde(rename = "Activate", default)]
     pub activates: Vec<Activate>,
@@ -307,7 +317,7 @@ impl SR1PartDataTrait for Part {
             angle_v: self.angle_v,
             flip_x: self.flip_x.unwrap_or(0_i8) != 0,
             flip_y: self.flip_y.unwrap_or(0_i8) != 0,
-            editor_angle: self.editor_angle.unwrap_or(0_i32),
+            editor_angle: self.editor_angle,
             part_type,
             part_type_id: self.part_type_id.clone(),
             active: self.activated.unwrap_or(0_i8) != 0,
@@ -325,11 +335,11 @@ impl SR1ShipTrait for RawShip {
         SR1Ship {
             name: name.unwrap_or("NewShip".to_string()),
             description: "".to_string(),
-            version: self.version.unwrap_or(1_i32),
+            version: self.version,
             parts: self.parts.as_sr1_vec(),
             connections: self.connects.as_vec(),
             lift_off: self.lift_off != 0,
-            touch_ground: self.touch_ground.to_owned().map(|i| i != 0).unwrap_or(true),
+            touch_ground: if self.touch_ground != 0 { true } else { false },
             disconnected: self.disconnected.as_sr1_vec(),
         }
     }
