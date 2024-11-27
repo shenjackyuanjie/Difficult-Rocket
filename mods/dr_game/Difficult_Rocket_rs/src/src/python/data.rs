@@ -31,9 +31,7 @@ impl PySaveStatus {
 }
 
 impl Default for PySaveStatus {
-    fn default() -> Self {
-        Self::new(false)
-    }
+    fn default() -> Self { Self::new(false) }
 }
 
 #[pyclass]
@@ -44,57 +42,37 @@ pub struct PySR1PartType {
 }
 
 impl PySR1PartType {
-    pub fn new(data: SR1PartType) -> Self {
-        Self { data }
-    }
+    pub fn new(data: SR1PartType) -> Self { Self { data } }
 }
 
 #[pymethods]
 impl PySR1PartType {
     #[getter]
-    fn get_name(&self) -> String {
-        self.data.name.clone()
-    }
+    fn get_name(&self) -> String { self.data.name.clone() }
 
     #[getter]
-    fn get_description(&self) -> String {
-        self.data.description.clone()
-    }
+    fn get_description(&self) -> String { self.data.description.clone() }
 
     #[getter]
-    fn get_sprite(&self) -> String {
-        self.data.sprite.clone()
-    }
+    fn get_sprite(&self) -> String { self.data.sprite.clone() }
 
     #[getter]
-    fn get_mass(&self) -> f64 {
-        self.data.mass
-    }
+    fn get_mass(&self) -> f64 { self.data.mass }
 
     #[getter]
-    fn get_width(&self) -> u32 {
-        self.data.width
-    }
+    fn get_width(&self) -> u32 { self.data.width }
 
     #[getter]
-    fn get_height(&self) -> u32 {
-        self.data.height
-    }
+    fn get_height(&self) -> u32 { self.data.height }
 
     #[getter]
-    fn get_friction(&self) -> f64 {
-        self.data.friction
-    }
+    fn get_friction(&self) -> f64 { self.data.friction }
 
     #[getter]
-    fn get_hidden(&self) -> bool {
-        self.data.hidden
-    }
+    fn get_hidden(&self) -> bool { self.data.hidden }
 
     #[getter]
-    fn get_type(&self) -> String {
-        self.data.p_type.into()
-    }
+    fn get_type(&self) -> String { self.data.p_type.into() }
 }
 
 #[pyclass]
@@ -138,72 +116,46 @@ pub struct PySR1PartData {
 }
 
 impl PySR1PartData {
-    pub fn new(data: SR1PartData) -> Self {
-        Self { data }
-    }
+    pub fn new(data: SR1PartData) -> Self { Self { data } }
 }
 
 #[pymethods]
 impl PySR1PartData {
     #[getter]
-    fn get_id(&self) -> IdType {
-        self.data.id
-    }
+    fn get_id(&self) -> IdType { self.data.id }
 
     #[getter]
-    fn get_part_type_id(&self) -> String {
-        self.data.part_type_id.clone()
-    }
+    fn get_part_type_id(&self) -> String { self.data.part_type_id.clone() }
 
     #[getter]
-    fn get_pos(&self) -> (f64, f64) {
-        (self.data.x, self.data.y)
-    }
+    fn get_pos(&self) -> (f64, f64) { (self.data.x, self.data.y) }
 
     #[getter]
-    fn get_x(&self) -> f64 {
-        self.data.x
-    }
+    fn get_x(&self) -> f64 { self.data.x }
 
     #[getter]
-    fn get_y(&self) -> f64 {
-        self.data.y
-    }
+    fn get_y(&self) -> f64 { self.data.y }
 
     #[getter]
-    fn get_activate(&self) -> bool {
-        self.data.active
-    }
+    fn get_activate(&self) -> bool { self.data.active }
 
     #[getter]
-    fn get_angle(&self) -> f64 {
-        self.data.angle
-    }
+    fn get_angle(&self) -> f64 { self.data.angle }
 
     #[getter]
-    fn get_angle_r(&self) -> f64 {
-        self.data.angle_degrees()
-    }
+    fn get_angle_r(&self) -> f64 { self.data.angle_degrees() }
 
     #[getter]
-    fn get_angle_v(&self) -> f64 {
-        self.data.angle_v
-    }
+    fn get_angle_v(&self) -> f64 { self.data.angle_v }
 
     #[getter]
-    fn get_explode(&self) -> bool {
-        self.data.explode
-    }
+    fn get_explode(&self) -> bool { self.data.explode }
 
     #[getter]
-    fn get_flip_x(&self) -> bool {
-        self.data.flip_x
-    }
+    fn get_flip_x(&self) -> bool { self.data.flip_x }
 
     #[getter]
-    fn get_flip_y(&self) -> bool {
-        self.data.flip_y
-    }
+    fn get_flip_y(&self) -> bool { self.data.flip_y }
 
     fn get_part_box_by_type(&self, part_type: PySR1PartType) -> ((f64, f64), (f64, f64)) {
         let radius = self.data.angle;
@@ -337,24 +289,16 @@ impl PySR1Ship {
     }
 
     #[getter]
-    fn get_name(&self) -> String {
-        self.ship.name.clone()
-    }
+    fn get_name(&self) -> String { self.ship.name.clone() }
 
     #[getter]
-    fn get_description(&self) -> String {
-        self.ship.description.clone()
-    }
+    fn get_description(&self) -> String { self.ship.description.clone() }
 
     #[getter]
-    fn get_lift_off(&self) -> bool {
-        self.ship.lift_off
-    }
+    fn get_lift_off(&self) -> bool { self.ship.lift_off }
 
     #[getter]
-    fn get_touch_ground(&self) -> bool {
-        self.ship.touch_ground
-    }
+    fn get_touch_ground(&self) -> bool { self.ship.touch_ground }
 
     #[getter]
     fn get_mass(&self) -> f64 {

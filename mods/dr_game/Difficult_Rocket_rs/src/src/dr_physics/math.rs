@@ -18,9 +18,7 @@ pub struct Point2D {
 }
 
 impl Point2D {
-    pub fn new(x: f64, y: f64) -> Self {
-        Self { x, y }
-    }
+    pub fn new(x: f64, y: f64) -> Self { Self { x, y } }
 
     pub fn distance(&self, other: &Point2D) -> f64 {
         let dx = (other.x - self.x).powf(2.0);
@@ -28,9 +26,7 @@ impl Point2D {
         (dx + dy).powf(0.5)
     }
 
-    pub fn distance_default(&self) -> f64 {
-        self.distance(&Point2D::new(0.0, 0.0))
-    }
+    pub fn distance_default(&self) -> f64 { self.distance(&Point2D::new(0.0, 0.0)) }
 
     pub fn add_mut(&mut self, x: f64, y: f64) {
         self.x += x;
@@ -48,17 +44,11 @@ impl Rotate for Point2D {
         Self { x, y }
     }
 
-    fn rotate(&self, angle: f64) -> Self {
-        self.rotate_radius(angle.to_radians())
-    }
+    fn rotate(&self, angle: f64) -> Self { self.rotate_radius(angle.to_radians()) }
 
-    fn rotate_radius_mut(&mut self, radius: f64) {
-        *self = self.rotate_radius(radius);
-    }
+    fn rotate_radius_mut(&mut self, radius: f64) { *self = self.rotate_radius(radius); }
 
-    fn rotate_mut(&mut self, angle: f64) {
-        self.rotate_radius_mut(angle.to_radians())
-    }
+    fn rotate_mut(&mut self, angle: f64) { self.rotate_radius_mut(angle.to_radians()) }
 }
 
 impl Add for Point2D {
@@ -98,21 +88,15 @@ pub struct OneTimeLine {
 }
 
 impl Rotate for OneTimeLine {
-    fn rotate(&self, angle: f64) -> Self {
-        self.rotate_radius(angle.to_radians())
-    }
+    fn rotate(&self, angle: f64) -> Self { self.rotate_radius(angle.to_radians()) }
 
     fn rotate_radius(&self, radius: f64) -> Self {
         OneTimeLine::point_new(&self.start.rotate_radius(radius), &self.end.rotate_radius(radius))
     }
 
-    fn rotate_mut(&mut self, angle: f64) {
-        self.rotate_radius_mut(angle.to_radians())
-    }
+    fn rotate_mut(&mut self, angle: f64) { self.rotate_radius_mut(angle.to_radians()) }
 
-    fn rotate_radius_mut(&mut self, radius: f64) {
-        *self = self.rotate_radius(radius);
-    }
+    fn rotate_radius_mut(&mut self, radius: f64) { *self = self.rotate_radius(radius); }
 }
 
 #[derive(Clone, Copy)]
@@ -212,9 +196,7 @@ impl OneTimeLine {
         Self { start, end }
     }
 
-    pub fn point_new(a: &Point2D, b: &Point2D) -> Self {
-        Self::pos_new(a.x, a.y, b.x, b.y)
-    }
+    pub fn point_new(a: &Point2D, b: &Point2D) -> Self { Self::pos_new(a.x, a.y, b.x, b.y) }
 
     pub fn point1_k_b_new(point: &Point2D, k: Option<f64>, b: Option<f64>) -> Self {
         let _k: f64;

@@ -17,9 +17,7 @@ mod sr1_parse;
 use pyo3::prelude::*;
 
 #[pyfunction]
-fn get_version_str() -> String {
-    env!("CARGO_PKG_VERSION").to_string()
-}
+fn get_version_str() -> String { env!("CARGO_PKG_VERSION").to_string() }
 
 #[pymodule]
 #[pyo3(name = "Difficult_Rocket_rs")]

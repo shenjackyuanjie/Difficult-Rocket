@@ -67,9 +67,7 @@ impl App {
         }
     }
 
-    pub fn ref_window(&self) -> &Window {
-        self.window.as_ref().unwrap()
-    }
+    pub fn ref_window(&self) -> &Window { self.window.as_ref().unwrap() }
 }
 
 unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {

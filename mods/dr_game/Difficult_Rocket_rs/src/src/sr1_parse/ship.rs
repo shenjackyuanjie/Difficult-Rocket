@@ -6,17 +6,11 @@ use quick_xml::de::from_str;
 use quick_xml::se::to_string;
 use serde::{Deserialize, Serialize};
 
-fn default_version() -> i32 {
-    1
-}
+fn default_version() -> i32 { 1 }
 
-fn default_lift_off() -> i8 {
-    0
-}
+fn default_lift_off() -> i8 { 0 }
 
-fn default_touch_ground() -> i8 {
-    1
-}
+fn default_touch_ground() -> i8 { 1 }
 
 /// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
 /// using quick xml
@@ -48,9 +42,7 @@ pub struct RawShip {
     pub disconnected: DisconnectedParts,
 }
 
-fn default_editor_angle() -> i32 {
-    0
-}
+fn default_editor_angle() -> i32 { 0 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Part {
@@ -127,9 +119,7 @@ pub struct DisconnectedParts {
 }
 
 impl Parts {
-    pub fn as_sr1_vec(&self) -> Vec<SR1PartData> {
-        self.parts.iter().map(|x| x.to_sr_part_data()).collect()
-    }
+    pub fn as_sr1_vec(&self) -> Vec<SR1PartData> { self.parts.iter().map(|x| x.to_sr_part_data()).collect() }
     pub fn from_vec_sr1(parts: &Vec<SR1PartData>) -> Self {
         Parts {
             parts: parts.iter().map(|x| x.to_raw_part_data()).collect(),
@@ -138,12 +128,8 @@ impl Parts {
 }
 
 impl Connections {
-    pub fn as_vec(&self) -> Vec<Connection> {
-        self.connections.clone()
-    }
-    pub fn from_vec(connections: Vec<Connection>) -> Self {
-        Connections { connections }
-    }
+    pub fn as_vec(&self) -> Vec<Connection> { self.connections.clone() }
+    pub fn from_vec(connections: Vec<Connection>) -> Self { Connections { connections } }
 }
 
 impl DisconnectedParts {
@@ -295,13 +281,9 @@ impl Connection {
         }
     }
     /// 是否为 Dock 类型
-    pub fn is_dock(&self) -> bool {
-        matches!(self, Connection::Dock { .. })
-    }
+    pub fn is_dock(&self) -> bool { matches!(self, Connection::Dock { .. }) }
     /// 是否为 Normal 类型
-    pub fn is_normal(&self) -> bool {
-        matches!(self, Connection::Normal { .. })
-    }
+    pub fn is_normal(&self) -> bool { matches!(self, Connection::Normal { .. }) }
 }
 
 impl SR1PartDataTrait for Part {
@@ -325,9 +307,7 @@ impl SR1PartDataTrait for Part {
         }
     }
 
-    fn to_raw_part_data(&self) -> Part {
-        self.clone()
-    }
+    fn to_raw_part_data(&self) -> Part { self.clone() }
 }
 
 impl SR1ShipTrait for RawShip {
@@ -344,9 +324,7 @@ impl SR1ShipTrait for RawShip {
         }
     }
 
-    fn to_raw_ship(&self) -> RawShip {
-        self.clone()
-    }
+    fn to_raw_ship(&self) -> RawShip { self.clone() }
 }
 
 impl RawShip {

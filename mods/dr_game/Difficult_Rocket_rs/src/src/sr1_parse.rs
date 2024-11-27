@@ -203,9 +203,7 @@ impl SR1PartList {
         SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
     }
 
-    pub fn insert_part(&mut self, part: SR1PartType) {
-        self.types.insert(0, part);
-    }
+    pub fn insert_part(&mut self, part: SR1PartType) { self.types.insert(0, part); }
 }
 
 pub trait SR1PartTypeData {
@@ -251,9 +249,7 @@ impl SR1PartListTrait for SR1PartList {
 }
 
 impl SR1PartTypeData for SR1PartType {
-    fn to_sr_part_type(&self) -> SR1PartType {
-        self.clone()
-    }
+    fn to_sr_part_type(&self) -> SR1PartType { self.clone() }
 
     fn to_raw_part_type(&self) -> RawPartType {
         let tank: Option<Tank> = match &self.attr {
@@ -377,9 +373,7 @@ impl SR1PartTypeData for SR1PartType {
 }
 
 impl SR1PartDataTrait for SR1PartData {
-    fn to_sr_part_data(&self) -> SR1PartData {
-        self.clone()
-    }
+    fn to_sr_part_data(&self) -> SR1PartData { self.clone() }
 
     fn to_raw_part_data(&self) -> RawPartData {
         let (tank, engine) = if let Some(fuel) = &self.attr.fuel {
@@ -496,9 +490,7 @@ impl SR1PartData {
         pos_box
     }
 
-    pub fn angle_degrees(&self) -> f64 {
-        radians_map_to_degrees(self.angle)
-    }
+    pub fn angle_degrees(&self) -> f64 { radians_map_to_degrees(self.angle) }
 }
 
 #[derive(Debug, Clone)]
@@ -656,9 +648,7 @@ pub struct SaveStatus {
 }
 
 impl SaveStatus {
-    pub fn new(save_default: bool) -> Self {
-        SaveStatus { save_default }
-    }
+    pub fn new(save_default: bool) -> Self { SaveStatus { save_default } }
 }
 
 impl SR1Ship {

@@ -115,13 +115,9 @@ pub struct AttachPoints {
 }
 
 impl AttachPoints {
-    pub fn new(attaches: Vec<AttachPoint>) -> Self {
-        AttachPoints { points: attaches }
-    }
+    pub fn new(attaches: Vec<AttachPoint>) -> Self { AttachPoints { points: attaches } }
 
-    pub fn unzip(&self) -> Vec<AttachPoint> {
-        self.points.clone()
-    }
+    pub fn unzip(&self) -> Vec<AttachPoint> { self.points.clone() }
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -369,15 +365,11 @@ impl SR1PartTypeData for RawPartType {
             attr: part_attr,
         }
     }
-    fn to_raw_part_type(&self) -> RawPartType {
-        self.clone()
-    }
+    fn to_raw_part_type(&self) -> RawPartType { self.clone() }
 }
 
 impl RawPartList {
-    pub fn new(parts: Vec<RawPartType>) -> Self {
-        RawPartList { part_types: parts }
-    }
+    pub fn new(parts: Vec<RawPartType>) -> Self { RawPartList { part_types: parts } }
 
     pub fn from_file(file_name: String) -> Result<Self> {
         let part_list_file = std::fs::read_to_string(file_name)?;
@@ -402,7 +394,5 @@ impl SR1PartListTrait for RawPartList {
         SR1PartList::part_types_new(types, name)
     }
 
-    fn to_raw_part_list(&self) -> RawPartList {
-        self.clone()
-    }
+    fn to_raw_part_list(&self) -> RawPartList { self.clone() }
 }
