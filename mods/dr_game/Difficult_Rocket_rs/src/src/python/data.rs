@@ -43,6 +43,8 @@ pub struct PySR1PartType {
 
 impl PySR1PartType {
     pub fn new(data: SR1PartType) -> Self { Self { data } }
+
+    pub fn ref_new(data: &SR1PartType) -> Self { Self { data: data.clone() } }
 }
 
 #[pymethods]
@@ -99,12 +101,16 @@ impl PySR1PartList {
     }
 
     fn as_dict(&self) -> HashMap<String, PySR1PartType> {
-        self.data.get_cache().iter().map(|(k, v)| (k.clone(), PySR1PartType::new(v.clone()))).collect()
+        let mut map = HashMap::new();
+        for part_type in self.data.types.iter() {
+            map.insert(part_type.name.clone(), PySR1PartType::ref_new(part_type));
+        }
+        map
     }
 
     fn get_part_type(&self, name: String) -> Option<PySR1PartType> {
         let part_type = self.data.get_part_type(&name);
-        part_type.map(PySR1PartType::new)
+        part_type.map(PySR1PartType::ref_new)
     }
 }
 

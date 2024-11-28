@@ -1,5 +1,0 @@
-{
-    "rust-analyzer.linkedProjects": [
-        "mods/dr_game/Difficult_Rocket_rs/src/Cargo.toml"
-    ]
-}

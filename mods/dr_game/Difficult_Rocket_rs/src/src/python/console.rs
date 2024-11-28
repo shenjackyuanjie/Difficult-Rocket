@@ -10,6 +10,9 @@ pub struct PyConsole {
     pub keyboard_input_receiver: Option<std::sync::mpsc::Receiver<String>>,
 }
 
+/// 额, 就先这样吧(逃
+unsafe impl Sync for PyConsole {}
+
 #[pymethods]
 impl PyConsole {
     #[new]

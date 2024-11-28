@@ -90,7 +90,7 @@ pub struct Part {
     pub inflate: Option<i8>,
     #[serde(rename = "@inflation")]
     pub inflation: Option<f64>,
-    #[serde(rename = "@deployed")]
+    #[serde(rename = "@exploded")]
     pub exploded: Option<i8>,
     #[serde(rename = "@rope")]
     pub rope: Option<i8>,
@@ -289,7 +289,7 @@ impl Connection {
 impl SR1PartDataTrait for Part {
     fn to_sr_part_data(&self) -> SR1PartData {
         let attr = SR1PartDataAttr::from_raw(self, None, true);
-        let part_type = attr.get_part_type();
+        let part_type = unsafe { attr.get_part_type_none_mut() };
         SR1PartData {
             attr,
             x: self.x,

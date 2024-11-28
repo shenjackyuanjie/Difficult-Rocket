@@ -14,7 +14,11 @@ mod renders;
 /// sr1 的逆天数据结构解析
 mod sr1_parse;
 
-use pyo3::prelude::*;
+use pyo3::{
+    pyfunction, pymodule,
+    types::{PyModule, PyModuleMethods},
+    wrap_pyfunction, Bound, PyResult,
+};
 
 #[pyfunction]
 fn get_version_str() -> String { env!("CARGO_PKG_VERSION").to_string() }

@@ -18,7 +18,7 @@ if __name__ == "__main__":
     os.chdir("./mods/dr_game/Difficult_Rocket_rs/src")
     os.chdir("./src")
 
-    subprocess.run(["cargo", "fmt", "--all"])
+    subprocess.run(["cargo", "+nightly", "fmt", "--all"])
 
     if args.clean:
         subprocess.run(["cargo", "clean"])
