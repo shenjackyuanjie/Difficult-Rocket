@@ -10,13 +10,14 @@ import argparse
 basic = {
     "images": [
         'pillow >= 10.4.0; (platform_python_implementation == "PyPy" and '
-        'python_version < "3.10") or platform_python_implementation == "CPython"',
+        'python_version < "3.13" and python_version > "3.8") or '
+        'platform_python_implementation == "CPython"',
     ],
     "sys info": [
         "psutil >= 6.0.0"
     ],
     "file read": [
-        "tomli >= 2.0.1",
+        "tomli >= 2.0.2",
         "tomli-w >= 1.0.0",
         "defusedxml >= 0.7.1"
     ],
@@ -27,7 +28,7 @@ build = {
         "nuitka >= 2.4",
         "imageio >= 2.34.2",
         "setuptools >= 69",
-        "setuptools-rust >= 1.10.0",
+        "setuptools-rust >= 1.10.2",
         "wheel >= 0.43.0",
     ]
 }

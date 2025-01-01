@@ -16,6 +16,7 @@ from lib_not_dr import loggers
 # from pyglet.text import Label
 
 # from . import DR_mod_runtime
+from .render import render_hack_init
 
 logger = loggers.config.get_logger_from_old("client.dr_game_menu", "client")
 
@@ -50,6 +51,18 @@ class Menu(BaseScreen):
             group=self.main_group,
         )
 
+        self.magic_rust_test_button = OreuiButton(
+            x=100,
+            y=150,
+            width=150,
+            height=30,
+            text="一些魔法 rust 测试",
+            toggle_mode=False,
+            auto_release=True,
+            batch=self.main_batch,
+            group=self.main_group,
+        )
+
         def on_release(x, y):
             from .sr1_ship import SR1ShipEditor, SR1ShipSelecter
 
@@ -60,7 +73,9 @@ class Menu(BaseScreen):
             logger.info("added SR1_ship screen", tag="dr_game")
 
         self.enter_ship_editor_button.set_handler("on_release", on_release)
+        self.magic_rust_test_button.set_handler("on_release", render_hack_init)
         main_window.push_handlers(self.enter_ship_editor_button)
+        main_window.push_handlers(self.magic_rust_test_button)
 
     def on_draw(self, window: ClientWindow):
         self.main_batch.draw()

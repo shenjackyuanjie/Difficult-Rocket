@@ -1,14 +1,16 @@
+use crate::sr1_parse::IdType;
 use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
 use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
-use crate::IdType;
 
-use anyhow::Result;
-use pyo3::prelude::*;
 use quick_xml::de::from_str;
-use quick_xml::events::Event;
-use quick_xml::reader::Reader;
 use quick_xml::se::to_string;
 use serde::{Deserialize, Serialize};
+
+fn default_version() -> i32 { 1 }
+
+fn default_lift_off() -> i8 { 0 }
+
+fn default_touch_ground() -> i8 { 1 }
 
 /// https://docs.rs/quick-xml/latest/quick_xml/de/index.html#basics
 /// using quick xml
@@ -19,19 +21,28 @@ pub struct RawShip {
     pub parts: Parts,
     #[serde(rename = "Connections")]
     pub connects: Connections,
-    #[serde(rename = "@version")]
-    pub version: Option<i32>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48
-    // SR1 says version is also optional, let them happy
-    // it's always 1
-    #[serde(rename = "@liftedOff")]
+    ///
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48~~
+    ///
+    /// ~~SR1 says version is also optional, let them happy~~
+    ///
+    /// it's always 1, if not found, just give a 1
+    #[serde(rename = "@version", default = "default_version")]
+    pub version: i32,
+    #[serde(rename = "@liftedOff", default = "default_lift_off")]
     pub lift_off: i8,
-    #[serde(rename = "@touchingGround")]
-    pub touch_ground: Option<i8>, // Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49
-    // SR1 says it's optional, let them happy
-    // NOT always 0
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49~~
+    ///
+    /// ~~SR1 says it's optional, let them happy~~
+    ///
+    /// NOT always 0, default will give a 1
+    #[serde(rename = "@touchingGround", default = "default_touch_ground")]
+    pub touch_ground: i8,
     #[serde(rename = "DisconnectedParts")]
     pub disconnected: DisconnectedParts,
 }
+
+fn default_editor_angle() -> i32 { 0 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Part {
@@ -49,10 +60,13 @@ pub struct Part {
     pub x: f64,
     #[serde(rename = "@y")]
     pub y: f64,
-    /// Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47
-    /// SR1 says it's optional, let them happy
-    #[serde(rename = "@editorAngle")]
-    pub editor_angle: Option<i32>,
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47~~
+    ///
+    /// ~~SR1 says it's optional, let them happy~~
+    ///
+    /// just set to 0 if not found
+    #[serde(rename = "@editorAngle", default = "default_editor_angle")]
+    pub editor_angle: i32,
     #[serde(rename = "@angle")]
     pub angle: f64,
     #[serde(rename = "@angleV")]
@@ -76,7 +90,7 @@ pub struct Part {
     pub inflate: Option<i8>,
     #[serde(rename = "@inflation")]
     pub inflation: Option<f64>,
-    #[serde(rename = "@deployed")]
+    #[serde(rename = "@exploded")]
     pub exploded: Option<i8>,
     #[serde(rename = "@rope")]
     pub rope: Option<i8>,
@@ -105,10 +119,8 @@ pub struct DisconnectedParts {
 }
 
 impl Parts {
-    pub fn as_sr1_vec(&self) -> Vec<SR1PartData> {
-        self.parts.iter().map(|x| x.to_sr_part_data()).collect()
-    }
-    pub fn from_vec_sr1(parts: Vec<SR1PartData>) -> Self {
+    pub fn as_sr1_vec(&self) -> Vec<SR1PartData> { self.parts.iter().map(|x| x.to_sr_part_data()).collect() }
+    pub fn from_vec_sr1(parts: &Vec<SR1PartData>) -> Self {
         Parts {
             parts: parts.iter().map(|x| x.to_raw_part_data()).collect(),
         }
@@ -116,12 +128,8 @@ impl Parts {
 }
 
 impl Connections {
-    pub fn as_vec(&self) -> Vec<Connection> {
-        self.connections.clone()
-    }
-    pub fn from_vec(connections: Vec<Connection>) -> Self {
-        Connections { connections }
-    }
+    pub fn as_vec(&self) -> Vec<Connection> { self.connections.clone() }
+    pub fn from_vec(connections: Vec<Connection>) -> Self { Connections { connections } }
 }
 
 impl DisconnectedParts {
@@ -132,7 +140,7 @@ impl DisconnectedParts {
         DisconnectedParts {
             parts: parts_list
                 .iter()
-                .map(|(part, connects)| DisconnectedPart::from_sr_part(part.to_vec(), connects.to_vec()))
+                .map(|(part, connects)| DisconnectedPart::from_sr_part(part, connects.clone()))
                 .collect(),
         }
     }
@@ -164,6 +172,7 @@ pub struct Pod {
 pub struct Staging {
     #[serde(rename = "@currentStage")]
     pub current_stage: i32,
+    /// if sr says just an empty steps, just give a empty vec
     #[serde(rename = "Step", default)]
     pub steps: Vec<Step>,
 }
@@ -171,6 +180,7 @@ pub struct Staging {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Step {
     /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/21~~
+    ///
     /// Now is (default)
     #[serde(rename = "Activate", default)]
     pub activates: Vec<Activate>,
@@ -198,7 +208,7 @@ impl DisconnectedPart {
         (self.parts.as_sr1_vec(), self.connects.as_vec())
     }
 
-    pub fn from_sr_part(parts: Vec<SR1PartData>, connects: Vec<Connection>) -> Self {
+    pub fn from_sr_part(parts: &Vec<SR1PartData>, connects: Vec<Connection>) -> Self {
         Self {
             parts: Parts::from_vec_sr1(parts),
             connects: Connections::from_vec(connects),
@@ -271,19 +281,15 @@ impl Connection {
         }
     }
     /// 是否为 Dock 类型
-    pub fn is_dock(&self) -> bool {
-        matches!(self, Connection::Dock { .. })
-    }
+    pub fn is_dock(&self) -> bool { matches!(self, Connection::Dock { .. }) }
     /// 是否为 Normal 类型
-    pub fn is_normal(&self) -> bool {
-        matches!(self, Connection::Normal { .. })
-    }
+    pub fn is_normal(&self) -> bool { matches!(self, Connection::Normal { .. }) }
 }
 
 impl SR1PartDataTrait for Part {
     fn to_sr_part_data(&self) -> SR1PartData {
         let attr = SR1PartDataAttr::from_raw(self, None, true);
-        let part_type = attr.get_part_type();
+        let part_type = unsafe { attr.get_part_type_none_mut() };
         SR1PartData {
             attr,
             x: self.x,
@@ -293,7 +299,7 @@ impl SR1PartDataTrait for Part {
             angle_v: self.angle_v,
             flip_x: self.flip_x.unwrap_or(0_i8) != 0,
             flip_y: self.flip_y.unwrap_or(0_i8) != 0,
-            editor_angle: self.editor_angle.unwrap_or(0_i32),
+            editor_angle: self.editor_angle,
             part_type,
             part_type_id: self.part_type_id.clone(),
             active: self.activated.unwrap_or(0_i8) != 0,
@@ -301,9 +307,7 @@ impl SR1PartDataTrait for Part {
         }
     }
 
-    fn to_raw_part_data(&self) -> Part {
-        self.clone()
-    }
+    fn to_raw_part_data(&self) -> Part { self.clone() }
 }
 
 impl SR1ShipTrait for RawShip {
@@ -311,18 +315,16 @@ impl SR1ShipTrait for RawShip {
         SR1Ship {
             name: name.unwrap_or("NewShip".to_string()),
             description: "".to_string(),
-            version: self.version.unwrap_or(1_i32),
+            version: self.version,
             parts: self.parts.as_sr1_vec(),
             connections: self.connects.as_vec(),
             lift_off: self.lift_off != 0,
-            touch_ground: self.touch_ground.to_owned().map(|i| i != 0).unwrap_or(true),
+            touch_ground: if self.touch_ground != 0 { true } else { false },
             disconnected: self.disconnected.as_sr1_vec(),
         }
     }
 
-    fn to_raw_ship(&self) -> RawShip {
-        self.clone()
-    }
+    fn to_raw_ship(&self) -> RawShip { self.clone() }
 }
 
 impl RawShip {
@@ -344,87 +346,10 @@ impl RawShip {
     }
 
     #[allow(unused)]
-    pub fn save(&self, file_name: String) -> Result<()> {
+    pub fn save(&self, file_name: String) -> anyhow::Result<()> {
         let part_list_file = to_string(self)?;
         print!("{:?}", part_list_file);
         std::fs::write(file_name, part_list_file)?;
         Ok(())
-    }
-}
-
-#[pyfunction]
-#[pyo3(name = "read_ship_test")]
-#[pyo3(signature = (path = "./assets/builtin/dock1.xml".to_string()))]
-pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
-    let file = std::fs::read_to_string(path)?;
-    let raw_ship = from_str::<RawShip>(&file);
-    match raw_ship {
-        Ok(ship) => {
-            println!("{:?}", ship);
-            Ok(true)
-        }
-        Err(e) => {
-            println!("{:?}", e);
-            Ok(false)
-        }
-    }
-}
-
-#[pyfunction]
-#[pyo3(name = "assert_ship")]
-/// 校验这玩意是不是个船
-pub fn py_assert_ship(path: String) -> bool {
-    let file_data = match std::fs::read_to_string(path) {
-        Ok(data) => data,
-        Err(e) => {
-            println!("ERROR while reading file!\n{}\n----------", e);
-            return false;
-        }
-    };
-    let mut reader = Reader::from_str(&file_data);
-    // 读取第一个
-    loop {
-        match reader.read_event() {
-            Ok(Event::Start(e)) => {
-                if e.name().as_ref() == b"Ship" {
-                    // 再验证一下 version, liftedOff, touchingGround
-                    let mut founds = (false, false, false);
-                    for attr in e.attributes().flatten() {
-                            match attr.key.as_ref() {
-                                b"version" => {
-                                    founds.0 = true;
-                                }
-                                b"liftedOff" => {
-                                    founds.1 = true;
-                                }
-                                b"touchingGround" => {
-                                    founds.2 = true;
-                                }
-                                _ => (),
-                        }
-                    }
-                    if !(founds.0 && founds.1 && founds.2) {
-                        println!(
-                            "warning: {}{}{} not found",
-                            if founds.0 { "" } else { "version " },
-                            if founds.1 { "" } else { "liftedOff " },
-                            if founds.2 { "" } else { "touchingGround " }
-                        );
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            }
-            Ok(Event::Eof) => {
-                println!("EOF");
-                return false;
-            }
-            Err(e) => {
-                println!("ERROR while using xml to parse the file!\n{:?}\n----------", e);
-                return false;
-            }
-            _ => (),
-        }
     }
 }

@@ -52,6 +52,11 @@ if TYPE_CHECKING:
         """
         ...
 
+    def render_hack() -> None:
+        """
+        进行一些 rust 方面的 渲染接管
+        """
+
     class SR1PartType_rs:  # NOQA
         """
         用于从 rust 中读取 SR1PartType

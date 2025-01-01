@@ -6,7 +6,7 @@
  * -------------------------------
  */
 
-use crate::IdType;
+use crate::sr1_parse::IdType;
 
 use nalgebra::{Matrix2, Vector2};
 use pyo3::prelude::*;
@@ -37,9 +37,7 @@ pub struct EditorArea {
 
 impl EditorArea {
     /// 添加一个碰撞箱
-    pub fn add_box(&mut self, box_data: BoundedShape) {
-        self.collision_box.push(box_data);
-    }
+    pub fn add_box(&mut self, box_data: BoundedShape) { self.collision_box.push(box_data); }
 
     /// 删除一个碰撞箱
     pub fn remove_box_by_id(&mut self, id: IdType) -> bool {

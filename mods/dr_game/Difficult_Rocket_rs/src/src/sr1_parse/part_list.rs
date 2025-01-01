@@ -2,7 +2,6 @@ use crate::sr1_parse::{SR1PartList, SR1PartType, SR1PartTypeAttr};
 use crate::sr1_parse::{SR1PartListTrait, SR1PartTypeData};
 
 use anyhow::Result;
-use pyo3::prelude::*;
 use quick_xml::de::from_str;
 use serde::{Deserialize, Serialize};
 
@@ -116,13 +115,9 @@ pub struct AttachPoints {
 }
 
 impl AttachPoints {
-    pub fn new(attaches: Vec<AttachPoint>) -> Self {
-        AttachPoints { points: attaches }
-    }
+    pub fn new(attaches: Vec<AttachPoint>) -> Self { AttachPoints { points: attaches } }
 
-    pub fn unzip(&self) -> Vec<AttachPoint> {
-        self.points.clone()
-    }
+    pub fn unzip(&self) -> Vec<AttachPoint> { self.points.clone() }
 }
 
 #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
@@ -370,15 +365,11 @@ impl SR1PartTypeData for RawPartType {
             attr: part_attr,
         }
     }
-    fn to_raw_part_type(&self) -> RawPartType {
-        self.clone()
-    }
+    fn to_raw_part_type(&self) -> RawPartType { self.clone() }
 }
 
 impl RawPartList {
-    pub fn new(parts: Vec<RawPartType>) -> Self {
-        RawPartList { part_types: parts }
-    }
+    pub fn new(parts: Vec<RawPartType>) -> Self { RawPartList { part_types: parts } }
 
     pub fn from_file(file_name: String) -> Result<Self> {
         let part_list_file = std::fs::read_to_string(file_name)?;
@@ -403,21 +394,5 @@ impl SR1PartListTrait for RawPartList {
         SR1PartList::part_types_new(types, name)
     }
 
-    fn to_raw_part_list(&self) -> RawPartList {
-        self.clone()
-    }
-}
-
-#[pyfunction]
-#[pyo3(name = "part_list_read_test", signature = (file_name = "./assets/builtin/PartList.xml".to_string()))]
-pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
-    let file_name = file_name.unwrap_or("./assets/builtin/PartList.xml".to_string());
-    // let _parts = RawPartList::from_file(file_name);
-    // if let Some(parts) = _parts {
-    //     // println!("{:?}", parts)
-    //     parts.list_print();
-    //     let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
-    // }
-    println!("{:?}", RawPartList::from_file(file_name));
-    Ok(())
+    fn to_raw_part_list(&self) -> RawPartList { self.clone() }
 }

@@ -1,6 +1,9 @@
-mod data_structure;
+pub mod part_list;
+/// 所有的 Python 相关交互都应该在这里
+pub mod py;
+pub mod ship;
 
-pub use self::data_structure::*;
+pub type IdType = i64;
 
 use crate::dr_physics::math::{Edge, Shape};
 use crate::dr_physics::math::{Point2D, Rotate};
@@ -12,9 +15,7 @@ use crate::sr1_parse::ship::{
     Staging as RawStaging, Step as RawStep, Tank as RawTank,
 };
 use crate::sr1_parse::ship::{Connections as RawConnections, DisconnectedParts, Parts as RawParts};
-use crate::IdType;
 
-use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::io::Cursor;
 use std::ops::Deref;
@@ -159,18 +160,11 @@ impl SR1PartType {
 #[derive(Debug, Clone)]
 pub struct SR1PartList {
     pub types: Vec<SR1PartType>,
-    pub cache: RefCell<Option<HashMap<String, SR1PartType>>>,
     pub name: String,
 }
 
 impl SR1PartList {
-    pub fn new(name: String, types: Vec<SR1PartType>) -> SR1PartList {
-        SR1PartList {
-            types,
-            cache: RefCell::new(None),
-            name,
-        }
-    }
+    pub fn new(name: String, types: Vec<SR1PartType>) -> SR1PartList { SR1PartList { types, name } }
 
     pub fn from_file(file_name: String) -> Option<SR1PartList> {
         if let Ok(raw_list) = RawPartList::from_file(file_name) {
@@ -180,30 +174,15 @@ impl SR1PartList {
         None
     }
 
-    pub fn get_cache(&self) -> HashMap<String, SR1PartType> {
-        if self.cache.borrow().is_none() {
-            let mut map = HashMap::new();
-            for part in self.types.iter() {
-                map.insert(part.id.clone(), part.clone());
-            }
-            let cache = Some(map.clone());
-            self.cache.replace(cache);
-        }
-        self.cache.borrow().clone().unwrap()
-    }
-
-    pub fn get_part_type(&self, type_name: &String) -> Option<SR1PartType> {
-        let cache = self.get_cache();
-        cache.get(type_name).cloned()
+    pub fn get_part_type(&self, type_name: &String) -> Option<&SR1PartType> {
+        self.types.iter().find(|part_type| &part_type.id == type_name)
     }
 
     pub fn part_types_new(part_types: Vec<SR1PartType>, name: Option<String>) -> Self {
         SR1PartList::new(name.unwrap_or("NewPartList".to_string()), part_types)
     }
 
-    pub fn insert_part(&mut self, part: SR1PartType) {
-        self.types.insert(0, part);
-    }
+    pub fn insert_part(&mut self, part: SR1PartType) { self.types.insert(0, part); }
 }
 
 pub trait SR1PartTypeData {
@@ -249,9 +228,7 @@ impl SR1PartListTrait for SR1PartList {
 }
 
 impl SR1PartTypeData for SR1PartType {
-    fn to_sr_part_type(&self) -> SR1PartType {
-        self.clone()
-    }
+    fn to_sr_part_type(&self) -> SR1PartType { self.clone() }
 
     fn to_raw_part_type(&self) -> RawPartType {
         let tank: Option<Tank> = match &self.attr {
@@ -375,9 +352,7 @@ impl SR1PartTypeData for SR1PartType {
 }
 
 impl SR1PartDataTrait for SR1PartData {
-    fn to_sr_part_data(&self) -> SR1PartData {
-        self.clone()
-    }
+    fn to_sr_part_data(&self) -> SR1PartData { self.clone() }
 
     fn to_raw_part_data(&self) -> RawPartData {
         let (tank, engine) = if let Some(fuel) = &self.attr.fuel {
@@ -422,7 +397,7 @@ impl SR1PartDataTrait for SR1PartData {
             id: self.id,
             x: self.x,
             y: self.y,
-            editor_angle: Some(self.editor_angle),
+            editor_angle: self.editor_angle,
             angle: self.angle,
             angle_v: self.angle_v,
             flip_x: Some(self.flip_x as i8),
@@ -494,9 +469,7 @@ impl SR1PartData {
         pos_box
     }
 
-    pub fn angle_degrees(&self) -> f64 {
-        radians_map_to_degrees(self.angle)
-    }
+    pub fn angle_degrees(&self) -> f64 { radians_map_to_degrees(self.angle) }
 }
 
 #[derive(Debug, Clone)]
@@ -520,39 +493,44 @@ pub struct SR1PartDataAttr {
     pub deployed: Option<bool>,
     pub rope: Option<bool>,
     // part_type
-    pub part_type: Cell<Option<SR1PartTypeEnum>>,
+    pub part_type: Option<SR1PartTypeEnum>,
 }
 
 impl SR1PartDataAttr {
-    pub fn guess_type(&self) -> SR1PartTypeEnum {
-        if let Some(part_type) = self.part_type.get() {
+    pub fn guess_type(&mut self) -> SR1PartTypeEnum {
+        if let Some(part_type) = self.part_type {
             return part_type;
         }
         if self.fuel.is_some() {
-            self.part_type.set(Some(SR1PartTypeEnum::tank));
-            return self.part_type.get().unwrap();
+            self.part_type = Some(SR1PartTypeEnum::tank);
+            return SR1PartTypeEnum::tank;
         }
         if self.name.is_some() {
-            self.part_type.set(Some(SR1PartTypeEnum::pod));
-            return self.part_type.get().unwrap();
+            self.part_type = Some(SR1PartTypeEnum::pod);
+            return SR1PartTypeEnum::pod;
         }
         if self.extension.is_some() {
-            self.part_type.set(Some(SR1PartTypeEnum::solar));
-            return self.part_type.get().unwrap();
+            self.part_type = Some(SR1PartTypeEnum::solar);
+            return SR1PartTypeEnum::solar;
         }
         if self.chute_x.is_some() {
-            self.part_type.set(Some(SR1PartTypeEnum::parachute));
-            return self.part_type.get().unwrap();
+            self.part_type = Some(SR1PartTypeEnum::parachute);
         }
         SR1PartTypeEnum::strut // 默认为 Strut    开摆
     }
 
-    pub fn get_part_type(&self) -> SR1PartTypeEnum {
-        if let Some(part_type) = self.part_type.get() {
+    pub fn get_part_type(&mut self) -> SR1PartTypeEnum {
+        if let Some(part_type) = self.part_type {
             return part_type;
         }
         self.guess_type()
     }
+
+    pub unsafe fn get_part_type_none_mut(&self) -> SR1PartTypeEnum {
+        let slf = self as *const Self as *mut Self;
+        (*slf).get_part_type()
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         fuel: Option<f64>,
@@ -585,7 +563,7 @@ impl SR1PartDataAttr {
             inflation,
             deployed,
             rope,
-            part_type: Cell::new(part_type),
+            part_type,
         }
     }
 
@@ -611,7 +589,7 @@ impl SR1PartDataAttr {
         } else {
             (None, None, None, None)
         };
-        let results = SR1PartDataAttr {
+        let mut results = SR1PartDataAttr {
             fuel,
             name,
             throttle,
@@ -626,10 +604,10 @@ impl SR1PartDataAttr {
             inflation: raw_data.inflation,
             deployed: raw_data.deployed.map(|i| i != 0),
             rope: raw_data.rope.map(|i| i != 0),
-            part_type: Cell::new(part_type),
+            part_type,
         };
 
-        if guess & results.part_type.get().is_none() {
+        if guess & results.part_type.is_none() {
             results.guess_type();
         }
         results
@@ -654,9 +632,7 @@ pub struct SaveStatus {
 }
 
 impl SaveStatus {
-    pub fn new(save_default: bool) -> Self {
-        SaveStatus { save_default }
-    }
+    pub fn new(save_default: bool) -> Self { SaveStatus { save_default } }
 }
 
 impl SR1Ship {
@@ -922,11 +898,11 @@ impl SR1ShipTrait for SR1Ship {
     #[inline]
     fn to_raw_ship(&self) -> RawShip {
         RawShip {
-            parts: RawParts::from_vec_sr1(self.parts.clone()),
+            parts: RawParts::from_vec_sr1(&self.parts),
             connects: RawConnections::from_vec(self.connections.clone()),
-            version: Some(self.version),
+            version: self.version,
             lift_off: self.lift_off as i8,
-            touch_ground: Some(self.touch_ground as i8),
+            touch_ground: self.touch_ground as i8,
             disconnected: DisconnectedParts::from_vec_sr1(self.disconnected.clone()),
         }
     }

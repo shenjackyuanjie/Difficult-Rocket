@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import math
 from typing import Tuple, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 # from libs import pyglet
@@ -48,14 +48,22 @@ class OreuiShapeColors:
     def __eq__(self, other: object) -> bool:
         return (
             self.__class__ == other.__class__
-            and self.highlight == other.highlight
-            and self.border == other.border
-            and self.down_pad == other.down_pad
-            and self.corner == other.corner
-            and self.left_up == other.left_up
-            and self.right_down == other.right_down
-            and self.inner == other.inner
+            and self.highlight == other.highlight # pyright: ignore reportAttributeAccessIssue
+            and self.border == other.border # pyright: ignore reportAttributeAccessIssue
+            and self.down_pad == other.down_pad # pyright: ignore reportAttributeAccessIssue
+            and self.corner == other.corner # pyright: ignore reportAttributeAccessIssue
+            and self.left_up == other.left_up # pyright: ignore reportAttributeAccessIssue
+            and self.right_down == other.right_down # pyright: ignore reportAttributeAccessIssue
+            and self.inner == other.inner # pyright: ignore reportAttributeAccessIssue
         )
+
+    @property
+    def base_color(self) -> tuple[int, int, int, int]:
+        return self.inner
+
+    @base_color.setter
+    def base_color(self, value: tuple[int, int, int, int]) -> None:
+        self.inner = value
 
 
 class OreuiButtonStyles(Enum):
@@ -123,16 +131,16 @@ class OreuiButtonStatus:
     highlight: bool = False
     pad: float = 2
     down_pad: float = 5
-    colors: OreuiShapeColors = OreuiShapeColors()
+    colors: OreuiShapeColors = field(default_factory=OreuiShapeColors)
 
     def __eq__(self, value: object) -> bool:
         return (
             self.__class__ == value.__class__
-            and self.popout == value.popout
-            and self.highlight == value.highlight
-            and self.pad == value.pad
-            and self.down_pad == value.down_pad
-            and self.colors == value.colors
+            and self.popout == value.popout # pyright: ignore reportAttributeAccessIssue
+            and self.highlight == value.highlight # pyright: ignore reportAttributeAccessIssue
+            and self.pad == value.pad # pyright: ignore reportAttributeAccessIssue
+            and self.down_pad == value.down_pad # pyright: ignore reportAttributeAccessIssue
+            and self.colors == value.colors # pyright: ignore reportAttributeAccessIssue
         )
 
     @property
@@ -193,8 +201,8 @@ class OreuiShape(ShapeBase):
         return self._down_pad
 
     @property
-    def color(self) -> OreuiShapeColors:
-        return self._colors
+    def color(self) -> tuple[int, int, int, int]:
+        return self._colors.base_color
 
     @property
     def colors(self) -> OreuiShapeColors:
@@ -220,8 +228,10 @@ class OreuiShape(ShapeBase):
         self._update_vertices()
 
     @color.setter
-    def color(self, value: OreuiShapeColors) -> None:
-        self._colors = value
+    def color(self, values: tuple[int, int, int, int] | tuple[int, int, int]) -> None:
+        if len(values) == 3:
+            values = values + (255,)
+        self._colors.base_color = values
         self._update_color()
 
     @colors.setter
@@ -748,7 +758,7 @@ class OreuiButton(WidgetBase):
             height=height
             + 3
             - self.current_status.pad2x * 2
-            - self.current_status.real_down_pad(),
+            - self.current_status.real_down_pad(), # pyright: ignore reportArgumentType
             anchor_x="center",
             anchor_y="bottom",
             font_size=12,
@@ -872,7 +882,7 @@ class OreuiButton(WidgetBase):
     def on_mouse_press(self, x: int, y: int, buttons: int, modifiers: int) -> bool:
         """返回是否点击到了按钮"""
         if not self._enabled:
-            return
+            return False
         if (x, y) in self:
             if self.toggle_mode:
                 self._pressed = not self._pressed
@@ -896,7 +906,7 @@ class OreuiButton(WidgetBase):
     def on_mouse_release(self, x: int, y: int, buttons: int, modifiers: int) -> bool:
         """返回是否点击到了按钮"""
         if not self._enabled:
-            return
+            return False
         if self._pressed:
             self._selected = False  # 抬手了
             if not self.toggle_mode and self._auto_release:

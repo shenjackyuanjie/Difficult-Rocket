@@ -6,10 +6,10 @@ use pyo3::prelude::*;
 use crate::dr_physics::math::{Point2D, Rotate};
 use crate::sr1_parse::part_list::RawPartList;
 use crate::sr1_parse::ship::{Connection, RawConnectionData, RawShip};
+use crate::sr1_parse::IdType;
 use crate::sr1_parse::SaveStatus;
 use crate::sr1_parse::{get_max_box, SR1PartData, SR1PartListTrait};
 use crate::sr1_parse::{SR1PartList, SR1PartType, SR1Ship};
-use crate::IdType;
 
 use quick_xml::se::to_string;
 
@@ -31,9 +31,7 @@ impl PySaveStatus {
 }
 
 impl Default for PySaveStatus {
-    fn default() -> Self {
-        Self::new(false)
-    }
+    fn default() -> Self { Self::new(false) }
 }
 
 #[pyclass]
@@ -44,57 +42,39 @@ pub struct PySR1PartType {
 }
 
 impl PySR1PartType {
-    pub fn new(data: SR1PartType) -> Self {
-        Self { data }
-    }
+    pub fn new(data: SR1PartType) -> Self { Self { data } }
+
+    pub fn ref_new(data: &SR1PartType) -> Self { Self { data: data.clone() } }
 }
 
 #[pymethods]
 impl PySR1PartType {
     #[getter]
-    fn get_name(&self) -> String {
-        self.data.name.clone()
-    }
+    fn get_name(&self) -> String { self.data.name.clone() }
 
     #[getter]
-    fn get_description(&self) -> String {
-        self.data.description.clone()
-    }
+    fn get_description(&self) -> String { self.data.description.clone() }
 
     #[getter]
-    fn get_sprite(&self) -> String {
-        self.data.sprite.clone()
-    }
+    fn get_sprite(&self) -> String { self.data.sprite.clone() }
 
     #[getter]
-    fn get_mass(&self) -> f64 {
-        self.data.mass
-    }
+    fn get_mass(&self) -> f64 { self.data.mass }
 
     #[getter]
-    fn get_width(&self) -> u32 {
-        self.data.width
-    }
+    fn get_width(&self) -> u32 { self.data.width }
 
     #[getter]
-    fn get_height(&self) -> u32 {
-        self.data.height
-    }
+    fn get_height(&self) -> u32 { self.data.height }
 
     #[getter]
-    fn get_friction(&self) -> f64 {
-        self.data.friction
-    }
+    fn get_friction(&self) -> f64 { self.data.friction }
 
     #[getter]
-    fn get_hidden(&self) -> bool {
-        self.data.hidden
-    }
+    fn get_hidden(&self) -> bool { self.data.hidden }
 
     #[getter]
-    fn get_type(&self) -> String {
-        self.data.p_type.into()
-    }
+    fn get_type(&self) -> String { self.data.p_type.into() }
 }
 
 #[pyclass]
@@ -121,12 +101,16 @@ impl PySR1PartList {
     }
 
     fn as_dict(&self) -> HashMap<String, PySR1PartType> {
-        self.data.get_cache().iter().map(|(k, v)| (k.clone(), PySR1PartType::new(v.clone()))).collect()
+        let mut map = HashMap::new();
+        for part_type in self.data.types.iter() {
+            map.insert(part_type.name.clone(), PySR1PartType::ref_new(part_type));
+        }
+        map
     }
 
     fn get_part_type(&self, name: String) -> Option<PySR1PartType> {
         let part_type = self.data.get_part_type(&name);
-        part_type.map(PySR1PartType::new)
+        part_type.map(PySR1PartType::ref_new)
     }
 }
 
@@ -138,72 +122,46 @@ pub struct PySR1PartData {
 }
 
 impl PySR1PartData {
-    pub fn new(data: SR1PartData) -> Self {
-        Self { data }
-    }
+    pub fn new(data: SR1PartData) -> Self { Self { data } }
 }
 
 #[pymethods]
 impl PySR1PartData {
     #[getter]
-    fn get_id(&self) -> IdType {
-        self.data.id
-    }
+    fn get_id(&self) -> IdType { self.data.id }
 
     #[getter]
-    fn get_part_type_id(&self) -> String {
-        self.data.part_type_id.clone()
-    }
+    fn get_part_type_id(&self) -> String { self.data.part_type_id.clone() }
 
     #[getter]
-    fn get_pos(&self) -> (f64, f64) {
-        (self.data.x, self.data.y)
-    }
+    fn get_pos(&self) -> (f64, f64) { (self.data.x, self.data.y) }
 
     #[getter]
-    fn get_x(&self) -> f64 {
-        self.data.x
-    }
+    fn get_x(&self) -> f64 { self.data.x }
 
     #[getter]
-    fn get_y(&self) -> f64 {
-        self.data.y
-    }
+    fn get_y(&self) -> f64 { self.data.y }
 
     #[getter]
-    fn get_activate(&self) -> bool {
-        self.data.active
-    }
+    fn get_activate(&self) -> bool { self.data.active }
 
     #[getter]
-    fn get_angle(&self) -> f64 {
-        self.data.angle
-    }
+    fn get_angle(&self) -> f64 { self.data.angle }
 
     #[getter]
-    fn get_angle_r(&self) -> f64 {
-        self.data.angle_degrees()
-    }
+    fn get_angle_r(&self) -> f64 { self.data.angle_degrees() }
 
     #[getter]
-    fn get_angle_v(&self) -> f64 {
-        self.data.angle_v
-    }
+    fn get_angle_v(&self) -> f64 { self.data.angle_v }
 
     #[getter]
-    fn get_explode(&self) -> bool {
-        self.data.explode
-    }
+    fn get_explode(&self) -> bool { self.data.explode }
 
     #[getter]
-    fn get_flip_x(&self) -> bool {
-        self.data.flip_x
-    }
+    fn get_flip_x(&self) -> bool { self.data.flip_x }
 
     #[getter]
-    fn get_flip_y(&self) -> bool {
-        self.data.flip_y
-    }
+    fn get_flip_y(&self) -> bool { self.data.flip_y }
 
     fn get_part_box_by_type(&self, part_type: PySR1PartType) -> ((f64, f64), (f64, f64)) {
         let radius = self.data.angle;
@@ -337,24 +295,16 @@ impl PySR1Ship {
     }
 
     #[getter]
-    fn get_name(&self) -> String {
-        self.ship.name.clone()
-    }
+    fn get_name(&self) -> String { self.ship.name.clone() }
 
     #[getter]
-    fn get_description(&self) -> String {
-        self.ship.description.clone()
-    }
+    fn get_description(&self) -> String { self.ship.description.clone() }
 
     #[getter]
-    fn get_lift_off(&self) -> bool {
-        self.ship.lift_off
-    }
+    fn get_lift_off(&self) -> bool { self.ship.lift_off }
 
     #[getter]
-    fn get_touch_ground(&self) -> bool {
-        self.ship.touch_ground
-    }
+    fn get_touch_ground(&self) -> bool { self.ship.touch_ground }
 
     #[getter]
     fn get_mass(&self) -> f64 {

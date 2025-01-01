@@ -14,25 +14,34 @@ crate-type = ["cdylib"]
 #[profile.dev.package.rapier2d-f64]
 #opt-level = 2
 
-[profile.release]
-lto = "fat"
-# 舍弃恐慌信息以快速终止程序，而非展开调用栈。
-# 请以开发模式编译程序以检查恐慌信息。
-panic = "abort"
-opt-level = 2
-
 [dependencies]
 anyhow = "1.0"
 
-quick-xml = { version = "0.36.1", features = ["serialize"] }
+quick-xml = { version = "0.37", features = ["serialize"] }
 serde = { version = "1.0", features = ["derive"] }
 
 nalgebra = "0.33"
-pyo3 = { version = "0.22.2", features = [
+pyo3 = { version = "0.23", features = [
     "extension-module",
     "macros",
     "py-clone",
 ] }
 
-rapier2d-f64 = { version = "0.22.0", features = ["simd-stable"] }
+# 让我们来试试黑魔法
+winit = "0.30.5"
+
+rapier2d-f64 = { version = "0.22", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!
+
+raw-window-handle = "0.6.2"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59.0", features = [
+    "Win32_Foundation",
+    "Win32_System_Threading",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+# windows = { version = "0.58" , features = [
+#     "UI_Core"
+# ]}

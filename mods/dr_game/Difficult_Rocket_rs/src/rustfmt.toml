@@ -11,7 +11,7 @@ attr_fn_like_width = 100
 # 函数调用参数的最大长度
 fn_call_width = 80
 # 简单函数格式化为单行
-fn_single_line = false
+fn_single_line = true
 
 # 自动对齐最大长度
 enum_discrim_align_threshold = 5
