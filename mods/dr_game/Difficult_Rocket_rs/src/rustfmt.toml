@@ -21,3 +21,6 @@ use_field_init_shorthand = true
 color = "Always"
 
 edition = "2021"
+# 这样不用 nightly 也可以使用 unstable 特性
+unstable_features = true
+
