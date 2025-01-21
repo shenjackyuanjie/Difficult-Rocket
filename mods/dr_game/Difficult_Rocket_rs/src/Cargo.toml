@@ -28,9 +28,9 @@ pyo3 = { version = "0.23", features = [
 ] }
 
 # 让我们来试试黑魔法
-winit = "0.30.5"
+winit = "0.30"
 
-rapier2d-f64 = { version = "0.22", features = ["simd-stable"] }
+rapier2d-f64 = { version = "0.23", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!
 
 raw-window-handle = "0.6.2"
