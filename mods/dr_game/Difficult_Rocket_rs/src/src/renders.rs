@@ -1,5 +1,7 @@
 #[cfg(windows)]
 mod win;
+#[cfg(windows)]
+mod win_gpu;
 
 use pyo3::pyfunction;
 

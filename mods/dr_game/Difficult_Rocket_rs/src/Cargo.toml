@@ -29,11 +29,13 @@ pyo3 = { version = "0.23", features = [
 
 # 让我们来试试黑魔法
 winit = "0.30"
+wgpu = "24"
 
 rapier2d-f64 = { version = "0.23", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!
 
 raw-window-handle = "0.6.2"
+pollster = "0.4.0"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.59.0", features = [

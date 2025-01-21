@@ -1,3 +1,15 @@
+//! 目前我有一个cpython程序
+//! 使用pyglet通过OpenGL创建一个窗口
+//! 其中会通过pyo3调用rust代码(也就是不需要通过手动ffi来调用)
+//! 调用rust代码的步骤比较自由, 可以在 Python 侧的渲染循环开始之前调用, 也可以在渲染循环中调用
+//! 甚至自定义某个阶段的回调函数, 由 Python 侧调用
+//! 我想在rust部分能够直接在pyglet创建的窗口上绘制内容 要怎么做呢？
+//! 请优先考虑Windows平台下的实现即可
+//! 不一定拘泥与使用 OpenGL 来渲染, 也可以使用其他的渲染方式
+//! 其他桌面平台如macOS/Linux的需求可以先行忽略
+//! 不需要考虑 web 平台或者移动平台 的需求
+//! 但是请保留移植的可能性
+
 use std::num::NonZeroIsize;
 
 use winit::event::WindowEvent;
@@ -109,7 +121,7 @@ pub fn render_main() {
     // let window_ptr = window as isize;
 
     let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(window as isize).unwrap());
-    let raw_handle = RawWindowHandle::Win32(win32_handle);
+    let raw_handle: RawWindowHandle = RawWindowHandle::Win32(win32_handle);
 
     let mut app = App::new(raw_handle);
 
