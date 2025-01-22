@@ -16,7 +16,6 @@ from lib_not_dr import loggers
 # from pyglet.text import Label
 
 # from . import DR_mod_runtime
-from .render import render_hack_init
 
 logger = loggers.config.get_logger_from_old("client.dr_game_menu", "client")
 
