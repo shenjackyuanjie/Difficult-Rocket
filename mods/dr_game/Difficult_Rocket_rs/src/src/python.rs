@@ -10,3 +10,4 @@ pub mod console;
 pub mod data;
 #[allow(unused)]
 pub mod editor;
+pub mod renders;

@@ -1,7 +1,8 @@
-use raw_window_handle::RawWindowHandle;
-use winit::window::Window;
-use wgpu::{Adapter, Device, Instance, Queue, Surface, SurfaceTargetUnsafe};
+use std::num::NonZeroIsize;
+
 use pollster::block_on;
+use raw_window_handle::{RawWindowHandle, Win32WindowHandle};
+use wgpu::{Adapter, Device, Gles3MinorVersion, Instance, InstanceDescriptor, Queue, Surface, SurfaceTargetUnsafe};
 
 /// 定义一个结构体保存所有渲染上下文
 #[derive(Debug)]
@@ -14,50 +15,41 @@ pub struct WgpuContext {
 }
 
 impl WgpuContext {
-    pub fn new(window_handle: &RawWindowHandle) -> anyhow::Result<Self> {
-        let unsafe_handle = SurfaceTargetUnsafe::RawHandle{
-            raw_window_handle: window_handle.to_owned(),
-            raw_display_handle: raw_window_handle::RawDisplayHandle::Windows(raw_window_handle::WindowsDisplayHandle::new())
-        };
+    pub fn new(unsafe_handle: SurfaceTargetUnsafe) -> anyhow::Result<Self> {
+        let mut descripter = InstanceDescriptor::default();
+        descripter.backends = wgpu::Backends::from_comma_list("vulkan,dx12");
 
-        let instance = Instance::default();
-        let surface = unsafe {
-            instance.create_surface_unsafe(unsafe_handle)
-        }?;
+        let instance = Instance::new(&descripter);
+        let surface = unsafe { instance.create_surface_unsafe(unsafe_handle) }?;
 
         // 步骤2: 请求适配器（Adapter）
-        let adapter = block_on(
-            instance.request_adapter(&wgpu::RequestAdapterOptions {
-                power_preference: wgpu::PowerPreference::HighPerformance,
-                compatible_surface: Some(&surface),
-                force_fallback_adapter: false,
-            })
-        ).expect("Failed to find合适的适配器");
+        let adapter = block_on(instance.request_adapter(&wgpu::RequestAdapterOptions {
+            power_preference: wgpu::PowerPreference::HighPerformance,
+            compatible_surface: Some(&surface),
+            force_fallback_adapter: false,
+        }))
+        .expect("没找到合适的适配器");
 
         // 步骤3: 创建设备和队列（Device/Queue）
-        let (device, queue) = block_on(
-            adapter.request_device(
-                &wgpu::DeviceDescriptor {
-                    label: None,
-                    // 如果需要特定功能（如深度缓冲），在此处声明
-                    required_features: wgpu::Features::empty(),
-                    // 根据需求调整限制（如纹理大小）
-                    required_limits: wgpu::Limits::downlevel_defaults(),
-                    memory_hints: wgpu::MemoryHints::default(),
-                },
-                None, // 追踪路径（Trace Path）
-            )
-        )?;
+        let (device, queue) = block_on(adapter.request_device(
+            &wgpu::DeviceDescriptor {
+                label: Some("主设备"),
+                // 如果需要特定功能（如深度缓冲），在此处声明
+                required_features: wgpu::Features::empty(),
+                // 根据需求调整限制（如纹理大小）
+                required_limits: wgpu::Limits::downlevel_defaults(),
+                memory_hints: wgpu::MemoryHints::default(),
+            },
+            None, // 追踪路径（Trace Path）
+        ))?;
 
         // 步骤4: 配置Surface
         let surface_caps = surface.get_capabilities(&adapter);
-        let surface_format = surface_caps.formats.iter()
-            .find(|f| f.is_srgb())
-            .unwrap_or(&surface_caps.formats[0]);
+        let surface_format = surface_caps.formats.iter().find(|f| f.is_srgb()).unwrap_or(&surface_caps.formats[0]);
 
         let height = 100;
         let width = 100;
-        // let size = 
+        // let size =
         let config = wgpu::SurfaceConfiguration {
             usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
             format: *surface_format,
@@ -78,4 +70,55 @@ impl WgpuContext {
             config,
         })
     }
+
+    pub fn on_draw(&mut self) {
+        // 步骤5: 渲染
+        // let frame = self.surface.get_current_frame().expect("Failed to acquire next swap chain texture").output;
+        // let mut encoder = self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
+        // {
+        //     let _render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+        //         color_attachments: &[
+        //             wgpu::RenderPassColorAttachment {
+        //                 view: &frame.view,
+        //                 resolve_target: None,
+        //                 ops: wgpu::Operations {
+        //                     load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+        //                     store: true,
+        //                 }
+        //             }
+        //         ],
+        //         depth_stencil_attachment: None,
+        //     });
+        // }
+        // self.queue.submit(std::iter::once(encoder.finish()));
+    }
+}
+
+pub fn render_init() -> Option<crate::python::renders::WgpuRenderPy> {
+    let handler = match crate::platform::win::get_window_handler() {
+        Some(handler) => handler,
+        None => {
+            println!("找不到 pyglet 创建的窗口");
+            return None;
+        }
+    };
+
+    let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(handler).unwrap());
+    let raw_handle: RawWindowHandle = RawWindowHandle::Win32(win32_handle);
+    let unsafe_handle = SurfaceTargetUnsafe::RawHandle {
+        raw_window_handle: raw_handle,
+        raw_display_handle: raw_window_handle::RawDisplayHandle::Windows(raw_window_handle::WindowsDisplayHandle::new()),
+    };
+
+    let content = match WgpuContext::new(unsafe_handle) {
+        Ok(content) => content,
+        Err(e) => {
+            println!("Failed to create wgpu context: {:?}", e);
+            return None;
+        }
+    };
+
+    let py_warped = crate::python::renders::WgpuRenderPy::new(content);
+
+    Some(py_warped)
 }

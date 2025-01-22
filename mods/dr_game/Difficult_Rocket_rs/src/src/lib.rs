@@ -7,6 +7,8 @@
  */
 
 mod dr_physics;
+/// 平台相关的代码
+pub mod platform;
 /// Python 交互
 mod python;
 /// 也许是一些渲染的东西

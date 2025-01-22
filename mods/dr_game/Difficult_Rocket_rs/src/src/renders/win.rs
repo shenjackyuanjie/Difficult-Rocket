@@ -19,8 +19,6 @@ use winit::window::WindowAttributes;
 use winit::{application::ApplicationHandler, event_loop::EventLoop, window::Window};
 
 use windows_sys::Win32::Foundation::HWND;
-use windows_sys::Win32::System::Threading::GetCurrentProcessId;
-use windows_sys::Win32::UI::WindowsAndMessaging::{EnumWindows, GetWindowThreadProcessId};
 
 use raw_window_handle::{RawWindowHandle, Win32WindowHandle};
 
@@ -82,17 +80,6 @@ impl App {
     pub fn ref_window(&self) -> &Window { self.window.as_ref().unwrap() }
 }
 
-unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {
-    let mut process_id = 0;
-    GetWindowThreadProcessId(hwnd, &mut process_id);
-    if process_id == GetCurrentProcessId() {
-        println!("找到当前的窗口: {:?}", hwnd);
-        *(lparam as *mut HWND) = hwnd;
-        return 0;
-    }
-    1
-}
-
 fn render_thread(handler: isize) -> anyhow::Result<()> {
     let window = handler as HWND;
     let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(window as isize).unwrap());
@@ -108,15 +95,13 @@ fn render_thread(handler: isize) -> anyhow::Result<()> {
 }
 
 pub fn render_main() {
-    let mut window: HWND = std::ptr::null_mut();
-
-    let result = unsafe { EnumWindows(Some(enum_windows_proc), &mut window as *mut _ as isize) };
-
-    if result != 0 {
-        println!("Find window failed");
-        return;
-    }
-    println!("找到 pyglet 的窗口: {:?}", window);
+    let window = match crate::platform::win::get_window_handler() {
+        Some(window) => window,
+        None => {
+            println!("Failed to get window handler");
+            return;
+        }
+    };
 
     // let window_ptr = window as isize;
 
