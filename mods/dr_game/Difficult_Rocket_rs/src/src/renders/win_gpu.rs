@@ -55,16 +55,18 @@ impl WgpuContext {
             .find(|f| f.is_srgb())
             .unwrap_or(&surface_caps.formats[0]);
 
-        // let initial_size = window_handle.window_size();
+        let height = 100;
+        let width = 100;
         // let size = 
         let config = wgpu::SurfaceConfiguration {
             usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
             format: *surface_format,
-            width: initial_size.width,
-            height: initial_size.height,
+            width,
+            height,
             present_mode: wgpu::PresentMode::Fifo, // 垂直同步
             alpha_mode: surface_caps.alpha_modes[0],
             view_formats: vec![],
+            desired_maximum_frame_latency: 1,
         };
         surface.configure(&device, &config);
 
