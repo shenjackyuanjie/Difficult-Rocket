@@ -76,13 +76,13 @@ class Menu(BaseScreen):
         def render_hacks(x, y):
             from .Difficult_Rocket_rs import render_hack
             if self.hacks is not None:
+                logger.info("render_hack 已经做过了", tag="dr_game_hacks")
                 return
             render = render_hack()
             if render is not None:
                 render.on_resize(main_window.width, main_window.height)
                 self.hacks = render
-                logger.info("render_hack_init", tag="dr_game_hacks")
-
+                logger.info("render_hack_inited", tag="dr_game_hacks")
 
         self.enter_ship_editor_button.set_handler("on_release", on_release)
         self.magic_rust_test_button.set_handler("on_release", render_hacks)
@@ -91,3 +91,5 @@ class Menu(BaseScreen):
 
     def on_draw(self, window: ClientWindow):
         self.main_batch.draw()
+        if self.hacks is not None:
+            self.hacks.on_draw()
