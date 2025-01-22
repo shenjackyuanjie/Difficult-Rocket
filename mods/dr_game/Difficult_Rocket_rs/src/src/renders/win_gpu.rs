@@ -71,6 +71,12 @@ impl WgpuContext {
         })
     }
 
+    pub fn on_resize(&mut self, width: u32, height: u32) {
+        self.config.width = width;
+        self.config.height = height;
+        self.surface.configure(&self.device, &self.config);
+    }
+
     pub fn on_draw(&mut self) {
         // 步骤5: 渲染
         // let frame = self.surface.get_current_frame().expect("Failed to acquire next swap chain texture").output;

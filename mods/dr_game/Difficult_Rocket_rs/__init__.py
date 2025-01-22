@@ -52,10 +52,20 @@ if TYPE_CHECKING:
         """
         ...
 
-    def render_hack() -> None:
+    def render_hack() -> WgpuRender | None:
         """
-        进行一些 rust 方面的 渲染接管
+        进行一些 rust 方面的 渲染覆盖, 报错则返回 None
         """
+        ...
+
+    class WgpuRender:
+        """
+        一些很神奇的 wgpu 渲染
+        用于在必要的时候跳过 pyglet 直接在 rust 中渲染
+        目前 Windows only
+        """
+        def on_draw(self) -> None:
+            ...
 
     class SR1PartType_rs:  # NOQA
         """

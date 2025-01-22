@@ -30,6 +30,7 @@ class Menu(BaseScreen):
 
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
+        self.hacks = None
         self.main_batch = Batch()
         self.main_group = Group(parent=main_window.main_group, order=1)
 
@@ -67,13 +68,24 @@ class Menu(BaseScreen):
             from .sr1_ship import SR1ShipEditor, SR1ShipSelecter
 
             main_window.remove_handlers(self.enter_ship_editor_button)
+            main_window.remove_handlers(self.magic_rust_test_button)
             main_window.remove_sub_screen("DR_game_menu")
             main_window.add_sub_screen(SR1ShipSelecter.name, SR1ShipSelecter)
             main_window.add_sub_screen(SR1ShipEditor.name, SR1ShipEditor)
             logger.info("added SR1_ship screen", tag="dr_game")
 
+        def render_hacks(x, y):
+            from .Difficult_Rocket_rs import render_hack
+            if self.hacks is not None:
+                return
+            render = render_hack()
+            if render is not None:
+                self.hacks = render
+                logger.info("render_hack_init", tag="dr_game_hacks")
+
+
         self.enter_ship_editor_button.set_handler("on_release", on_release)
-        self.magic_rust_test_button.set_handler("on_release", render_hack_init)
+        self.magic_rust_test_button.set_handler("on_release", render_hacks)
         main_window.push_handlers(self.enter_ship_editor_button)
         main_window.push_handlers(self.magic_rust_test_button)
 
