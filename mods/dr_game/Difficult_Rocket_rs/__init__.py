@@ -67,6 +67,9 @@ if TYPE_CHECKING:
         def on_draw(self) -> None:
             ...
 
+        def on_resize(self, width: int, height: int) -> None:
+            ...
+
     class SR1PartType_rs:  # NOQA
         """
         用于从 rust 中读取 SR1PartType

@@ -79,6 +79,7 @@ class Menu(BaseScreen):
                 return
             render = render_hack()
             if render is not None:
+                render.on_resize(main_window.width, main_window.height)
                 self.hacks = render
                 logger.info("render_hack_init", tag="dr_game_hacks")
 
