@@ -89,6 +89,10 @@ class Menu(BaseScreen):
         main_window.push_handlers(self.enter_ship_editor_button)
         main_window.push_handlers(self.magic_rust_test_button)
 
+    def on_resize(self, width, height, window: ClientWindow):
+        if self.hacks is not None:
+            self.hacks.on_resize(width, height)
+
     def on_draw(self, window: ClientWindow):
         self.main_batch.draw()
         if self.hacks is not None:

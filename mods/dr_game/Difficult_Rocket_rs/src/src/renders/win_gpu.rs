@@ -2,7 +2,7 @@ use std::num::NonZeroIsize;
 
 use pollster::block_on;
 use raw_window_handle::{RawWindowHandle, Win32WindowHandle};
-use wgpu::{Adapter, Device, Gles3MinorVersion, Instance, InstanceDescriptor, Queue, Surface, SurfaceTargetUnsafe};
+use wgpu::{Adapter, Device, Instance, InstanceDescriptor, Queue, Surface, SurfaceTargetUnsafe};
 
 /// 定义一个结构体保存所有渲染上下文
 #[derive(Debug)]
