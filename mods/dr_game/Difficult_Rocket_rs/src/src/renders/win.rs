@@ -14,8 +14,11 @@ pub struct WgpuContext {
     pub config: wgpu::SurfaceConfiguration,
     pub render_pipeline: wgpu::RenderPipeline,
     pub vertex_buffer: wgpu::Buffer,
+    pub index_buffer: wgpu::Buffer,
+    num_indices: u32,
 }
 
+#[repr(C)]
 #[derive(Copy, Clone, Debug)]
 struct Vertex {
     position: [f32; 3],
@@ -23,16 +26,28 @@ struct Vertex {
 }
 
 impl Vertex {
-    pub fn as_u8(&self) -> Vec<u8> {
-        let mut data: Vec<u8> = Vec::with_capacity(6 * 4);
-        data.extend_from_slice(&self.position.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
-        data.extend_from_slice(&self.color.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
-        data
-    }
-
     pub fn extend_u8(&self, data: &mut Vec<u8>) {
         data.extend_from_slice(&self.position.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
         data.extend_from_slice(&self.color.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
+    }
+
+    pub fn desc<'a>() -> wgpu::VertexBufferLayout<'a> {
+        wgpu::VertexBufferLayout {
+            array_stride: std::mem::size_of::<Vertex>() as wgpu::BufferAddress,
+            step_mode: wgpu::VertexStepMode::Vertex,
+            attributes: &[
+                wgpu::VertexAttribute {
+                    offset: 0,
+                    shader_location: 0,
+                    format: wgpu::VertexFormat::Float32x3,
+                },
+                wgpu::VertexAttribute {
+                    offset: std::mem::size_of::<[f32; 3]>() as wgpu::BufferAddress,
+                    shader_location: 1,
+                    format: wgpu::VertexFormat::Float32x3,
+                },
+            ],
+        }
     }
 }
 
@@ -132,7 +147,7 @@ impl WgpuContext {
             vertex: wgpu::VertexState {
                 module: &shader,
                 entry_point: Some("vs_main"),
-                buffers: &[],
+                buffers: &[Vertex::desc()],
                 compilation_options: Default::default(),
             },
             fragment: Some(wgpu::FragmentState {
@@ -204,6 +219,21 @@ impl WgpuContext {
             usage: wgpu::BufferUsages::VERTEX,
         });
 
+        let index_data = [0u16, 1, 2, 3, 4, 5];
+        let index_buffer = {
+            let mut data = Vec::with_capacity(index_data.len() * std::mem::size_of::<u16>());
+            for index in index_data.iter() {
+                data.extend_from_slice(&index.to_ne_bytes());
+            }
+            data
+        };
+
+        let index_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("Index Buffer"),
+            contents: &index_buffer,
+            usage: wgpu::BufferUsages::INDEX,
+        });
+
         Ok(Self {
             surface,
             adapter,
@@ -212,6 +242,8 @@ impl WgpuContext {
             config,
             render_pipeline,
             vertex_buffer,
+            index_buffer,
+            num_indices: index_data.len() as u32,
         })
     }
 
@@ -228,23 +260,28 @@ impl WgpuContext {
             label: Some("Render Encoder"),
         });
         {
-            // let _render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-            //     label: Some("Render Pass"),
-            //     color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-            //         view: &view,
-            //         resolve_target: None,
-            //         ops: wgpu::Operations {
-            //             load: wgpu::LoadOp::Clear(wgpu::Color {
-            //                 r: 0.1,
-            //                 g: 0.2,
-            //                 b: 0.3,
-            //                 a: 1.0,
-            //             }),
-            //             store: wgpu::StoreOp::Store,
-            //         },
-            //     })],
-            //     ..Default::default()
-            // });
+            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("Render Pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: &view,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color {
+                            r: 0.0,
+                            g: 0.0,
+                            b: 0.0,
+                            a: 0.0,
+                        }),
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                ..Default::default()
+            });
+
+            render_pass.set_pipeline(&self.render_pipeline);
+            render_pass.set_vertex_buffer(0, self.vertex_buffer.slice(..));
+            render_pass.set_index_buffer(self.index_buffer.slice(..), wgpu::IndexFormat::Uint16);
+            render_pass.draw_indexed(0..self.num_indices, 0, 0..1);
         }
         self.queue.submit(std::iter::once(encoder.finish()));
         output.present();
