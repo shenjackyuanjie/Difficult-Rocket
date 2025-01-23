@@ -29,7 +29,7 @@ pyo3 = { version = "0.23", features = [
 
 # 让我们来试试黑魔法
 winit = "0.30"
-wgpu = "24"
+wgpu = { version = "24", features = ["wgsl"]}
 
 rapier2d-f64 = { version = "0.23", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!

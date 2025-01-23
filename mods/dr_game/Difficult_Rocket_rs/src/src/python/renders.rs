@@ -4,7 +4,7 @@ use pyo3::prelude::*;
 #[pyo3(name = "WgpuRender")]
 pub struct WgpuRenderPy {
     #[cfg(windows)]
-    pub app: crate::renders::win_gpu::WgpuContext,
+    pub app: crate::renders::win::WgpuContext,
 }
 
 #[pymethods]
@@ -21,5 +21,5 @@ impl WgpuRenderPy {
 }
 
 impl WgpuRenderPy {
-    pub fn new(app: crate::renders::win_gpu::WgpuContext) -> Self { Self { app } }
+    pub fn new(app: crate::renders::win::WgpuContext) -> Self { Self { app } }
 }

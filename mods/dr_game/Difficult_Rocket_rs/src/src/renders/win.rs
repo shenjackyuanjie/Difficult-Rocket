@@ -1,122 +1,292 @@
-//! 目前我有一个cpython程序
-//! 使用pyglet通过OpenGL创建一个窗口
-//! 其中会通过pyo3调用rust代码(也就是不需要通过手动ffi来调用)
-//! 调用rust代码的步骤比较自由, 可以在 Python 侧的渲染循环开始之前调用, 也可以在渲染循环中调用
-//! 甚至自定义某个阶段的回调函数, 由 Python 侧调用
-//! 我想在rust部分能够直接在pyglet创建的窗口上绘制内容 要怎么做呢？
-//! 请优先考虑Windows平台下的实现即可
-//! 不一定拘泥与使用 OpenGL 来渲染, 也可以使用其他的渲染方式
-//! 其他桌面平台如macOS/Linux的需求可以先行忽略
-//! 不需要考虑 web 平台或者移动平台 的需求
-//! 但是请保留移植的可能性
-
 use std::num::NonZeroIsize;
 
-use winit::event::WindowEvent;
-use winit::platform::run_on_demand::EventLoopExtRunOnDemand;
-use winit::platform::windows::EventLoopBuilderExtWindows;
-use winit::window::WindowAttributes;
-use winit::{application::ApplicationHandler, event_loop::EventLoop, window::Window};
-
-use windows_sys::Win32::Foundation::HWND;
-
+use pollster::block_on;
 use raw_window_handle::{RawWindowHandle, Win32WindowHandle};
+use wgpu::{util::DeviceExt, Adapter, Device, Instance, InstanceDescriptor, Queue, Surface, SurfaceTargetUnsafe};
 
-struct App {
-    window: Option<Window>,
-    parent: RawWindowHandle,
+/// 定义一个结构体保存所有渲染上下文
+#[derive(Debug)]
+pub struct WgpuContext {
+    pub surface: Surface<'static>,
+    pub adapter: Adapter,
+    pub device: Device,
+    pub queue: Queue,
+    pub config: wgpu::SurfaceConfiguration,
+    pub render_pipeline: wgpu::RenderPipeline,
+    pub vertex_buffer: wgpu::Buffer,
 }
 
-impl ApplicationHandler for App {
-    fn resumed(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
-        // 这里需要获取现有的窗口, 毕竟是运行在一个已有窗口的 Python 程序里
-        if self.window.is_none() {
-            println!("Create window");
-            let window_attribute = unsafe { WindowAttributes::default().with_parent_window(Some(self.parent.clone())) };
-            let window = event_loop.create_window(window_attribute).unwrap();
-            self.window = Some(window);
-        }
+#[derive(Copy, Clone, Debug)]
+struct Vertex {
+    position: [f32; 3],
+    color: [f32; 3],
+}
+
+impl Vertex {
+    pub fn as_u8(&self) -> Vec<u8> {
+        let mut data: Vec<u8> = Vec::with_capacity(6 * 4);
+        data.extend_from_slice(&self.position.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
+        data.extend_from_slice(&self.color.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
+        data
     }
 
-    fn window_event(
-        &mut self,
-        event_loop: &winit::event_loop::ActiveEventLoop,
-        _window_id: winit::window::WindowId,
-        event: winit::event::WindowEvent,
-    ) {
-        match event {
-            WindowEvent::CloseRequested => {
-                println!("Close window");
-                event_loop.exit();
-            }
-            WindowEvent::Destroyed => {
-                println!("Window destroyed");
-                event_loop.exit();
-            }
-            WindowEvent::RedrawRequested => {
-                println!("Redraw window");
-                // self.ref_window().
-                event_loop.exit();
-            }
-            WindowEvent::MouseInput { button, .. } => {
-                println!("Mouse input: {:?}", button);
-            }
-            WindowEvent::Moved(pos) => {
-                println!("Window moved: {:?}", pos);
-            }
-            _ => {}
-        }
+    pub fn extend_u8(&self, data: &mut Vec<u8>) {
+        data.extend_from_slice(&self.position.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
+        data.extend_from_slice(&self.color.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
     }
 }
 
-impl App {
-    pub fn new(handle: RawWindowHandle) -> Self {
-        Self {
-            window: None,
-            parent: handle,
+const SHADER: &str = r#"
+// 顶点着色器
+
+struct VertexInput {
+    @location(0) position: vec3f,
+    @location(1) color: vec3f,
+};
+
+struct VertexOutput {
+    @builtin(position) clip_position: vec4f,
+    @location(0) color: vec3f,
+};
+
+@vertex
+fn vs_main(
+    model: VertexInput,
+) -> VertexOutput {
+    var out: VertexOutput;
+    out.color = model.color;
+    out.clip_position = vec4f(model.position, 1.0);
+    return out;
+}
+
+// 片元着色器
+
+@fragment
+fn fs_main(in: VertexOutput) -> @location(0) vec4f {
+    return vec4f(in.color, 1.0);
+}
+"#;
+
+impl WgpuContext {
+    pub fn new(unsafe_handle: SurfaceTargetUnsafe) -> anyhow::Result<Self> {
+        let mut descripter = InstanceDescriptor::default();
+        descripter.backends = wgpu::Backends::from_comma_list("vulkan,dx12");
+
+        let instance = Instance::new(&descripter);
+        let surface = unsafe { instance.create_surface_unsafe(unsafe_handle) }?;
+
+        // 步骤2: 请求适配器（Adapter）
+        let adapter = block_on(instance.request_adapter(&wgpu::RequestAdapterOptions {
+            power_preference: wgpu::PowerPreference::HighPerformance,
+            compatible_surface: Some(&surface),
+            force_fallback_adapter: false,
+        }))
+        .expect("没找到合适的适配器");
+
+        // 步骤3: 创建设备和队列（Device/Queue）
+        let (device, queue) = block_on(adapter.request_device(
+            &wgpu::DeviceDescriptor {
+                label: Some("主设备"),
+                // 如果需要特定功能（如深度缓冲），在此处声明
+                required_features: wgpu::Features::empty(),
+                // 根据需求调整限制（如纹理大小）
+                required_limits: wgpu::Limits::downlevel_defaults(),
+                memory_hints: wgpu::MemoryHints::default(),
+            },
+            None, // 追踪路径（Trace Path）
+        ))?;
+
+        // 步骤4: 配置Surface
+        let surface_caps = surface.get_capabilities(&adapter);
+        let surface_format = surface_caps.formats.iter().find(|f| f.is_srgb()).unwrap_or(&surface_caps.formats[0]);
+
+        let height = 100;
+        let width = 100;
+        // let size =
+        let config = wgpu::SurfaceConfiguration {
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+            format: *surface_format,
+            width,
+            height,
+            present_mode: wgpu::PresentMode::Fifo, // 垂直同步
+            alpha_mode: surface_caps.alpha_modes[0],
+            view_formats: vec![],
+            desired_maximum_frame_latency: 1,
+        };
+        surface.configure(&device, &config);
+
+        let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("main shader"),
+            source: wgpu::ShaderSource::Wgsl(SHADER.into()),
+        });
+
+        let render_pipline_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("Render Pipeline Layout"),
+            bind_group_layouts: &[],
+            push_constant_ranges: &[],
+        });
+
+        let render_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+            label: Some("Render Pipeline"),
+            layout: Some(&render_pipline_layout),
+            vertex: wgpu::VertexState {
+                module: &shader,
+                entry_point: Some("vs_main"),
+                buffers: &[],
+                compilation_options: Default::default(),
+            },
+            fragment: Some(wgpu::FragmentState {
+                module: &shader,
+                entry_point: Some("fs_main"),
+                targets: &[Some(wgpu::ColorTargetState {
+                    format: config.format,
+                    blend: Some(wgpu::BlendState::REPLACE),
+                    write_mask: wgpu::ColorWrites::ALL,
+                })],
+                compilation_options: Default::default(),
+            }),
+            primitive: wgpu::PrimitiveState {
+                topology: wgpu::PrimitiveTopology::TriangleList, // 1.
+                strip_index_format: None,
+                front_face: wgpu::FrontFace::Ccw, // 2.
+                cull_mode: Some(wgpu::Face::Back),
+                // 将此设置为 Fill 以外的任何值都要需要开启 Feature::NON_FILL_POLYGON_MODE
+                polygon_mode: wgpu::PolygonMode::Fill,
+                // 需要开启 Features::DEPTH_CLIP_CONTROL
+                unclipped_depth: false,
+                // 需要开启 Features::CONSERVATIVE_RASTERIZATION
+                conservative: false,
+            },
+            depth_stencil: None,
+            multisample: wgpu::MultisampleState {
+                count: 1,
+                mask: !0,
+                alpha_to_coverage_enabled: false,
+            },
+            multiview: None,
+            cache: None,
+        });
+
+        let vertex_data = [
+            Vertex {
+                position: [-0.0868241, -0.49240386, 0.0],
+                color: [0.5, 0.0, 0.5],
+            },
+            Vertex {
+                position: [0.4131759, -0.49240386, 0.0],
+                color: [0.5, 0.0, 0.5],
+            },
+            Vertex {
+                position: [0.4131759, 0.49240386, 0.0],
+                color: [0.5, 0.0, 0.5],
+            },
+            Vertex {
+                position: [-0.0868241, -0.49240386, 0.0],
+                color: [0.5, 0.0, 0.5],
+            },
+            Vertex {
+                position: [0.4131759, 0.49240386, 0.0],
+                color: [0.5, 0.0, 0.5],
+            },
+            Vertex {
+                position: [-0.0868241, 0.49240386, 0.0],
+                color: [0.5, 0.0, 0.5],
+            },
+        ];
+        let mut data = Vec::new();
+        for vertex in vertex_data.iter() {
+            vertex.extend_u8(&mut data);
         }
+
+        let vertex_buffer = device.create_buffer_init( &wgpu::util::BufferInitDescriptor {
+            label: Some("Vertex Buffer"),
+            contents: &data,
+            usage: wgpu::BufferUsages::VERTEX,
+        });
+
+        Ok(Self {
+            surface,
+            adapter,
+            device,
+            queue,
+            config,
+            render_pipeline,
+            vertex_buffer,
+        })
     }
 
-    pub fn ref_window(&self) -> &Window { self.window.as_ref().unwrap() }
+    pub fn on_resize(&mut self, width: u32, height: u32) {
+        self.config.width = width;
+        self.config.height = height;
+        self.surface.configure(&self.device, &self.config);
+    }
+
+    fn inner_on_draw(&mut self) -> anyhow::Result<()> {
+        let output = self.surface.get_current_texture()?;
+        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
+        let mut encoder = self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+            label: Some("Render Encoder"),
+        });
+        {
+            // let _render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+            //     label: Some("Render Pass"),
+            //     color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+            //         view: &view,
+            //         resolve_target: None,
+            //         ops: wgpu::Operations {
+            //             load: wgpu::LoadOp::Clear(wgpu::Color {
+            //                 r: 0.1,
+            //                 g: 0.2,
+            //                 b: 0.3,
+            //                 a: 1.0,
+            //             }),
+            //             store: wgpu::StoreOp::Store,
+            //         },
+            //     })],
+            //     ..Default::default()
+            // });
+        }
+        self.queue.submit(std::iter::once(encoder.finish()));
+        output.present();
+
+        Ok(())
+    }
+
+    pub fn on_draw(&mut self) {
+        match self.inner_on_draw() {
+            Ok(_) => {}
+            Err(e) => {
+                println!("Failed to draw: {:?}", e);
+            }
+        }
+    }
 }
 
-fn render_thread(handler: isize) -> anyhow::Result<()> {
-    let window = handler as HWND;
-    let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(window as isize).unwrap());
-    let raw_handle = RawWindowHandle::Win32(win32_handle);
-
-    let mut app = App::new(raw_handle);
-
-    let event_loop = EventLoop::builder().with_any_thread(true).build()?;
-    // let event_loop = EventLoop::new()?;
-    event_loop.run_app(&mut app)?;
-
-    Ok(())
-}
-
-pub fn render_main() {
-    let window = match crate::platform::win::get_window_handler() {
-        Some(window) => window,
+pub fn render_init() -> Option<crate::python::renders::WgpuRenderPy> {
+    let handler = match crate::platform::win::get_window_handler() {
+        Some(handler) => handler,
         None => {
-            println!("Failed to get window handler");
-            return;
+            println!("找不到 pyglet 创建的窗口");
+            return None;
         }
     };
 
-    // let window_ptr = window as isize;
-
-    let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(window as isize).unwrap());
+    let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(handler).unwrap());
     let raw_handle: RawWindowHandle = RawWindowHandle::Win32(win32_handle);
+    let unsafe_handle = SurfaceTargetUnsafe::RawHandle {
+        raw_window_handle: raw_handle,
+        raw_display_handle: raw_window_handle::RawDisplayHandle::Windows(raw_window_handle::WindowsDisplayHandle::new()),
+    };
 
-    let mut app = App::new(raw_handle);
+    let content = match WgpuContext::new(unsafe_handle) {
+        Ok(content) => content,
+        Err(e) => {
+            println!("Failed to create wgpu context: {:?}", e);
+            return None;
+        }
+    };
 
-    let mut event_loop = EventLoop::new().unwrap();
-    // let event_loop = EventLoop::new()?;
-    // event_loop.run_app(&mut app).unwrap();
+    let py_warped = crate::python::renders::WgpuRenderPy::new(content);
 
-    let threaded_event_loop = event_loop.run_app_on_demand(&mut app).unwrap();
-
-    std::thread::spawn(move || {
-        // render_thread(window as isize).unwrap();
-    });
+    Some(py_warped)
 }
