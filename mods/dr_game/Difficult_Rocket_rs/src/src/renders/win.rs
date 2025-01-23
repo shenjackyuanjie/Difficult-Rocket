@@ -198,7 +198,7 @@ impl WgpuContext {
             vertex.extend_u8(&mut data);
         }
 
-        let vertex_buffer = device.create_buffer_init( &wgpu::util::BufferInitDescriptor {
+        let vertex_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
             label: Some("Vertex Buffer"),
             contents: &data,
             usage: wgpu::BufferUsages::VERTEX,
