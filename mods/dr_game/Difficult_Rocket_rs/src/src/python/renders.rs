@@ -9,9 +9,9 @@ pub struct WgpuRenderPy {
 
 #[pymethods]
 impl WgpuRenderPy {
-    pub fn on_draw(&mut self) {
+    pub fn on_draw(&mut self, clear: bool) {
         #[cfg(windows)]
-        self.app.on_draw();
+        self.app.on_draw(clear);
     }
 
     pub fn on_resize(&mut self, width: u32, height: u32) {

@@ -78,6 +78,10 @@ fn vs_main(
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4f {
+    // 如果 color 是 0.0, 0.0, 0.0, 输出透明
+    if (all(in.color == vec3f(0.0, 0.0, 0.0))) {
+        return vec4f(0.0, 0.0, 0.0, 0.0);
+    }
     return vec4f(in.color, 1.0);
 }
 "#;
@@ -155,7 +159,7 @@ impl WgpuContext {
                 entry_point: Some("fs_main"),
                 targets: &[Some(wgpu::ColorTargetState {
                     format: config.format,
-                    blend: Some(wgpu::BlendState::REPLACE),
+                    blend: Some(wgpu::BlendState::ALPHA_BLENDING),
                     write_mask: wgpu::ColorWrites::ALL,
                 })],
                 compilation_options: Default::default(),
@@ -184,29 +188,25 @@ impl WgpuContext {
 
         let vertex_data = [
             Vertex {
-                position: [-0.0868241, -0.49240386, 0.0],
-                color: [0.5, 0.0, 0.5],
-            },
-            Vertex {
-                position: [0.4131759, -0.49240386, 0.0],
-                color: [0.5, 0.0, 0.5],
-            },
-            Vertex {
-                position: [0.4131759, 0.49240386, 0.0],
-                color: [0.5, 0.0, 0.5],
-            },
-            Vertex {
-                position: [-0.0868241, -0.49240386, 0.0],
-                color: [0.5, 0.0, 0.5],
-            },
-            Vertex {
-                position: [0.4131759, 0.49240386, 0.0],
-                color: [0.5, 0.0, 0.5],
-            },
-            Vertex {
                 position: [-0.0868241, 0.49240386, 0.0],
+                color: [0.1, 0.2, 0.5],
+            }, // A
+            Vertex {
+                position: [-0.49513406, 0.06958647, 0.0],
+                color: [0.2, 0.4, 0.5],
+            }, // B
+            Vertex {
+                position: [-0.21918549, -0.44939706, 0.0],
+                color: [0.6, 0.0, 0.5],
+            }, // C
+            Vertex {
+                position: [0.35966998, -0.3473291, 0.0],
                 color: [0.5, 0.0, 0.5],
-            },
+            }, // D
+            Vertex {
+                position: [0.44147372, 0.2347359, 0.0],
+                color: [0.5, 0.0, 0.5],
+            }, // E
         ];
         let mut data = Vec::new();
         for vertex in vertex_data.iter() {
@@ -219,7 +219,7 @@ impl WgpuContext {
             usage: wgpu::BufferUsages::VERTEX,
         });
 
-        let index_data = [0u16, 1, 2, 3, 4, 5];
+        let index_data = [0, 1, 4, 1, 2, 4, 2, 3, 4_u16];
         let index_buffer = {
             let mut data = Vec::with_capacity(index_data.len() * std::mem::size_of::<u16>());
             for index in index_data.iter() {
@@ -253,7 +253,7 @@ impl WgpuContext {
         self.surface.configure(&self.device, &self.config);
     }
 
-    fn inner_on_draw(&mut self) -> anyhow::Result<()> {
+    fn inner_on_draw(&self) -> anyhow::Result<()> {
         let output = self.surface.get_current_texture()?;
         let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
         let mut encoder = self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
@@ -266,13 +266,8 @@ impl WgpuContext {
                     view: &view,
                     resolve_target: None,
                     ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color {
-                            r: 0.0,
-                            g: 0.0,
-                            b: 0.0,
-                            a: 0.0,
-                        }),
-                        store: wgpu::StoreOp::Store,
+                        load: wgpu::LoadOp::Load,
+                        store: wgpu::StoreOp::Discard,
                     },
                 })],
                 ..Default::default()
@@ -289,11 +284,44 @@ impl WgpuContext {
         Ok(())
     }
 
-    pub fn on_draw(&mut self) {
-        match self.inner_on_draw() {
-            Ok(_) => {}
-            Err(e) => {
-                println!("Failed to draw: {:?}", e);
+    fn inner_clear_draw(&self) -> anyhow::Result<()> {
+        let output = self.surface.get_current_texture()?;
+        let mut encoder = self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
+            label: Some("Clear Encoder"),
+        });
+        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
+        {
+            let mut _render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("Render Pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: &view,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
+                        store: wgpu::StoreOp::Discard,
+                    },
+                })],
+                ..Default::default()
+            });
+        }
+        self.queue.submit(std::iter::once(encoder.finish()));
+        Ok(())
+    }
+
+    pub fn on_draw(&mut self, clear: bool) {
+        if clear {
+            match self.inner_clear_draw() {
+                Ok(_) => {}
+                Err(e) => {
+                    println!("Failed to clear: {:?}", e);
+                }
+            }
+        } else {
+            match self.inner_on_draw() {
+                Ok(_) => {}
+                Err(e) => {
+                    println!("Failed to draw: {:?}", e);
+                }
             }
         }
     }

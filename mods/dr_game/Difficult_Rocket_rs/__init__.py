@@ -64,7 +64,7 @@ if TYPE_CHECKING:
         用于在必要的时候跳过 pyglet 直接在 rust 中渲染
         目前 Windows only
         """
-        def on_draw(self) -> None:
+        def on_draw(self, clear: bool) -> None:
             ...
 
         def on_resize(self, width: int, height: int) -> None:

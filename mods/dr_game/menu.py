@@ -30,6 +30,7 @@ class Menu(BaseScreen):
     def __init__(self, main_window: ClientWindow):
         super().__init__(main_window)
         self.hacks = None
+        self.enable_hacks = True
         self.main_batch = Batch()
         self.main_group = Group(parent=main_window.main_group, order=1)
 
@@ -93,7 +94,12 @@ class Menu(BaseScreen):
         if self.hacks is not None:
             self.hacks.on_resize(width, height)
 
+    def on_mouse_press(self, x, y, button, modifiers, window):
+        if button == 1:
+            self.enable_hacks = not self.enable_hacks
+            logger.info(f"enable_hacks: {self.enable_hacks}", tag="dr_game_hacks")
+
     def on_draw(self, window: ClientWindow):
         self.main_batch.draw()
         if self.hacks is not None:
-            self.hacks.on_draw()
+            self.hacks.on_draw(not self.enable_hacks)
