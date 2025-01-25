@@ -11,6 +11,8 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+from __future__ import annotations
+
 import sys
 import time
 import logging
@@ -65,8 +67,11 @@ class Console(Options):
     def stop(self):
         self.running = False
 
-    def get_command(self) -> str:
-        return self.caches.pop(0)
+    def get_command(self) -> str | None:
+        if self.caches:
+            return self.caches.pop(0)
+        else:
+            return None
 
 
 class Game(Options):

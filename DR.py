@@ -91,7 +91,6 @@ def main() -> int:
         text = cache_steam.getvalue()
         print(text)
     else:
-        crash.record_thread = False
         print(crash.all_thread)
         print(crash.all_process)
     # join all thread

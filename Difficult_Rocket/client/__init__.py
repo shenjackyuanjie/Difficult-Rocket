@@ -250,7 +250,7 @@ class ClientWindow(Window):
     def on_draw(self, *dt):
         while command := self.game.console.get_command():
             self.on_command(line.CommandText(command))
-        pyglet.gl.glClearColor(0.1, 0, 0, 0.0)
+        pyglet.gl.glClearColor(1, 1, 1, 0.0)
         self.clear()
         self.draw_update(float(self.SPF))
         self.draw_batch()
