@@ -1,8 +1,0 @@
-<Ship currentStage="0" throttle="0.000000">
-    <Parts>
-        <Part partType="pod-1" id="1" x="0.000000" y="0.750000" angle="0.000000" angleV="0.000000" activated="0"
-              exploded="0"/>
-    </Parts>
-    <Connections/>
-    <Staging/>
-</Ship>
