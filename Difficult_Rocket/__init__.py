@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 from Difficult_Rocket.api.types import Options, Version
 
-sdk_version = Version("0.9.2.0")  # SDK 版本
+sdk_version = Version("0.9.3.0")  # SDK 版本
 build_version = Version("3.0.1")  # 编译文件版本(与游戏本体无关)
 api_version = Version("0.1.2.3")  # API 版本
 __version__ = sdk_version
