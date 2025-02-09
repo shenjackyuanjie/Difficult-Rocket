@@ -53,7 +53,7 @@ script = 'scripts/lndl-config.py'
 main = "DR.py"
 
 lto = "yes"
-clang = true
+clang = false
 msvc = "latest"
 mingw64 = false
 
