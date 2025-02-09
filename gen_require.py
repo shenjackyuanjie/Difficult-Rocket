@@ -14,7 +14,7 @@ basic = {
         'platform_python_implementation == "CPython"',
     ],
     "sys info": [
-        "psutil >= 6.0.0"
+        "psutil >= 6.1.1"
     ],
     "file read": [
         "tomli >= 2.0.2",
@@ -25,7 +25,7 @@ basic = {
 
 build = {
     "compile": [
-        "nuitka >= 2.4",
+        "nuitka >= 2.6",
         "imageio >= 2.34.2",
         "setuptools >= 69",
         "setuptools-rust >= 1.10.2",
