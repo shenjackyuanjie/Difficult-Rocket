@@ -276,7 +276,7 @@ class SR1ShipEditor(BaseScreen):
             0,
             0,
             0,
-            width=5,
+            thickness=5,
             color=(200, 200, 10, 255),
             batch=self.main_batch,
             group=Group(5, parent=self.part_group),
