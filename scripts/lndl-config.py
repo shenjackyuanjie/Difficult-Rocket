@@ -61,6 +61,7 @@ def main(config: raw_config_type) -> nuitka_config_type:
     if platform.system() == "Darwin":
         config.pop("windows-icon-from-ico")
         config.pop("linux-icon")
+        config["macos-app-version"] = str(sdk_version)
     elif platform.system() == "Linux":
         config.pop("windows-icon-from-ico")
         config.pop("macos-app-icon")
@@ -70,7 +71,6 @@ def main(config: raw_config_type) -> nuitka_config_type:
 
     config["file-version"] = str(build_version)
     config["product-version"] = str(sdk_version)
-    config["macos-app-version"] = str(sdk_version)
 
     config["nofollow-import-to"] += gen_pyglet_no_follow_import()
     if is_github:
