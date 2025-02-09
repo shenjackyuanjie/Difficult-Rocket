@@ -540,6 +540,7 @@ class 拐角(ShapeBase):
     ) -> None:
         self._x = x
         self._y = y
+        self._z = 1.0
         self._width = width
         self._height = height
         self._thick1 = thick1
