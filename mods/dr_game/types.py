@@ -3,6 +3,7 @@
 #  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
 #  All rights reserved
 #  -------------------------------
+from __future__ import annotations
 
 import math
 from typing import Dict, Union
@@ -24,17 +25,19 @@ class SR1Textures(Options):
             img.anchor_y = img.height // 2
             setattr(self, image_name, img)
         self.flush_option()
+        return True
 
-    def get_texture(self, name: str):
+    def get_texture(self, name: str) -> AbstractImage:
         """
         获取材质
         :param name:
         :return:
         """
+        self.cached_options: dict[str, AbstractImage]
         if name in self.cached_options:
-            return self.cached_options.get(name)
+            return self.cached_options[name]
         elif name.split(".")[0] in self.cached_options:
-            return self.cached_options.get(name.split(".")[0])
+            return self.cached_options[name.split(".")[0]]
         else:
             img = load(f"assets/textures/parts/{name}")
             img.anchor_x = img.width // 2
