@@ -167,8 +167,8 @@ class BaseScreen(EventDispatcher, Options):
         def on_file_drop(
             self, x: int, y: int, paths: list[PathLike], window: ClientWindow
         ):
-            """File(s) were dropped into the window, will return the position of the cursor
-            and a list of paths to the files that were dropped.
+            """File(s) were dropped into the window, will return the position of the
+            cursor and a list of paths to the files that were dropped.
 
             .. versionadded:: 1.5.1
 
@@ -189,7 +189,8 @@ class BaseScreen(EventDispatcher, Options):
         ) -> None | bool:
             """A key on the keyboard was pressed (and held down).
 
-            Since pyglet 1.1 the default handler dispatches the :py:meth:`~pyglet.window.Window.on_close`
+            Since pyglet 1.1 the default handler dispatches the
+            :py:meth:`~pyglet.window.Window.on_close`
             event if the ``ESC`` key is pressed.
 
             :Parameters:
@@ -201,7 +202,9 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_key_release(self, symbol: int, modifiers: int, window: ClientWindow) -> None | bool:
+        def on_key_release(
+            self, symbol: int, modifiers: int, window: ClientWindow
+        ) -> None | bool:
             """A key on the keyboard was released.
 
             :Parameters:
@@ -213,7 +216,9 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow) -> None | bool:
+        def on_mouse_motion(
+            self, x: int, y: int, dx: int, dy: int, window: ClientWindow
+        ) -> None | bool:
             """The mouse was moved with no buttons held down.
 
             :Parameters:
@@ -434,9 +439,9 @@ class BaseScreen(EventDispatcher, Options):
         def on_text_motion(self, motion: int, window: ClientWindow):
             """The user moved the text input cursor.
 
-            Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press` and before
-            :py:meth:`~pyglet.window.Window.on_key_release`, but may also be called multiple times if the key
-            is help down (key repeating).
+            Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press`
+            and before :py:meth:`~pyglet.window.Window.on_key_release`, but may also be
+            called multiple times if the key is help down (key repeating).
 
             You should always use this method for moving the text input cursor
             (caret), as different platforms have different default keyboard
@@ -471,14 +476,14 @@ class BaseScreen(EventDispatcher, Options):
             """The user moved the text input cursor while extending the
             selection.
 
-            Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press` and before
-            :py:meth:`~pyglet.window.Window.on_key_release`, but may also be called multiple times if the key
-            is help down (key repeating).
+            Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press`
+            and before :py:meth:`~pyglet.window.Window.on_key_release`, but may also be
+            called multiple times if the key is help down (key repeating).
 
             You should always use this method for responding to text selection
-            events rather than the raw :py:meth:`~pyglet.window.Window.on_key_press`, as different platforms
-            have different default keyboard mappings, and key repeats are
-            handled correctly.
+            events rather than the raw :py:meth:`~pyglet.window.Window.on_key_press`, as
+            different platforms have different default keyboard mappings, and key repeats
+            are handled correctly.
 
             The values that `motion` can take are defined in :py:mod:`pyglet.window.key`:
 

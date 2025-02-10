@@ -11,6 +11,14 @@ github: @shenjackyuanjie
 gitee:  @shenjackyuanjie
 """
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from . import exception
+    from . import screen
+    from . import types
+    from . import mod
+
 __all__ = [
     "exception",
     # 错误类定义
