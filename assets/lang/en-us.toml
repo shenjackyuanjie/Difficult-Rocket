@@ -54,6 +54,8 @@ load.font.use_time = "Font loading has used: {} second"
 
 [window]
 setup.start = "Window start loading"
+setup.icon.loaded = "Icon file loaded"
+setup.icon.not_fount = "Icon file not found, using default icon"
 setup.use_time = "Window loading has used: {} second"
 setup.use_time_ns = "Window loading has used: {} nano second"
 os.pid_is = "Window's PID: {} PPID: {}"

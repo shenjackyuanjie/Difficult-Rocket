@@ -300,7 +300,12 @@ class ClientWindow(Window):
         self.logger.debug(tr().window.setup.use_time_ns().format(self.use_time))
 
     def setup(self):
-        self.set_icon(pyglet.image.load("assets/textures/icon.ico"))
+        try:
+            icon = pyglet.image.load("assets/textures/icon.ico")
+            self.set_icon(icon.get_image_data())
+            self.logger.info(tr().window.setup.icon.loaded())
+        except FileNotFoundError:
+            self.logger.warn(tr().window.setup.icon.not_found())
         self.load_fonts()
         self.screen_list["DR_debug"] = DRDEBUGScreen(self)
         self.game.dispatch_mod_event("on_client_start", game=self.game, client=self)

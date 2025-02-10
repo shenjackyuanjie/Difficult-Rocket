@@ -54,6 +54,8 @@ load.font.use_time = "字体加载消耗时间: {} 秒"
 
 [window]
 setup.start = "游戏窗口加载开始"
+setup.icon.loaded = "图标文件加载完成"
+setup.icon.not_found = "图标文件不存在，正在使用默认图标"
 setup.use_time = "游戏窗口加载消耗时间: {} 秒"
 setup.use_time_ns = "游戏窗口载入消耗时间: {} 纳秒"
 os.pid_is = "游戏窗口 PID: {} PPID: {}"
