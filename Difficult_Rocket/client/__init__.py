@@ -62,7 +62,7 @@ class ClientOption(Options):
     background_color: List[float] = [21 / 255, 22 / 255, 23 / 255, 0.0]
     caption: str = "Difficult Rocket v{DR_version}"
 
-    def load_file(self) -> None:
+    def load_file(self):
         file = DR_runtime.main_config
         self.fps = int(file["runtime"]["fps"])
         self.width = int(file["window"]["width"])
@@ -76,6 +76,7 @@ class ClientOption(Options):
         alpha = file["window"]["background_color"][3]
         self.background_color = [*color, alpha]
         self.caption = DR_runtime.format(self.caption)
+        return True
 
 
 class Client:
@@ -398,7 +399,7 @@ class ClientWindow(Window):
     def get_sub_screen(self, title: str) -> BaseScreen | None:
         """获取一个页面
         添加自: 0.9.2.0"""
-        self.screen_list.setdefault(title, None)
+        self.screen_list.setdefault(title, None)  # type: ignore
         return self.screen_list.get(title)
 
     def remove_sub_screen(self, title: str) -> BaseScreen | None:

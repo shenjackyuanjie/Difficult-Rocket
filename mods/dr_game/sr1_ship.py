@@ -118,7 +118,7 @@ class SR1ShipSelecter(BaseScreen):
             if not file.is_file:
                 continue
             # 尝试加载一下
-            if assert_ship(str(file)):
+            if assert_ship(str(file)):  # type: ignore
                 logger.info(
                     sr_tr().sr1.ship.ship.valid().format(file), tag="ship explorer"
                 )
@@ -293,7 +293,7 @@ class SR1ShipEditor(BaseScreen):
         # Optional data
         self.textures: SR1Textures = SR1Textures()
         self.gen_draw: Generator | None = None
-        self.rust_ship: SR1Ship_rs | None = None
+        self.rust_ship: SR1Ship_rs | None = None  # type: ignore
         self.ship_name: str | None = None
 
         # List/Dict data
@@ -303,7 +303,7 @@ class SR1ShipEditor(BaseScreen):
 
         if DR_mod_runtime.use_DR_rust:
             self.rust_parts = None
-            self.part_list_rs = SR1PartList_rs(
+            self.part_list_rs = SR1PartList_rs(  # type: ignore
                 "assets/builtin/PartList.xml", "builtin_part_list"
             )
 
@@ -342,7 +342,7 @@ class SR1ShipEditor(BaseScreen):
             logger.info(sr_tr().sr1.ship.xml.loading().format(file_path), tag="load_xml")
             self.ship_name = file_path.stem
             if DR_mod_runtime.use_DR_rust:
-                self.rust_ship = SR1Ship_rs(
+                self.rust_ship = SR1Ship_rs(  # type: ignore
                     str(file_path), self.part_list_rs, "a_new_ship"
                 )
             logger.info(sr_tr().sr1.ship.xml.load_done(), tag="load_xml")
@@ -556,7 +556,7 @@ class SR1ShipEditor(BaseScreen):
 
         explorer = window.get_sub_screen(SR1ShipSelecter.name)
         if explorer is not None:
-            explorer.draw_batch_(window)
+            explorer.draw_batch(window)
 
     def on_draw(self, window: ClientWindow):
         if self.status.draw_call:
@@ -584,7 +584,7 @@ class SR1ShipEditor(BaseScreen):
         self.height = height
 
     def on_mouse_scroll(
-        self, x: int, y: int, scroll_x: int, scroll_y: int, window: ClientWindow
+        self, x: int, y: int, scroll_x: float, scroll_y: float, window: ClientWindow
     ):
         if self.status.focus:
             mouse_dx = x - (self.width / 2) + self.dx
@@ -748,7 +748,7 @@ class SR1ShipEditor(BaseScreen):
             self.dx += dx
             self.dy += dy
 
-    def on_file_drop(self, x: int, y: int, paths: list[str], window: ClientWindow):
+    def on_file_drop(self, x: int, y: int, paths: list[str], window: ClientWindow):  # type: ignore
         if len(paths) == 1:
             # only file/path
             self.load_xml(Path(paths[0]))
