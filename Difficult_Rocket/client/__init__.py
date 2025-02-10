@@ -217,6 +217,28 @@ def _call_screen_after(func: Callable) -> Callable:
     return warped
 
 
+def _none_stop_call_screen_after(func: Callable) -> Callable:
+    """
+    同 _call_screen_after, 但不会因为子窗口函数返回 True 而停止
+    """
+
+    @functools.wraps(func)
+    def warped(self: "ClientWindow", *args, **kwargs):
+        result = func(self, *args, **kwargs)
+        for title, a_screen in self.screen_list.items():
+            a_screen.window_pointer = self
+            # 提前帮子窗口设置好指针
+            if hasattr(a_screen, func.__name__):
+                try:
+                    getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
+                except Exception:
+                    traceback.print_exc()
+        return result
+
+    warped.__signature__ = inspect.signature(func)  # type: ignore
+    return warped
+
+
 def _call_screen_before(func: Callable) -> Callable:
     """
     >>> @_call_screen_before
@@ -237,6 +259,24 @@ def _call_screen_before(func: Callable) -> Callable:
                     if getattr(a_screen, func.__name__)(*args, **kwargs, window=self):
                         # 他返回了一个 True
                         break
+                except Exception:
+                    traceback.print_exc()
+        result = func(self, *args, **kwargs)
+        return result
+
+    warped.__signature__ = inspect.signature(func)  # type: ignore
+    return warped
+
+
+def _none_stop_call_screen_before(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def warped(self: "ClientWindow", *args, **kwargs):
+        for title, a_screen in self.screen_list.items():
+            a_screen.window_pointer = self
+            # 提前帮子窗口设置好指针
+            if hasattr(a_screen, func.__name__):
+                try:
+                    getattr(a_screen, func.__name__)(*args, **kwargs, window=self)
                 except Exception:
                     traceback.print_exc()
         result = func(self, *args, **kwargs)
@@ -393,7 +433,7 @@ class ClientWindow(Window):
         self.on_draw()
         self.flip()
 
-    @_call_screen_after
+    @_none_stop_call_screen_after
     def on_draw(self, *dt: float):
         while (command := self.game.console.get_command()) is not None:
             self.on_command(line.CommandText(command))
@@ -405,7 +445,7 @@ class ClientWindow(Window):
     def on_resize(self, width: int, height: int):
         super().on_resize(width, height)
 
-    @_call_screen_after
+    @_none_stop_call_screen_after
     def on_refresh(self, dt):
         ...
 
@@ -503,7 +543,7 @@ class ClientWindow(Window):
     def on_deactivate(self):
         ...
 
-    @_call_screen_before
+    @_none_stop_call_screen_before
     def on_move(self, x, y):
         ...
 
@@ -594,7 +634,7 @@ class ClientWindow(Window):
             tr().window.text.motion_select().format(motion_string), tag="text"
         )
 
-    @_call_screen_before
+    @_none_stop_call_screen_before
     def on_close(self, source: str = "window") -> None:
         self.game.dispatch_mod_event(
             "on_close", game=self.game, client=self, source=source

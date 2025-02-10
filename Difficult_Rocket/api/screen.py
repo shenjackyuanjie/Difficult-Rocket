@@ -43,31 +43,33 @@ class BaseScreen(EventDispatcher, Options):
 
     if TYPE_CHECKING:
 
-        def on_command(self, command: CommandText, window: ClientWindow):
+        def on_command(self, command: CommandText, window: ClientWindow) -> None | bool:
             """
             命令输入事件
             """
 
-        def on_message(self, message: CommandText, window: ClientWindow):
+        def on_message(self, message: CommandText, window: ClientWindow) -> None | bool:
             """
             消息输入事件
             """
 
-        def draw_update(self, tick: float, window: ClientWindow):
+        def draw_update(self, tick: float, window: ClientWindow) -> None | bool:
             """
             画面更新
+            如果返回 True, 则会取消后续的绘制
             """
 
-        def draw_batch(self, window: ClientWindow):
+        def draw_batch(self, window: ClientWindow) -> None | bool:
             """
             画面绘制
+            如果返回 True, 则会取消后续的绘制
             """
 
         """
         Pyglet 定义的事件
         """
 
-        def on_activate(self, window: ClientWindow):
+        def on_activate(self, window: ClientWindow) -> None | bool:
             """The window was activated.
 
             This event can be triggered by clicking on the title bar, bringing
@@ -78,7 +80,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_close(self, window: ClientWindow):
+        def on_close(self, source: str, window: ClientWindow) -> None:
             """The user attempted to close the window.
 
             This event can be triggered by clicking on the "X" control box in
@@ -91,7 +93,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_context_lost(self, window: ClientWindow):
+        def on_context_lost(self, window: ClientWindow) -> None:
             """The window's GL context was lost.
 
             When the context is lost no more GL methods can be called until it
@@ -127,7 +129,7 @@ class BaseScreen(EventDispatcher, Options):
             """
 
         # def on_draw(self, dt: float, window: ClientWindow):  # TODO: wait for pyglet 2.1
-        def on_draw(self, window: ClientWindow):
+        def on_draw(self, window: ClientWindow) -> None:
             """The window contents must be redrawn.
 
             The `EventLoop` will dispatch this event when the window
@@ -147,7 +149,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_expose(self, window: ClientWindow):
+        def on_expose(self, window: ClientWindow) -> None:
             """A portion of the window needs to be redrawn.
 
             This event is triggered when the window first appears, and any time
@@ -165,8 +167,8 @@ class BaseScreen(EventDispatcher, Options):
         def on_file_drop(
             self, x: int, y: int, paths: list[PathLike], window: ClientWindow
         ):
-            """File(s) were dropped into the window, will return the position of the cursor and
-            a list of paths to the files that were dropped.
+            """File(s) were dropped into the window, will return the position of the cursor
+            and a list of paths to the files that were dropped.
 
             .. versionadded:: 1.5.1
 
@@ -182,7 +184,9 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_key_press(self, symbol: int, modifiers: int, window: ClientWindow):
+        def on_key_press(
+            self, symbol: int, modifiers: int, window: ClientWindow
+        ) -> None | bool:
             """A key on the keyboard was pressed (and held down).
 
             Since pyglet 1.1 the default handler dispatches the :py:meth:`~pyglet.window.Window.on_close`
@@ -197,7 +201,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_key_release(self, symbol: int, modifiers: int, window: ClientWindow):
+        def on_key_release(self, symbol: int, modifiers: int, window: ClientWindow) -> None | bool:
             """A key on the keyboard was released.
 
             :Parameters:
@@ -209,7 +213,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow):
+        def on_mouse_motion(self, x: int, y: int, dx: int, dy: int, window: ClientWindow) -> None | bool:
             """The mouse was moved with no buttons held down.
 
             :Parameters:
@@ -234,7 +238,7 @@ class BaseScreen(EventDispatcher, Options):
             buttons: int,
             modifiers: int,
             window: ClientWindow,
-        ):
+        ) -> None | bool:
             """The mouse was moved with one or more mouse buttons pressed.
 
             This event will continue to be fired even if the mouse leaves
@@ -260,7 +264,7 @@ class BaseScreen(EventDispatcher, Options):
 
         def on_mouse_press(
             self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
-        ):
+        ) -> None | bool:
             """A mouse button was pressed (and held down).
 
             :Parameters:
@@ -279,7 +283,7 @@ class BaseScreen(EventDispatcher, Options):
 
         def on_mouse_release(
             self, x: int, y: int, button: int, modifiers: int, window: ClientWindow
-        ):
+        ) -> None | bool:
             """A mouse button was released.
 
             :Parameters:
@@ -298,7 +302,7 @@ class BaseScreen(EventDispatcher, Options):
 
         def on_mouse_scroll(
             self, x: int, y: int, scroll_x: float, scroll_y: float, window: ClientWindow
-        ):
+        ) -> None | bool:
             """The mouse wheel was scrolled.
 
             Note that most mice have only a vertical scroll wheel, so
@@ -319,7 +323,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_mouse_enter(self, x: int, y: int, window: ClientWindow):
+        def on_mouse_enter(self, x: int, y: int, window: ClientWindow) -> None | bool:
             """The mouse was moved into the window.
 
             This event will not be triggered if the mouse is currently being
@@ -334,7 +338,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_mouse_leave(self, x: int, y: int, window: ClientWindow):
+        def on_mouse_leave(self, x: int, y: int, window: ClientWindow) -> None | bool:
             """The mouse was moved outside of the window.
 
             This event will not be triggered if the mouse is currently being
@@ -350,7 +354,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_move(self, x: int, y: int, window: ClientWindow):
+        def on_move(self, x: int, y: int, window: ClientWindow) -> None:
             """The window was moved.
 
             :Parameters:
@@ -365,7 +369,7 @@ class BaseScreen(EventDispatcher, Options):
             :event:
             """
 
-        def on_refresh(self, dt, window: ClientWindow):
+        def on_refresh(self, dt, window: ClientWindow) -> None:
             """The window contents must be redrawn.
 
             The `EventLoop` will dispatch this event when the window
