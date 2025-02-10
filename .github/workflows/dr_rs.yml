@@ -101,7 +101,7 @@ jobs:
 
       # Uploads artifact
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: DR_rs${{env.DR_version}}-${{runner.os}}${{matrix.python-version}}-Build.${{github.run_number}}+${{env.short_sha}}
           path: |

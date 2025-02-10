@@ -116,12 +116,12 @@ jobs:
           field: 'project.version'
       
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: builds
       
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: DR_full_v${{steps.dr-version.outputs.value}}-All
           path: builds/
