@@ -420,10 +420,10 @@ class BaseScreen(EventDispatcher, Options):
         def on_text(self, text: str, window: ClientWindow):
             """The user input some text.
 
-            Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press` and before
-            :py:meth:`~pyglet.window.Window.on_key_release`, but may also be called multiple times if the key
-            is held down (key repeating); or called without key presses if
-            another input method was used (e.g., a pen input).
+            Typically this is called after :py:meth:`~pyglet.window.Window.on_key_press`
+            and before :py:meth:`~pyglet.window.Window.on_key_release`, but may also be
+            called multiple times if the key is held down (key repeating); or called
+            without key presses if another input method was used (e.g., a pen input).
 
             You should always use this method for interpreting text, as the
             key symbols often have complex mappings to their unicode
