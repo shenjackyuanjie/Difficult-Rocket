@@ -33,21 +33,22 @@ pub enum SR1PartTypeEnum {
 impl From<SR1PartTypeEnum> for String {
     fn from(val: SR1PartTypeEnum) -> Self {
         match val {
-            SR1PartTypeEnum::pod => "pod".to_string(),
-            SR1PartTypeEnum::detacher => "detacher".to_string(),
-            SR1PartTypeEnum::wheel => "wheel".to_string(),
-            SR1PartTypeEnum::fuselage => "fuselage".to_string(),
-            SR1PartTypeEnum::strut => "strut".to_string(),
-            SR1PartTypeEnum::tank => "tank".to_string(),
-            SR1PartTypeEnum::engine => "engine".to_string(),
-            SR1PartTypeEnum::parachute => "parachute".to_string(),
-            SR1PartTypeEnum::nosecone => "nosecone".to_string(),
-            SR1PartTypeEnum::rcs => "rcs".to_string(),
-            SR1PartTypeEnum::solar => "solar".to_string(),
-            SR1PartTypeEnum::dockconnector => "dockconnector".to_string(),
-            SR1PartTypeEnum::dockport => "dockport".to_string(),
-            SR1PartTypeEnum::lander => "lander".to_string(),
+            SR1PartTypeEnum::pod => "pod",
+            SR1PartTypeEnum::detacher => "detacher",
+            SR1PartTypeEnum::wheel => "wheel",
+            SR1PartTypeEnum::fuselage => "fuselage",
+            SR1PartTypeEnum::strut => "strut",
+            SR1PartTypeEnum::tank => "tank",
+            SR1PartTypeEnum::engine => "engine",
+            SR1PartTypeEnum::parachute => "parachute",
+            SR1PartTypeEnum::nosecone => "nosecone",
+            SR1PartTypeEnum::rcs => "rcs",
+            SR1PartTypeEnum::solar => "solar",
+            SR1PartTypeEnum::dockconnector => "dockconnector",
+            SR1PartTypeEnum::dockport => "dockport",
+            SR1PartTypeEnum::lander => "lander",
         }
+        .to_string()
     }
 }
 

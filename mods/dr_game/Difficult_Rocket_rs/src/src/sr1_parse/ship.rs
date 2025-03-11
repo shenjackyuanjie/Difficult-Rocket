@@ -22,7 +22,7 @@ pub struct RawShip {
     #[serde(rename = "Connections")]
     pub connects: Connections,
     ///
-    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48~~
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/48 ~~
     ///
     /// ~~SR1 says version is also optional, let them happy~~
     ///
@@ -31,7 +31,7 @@ pub struct RawShip {
     pub version: i32,
     #[serde(rename = "@liftedOff", default = "default_lift_off")]
     pub lift_off: i8,
-    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49~~
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/49 ~~
     ///
     /// ~~SR1 says it's optional, let them happy~~
     ///
@@ -60,7 +60,7 @@ pub struct Part {
     pub x: f64,
     #[serde(rename = "@y")]
     pub y: f64,
-    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47~~
+    /// ~~Option for https://github.com/shenjackyuanjie/Difficult-Rocket/issues/47 ~~
     ///
     /// ~~SR1 says it's optional, let them happy~~
     ///
@@ -120,7 +120,7 @@ pub struct DisconnectedParts {
 
 impl Parts {
     pub fn as_sr1_vec(&self) -> Vec<SR1PartData> { self.parts.iter().map(|x| x.to_sr_part_data()).collect() }
-    pub fn from_vec_sr1(parts: &Vec<SR1PartData>) -> Self {
+    pub fn from_vec_sr1(parts: &[SR1PartData]) -> Self {
         Parts {
             parts: parts.iter().map(|x| x.to_raw_part_data()).collect(),
         }
@@ -208,7 +208,7 @@ impl DisconnectedPart {
         (self.parts.as_sr1_vec(), self.connects.as_vec())
     }
 
-    pub fn from_sr_part(parts: &Vec<SR1PartData>, connects: Vec<Connection>) -> Self {
+    pub fn from_sr_part(parts: &[SR1PartData], connects: Vec<Connection>) -> Self {
         Self {
             parts: Parts::from_vec_sr1(parts),
             connects: Connections::from_vec(connects),
@@ -319,7 +319,7 @@ impl SR1ShipTrait for RawShip {
             parts: self.parts.as_sr1_vec(),
             connections: self.connects.as_vec(),
             lift_off: self.lift_off != 0,
-            touch_ground: if self.touch_ground != 0 { true } else { false },
+            touch_ground: self.touch_ground != 0,
             disconnected: self.disconnected.as_sr1_vec(),
         }
     }
