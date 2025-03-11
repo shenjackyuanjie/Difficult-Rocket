@@ -21,7 +21,7 @@ quick-xml = { version = "0.37", features = ["serialize"] }
 serde = { version = "1.0", features = ["derive"] }
 
 nalgebra = "0.33"
-pyo3 = { version = "0.23", features = [
+pyo3 = { version = "0.24", features = [
     "extension-module",
     "macros",
     "py-clone",
@@ -33,11 +33,11 @@ wgpu = { version = "24", features = ["wgsl"] }
 rapier2d-f64 = { version = "0.23", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!
 
-raw-window-handle = "0.6.2"
+raw-window-handle = "0.6"
 pollster = "0.4.0"
 
 [target.'cfg(windows)'.dependencies]
-windows-sys = { version = "0.59.0", features = [
+windows-sys = { version = "0.59", features = [
     "Win32_Foundation",
     "Win32_System_Threading",
     "Win32_UI_WindowsAndMessaging",
