@@ -69,8 +69,8 @@ jobs:
 
       # 使用 ruff 检查一遍仓库
       - name: Ruff check
-        if: runner.os == 'Windows' && matrix.python-version == '3.8'
         # 只在 windows 的 python 3.8 上检查 减少无用报错
+        if: runner.os == 'Windows' && matrix.python-version == '3.8'
         run: |
           pip install ruff
           ruff check . --exit-zero
