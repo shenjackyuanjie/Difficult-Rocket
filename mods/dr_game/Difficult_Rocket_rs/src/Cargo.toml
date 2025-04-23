@@ -1,7 +1,7 @@
 [package]
 name = "difficult_rocket_rs"
 version = "0.4.2"
-edition = "2021"
+edition = "2024"
 license-file = '../../LICENSE'
 authors = ["shenjackyuanjie <3695888@qq.com>"]
 
@@ -28,9 +28,9 @@ pyo3 = { version = "0.24", features = [
 ] }
 
 # 让我们来试试黑魔法
-wgpu = { version = "24", features = ["wgsl"] }
+wgpu = { version = "25", features = ["wgsl"] }
 
-rapier2d-f64 = { version = "0.23", features = ["simd-stable"] }
+rapier2d-f64 = { version = "0.24", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!
 
 raw-window-handle = "0.6"

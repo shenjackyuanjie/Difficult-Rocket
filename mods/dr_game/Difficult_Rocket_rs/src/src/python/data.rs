@@ -4,11 +4,11 @@ use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
 use crate::dr_physics::math::{Point2D, Rotate};
-use crate::sr1_parse::part_list::RawPartList;
-use crate::sr1_parse::ship::{Connection, RawConnectionData, RawShip};
 use crate::sr1_parse::IdType;
 use crate::sr1_parse::SaveStatus;
-use crate::sr1_parse::{get_max_box, SR1PartData, SR1PartListTrait};
+use crate::sr1_parse::part_list::RawPartList;
+use crate::sr1_parse::ship::{Connection, RawConnectionData, RawShip};
+use crate::sr1_parse::{SR1PartData, SR1PartListTrait, get_max_box};
 use crate::sr1_parse::{SR1PartList, SR1PartType, SR1Ship};
 
 use quick_xml::se::to_string;

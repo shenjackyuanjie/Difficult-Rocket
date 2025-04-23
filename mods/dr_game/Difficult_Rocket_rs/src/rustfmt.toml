@@ -20,7 +20,6 @@ use_field_init_shorthand = true
 # 是否使用彩色输出
 color = "Always"
 
-edition = "2021"
+style_edition = "2024"
 # 这样不用 nightly 也可以使用 unstable 特性
 unstable_features = true
-

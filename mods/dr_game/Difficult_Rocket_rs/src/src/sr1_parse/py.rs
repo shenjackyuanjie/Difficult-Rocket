@@ -1,5 +1,5 @@
-use pyo3::{pyfunction, PyResult, Python};
-use quick_xml::{de::from_str, events::Event, Reader};
+use pyo3::{PyResult, Python, pyfunction};
+use quick_xml::{Reader, de::from_str, events::Event};
 
 use super::part_list::RawPartList;
 use super::ship::RawShip;

@@ -14,7 +14,10 @@ use std::num::NonZeroIsize;
 
 use pollster::block_on;
 use raw_window_handle::{RawWindowHandle, Win32WindowHandle};
-use wgpu::{util::DeviceExt, Adapter, Device, Instance, InstanceDescriptor, Queue, Surface, SurfaceTargetUnsafe};
+use wgpu::{
+    Adapter, Backends, Device, Instance, InstanceDescriptor, InstanceFlags, Queue, Surface, SurfaceTargetUnsafe,
+    util::DeviceExt,
+};
 
 /// 定义一个结构体保存所有渲染上下文
 #[derive(Debug)]
@@ -39,8 +42,8 @@ struct Vertex {
 
 impl Vertex {
     pub fn extend_u8(&self, data: &mut Vec<u8>) {
-        data.extend_from_slice(&self.position.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
-        data.extend_from_slice(&self.color.iter().map(|x| x.to_ne_bytes()).flatten().collect::<Vec<u8>>());
+        data.extend_from_slice(&self.position.iter().flat_map(|x| x.to_ne_bytes()).collect::<Vec<u8>>());
+        data.extend_from_slice(&self.color.iter().flat_map(|x| x.to_ne_bytes()).collect::<Vec<u8>>());
     }
 
     pub fn desc<'a>() -> wgpu::VertexBufferLayout<'a> {
@@ -100,7 +103,11 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
 impl WgpuContext {
     pub fn new(unsafe_handle: SurfaceTargetUnsafe) -> anyhow::Result<Self> {
-        let mut descripter = InstanceDescriptor::default();
+        let mut descripter = InstanceDescriptor {
+            backends: Backends::all(),
+            flags: InstanceFlags::default(),
+            backend_options: wgpu::BackendOptions::default(),
+        };
         descripter.backends = wgpu::Backends::from_comma_list("vulkan,dx12");
 
         let instance = Instance::new(&descripter);
@@ -115,17 +122,15 @@ impl WgpuContext {
         .expect("没找到合适的适配器");
 
         // 步骤3: 创建设备和队列（Device/Queue）
-        let (device, queue) = block_on(adapter.request_device(
-            &wgpu::DeviceDescriptor {
-                label: Some("主设备"),
-                // 如果需要特定功能（如深度缓冲），在此处声明
-                required_features: wgpu::Features::empty(),
-                // 根据需求调整限制（如纹理大小）
-                required_limits: wgpu::Limits::downlevel_defaults(),
-                memory_hints: wgpu::MemoryHints::default(),
-            },
-            None, // 追踪路径（Trace Path）
-        ))?;
+        let (device, queue) = block_on(adapter.request_device(&wgpu::DeviceDescriptor {
+            label: Some("主设备"),
+            // 如果需要特定功能（如深度缓冲），在此处声明
+            required_features: wgpu::Features::empty(),
+            // 根据需求调整限制（如纹理大小）
+            required_limits: wgpu::Limits::downlevel_defaults(),
+            memory_hints: wgpu::MemoryHints::default(),
+            trace: wgpu::Trace::Off,
+        }))?;
 
         // 步骤4: 配置Surface
         let surface_caps = surface.get_capabilities(&adapter);

@@ -6,11 +6,13 @@ use windows_sys::Win32::{
 
 unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {
     let mut process_id = 0;
-    GetWindowThreadProcessId(hwnd, &mut process_id);
-    if process_id == GetCurrentProcessId() {
-        println!("找到当前的窗口: {:?}", hwnd);
-        *(lparam as *mut HWND) = hwnd;
-        return 0;
+    unsafe {
+        GetWindowThreadProcessId(hwnd, &mut process_id);
+        if process_id == GetCurrentProcessId() {
+            println!("找到当前的窗口: {:?}", hwnd);
+            *(lparam as *mut HWND) = hwnd;
+            return 0;
+        }
     }
     1
 }

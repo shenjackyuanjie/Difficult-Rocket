@@ -528,7 +528,7 @@ impl SR1PartDataAttr {
 
     pub unsafe fn get_part_type_none_mut(&self) -> SR1PartTypeEnum {
         let slf = self as *const Self as *mut Self;
-        (*slf).get_part_type()
+        unsafe { (*slf).get_part_type() }
     }
 
     #[allow(clippy::too_many_arguments)]

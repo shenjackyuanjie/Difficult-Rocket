@@ -169,15 +169,15 @@ impl Shape {
     pub fn move_xy(&mut self, x: Option<f64>, y: Option<f64>) {
         let x = x.unwrap_or(0.0);
         let y = y.unwrap_or(0.0);
-        for edge in self.bounds.iter() {
+        for edge in self.bounds.iter_mut() {
             match edge {
-                Edge::OneTimeLine(mut line) => {
+                Edge::OneTimeLine(line) => {
                     line.start.x += x;
                     line.start.y += y;
                     line.end.x += x;
                     line.end.y += y;
                 }
-                Edge::CircularArc(mut arc) => {
+                Edge::CircularArc(arc) => {
                     arc.pos.x += x;
                     arc.pos.y += y;
                 }

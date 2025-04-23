@@ -17,9 +17,9 @@ mod renders;
 mod sr1_parse;
 
 use pyo3::{
-    pyfunction, pymodule,
+    Bound, PyResult, pyfunction, pymodule,
     types::{PyModule, PyModuleMethods},
-    wrap_pyfunction, Bound, PyResult,
+    wrap_pyfunction,
 };
 
 #[pyfunction]
