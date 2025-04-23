@@ -4,6 +4,6 @@
 #  All rights reserved
 #  -------------------------------
 
-from Difficult_Rocket.gui.widget.button import PressTextButton
+from Difficult_Rocket.gui.widget.button import OreuiButton
 
-__all__ = ["PressTextButton"]
+__all__ = ["OreuiButton"]
