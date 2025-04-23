@@ -192,7 +192,7 @@ class SR1ShipSelecter(BaseScreen):
                 self.main_group.view_y = len(self.buttons) * (30 + 5) - self.height
             return True
 
-    def draw_batch_(self, window: ClientWindow):
+    def draw_batch(self, window: ClientWindow):
         gl.glEnable(gl.GL_SCISSOR_TEST)
         gl.glScissor(int(self.dx), int(self.dy), int(self.width), int(self.height))
         gl.glViewport(
