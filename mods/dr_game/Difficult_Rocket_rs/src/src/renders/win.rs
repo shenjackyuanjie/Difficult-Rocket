@@ -108,7 +108,7 @@ impl WgpuContext {
             flags: InstanceFlags::default(),
             backend_options: wgpu::BackendOptions::default(),
         };
-        descripter.backends = wgpu::Backends::from_comma_list("vulkan,dx12");
+        descripter.backends = wgpu::Backends::from_comma_list("vulkan");
 
         let instance = Instance::new(&descripter);
         let surface = unsafe { instance.create_surface_unsafe(unsafe_handle) }?;
@@ -118,8 +118,8 @@ impl WgpuContext {
             power_preference: wgpu::PowerPreference::HighPerformance,
             compatible_surface: Some(&surface),
             force_fallback_adapter: false,
-        }))
-        .expect("没找到合适的适配器");
+        }))?;
+        // .expect("没找到合适的适配器");
 
         // 步骤3: 创建设备和队列（Device/Queue）
         let (device, queue) = block_on(adapter.request_device(&wgpu::DeviceDescriptor {
@@ -353,7 +353,8 @@ pub fn render_init() -> Option<crate::python::renders::WgpuRenderPy> {
         }
     };
 
-    let win32_handle = Win32WindowHandle::new(NonZeroIsize::new(handler).unwrap());
+    let mut win32_handle = Win32WindowHandle::new(NonZeroIsize::new(handler.0).unwrap());
+    win32_handle.hinstance = NonZeroIsize::new(handler.1);
     let raw_handle: RawWindowHandle = RawWindowHandle::Win32(win32_handle);
     let unsafe_handle = SurfaceTargetUnsafe::RawHandle {
         raw_window_handle: raw_handle,

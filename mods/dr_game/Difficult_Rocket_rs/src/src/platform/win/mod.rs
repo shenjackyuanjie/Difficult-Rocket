@@ -1,7 +1,7 @@
 use windows_sys::Win32::{
     Foundation::HWND,
     System::Threading::GetCurrentProcessId,
-    UI::WindowsAndMessaging::{EnumWindows, GetWindowThreadProcessId},
+    UI::WindowsAndMessaging::{EnumWindows, GWLP_HINSTANCE, GetWindowLongPtrW, GetWindowThreadProcessId},
 };
 
 unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {
@@ -17,7 +17,8 @@ unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {
     1
 }
 
-pub fn get_window_handler() -> Option<isize> {
+/// 返回窗口的 HWND 和 HINSTANCE
+pub fn get_window_handler() -> Option<(isize, isize)> {
     let mut window: HWND = std::ptr::null_mut();
 
     let result = unsafe { EnumWindows(Some(enum_windows_proc), &mut window as *mut _ as isize) };
@@ -26,5 +27,7 @@ pub fn get_window_handler() -> Option<isize> {
         return None;
     }
 
-    Some(window as isize)
+    let h_instance = unsafe { GetWindowLongPtrW(window, GWLP_HINSTANCE) };
+
+    Some((window as isize, h_instance as isize))
 }
