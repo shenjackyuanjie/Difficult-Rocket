@@ -15,8 +15,8 @@ use std::num::NonZeroIsize;
 use pollster::block_on;
 use raw_window_handle::{RawWindowHandle, Win32WindowHandle};
 use wgpu::{
-    Adapter, Backends, Device, Instance, InstanceDescriptor, InstanceFlags, Queue, Surface, SurfaceTargetUnsafe,
-    util::DeviceExt,
+    Adapter, Backends, Device, Gles3MinorVersion, Instance, InstanceDescriptor, InstanceFlags, Queue, Surface,
+    SurfaceTargetUnsafe, util::DeviceExt,
 };
 
 /// 定义一个结构体保存所有渲染上下文
@@ -103,12 +103,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
 impl WgpuContext {
     pub fn new(unsafe_handle: SurfaceTargetUnsafe) -> anyhow::Result<Self> {
-        let mut descripter = InstanceDescriptor {
-            backends: Backends::all(),
+        let mut backend_option = wgpu::BackendOptions::default();
+        backend_option.gl.gles_minor_version = Gles3MinorVersion::Version2;
+        let descripter = InstanceDescriptor {
+            backends: wgpu::Backends::from_comma_list("opengl"),
             flags: InstanceFlags::default(),
-            backend_options: wgpu::BackendOptions::default(),
+            backend_options: backend_option,
         };
-        descripter.backends = wgpu::Backends::from_comma_list("vulkan");
 
         let instance = Instance::new(&descripter);
         let surface = unsafe { instance.create_surface_unsafe(unsafe_handle) }?;
@@ -144,7 +145,7 @@ impl WgpuContext {
             format: *surface_format,
             width,
             height,
-            present_mode: wgpu::PresentMode::Fifo, // 垂直同步
+            present_mode: wgpu::PresentMode::Immediate, // 垂直同步
             alpha_mode: surface_caps.alpha_modes[0],
             view_formats: vec![],
             desired_maximum_frame_latency: 1,

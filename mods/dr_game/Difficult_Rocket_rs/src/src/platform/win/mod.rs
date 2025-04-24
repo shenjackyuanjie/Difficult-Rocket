@@ -29,5 +29,5 @@ pub fn get_window_handler() -> Option<(isize, isize)> {
 
     let h_instance = unsafe { GetWindowLongPtrW(window, GWLP_HINSTANCE) };
 
-    Some((window as isize, h_instance as isize))
+    Some((window as isize, h_instance))
 }
