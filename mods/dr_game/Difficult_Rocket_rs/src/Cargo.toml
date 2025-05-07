@@ -27,22 +27,18 @@ pyo3 = { version = "0.24", features = [
     "py-clone",
 ] }
 
-# 让我们来试试黑魔法
-wgpu = { version = "25", features = ["wgsl"] }
 
 rapier2d-f64 = { version = "0.24", features = ["simd-stable"] }
 # 虽然但是, raiper在这里!
 
-raw-window-handle = "0.6"
-pollster = "0.4.0"
+# 让我们来试试黑魔法
+# 我投降, 我直接写 gl 还不行吗
+gl33 = "0.2.1"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.59", features = [
     "Win32_Foundation",
     "Win32_System_Threading",
     "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_OpenGL",
 ] }
-
-# windows = { version = "0.58" , features = [
-#     "UI_Core"
-# ]}

@@ -1,8 +1,3 @@
-#  -------------------------------
-#  Difficult Rocket
-#  Copyright © 2020-2023 by shenjackyuanjie 3695888@qq.com
-#  All rights reserved
-#  -------------------------------
 import sys
 import shutil
 from setuptools import setup
@@ -12,7 +7,7 @@ package_path = "Difficult_Rocket_rs"
 
 setup(
     name="Difficult_Rocket_rs",
-    version="0.3.5",
+    version="0.4.2",
     author="shenjackyuanjie",
     author_email="3695888@qq.com",
     rust_extensions=[

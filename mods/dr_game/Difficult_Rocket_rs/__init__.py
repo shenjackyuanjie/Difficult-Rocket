@@ -52,6 +52,21 @@ if TYPE_CHECKING:
         """
         ...
 
+    def opengl_render(width: int, height: int) -> DRglContent | None:
+        """
+        直接使用 opengl 进行的渲染覆盖
+        """
+
+    class DRglContent:
+        """
+        我投降, 手撸 OpenGL 了
+        """
+        def on_draw(self) -> None:
+            ...
+
+        def on_resize(self, width: int, height: int) -> None:
+            ...
+
     def render_hack() -> WgpuRender | None:
         """
         进行一些 rust 方面的 渲染覆盖, 报错则返回 None
