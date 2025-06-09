@@ -34,10 +34,9 @@ rapier2d-f64 = { version = "0.26", features = ["simd-stable"] }
 # 让我们来试试黑魔法
 # 我投降, 我直接写 gl 还不行吗
 gl33 = "0.2.1"
-windows = { version = "0.61.1", features = ["Win32_UI_Shell", "Win32_System_Com"] }
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.61.1", features = ["Win32_UI_Shell"] }
+windows = { version = "0.61.1", features = ["Win32_UI_Shell", "Win32_UI_Controls", "Win32_System_Com"] }
 windows-sys = { version = "0.59", features = [
     "Win32_Foundation",
     "Win32_System_Threading",

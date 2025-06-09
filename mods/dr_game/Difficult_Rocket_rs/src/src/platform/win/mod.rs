@@ -1,14 +1,18 @@
+use std::{ffi::OsStr, os::windows::ffi::OsStrExt};
+
 use windows::{
     Win32::{
         System::Com::{CLSCTX_ALL, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoCreateInstance, CoInitializeEx},
-        UI::Shell::{ITaskbarList, ITaskbarList3},
+        UI::Shell::ITaskbarList3,
     },
-    core::Interface,
+    core::{Interface, PWSTR},
 };
 use windows_sys::Win32::{
     Foundation::HWND,
     System::Threading::GetCurrentProcessId,
-    UI::WindowsAndMessaging::{EnumWindows, GWLP_HINSTANCE, GetWindowLongPtrW, GetWindowThreadProcessId},
+    UI::WindowsAndMessaging::{
+        EnumWindows, GWLP_HINSTANCE, GetPropA, GetPropW, GetWindowLongPtrW, GetWindowThreadProcessId,
+    },
 };
 
 unsafe extern "system" fn enum_windows_proc(hwnd: HWND, lparam: isize) -> i32 {
@@ -39,6 +43,8 @@ pub fn get_window_handler() -> Option<(isize, isize)> {
     Some((window as isize, h_instance))
 }
 
+const TASKBAR_PROP_NAME: &str = "TaskbarButtonCreated\0";
+
 /// 设置当前窗口的任务栏进度条进度
 ///
 /// all: 全部
@@ -47,14 +53,31 @@ pub fn get_window_handler() -> Option<(isize, isize)> {
 pub fn set_progress_value(all: u64, complete: u64) {
     // https://learn.microsoft.com/zh-cn/windows/win32/api/objbase/ne-objbase-coinit
     // https://learn.microsoft.com/zh-cn/windows/win32/api/combaseapi/nf-combaseapi-coinitializeex
-    unsafe { CoInitializeEx(None, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE).ok().expect("co init faild") };
+    static COM_INIT: std::sync::Once = std::sync::Once::new();
+    COM_INIT.call_once(|| unsafe {
+        CoInitializeEx(None, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE)
+            .ok()
+            .expect("COM 初始化失败");
+    });
 
-    if let Some((handle, _)) = get_window_handler() {
+    println!("iid: {:?}", ITaskbarList3::IID);
+
+    if let Some((windows_handle, _)) = get_window_handler() {
         let i_taskbar: ITaskbarList3 =
             unsafe { CoCreateInstance(&ITaskbarList3::IID, None, CLSCTX_ALL).expect("faild to create ITaskBarList3") };
-        if let Err(e) =
-            unsafe { i_taskbar.SetProgressValue(windows::Win32::Foundation::HWND(handle as HWND), complete, all) }
-        {
+
+        // let i_taskbar: ITaskbarList3 = unsafe {
+        //     let wide_str = OsStr::new(TASKBAR_PROP_NAME).encode_wide().chain(Some(0)).collect::<Vec<u16>>();
+        //     let handle = GetPropW(windows_handle as HWND, wide_str.as_ptr());
+        //     if handle.is_null() {
+        //         panic!("handld is null!");
+        //     }
+        //     ITaskbarList3::from_raw(handle)
+        // };
+
+        if let Err(e) = unsafe {
+            i_taskbar.SetProgressValue(windows::Win32::Foundation::HWND(windows_handle as HWND), complete, all)
+        } {
             println!("got error while setting progress value to {complete}/{all}: {e}");
         }
     }
