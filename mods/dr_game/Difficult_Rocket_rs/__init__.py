@@ -67,6 +67,11 @@ if TYPE_CHECKING:
         def on_resize(self, width: int, height: int) -> None:
             ...
 
+    def set_progress_value(all: int, complete: int) -> None:
+        """
+        Windows下设置当前窗口任务栏的进度条
+        """
+
     def render_hack() -> WgpuRender | None:
         """
         进行一些 rust 方面的 渲染覆盖, 报错则返回 None

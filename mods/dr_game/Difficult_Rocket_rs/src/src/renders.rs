@@ -19,3 +19,15 @@ pub fn opengl_render(width: u32, height: u32) -> Option<opengl::DRglContent> { o
 //     println!("render_hacking_end");
 //     render
 // }
+
+#[pyfunction]
+pub fn set_progress_value(all: u64, complete: u64) {
+    #[cfg(target_os = "windows")]
+    {
+        crate::platform::win::set_progress_value(all, complete);
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        println!("非 windows 不支持设置任务栏进度条!");
+    }
+}

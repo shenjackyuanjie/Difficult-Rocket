@@ -35,6 +35,7 @@ fn module_init(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(python::data::load_and_save_test, m)?)?;
     // m.add_function(wrap_pyfunction!(renders::render_hack, m)?)?;
     m.add_function(wrap_pyfunction!(renders::opengl_render, m)?)?;
+    m.add_function(wrap_pyfunction!(renders::set_progress_value, m)?)?;
     m.add_class::<python::data::PySR1Ship>()?;
     m.add_class::<python::data::PySR1PartList>()?;
     m.add_class::<python::data::PySR1PartType>()?;

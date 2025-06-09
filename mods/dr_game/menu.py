@@ -4,6 +4,8 @@
 #  All rights reserved
 #  -------------------------------
 
+import random
+
 from pyglet.graphics import Batch, Group
 
 from Difficult_Rocket.client import ClientWindow
@@ -41,6 +43,7 @@ class Menu(BaseScreen):
         # 高二, 马上要研学了, 似乎做了点啥, 但似乎又没做点啥 (20240526)
         # 高二最后一个暑假都过了一半了, 可算把按钮好歹写完了 (20240804)
         # 高三二模第二天, 我回来写点 opengl 了 (20250507)
+        # 高考第三天, 我来写点 taskbar (20250609)
 
         self.enter_ship_editor_button = OreuiButton(
             x=100,
@@ -72,6 +75,18 @@ class Menu(BaseScreen):
             width=200,
             height=30,
             text="一些魔法 rust 测试 (opengl)",
+            toggle_mode=False,
+            auto_release=True,
+            batch=self.main_batch,
+            group=self.main_group,
+        )
+
+        self.task_bar_test_button = OreuiButton(
+            x=100,
+            y=250,
+            width=200,
+            height=30,
+            text="一些控制栏测试",
             toggle_mode=False,
             auto_release=True,
             batch=self.main_batch,
@@ -111,12 +126,22 @@ class Menu(BaseScreen):
                 self.gl_hacks = render
                 logger.info("render_hack_inited", tag="dr_game_gl_hacks")
 
+
+        def taks_bar_test(x, y):
+            from .Difficult_Rocket_rs import set_progress_value
+            full = 1000
+            complete = random.randint(1, 1000)
+            logger.info(f"将把任务栏进度条设置为 {full}/{complete}")
+            set_progress_value(full, complete)
+
         self.enter_ship_editor_button.set_handler("on_release", on_release)
         self.magic_rust_wgpu_test_button.set_handler("on_release", render_hacks_wgpu)
         self.magic_rust_gl_test_button.set_handler("on_release", render_hacks_gl)
+        self.task_bar_test_button.set_handler("on_release", taks_bar_test)
         main_window.push_handlers(self.enter_ship_editor_button)
         main_window.push_handlers(self.magic_rust_wgpu_test_button)
         main_window.push_handlers(self.magic_rust_gl_test_button)
+        main_window.push_handlers(self.task_bar_test_button)
 
     def on_resize(self, width, height, window: ClientWindow):
         if self.wgpu_hacks is not None:
