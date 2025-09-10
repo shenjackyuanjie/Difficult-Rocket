@@ -5,7 +5,7 @@ requires = ["setuptools", "wheel", "setuptools-rust"]
 name = 'Difficult_Rocket_rs'
 dynamic = ['version']
 authors = [
-    {name = 'shenjackyuanjie', email = '3695888@qq.com'}
+    { name = 'shenjackyuanjie', email = '3695888@qq.com' }
 ]
 requires-python = ">=3.8"
 classifiers = [
