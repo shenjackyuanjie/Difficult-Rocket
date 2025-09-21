@@ -37,17 +37,11 @@ jobs:
     steps:
       # Check-out repository
       - name: Check out
-        uses: actions/checkout@v4
-
-      # 初始化子模块
-      - name: Init submodules
-        run: |
-          git submodule init
-          git submodule update
+        uses: actions/checkout@v5
 
       # 安装 Python
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}  # 为了支持 win7 我还是得用 3.8
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
@@ -55,17 +49,11 @@ jobs:
           cache-dependency-path: |
             **/requirement-dev.txt
 
-      # 安装特殊依赖
-      - name: Install git denpendencies
-        run: |
-          pip install libs/lib_not_dr
-          pip install libs/pyglet
-
       # 安装依赖
-      - name: Install env
+      - name: Install dependencies
         run: |
-          python gen_require.py 1
-          pip install -r requirements.txt
+          pip install uv
+          uv sync --group build
 
       # 使用 ruff 检查一遍仓库
       - name: Ruff check
@@ -80,15 +68,16 @@ jobs:
         id: DR_info
         shell: pwsh
         run: |
-          $infos = python .github/workflows/get_info.py -github
+          $infos = uv run --preview-features extra-build-dependencies .github/workflows/get_info.py -github
           Write-Output $infos >> $env:GITHUB_ENV
-          python .github/workflows/get_info.py
+          uv run --preview-features extra-build-dependencies .github/workflows/get_info.py
 
       # 使用新的 nuitka_build.py
       - name: Build by nuitka
         shell: pwsh
         run: |
-          python -m lndl_nuitka . -y -github
+          $env:PYTHONPATH="."
+          uv run lndl_nuitka . -y -github
           # 集成的构建脚本 好耶！
 
       # 获取短 sha

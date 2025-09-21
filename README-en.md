@@ -55,8 +55,6 @@ Difficult-rocket is a Simple Rocket liked game build with Python (shorten as "ro
 ### 1. Clone
 
 ```bash title="clone.sh"
-mkdir DR
-cd DR
 git clone https://github.com/shenjackyuanjie/Difficult-Rocket.git
 # or
 git clone https://gitee.com/shenjackyuanjie/Difficult-Rocket.git
@@ -67,12 +65,8 @@ git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
 ### 2. Install requirements
 
 ```bash title="install.sh"
-python gen_require.py 0
-python -m pip install -r requirements.txt
-git submodule update --init --recursive
-cd libs
-python -m pip install ./lib_not_dr
-python -m pip install ./pyglet
+python -m pip install --upgrade uv
+python -m uv sync
 ```
 
 ### 3. Run
@@ -97,8 +91,9 @@ python DR.py
 
 ## Required Python Modules
 
-> python gen_require.py [-h] {0,1,2}
-> run / build / compile
+> Run: uv sync
+> Build: uv sync --group build
+> Compile: uv sync --all-groups
 
 - `pyglet` (pre-installed V2.x path:`./libs/pyglet`)
 - `xmltodict` (pre-installed V0.12.0 path:`./libs/xmltodict`)

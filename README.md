@@ -4,7 +4,7 @@ Readme 请查看 [dr.shenjack.top](https://dr.shenjack.top/main/readme)
 
 Readme please check out [dr.shenjack.top](https://dr.shenjack.top/main/readme-en)
 
-## below is an old, unsynchronized readme
+## below is an old, synchronized readme
 ## 下面是一个 老的, 未同步的 readme
 
 # Difficult Rocket
@@ -32,7 +32,7 @@ Readme please check out [dr.shenjack.top](https://dr.shenjack.top/main/readme-en
 
 [![release version](https://img.shields.io/badge/Release-0.9.2.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 [![pre version](https://img.shields.io/badge/Pre_Release-0.9.2.0-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
-[![devlo version](https://img.shields.io/badge/Devloping-0.9.3-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
+[![develop version](https://img.shields.io/badge/Devloping-0.9.3-blue.svg)](https://github.com/shenjackyuanjie/Difficult-Rocket/releases)
 
 [![language badge](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)](https://stats.deeptrain.net/repo/shenjackyuanjie/Difficult-Rocket?theme=dark)
 
@@ -55,8 +55,6 @@ Readme please check out [dr.shenjack.top](https://dr.shenjack.top/main/readme-en
 ### 1. Clone
 
 ```bash title="clone.sh"
-mkdir DR
-cd DR
 git clone https://github.com/shenjackyuanjie/Difficult-Rocket.git
 # 或者
 git clone https://gitee.com/shenjackyuanjie/Difficult-Rocket.git
@@ -67,12 +65,8 @@ git clone git@github.com:shenjackyuanjie/Difficult-Rocket.git
 ### 2. 安装依赖
 
 ```bash title="install.sh"
-python gen_require.py 0
-python -m pip install -r requirements.txt
-git submodule update --init --recursive
-cd libs
-python -m pip install ./lib_not_dr
-python -m pip install ./pyglet
+python -m pip install --upgrade uv
+python -m uv sync
 ```
 
 ### 3. 运行
@@ -97,8 +91,9 @@ python DR.py
 
 ## 需要的Python模块
 
-> python gen_require.py [-h] {0,1,2}
-> run / build / compile
+> Run: uv sync
+> Build: uv sync --group build
+> Compile: uv sync --all-groups
 
 - `pyglet` (已经内置 V2.x 路径：`./libs/pyglet`)
 - `xmltodict` (已经内置 V0.12.0 路径:`./libs/xmltodict`)
