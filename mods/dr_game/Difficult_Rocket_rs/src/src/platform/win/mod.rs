@@ -3,7 +3,7 @@ use std::{ffi::OsStr, os::windows::ffi::OsStrExt};
 use windows::{
     Win32::{
         System::Com::{CLSCTX_ALL, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoCreateInstance, CoInitializeEx},
-        UI::Shell::ITaskbarList3,
+        UI::Shell::{ITaskbarList, ITaskbarList3},
     },
     core::{Interface, PWSTR},
 };
@@ -64,7 +64,7 @@ pub fn set_progress_value(all: u64, complete: u64) {
 
     if let Some((windows_handle, _)) = get_window_handler() {
         let i_taskbar: ITaskbarList3 =
-            unsafe { CoCreateInstance(&ITaskbarList3::IID, None, CLSCTX_ALL).expect("faild to create ITaskBarList3") };
+            unsafe { CoCreateInstance(&ITaskbarList::IID, None, CLSCTX_ALL).expect("faild to create ITaskBarList3") };
 
         // let i_taskbar: ITaskbarList3 = unsafe {
         //     let wide_str = OsStr::new(TASKBAR_PROP_NAME).encode_wide().chain(Some(0)).collect::<Vec<u16>>();

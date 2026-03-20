@@ -17,11 +17,11 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = "1.0"
 
-quick-xml = { version = "0.37", features = ["serialize"] }
+quick-xml = { version = "0.39", features = ["serialize"] }
 serde = { version = "1.0", features = ["derive"] }
 
 nalgebra = "0.33"
-pyo3 = { version = "0.25", features = [
+pyo3 = { version = "0.28", features = [
     "extension-module",
     "macros",
     "py-clone",
@@ -33,11 +33,11 @@ rapier2d-f64 = { version = "0.26", features = ["simd-stable"] }
 
 # 让我们来试试黑魔法
 # 我投降, 我直接写 gl 还不行吗
-gl33 = "0.2.1"
+gl33 = "0.2"
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.61.1", features = ["Win32_UI_Shell", "Win32_UI_Controls", "Win32_System_Com"] }
-windows-sys = { version = "0.59", features = [
+windows = { version = "0.62", features = ["Win32_UI_Shell", "Win32_UI_Controls", "Win32_System_Com"] }
+windows-sys = { version = "0.61", features = [
     "Win32_Foundation",
     "Win32_System_Threading",
     "Win32_UI_WindowsAndMessaging",

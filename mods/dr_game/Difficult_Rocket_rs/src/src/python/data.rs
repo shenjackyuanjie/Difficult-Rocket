@@ -13,7 +13,7 @@ use crate::sr1_parse::{SR1PartList, SR1PartType, SR1Ship};
 
 use quick_xml::se::to_string;
 
-#[pyclass]
+#[pyclass(from_py_object)]
 #[pyo3(name = "SaveStatus_rs")]
 #[derive(Clone, Debug)]
 pub struct PySaveStatus {
@@ -34,7 +34,7 @@ impl Default for PySaveStatus {
     fn default() -> Self { Self::new(false) }
 }
 
-#[pyclass]
+#[pyclass(from_py_object)]
 #[derive(Clone, Debug)]
 #[pyo3(name = "SR1PartType_rs")]
 pub struct PySR1PartType {
@@ -77,7 +77,7 @@ impl PySR1PartType {
     fn get_type(&self) -> String { self.data.p_type.into() }
 }
 
-#[pyclass]
+#[pyclass(from_py_object)]
 #[derive(Clone, Debug)]
 #[pyo3(name = "SR1PartList_rs")]
 pub struct PySR1PartList {
@@ -114,7 +114,7 @@ impl PySR1PartList {
     }
 }
 
-#[pyclass]
+#[pyclass(skip_from_py_object)]
 #[derive(Clone, Debug)]
 #[pyo3(name = "SR1PartData_rs")]
 pub struct PySR1PartData {
@@ -176,7 +176,7 @@ impl PySR1PartData {
     }
 }
 
-#[pyclass]
+#[pyclass(skip_from_py_object)]
 #[derive(Debug, Clone)]
 #[pyo3(name = "SR1Connection_rs")]
 pub struct PySR1Connections {
@@ -229,7 +229,7 @@ impl PySR1Connections {
     }
 }
 
-#[pyclass]
+#[pyclass(skip_from_py_object)]
 #[derive(Clone, Debug)]
 #[pyo3(name = "SR1Ship_rs")]
 pub struct PySR1Ship {
