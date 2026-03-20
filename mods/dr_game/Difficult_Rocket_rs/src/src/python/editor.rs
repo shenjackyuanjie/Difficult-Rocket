@@ -6,7 +6,7 @@
  * -------------------------------
  */
 
-use crate::sr1_parse::IdType;
+use crate::sr1_parse::types::IdType;
 
 use nalgebra::{Matrix2, Vector2};
 use pyo3::prelude::*;

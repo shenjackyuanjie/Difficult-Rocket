@@ -1,5 +1,5 @@
-use crate::sr1_parse::{SR1PartList, SR1PartType, SR1PartTypeAttr};
-use crate::sr1_parse::{SR1PartListTrait, SR1PartTypeData};
+use crate::sr1_parse::traits::{SR1PartListTrait, SR1PartTypeData};
+use crate::sr1_parse::types::{Damage as SR1Damage, SR1PartList, SR1PartType, SR1PartTypeAttr};
 
 use anyhow::Result;
 use quick_xml::de::from_str;
@@ -134,8 +134,8 @@ pub struct Damage {
 }
 
 impl Damage {
-    pub fn take_damage(&self) -> crate::sr1_parse::Damage {
-        crate::sr1_parse::Damage {
+    pub fn take_damage(&self) -> SR1Damage {
+        SR1Damage {
             disconnect: self.disconnect,
             explode: self.explode,
             explosion_power: self.explosion_power.unwrap_or(100_f64),

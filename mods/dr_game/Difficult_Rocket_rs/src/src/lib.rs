@@ -32,16 +32,16 @@ fn module_init(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sr1_parse::py::read_part_list_py, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_parse::py::py_raw_ship_from_file, m)?)?;
     m.add_function(wrap_pyfunction!(sr1_parse::py::py_assert_ship, m)?)?;
-    m.add_function(wrap_pyfunction!(python::data::load_and_save_test, m)?)?;
+    m.add_function(wrap_pyfunction!(python::data::tests::load_and_save_test, m)?)?;
     // m.add_function(wrap_pyfunction!(renders::render_hack, m)?)?;
     m.add_function(wrap_pyfunction!(renders::opengl_render, m)?)?;
     m.add_function(wrap_pyfunction!(renders::set_progress_value, m)?)?;
-    m.add_class::<python::data::PySR1Ship>()?;
-    m.add_class::<python::data::PySR1PartList>()?;
-    m.add_class::<python::data::PySR1PartType>()?;
-    m.add_class::<python::data::PySR1PartData>()?;
-    m.add_class::<python::data::PySaveStatus>()?;
-    m.add_class::<python::data::PySR1Connections>()?;
+    m.add_class::<python::data::ship::PySR1Ship>()?;
+    m.add_class::<python::data::part_list::PySR1PartList>()?;
+    m.add_class::<python::data::part_type::PySR1PartType>()?;
+    m.add_class::<python::data::part_data::PySR1PartData>()?;
+    m.add_class::<python::data::save_status::PySaveStatus>()?;
+    m.add_class::<python::data::connections::PySR1Connections>()?;
     m.add_class::<python::console::PyConsole>()?;
     // m.add_class::<python::editor::EditorArea>()?;
     Ok(())

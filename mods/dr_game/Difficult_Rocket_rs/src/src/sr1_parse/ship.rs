@@ -1,6 +1,5 @@
-use crate::sr1_parse::IdType;
-use crate::sr1_parse::{SR1PartData, SR1PartDataAttr, SR1Ship};
-use crate::sr1_parse::{SR1PartDataTrait, SR1ShipTrait};
+use crate::sr1_parse::traits::{SR1PartDataTrait, SR1ShipTrait};
+use crate::sr1_parse::types::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
 
 use quick_xml::de::from_str;
 use quick_xml::se::to_string;
