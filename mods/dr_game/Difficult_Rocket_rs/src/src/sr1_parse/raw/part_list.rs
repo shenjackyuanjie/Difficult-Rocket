@@ -1,5 +1,4 @@
-use crate::sr1_parse::traits::{SR1PartListTrait, SR1PartTypeData};
-use crate::sr1_parse::types::{Damage as SR1Damage, SR1PartList, SR1PartType, SR1PartTypeAttr};
+use crate::sr1_parse::model::{Damage as SR1Damage, SR1PartList, SR1PartType, SR1PartTypeAttr};
 
 use anyhow::Result;
 use quick_xml::de::from_str;
@@ -284,8 +283,8 @@ pub struct RawPartType {
     pub lander: Option<Lander>,
 }
 
-impl SR1PartTypeData for RawPartType {
-    fn to_sr_part_type(&self) -> SR1PartType {
+impl RawPartType {
+    pub fn to_sr_part_type(&self) -> SR1PartType {
         let part_attr: Option<SR1PartTypeAttr> = match self.r#type {
             SR1PartTypeEnum::tank => {
                 let tank = self.tank.unwrap();
@@ -366,7 +365,6 @@ impl SR1PartTypeData for RawPartType {
             attr: part_attr,
         }
     }
-    fn to_raw_part_type(&self) -> RawPartType { self.clone() }
 }
 
 impl RawPartList {
@@ -386,14 +384,12 @@ impl RawPartList {
     }
 }
 
-impl SR1PartListTrait for RawPartList {
-    fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
+impl RawPartList {
+    pub fn to_sr_part_list(&self, name: Option<String>) -> SR1PartList {
         let mut types: Vec<SR1PartType> = Vec::new();
         for part_data in self.part_types.iter() {
             types.push(part_data.to_sr_part_type());
         }
         SR1PartList::part_types_new(types, name)
     }
-
-    fn to_raw_part_list(&self) -> RawPartList { self.clone() }
 }

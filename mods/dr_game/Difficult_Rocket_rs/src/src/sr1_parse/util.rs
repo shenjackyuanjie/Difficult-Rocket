@@ -2,7 +2,7 @@ use std::ops::Deref;
 
 use crate::dr_physics::math::Point2D;
 use crate::dr_physics::math::Rotate;
-use crate::sr1_parse::types::{SR1PartData, SR1PartList};
+use crate::sr1_parse::model::{SR1PartData, SR1PartList};
 
 pub fn radians_map_to_degrees(angle: f64) -> f64 {
     let angle_string = angle.to_string();

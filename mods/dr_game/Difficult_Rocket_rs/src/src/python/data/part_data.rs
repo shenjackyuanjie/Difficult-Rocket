@@ -1,8 +1,7 @@
 use pyo3::prelude::*;
 
-use crate::dr_physics::math::{Point2D, Rotate};
 use crate::python::data::part_type::PySR1PartType;
-use crate::sr1_parse::types::{IdType, SR1PartData};
+use crate::sr1_parse::model::{IdType, SR1PartData};
 
 #[pyclass(skip_from_py_object)]
 #[derive(Clone, Debug)]
@@ -54,14 +53,6 @@ impl PySR1PartData {
     fn get_flip_y(&self) -> bool { self.data.flip_y }
 
     fn get_part_box_by_type(&self, part_type: PySR1PartType) -> ((f64, f64), (f64, f64)) {
-        let radius = self.data.angle;
-        let ((x1, y1), (x2, y2)) = part_type.data.get_box();
-        let mut p1 = Point2D::new(x1, y1);
-        let mut p2 = Point2D::new(x2, y2);
-        p1.rotate_radius_mut(radius);
-        p2.rotate_radius_mut(radius);
-        p1.add_mut(self.data.x * 2.0, self.data.y * 2.0);
-        p2.add_mut(self.data.x * 2.0, self.data.y * 2.0);
-        ((p1.x, p1.y), (p2.x, p2.y))
+        self.data.get_corner_points(&part_type.data)
     }
 }

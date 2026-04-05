@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 
-use crate::sr1_parse::ship::{Connection, RawConnectionData};
-use crate::sr1_parse::types::IdType;
+use crate::sr1_parse::model::IdType;
+use crate::sr1_parse::raw::{Connection, RawConnectionData};
 
 #[pyclass(skip_from_py_object)]
 #[derive(Debug, Clone)]

@@ -1,5 +1,4 @@
-use crate::sr1_parse::traits::{SR1PartDataTrait, SR1ShipTrait};
-use crate::sr1_parse::types::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
+use crate::sr1_parse::model::{IdType, SR1PartData, SR1PartDataAttr, SR1Ship};
 
 use quick_xml::de::from_str;
 use quick_xml::se::to_string;
@@ -285,8 +284,8 @@ impl Connection {
     pub fn is_normal(&self) -> bool { matches!(self, Connection::Normal { .. }) }
 }
 
-impl SR1PartDataTrait for Part {
-    fn to_sr_part_data(&self) -> SR1PartData {
+impl Part {
+    pub fn to_sr_part_data(&self) -> SR1PartData {
         let attr = SR1PartDataAttr::from_raw(self, None, true);
         let part_type = unsafe { attr.get_part_type_none_mut() };
         SR1PartData {
@@ -305,12 +304,10 @@ impl SR1PartDataTrait for Part {
             explode: self.exploded.unwrap_or(0_i8) != 0,
         }
     }
-
-    fn to_raw_part_data(&self) -> Part { self.clone() }
 }
 
-impl SR1ShipTrait for RawShip {
-    fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
+impl RawShip {
+    pub fn to_sr_ship(&self, name: Option<String>) -> SR1Ship {
         SR1Ship {
             name: name.unwrap_or("NewShip".to_string()),
             description: "".to_string(),
@@ -323,10 +320,6 @@ impl SR1ShipTrait for RawShip {
         }
     }
 
-    fn to_raw_ship(&self) -> RawShip { self.clone() }
-}
-
-impl RawShip {
     pub fn from_file(path: String) -> Option<RawShip> {
         let ship_file = std::fs::read_to_string(path); // for encoding error
         if let Err(e) = ship_file {

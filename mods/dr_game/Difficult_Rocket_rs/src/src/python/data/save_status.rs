@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 
-use crate::sr1_parse::types::SaveStatus;
+use crate::sr1_parse::model::SaveStatus;
 
 #[pyclass(from_py_object)]
 #[pyo3(name = "SaveStatus_rs")]

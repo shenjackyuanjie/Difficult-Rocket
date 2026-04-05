@@ -6,6 +6,7 @@
  * -------------------------------
  */
 
+pub mod api;
 pub mod console;
 pub mod data;
 #[allow(unused)]

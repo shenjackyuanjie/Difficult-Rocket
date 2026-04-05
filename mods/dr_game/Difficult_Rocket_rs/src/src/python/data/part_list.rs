@@ -3,9 +3,8 @@ use std::collections::HashMap;
 use pyo3::prelude::*;
 
 use crate::python::data::part_type::PySR1PartType;
-use crate::sr1_parse::part_list::RawPartList;
-use crate::sr1_parse::traits::SR1PartListTrait;
-use crate::sr1_parse::types::SR1PartList;
+use crate::sr1_parse::model::SR1PartList;
+use crate::sr1_parse::ship_io::load_part_list_from_file;
 
 #[pyclass(from_py_object)]
 #[derive(Clone, Debug)]
@@ -19,14 +18,14 @@ impl PySR1PartList {
     #[new]
     #[pyo3(text_signature = "(file_path = './assets/builtin/PartList.xml', list_name = 'NewPartList')")]
     fn new(file_path: String, list_name: String) -> Self {
-        let raw_part_list: RawPartList = match RawPartList::from_file(file_path.clone()) {
-            Ok(raw_part_list) => raw_part_list,
+        let mut data = match load_part_list_from_file(file_path.clone()) {
+            Ok(part_list) => part_list,
             Err(e) => {
                 println!("ERROR!\n{}\n----------", e);
                 panic!("Parse part list failed! {}\n{e}", file_path);
             }
         };
-        let data = raw_part_list.to_sr_part_list(Some(list_name));
+        data.name = list_name;
         Self { data }
     }
 

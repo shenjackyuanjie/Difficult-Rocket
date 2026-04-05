@@ -29,9 +29,9 @@ fn get_version_str() -> String { env!("CARGO_PKG_VERSION").to_string() }
 #[pyo3(name = "Difficult_Rocket_rs")]
 fn module_init(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_version_str, m)?)?;
-    m.add_function(wrap_pyfunction!(sr1_parse::py::read_part_list_py, m)?)?;
-    m.add_function(wrap_pyfunction!(sr1_parse::py::py_raw_ship_from_file, m)?)?;
-    m.add_function(wrap_pyfunction!(sr1_parse::py::py_assert_ship, m)?)?;
+    m.add_function(wrap_pyfunction!(python::api::read_part_list_py, m)?)?;
+    m.add_function(wrap_pyfunction!(python::api::py_raw_ship_from_file, m)?)?;
+    m.add_function(wrap_pyfunction!(python::api::py_assert_ship, m)?)?;
     m.add_function(wrap_pyfunction!(python::data::tests::load_and_save_test, m)?)?;
     // m.add_function(wrap_pyfunction!(renders::render_hack, m)?)?;
     m.add_function(wrap_pyfunction!(renders::opengl_render, m)?)?;

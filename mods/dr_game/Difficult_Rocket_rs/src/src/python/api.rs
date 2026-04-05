@@ -1,19 +1,12 @@
 use pyo3::{PyResult, Python, pyfunction};
 use quick_xml::{Reader, de::from_str, events::Event};
 
-use super::part_list::RawPartList;
-use super::ship::RawShip;
+use crate::sr1_parse::raw::{RawPartList, RawShip};
 
 #[pyfunction]
 #[pyo3(name = "part_list_read_test", signature = (file_name = "./assets/builtin/PartList.xml".to_string()))]
 pub fn read_part_list_py(_py: Python, file_name: Option<String>) -> PyResult<()> {
     let file_name = file_name.unwrap_or("./assets/builtin/PartList.xml".to_string());
-    // let _parts = RawPartList::from_file(file_name);
-    // if let Some(parts) = _parts {
-    //     // println!("{:?}", parts)
-    //     parts.list_print();
-    //     let _part_list = parts.to_sr_part_list(Some("Vanilla".to_string()));
-    // }
     println!("{:?}", RawPartList::from_file(file_name));
     Ok(())
 }
@@ -38,7 +31,6 @@ pub fn py_raw_ship_from_file(path: String) -> PyResult<bool> {
 
 #[pyfunction]
 #[pyo3(name = "assert_ship")]
-/// 校验这玩意是不是个船
 pub fn py_assert_ship(path: String) -> bool {
     let file_data = match std::fs::read_to_string(path) {
         Ok(data) => data,
@@ -48,24 +40,16 @@ pub fn py_assert_ship(path: String) -> bool {
         }
     };
     let mut reader = Reader::from_str(&file_data);
-    // 读取第一个
     loop {
         match reader.read_event() {
             Ok(Event::Start(e)) => {
                 if e.name().as_ref() == b"Ship" {
-                    // 再验证一下 version, liftedOff, touchingGround
                     let mut founds = (false, false, false);
                     for attr in e.attributes().flatten() {
                         match attr.key.as_ref() {
-                            b"version" => {
-                                founds.0 = true;
-                            }
-                            b"liftedOff" => {
-                                founds.1 = true;
-                            }
-                            b"touchingGround" => {
-                                founds.2 = true;
-                            }
+                            b"version" => founds.0 = true,
+                            b"liftedOff" => founds.1 = true,
+                            b"touchingGround" => founds.2 = true,
                             _ => (),
                         }
                     }
@@ -77,9 +61,8 @@ pub fn py_assert_ship(path: String) -> bool {
                             if founds.2 { "" } else { "touchingGround " }
                         );
                         return false;
-                    } else {
-                        return true;
                     }
+                    return true;
                 }
             }
             Ok(Event::Eof) => {

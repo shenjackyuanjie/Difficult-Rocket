@@ -1,19 +1,21 @@
 use std::collections::HashMap;
 use std::io::Cursor;
 
+use anyhow::Result;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
 use quick_xml::writer::Writer;
 
-use crate::sr1_parse::part_list::SR1PartTypeEnum;
-use crate::sr1_parse::ship::{Connection, RawShip};
-use crate::sr1_parse::traits::SR1ShipTrait;
-use crate::sr1_parse::types::{IdType, PartsWithConnections, SR1PartData, SR1PartList, SR1Ship, SaveStatus};
+use crate::sr1_parse::model::{IdType, PartsWithConnections, SR1PartData, SR1PartList, SR1Ship, SaveStatus};
+use crate::sr1_parse::raw::part_list::{RawPartList, SR1PartTypeEnum};
+use crate::sr1_parse::raw::ship::{Connection, RawShip};
 
 type XmlWriter = Writer<Cursor<Vec<u8>>>;
 
 fn bool_i8_string(value: bool) -> String { (value as i8).to_string() }
 
-fn push_attr_owned(elem: &mut BytesStart<'_>, key: &'static str, value: String) { elem.push_attribute((key, value.as_str())); }
+fn push_attr_owned(elem: &mut BytesStart<'_>, key: &'static str, value: String) {
+    elem.push_attribute((key, value.as_str()));
+}
 
 fn write_start(writer: &mut XmlWriter, tag: &str) { writer.write_event(Event::Start(BytesStart::new(tag))).unwrap(); }
 
@@ -57,11 +59,7 @@ fn build_fuel_element(part: &SR1PartData) -> BytesStart<'static> {
 
 fn build_stage_element(part: &SR1PartData) -> BytesStart<'static> {
     let mut stage_attr = BytesStart::new("Staging");
-    push_attr_owned(
-        &mut stage_attr,
-        "currentStage",
-        part.attr.current_stage.unwrap().to_string(),
-    );
+    push_attr_owned(&mut stage_attr, "currentStage", part.attr.current_stage.unwrap().to_string());
     stage_attr
 }
 
@@ -211,18 +209,25 @@ fn write_ship_xml(data: &SR1Ship, save_status: &SaveStatus) -> String {
     String::from_utf8(writer.into_inner().into_inner()).unwrap()
 }
 
-impl SR1Ship {
-    pub fn from_file(file_name: String, ship_name: Option<String>) -> Option<Self> {
-        if !std::path::Path::new(&file_name).exists() {
-            return None;
-        }
-        let ship = RawShip::from_file(file_name);
-        match ship {
-            Some(ship) => Some(ship.to_sr_ship(ship_name)),
-            None => None,
-        }
-    }
+pub fn load_part_list_from_file(file_name: String) -> Result<SR1PartList> {
+    let raw_list = RawPartList::from_file(file_name)?;
+    Ok(raw_list.to_sr_part_list(None))
+}
 
+pub fn load_ship_from_file(file_name: String, ship_name: Option<String>) -> Result<SR1Ship> {
+    if !std::path::Path::new(&file_name).exists() {
+        anyhow::bail!("ship file not found: {file_name}");
+    }
+    let ship = RawShip::from_file(file_name).ok_or_else(|| anyhow::anyhow!("failed to parse ship file"))?;
+    Ok(ship.to_sr_ship(ship_name))
+}
+
+pub fn save_ship_to_file(ship: &SR1Ship, file_name: String, save_status: &SaveStatus) -> Result<()> {
+    std::fs::write(file_name, write_ship_xml(ship, save_status))?;
+    Ok(())
+}
+
+impl SR1Ship {
     pub fn parse_part_list_to_part(&mut self, part_list: &SR1PartList) {
         for part in self.parts.iter_mut() {
             if let Some(part_type) = part_list.get_part_type(&part.part_type_id) {
@@ -249,10 +254,5 @@ impl SR1Ship {
             }
         }
         result
-    }
-
-    pub fn save(&self, file_name: String, save_status: &SaveStatus) -> Option<()> {
-        std::fs::write(file_name, write_ship_xml(self, save_status)).unwrap();
-        Some(())
     }
 }

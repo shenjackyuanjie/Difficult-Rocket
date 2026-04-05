@@ -1,8 +1,11 @@
+use std::collections::HashMap;
+
 use crate::dr_physics::math::{Edge, Shape};
-use crate::sr1_parse::part_list::Damage as RawDamage;
-use crate::sr1_parse::part_list::{AttachPoint, FuelType, Shape as RawShape, SR1PartTypeEnum};
-use crate::sr1_parse::ship::Connection;
-use crate::sr1_parse::util::radians_map_to_degrees;
+use crate::sr1_parse::raw::part_list::{
+    AttachPoint, Damage as RawDamage, FuelType, SR1PartTypeEnum, Shape as RawShape,
+};
+use crate::sr1_parse::raw::ship::{Connection, Part as RawPart};
+use crate::sr1_parse::util::{get_max_box, radians_map_to_degrees};
 
 pub type IdType = i64;
 pub type PartsWithConnections = Vec<(Vec<SR1PartData>, Vec<Connection>)>;
@@ -103,17 +106,6 @@ pub struct SR1PartList {
 impl SR1PartList {
     pub fn new(name: String, types: Vec<SR1PartType>) -> SR1PartList { SR1PartList { types, name } }
 
-    pub fn from_file(file_name: String) -> Option<SR1PartList> {
-        use crate::sr1_parse::part_list::RawPartList;
-        use crate::sr1_parse::traits::SR1PartListTrait;
-
-        if let Ok(raw_list) = RawPartList::from_file(file_name) {
-            let sr_list = raw_list.to_sr_part_list(None);
-            return Some(sr_list);
-        }
-        None
-    }
-
     pub fn get_part_type(&self, type_name: &String) -> Option<&SR1PartType> {
         self.types.iter().find(|part_type| &part_type.id == type_name)
     }
@@ -123,6 +115,16 @@ impl SR1PartList {
     }
 
     pub fn insert_part(&mut self, part: SR1PartType) { self.types.insert(0, part); }
+
+    pub fn renamed(&self, name: Option<String>) -> SR1PartList {
+        if let Some(name) = name {
+            let mut dupe = self.clone();
+            dupe.name = name;
+            dupe
+        } else {
+            self.clone()
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -162,6 +164,75 @@ impl SR1PartData {
     }
 
     pub fn angle_degrees(&self) -> f64 { radians_map_to_degrees(self.angle) }
+
+    pub fn get_corner_points(&self, part_type: &SR1PartType) -> ((f64, f64), (f64, f64)) {
+        let (x1, y1, x2, y2) = self.get_box(part_type);
+        ((x1 * 2.0, y1 * 2.0), (x2 * 2.0, y2 * 2.0))
+    }
+
+    pub fn to_raw_part_data(&self) -> crate::sr1_parse::raw::ship::Part {
+        use crate::sr1_parse::raw::ship::{Activate, Engine as RawEngine, Part, Pod, Staging, Step, Tank as RawTank};
+
+        let (tank, engine) = if let Some(fuel) = &self.attr.fuel {
+            match self.part_type {
+                SR1PartTypeEnum::tank => (Some(RawTank { fuel: fuel.to_owned() }), None),
+                SR1PartTypeEnum::engine => (None, Some(RawEngine { fuel: fuel.to_owned() })),
+                _ => (None, None),
+            }
+        } else {
+            (None, None)
+        };
+        let pod = match (&self.attr.name, &self.attr.throttle, &self.attr.current_stage, &self.attr.steps) {
+            (Some(name), Some(throttle), Some(current_stage), Some(steps)) => Some({
+                let mut actives = Vec::new();
+                for step in steps {
+                    let mut steps = Vec::new();
+                    for active in step {
+                        steps.push(Activate {
+                            id: active.0.to_owned(),
+                            moved: active.1.to_owned() as i8,
+                        });
+                    }
+                    actives.push(Step { activates: steps });
+                }
+                let stages = Staging {
+                    current_stage: current_stage.to_owned(),
+                    steps: actives,
+                };
+                Pod {
+                    name: name.clone(),
+                    throttle: throttle.to_owned(),
+                    stages,
+                }
+            }),
+            _ => None,
+        };
+        Part {
+            tank,
+            engine,
+            pod,
+            part_type_id: self.part_type_id.clone(),
+            id: self.id,
+            x: self.x,
+            y: self.y,
+            editor_angle: self.editor_angle,
+            angle: self.angle,
+            angle_v: self.angle_v,
+            flip_x: Some(self.flip_x as i8),
+            flip_y: Some(self.flip_y as i8),
+            chute_x: self.attr.chute_x,
+            chute_y: self.attr.chute_y,
+            chute_height: self.attr.chute_height,
+            extension: self.attr.extension,
+            inflate: self.attr.inflate.map(|b| b as i8),
+            inflation: self.attr.inflation,
+            exploded: Some(self.explode as i8),
+            rope: self.attr.rope.map(|b| b as i8),
+            chute_angle: self.attr.chute_angle,
+            activated: Some(self.active as i8),
+            deployed: self.attr.deployed.map(|b| b as i8),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -254,7 +325,7 @@ impl SR1PartDataAttr {
         }
     }
 
-    pub fn from_raw(raw_data: &crate::sr1_parse::ship::Part, part_type: Option<SR1PartTypeEnum>, guess: bool) -> Self {
+    pub fn from_raw(raw_data: &RawPart, part_type: Option<SR1PartTypeEnum>, guess: bool) -> Self {
         let fuel = if let Some(tank) = &raw_data.tank {
             Some(tank.fuel.to_owned())
         } else {
@@ -311,6 +382,94 @@ pub struct SR1Ship {
     pub parts: Vec<SR1PartData>,
     pub connections: Vec<Connection>,
     pub disconnected: Vec<(Vec<SR1PartData>, Vec<Connection>)>,
+}
+
+impl SR1Ship {
+    pub fn renamed(&self, name: Option<String>) -> SR1Ship {
+        if let Some(name) = name {
+            let mut dupe = self.clone();
+            dupe.name = name;
+            dupe
+        } else {
+            self.clone()
+        }
+    }
+
+    pub fn img_bounds(&self, part_list: &SR1PartList) -> (i64, i64, i64, i64) {
+        let mut max_box = get_max_box(&self.parts, part_list);
+        max_box.0 *= 60.0;
+        max_box.1 *= 60.0;
+        max_box.2 *= 60.0;
+        max_box.3 *= 60.0;
+        (max_box.0 as i64, max_box.1 as i64, max_box.2 as i64, max_box.3 as i64)
+    }
+
+    pub fn total_mass(&self, part_list: &SR1PartList) -> f64 {
+        self.parts
+            .iter()
+            .filter_map(|part_data| part_list.get_part_type(&part_data.part_type_id).map(|part_type| part_type.mass))
+            .sum()
+    }
+
+    pub fn resolved_parts(&self, part_list: &SR1PartList) -> Vec<(SR1PartType, SR1PartData)> {
+        self.parts
+            .iter()
+            .filter_map(|part_data| {
+                part_list
+                    .get_part_type(&part_data.part_type_id)
+                    .map(|part_type| (part_type.clone(), part_data.clone()))
+            })
+            .collect()
+    }
+
+    pub fn resolved_parts_by_id(&self, part_list: &SR1PartList) -> HashMap<IdType, Vec<(SR1PartType, SR1PartData)>> {
+        let mut parts = HashMap::new();
+        for (part_type, part_data) in self.resolved_parts(part_list) {
+            parts.entry(part_data.id).or_insert_with(Vec::new).push((part_type, part_data));
+        }
+        parts
+    }
+
+    pub fn resolved_disconnected_parts(
+        &self,
+        part_list: &SR1PartList,
+    ) -> Vec<(Vec<(SR1PartType, SR1PartData)>, Vec<Connection>)> {
+        self.disconnected
+            .iter()
+            .map(|(part_group, connections)| {
+                let group_parts = part_group
+                    .iter()
+                    .filter_map(|part_data| {
+                        part_list
+                            .get_part_type(&part_data.part_type_id)
+                            .map(|part_type| (part_type.clone(), part_data.clone()))
+                    })
+                    .collect();
+                (group_parts, connections.clone())
+            })
+            .collect()
+    }
+
+    pub fn part_box(&self, part_list: &SR1PartList, part_id: IdType) -> Option<((f64, f64), (f64, f64))> {
+        self.parts.iter().find(|part_data| part_data.id == part_id).and_then(|part_data| {
+            part_list
+                .get_part_type(&part_data.part_type_id)
+                .map(|part_type| part_data.get_corner_points(part_type))
+        })
+    }
+
+    pub fn to_raw_ship(&self) -> crate::sr1_parse::raw::ship::RawShip {
+        use crate::sr1_parse::raw::ship::{Connections, DisconnectedParts, Parts, RawShip};
+
+        RawShip {
+            parts: Parts::from_vec_sr1(&self.parts),
+            connects: Connections::from_vec(self.connections.clone()),
+            version: self.version,
+            lift_off: self.lift_off as i8,
+            touch_ground: self.touch_ground as i8,
+            disconnected: DisconnectedParts::from_vec_sr1(self.disconnected.clone()),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy)]

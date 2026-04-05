@@ -2,7 +2,7 @@ use pyo3::prelude::*;
 
 use quick_xml::se::to_string;
 
-use crate::sr1_parse::ship::RawShip;
+use crate::sr1_parse::raw::RawShip;
 
 #[pyfunction]
 pub fn load_and_save_test(file_name: String) -> PyResult<()> {

@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 
-use crate::sr1_parse::types::SR1PartType;
+use crate::sr1_parse::model::SR1PartType;
 
 #[pyclass(from_py_object)]
 #[derive(Clone, Debug)]
